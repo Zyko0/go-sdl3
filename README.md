@@ -17,15 +17,13 @@
 package main
 
 import (
-	"image/color"
 	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
-	"github.com/Zyko0/go-sdl3/binary"
 )
 
 func main() {
-	defer binary.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
+	sdl.LoadLibrary("SDL3.dll")
 
 	runtime.LockOSThread()
 
@@ -45,7 +43,7 @@ func main() {
 	defer renderer.Destroy()
 	defer window.Destroy()
 
-	err = renderer.SetRenderDrawColor(color.RGBA{255, 255, 255, 255})
+	err = renderer.SetRenderDrawColor(255, 255, 255, 255)
 	if err != nil {
 		panic(err)
 	}
