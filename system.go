@@ -4,6 +4,10 @@ package sdl
 
 // TODO:
 
+func GetTicks() uint64 {
+	return iGetTicks()
+}
+
 // Filesystem
 
 // TODO:

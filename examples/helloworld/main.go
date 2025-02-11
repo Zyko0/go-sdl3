@@ -1,7 +1,6 @@
 package main
 
 import (
-	"image/color"
 	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
@@ -29,7 +28,7 @@ func main() {
 	defer renderer.Destroy()
 	defer window.Destroy()
 
-	err = renderer.SetRenderDrawColor(color.RGBA{255, 255, 255, 255})
+	err = renderer.SetRenderDrawColor(255, 255, 255, 255)
 	if err != nil {
 		panic(err)
 	}

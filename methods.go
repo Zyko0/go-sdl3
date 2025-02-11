@@ -1859,17 +1859,20 @@ func (renderer *Renderer) RenderScale(scaleX *float32, scaleY *float32) bool {
 	return iGetRenderScale(renderer, scaleX, scaleY)
 }
 
-func (renderer *Renderer) SetRenderDrawColor(clr color.RGBA) error {
-	if !iSetRenderDrawColor(renderer, clr.R, clr.G, clr.B, clr.A) {
+func (renderer *Renderer) SetRenderDrawColor(r, g, b, a uint8) error {
+	if !iSetRenderDrawColor(renderer, r, g, b, a) {
 		return lastError()
 	}
 
 	return nil
 }
 
-func (renderer *Renderer) SetRenderDrawColorFloat(r float32, g float32, b float32, a float32) bool {
-	panic("not implemented")
-	return iSetRenderDrawColorFloat(renderer, r, g, b, a)
+func (renderer *Renderer) SetRenderDrawColorFloat(r float32, g float32, b float32, a float32) error {
+	if !iSetRenderDrawColorFloat(renderer, r, g, b, a) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderDrawColor(r *uint8, g *uint8, b *uint8, a *uint8) (color.RGBA, error) {

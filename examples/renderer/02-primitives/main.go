@@ -3,7 +3,6 @@
 package main
 
 import (
-	"image/color"
 	"math/rand/v2"
 	"runtime"
 
@@ -54,22 +53,22 @@ func main() {
 		var rect sdl.FRect
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(color.RGBA{33, 33, 33, 255}) /* dark gray, full alpha */
-		renderer.RenderClear()                                   /* start with a blank canvas. */
+		renderer.SetRenderDrawColor(33, 33, 33, 255) /* dark gray, full alpha */
+		renderer.RenderClear()                       /* start with a blank canvas. */
 
 		/* draw a filled rectangle in the middle of the canvas. */
-		renderer.SetRenderDrawColor(color.RGBA{0, 0, 255, 255}) /* blue, full alpha */
+		renderer.SetRenderDrawColor(0, 0, 255, 255) /* blue, full alpha */
 		rect.X, rect.Y = 100, 100
 		rect.W = 440
 		rect.H = 280
 		renderer.RenderFillRect(&rect)
 
 		/* draw some points across the canvas. */
-		renderer.SetRenderDrawColor(color.RGBA{255, 0, 0, 255}) /* red, full alpha */
+		renderer.SetRenderDrawColor(255, 0, 0, 255) /* red, full alpha */
 		renderer.RenderPoints(points[:])
 
 		/* draw a unfilled rectangle in-set a little bit. */
-		renderer.SetRenderDrawColor(color.RGBA{0, 255, 0, 255}) /* green, full alpha */
+		renderer.SetRenderDrawColor(0, 255, 0, 255) /* green, full alpha */
 		rect.X += 30
 		rect.Y += 30
 		rect.W -= 60
@@ -77,7 +76,7 @@ func main() {
 		renderer.RenderRect(&rect)
 
 		/* draw two lines in an X across the whole canvas. */
-		renderer.SetRenderDrawColor(color.RGBA{255, 255, 0, 255}) /* yellow, full alpha */
+		renderer.SetRenderDrawColor(255, 255, 0, 255) /* yellow, full alpha */
 		renderer.RenderLine(0, 0, 640, 480)
 		renderer.RenderLine(0, 480, 640, 0)
 
