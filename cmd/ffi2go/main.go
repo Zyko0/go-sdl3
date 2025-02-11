@@ -21,7 +21,7 @@ var (
 	ffi string
 
 	// Note: can be found at https://wiki.libsdl.org/SDL3/QuickReference
-	//go:embed ref.h
+	//go:embed ref_h
 	apiRefCode string
 )
 
