@@ -24,12 +24,13 @@ func main() {
 
 	runtime.LockOSThread()
 
+	defer sdl.Quit()
 	err := sdl.Init(sdl.INIT_VIDEO)
 	if err != nil {
 		panic(err)
 	}
 
-	window, renderer, err := sdl.CreateWindowAndRenderer("examples/03-lines", 640, 480, 0)
+	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/03-lines", 640, 480, 0)
 	if err != nil {
 		panic(err)
 	}

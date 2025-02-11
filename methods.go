@@ -1919,9 +1919,12 @@ func (renderer *Renderer) RenderPoint(x float32, y float32) bool {
 	return iRenderPoint(renderer, x, y)
 }
 
-func (renderer *Renderer) RenderPoints(points *FPoint, count int) bool {
-	panic("not implemented")
-	return iRenderPoints(renderer, points, count)
+func (renderer *Renderer) RenderPoints(points []FPoint) error {
+	if !iRenderPoints(renderer, unsafe.SliceData(points), len(points)) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 float32) error {
@@ -1940,9 +1943,12 @@ func (renderer *Renderer) RenderLines(points []FPoint) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderRect(rect *FRect) bool {
-	panic("not implemented")
-	return iRenderRect(renderer, rect)
+func (renderer *Renderer) RenderRect(rect *FRect) error {
+	if !iRenderRect(renderer, rect) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderRects(rects *FRect, count int) bool {
@@ -1950,9 +1956,12 @@ func (renderer *Renderer) RenderRects(rects *FRect, count int) bool {
 	return iRenderRects(renderer, rects, count)
 }
 
-func (renderer *Renderer) RenderFillRect(rect *FRect) bool {
-	panic("not implemented")
-	return iRenderFillRect(renderer, rect)
+func (renderer *Renderer) RenderFillRect(rect *FRect) error {
+	if !iRenderFillRect(renderer, rect) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderFillRects(rects *FRect, count int) bool {
