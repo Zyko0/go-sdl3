@@ -1,0 +1,27 @@
+version: '3'
+
+tasks:
+    dependencies:
+        cmds:
+            # Install purego-gen
+            - go install github.com/Zyko0/purego-gen/cmd/purego-gen@latest
+    
+    generate-ffi:
+        cmds:
+            # Generate ffi.json file
+            - docker build . -t sdl3ffi
+            - docker create --name tmp sdl3ffi
+            - docker cp tmp:/ffi.json ./cmd/ffi2go/ffi.json
+            - docker rm -f tmp
+    
+    generate-bindings:
+        deps: [dependencies, generate-ffi]
+        cmds:
+            # Generate go bindings from ffi.json file 
+            - go run ./cmd/ffi2go
+            - purego-gen --no-warnings --function-name "initialize" --input "./sdl_functions.gen.go" --extra "./sdl_structs.gen.go,./sdl_types.gen.go,./sdl_enums.gen.go,./extra.go"
+
+    generate-methods:
+        cmds:
+            # Generate methods heuristically as a starting point
+            - go run ./cmd/methodgen
