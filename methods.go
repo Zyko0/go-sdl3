@@ -9,7 +9,10 @@ on the documentation.
 
 package sdl
 
-import "image/color"
+import (
+	"image/color"
+	"unsafe"
+)
 
 // ThreadPriority
 
@@ -1921,14 +1924,20 @@ func (renderer *Renderer) RenderPoints(points *FPoint, count int) bool {
 	return iRenderPoints(renderer, points, count)
 }
 
-func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 float32) bool {
-	panic("not implemented")
-	return iRenderLine(renderer, x1, y1, x2, y2)
+func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 float32) error {
+	if !iRenderLine(renderer, x1, y1, x2, y2) {
+		return lastError()
+	}
+
+	return nil
 }
 
-func (renderer *Renderer) RenderLines(points *FPoint, count int) bool {
-	panic("not implemented")
-	return iRenderLines(renderer, points, count)
+func (renderer *Renderer) RenderLines(points []FPoint) error {
+	if !iRenderLines(renderer, unsafe.SliceData(points), len(points)) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderRect(rect *FRect) bool {
