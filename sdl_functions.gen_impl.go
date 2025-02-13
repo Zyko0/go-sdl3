@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package sdl
 
@@ -4793,7 +4793,7 @@ func initialize() {
 	iMemoryBarrierAcquireFunction = func() {
 		purego.SyscallN(_addr_SDL_MemoryBarrierAcquireFunction)
 	}
-	iCompareAndSwapAtomicInt = func(a *AtomicInt, oldval int, newval int) bool {
+	iCompareAndSwapAtomicInt = func(a *AtomicInt, oldval int32, newval int32) bool {
 		_a := uintptr(unsafe.Pointer(a))
 		_oldval := uintptr(oldval)
 		_newval := uintptr(newval)
@@ -4801,24 +4801,24 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetAtomicInt = func(a *AtomicInt, v int) int {
+	iSetAtomicInt = func(a *AtomicInt, v int32) int32 {
 		_a := uintptr(unsafe.Pointer(a))
 		_v := uintptr(v)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAtomicInt, _a, _v)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetAtomicInt = func(a *AtomicInt) int {
+	iGetAtomicInt = func(a *AtomicInt) int32 {
 		_a := uintptr(unsafe.Pointer(a))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAtomicInt, _a)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iAddAtomicInt = func(a *AtomicInt, v int) int {
+	iAddAtomicInt = func(a *AtomicInt, v int32) int32 {
 		_a := uintptr(unsafe.Pointer(a))
 		_v := uintptr(v)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_AddAtomicInt, _a, _v)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iCompareAndSwapAtomicU32 = func(a *AtomicU32, oldval uint32, newval uint32) bool {
@@ -5072,7 +5072,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iWaitThread = func(thread *Thread, status *int) {
+	iWaitThread = func(thread *Thread, status *int32) {
 		_thread := uintptr(unsafe.Pointer(thread))
 		_status := uintptr(unsafe.Pointer(status))
 		purego.SyscallN(_addr_SDL_WaitThread, _thread, _status)
@@ -5595,12 +5595,12 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetNumAudioDrivers = func() int {
+	iGetNumAudioDrivers = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumAudioDrivers)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetAudioDriver = func(index int) string {
+	iGetAudioDriver = func(index int32) string {
 		_index := uintptr(index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioDriver, _index)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
@@ -5611,13 +5611,13 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetAudioPlaybackDevices = func(count *int) uintptr {
+	iGetAudioPlaybackDevices = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioPlaybackDevices, _count)
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGetAudioRecordingDevices = func(count *int) uintptr {
+	iGetAudioRecordingDevices = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioRecordingDevices, _count)
 		__r0 := uintptr(_r0)
@@ -5629,7 +5629,7 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetAudioDeviceFormat = func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int) bool {
+	iGetAudioDeviceFormat = func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int32) bool {
 		_devid := uintptr(devid)
 		_spec := uintptr(unsafe.Pointer(spec))
 		_sample_frames := uintptr(unsafe.Pointer(sample_frames))
@@ -5637,7 +5637,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetAudioDeviceChannelMap = func(devid AudioDeviceID, count *int) uintptr {
+	iGetAudioDeviceChannelMap = func(devid AudioDeviceID, count *int32) uintptr {
 		_devid := uintptr(devid)
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioDeviceChannelMap, _devid, _count)
@@ -5687,7 +5687,7 @@ func initialize() {
 		_devid := uintptr(devid)
 		purego.SyscallN(_addr_SDL_CloseAudioDevice, _devid)
 	}
-	iBindAudioStreams = func(devid AudioDeviceID, streams **AudioStream, num_streams int) bool {
+	iBindAudioStreams = func(devid AudioDeviceID, streams **AudioStream, num_streams int32) bool {
 		_devid := uintptr(devid)
 		_streams := uintptr(unsafe.Pointer(streams))
 		_num_streams := uintptr(num_streams)
@@ -5702,7 +5702,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iUnbindAudioStreams = func(streams **AudioStream, num_streams int) {
+	iUnbindAudioStreams = func(streams **AudioStream, num_streams int32) {
 		_streams := uintptr(unsafe.Pointer(streams))
 		_num_streams := uintptr(num_streams)
 		purego.SyscallN(_addr_SDL_UnbindAudioStreams, _streams, _num_streams)
@@ -5750,21 +5750,21 @@ func initialize() {
 	purego.RegisterLibFunc(&iSetAudioStreamFrequencyRatio, _hnd_sdl, "SDL_SetAudioStreamFrequencyRatio")
 	purego.RegisterLibFunc(&iGetAudioStreamGain, _hnd_sdl, "SDL_GetAudioStreamGain")
 	purego.RegisterLibFunc(&iSetAudioStreamGain, _hnd_sdl, "SDL_SetAudioStreamGain")
-	iGetAudioStreamInputChannelMap = func(stream *AudioStream, count *int) uintptr {
+	iGetAudioStreamInputChannelMap = func(stream *AudioStream, count *int32) uintptr {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioStreamInputChannelMap, _stream, _count)
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGetAudioStreamOutputChannelMap = func(stream *AudioStream, count *int) uintptr {
+	iGetAudioStreamOutputChannelMap = func(stream *AudioStream, count *int32) uintptr {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioStreamOutputChannelMap, _stream, _count)
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iSetAudioStreamInputChannelMap = func(stream *AudioStream, chmap *int, count int) bool {
+	iSetAudioStreamInputChannelMap = func(stream *AudioStream, chmap *int32, count int32) bool {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_chmap := uintptr(unsafe.Pointer(chmap))
 		_count := uintptr(count)
@@ -5772,7 +5772,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetAudioStreamOutputChannelMap = func(stream *AudioStream, chmap *int, count int) bool {
+	iSetAudioStreamOutputChannelMap = func(stream *AudioStream, chmap *int32, count int32) bool {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_chmap := uintptr(unsafe.Pointer(chmap))
 		_count := uintptr(count)
@@ -5780,7 +5780,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iPutAudioStreamData = func(stream *AudioStream, buf uintptr, len int) bool {
+	iPutAudioStreamData = func(stream *AudioStream, buf uintptr, len int32) bool {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_buf := uintptr(buf)
 		_len := uintptr(len)
@@ -5788,24 +5788,24 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetAudioStreamData = func(stream *AudioStream, buf uintptr, len int) int {
+	iGetAudioStreamData = func(stream *AudioStream, buf uintptr, len int32) int32 {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_buf := uintptr(buf)
 		_len := uintptr(len)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioStreamData, _stream, _buf, _len)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetAudioStreamAvailable = func(stream *AudioStream) int {
+	iGetAudioStreamAvailable = func(stream *AudioStream) int32 {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioStreamAvailable, _stream)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetAudioStreamQueued = func(stream *AudioStream) int {
+	iGetAudioStreamQueued = func(stream *AudioStream) int32 {
 		_stream := uintptr(unsafe.Pointer(stream))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetAudioStreamQueued, _stream)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iFlushAudioStream = func(stream *AudioStream) bool {
@@ -5911,7 +5911,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iMixAudio, _hnd_sdl, "SDL_MixAudio")
-	iConvertAudioSamples = func(src_spec *AudioSpec, src_data *uint8, src_len int, dst_spec *AudioSpec, dst_data **uint8, dst_len *int) bool {
+	iConvertAudioSamples = func(src_spec *AudioSpec, src_data *uint8, src_len int32, dst_spec *AudioSpec, dst_data **uint8, dst_len *int32) bool {
 		_src_spec := uintptr(unsafe.Pointer(src_spec))
 		_src_data := uintptr(unsafe.Pointer(src_data))
 		_src_len := uintptr(src_len)
@@ -5928,10 +5928,10 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetSilenceValueForFormat = func(format AudioFormat) int {
+	iGetSilenceValueForFormat = func(format AudioFormat) int32 {
 		_format := uintptr(format)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSilenceValueForFormat, _format)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iComposeCustomBlendMode = func(srcColorFactor BlendFactor, dstColorFactor BlendFactor, colorOperation BlendOperation, srcAlphaFactor BlendFactor, dstAlphaFactor BlendFactor, alphaOperation BlendOperation) BlendMode {
@@ -5951,7 +5951,7 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetMasksForPixelFormat = func(format PixelFormat, bpp *int, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool {
+	iGetMasksForPixelFormat = func(format PixelFormat, bpp *int32, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool {
 		_format := uintptr(format)
 		_bpp := uintptr(unsafe.Pointer(bpp))
 		_Rmask := uintptr(unsafe.Pointer(Rmask))
@@ -5962,7 +5962,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetPixelFormatForMasks = func(bpp int, Rmask uint32, Gmask uint32, Bmask uint32, Amask uint32) PixelFormat {
+	iGetPixelFormatForMasks = func(bpp int32, Rmask uint32, Gmask uint32, Bmask uint32, Amask uint32) PixelFormat {
 		_bpp := uintptr(bpp)
 		_Rmask := uintptr(Rmask)
 		_Gmask := uintptr(Gmask)
@@ -5978,13 +5978,13 @@ func initialize() {
 		__r0 := (*PixelFormatDetails)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iCreatePalette = func(ncolors int) *Palette {
+	iCreatePalette = func(ncolors int32) *Palette {
 		_ncolors := uintptr(ncolors)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_CreatePalette, _ncolors)
 		__r0 := (*Palette)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iSetPaletteColors = func(palette *Palette, colors *Color, firstcolor int, ncolors int) bool {
+	iSetPaletteColors = func(palette *Palette, colors *Color, firstcolor int32, ncolors int32) bool {
 		_palette := uintptr(unsafe.Pointer(palette))
 		_colors := uintptr(unsafe.Pointer(colors))
 		_firstcolor := uintptr(firstcolor)
@@ -6060,7 +6060,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetRectEnclosingPoints = func(points *Point, count int, clip *Rect, result *Rect) bool {
+	iGetRectEnclosingPoints = func(points *Point, count int32, clip *Rect, result *Rect) bool {
 		_points := uintptr(unsafe.Pointer(points))
 		_count := uintptr(count)
 		_clip := uintptr(unsafe.Pointer(clip))
@@ -6069,7 +6069,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetRectAndLineIntersection = func(rect *Rect, X1 *int, Y1 *int, X2 *int, Y2 *int) bool {
+	iGetRectAndLineIntersection = func(rect *Rect, X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool {
 		_rect := uintptr(unsafe.Pointer(rect))
 		_X1 := uintptr(unsafe.Pointer(X1))
 		_Y1 := uintptr(unsafe.Pointer(Y1))
@@ -6102,7 +6102,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetRectEnclosingPointsFloat = func(points *FPoint, count int, clip *FRect, result *FRect) bool {
+	iGetRectEnclosingPointsFloat = func(points *FPoint, count int32, clip *FRect, result *FRect) bool {
 		_points := uintptr(unsafe.Pointer(points))
 		_count := uintptr(count)
 		_clip := uintptr(unsafe.Pointer(clip))
@@ -6121,7 +6121,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iCreateSurface = func(width int, height int, format PixelFormat) *Surface {
+	iCreateSurface = func(width int32, height int32, format PixelFormat) *Surface {
 		_width := uintptr(width)
 		_height := uintptr(height)
 		_format := uintptr(format)
@@ -6129,7 +6129,7 @@ func initialize() {
 		__r0 := (*Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iCreateSurfaceFrom = func(width int, height int, format PixelFormat, pixels uintptr, pitch int) *Surface {
+	iCreateSurfaceFrom = func(width int32, height int32, format PixelFormat, pixels uintptr, pitch int32) *Surface {
 		_width := uintptr(width)
 		_height := uintptr(height)
 		_format := uintptr(format)
@@ -6194,7 +6194,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetSurfaceImages = func(surface *Surface, count *int) uintptr {
+	iGetSurfaceImages = func(surface *Surface, count *int32) uintptr {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSurfaceImages, _surface, _count)
@@ -6364,7 +6364,7 @@ func initialize() {
 		__r0 := (*Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iScaleSurface = func(surface *Surface, width int, height int, scaleMode ScaleMode) *Surface {
+	iScaleSurface = func(surface *Surface, width int32, height int32, scaleMode ScaleMode) *Surface {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_width := uintptr(width)
 		_height := uintptr(height)
@@ -6390,7 +6390,7 @@ func initialize() {
 		__r0 := (*Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iConvertPixels = func(width int, height int, src_format PixelFormat, src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr, dst_pitch int) bool {
+	iConvertPixels = func(width int32, height int32, src_format PixelFormat, src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr, dst_pitch int32) bool {
 		_width := uintptr(width)
 		_height := uintptr(height)
 		_src_format := uintptr(src_format)
@@ -6403,7 +6403,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iConvertPixelsAndColorspace = func(width int, height int, src_format PixelFormat, src_colorspace Colorspace, src_properties PropertiesID, src uintptr, src_pitch int, dst_format PixelFormat, dst_colorspace Colorspace, dst_properties PropertiesID, dst uintptr, dst_pitch int) bool {
+	iConvertPixelsAndColorspace = func(width int32, height int32, src_format PixelFormat, src_colorspace Colorspace, src_properties PropertiesID, src uintptr, src_pitch int32, dst_format PixelFormat, dst_colorspace Colorspace, dst_properties PropertiesID, dst uintptr, dst_pitch int32) bool {
 		_width := uintptr(width)
 		_height := uintptr(height)
 		_src_format := uintptr(src_format)
@@ -6420,7 +6420,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iPremultiplyAlpha = func(width int, height int, src_format PixelFormat, src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr, dst_pitch int, linear bool) bool {
+	iPremultiplyAlpha = func(width int32, height int32, src_format PixelFormat, src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr, dst_pitch int32, linear bool) bool {
 		_width := uintptr(width)
 		_height := uintptr(height)
 		_src_format := uintptr(src_format)
@@ -6456,7 +6456,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iFillSurfaceRects = func(dst *Surface, rects *Rect, count int, color uint32) bool {
+	iFillSurfaceRects = func(dst *Surface, rects *Rect, count int32, color uint32) bool {
 		_dst := uintptr(unsafe.Pointer(dst))
 		_rects := uintptr(unsafe.Pointer(rects))
 		_count := uintptr(count)
@@ -6533,7 +6533,7 @@ func initialize() {
 		__r0 := uint32(_r0)
 		return __r0
 	}
-	iReadSurfacePixel = func(surface *Surface, x int, y int, r *uint8, g *uint8, b *uint8, a *uint8) bool {
+	iReadSurfacePixel = func(surface *Surface, x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_x := uintptr(x)
 		_y := uintptr(y)
@@ -6545,7 +6545,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iReadSurfacePixelFloat = func(surface *Surface, x int, y int, r *float32, g *float32, b *float32, a *float32) bool {
+	iReadSurfacePixelFloat = func(surface *Surface, x int32, y int32, r *float32, g *float32, b *float32, a *float32) bool {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_x := uintptr(x)
 		_y := uintptr(y)
@@ -6557,7 +6557,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iWriteSurfacePixel = func(surface *Surface, x int, y int, r uint8, g uint8, b uint8, a uint8) bool {
+	iWriteSurfacePixel = func(surface *Surface, x int32, y int32, r uint8, g uint8, b uint8, a uint8) bool {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_x := uintptr(x)
 		_y := uintptr(y)
@@ -6570,12 +6570,12 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iWriteSurfacePixelFloat, _hnd_sdl, "SDL_WriteSurfacePixelFloat")
-	iGetNumCameraDrivers = func() int {
+	iGetNumCameraDrivers = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumCameraDrivers)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetCameraDriver = func(index int) string {
+	iGetCameraDriver = func(index int32) string {
 		_index := uintptr(index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetCameraDriver, _index)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
@@ -6586,13 +6586,13 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetCameras = func(count *int) uintptr {
+	iGetCameras = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetCameras, _count)
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGetCameraSupportedFormats = func(instance_id CameraID, count *int) uintptr {
+	iGetCameraSupportedFormats = func(instance_id CameraID, count *int32) uintptr {
 		_instance_id := uintptr(instance_id)
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetCameraSupportedFormats, _instance_id, _count)
@@ -6618,10 +6618,10 @@ func initialize() {
 		__r0 := (*Camera)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetCameraPermissionState = func(camera *Camera) int {
+	iGetCameraPermissionState = func(camera *Camera) int32 {
 		_camera := uintptr(unsafe.Pointer(camera))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetCameraPermissionState, _camera)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetCameraID = func(camera *Camera) CameraID {
@@ -6729,14 +6729,14 @@ func initialize() {
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGetNumLogicalCPUCores = func() int {
+	iGetNumLogicalCPUCores = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumLogicalCPUCores)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetCPUCacheLineSize = func() int {
+	iGetCPUCacheLineSize = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetCPUCacheLineSize)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iHasAltiVec = func() bool {
@@ -6809,9 +6809,9 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetSystemRAM = func() int {
+	iGetSystemRAM = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSystemRAM)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetSIMDAlignment = func() uintptr {
@@ -6819,12 +6819,12 @@ func initialize() {
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGetNumVideoDrivers = func() int {
+	iGetNumVideoDrivers = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumVideoDrivers)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetVideoDriver = func(index int) string {
+	iGetVideoDriver = func(index int32) string {
 		_index := uintptr(index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVideoDriver, _index)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
@@ -6840,7 +6840,7 @@ func initialize() {
 		__r0 := SystemTheme(_r0)
 		return __r0
 	}
-	iGetDisplays = func(count *int) uintptr {
+	iGetDisplays = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetDisplays, _count)
 		__r0 := uintptr(_r0)
@@ -6890,7 +6890,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iGetDisplayContentScale, _hnd_sdl, "SDL_GetDisplayContentScale")
-	iGetFullscreenDisplayModes = func(displayID DisplayID, count *int) uintptr {
+	iGetFullscreenDisplayModes = func(displayID DisplayID, count *int32) uintptr {
 		_displayID := uintptr(displayID)
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetFullscreenDisplayModes, _displayID, _count)
@@ -6956,13 +6956,13 @@ func initialize() {
 		__r0 := PixelFormat(_r0)
 		return __r0
 	}
-	iGetWindows = func(count *int) uintptr {
+	iGetWindows = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetWindows, _count)
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iCreateWindow = func(title string, w int, h int, flags WindowFlags) *Window {
+	iCreateWindow = func(title string, w int32, h int32, flags WindowFlags) *Window {
 		_title := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(title)))
 		defer runtime.KeepAlive(_title)
 		_w := uintptr(w)
@@ -6972,7 +6972,7 @@ func initialize() {
 		__r0 := (*Window)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iCreatePopupWindow = func(parent *Window, offset_x int, offset_y int, w int, h int, flags WindowFlags) *Window {
+	iCreatePopupWindow = func(parent *Window, offset_x int32, offset_y int32, w int32, h int32, flags WindowFlags) *Window {
 		_parent := uintptr(unsafe.Pointer(parent))
 		_offset_x := uintptr(offset_x)
 		_offset_y := uintptr(offset_y)
@@ -7040,7 +7040,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetWindowPosition = func(window *Window, x int, y int) bool {
+	iSetWindowPosition = func(window *Window, x int32, y int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_x := uintptr(x)
 		_y := uintptr(y)
@@ -7048,7 +7048,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowPosition = func(window *Window, x *int, y *int) bool {
+	iGetWindowPosition = func(window *Window, x *int32, y *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_x := uintptr(unsafe.Pointer(x))
 		_y := uintptr(unsafe.Pointer(y))
@@ -7056,7 +7056,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetWindowSize = func(window *Window, w int, h int) bool {
+	iSetWindowSize = func(window *Window, w int32, h int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_w := uintptr(w)
 		_h := uintptr(h)
@@ -7064,7 +7064,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowSize = func(window *Window, w *int, h *int) bool {
+	iGetWindowSize = func(window *Window, w *int32, h *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -7088,7 +7088,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowBordersSize = func(window *Window, top *int, left *int, bottom *int, right *int) bool {
+	iGetWindowBordersSize = func(window *Window, top *int32, left *int32, bottom *int32, right *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_top := uintptr(unsafe.Pointer(top))
 		_left := uintptr(unsafe.Pointer(left))
@@ -7098,7 +7098,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowSizeInPixels = func(window *Window, w *int, h *int) bool {
+	iGetWindowSizeInPixels = func(window *Window, w *int32, h *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -7106,7 +7106,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetWindowMinimumSize = func(window *Window, min_w int, min_h int) bool {
+	iSetWindowMinimumSize = func(window *Window, min_w int32, min_h int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_min_w := uintptr(min_w)
 		_min_h := uintptr(min_h)
@@ -7114,7 +7114,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowMinimumSize = func(window *Window, w *int, h *int) bool {
+	iGetWindowMinimumSize = func(window *Window, w *int32, h *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -7122,7 +7122,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetWindowMaximumSize = func(window *Window, max_w int, max_h int) bool {
+	iSetWindowMaximumSize = func(window *Window, max_w int32, max_h int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_max_w := uintptr(max_w)
 		_max_h := uintptr(max_h)
@@ -7130,7 +7130,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowMaximumSize = func(window *Window, w *int, h *int) bool {
+	iGetWindowMaximumSize = func(window *Window, w *int32, h *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -7232,14 +7232,14 @@ func initialize() {
 		__r0 := (*Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iSetWindowSurfaceVSync = func(window *Window, vsync int) bool {
+	iSetWindowSurfaceVSync = func(window *Window, vsync int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_vsync := uintptr(vsync)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetWindowSurfaceVSync, _window, _vsync)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetWindowSurfaceVSync = func(window *Window, vsync *int) bool {
+	iGetWindowSurfaceVSync = func(window *Window, vsync *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_vsync := uintptr(unsafe.Pointer(vsync))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetWindowSurfaceVSync, _window, _vsync)
@@ -7252,7 +7252,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iUpdateWindowSurfaceRects = func(window *Window, rects *Rect, numrects int) bool {
+	iUpdateWindowSurfaceRects = func(window *Window, rects *Rect, numrects int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_rects := uintptr(unsafe.Pointer(rects))
 		_numrects := uintptr(numrects)
@@ -7345,7 +7345,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iShowWindowSystemMenu = func(window *Window, x int, y int) bool {
+	iShowWindowSystemMenu = func(window *Window, x int32, y int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_x := uintptr(x)
 		_y := uintptr(y)
@@ -7416,14 +7416,14 @@ func initialize() {
 	iGL_ResetAttributes = func() {
 		purego.SyscallN(_addr_SDL_GL_ResetAttributes)
 	}
-	iGL_SetAttribute = func(attr GLAttr, value int) bool {
+	iGL_SetAttribute = func(attr GLAttr, value int32) bool {
 		_attr := uintptr(attr)
 		_value := uintptr(value)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_SetAttribute, _attr, _value)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGL_GetAttribute = func(attr GLAttr, value *int) bool {
+	iGL_GetAttribute = func(attr GLAttr, value *int32) bool {
 		_attr := uintptr(attr)
 		_value := uintptr(unsafe.Pointer(value))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_GetAttribute, _attr, _value)
@@ -7476,13 +7476,13 @@ func initialize() {
 		_userdata := uintptr(userdata)
 		purego.SyscallN(_addr_SDL_EGL_SetAttributeCallbacks, _platformAttribCallback, _surfaceAttribCallback, _contextAttribCallback, _userdata)
 	}
-	iGL_SetSwapInterval = func(interval int) bool {
+	iGL_SetSwapInterval = func(interval int32) bool {
 		_interval := uintptr(interval)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_SetSwapInterval, _interval)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGL_GetSwapInterval = func(interval *int) bool {
+	iGL_GetSwapInterval = func(interval *int32) bool {
 		_interval := uintptr(unsafe.Pointer(interval))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_GetSwapInterval, _interval)
 		__r0 := _r0 != 0
@@ -7500,7 +7500,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int, default_location string, allow_many bool) {
+	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
 		_callback := purego.NewCallback(callback)
 		_userdata := uintptr(userdata)
 		_window := uintptr(unsafe.Pointer(window))
@@ -7514,7 +7514,7 @@ func initialize() {
 		}
 		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, _callback, _userdata, _window, _filters, _nfilters, _default_location, _allow_many)
 	}
-	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int, default_location string) {
+	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
 		_callback := purego.NewCallback(callback)
 		_userdata := uintptr(userdata)
 		_window := uintptr(unsafe.Pointer(window))
@@ -7543,7 +7543,7 @@ func initialize() {
 		_props := uintptr(props)
 		purego.SyscallN(_addr_SDL_ShowFileDialogWithProperties, _typ, _callback, _userdata, _props)
 	}
-	iGUIDToString = func(guid GUID, pszGUID string, cbGUID int) {
+	iGUIDToString = func(guid GUID, pszGUID string, cbGUID int32) {
 		_guid := uintptr(unsafe.Pointer(guid))
 		_pszGUID := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(pszGUID)))
 		defer runtime.KeepAlive(_pszGUID)
@@ -7557,14 +7557,14 @@ func initialize() {
 		__r0 := (GUID)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetPowerInfo = func(seconds *int, percent *int) PowerState {
+	iGetPowerInfo = func(seconds *int32, percent *int32) PowerState {
 		_seconds := uintptr(unsafe.Pointer(seconds))
 		_percent := uintptr(unsafe.Pointer(percent))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetPowerInfo, _seconds, _percent)
 		__r0 := PowerState(_r0)
 		return __r0
 	}
-	iGetSensors = func(count *int) uintptr {
+	iGetSensors = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSensors, _count)
 		__r0 := uintptr(_r0)
@@ -7582,10 +7582,10 @@ func initialize() {
 		__r0 := SensorType(_r0)
 		return __r0
 	}
-	iGetSensorNonPortableTypeForID = func(instance_id SensorID) int {
+	iGetSensorNonPortableTypeForID = func(instance_id SensorID) int32 {
 		_instance_id := uintptr(instance_id)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSensorNonPortableTypeForID, _instance_id)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iOpenSensor = func(instance_id SensorID) *Sensor {
@@ -7618,10 +7618,10 @@ func initialize() {
 		__r0 := SensorType(_r0)
 		return __r0
 	}
-	iGetSensorNonPortableType = func(sensor *Sensor) int {
+	iGetSensorNonPortableType = func(sensor *Sensor) int32 {
 		_sensor := uintptr(unsafe.Pointer(sensor))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetSensorNonPortableType, _sensor)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetSensorID = func(sensor *Sensor) SensorID {
@@ -7630,7 +7630,7 @@ func initialize() {
 		__r0 := SensorID(_r0)
 		return __r0
 	}
-	iGetSensorData = func(sensor *Sensor, data *float32, num_values int) bool {
+	iGetSensorData = func(sensor *Sensor, data *float32, num_values int32) bool {
 		_sensor := uintptr(unsafe.Pointer(sensor))
 		_data := uintptr(unsafe.Pointer(data))
 		_num_values := uintptr(num_values)
@@ -7656,7 +7656,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetJoysticks = func(count *int) uintptr {
+	iGetJoysticks = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoysticks, _count)
 		__r0 := uintptr(_r0)
@@ -7674,10 +7674,10 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetJoystickPlayerIndexForID = func(instance_id JoystickID) int {
+	iGetJoystickPlayerIndexForID = func(instance_id JoystickID) int32 {
 		_instance_id := uintptr(instance_id)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickPlayerIndexForID, _instance_id)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetJoystickGUIDForID = func(instance_id JoystickID) GUID {
@@ -7722,7 +7722,7 @@ func initialize() {
 		__r0 := (*Joystick)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetJoystickFromPlayerIndex = func(player_index int) *Joystick {
+	iGetJoystickFromPlayerIndex = func(player_index int32) *Joystick {
 		_player_index := uintptr(player_index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickFromPlayerIndex, _player_index)
 		__r0 := (*Joystick)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
@@ -7746,7 +7746,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetJoystickVirtualAxis = func(joystick *Joystick, axis int, value int16) bool {
+	iSetJoystickVirtualAxis = func(joystick *Joystick, axis int32, value int16) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_axis := uintptr(axis)
 		_value := uintptr(value)
@@ -7754,7 +7754,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetJoystickVirtualBall = func(joystick *Joystick, ball int, xrel int16, yrel int16) bool {
+	iSetJoystickVirtualBall = func(joystick *Joystick, ball int32, xrel int16, yrel int16) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_ball := uintptr(ball)
 		_xrel := uintptr(xrel)
@@ -7763,7 +7763,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetJoystickVirtualButton = func(joystick *Joystick, button int, down bool) bool {
+	iSetJoystickVirtualButton = func(joystick *Joystick, button int32, down bool) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_button := uintptr(button)
 		_down := uintptr(0)
@@ -7774,7 +7774,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetJoystickVirtualHat = func(joystick *Joystick, hat int, value uint8) bool {
+	iSetJoystickVirtualHat = func(joystick *Joystick, hat int32, value uint8) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_hat := uintptr(hat)
 		_value := uintptr(value)
@@ -7783,7 +7783,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iSetJoystickVirtualTouchpad, _hnd_sdl, "SDL_SetJoystickVirtualTouchpad")
-	iSendJoystickVirtualSensorData = func(joystick *Joystick, typ SensorType, sensor_timestamp uint64, data *float32, num_values int) bool {
+	iSendJoystickVirtualSensorData = func(joystick *Joystick, typ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_typ := uintptr(typ)
 		_sensor_timestamp := uintptr(sensor_timestamp)
@@ -7811,13 +7811,13 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetJoystickPlayerIndex = func(joystick *Joystick) int {
+	iGetJoystickPlayerIndex = func(joystick *Joystick) int32 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickPlayerIndex, _joystick)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iSetJoystickPlayerIndex = func(joystick *Joystick, player_index int) bool {
+	iSetJoystickPlayerIndex = func(joystick *Joystick, player_index int32) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_player_index := uintptr(player_index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetJoystickPlayerIndex, _joystick, _player_index)
@@ -7886,28 +7886,28 @@ func initialize() {
 		__r0 := JoystickID(_r0)
 		return __r0
 	}
-	iGetNumJoystickAxes = func(joystick *Joystick) int {
+	iGetNumJoystickAxes = func(joystick *Joystick) int32 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumJoystickAxes, _joystick)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetNumJoystickBalls = func(joystick *Joystick) int {
+	iGetNumJoystickBalls = func(joystick *Joystick) int32 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumJoystickBalls, _joystick)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetNumJoystickHats = func(joystick *Joystick) int {
+	iGetNumJoystickHats = func(joystick *Joystick) int32 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumJoystickHats, _joystick)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetNumJoystickButtons = func(joystick *Joystick) int {
+	iGetNumJoystickButtons = func(joystick *Joystick) int32 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumJoystickButtons, _joystick)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iSetJoystickEventsEnabled = func(enabled bool) {
@@ -7925,14 +7925,14 @@ func initialize() {
 	iUpdateJoysticks = func() {
 		purego.SyscallN(_addr_SDL_UpdateJoysticks)
 	}
-	iGetJoystickAxis = func(joystick *Joystick, axis int) int16 {
+	iGetJoystickAxis = func(joystick *Joystick, axis int32) int16 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_axis := uintptr(axis)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickAxis, _joystick, _axis)
 		__r0 := int16(_r0)
 		return __r0
 	}
-	iGetJoystickAxisInitialState = func(joystick *Joystick, axis int, state *int16) bool {
+	iGetJoystickAxisInitialState = func(joystick *Joystick, axis int32, state *int16) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_axis := uintptr(axis)
 		_state := uintptr(unsafe.Pointer(state))
@@ -7940,7 +7940,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetJoystickBall = func(joystick *Joystick, ball int, dx *int, dy *int) bool {
+	iGetJoystickBall = func(joystick *Joystick, ball int32, dx *int32, dy *int32) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_ball := uintptr(ball)
 		_dx := uintptr(unsafe.Pointer(dx))
@@ -7949,14 +7949,14 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetJoystickHat = func(joystick *Joystick, hat int) uint8 {
+	iGetJoystickHat = func(joystick *Joystick, hat int32) uint8 {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_hat := uintptr(hat)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickHat, _joystick, _hat)
 		__r0 := uint8(_r0)
 		return __r0
 	}
-	iGetJoystickButton = func(joystick *Joystick, button int) bool {
+	iGetJoystickButton = func(joystick *Joystick, button int32) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_button := uintptr(button)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickButton, _joystick, _button)
@@ -7990,7 +7990,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSendJoystickEffect = func(joystick *Joystick, data uintptr, size int) bool {
+	iSendJoystickEffect = func(joystick *Joystick, data uintptr, size int32) bool {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_data := uintptr(data)
 		_size := uintptr(size)
@@ -8008,35 +8008,35 @@ func initialize() {
 		__r0 := JoystickConnectionState(_r0)
 		return __r0
 	}
-	iGetJoystickPowerInfo = func(joystick *Joystick, percent *int) PowerState {
+	iGetJoystickPowerInfo = func(joystick *Joystick, percent *int32) PowerState {
 		_joystick := uintptr(unsafe.Pointer(joystick))
 		_percent := uintptr(unsafe.Pointer(percent))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickPowerInfo, _joystick, _percent)
 		__r0 := PowerState(_r0)
 		return __r0
 	}
-	iAddGamepadMapping = func(mapping string) int {
+	iAddGamepadMapping = func(mapping string) int32 {
 		_mapping := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(mapping)))
 		defer runtime.KeepAlive(_mapping)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_AddGamepadMapping, _mapping)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iAddGamepadMappingsFromIO = func(src *IOStream, closeio bool) int {
+	iAddGamepadMappingsFromIO = func(src *IOStream, closeio bool) int32 {
 		_src := uintptr(unsafe.Pointer(src))
 		_closeio := uintptr(0)
 		if closeio {
 			_closeio = 1
 		}
 		_r0, _, _ := purego.SyscallN(_addr_SDL_AddGamepadMappingsFromIO, _src, _closeio)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iAddGamepadMappingsFromFile = func(file string) int {
+	iAddGamepadMappingsFromFile = func(file string) int32 {
 		_file := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file)))
 		defer runtime.KeepAlive(_file)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_AddGamepadMappingsFromFile, _file)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iReloadGamepadMappings = func() bool {
@@ -8044,7 +8044,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetGamepadMappings = func(count *int) uintptr {
+	iGetGamepadMappings = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadMappings, _count)
 		__r0 := uintptr(_r0)
@@ -8075,7 +8075,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetGamepads = func(count *int) uintptr {
+	iGetGamepads = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepads, _count)
 		__r0 := uintptr(_r0)
@@ -8099,10 +8099,10 @@ func initialize() {
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetGamepadPlayerIndexForID = func(instance_id JoystickID) int {
+	iGetGamepadPlayerIndexForID = func(instance_id JoystickID) int32 {
 		_instance_id := uintptr(instance_id)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadPlayerIndexForID, _instance_id)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetGamepadGUIDForID = func(instance_id JoystickID) GUID {
@@ -8159,7 +8159,7 @@ func initialize() {
 		__r0 := (*Gamepad)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetGamepadFromPlayerIndex = func(player_index int) *Gamepad {
+	iGetGamepadFromPlayerIndex = func(player_index int32) *Gamepad {
 		_player_index := uintptr(player_index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadFromPlayerIndex, _player_index)
 		__r0 := (*Gamepad)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
@@ -8201,13 +8201,13 @@ func initialize() {
 		__r0 := GamepadType(_r0)
 		return __r0
 	}
-	iGetGamepadPlayerIndex = func(gamepad *Gamepad) int {
+	iGetGamepadPlayerIndex = func(gamepad *Gamepad) int32 {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadPlayerIndex, _gamepad)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iSetGamepadPlayerIndex = func(gamepad *Gamepad, player_index int) bool {
+	iSetGamepadPlayerIndex = func(gamepad *Gamepad, player_index int32) bool {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_player_index := uintptr(player_index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetGamepadPlayerIndex, _gamepad, _player_index)
@@ -8256,7 +8256,7 @@ func initialize() {
 		__r0 := JoystickConnectionState(_r0)
 		return __r0
 	}
-	iGetGamepadPowerInfo = func(gamepad *Gamepad, percent *int) PowerState {
+	iGetGamepadPowerInfo = func(gamepad *Gamepad, percent *int32) PowerState {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_percent := uintptr(unsafe.Pointer(percent))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadPowerInfo, _gamepad, _percent)
@@ -8287,7 +8287,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetGamepadBindings = func(gamepad *Gamepad, count *int) uintptr {
+	iGetGamepadBindings = func(gamepad *Gamepad, count *int32) uintptr {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGamepadBindings, _gamepad, _count)
@@ -8378,20 +8378,20 @@ func initialize() {
 		__r0 := GamepadButtonLabel(_r0)
 		return __r0
 	}
-	iGetNumGamepadTouchpads = func(gamepad *Gamepad) int {
+	iGetNumGamepadTouchpads = func(gamepad *Gamepad) int32 {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumGamepadTouchpads, _gamepad)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetNumGamepadTouchpadFingers = func(gamepad *Gamepad, touchpad int) int {
+	iGetNumGamepadTouchpadFingers = func(gamepad *Gamepad, touchpad int32) int32 {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_touchpad := uintptr(touchpad)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumGamepadTouchpadFingers, _gamepad, _touchpad)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetGamepadTouchpadFinger = func(gamepad *Gamepad, touchpad int, finger int, down *bool, x *float32, y *float32, pressure *float32) bool {
+	iGetGamepadTouchpadFinger = func(gamepad *Gamepad, touchpad int32, finger int32, down *bool, x *float32, y *float32, pressure *float32) bool {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_touchpad := uintptr(touchpad)
 		_finger := uintptr(finger)
@@ -8429,7 +8429,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iGetGamepadSensorDataRate, _hnd_sdl, "SDL_GetGamepadSensorDataRate")
-	iGetGamepadSensorData = func(gamepad *Gamepad, typ SensorType, data *float32, num_values int) bool {
+	iGetGamepadSensorData = func(gamepad *Gamepad, typ SensorType, data *float32, num_values int32) bool {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_typ := uintptr(typ)
 		_data := uintptr(unsafe.Pointer(data))
@@ -8465,7 +8465,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSendGamepadEffect = func(gamepad *Gamepad, data uintptr, size int) bool {
+	iSendGamepadEffect = func(gamepad *Gamepad, data uintptr, size int32) bool {
 		_gamepad := uintptr(unsafe.Pointer(gamepad))
 		_data := uintptr(data)
 		_size := uintptr(size)
@@ -8496,7 +8496,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetKeyboards = func(count *int) uintptr {
+	iGetKeyboards = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetKeyboards, _count)
 		__r0 := uintptr(_r0)
@@ -8513,7 +8513,7 @@ func initialize() {
 		__r0 := (*Window)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iGetKeyboardState = func(numkeys *int) *bool {
+	iGetKeyboardState = func(numkeys *int32) *bool {
 		_numkeys := uintptr(unsafe.Pointer(numkeys))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetKeyboardState, _numkeys)
 		__r0 := (*bool)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
@@ -8614,7 +8614,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetTextInputArea = func(window *Window, rect *Rect, cursor int) bool {
+	iSetTextInputArea = func(window *Window, rect *Rect, cursor int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_cursor := uintptr(cursor)
@@ -8622,7 +8622,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetTextInputArea = func(window *Window, rect *Rect, cursor *int) bool {
+	iGetTextInputArea = func(window *Window, rect *Rect, cursor *int32) bool {
 		_window := uintptr(unsafe.Pointer(window))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_cursor := uintptr(unsafe.Pointer(cursor))
@@ -8646,7 +8646,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetMice = func(count *int) uintptr {
+	iGetMice = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetMice, _count)
 		__r0 := uintptr(_r0)
@@ -8711,7 +8711,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iCreateCursor = func(data *uint8, mask *uint8, w int, h int, hot_x int, hot_y int) *Cursor {
+	iCreateCursor = func(data *uint8, mask *uint8, w int32, h int32, hot_x int32, hot_y int32) *Cursor {
 		_data := uintptr(unsafe.Pointer(data))
 		_mask := uintptr(unsafe.Pointer(mask))
 		_w := uintptr(w)
@@ -8722,7 +8722,7 @@ func initialize() {
 		__r0 := (*Cursor)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iCreateColorCursor = func(surface *Surface, hot_x int, hot_y int) *Cursor {
+	iCreateColorCursor = func(surface *Surface, hot_x int32, hot_y int32) *Cursor {
 		_surface := uintptr(unsafe.Pointer(surface))
 		_hot_x := uintptr(hot_x)
 		_hot_y := uintptr(hot_y)
@@ -8771,7 +8771,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetTouchDevices = func(count *int) uintptr {
+	iGetTouchDevices = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTouchDevices, _count)
 		__r0 := uintptr(_r0)
@@ -8789,7 +8789,7 @@ func initialize() {
 		__r0 := TouchDeviceType(_r0)
 		return __r0
 	}
-	iGetTouchFingers = func(touchID TouchID, count *int) uintptr {
+	iGetTouchFingers = func(touchID TouchID, count *int32) uintptr {
 		_touchID := uintptr(touchID)
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTouchFingers, _touchID, _count)
@@ -8799,14 +8799,14 @@ func initialize() {
 	iPumpEvents = func() {
 		purego.SyscallN(_addr_SDL_PumpEvents)
 	}
-	iPeepEvents = func(events *Event, numevents int, action EventAction, minType uint32, maxType uint32) int {
+	iPeepEvents = func(events *Event, numevents int32, action EventAction, minType uint32, maxType uint32) int32 {
 		_events := uintptr(unsafe.Pointer(events))
 		_numevents := uintptr(numevents)
 		_action := uintptr(action)
 		_minType := uintptr(minType)
 		_maxType := uintptr(maxType)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_PeepEvents, _events, _numevents, _action, _minType, _maxType)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iHasEvent = func(typ uint32) bool {
@@ -8899,7 +8899,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iRegisterEvents = func(numevents int) uint32 {
+	iRegisterEvents = func(numevents int32) uint32 {
 		_numevents := uintptr(numevents)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_RegisterEvents, _numevents)
 		__r0 := uint32(_r0)
@@ -8980,7 +8980,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGlobDirectory = func(path string, pattern string, flags GlobFlags, count *int) uintptr {
+	iGlobDirectory = func(path string, pattern string, flags GlobFlags, count *int32) uintptr {
 		_path := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path)))
 		defer runtime.KeepAlive(_path)
 		_pattern := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(pattern)))
@@ -9032,12 +9032,12 @@ func initialize() {
 		_device := uintptr(unsafe.Pointer(device))
 		purego.SyscallN(_addr_SDL_DestroyGPUDevice, _device)
 	}
-	iGetNumGPUDrivers = func() int {
+	iGetNumGPUDrivers = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumGPUDrivers)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetGPUDriver = func(index int) string {
+	iGetGPUDriver = func(index int32) string {
 		_index := uintptr(index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGPUDriver, _index)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
@@ -9618,7 +9618,7 @@ func initialize() {
 		__r0 := uint32(_r0)
 		return __r0
 	}
-	iGetHaptics = func(count *int) uintptr {
+	iGetHaptics = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetHaptics, _count)
 		__r0 := uintptr(_r0)
@@ -9680,16 +9680,16 @@ func initialize() {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		purego.SyscallN(_addr_SDL_CloseHaptic, _haptic)
 	}
-	iGetMaxHapticEffects = func(haptic *Haptic) int {
+	iGetMaxHapticEffects = func(haptic *Haptic) int32 {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetMaxHapticEffects, _haptic)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetMaxHapticEffectsPlaying = func(haptic *Haptic) int {
+	iGetMaxHapticEffectsPlaying = func(haptic *Haptic) int32 {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetMaxHapticEffectsPlaying, _haptic)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetHapticFeatures = func(haptic *Haptic) uint32 {
@@ -9698,10 +9698,10 @@ func initialize() {
 		__r0 := uint32(_r0)
 		return __r0
 	}
-	iGetNumHapticAxes = func(haptic *Haptic) int {
+	iGetNumHapticAxes = func(haptic *Haptic) int32 {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumHapticAxes, _haptic)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iHapticEffectSupported = func(haptic *Haptic, effect *HapticEffect) bool {
@@ -9711,14 +9711,14 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iCreateHapticEffect = func(haptic *Haptic, effect *HapticEffect) int {
+	iCreateHapticEffect = func(haptic *Haptic, effect *HapticEffect) int32 {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(unsafe.Pointer(effect))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateHapticEffect, _haptic, _effect)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iUpdateHapticEffect = func(haptic *Haptic, effect int, data *HapticEffect) bool {
+	iUpdateHapticEffect = func(haptic *Haptic, effect int32, data *HapticEffect) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(effect)
 		_data := uintptr(unsafe.Pointer(data))
@@ -9726,7 +9726,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iRunHapticEffect = func(haptic *Haptic, effect int, iterations uint32) bool {
+	iRunHapticEffect = func(haptic *Haptic, effect int32, iterations uint32) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(effect)
 		_iterations := uintptr(iterations)
@@ -9734,33 +9734,33 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iStopHapticEffect = func(haptic *Haptic, effect int) bool {
+	iStopHapticEffect = func(haptic *Haptic, effect int32) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(effect)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_StopHapticEffect, _haptic, _effect)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iDestroyHapticEffect = func(haptic *Haptic, effect int) {
+	iDestroyHapticEffect = func(haptic *Haptic, effect int32) {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(effect)
 		purego.SyscallN(_addr_SDL_DestroyHapticEffect, _haptic, _effect)
 	}
-	iGetHapticEffectStatus = func(haptic *Haptic, effect int) bool {
+	iGetHapticEffectStatus = func(haptic *Haptic, effect int32) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_effect := uintptr(effect)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetHapticEffectStatus, _haptic, _effect)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetHapticGain = func(haptic *Haptic, gain int) bool {
+	iSetHapticGain = func(haptic *Haptic, gain int32) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_gain := uintptr(gain)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetHapticGain, _haptic, _gain)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetHapticAutocenter = func(haptic *Haptic, autocenter int) bool {
+	iSetHapticAutocenter = func(haptic *Haptic, autocenter int32) bool {
 		_haptic := uintptr(unsafe.Pointer(haptic))
 		_autocenter := uintptr(autocenter)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetHapticAutocenter, _haptic, _autocenter)
@@ -9947,7 +9947,7 @@ func initialize() {
 		_handle := uintptr(unsafe.Pointer(handle))
 		purego.SyscallN(_addr_SDL_UnloadObject, _handle)
 	}
-	iGetPreferredLocales = func(count *int) uintptr {
+	iGetPreferredLocales = func(count *int32) uintptr {
 		_count := uintptr(unsafe.Pointer(count))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetPreferredLocales, _count)
 		__r0 := uintptr(_r0)
@@ -9957,12 +9957,12 @@ func initialize() {
 		_priority := uintptr(priority)
 		purego.SyscallN(_addr_SDL_SetLogPriorities, _priority)
 	}
-	iSetLogPriority = func(category int, priority LogPriority) {
+	iSetLogPriority = func(category int32, priority LogPriority) {
 		_category := uintptr(category)
 		_priority := uintptr(priority)
 		purego.SyscallN(_addr_SDL_SetLogPriority, _category, _priority)
 	}
-	iGetLogPriority = func(category int) LogPriority {
+	iGetLogPriority = func(category int32) LogPriority {
 		_category := uintptr(category)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetLogPriority, _category)
 		__r0 := LogPriority(_r0)
@@ -9984,56 +9984,56 @@ func initialize() {
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_Log, _fmt)
 	}
-	iLogTrace = func(category int, fmt string) {
+	iLogTrace = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogTrace, _category, _fmt)
 	}
-	iLogVerbose = func(category int, fmt string) {
+	iLogVerbose = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogVerbose, _category, _fmt)
 	}
-	iLogDebug = func(category int, fmt string) {
+	iLogDebug = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogDebug, _category, _fmt)
 	}
-	iLogInfo = func(category int, fmt string) {
+	iLogInfo = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogInfo, _category, _fmt)
 	}
-	iLogWarn = func(category int, fmt string) {
+	iLogWarn = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogWarn, _category, _fmt)
 	}
-	iLogError = func(category int, fmt string) {
+	iLogError = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogError, _category, _fmt)
 	}
-	iLogCritical = func(category int, fmt string) {
+	iLogCritical = func(category int32, fmt string) {
 		_category := uintptr(category)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogCritical, _category, _fmt)
 	}
-	iLogMessage = func(category int, priority LogPriority, fmt string) {
+	iLogMessage = func(category int32, priority LogPriority, fmt string) {
 		_category := uintptr(category)
 		_priority := uintptr(priority)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
 		defer runtime.KeepAlive(_fmt)
 		purego.SyscallN(_addr_SDL_LogMessage, _category, _priority, _fmt)
 	}
-	iLogMessageV = func(category int, priority LogPriority, fmt string, ap va_list) {
+	iLogMessageV = func(category int32, priority LogPriority, fmt string, ap va_list) {
 		_category := uintptr(category)
 		_priority := uintptr(priority)
 		_fmt := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt)))
@@ -10052,7 +10052,7 @@ func initialize() {
 		_userdata := uintptr(userdata)
 		purego.SyscallN(_addr_SDL_SetLogOutputFunction, _callback, _userdata)
 	}
-	iShowMessageBox = func(messageboxdata *MessageBoxData, buttonid *int) bool {
+	iShowMessageBox = func(messageboxdata *MessageBoxData, buttonid *int32) bool {
 		_messageboxdata := uintptr(unsafe.Pointer(messageboxdata))
 		_buttonid := uintptr(unsafe.Pointer(buttonid))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowMessageBox, _messageboxdata, _buttonid)
@@ -10115,7 +10115,7 @@ func initialize() {
 		__r0 := PropertiesID(_r0)
 		return __r0
 	}
-	iReadProcess = func(process *Process, datasize *uintptr, exitcode *int) uintptr {
+	iReadProcess = func(process *Process, datasize *uintptr, exitcode *int32) uintptr {
 		_process := uintptr(unsafe.Pointer(process))
 		_datasize := uintptr(unsafe.Pointer(datasize))
 		_exitcode := uintptr(unsafe.Pointer(exitcode))
@@ -10145,7 +10145,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iWaitProcess = func(process *Process, block bool, exitcode *int) bool {
+	iWaitProcess = func(process *Process, block bool, exitcode *int32) bool {
 		_process := uintptr(unsafe.Pointer(process))
 		_block := uintptr(0)
 		if block {
@@ -10160,18 +10160,18 @@ func initialize() {
 		_process := uintptr(unsafe.Pointer(process))
 		purego.SyscallN(_addr_SDL_DestroyProcess, _process)
 	}
-	iGetNumRenderDrivers = func() int {
+	iGetNumRenderDrivers = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetNumRenderDrivers)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetRenderDriver = func(index int) string {
+	iGetRenderDriver = func(index int32) string {
 		_index := uintptr(index)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetRenderDriver, _index)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iCreateWindowAndRenderer = func(title string, width int, height int, window_flags WindowFlags, window **Window, renderer **Renderer) bool {
+	iCreateWindowAndRenderer = func(title string, width int32, height int32, window_flags WindowFlags, window **Window, renderer **Renderer) bool {
 		_title := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(title)))
 		defer runtime.KeepAlive(_title)
 		_width := uintptr(width)
@@ -10227,7 +10227,7 @@ func initialize() {
 		__r0 := PropertiesID(_r0)
 		return __r0
 	}
-	iGetRenderOutputSize = func(renderer *Renderer, w *int, h *int) bool {
+	iGetRenderOutputSize = func(renderer *Renderer, w *int32, h *int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -10235,7 +10235,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetCurrentRenderOutputSize = func(renderer *Renderer, w *int, h *int) bool {
+	iGetCurrentRenderOutputSize = func(renderer *Renderer, w *int32, h *int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -10243,7 +10243,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iCreateTexture = func(renderer *Renderer, format PixelFormat, access TextureAccess, w int, h int) *Texture {
+	iCreateTexture = func(renderer *Renderer, format PixelFormat, access TextureAccess, w int32, h int32) *Texture {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_format := uintptr(format)
 		_access := uintptr(access)
@@ -10365,7 +10365,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iUpdateTexture = func(texture *Texture, rect *Rect, pixels uintptr, pitch int) bool {
+	iUpdateTexture = func(texture *Texture, rect *Rect, pixels uintptr, pitch int32) bool {
 		_texture := uintptr(unsafe.Pointer(texture))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_pixels := uintptr(pixels)
@@ -10374,7 +10374,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iUpdateYUVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int, Uplane *uint8, Upitch int, Vplane *uint8, Vpitch int) bool {
+	iUpdateYUVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
 		_texture := uintptr(unsafe.Pointer(texture))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_Yplane := uintptr(unsafe.Pointer(Yplane))
@@ -10387,7 +10387,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iUpdateNVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int, UVplane *uint8, UVpitch int) bool {
+	iUpdateNVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool {
 		_texture := uintptr(unsafe.Pointer(texture))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_Yplane := uintptr(unsafe.Pointer(Yplane))
@@ -10398,7 +10398,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iLockTexture = func(texture *Texture, rect *Rect, pixels *uintptr, pitch *int) bool {
+	iLockTexture = func(texture *Texture, rect *Rect, pixels *uintptr, pitch *int32) bool {
 		_texture := uintptr(unsafe.Pointer(texture))
 		_rect := uintptr(unsafe.Pointer(rect))
 		_pixels := uintptr(unsafe.Pointer(pixels))
@@ -10432,7 +10432,7 @@ func initialize() {
 		__r0 := (*Texture)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iSetRenderLogicalPresentation = func(renderer *Renderer, w int, h int, mode RendererLogicalPresentation) bool {
+	iSetRenderLogicalPresentation = func(renderer *Renderer, w int32, h int32, mode RendererLogicalPresentation) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_w := uintptr(w)
 		_h := uintptr(h)
@@ -10441,7 +10441,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetRenderLogicalPresentation = func(renderer *Renderer, w *int, h *int, mode *RendererLogicalPresentation) bool {
+	iGetRenderLogicalPresentation = func(renderer *Renderer, w *int32, h *int32, mode *RendererLogicalPresentation) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_w := uintptr(unsafe.Pointer(w))
 		_h := uintptr(unsafe.Pointer(h))
@@ -10582,7 +10582,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iRenderPoint, _hnd_sdl, "SDL_RenderPoint")
-	iRenderPoints = func(renderer *Renderer, points *FPoint, count int) bool {
+	iRenderPoints = func(renderer *Renderer, points *FPoint, count int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_points := uintptr(unsafe.Pointer(points))
 		_count := uintptr(count)
@@ -10591,7 +10591,7 @@ func initialize() {
 		return __r0
 	}
 	purego.RegisterLibFunc(&iRenderLine, _hnd_sdl, "SDL_RenderLine")
-	iRenderLines = func(renderer *Renderer, points *FPoint, count int) bool {
+	iRenderLines = func(renderer *Renderer, points *FPoint, count int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_points := uintptr(unsafe.Pointer(points))
 		_count := uintptr(count)
@@ -10606,7 +10606,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iRenderRects = func(renderer *Renderer, rects *FRect, count int) bool {
+	iRenderRects = func(renderer *Renderer, rects *FRect, count int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_rects := uintptr(unsafe.Pointer(rects))
 		_count := uintptr(count)
@@ -10621,7 +10621,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iRenderFillRects = func(renderer *Renderer, rects *FRect, count int) bool {
+	iRenderFillRects = func(renderer *Renderer, rects *FRect, count int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_rects := uintptr(unsafe.Pointer(rects))
 		_count := uintptr(count)
@@ -10652,7 +10652,7 @@ func initialize() {
 	}
 	purego.RegisterLibFunc(&iRenderTextureTiled, _hnd_sdl, "SDL_RenderTextureTiled")
 	purego.RegisterLibFunc(&iRenderTexture9Grid, _hnd_sdl, "SDL_RenderTexture9Grid")
-	iRenderGeometry = func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int, indices *int, num_indices int) bool {
+	iRenderGeometry = func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_texture := uintptr(unsafe.Pointer(texture))
 		_vertices := uintptr(unsafe.Pointer(vertices))
@@ -10663,7 +10663,7 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iRenderGeometryRaw = func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int, color *FColor, color_stride int, uv *float32, uv_stride int, num_vertices int, indices uintptr, num_indices int, size_indices int) bool {
+	iRenderGeometryRaw = func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices uintptr, num_indices int32, size_indices int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_texture := uintptr(unsafe.Pointer(texture))
 		_xy := uintptr(unsafe.Pointer(xy))
@@ -10728,14 +10728,14 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iSetRenderVSync = func(renderer *Renderer, vsync int) bool {
+	iSetRenderVSync = func(renderer *Renderer, vsync int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_vsync := uintptr(vsync)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_SetRenderVSync, _renderer, _vsync)
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iGetRenderVSync = func(renderer *Renderer, vsync *int) bool {
+	iGetRenderVSync = func(renderer *Renderer, vsync *int32) bool {
 		_renderer := uintptr(unsafe.Pointer(renderer))
 		_vsync := uintptr(unsafe.Pointer(vsync))
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetRenderVSync, _renderer, _vsync)
@@ -10878,7 +10878,7 @@ func initialize() {
 		__r0 := uint64(_r0)
 		return __r0
 	}
-	iGlobStorageDirectory = func(storage *Storage, path string, pattern string, flags GlobFlags, count *int) uintptr {
+	iGlobStorageDirectory = func(storage *Storage, path string, pattern string, flags GlobFlags, count *int32) uintptr {
 		_storage := uintptr(unsafe.Pointer(storage))
 		_path := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path)))
 		defer runtime.KeepAlive(_path)
@@ -10972,27 +10972,27 @@ func initialize() {
 		__r0 := Time(_r0)
 		return __r0
 	}
-	iGetDaysInMonth = func(year int, month int) int {
+	iGetDaysInMonth = func(year int32, month int32) int32 {
 		_year := uintptr(year)
 		_month := uintptr(month)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetDaysInMonth, _year, _month)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetDayOfYear = func(year int, month int, day int) int {
+	iGetDayOfYear = func(year int32, month int32, day int32) int32 {
 		_year := uintptr(year)
 		_month := uintptr(month)
 		_day := uintptr(day)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetDayOfYear, _year, _month, _day)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iGetDayOfWeek = func(year int, month int, day int) int {
+	iGetDayOfWeek = func(year int32, month int32, day int32) int32 {
 		_year := uintptr(year)
 		_month := uintptr(month)
 		_day := uintptr(day)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetDayOfWeek, _year, _month, _day)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetTicks = func() uint64 {
@@ -11052,16 +11052,16 @@ func initialize() {
 	iSetMainReady = func() {
 		purego.SyscallN(_addr_SDL_SetMainReady)
 	}
-	iRunApp = func(argc int, argv *string, mainFunction main_func, reserved uintptr) int {
+	iRunApp = func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32 {
 		_argc := uintptr(argc)
 		_argv := uintptr(unsafe.Pointer(argv))
 		_mainFunction := purego.NewCallback(mainFunction)
 		_reserved := uintptr(reserved)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_RunApp, _argc, _argv, _mainFunction, _reserved)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
-	iEnterAppMainCallbacks = func(argc int, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int {
+	iEnterAppMainCallbacks = func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32 {
 		_argc := uintptr(argc)
 		_argv := uintptr(unsafe.Pointer(argv))
 		_appinit := purego.NewCallback(appinit)
@@ -11069,7 +11069,7 @@ func initialize() {
 		_appevent := purego.NewCallback(appevent)
 		_appquit := purego.NewCallback(appquit)
 		_r0, _, _ := purego.SyscallN(_addr_SDL_EnterAppMainCallbacks, _argc, _argv, _appinit, _appiter, _appevent, _appquit)
-		__r0 := int(_r0)
+		__r0 := int32(_r0)
 		return __r0
 	}
 	iGDKSuspendComplete = func() {

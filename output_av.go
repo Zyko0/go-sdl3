@@ -5,11 +5,11 @@ import "unsafe"
 // Video
 
 func GetNumVideoDrivers() int {
-	return iGetNumVideoDrivers()
+	return int(iGetNumVideoDrivers())
 }
 
 func GetVideoDriver(index int) string {
-	return iGetVideoDriver(index)
+	return iGetVideoDriver(int32(index))
 }
 
 func GetCurrentVideoDriver() string {
@@ -21,7 +21,7 @@ func GetSystemTheme() SystemTheme {
 }
 
 func GetDisplays() ([]DisplayID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetDisplays(&count)
 	if ptr == 0 {
@@ -29,7 +29,7 @@ func GetDisplays() ([]DisplayID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[DisplayID](ptr, count), nil
+	return clonePtrSlice[DisplayID](ptr, int(count)), nil
 }
 
 func GetPrimaryDisplay() DisplayID {
@@ -49,7 +49,7 @@ func GetDisplayForWindow(window *Window) DisplayID {
 }
 
 func GetWindows() ([]*Window, error) {
-	var count int
+	var count int32
 
 	ptr := iGetWindows(&count)
 	if ptr == 0 {
@@ -57,11 +57,11 @@ func GetWindows() ([]*Window, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[*Window](ptr, count), nil
+	return clonePtrSlice[*Window](ptr, int(count)), nil
 }
 
 func CreateWindow(title string, width, height int, flags WindowFlags) (*Window, error) {
-	window := iCreateWindow(title, width, height, flags)
+	window := iCreateWindow(title, int32(width), int32(height), flags)
 	if window == nil {
 		return nil, lastError()
 	}
@@ -107,15 +107,15 @@ func DisableScreenSaver() error {
 // Audio
 
 func GetNumAudioDrivers() int {
-	return iGetNumAudioDrivers()
+	return int(iGetNumAudioDrivers())
 }
 
 func GetAudioDriver(index int) string {
-	return iGetAudioDriver(index)
+	return iGetAudioDriver(int32(index))
 }
 
 func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetAudioPlaybackDevices(&count)
 	if ptr == 0 {
@@ -123,11 +123,11 @@ func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[AudioDeviceID](ptr, count), nil
+	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
 
 func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetAudioRecordingDevices(&count)
 	if ptr == 0 {
@@ -135,11 +135,11 @@ func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[AudioDeviceID](ptr, count), nil
+	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
 
 func UnbindAudioStreams(streams []*AudioStream) {
-	iUnbindAudioStreams(unsafe.SliceData(streams), len(streams))
+	iUnbindAudioStreams(unsafe.SliceData(streams), int32(len(streams)))
 }
 
 func CreateAudioStream(srcSpec *AudioSpec) (*AudioStream, *AudioSpec, error) {
@@ -187,16 +187,16 @@ func MixAudio(src []byte, format AudioFormat, volume float32) ([]byte, error) {
 
 func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte, error) {
 	var ptr *byte
-	var count int
+	var count int32
 	dstSpec := &AudioSpec{}
 
 	if !iConvertAudioSamples(
-		srcSpec, unsafe.SliceData(srcData), len(srcData),
+		srcSpec, unsafe.SliceData(srcData), int32(len(srcData)),
 		dstSpec, &ptr, &count,
 	) {
 		return nil, nil, lastError()
 	}
 	defer sdlFree(uintptr(unsafe.Pointer(ptr)))
 
-	return dstSpec, clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), count), nil
+	return dstSpec, clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }

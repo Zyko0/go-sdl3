@@ -64,7 +64,7 @@ var (
 		"double":         "float64",
 		"unsigned-short": "uint16",
 		"unsigned-int":   "uint",
-		"unsigned-long":  "ulong",
+		"unsigned-long":  "uint64",
 		"long-long":      "int64", // TODO: sure?
 		"ulong":          "uint64",
 		"size_t":         "uintptr",
@@ -166,10 +166,15 @@ func sanitizeArgName(s string) string {
 	}
 }
 
-func convType(s string) string {
+func convType(s string, bitSize int) string {
 	s = strings.ReplaceAll(s, ":", "")
 	if ret, ok := typesConversions[s]; ok {
-		return ret
+		switch ret {
+		case "int", "uint":
+			return fmt.Sprintf("%s%d", s, bitSize)
+		default:
+			return ret
+		}
 	}
 	return s
 }
@@ -197,7 +202,7 @@ func extractType(e *FFIEntry) string {
 	case e.Tag == ":struct", e.Tag == "struct":
 		typ = e.Name
 	default:
-		typ = convType(e.Tag)
+		typ = convType(e.Tag, e.BitSize)
 	}
 
 	return postConvertType(typ)

@@ -18,7 +18,7 @@ type AsyncIOOutcome struct {
 type AsyncIOQueue struct{}
 
 type AtomicInt struct {
-	Value int
+	Value int32
 }
 
 type AtomicU32 struct {
@@ -55,8 +55,8 @@ type IOStream struct{}
 
 type AudioSpec struct {
 	Format   AudioFormat
-	Channels int
-	Freq     int
+	Channels int32
+	Freq     int32
 }
 
 type AudioStream struct{}
@@ -76,10 +76,10 @@ type FColor struct {
 }
 
 type Palette struct {
-	Ncolors  int
+	Ncolors  int32
 	Colors   *Color
 	Version  uint32
-	Refcount int
+	Refcount int32
 }
 
 type PixelFormatDetails struct {
@@ -102,8 +102,8 @@ type PixelFormatDetails struct {
 }
 
 type Point struct {
-	X int
-	Y int
+	X int32
+	Y int32
 }
 
 type FPoint struct {
@@ -112,10 +112,10 @@ type FPoint struct {
 }
 
 type Rect struct {
-	X int
-	Y int
-	W int
-	H int
+	X int32
+	Y int32
+	W int32
+	H int32
 }
 
 type FRect struct {
@@ -128,11 +128,11 @@ type FRect struct {
 type Surface struct {
 	Flags    SurfaceFlags
 	Format   PixelFormat
-	W        int
-	H        int
-	Pitch    int
+	W        int32
+	H        int32
+	Pitch    int32
 	Pixels   uintptr
-	Refcount int
+	Refcount int32
 	Reserved uintptr
 }
 
@@ -141,10 +141,10 @@ type Camera struct{}
 type CameraSpec struct {
 	Format               PixelFormat
 	Colorspace           Colorspace
-	Width                int
-	Height               int
-	FramerateNumerator   int
-	FramerateDenominator int
+	Width                int32
+	Height               int32
+	FramerateNumerator   int32
+	FramerateDenominator int32
 }
 
 type DisplayModeData struct{}
@@ -152,12 +152,12 @@ type DisplayModeData struct{}
 type DisplayMode struct {
 	DisplayID              DisplayID
 	Format                 PixelFormat
-	W                      int
-	H                      int
+	W                      int32
+	H                      int32
 	PixelDensity           float32
 	RefreshRate            float32
-	RefreshRateNumerator   int
-	RefreshRateDenominator int
+	RefreshRateNumerator   int32
+	RefreshRateDenominator int32
 	Internal               *DisplayModeData
 }
 
@@ -409,7 +409,7 @@ type JoyBatteryEvent struct {
 	Timestamp uint64
 	Which     JoystickID
 	State     PowerState
-	Percent   int
+	Percent   int32
 }
 
 type GamepadAxisEvent struct {
@@ -1053,7 +1053,7 @@ type Locale struct {
 
 type MessageBoxButtonData struct {
 	Flags    MessageBoxButtonFlags
-	ButtonID int
+	ButtonID int32
 	Text     string
 }
 
@@ -1072,7 +1072,7 @@ type MessageBoxData struct {
 	Window      *Window
 	Title       string
 	Message     string
-	Numbuttons  int
+	Numbuttons  int32
 	Buttons     *MessageBoxButtonData
 	ColorScheme *MessageBoxColorScheme
 }
@@ -1089,9 +1089,9 @@ type Renderer struct{}
 
 type Texture struct {
 	Format   PixelFormat
-	W        int
-	H        int
-	Refcount int
+	W        int32
+	H        int32
+	Refcount int32
 }
 
 type StorageInterface struct {
@@ -1112,13 +1112,13 @@ type StorageInterface struct {
 type Storage struct{}
 
 type DateTime struct {
-	Year       int
-	Month      int
-	Day        int
-	Hour       int
-	Minute     int
-	Second     int
-	Nanosecond int
-	DayOfWeek  int
-	UtcOffset  int
+	Year       int32
+	Month      int32
+	Day        int32
+	Hour       int32
+	Minute     int32
+	Second     int32
+	Nanosecond int32
+	DayOfWeek  int32
+	UtcOffset  int32
 }

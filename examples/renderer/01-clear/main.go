@@ -1,4 +1,4 @@
-// https://examples.libsdl.org/SDL3/renderer/02-primitives/
+// https://examples.libsdl.org/SDL3/renderer/01-clear/
 
 package main
 

@@ -3,18 +3,18 @@ package sdl
 // Render
 
 func GetNumRenderDrivers() int {
-	return iGetNumRenderDrivers()
+	return int(iGetNumRenderDrivers())
 }
 
 func GetRenderDriver(index int) string {
-	return iGetRenderDriver(index)
+	return iGetRenderDriver(int32(index))
 }
 
 func CreateWindowAndRenderer(title string, width, height int, flags WindowFlags) (*Window, *Renderer, error) {
 	var window *Window
 	var renderer *Renderer
 
-	if !iCreateWindowAndRenderer(title, width, height, flags, &window, &renderer) {
+	if !iCreateWindowAndRenderer(title, int32(width), int32(height), flags, &window, &renderer) {
 		return nil, nil, lastError()
 	}
 
@@ -33,16 +33,24 @@ func CreateRendererWithProperties(props PropertiesID) (*Renderer, error) {
 // Pixels
 
 func GetPixelFormatForMasks(bpp int, rmask, gmask, bmask, amask uint32) PixelFormat {
-	return iGetPixelFormatForMasks(bpp, rmask, gmask, bmask, amask)
+	return iGetPixelFormatForMasks(int32(bpp), rmask, gmask, bmask, amask)
 }
 
 func CreatePalette(numColors int) (*Palette, error) {
-	palette := iCreatePalette(numColors)
+	palette := iCreatePalette(int32(numColors))
 	if palette == nil {
 		return nil, lastError()
 	}
 
 	return palette, nil
+}
+
+func MapRGB(format *PixelFormatDetails, palette *Palette, r, g, b byte) uint32 {
+	return iMapRGB(format, palette, r, g, b)
+}
+
+func MapRGBA(format *PixelFormatDetails, palette *Palette, r, g, b, a byte) uint32 {
+	return iMapRGBA(format, palette, r, g, b, a)
 }
 
 func GetRGB(pixel uint32, format *PixelFormatDetails, palette *Palette) (r, g, b uint8) {
@@ -60,7 +68,7 @@ func GetRGBA(pixel uint32, format *PixelFormatDetails, palette *Palette) (r, g, 
 // Surface
 
 func CreateSurface(width, height int, format PixelFormat) (*Surface, error) {
-	surface := iCreateSurface(width, height, format)
+	surface := iCreateSurface(int32(width), int32(height), format)
 	if surface == nil {
 		return nil, lastError()
 	}

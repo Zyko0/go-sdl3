@@ -11,7 +11,7 @@ func HasKeyboard() bool {
 }
 
 func GetKeyboards() ([]KeyboardID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetKeyboards(&count)
 	if ptr == 0 {
@@ -19,15 +19,15 @@ func GetKeyboards() ([]KeyboardID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[KeyboardID](ptr, count), nil
+	return clonePtrSlice[KeyboardID](ptr, int(count)), nil
 }
 
 func GetKeyboardState() []bool {
-	var count int
+	var count int32
 
 	ptr := iGetKeyboardState(&count)
 
-	return ptrToSlice[bool](uintptr(unsafe.Pointer(ptr)), count)
+	return ptrToSlice[bool](uintptr(unsafe.Pointer(ptr)), int(count))
 }
 
 func ResetKeyboard() {
@@ -53,15 +53,15 @@ func HasMouse() bool {
 }
 
 func GetMice() ([]MouseID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetMice(&count)
 	if ptr == 0 {
 		return nil, lastError()
 	}
 	defer sdlFree(ptr)
-	
-	return clonePtrSlice[MouseID](ptr, count), nil
+
+	return clonePtrSlice[MouseID](ptr, int(count)), nil
 }
 
 func GetMouseFocus() *Window {
@@ -112,7 +112,7 @@ func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, er
 	cursor := iCreateCursor(
 		unsafe.SliceData(data),
 		unsafe.SliceData(mask),
-		width, height, hotX, hotY,
+		int32(width), int32(height), int32(hotX), int32(hotY),
 	)
 	if cursor == nil {
 		return nil, lastError()
@@ -165,7 +165,7 @@ func CursorVisible() bool {
 // Touch
 
 func GetTouchDevices() ([]TouchID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetTouchDevices(&count)
 	if ptr == 0 {
@@ -173,7 +173,7 @@ func GetTouchDevices() ([]TouchID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[TouchID](ptr, count), nil
+	return clonePtrSlice[TouchID](ptr, int(count)), nil
 }
 
 // Gamepad
@@ -203,15 +203,15 @@ func ReloadGamepadMappings() error {
 }
 
 func GetGamepadMappings() ([]string, error) {
-	var count int
+	var count int32
 
 	ptr := iGetGamepadMappings(&count)
 	if ptr == 0 {
 		return nil, lastError()
 	}
 	defer sdlFree(ptr)
-	
-	return clonePtrSlice[string](ptr, count), nil
+
+	return clonePtrSlice[string](ptr, int(count)), nil
 }
 
 func HasGamepad() bool {
@@ -219,19 +219,19 @@ func HasGamepad() bool {
 }
 
 func GetGamepads() ([]JoystickID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetGamepads(&count)
 	if ptr == 0 {
 		return nil, lastError()
 	}
 	defer sdlFree(ptr)
-	
-	return clonePtrSlice[JoystickID](ptr, count), nil
+
+	return clonePtrSlice[JoystickID](ptr, int(count)), nil
 }
 
 func GetGamepadFromPlayerIndex(playerIndex int) *Gamepad {
-	return iGetGamepadFromPlayerIndex(playerIndex)
+	return iGetGamepadFromPlayerIndex(int32(playerIndex))
 }
 
 func SetGamepadEventsEnabled(enabled bool) {
@@ -269,19 +269,19 @@ func HasJoystick() bool {
 }
 
 func GetJoysticks() ([]JoystickID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetJoysticks(&count)
 	if ptr == 0 {
 		return nil, lastError()
 	}
 	defer sdlFree(ptr)
-	
-	return clonePtrSlice[JoystickID](ptr, count), nil
+
+	return clonePtrSlice[JoystickID](ptr, int(count)), nil
 }
 
 func GetJoystickFromPlayerIndex(playerIndex int) *Joystick {
-	return iGetJoystickFromPlayerIndex(playerIndex)
+	return iGetJoystickFromPlayerIndex(int32(playerIndex))
 }
 
 func AttachVirtualJoystick(desc *VirtualJoystickDesc) JoystickID {
@@ -307,11 +307,11 @@ func UpdateJoysticks() {
 // Camera
 
 func GetNumCameraDrivers() int {
-	return iGetNumCameraDrivers()
+	return int(iGetNumCameraDrivers())
 }
 
 func GetCameraDriver(index int) string {
-	return iGetCameraDriver(index)
+	return iGetCameraDriver(int32(index))
 }
 
 func GetCurrentCameraDriver() string {
@@ -319,7 +319,7 @@ func GetCurrentCameraDriver() string {
 }
 
 func GetCameras() ([]CameraID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetCameras(&count)
 	if ptr == 0 {
@@ -327,7 +327,7 @@ func GetCameras() ([]CameraID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[CameraID](ptr, count), nil
+	return clonePtrSlice[CameraID](ptr, int(count)), nil
 }
 
 // Clipboard

@@ -1,5 +1,7 @@
 package sdl
 
+import "unsafe"
+
 // Init
 
 func Init(flags InitFlags) error {
@@ -188,6 +190,18 @@ func EventEnabled(typ EventType) bool {
 // TODO:
 
 // IOStream
+
+func IOFromConstMem(mem []byte) (*IOStream, error) {
+	stream := iIOFromConstMem(
+		uintptr(unsafe.Pointer(unsafe.SliceData(mem))),
+		uintptr(len(mem)),
+	)
+	if stream == nil {
+		return nil, lastError()
+	}
+
+	return stream, nil
+}
 
 // TODO:
 

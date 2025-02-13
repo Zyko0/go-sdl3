@@ -40,8 +40,8 @@ func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *
 // Power
 
 type PowerInfo struct {
-	Seconds int
-	Percent int
+	Seconds int32
+	Percent int32
 	State   PowerState
 }
 
@@ -59,7 +59,7 @@ func GetPowerInfo() (PowerInfo, error) {
 // Sensor
 
 func GetSensors() ([]SensorID, error) {
-	var count int
+	var count int32
 
 	ptr := iGetSensors(&count)
 	if ptr == 0 {
@@ -67,7 +67,7 @@ func GetSensors() ([]SensorID, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[SensorID](ptr, count), nil
+	return clonePtrSlice[SensorID](ptr, int(count)), nil
 }
 
 func UpdateSensors() {
@@ -97,7 +97,7 @@ func UpdateSensors() {
 // Locale
 
 func GetPreferredLocales() ([]*Locale, error) {
-	var count int
+	var count int32
 
 	ptr := iGetPreferredLocales(&count)
 	if ptr == 0 {
@@ -105,7 +105,7 @@ func GetPreferredLocales() ([]*Locale, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[*Locale](ptr, count), nil
+	return clonePtrSlice[*Locale](ptr, int(count)), nil
 }
 
 // System

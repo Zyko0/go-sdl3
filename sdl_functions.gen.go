@@ -92,22 +92,22 @@ var (
 	// SDL_CompareAndSwapAtomicInt => Set an atomic variable to a new value if it is currently an old value.
 	//
 	//puregogen:function symbol=SDL_CompareAndSwapAtomicInt
-	iCompareAndSwapAtomicInt func(a *AtomicInt, oldval int, newval int) bool
+	iCompareAndSwapAtomicInt func(a *AtomicInt, oldval int32, newval int32) bool
 
 	// SDL_SetAtomicInt => Set an atomic variable to a value.
 	//
 	//puregogen:function symbol=SDL_SetAtomicInt
-	iSetAtomicInt func(a *AtomicInt, v int) int
+	iSetAtomicInt func(a *AtomicInt, v int32) int32
 
 	// SDL_GetAtomicInt => Get the value of an atomic variable.
 	//
 	//puregogen:function symbol=SDL_GetAtomicInt
-	iGetAtomicInt func(a *AtomicInt) int
+	iGetAtomicInt func(a *AtomicInt) int32
 
 	// SDL_AddAtomicInt => Add to an atomic variable.
 	//
 	//puregogen:function symbol=SDL_AddAtomicInt
-	iAddAtomicInt func(a *AtomicInt, v int) int
+	iAddAtomicInt func(a *AtomicInt, v int32) int32
 
 	// SDL_CompareAndSwapAtomicU32 => Set an atomic variable to a new value if it is currently an old value.
 	//
@@ -292,7 +292,7 @@ var (
 	// SDL_WaitThread => Wait for a thread to finish.
 	//
 	//puregogen:function symbol=SDL_WaitThread
-	iWaitThread func(thread *Thread, status *int)
+	iWaitThread func(thread *Thread, status *int32)
 
 	// SDL_GetThreadState => Get the current state of a thread.
 	//
@@ -704,12 +704,12 @@ var (
 	// SDL_GetNumAudioDrivers => Use this function to get the number of built-in audio drivers.
 	//
 	//puregogen:function symbol=SDL_GetNumAudioDrivers
-	iGetNumAudioDrivers func() int
+	iGetNumAudioDrivers func() int32
 
 	// SDL_GetAudioDriver => Use this function to get the name of a built in audio driver.
 	//
 	//puregogen:function symbol=SDL_GetAudioDriver
-	iGetAudioDriver func(index int) string
+	iGetAudioDriver func(index int32) string
 
 	// SDL_GetCurrentAudioDriver => Get the name of the current audio driver.
 	//
@@ -720,13 +720,13 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetAudioPlaybackDevices
-	iGetAudioPlaybackDevices func(count *int) uintptr
+	iGetAudioPlaybackDevices func(count *int32) uintptr
 
 	// SDL_GetAudioRecordingDevices => Get a list of currently-connected audio recording devices.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetAudioRecordingDevices
-	iGetAudioRecordingDevices func(count *int) uintptr
+	iGetAudioRecordingDevices func(count *int32) uintptr
 
 	// SDL_GetAudioDeviceName => Get the human-readable name of a specific audio device.
 	//
@@ -736,13 +736,13 @@ var (
 	// SDL_GetAudioDeviceFormat => Get the current audio format of a specific audio device.
 	//
 	//puregogen:function symbol=SDL_GetAudioDeviceFormat
-	iGetAudioDeviceFormat func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int) bool
+	iGetAudioDeviceFormat func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int32) bool
 
 	// SDL_GetAudioDeviceChannelMap => Get the current channel map of an audio device.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetAudioDeviceChannelMap
-	iGetAudioDeviceChannelMap func(devid AudioDeviceID, count *int) uintptr
+	iGetAudioDeviceChannelMap func(devid AudioDeviceID, count *int32) uintptr
 
 	// SDL_OpenAudioDevice => Open a specific audio device.
 	//
@@ -792,7 +792,7 @@ var (
 	// SDL_BindAudioStreams => Bind a list of audio streams to an audio device.
 	//
 	//puregogen:function symbol=SDL_BindAudioStreams
-	iBindAudioStreams func(devid AudioDeviceID, streams **AudioStream, num_streams int) bool
+	iBindAudioStreams func(devid AudioDeviceID, streams **AudioStream, num_streams int32) bool
 
 	// SDL_BindAudioStream => Bind a single audio stream to an audio device.
 	//
@@ -802,7 +802,7 @@ var (
 	// SDL_UnbindAudioStreams => Unbind a list of audio streams from their audio devices.
 	//
 	//puregogen:function symbol=SDL_UnbindAudioStreams
-	iUnbindAudioStreams func(streams **AudioStream, num_streams int)
+	iUnbindAudioStreams func(streams **AudioStream, num_streams int32)
 
 	// SDL_UnbindAudioStream => Unbind a single audio stream from its audio device.
 	//
@@ -858,43 +858,43 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetAudioStreamInputChannelMap
-	iGetAudioStreamInputChannelMap func(stream *AudioStream, count *int) uintptr
+	iGetAudioStreamInputChannelMap func(stream *AudioStream, count *int32) uintptr
 
 	// SDL_GetAudioStreamOutputChannelMap => Get the current output channel map of an audio stream.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetAudioStreamOutputChannelMap
-	iGetAudioStreamOutputChannelMap func(stream *AudioStream, count *int) uintptr
+	iGetAudioStreamOutputChannelMap func(stream *AudioStream, count *int32) uintptr
 
 	// SDL_SetAudioStreamInputChannelMap => Set the current input channel map of an audio stream.
 	//
 	//puregogen:function symbol=SDL_SetAudioStreamInputChannelMap
-	iSetAudioStreamInputChannelMap func(stream *AudioStream, chmap *int, count int) bool
+	iSetAudioStreamInputChannelMap func(stream *AudioStream, chmap *int32, count int32) bool
 
 	// SDL_SetAudioStreamOutputChannelMap => Set the current output channel map of an audio stream.
 	//
 	//puregogen:function symbol=SDL_SetAudioStreamOutputChannelMap
-	iSetAudioStreamOutputChannelMap func(stream *AudioStream, chmap *int, count int) bool
+	iSetAudioStreamOutputChannelMap func(stream *AudioStream, chmap *int32, count int32) bool
 
 	// SDL_PutAudioStreamData => Add data to the stream.
 	//
 	//puregogen:function symbol=SDL_PutAudioStreamData
-	iPutAudioStreamData func(stream *AudioStream, buf uintptr, len int) bool
+	iPutAudioStreamData func(stream *AudioStream, buf uintptr, len int32) bool
 
 	// SDL_GetAudioStreamData => Get converted/resampled data from the stream.
 	//
 	//puregogen:function symbol=SDL_GetAudioStreamData
-	iGetAudioStreamData func(stream *AudioStream, buf uintptr, len int) int
+	iGetAudioStreamData func(stream *AudioStream, buf uintptr, len int32) int32
 
 	// SDL_GetAudioStreamAvailable => Get the number of converted/resampled bytes available.
 	//
 	//puregogen:function symbol=SDL_GetAudioStreamAvailable
-	iGetAudioStreamAvailable func(stream *AudioStream) int
+	iGetAudioStreamAvailable func(stream *AudioStream) int32
 
 	// SDL_GetAudioStreamQueued => Get the number of bytes currently queued.
 	//
 	//puregogen:function symbol=SDL_GetAudioStreamQueued
-	iGetAudioStreamQueued func(stream *AudioStream) int
+	iGetAudioStreamQueued func(stream *AudioStream) int32
 
 	// SDL_FlushAudioStream => Tell the stream that you're done sending data, and anything being buffered should be converted/resampled and made available immediately.
 	//
@@ -974,7 +974,7 @@ var (
 	// SDL_ConvertAudioSamples => Convert some audio data of one format to another format.
 	//
 	//puregogen:function symbol=SDL_ConvertAudioSamples
-	iConvertAudioSamples func(src_spec *AudioSpec, src_data *uint8, src_len int, dst_spec *AudioSpec, dst_data **uint8, dst_len *int) bool
+	iConvertAudioSamples func(src_spec *AudioSpec, src_data *uint8, src_len int32, dst_spec *AudioSpec, dst_data **uint8, dst_len *int32) bool
 
 	// SDL_GetAudioFormatName => Get the human readable name of an audio format.
 	//
@@ -984,7 +984,7 @@ var (
 	// SDL_GetSilenceValueForFormat => Get the appropriate memset value for silencing an audio format.
 	//
 	//puregogen:function symbol=SDL_GetSilenceValueForFormat
-	iGetSilenceValueForFormat func(format AudioFormat) int
+	iGetSilenceValueForFormat func(format AudioFormat) int32
 
 	// SDL_ComposeCustomBlendMode => Compose a custom blend mode for renderers.
 	//
@@ -999,12 +999,12 @@ var (
 	// SDL_GetMasksForPixelFormat => Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
 	//
 	//puregogen:function symbol=SDL_GetMasksForPixelFormat
-	iGetMasksForPixelFormat func(format PixelFormat, bpp *int, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool
+	iGetMasksForPixelFormat func(format PixelFormat, bpp *int32, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool
 
 	// SDL_GetPixelFormatForMasks => Convert a bpp value and RGBA masks to an enumerated pixel format.
 	//
 	//puregogen:function symbol=SDL_GetPixelFormatForMasks
-	iGetPixelFormatForMasks func(bpp int, Rmask uint32, Gmask uint32, Bmask uint32, Amask uint32) PixelFormat
+	iGetPixelFormatForMasks func(bpp int32, Rmask uint32, Gmask uint32, Bmask uint32, Amask uint32) PixelFormat
 
 	// SDL_GetPixelFormatDetails => Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
 	//
@@ -1014,12 +1014,12 @@ var (
 	// SDL_CreatePalette => Create a palette structure with the specified number of color entries.
 	//
 	//puregogen:function symbol=SDL_CreatePalette
-	iCreatePalette func(ncolors int) *Palette
+	iCreatePalette func(ncolors int32) *Palette
 
 	// SDL_SetPaletteColors => Set a range of colors in a palette.
 	//
 	//puregogen:function symbol=SDL_SetPaletteColors
-	iSetPaletteColors func(palette *Palette, colors *Color, firstcolor int, ncolors int) bool
+	iSetPaletteColors func(palette *Palette, colors *Color, firstcolor int32, ncolors int32) bool
 
 	// SDL_DestroyPalette => Free a palette created with SDL_CreatePalette().
 	//
@@ -1064,12 +1064,12 @@ var (
 	// SDL_GetRectEnclosingPoints => Calculate a minimal rectangle enclosing a set of points.
 	//
 	//puregogen:function symbol=SDL_GetRectEnclosingPoints
-	iGetRectEnclosingPoints func(points *Point, count int, clip *Rect, result *Rect) bool
+	iGetRectEnclosingPoints func(points *Point, count int32, clip *Rect, result *Rect) bool
 
 	// SDL_GetRectAndLineIntersection => Calculate the intersection of a rectangle and line segment.
 	//
 	//puregogen:function symbol=SDL_GetRectAndLineIntersection
-	iGetRectAndLineIntersection func(rect *Rect, X1 *int, Y1 *int, X2 *int, Y2 *int) bool
+	iGetRectAndLineIntersection func(rect *Rect, X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool
 
 	// SDL_HasRectIntersectionFloat => Determine whether two rectangles intersect with float precision.
 	//
@@ -1089,7 +1089,7 @@ var (
 	// SDL_GetRectEnclosingPointsFloat => Calculate a minimal rectangle enclosing a set of points with float precision.
 	//
 	//puregogen:function symbol=SDL_GetRectEnclosingPointsFloat
-	iGetRectEnclosingPointsFloat func(points *FPoint, count int, clip *FRect, result *FRect) bool
+	iGetRectEnclosingPointsFloat func(points *FPoint, count int32, clip *FRect, result *FRect) bool
 
 	// SDL_GetRectAndLineIntersectionFloat => Calculate the intersection of a rectangle and line segment with float precision.
 	//
@@ -1099,12 +1099,12 @@ var (
 	// SDL_CreateSurface => Allocate a new surface with a specific pixel format.
 	//
 	//puregogen:function symbol=SDL_CreateSurface
-	iCreateSurface func(width int, height int, format PixelFormat) *Surface
+	iCreateSurface func(width int32, height int32, format PixelFormat) *Surface
 
 	// SDL_CreateSurfaceFrom => Allocate a new surface with a specific pixel format and existing pixel data.
 	//
 	//puregogen:function symbol=SDL_CreateSurfaceFrom
-	iCreateSurfaceFrom func(width int, height int, format PixelFormat, pixels uintptr, pitch int) *Surface
+	iCreateSurfaceFrom func(width int32, height int32, format PixelFormat, pixels uintptr, pitch int32) *Surface
 
 	// SDL_DestroySurface => Free a surface.
 	//
@@ -1155,7 +1155,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetSurfaceImages
-	iGetSurfaceImages func(surface *Surface, count *int) uintptr
+	iGetSurfaceImages func(surface *Surface, count *int32) uintptr
 
 	// SDL_RemoveSurfaceAlternateImages => Remove all alternate versions of a surface.
 	//
@@ -1270,7 +1270,7 @@ var (
 	// SDL_ScaleSurface => Creates a new surface identical to the existing surface, scaled to the desired size.
 	//
 	//puregogen:function symbol=SDL_ScaleSurface
-	iScaleSurface func(surface *Surface, width int, height int, scaleMode ScaleMode) *Surface
+	iScaleSurface func(surface *Surface, width int32, height int32, scaleMode ScaleMode) *Surface
 
 	// SDL_ConvertSurface => Copy an existing surface to a new surface of the specified format.
 	//
@@ -1285,17 +1285,17 @@ var (
 	// SDL_ConvertPixels => Copy a block of pixels of one format to another format.
 	//
 	//puregogen:function symbol=SDL_ConvertPixels
-	iConvertPixels func(width int, height int, src_format PixelFormat, src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr, dst_pitch int) bool
+	iConvertPixels func(width int32, height int32, src_format PixelFormat, src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr, dst_pitch int32) bool
 
 	// SDL_ConvertPixelsAndColorspace => Copy a block of pixels of one format and colorspace to another format and colorspace.
 	//
 	//puregogen:function symbol=SDL_ConvertPixelsAndColorspace
-	iConvertPixelsAndColorspace func(width int, height int, src_format PixelFormat, src_colorspace Colorspace, src_properties PropertiesID, src uintptr, src_pitch int, dst_format PixelFormat, dst_colorspace Colorspace, dst_properties PropertiesID, dst uintptr, dst_pitch int) bool
+	iConvertPixelsAndColorspace func(width int32, height int32, src_format PixelFormat, src_colorspace Colorspace, src_properties PropertiesID, src uintptr, src_pitch int32, dst_format PixelFormat, dst_colorspace Colorspace, dst_properties PropertiesID, dst uintptr, dst_pitch int32) bool
 
 	// SDL_PremultiplyAlpha => Premultiply the alpha on a block of pixels.
 	//
 	//puregogen:function symbol=SDL_PremultiplyAlpha
-	iPremultiplyAlpha func(width int, height int, src_format PixelFormat, src uintptr, src_pitch int, dst_format PixelFormat, dst uintptr, dst_pitch int, linear bool) bool
+	iPremultiplyAlpha func(width int32, height int32, src_format PixelFormat, src uintptr, src_pitch int32, dst_format PixelFormat, dst uintptr, dst_pitch int32, linear bool) bool
 
 	// SDL_PremultiplySurfaceAlpha => Premultiply the alpha in a surface.
 	//
@@ -1315,7 +1315,7 @@ var (
 	// SDL_FillSurfaceRects => Perform a fast fill of a set of rectangles with a specific color.
 	//
 	//puregogen:function symbol=SDL_FillSurfaceRects
-	iFillSurfaceRects func(dst *Surface, rects *Rect, count int, color uint32) bool
+	iFillSurfaceRects func(dst *Surface, rects *Rect, count int32, color uint32) bool
 
 	// SDL_BlitSurface => Performs a fast blit from the source surface to the destination surface with clipping.
 	//
@@ -1350,7 +1350,7 @@ var (
 	// SDL_BlitSurface9Grid => Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.
 	//
 	//puregogen:function symbol=SDL_BlitSurface9Grid
-	iBlitSurface9Grid func(src *Surface, srcrect *Rect, left_width int, right_width int, top_height int, bottom_height int, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool
+	iBlitSurface9Grid func(src *Surface, srcrect *Rect, left_width int32, right_width int32, top_height int32, bottom_height int32, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool
 
 	// SDL_MapSurfaceRGB => Map an RGB triple to an opaque pixel value for a surface.
 	//
@@ -1365,32 +1365,32 @@ var (
 	// SDL_ReadSurfacePixel => Retrieves a single pixel from a surface.
 	//
 	//puregogen:function symbol=SDL_ReadSurfacePixel
-	iReadSurfacePixel func(surface *Surface, x int, y int, r *uint8, g *uint8, b *uint8, a *uint8) bool
+	iReadSurfacePixel func(surface *Surface, x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool
 
 	// SDL_ReadSurfacePixelFloat => Retrieves a single pixel from a surface.
 	//
 	//puregogen:function symbol=SDL_ReadSurfacePixelFloat
-	iReadSurfacePixelFloat func(surface *Surface, x int, y int, r *float32, g *float32, b *float32, a *float32) bool
+	iReadSurfacePixelFloat func(surface *Surface, x int32, y int32, r *float32, g *float32, b *float32, a *float32) bool
 
 	// SDL_WriteSurfacePixel => Writes a single pixel to a surface.
 	//
 	//puregogen:function symbol=SDL_WriteSurfacePixel
-	iWriteSurfacePixel func(surface *Surface, x int, y int, r uint8, g uint8, b uint8, a uint8) bool
+	iWriteSurfacePixel func(surface *Surface, x int32, y int32, r uint8, g uint8, b uint8, a uint8) bool
 
 	// SDL_WriteSurfacePixelFloat => Writes a single pixel to a surface.
 	//
 	//puregogen:function symbol=SDL_WriteSurfacePixelFloat
-	iWriteSurfacePixelFloat func(surface *Surface, x int, y int, r float32, g float32, b float32, a float32) bool
+	iWriteSurfacePixelFloat func(surface *Surface, x int32, y int32, r float32, g float32, b float32, a float32) bool
 
 	// SDL_GetNumCameraDrivers => Use this function to get the number of built-in camera drivers.
 	//
 	//puregogen:function symbol=SDL_GetNumCameraDrivers
-	iGetNumCameraDrivers func() int
+	iGetNumCameraDrivers func() int32
 
 	// SDL_GetCameraDriver => Use this function to get the name of a built in camera driver.
 	//
 	//puregogen:function symbol=SDL_GetCameraDriver
-	iGetCameraDriver func(index int) string
+	iGetCameraDriver func(index int32) string
 
 	// SDL_GetCurrentCameraDriver => Get the name of the current camera driver.
 	//
@@ -1401,13 +1401,13 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetCameras
-	iGetCameras func(count *int) uintptr
+	iGetCameras func(count *int32) uintptr
 
 	// SDL_GetCameraSupportedFormats => Get the list of native formats/sizes a camera supports.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetCameraSupportedFormats
-	iGetCameraSupportedFormats func(instance_id CameraID, count *int) uintptr
+	iGetCameraSupportedFormats func(instance_id CameraID, count *int32) uintptr
 
 	// SDL_GetCameraName => Get the human-readable device name for a camera.
 	//
@@ -1427,7 +1427,7 @@ var (
 	// SDL_GetCameraPermissionState => Query if camera access has been approved by the user.
 	//
 	//puregogen:function symbol=SDL_GetCameraPermissionState
-	iGetCameraPermissionState func(camera *Camera) int
+	iGetCameraPermissionState func(camera *Camera) int32
 
 	// SDL_GetCameraID => Get the instance ID of an opened camera.
 	//
@@ -1521,12 +1521,12 @@ var (
 	// SDL_GetNumLogicalCPUCores => Get the number of logical CPU cores available.
 	//
 	//puregogen:function symbol=SDL_GetNumLogicalCPUCores
-	iGetNumLogicalCPUCores func() int
+	iGetNumLogicalCPUCores func() int32
 
 	// SDL_GetCPUCacheLineSize => Determine the L1 cache line size of the CPU.
 	//
 	//puregogen:function symbol=SDL_GetCPUCacheLineSize
-	iGetCPUCacheLineSize func() int
+	iGetCPUCacheLineSize func() int32
 
 	// SDL_HasAltiVec => Determine whether the CPU has AltiVec features.
 	//
@@ -1601,7 +1601,7 @@ var (
 	// SDL_GetSystemRAM => Get the amount of RAM configured in the system.
 	//
 	//puregogen:function symbol=SDL_GetSystemRAM
-	iGetSystemRAM func() int
+	iGetSystemRAM func() int32
 
 	// SDL_GetSIMDAlignment => Report the alignment this system needs for SIMD allocations.
 	//
@@ -1611,12 +1611,12 @@ var (
 	// SDL_GetNumVideoDrivers => Get the number of video drivers compiled into SDL.
 	//
 	//puregogen:function symbol=SDL_GetNumVideoDrivers
-	iGetNumVideoDrivers func() int
+	iGetNumVideoDrivers func() int32
 
 	// SDL_GetVideoDriver => Get the name of a built in video driver.
 	//
 	//puregogen:function symbol=SDL_GetVideoDriver
-	iGetVideoDriver func(index int) string
+	iGetVideoDriver func(index int32) string
 
 	// SDL_GetCurrentVideoDriver => Get the name of the currently initialized video driver.
 	//
@@ -1632,7 +1632,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetDisplays
-	iGetDisplays func(count *int) uintptr
+	iGetDisplays func(count *int32) uintptr
 
 	// SDL_GetPrimaryDisplay => Return the primary display.
 	//
@@ -1678,12 +1678,12 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetFullscreenDisplayModes
-	iGetFullscreenDisplayModes func(displayID DisplayID, count *int) uintptr
+	iGetFullscreenDisplayModes func(displayID DisplayID, count *int32) uintptr
 
 	// SDL_GetClosestFullscreenDisplayMode => Get the closest match to the requested display mode.
 	//
 	//puregogen:function symbol=SDL_GetClosestFullscreenDisplayMode
-	iGetClosestFullscreenDisplayMode func(displayID DisplayID, w int, h int, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool
+	iGetClosestFullscreenDisplayMode func(displayID DisplayID, w int32, h int32, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool
 
 	// SDL_GetDesktopDisplayMode => Get information about the desktop's display mode.
 	//
@@ -1745,17 +1745,17 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetWindows
-	iGetWindows func(count *int) uintptr
+	iGetWindows func(count *int32) uintptr
 
 	// SDL_CreateWindow => Create a window with the specified dimensions and flags.
 	//
 	//puregogen:function symbol=SDL_CreateWindow
-	iCreateWindow func(title string, w int, h int, flags WindowFlags) *Window
+	iCreateWindow func(title string, w int32, h int32, flags WindowFlags) *Window
 
 	// SDL_CreatePopupWindow => Create a child popup window of the specified parent window.
 	//
 	//puregogen:function symbol=SDL_CreatePopupWindow
-	iCreatePopupWindow func(parent *Window, offset_x int, offset_y int, w int, h int, flags WindowFlags) *Window
+	iCreatePopupWindow func(parent *Window, offset_x int32, offset_y int32, w int32, h int32, flags WindowFlags) *Window
 
 	// SDL_CreateWindowWithProperties => Create a window with the specified properties.
 	//
@@ -1805,22 +1805,22 @@ var (
 	// SDL_SetWindowPosition => Request that the window's position be set.
 	//
 	//puregogen:function symbol=SDL_SetWindowPosition
-	iSetWindowPosition func(window *Window, x int, y int) bool
+	iSetWindowPosition func(window *Window, x int32, y int32) bool
 
 	// SDL_GetWindowPosition => Get the position of a window.
 	//
 	//puregogen:function symbol=SDL_GetWindowPosition
-	iGetWindowPosition func(window *Window, x *int, y *int) bool
+	iGetWindowPosition func(window *Window, x *int32, y *int32) bool
 
 	// SDL_SetWindowSize => Request that the size of a window's client area be set.
 	//
 	//puregogen:function symbol=SDL_SetWindowSize
-	iSetWindowSize func(window *Window, w int, h int) bool
+	iSetWindowSize func(window *Window, w int32, h int32) bool
 
 	// SDL_GetWindowSize => Get the size of a window's client area.
 	//
 	//puregogen:function symbol=SDL_GetWindowSize
-	iGetWindowSize func(window *Window, w *int, h *int) bool
+	iGetWindowSize func(window *Window, w *int32, h *int32) bool
 
 	// SDL_GetWindowSafeArea => Get the safe area for this window.
 	//
@@ -1840,32 +1840,32 @@ var (
 	// SDL_GetWindowBordersSize => Get the size of a window's borders (decorations) around the client area.
 	//
 	//puregogen:function symbol=SDL_GetWindowBordersSize
-	iGetWindowBordersSize func(window *Window, top *int, left *int, bottom *int, right *int) bool
+	iGetWindowBordersSize func(window *Window, top *int32, left *int32, bottom *int32, right *int32) bool
 
 	// SDL_GetWindowSizeInPixels => Get the size of a window's client area, in pixels.
 	//
 	//puregogen:function symbol=SDL_GetWindowSizeInPixels
-	iGetWindowSizeInPixels func(window *Window, w *int, h *int) bool
+	iGetWindowSizeInPixels func(window *Window, w *int32, h *int32) bool
 
 	// SDL_SetWindowMinimumSize => Set the minimum size of a window's client area.
 	//
 	//puregogen:function symbol=SDL_SetWindowMinimumSize
-	iSetWindowMinimumSize func(window *Window, min_w int, min_h int) bool
+	iSetWindowMinimumSize func(window *Window, min_w int32, min_h int32) bool
 
 	// SDL_GetWindowMinimumSize => Get the minimum size of a window's client area.
 	//
 	//puregogen:function symbol=SDL_GetWindowMinimumSize
-	iGetWindowMinimumSize func(window *Window, w *int, h *int) bool
+	iGetWindowMinimumSize func(window *Window, w *int32, h *int32) bool
 
 	// SDL_SetWindowMaximumSize => Set the maximum size of a window's client area.
 	//
 	//puregogen:function symbol=SDL_SetWindowMaximumSize
-	iSetWindowMaximumSize func(window *Window, max_w int, max_h int) bool
+	iSetWindowMaximumSize func(window *Window, max_w int32, max_h int32) bool
 
 	// SDL_GetWindowMaximumSize => Get the maximum size of a window's client area.
 	//
 	//puregogen:function symbol=SDL_GetWindowMaximumSize
-	iGetWindowMaximumSize func(window *Window, w *int, h *int) bool
+	iGetWindowMaximumSize func(window *Window, w *int32, h *int32) bool
 
 	// SDL_SetWindowBordered => Set the border state of a window.
 	//
@@ -1935,12 +1935,12 @@ var (
 	// SDL_SetWindowSurfaceVSync => Toggle VSync for the window surface.
 	//
 	//puregogen:function symbol=SDL_SetWindowSurfaceVSync
-	iSetWindowSurfaceVSync func(window *Window, vsync int) bool
+	iSetWindowSurfaceVSync func(window *Window, vsync int32) bool
 
 	// SDL_GetWindowSurfaceVSync => Get VSync for the window surface.
 	//
 	//puregogen:function symbol=SDL_GetWindowSurfaceVSync
-	iGetWindowSurfaceVSync func(window *Window, vsync *int) bool
+	iGetWindowSurfaceVSync func(window *Window, vsync *int32) bool
 
 	// SDL_UpdateWindowSurface => Copy the window surface to the screen.
 	//
@@ -1950,7 +1950,7 @@ var (
 	// SDL_UpdateWindowSurfaceRects => Copy areas of the window surface to the screen.
 	//
 	//puregogen:function symbol=SDL_UpdateWindowSurfaceRects
-	iUpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int) bool
+	iUpdateWindowSurfaceRects func(window *Window, rects *Rect, numrects int32) bool
 
 	// SDL_DestroyWindowSurface => Destroy the surface associated with the window.
 	//
@@ -2020,7 +2020,7 @@ var (
 	// SDL_ShowWindowSystemMenu => Display the system-level window menu.
 	//
 	//puregogen:function symbol=SDL_ShowWindowSystemMenu
-	iShowWindowSystemMenu func(window *Window, x int, y int) bool
+	iShowWindowSystemMenu func(window *Window, x int32, y int32) bool
 
 	// SDL_SetWindowHitTest => Provide a callback that decides if a window region has special properties.
 	//
@@ -2090,12 +2090,12 @@ var (
 	// SDL_GL_SetAttribute => Set an OpenGL window attribute before window creation.
 	//
 	//puregogen:function symbol=SDL_GL_SetAttribute
-	iGL_SetAttribute func(attr GLAttr, value int) bool
+	iGL_SetAttribute func(attr GLAttr, value int32) bool
 
 	// SDL_GL_GetAttribute => Get the actual value for an attribute from the current context.
 	//
 	//puregogen:function symbol=SDL_GL_GetAttribute
-	iGL_GetAttribute func(attr GLAttr, value *int) bool
+	iGL_GetAttribute func(attr GLAttr, value *int32) bool
 
 	// SDL_GL_CreateContext => Create an OpenGL context for an OpenGL window, and make it current.
 	//
@@ -2140,12 +2140,12 @@ var (
 	// SDL_GL_SetSwapInterval => Set the swap interval for the current OpenGL context.
 	//
 	//puregogen:function symbol=SDL_GL_SetSwapInterval
-	iGL_SetSwapInterval func(interval int) bool
+	iGL_SetSwapInterval func(interval int32) bool
 
 	// SDL_GL_GetSwapInterval => Get the swap interval for the current OpenGL context.
 	//
 	//puregogen:function symbol=SDL_GL_GetSwapInterval
-	iGL_GetSwapInterval func(interval *int) bool
+	iGL_GetSwapInterval func(interval *int32) bool
 
 	// SDL_GL_SwapWindow => Update a window with OpenGL rendering.
 	//
@@ -2160,12 +2160,12 @@ var (
 	// SDL_ShowOpenFileDialog => Displays a dialog that lets the user select a file on their filesystem.
 	//
 	//puregogen:function symbol=SDL_ShowOpenFileDialog
-	iShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int, default_location string, allow_many bool)
+	iShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool)
 
 	// SDL_ShowSaveFileDialog => Displays a dialog that lets the user choose a new or existing file on their filesystem.
 	//
 	//puregogen:function symbol=SDL_ShowSaveFileDialog
-	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int, default_location string)
+	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string)
 
 	// SDL_ShowOpenFolderDialog => Displays a dialog that lets the user select a folder on their filesystem.
 	//
@@ -2180,7 +2180,7 @@ var (
 	// SDL_GUIDToString => Get an ASCII string representation for a given SDL_GUID.
 	//
 	//puregogen:function symbol=SDL_GUIDToString
-	iGUIDToString func(guid GUID, pszGUID string, cbGUID int)
+	iGUIDToString func(guid GUID, pszGUID string, cbGUID int32)
 
 	// SDL_StringToGUID => Convert a GUID string into a SDL_GUID structure.
 	//
@@ -2190,13 +2190,13 @@ var (
 	// SDL_GetPowerInfo => Get the current power supply details.
 	//
 	//puregogen:function symbol=SDL_GetPowerInfo
-	iGetPowerInfo func(seconds *int, percent *int) PowerState
+	iGetPowerInfo func(seconds *int32, percent *int32) PowerState
 
 	// SDL_GetSensors => Get a list of currently connected sensors.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetSensors
-	iGetSensors func(count *int) uintptr
+	iGetSensors func(count *int32) uintptr
 
 	// SDL_GetSensorNameForID => Get the implementation dependent name of a sensor.
 	//
@@ -2211,7 +2211,7 @@ var (
 	// SDL_GetSensorNonPortableTypeForID => Get the platform dependent type of a sensor.
 	//
 	//puregogen:function symbol=SDL_GetSensorNonPortableTypeForID
-	iGetSensorNonPortableTypeForID func(instance_id SensorID) int
+	iGetSensorNonPortableTypeForID func(instance_id SensorID) int32
 
 	// SDL_OpenSensor => Open a sensor for use.
 	//
@@ -2241,7 +2241,7 @@ var (
 	// SDL_GetSensorNonPortableType => Get the platform dependent type of a sensor.
 	//
 	//puregogen:function symbol=SDL_GetSensorNonPortableType
-	iGetSensorNonPortableType func(sensor *Sensor) int
+	iGetSensorNonPortableType func(sensor *Sensor) int32
 
 	// SDL_GetSensorID => Get the instance ID of a sensor.
 	//
@@ -2251,7 +2251,7 @@ var (
 	// SDL_GetSensorData => Get the current state of an opened sensor.
 	//
 	//puregogen:function symbol=SDL_GetSensorData
-	iGetSensorData func(sensor *Sensor, data *float32, num_values int) bool
+	iGetSensorData func(sensor *Sensor, data *float32, num_values int32) bool
 
 	// SDL_CloseSensor => Close a sensor previously opened with SDL_OpenSensor().
 	//
@@ -2282,7 +2282,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetJoysticks
-	iGetJoysticks func(count *int) uintptr
+	iGetJoysticks func(count *int32) uintptr
 
 	// SDL_GetJoystickNameForID => Get the implementation dependent name of a joystick.
 	//
@@ -2297,7 +2297,7 @@ var (
 	// SDL_GetJoystickPlayerIndexForID => Get the player index of a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickPlayerIndexForID
-	iGetJoystickPlayerIndexForID func(instance_id JoystickID) int
+	iGetJoystickPlayerIndexForID func(instance_id JoystickID) int32
 
 	// SDL_GetJoystickGUIDForID => Get the implementation-dependent GUID of a joystick.
 	//
@@ -2337,7 +2337,7 @@ var (
 	// SDL_GetJoystickFromPlayerIndex => Get the SDL_Joystick associated with a player index.
 	//
 	//puregogen:function symbol=SDL_GetJoystickFromPlayerIndex
-	iGetJoystickFromPlayerIndex func(player_index int) *Joystick
+	iGetJoystickFromPlayerIndex func(player_index int32) *Joystick
 
 	// SDL_AttachVirtualJoystick => Attach a new virtual joystick.
 	//
@@ -2357,32 +2357,32 @@ var (
 	// SDL_SetJoystickVirtualAxis => Set the state of an axis on an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickVirtualAxis
-	iSetJoystickVirtualAxis func(joystick *Joystick, axis int, value int16) bool
+	iSetJoystickVirtualAxis func(joystick *Joystick, axis int32, value int16) bool
 
 	// SDL_SetJoystickVirtualBall => Generate ball motion on an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickVirtualBall
-	iSetJoystickVirtualBall func(joystick *Joystick, ball int, xrel int16, yrel int16) bool
+	iSetJoystickVirtualBall func(joystick *Joystick, ball int32, xrel int16, yrel int16) bool
 
 	// SDL_SetJoystickVirtualButton => Set the state of a button on an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickVirtualButton
-	iSetJoystickVirtualButton func(joystick *Joystick, button int, down bool) bool
+	iSetJoystickVirtualButton func(joystick *Joystick, button int32, down bool) bool
 
 	// SDL_SetJoystickVirtualHat => Set the state of a hat on an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickVirtualHat
-	iSetJoystickVirtualHat func(joystick *Joystick, hat int, value uint8) bool
+	iSetJoystickVirtualHat func(joystick *Joystick, hat int32, value uint8) bool
 
 	// SDL_SetJoystickVirtualTouchpad => Set touchpad finger state on an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickVirtualTouchpad
-	iSetJoystickVirtualTouchpad func(joystick *Joystick, touchpad int, finger int, down bool, x float32, y float32, pressure float32) bool
+	iSetJoystickVirtualTouchpad func(joystick *Joystick, touchpad int32, finger int32, down bool, x float32, y float32, pressure float32) bool
 
 	// SDL_SendJoystickVirtualSensorData => Send a sensor update for an opened virtual joystick.
 	//
 	//puregogen:function symbol=SDL_SendJoystickVirtualSensorData
-	iSendJoystickVirtualSensorData func(joystick *Joystick, typ SensorType, sensor_timestamp uint64, data *float32, num_values int) bool
+	iSendJoystickVirtualSensorData func(joystick *Joystick, typ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool
 
 	// SDL_GetJoystickProperties => Get the properties associated with a joystick.
 	//
@@ -2402,12 +2402,12 @@ var (
 	// SDL_GetJoystickPlayerIndex => Get the player index of an opened joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickPlayerIndex
-	iGetJoystickPlayerIndex func(joystick *Joystick) int
+	iGetJoystickPlayerIndex func(joystick *Joystick) int32
 
 	// SDL_SetJoystickPlayerIndex => Set the player index of an opened joystick.
 	//
 	//puregogen:function symbol=SDL_SetJoystickPlayerIndex
-	iSetJoystickPlayerIndex func(joystick *Joystick, player_index int) bool
+	iSetJoystickPlayerIndex func(joystick *Joystick, player_index int32) bool
 
 	// SDL_GetJoystickGUID => Get the implementation-dependent GUID for the joystick.
 	//
@@ -2462,22 +2462,22 @@ var (
 	// SDL_GetNumJoystickAxes => Get the number of general axis controls on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetNumJoystickAxes
-	iGetNumJoystickAxes func(joystick *Joystick) int
+	iGetNumJoystickAxes func(joystick *Joystick) int32
 
 	// SDL_GetNumJoystickBalls => Get the number of trackballs on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetNumJoystickBalls
-	iGetNumJoystickBalls func(joystick *Joystick) int
+	iGetNumJoystickBalls func(joystick *Joystick) int32
 
 	// SDL_GetNumJoystickHats => Get the number of POV hats on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetNumJoystickHats
-	iGetNumJoystickHats func(joystick *Joystick) int
+	iGetNumJoystickHats func(joystick *Joystick) int32
 
 	// SDL_GetNumJoystickButtons => Get the number of buttons on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetNumJoystickButtons
-	iGetNumJoystickButtons func(joystick *Joystick) int
+	iGetNumJoystickButtons func(joystick *Joystick) int32
 
 	// SDL_SetJoystickEventsEnabled => Set the state of joystick event processing.
 	//
@@ -2497,27 +2497,27 @@ var (
 	// SDL_GetJoystickAxis => Get the current state of an axis control on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickAxis
-	iGetJoystickAxis func(joystick *Joystick, axis int) int16
+	iGetJoystickAxis func(joystick *Joystick, axis int32) int16
 
 	// SDL_GetJoystickAxisInitialState => Get the initial state of an axis control on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickAxisInitialState
-	iGetJoystickAxisInitialState func(joystick *Joystick, axis int, state *int16) bool
+	iGetJoystickAxisInitialState func(joystick *Joystick, axis int32, state *int16) bool
 
 	// SDL_GetJoystickBall => Get the ball axis change since the last poll.
 	//
 	//puregogen:function symbol=SDL_GetJoystickBall
-	iGetJoystickBall func(joystick *Joystick, ball int, dx *int, dy *int) bool
+	iGetJoystickBall func(joystick *Joystick, ball int32, dx *int32, dy *int32) bool
 
 	// SDL_GetJoystickHat => Get the current state of a POV hat on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickHat
-	iGetJoystickHat func(joystick *Joystick, hat int) uint8
+	iGetJoystickHat func(joystick *Joystick, hat int32) uint8
 
 	// SDL_GetJoystickButton => Get the current state of a button on a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickButton
-	iGetJoystickButton func(joystick *Joystick, button int) bool
+	iGetJoystickButton func(joystick *Joystick, button int32) bool
 
 	// SDL_RumbleJoystick => Start a rumble effect.
 	//
@@ -2537,7 +2537,7 @@ var (
 	// SDL_SendJoystickEffect => Send a joystick specific effect packet.
 	//
 	//puregogen:function symbol=SDL_SendJoystickEffect
-	iSendJoystickEffect func(joystick *Joystick, data uintptr, size int) bool
+	iSendJoystickEffect func(joystick *Joystick, data uintptr, size int32) bool
 
 	// SDL_CloseJoystick => Close a joystick previously opened with SDL_OpenJoystick().
 	//
@@ -2552,22 +2552,22 @@ var (
 	// SDL_GetJoystickPowerInfo => Get the battery state of a joystick.
 	//
 	//puregogen:function symbol=SDL_GetJoystickPowerInfo
-	iGetJoystickPowerInfo func(joystick *Joystick, percent *int) PowerState
+	iGetJoystickPowerInfo func(joystick *Joystick, percent *int32) PowerState
 
 	// SDL_AddGamepadMapping => Add support for gamepads that SDL is unaware of or change the binding of an existing gamepad.
 	//
 	//puregogen:function symbol=SDL_AddGamepadMapping
-	iAddGamepadMapping func(mapping string) int
+	iAddGamepadMapping func(mapping string) int32
 
 	// SDL_AddGamepadMappingsFromIO => Load a set of gamepad mappings from an SDL_IOStream.
 	//
 	//puregogen:function symbol=SDL_AddGamepadMappingsFromIO
-	iAddGamepadMappingsFromIO func(src *IOStream, closeio bool) int
+	iAddGamepadMappingsFromIO func(src *IOStream, closeio bool) int32
 
 	// SDL_AddGamepadMappingsFromFile => Load a set of gamepad mappings from a file.
 	//
 	//puregogen:function symbol=SDL_AddGamepadMappingsFromFile
-	iAddGamepadMappingsFromFile func(file string) int
+	iAddGamepadMappingsFromFile func(file string) int32
 
 	// SDL_ReloadGamepadMappings => Reinitialize the SDL mapping database to its initial state.
 	//
@@ -2578,7 +2578,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetGamepadMappings
-	iGetGamepadMappings func(count *int) uintptr
+	iGetGamepadMappings func(count *int32) uintptr
 
 	// SDL_GetGamepadMappingForGUID => Get the gamepad mapping string for a given GUID.
 	// SDL_free() must be called on the returned pointer.
@@ -2606,7 +2606,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetGamepads
-	iGetGamepads func(count *int) uintptr
+	iGetGamepads func(count *int32) uintptr
 
 	// SDL_IsGamepad => Check if the given joystick is supported by the gamepad interface.
 	//
@@ -2626,7 +2626,7 @@ var (
 	// SDL_GetGamepadPlayerIndexForID => Get the player index of a gamepad.
 	//
 	//puregogen:function symbol=SDL_GetGamepadPlayerIndexForID
-	iGetGamepadPlayerIndexForID func(instance_id JoystickID) int
+	iGetGamepadPlayerIndexForID func(instance_id JoystickID) int32
 
 	// SDL_GetGamepadGUIDForID => Get the implementation-dependent GUID of a gamepad.
 	//
@@ -2677,7 +2677,7 @@ var (
 	// SDL_GetGamepadFromPlayerIndex => Get the SDL_Gamepad associated with a player index.
 	//
 	//puregogen:function symbol=SDL_GetGamepadFromPlayerIndex
-	iGetGamepadFromPlayerIndex func(player_index int) *Gamepad
+	iGetGamepadFromPlayerIndex func(player_index int32) *Gamepad
 
 	// SDL_GetGamepadProperties => Get the properties associated with an opened gamepad.
 	//
@@ -2712,12 +2712,12 @@ var (
 	// SDL_GetGamepadPlayerIndex => Get the player index of an opened gamepad.
 	//
 	//puregogen:function symbol=SDL_GetGamepadPlayerIndex
-	iGetGamepadPlayerIndex func(gamepad *Gamepad) int
+	iGetGamepadPlayerIndex func(gamepad *Gamepad) int32
 
 	// SDL_SetGamepadPlayerIndex => Set the player index of an opened gamepad.
 	//
 	//puregogen:function symbol=SDL_SetGamepadPlayerIndex
-	iSetGamepadPlayerIndex func(gamepad *Gamepad, player_index int) bool
+	iSetGamepadPlayerIndex func(gamepad *Gamepad, player_index int32) bool
 
 	// SDL_GetGamepadVendor => Get the USB vendor ID of an opened gamepad, if available.
 	//
@@ -2757,7 +2757,7 @@ var (
 	// SDL_GetGamepadPowerInfo => Get the battery state of a gamepad.
 	//
 	//puregogen:function symbol=SDL_GetGamepadPowerInfo
-	iGetGamepadPowerInfo func(gamepad *Gamepad, percent *int) PowerState
+	iGetGamepadPowerInfo func(gamepad *Gamepad, percent *int32) PowerState
 
 	// SDL_GamepadConnected => Check if a gamepad has been opened and is currently connected.
 	//
@@ -2783,7 +2783,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetGamepadBindings
-	iGetGamepadBindings func(gamepad *Gamepad, count *int) uintptr
+	iGetGamepadBindings func(gamepad *Gamepad, count *int32) uintptr
 
 	// SDL_UpdateGamepads => Manually pump gamepad updates if not using the loop.
 	//
@@ -2853,17 +2853,17 @@ var (
 	// SDL_GetNumGamepadTouchpads => Get the number of touchpads on a gamepad.
 	//
 	//puregogen:function symbol=SDL_GetNumGamepadTouchpads
-	iGetNumGamepadTouchpads func(gamepad *Gamepad) int
+	iGetNumGamepadTouchpads func(gamepad *Gamepad) int32
 
 	// SDL_GetNumGamepadTouchpadFingers => Get the number of supported simultaneous fingers on a touchpad on a game gamepad.
 	//
 	//puregogen:function symbol=SDL_GetNumGamepadTouchpadFingers
-	iGetNumGamepadTouchpadFingers func(gamepad *Gamepad, touchpad int) int
+	iGetNumGamepadTouchpadFingers func(gamepad *Gamepad, touchpad int32) int32
 
 	// SDL_GetGamepadTouchpadFinger => Get the current state of a finger on a touchpad on a gamepad.
 	//
 	//puregogen:function symbol=SDL_GetGamepadTouchpadFinger
-	iGetGamepadTouchpadFinger func(gamepad *Gamepad, touchpad int, finger int, down *bool, x *float32, y *float32, pressure *float32) bool
+	iGetGamepadTouchpadFinger func(gamepad *Gamepad, touchpad int32, finger int32, down *bool, x *float32, y *float32, pressure *float32) bool
 
 	// SDL_GamepadHasSensor => Return whether a gamepad has a particular sensor.
 	//
@@ -2888,7 +2888,7 @@ var (
 	// SDL_GetGamepadSensorData => Get the current state of a gamepad sensor.
 	//
 	//puregogen:function symbol=SDL_GetGamepadSensorData
-	iGetGamepadSensorData func(gamepad *Gamepad, typ SensorType, data *float32, num_values int) bool
+	iGetGamepadSensorData func(gamepad *Gamepad, typ SensorType, data *float32, num_values int32) bool
 
 	// SDL_RumbleGamepad => Start a rumble effect on a gamepad.
 	//
@@ -2908,7 +2908,7 @@ var (
 	// SDL_SendGamepadEffect => Send a gamepad specific effect packet.
 	//
 	//puregogen:function symbol=SDL_SendGamepadEffect
-	iSendGamepadEffect func(gamepad *Gamepad, data uintptr, size int) bool
+	iSendGamepadEffect func(gamepad *Gamepad, data uintptr, size int32) bool
 
 	// SDL_CloseGamepad => Close a gamepad previously opened with SDL_OpenGamepad().
 	//
@@ -2934,7 +2934,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetKeyboards
-	iGetKeyboards func(count *int) uintptr
+	iGetKeyboards func(count *int32) uintptr
 
 	// SDL_GetKeyboardNameForID => Get the name of a keyboard.
 	//
@@ -2949,7 +2949,7 @@ var (
 	// SDL_GetKeyboardState => Get a snapshot of the current state of the keyboard.
 	//
 	//puregogen:function symbol=SDL_GetKeyboardState
-	iGetKeyboardState func(numkeys *int) *bool
+	iGetKeyboardState func(numkeys *int32) *bool
 
 	// SDL_ResetKeyboard => Clear the state of the keyboard.
 	//
@@ -3029,12 +3029,12 @@ var (
 	// SDL_SetTextInputArea => Set the area used to type Unicode text input.
 	//
 	//puregogen:function symbol=SDL_SetTextInputArea
-	iSetTextInputArea func(window *Window, rect *Rect, cursor int) bool
+	iSetTextInputArea func(window *Window, rect *Rect, cursor int32) bool
 
 	// SDL_GetTextInputArea => Get the area used to type Unicode text input.
 	//
 	//puregogen:function symbol=SDL_GetTextInputArea
-	iGetTextInputArea func(window *Window, rect *Rect, cursor *int) bool
+	iGetTextInputArea func(window *Window, rect *Rect, cursor *int32) bool
 
 	// SDL_HasScreenKeyboardSupport => Check whether the platform has screen keyboard support.
 	//
@@ -3055,7 +3055,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetMice
-	iGetMice func(count *int) uintptr
+	iGetMice func(count *int32) uintptr
 
 	// SDL_GetMouseNameForID => Get the name of a mouse.
 	//
@@ -3110,12 +3110,12 @@ var (
 	// SDL_CreateCursor => Create a cursor using the specified bitmap data and mask (in MSB format).
 	//
 	//puregogen:function symbol=SDL_CreateCursor
-	iCreateCursor func(data *uint8, mask *uint8, w int, h int, hot_x int, hot_y int) *Cursor
+	iCreateCursor func(data *uint8, mask *uint8, w int32, h int32, hot_x int32, hot_y int32) *Cursor
 
 	// SDL_CreateColorCursor => Create a color cursor.
 	//
 	//puregogen:function symbol=SDL_CreateColorCursor
-	iCreateColorCursor func(surface *Surface, hot_x int, hot_y int) *Cursor
+	iCreateColorCursor func(surface *Surface, hot_x int32, hot_y int32) *Cursor
 
 	// SDL_CreateSystemCursor => Create a system cursor.
 	//
@@ -3161,7 +3161,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetTouchDevices
-	iGetTouchDevices func(count *int) uintptr
+	iGetTouchDevices func(count *int32) uintptr
 
 	// SDL_GetTouchDeviceName => Get the touch device name as reported from the driver.
 	//
@@ -3177,7 +3177,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetTouchFingers
-	iGetTouchFingers func(touchID TouchID, count *int) uintptr
+	iGetTouchFingers func(touchID TouchID, count *int32) uintptr
 
 	// SDL_PumpEvents => Pump the event loop, gathering events from the input devices.
 	//
@@ -3187,7 +3187,7 @@ var (
 	// SDL_PeepEvents => Check the event queue for messages and optionally return them.
 	//
 	//puregogen:function symbol=SDL_PeepEvents
-	iPeepEvents func(events *Event, numevents int, action EventAction, minType uint32, maxType uint32) int
+	iPeepEvents func(events *Event, numevents int32, action EventAction, minType uint32, maxType uint32) int32
 
 	// SDL_HasEvent => Check for the existence of a certain event type in the event queue.
 	//
@@ -3267,7 +3267,7 @@ var (
 	// SDL_RegisterEvents => Allocate a set of user-defined events, and return the beginning event number for that set of events.
 	//
 	//puregogen:function symbol=SDL_RegisterEvents
-	iRegisterEvents func(numevents int) uint32
+	iRegisterEvents func(numevents int32) uint32
 
 	// SDL_GetWindowFromEvent => Get window associated with an event.
 	//
@@ -3324,7 +3324,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GlobDirectory
-	iGlobDirectory func(path string, pattern string, flags GlobFlags, count *int) uintptr
+	iGlobDirectory func(path string, pattern string, flags GlobFlags, count *int32) uintptr
 
 	// SDL_GetCurrentDirectory => Get what the system believes is the "current working directory."
 	// SDL_free() must be called on the returned pointer.
@@ -3360,12 +3360,12 @@ var (
 	// SDL_GetNumGPUDrivers => Get the number of GPU drivers compiled into SDL.
 	//
 	//puregogen:function symbol=SDL_GetNumGPUDrivers
-	iGetNumGPUDrivers func() int
+	iGetNumGPUDrivers func() int32
 
 	// SDL_GetGPUDriver => Get the name of a built in GPU driver.
 	//
 	//puregogen:function symbol=SDL_GetGPUDriver
-	iGetGPUDriver func(index int) string
+	iGetGPUDriver func(index int32) string
 
 	// SDL_GetGPUDeviceDriver => Returns the name of the backend used to create this GPU context.
 	//
@@ -3791,7 +3791,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetHaptics
-	iGetHaptics func(count *int) uintptr
+	iGetHaptics func(count *int32) uintptr
 
 	// SDL_GetHapticNameForID => Get the implementation dependent name of a haptic device.
 	//
@@ -3846,12 +3846,12 @@ var (
 	// SDL_GetMaxHapticEffects => Get the number of effects a haptic device can store.
 	//
 	//puregogen:function symbol=SDL_GetMaxHapticEffects
-	iGetMaxHapticEffects func(haptic *Haptic) int
+	iGetMaxHapticEffects func(haptic *Haptic) int32
 
 	// SDL_GetMaxHapticEffectsPlaying => Get the number of effects a haptic device can play at the same time.
 	//
 	//puregogen:function symbol=SDL_GetMaxHapticEffectsPlaying
-	iGetMaxHapticEffectsPlaying func(haptic *Haptic) int
+	iGetMaxHapticEffectsPlaying func(haptic *Haptic) int32
 
 	// SDL_GetHapticFeatures => Get the haptic device's supported features in bitwise manner.
 	//
@@ -3861,7 +3861,7 @@ var (
 	// SDL_GetNumHapticAxes => Get the number of haptic axes the device has.
 	//
 	//puregogen:function symbol=SDL_GetNumHapticAxes
-	iGetNumHapticAxes func(haptic *Haptic) int
+	iGetNumHapticAxes func(haptic *Haptic) int32
 
 	// SDL_HapticEffectSupported => Check to see if an effect is supported by a haptic device.
 	//
@@ -3871,42 +3871,42 @@ var (
 	// SDL_CreateHapticEffect => Create a new haptic effect on a specified device.
 	//
 	//puregogen:function symbol=SDL_CreateHapticEffect
-	iCreateHapticEffect func(haptic *Haptic, effect *HapticEffect) int
+	iCreateHapticEffect func(haptic *Haptic, effect *HapticEffect) int32
 
 	// SDL_UpdateHapticEffect => Update the properties of an effect.
 	//
 	//puregogen:function symbol=SDL_UpdateHapticEffect
-	iUpdateHapticEffect func(haptic *Haptic, effect int, data *HapticEffect) bool
+	iUpdateHapticEffect func(haptic *Haptic, effect int32, data *HapticEffect) bool
 
 	// SDL_RunHapticEffect => Run the haptic effect on its associated haptic device.
 	//
 	//puregogen:function symbol=SDL_RunHapticEffect
-	iRunHapticEffect func(haptic *Haptic, effect int, iterations uint32) bool
+	iRunHapticEffect func(haptic *Haptic, effect int32, iterations uint32) bool
 
 	// SDL_StopHapticEffect => Stop the haptic effect on its associated haptic device.
 	//
 	//puregogen:function symbol=SDL_StopHapticEffect
-	iStopHapticEffect func(haptic *Haptic, effect int) bool
+	iStopHapticEffect func(haptic *Haptic, effect int32) bool
 
 	// SDL_DestroyHapticEffect => Destroy a haptic effect on the device.
 	//
 	//puregogen:function symbol=SDL_DestroyHapticEffect
-	iDestroyHapticEffect func(haptic *Haptic, effect int)
+	iDestroyHapticEffect func(haptic *Haptic, effect int32)
 
 	// SDL_GetHapticEffectStatus => Get the status of the current effect on the specified haptic device.
 	//
 	//puregogen:function symbol=SDL_GetHapticEffectStatus
-	iGetHapticEffectStatus func(haptic *Haptic, effect int) bool
+	iGetHapticEffectStatus func(haptic *Haptic, effect int32) bool
 
 	// SDL_SetHapticGain => Set the global gain of the specified haptic device.
 	//
 	//puregogen:function symbol=SDL_SetHapticGain
-	iSetHapticGain func(haptic *Haptic, gain int) bool
+	iSetHapticGain func(haptic *Haptic, gain int32) bool
 
 	// SDL_SetHapticAutocenter => Set the global autocenter of the device.
 	//
 	//puregogen:function symbol=SDL_SetHapticAutocenter
-	iSetHapticAutocenter func(haptic *Haptic, autocenter int) bool
+	iSetHapticAutocenter func(haptic *Haptic, autocenter int32) bool
 
 	// SDL_PauseHaptic => Pause a haptic device.
 	//
@@ -4052,7 +4052,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetPreferredLocales
-	iGetPreferredLocales func(count *int) uintptr
+	iGetPreferredLocales func(count *int32) uintptr
 
 	// SDL_SetLogPriorities => Set the priority of all log categories.
 	//
@@ -4062,12 +4062,12 @@ var (
 	// SDL_SetLogPriority => Set the priority of a particular log category.
 	//
 	//puregogen:function symbol=SDL_SetLogPriority
-	iSetLogPriority func(category int, priority LogPriority)
+	iSetLogPriority func(category int32, priority LogPriority)
 
 	// SDL_GetLogPriority => Get the priority of a particular log category.
 	//
 	//puregogen:function symbol=SDL_GetLogPriority
-	iGetLogPriority func(category int) LogPriority
+	iGetLogPriority func(category int32) LogPriority
 
 	// SDL_ResetLogPriorities => Reset all priorities to default.
 	//
@@ -4087,47 +4087,47 @@ var (
 	// SDL_LogTrace => Log a message with SDL_LOG_PRIORITY_TRACE.
 	//
 	//puregogen:function symbol=SDL_LogTrace
-	iLogTrace func(category int, fmt string)
+	iLogTrace func(category int32, fmt string)
 
 	// SDL_LogVerbose => Log a message with SDL_LOG_PRIORITY_VERBOSE.
 	//
 	//puregogen:function symbol=SDL_LogVerbose
-	iLogVerbose func(category int, fmt string)
+	iLogVerbose func(category int32, fmt string)
 
 	// SDL_LogDebug => Log a message with SDL_LOG_PRIORITY_DEBUG.
 	//
 	//puregogen:function symbol=SDL_LogDebug
-	iLogDebug func(category int, fmt string)
+	iLogDebug func(category int32, fmt string)
 
 	// SDL_LogInfo => Log a message with SDL_LOG_PRIORITY_INFO.
 	//
 	//puregogen:function symbol=SDL_LogInfo
-	iLogInfo func(category int, fmt string)
+	iLogInfo func(category int32, fmt string)
 
 	// SDL_LogWarn => Log a message with SDL_LOG_PRIORITY_WARN.
 	//
 	//puregogen:function symbol=SDL_LogWarn
-	iLogWarn func(category int, fmt string)
+	iLogWarn func(category int32, fmt string)
 
 	// SDL_LogError => Log a message with SDL_LOG_PRIORITY_ERROR.
 	//
 	//puregogen:function symbol=SDL_LogError
-	iLogError func(category int, fmt string)
+	iLogError func(category int32, fmt string)
 
 	// SDL_LogCritical => Log a message with SDL_LOG_PRIORITY_CRITICAL.
 	//
 	//puregogen:function symbol=SDL_LogCritical
-	iLogCritical func(category int, fmt string)
+	iLogCritical func(category int32, fmt string)
 
 	// SDL_LogMessage => Log a message with the specified category and priority.
 	//
 	//puregogen:function symbol=SDL_LogMessage
-	iLogMessage func(category int, priority LogPriority, fmt string)
+	iLogMessage func(category int32, priority LogPriority, fmt string)
 
 	// SDL_LogMessageV => Log a message with the specified category and priority.
 	//
 	//puregogen:function symbol=SDL_LogMessageV
-	iLogMessageV func(category int, priority LogPriority, fmt string, ap va_list)
+	iLogMessageV func(category int32, priority LogPriority, fmt string, ap va_list)
 
 	// SDL_GetDefaultLogOutputFunction => Get the default log output function.
 	//
@@ -4147,7 +4147,7 @@ var (
 	// SDL_ShowMessageBox => Create a modal message box.
 	//
 	//puregogen:function symbol=SDL_ShowMessageBox
-	iShowMessageBox func(messageboxdata *MessageBoxData, buttonid *int) bool
+	iShowMessageBox func(messageboxdata *MessageBoxData, buttonid *int32) bool
 
 	// SDL_ShowSimpleMessageBox => Display a simple modal message box.
 	//
@@ -4192,7 +4192,7 @@ var (
 	// SDL_ReadProcess => Read all the output from a process.
 	//
 	//puregogen:function symbol=SDL_ReadProcess
-	iReadProcess func(process *Process, datasize *uintptr, exitcode *int) uintptr
+	iReadProcess func(process *Process, datasize *uintptr, exitcode *int32) uintptr
 
 	// SDL_GetProcessInput => Get the SDL_IOStream associated with process standard input.
 	//
@@ -4212,7 +4212,7 @@ var (
 	// SDL_WaitProcess => Wait for a process to finish.
 	//
 	//puregogen:function symbol=SDL_WaitProcess
-	iWaitProcess func(process *Process, block bool, exitcode *int) bool
+	iWaitProcess func(process *Process, block bool, exitcode *int32) bool
 
 	// SDL_DestroyProcess => Destroy a previously created process object.
 	//
@@ -4222,17 +4222,17 @@ var (
 	// SDL_GetNumRenderDrivers => Get the number of 2D rendering drivers available for the current display.
 	//
 	//puregogen:function symbol=SDL_GetNumRenderDrivers
-	iGetNumRenderDrivers func() int
+	iGetNumRenderDrivers func() int32
 
 	// SDL_GetRenderDriver => Use this function to get the name of a built in 2D rendering driver.
 	//
 	//puregogen:function symbol=SDL_GetRenderDriver
-	iGetRenderDriver func(index int) string
+	iGetRenderDriver func(index int32) string
 
 	// SDL_CreateWindowAndRenderer => Create a window and default renderer.
 	//
 	//puregogen:function symbol=SDL_CreateWindowAndRenderer
-	iCreateWindowAndRenderer func(title string, width int, height int, window_flags WindowFlags, window **Window, renderer **Renderer) bool
+	iCreateWindowAndRenderer func(title string, width int32, height int32, window_flags WindowFlags, window **Window, renderer **Renderer) bool
 
 	// SDL_CreateRenderer => Create a 2D rendering context for a window.
 	//
@@ -4272,17 +4272,17 @@ var (
 	// SDL_GetRenderOutputSize => Get the output size in pixels of a rendering context.
 	//
 	//puregogen:function symbol=SDL_GetRenderOutputSize
-	iGetRenderOutputSize func(renderer *Renderer, w *int, h *int) bool
+	iGetRenderOutputSize func(renderer *Renderer, w *int32, h *int32) bool
 
 	// SDL_GetCurrentRenderOutputSize => Get the current output size in pixels of a rendering context.
 	//
 	//puregogen:function symbol=SDL_GetCurrentRenderOutputSize
-	iGetCurrentRenderOutputSize func(renderer *Renderer, w *int, h *int) bool
+	iGetCurrentRenderOutputSize func(renderer *Renderer, w *int32, h *int32) bool
 
 	// SDL_CreateTexture => Create a texture for a rendering context.
 	//
 	//puregogen:function symbol=SDL_CreateTexture
-	iCreateTexture func(renderer *Renderer, format PixelFormat, access TextureAccess, w int, h int) *Texture
+	iCreateTexture func(renderer *Renderer, format PixelFormat, access TextureAccess, w int32, h int32) *Texture
 
 	// SDL_CreateTextureFromSurface => Create a texture from an existing surface.
 	//
@@ -4372,22 +4372,22 @@ var (
 	// SDL_UpdateTexture => Update the given texture rectangle with new pixel data.
 	//
 	//puregogen:function symbol=SDL_UpdateTexture
-	iUpdateTexture func(texture *Texture, rect *Rect, pixels uintptr, pitch int) bool
+	iUpdateTexture func(texture *Texture, rect *Rect, pixels uintptr, pitch int32) bool
 
 	// SDL_UpdateYUVTexture => Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
 	//
 	//puregogen:function symbol=SDL_UpdateYUVTexture
-	iUpdateYUVTexture func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int, Uplane *uint8, Upitch int, Vplane *uint8, Vpitch int) bool
+	iUpdateYUVTexture func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool
 
 	// SDL_UpdateNVTexture => Update a rectangle within a planar NV12 or NV21 texture with new pixels.
 	//
 	//puregogen:function symbol=SDL_UpdateNVTexture
-	iUpdateNVTexture func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int, UVplane *uint8, UVpitch int) bool
+	iUpdateNVTexture func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool
 
 	// SDL_LockTexture => Lock a portion of the texture for **write-only** pixel access.
 	//
 	//puregogen:function symbol=SDL_LockTexture
-	iLockTexture func(texture *Texture, rect *Rect, pixels *uintptr, pitch *int) bool
+	iLockTexture func(texture *Texture, rect *Rect, pixels *uintptr, pitch *int32) bool
 
 	// SDL_LockTextureToSurface => Lock a portion of the texture for **write-only** pixel access, and expose it as a SDL surface.
 	//
@@ -4412,12 +4412,12 @@ var (
 	// SDL_SetRenderLogicalPresentation => Set a device independent resolution and presentation mode for rendering.
 	//
 	//puregogen:function symbol=SDL_SetRenderLogicalPresentation
-	iSetRenderLogicalPresentation func(renderer *Renderer, w int, h int, mode RendererLogicalPresentation) bool
+	iSetRenderLogicalPresentation func(renderer *Renderer, w int32, h int32, mode RendererLogicalPresentation) bool
 
 	// SDL_GetRenderLogicalPresentation => Get device independent resolution and presentation mode for rendering.
 	//
 	//puregogen:function symbol=SDL_GetRenderLogicalPresentation
-	iGetRenderLogicalPresentation func(renderer *Renderer, w *int, h *int, mode *RendererLogicalPresentation) bool
+	iGetRenderLogicalPresentation func(renderer *Renderer, w *int32, h *int32, mode *RendererLogicalPresentation) bool
 
 	// SDL_GetRenderLogicalPresentationRect => Get the final presentation rectangle for rendering.
 	//
@@ -4537,7 +4537,7 @@ var (
 	// SDL_RenderPoints => Draw multiple points on the current rendering target at subpixel precision.
 	//
 	//puregogen:function symbol=SDL_RenderPoints
-	iRenderPoints func(renderer *Renderer, points *FPoint, count int) bool
+	iRenderPoints func(renderer *Renderer, points *FPoint, count int32) bool
 
 	// SDL_RenderLine => Draw a line on the current rendering target at subpixel precision.
 	//
@@ -4547,7 +4547,7 @@ var (
 	// SDL_RenderLines => Draw a series of connected lines on the current rendering target at subpixel precision.
 	//
 	//puregogen:function symbol=SDL_RenderLines
-	iRenderLines func(renderer *Renderer, points *FPoint, count int) bool
+	iRenderLines func(renderer *Renderer, points *FPoint, count int32) bool
 
 	// SDL_RenderRect => Draw a rectangle on the current rendering target at subpixel precision.
 	//
@@ -4557,7 +4557,7 @@ var (
 	// SDL_RenderRects => Draw some number of rectangles on the current rendering target at subpixel precision.
 	//
 	//puregogen:function symbol=SDL_RenderRects
-	iRenderRects func(renderer *Renderer, rects *FRect, count int) bool
+	iRenderRects func(renderer *Renderer, rects *FRect, count int32) bool
 
 	// SDL_RenderFillRect => Fill a rectangle on the current rendering target with the drawing color at subpixel precision.
 	//
@@ -4567,7 +4567,7 @@ var (
 	// SDL_RenderFillRects => Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.
 	//
 	//puregogen:function symbol=SDL_RenderFillRects
-	iRenderFillRects func(renderer *Renderer, rects *FRect, count int) bool
+	iRenderFillRects func(renderer *Renderer, rects *FRect, count int32) bool
 
 	// SDL_RenderTexture => Copy a portion of the texture to the current rendering target at subpixel precision.
 	//
@@ -4597,12 +4597,12 @@ var (
 	// SDL_RenderGeometry => Render a list of triangles, optionally using a texture and indices into the vertex array Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 	//
 	//puregogen:function symbol=SDL_RenderGeometry
-	iRenderGeometry func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int, indices *int, num_indices int) bool
+	iRenderGeometry func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool
 
 	// SDL_RenderGeometryRaw => Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 	//
 	//puregogen:function symbol=SDL_RenderGeometryRaw
-	iRenderGeometryRaw func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int, color *FColor, color_stride int, uv *float32, uv_stride int, num_vertices int, indices uintptr, num_indices int, size_indices int) bool
+	iRenderGeometryRaw func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices uintptr, num_indices int32, size_indices int32) bool
 
 	// SDL_RenderReadPixels => Read pixels from the current rendering target.
 	//
@@ -4647,12 +4647,12 @@ var (
 	// SDL_SetRenderVSync => Toggle VSync of the given renderer.
 	//
 	//puregogen:function symbol=SDL_SetRenderVSync
-	iSetRenderVSync func(renderer *Renderer, vsync int) bool
+	iSetRenderVSync func(renderer *Renderer, vsync int32) bool
 
 	// SDL_GetRenderVSync => Get VSync of the given renderer.
 	//
 	//puregogen:function symbol=SDL_GetRenderVSync
-	iGetRenderVSync func(renderer *Renderer, vsync *int) bool
+	iGetRenderVSync func(renderer *Renderer, vsync *int32) bool
 
 	// SDL_RenderDebugText => Draw debug text to an SDL_Renderer.
 	//
@@ -4748,7 +4748,7 @@ var (
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GlobStorageDirectory
-	iGlobStorageDirectory func(storage *Storage, path string, pattern string, flags GlobFlags, count *int) uintptr
+	iGlobStorageDirectory func(storage *Storage, path string, pattern string, flags GlobFlags, count *int32) uintptr
 
 	// SDL_SetX11EventHook => Set a callback for every X11 event.
 	//
@@ -4833,17 +4833,17 @@ var (
 	// SDL_GetDaysInMonth => Get the number of days in a month for a given year.
 	//
 	//puregogen:function symbol=SDL_GetDaysInMonth
-	iGetDaysInMonth func(year int, month int) int
+	iGetDaysInMonth func(year int32, month int32) int32
 
 	// SDL_GetDayOfYear => Get the day of year for a calendar date.
 	//
 	//puregogen:function symbol=SDL_GetDayOfYear
-	iGetDayOfYear func(year int, month int, day int) int
+	iGetDayOfYear func(year int32, month int32, day int32) int32
 
 	// SDL_GetDayOfWeek => Get the day of week for a calendar date.
 	//
 	//puregogen:function symbol=SDL_GetDayOfWeek
-	iGetDayOfWeek func(year int, month int, day int) int
+	iGetDayOfWeek func(year int32, month int32, day int32) int32
 
 	// SDL_GetTicks => Get the number of milliseconds since SDL library initialization.
 	//
@@ -4903,12 +4903,12 @@ var (
 	// SDL_RunApp => Initializes and launches an SDL application, by doing platform-specific initialization before calling your mainFunction and cleanups after it returns, if that is needed for a specific platform, otherwise it just calls mainFunction.
 	//
 	//puregogen:function symbol=SDL_RunApp
-	iRunApp func(argc int, argv *string, mainFunction main_func, reserved uintptr) int
+	iRunApp func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32
 
 	// SDL_EnterAppMainCallbacks => An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.
 	//
 	//puregogen:function symbol=SDL_EnterAppMainCallbacks
-	iEnterAppMainCallbacks func(argc int, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int
+	iEnterAppMainCallbacks func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32
 
 	// SDL_GDKSuspendComplete => Callback from the application to let the suspend continue.
 	//

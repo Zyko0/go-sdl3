@@ -54,7 +54,7 @@ func (touchID TouchID) TouchDeviceType() TouchDeviceType {
 	return iGetTouchDeviceType(touchID)
 }
 
-func (touchID TouchID) TouchFingers(count *int) **Finger {
+func (touchID TouchID) TouchFingers(count *int32) **Finger {
 	panic("not implemented")
 	//return iGetTouchFingers(touchID, count)
 }
@@ -133,7 +133,7 @@ func (storage *Storage) SpaceRemaining() uint64 {
 	return iGetStorageSpaceRemaining(storage)
 }
 
-func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFlags, count *int) *string {
+func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFlags, count *int32) *string {
 	panic("not implemented")
 	//return iGlobStorageDirectory(storage, path, pattern, flags, count)
 }
@@ -145,12 +145,12 @@ func (devid AudioDeviceID) AudioDeviceName() string {
 	return iGetAudioDeviceName(devid)
 }
 
-func (devid AudioDeviceID) AudioDeviceFormat(spec *AudioSpec, sample_frames *int) bool {
+func (devid AudioDeviceID) AudioDeviceFormat(spec *AudioSpec, sample_frames *int32) bool {
 	panic("not implemented")
 	return iGetAudioDeviceFormat(devid, spec, sample_frames)
 }
 
-func (devid AudioDeviceID) AudioDeviceChannelMap(count *int) *int {
+func (devid AudioDeviceID) AudioDeviceChannelMap(count *int32) *int {
 	panic("not implemented")
 	//return iGetAudioDeviceChannelMap(devid, count)
 }
@@ -200,7 +200,7 @@ func (devid AudioDeviceID) CloseAudioDevice() {
 	iCloseAudioDevice(devid)
 }
 
-func (devid AudioDeviceID) BindAudioStreams(streams **AudioStream, num_streams int) bool {
+func (devid AudioDeviceID) BindAudioStreams(streams **AudioStream, num_streams int32) bool {
 	panic("not implemented")
 	return iBindAudioStreams(devid, streams, num_streams)
 }
@@ -222,7 +222,7 @@ func (devid AudioDeviceID) SetAudioPostmixCallback(callback AudioPostmixCallback
 
 // Camera
 
-func (camera *Camera) PermissionState() int {
+func (camera *Camera) PermissionState() int32 {
 	panic("not implemented")
 	return iGetCameraPermissionState(camera)
 }
@@ -305,7 +305,7 @@ func (thread *Thread) ID() ThreadID {
 	return iGetThreadID(thread)
 }
 
-func (thread *Thread) Wait(status *int) {
+func (thread *Thread) Wait(status *int32) {
 	panic("not implemented")
 	iWaitThread(thread, status)
 }
@@ -337,7 +337,7 @@ func (sensor *Sensor) Type() SensorType {
 	return iGetSensorType(sensor)
 }
 
-func (sensor *Sensor) NonPortableType() int {
+func (sensor *Sensor) NonPortableType() int32 {
 	panic("not implemented")
 	return iGetSensorNonPortableType(sensor)
 }
@@ -347,7 +347,7 @@ func (sensor *Sensor) ID() SensorID {
 	return iGetSensorID(sensor)
 }
 
-func (sensor *Sensor) Data(data *float32, num_values int) bool {
+func (sensor *Sensor) Data(data *float32, num_values int32) bool {
 	panic("not implemented")
 	return iGetSensorData(sensor, data, num_values)
 }
@@ -407,7 +407,7 @@ func (A *Rect) Union(B *Rect, result *Rect) bool {
 	return iGetRectUnion(A, B, result)
 }
 
-func (rect *Rect) AndLineIntersection(X1 *int, Y1 *int, X2 *int, Y2 *int) bool {
+func (rect *Rect) AndLineIntersection(X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool {
 	panic("not implemented")
 	return iGetRectAndLineIntersection(rect, X1, Y1, X2, Y2)
 }
@@ -424,7 +424,7 @@ func (instance_id JoystickID) JoystickPathForID() string {
 	return iGetJoystickPathForID(instance_id)
 }
 
-func (instance_id JoystickID) JoystickPlayerIndexForID() int {
+func (instance_id JoystickID) JoystickPlayerIndexForID() int32 {
 	panic("not implemented")
 	return iGetJoystickPlayerIndexForID(instance_id)
 }
@@ -494,7 +494,7 @@ func (instance_id JoystickID) GamepadPathForID() string {
 	return iGetGamepadPathForID(instance_id)
 }
 
-func (instance_id JoystickID) GamepadPlayerIndexForID() int {
+func (instance_id JoystickID) GamepadPlayerIndexForID() int32 {
 	panic("not implemented")
 	return iGetGamepadPlayerIndexForID(instance_id)
 }
@@ -546,22 +546,22 @@ func (instance_id JoystickID) GamepadFromID() *Gamepad {
 
 // AtomicInt
 
-func (a *AtomicInt) CompareAndSwap(oldval int, newval int) bool {
+func (a *AtomicInt) CompareAndSwap(oldval int32, newval int32) bool {
 	panic("not implemented")
 	return iCompareAndSwapAtomicInt(a, oldval, newval)
 }
 
-func (a *AtomicInt) Set(v int) int {
+func (a *AtomicInt) Set(v int32) int32 {
 	panic("not implemented")
 	return iSetAtomicInt(a, v)
 }
 
-func (a *AtomicInt) Get() int {
+func (a *AtomicInt) Get() int32 {
 	panic("not implemented")
 	return iGetAtomicInt(a)
 }
 
-func (a *AtomicInt) Add(v int) int {
+func (a *AtomicInt) Add(v int32) int32 {
 	panic("not implemented")
 	return iAddAtomicInt(a, v)
 }
@@ -680,33 +680,35 @@ func (texture *Texture) ScaleMode(scaleMode *ScaleMode) bool {
 	return iGetTextureScaleMode(texture, scaleMode)
 }
 
-func (texture *Texture) Update(rect *Rect, pixels *byte, pitch int) bool {
+func (texture *Texture) Update(rect *Rect, pixels *byte, pitch int32) bool {
 	panic("not implemented")
 	//return iUpdateTexture(texture, rect, pixels, pitch)
 }
 
-func (texture *Texture) UpdateYUV(rect *Rect, Yplane *uint8, Ypitch int, Uplane *uint8, Upitch int, Vplane *uint8, Vpitch int) bool {
+func (texture *Texture) UpdateYUV(rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
 	panic("not implemented")
 	return iUpdateYUVTexture(texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch)
 }
 
-func (texture *Texture) UpdateNV(rect *Rect, Yplane *uint8, Ypitch int, UVplane *uint8, UVpitch int) bool {
+func (texture *Texture) UpdateNV(rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool {
 	panic("not implemented")
 	return iUpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch)
 }
 
-func (texture *Texture) Lock(rect *Rect, pixels **byte, pitch *int) bool {
+func (texture *Texture) Lock(rect *Rect, pixels **byte, pitch *int32) bool {
 	panic("not implemented")
 	//return iLockTexture(texture, rect, pixels, pitch)
 }
 
-func (texture *Texture) LockToSurface(rect *Rect, surface **Surface) bool {
-	panic("not implemented")
-	return iLockTextureToSurface(texture, rect, surface)
+func (texture *Texture) LockToSurface(rect *Rect, surface **Surface) error {
+	if !iLockTextureToSurface(texture, rect, surface) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (texture *Texture) Unlock() {
-	panic("not implemented")
 	iUnlockTexture(texture)
 }
 
@@ -754,14 +756,14 @@ func (format AudioFormat) Name() string {
 	return iGetAudioFormatName(format)
 }
 
-func (format AudioFormat) SilenceValueForFormat() int {
+func (format AudioFormat) SilenceValueForFormat() int32 {
 	panic("not implemented")
 	return iGetSilenceValueForFormat(format)
 }
 
 // Point
 
-func (points *Point) RectEnclosings(count int, clip *Rect, result *Rect) bool {
+func (points *Point) RectEnclosings(count int32, clip *Rect, result *Rect) bool {
 	panic("not implemented")
 	return iGetRectEnclosingPoints(points, count, clip, result)
 }
@@ -890,7 +892,6 @@ func (format *PixelFormatDetails) MapRGBA(palette *Palette, r uint8, g uint8, b 
 // Surface
 
 func (surface *Surface) Destroy() {
-	panic("not implemented")
 	iDestroySurface(surface)
 }
 
@@ -934,7 +935,7 @@ func (surface *Surface) HasAlternateImages() bool {
 	return iSurfaceHasAlternateImages(surface)
 }
 
-func (surface *Surface) Images(count *int) **Surface {
+func (surface *Surface) Images(count *int32) **Surface {
 	panic("not implemented")
 	//return iGetSurfaceImages(surface, count)
 }
@@ -1039,7 +1040,7 @@ func (surface *Surface) Duplicate() *Surface {
 	return iDuplicateSurface(surface)
 }
 
-func (surface *Surface) Scale(width int, height int, scaleMode ScaleMode) *Surface {
+func (surface *Surface) Scale(width int32, height int32, scaleMode ScaleMode) *Surface {
 	panic("not implemented")
 	return iScaleSurface(surface, width, height, scaleMode)
 }
@@ -1064,12 +1065,15 @@ func (surface *Surface) Clear(r float32, g float32, b float32, a float32) bool {
 	return iClearSurface(surface, r, g, b, a)
 }
 
-func (dst *Surface) FillRect(rect *Rect, color uint32) bool {
-	panic("not implemented")
-	return iFillSurfaceRect(dst, rect, color)
+func (dst *Surface) FillRect(rect *Rect, color uint32) error {
+	if !iFillSurfaceRect(dst, rect, color) {
+		return lastError()
+	}
+
+	return nil
 }
 
-func (dst *Surface) FillRects(rects *Rect, count int, color uint32) bool {
+func (dst *Surface) FillRects(rects *Rect, count int32, color uint32) bool {
 	panic("not implemented")
 	return iFillSurfaceRects(dst, rects, count, color)
 }
@@ -1104,7 +1108,7 @@ func (src *Surface) BlitTiledWithScale(srcrect *Rect, scale float32, scaleMode S
 	return iBlitSurfaceTiledWithScale(src, srcrect, scale, scaleMode, dst, dstrect)
 }
 
-func (src *Surface) Blit9Grid(srcrect *Rect, left_width int, right_width int, top_height int, bottom_height int, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool {
+func (src *Surface) Blit9Grid(srcrect *Rect, left_width int32, right_width int32, top_height int32, bottom_height int32, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool {
 	panic("not implemented")
 	return iBlitSurface9Grid(src, srcrect, left_width, right_width, top_height, bottom_height, scale, scaleMode, dst, dstrect)
 }
@@ -1119,27 +1123,27 @@ func (surface *Surface) MapRGBA(r uint8, g uint8, b uint8, a uint8) uint32 {
 	return iMapSurfaceRGBA(surface, r, g, b, a)
 }
 
-func (surface *Surface) ReadPixel(x int, y int, r *uint8, g *uint8, b *uint8, a *uint8) bool {
+func (surface *Surface) ReadPixel(x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool {
 	panic("not implemented")
 	return iReadSurfacePixel(surface, x, y, r, g, b, a)
 }
 
-func (surface *Surface) ReadPixelFloat(x int, y int, r *float32, g *float32, b *float32, a *float32) bool {
+func (surface *Surface) ReadPixelFloat(x int32, y int32, r *float32, g *float32, b *float32, a *float32) bool {
 	panic("not implemented")
 	return iReadSurfacePixelFloat(surface, x, y, r, g, b, a)
 }
 
-func (surface *Surface) WritePixel(x int, y int, r uint8, g uint8, b uint8, a uint8) bool {
+func (surface *Surface) WritePixel(x int32, y int32, r uint8, g uint8, b uint8, a uint8) bool {
 	panic("not implemented")
 	return iWriteSurfacePixel(surface, x, y, r, g, b, a)
 }
 
-func (surface *Surface) WritePixelFloat(x int, y int, r float32, g float32, b float32, a float32) bool {
+func (surface *Surface) WritePixelFloat(x int32, y int32, r float32, g float32, b float32, a float32) bool {
 	panic("not implemented")
 	return iWriteSurfacePixelFloat(surface, x, y, r, g, b, a)
 }
 
-func (surface *Surface) CreateColorCursor(hot_x int, hot_y int) *Cursor {
+func (surface *Surface) CreateColorCursor(hot_x int32, hot_y int32) *Cursor {
 	panic("not implemented")
 	return iCreateColorCursor(surface, hot_x, hot_y)
 }
@@ -1355,12 +1359,12 @@ func (haptic *Haptic) Close() {
 	iCloseHaptic(haptic)
 }
 
-func (haptic *Haptic) MaxEffects() int {
+func (haptic *Haptic) MaxEffects() int32 {
 	panic("not implemented")
 	return iGetMaxHapticEffects(haptic)
 }
 
-func (haptic *Haptic) MaxEffectsPlaying() int {
+func (haptic *Haptic) MaxEffectsPlaying() int32 {
 	panic("not implemented")
 	return iGetMaxHapticEffectsPlaying(haptic)
 }
@@ -1370,7 +1374,7 @@ func (haptic *Haptic) Features() uint32 {
 	return iGetHapticFeatures(haptic)
 }
 
-func (haptic *Haptic) NumAxes() int {
+func (haptic *Haptic) NumAxes() int32 {
 	panic("not implemented")
 	return iGetNumHapticAxes(haptic)
 }
@@ -1380,42 +1384,42 @@ func (haptic *Haptic) EffectSupported(effect *HapticEffect) bool {
 	return iHapticEffectSupported(haptic, effect)
 }
 
-func (haptic *Haptic) CreateEffect(effect *HapticEffect) int {
+func (haptic *Haptic) CreateEffect(effect *HapticEffect) int32 {
 	panic("not implemented")
 	return iCreateHapticEffect(haptic, effect)
 }
 
-func (haptic *Haptic) UpdateEffect(effect int, data *HapticEffect) bool {
+func (haptic *Haptic) UpdateEffect(effect int32, data *HapticEffect) bool {
 	panic("not implemented")
 	return iUpdateHapticEffect(haptic, effect, data)
 }
 
-func (haptic *Haptic) RunEffect(effect int, iterations uint32) bool {
+func (haptic *Haptic) RunEffect(effect int32, iterations uint32) bool {
 	panic("not implemented")
 	return iRunHapticEffect(haptic, effect, iterations)
 }
 
-func (haptic *Haptic) StopEffect(effect int) bool {
+func (haptic *Haptic) StopEffect(effect int32) bool {
 	panic("not implemented")
 	return iStopHapticEffect(haptic, effect)
 }
 
-func (haptic *Haptic) DestroyEffect(effect int) {
+func (haptic *Haptic) DestroyEffect(effect int32) {
 	panic("not implemented")
 	iDestroyHapticEffect(haptic, effect)
 }
 
-func (haptic *Haptic) EffectStatus(effect int) bool {
+func (haptic *Haptic) EffectStatus(effect int32) bool {
 	panic("not implemented")
 	return iGetHapticEffectStatus(haptic, effect)
 }
 
-func (haptic *Haptic) SetGain(gain int) bool {
+func (haptic *Haptic) SetGain(gain int32) bool {
 	panic("not implemented")
 	return iSetHapticGain(haptic, gain)
 }
 
-func (haptic *Haptic) SetAutocenter(autocenter int) bool {
+func (haptic *Haptic) SetAutocenter(autocenter int32) bool {
 	panic("not implemented")
 	return iSetHapticAutocenter(haptic, autocenter)
 }
@@ -1499,12 +1503,12 @@ func (gamepad *Gamepad) RealType() GamepadType {
 	return iGetRealGamepadType(gamepad)
 }
 
-func (gamepad *Gamepad) PlayerIndex() int {
+func (gamepad *Gamepad) PlayerIndex() int32 {
 	panic("not implemented")
 	return iGetGamepadPlayerIndex(gamepad)
 }
 
-func (gamepad *Gamepad) SetPlayerIndex(player_index int) bool {
+func (gamepad *Gamepad) SetPlayerIndex(player_index int32) bool {
 	panic("not implemented")
 	return iSetGamepadPlayerIndex(gamepad, player_index)
 }
@@ -1544,7 +1548,7 @@ func (gamepad *Gamepad) ConnectionState() JoystickConnectionState {
 	return iGetGamepadConnectionState(gamepad)
 }
 
-func (gamepad *Gamepad) PowerInfo(percent *int) PowerState {
+func (gamepad *Gamepad) PowerInfo(percent *int32) PowerState {
 	panic("not implemented")
 	return iGetGamepadPowerInfo(gamepad, percent)
 }
@@ -1560,7 +1564,7 @@ func (gamepad *Gamepad) Joystick() *Joystick {
 }
 
 func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
-	var count int
+	var count int32
 
 	ptr := iGetGamepadBindings(gamepad, &count)
 	if ptr == 0 {
@@ -1568,7 +1572,7 @@ func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
 	}
 	defer sdlFree(ptr)
 
-	return clonePtrSlice[*GamepadBinding](ptr, count), nil
+	return clonePtrSlice[*GamepadBinding](ptr, int(count)), nil
 }
 
 func (gamepad *Gamepad) HasAxis(axis GamepadAxis) bool {
@@ -1596,17 +1600,17 @@ func (gamepad *Gamepad) ButtonLabel(button GamepadButton) GamepadButtonLabel {
 	return iGetGamepadButtonLabel(gamepad, button)
 }
 
-func (gamepad *Gamepad) NumTouchpads() int {
+func (gamepad *Gamepad) NumTouchpads() int32 {
 	panic("not implemented")
 	return iGetNumGamepadTouchpads(gamepad)
 }
 
-func (gamepad *Gamepad) NumTouchpadFingers(touchpad int) int {
+func (gamepad *Gamepad) NumTouchpadFingers(touchpad int32) int32 {
 	panic("not implemented")
 	return iGetNumGamepadTouchpadFingers(gamepad, touchpad)
 }
 
-func (gamepad *Gamepad) TouchpadFinger(touchpad int, finger int, down *bool, x *float32, y *float32, pressure *float32) bool {
+func (gamepad *Gamepad) TouchpadFinger(touchpad int32, finger int32, down *bool, x *float32, y *float32, pressure *float32) bool {
 	panic("not implemented")
 	return iGetGamepadTouchpadFinger(gamepad, touchpad, finger, down, x, y, pressure)
 }
@@ -1631,7 +1635,7 @@ func (gamepad *Gamepad) SensorDataRate(typ SensorType) float32 {
 	return iGetGamepadSensorDataRate(gamepad, typ)
 }
 
-func (gamepad *Gamepad) SensorData(typ SensorType, data *float32, num_values int) bool {
+func (gamepad *Gamepad) SensorData(typ SensorType, data *float32, num_values int32) bool {
 	panic("not implemented")
 	return iGetGamepadSensorData(gamepad, typ, data, num_values)
 }
@@ -1651,7 +1655,7 @@ func (gamepad *Gamepad) SetLED(red uint8, green uint8, blue uint8) bool {
 	return iSetGamepadLED(gamepad, red, green, blue)
 }
 
-func (gamepad *Gamepad) SendEffect(data *byte, size int) bool {
+func (gamepad *Gamepad) SendEffect(data *byte, size int32) bool {
 	panic("not implemented")
 	//return iSendGamepadEffect(gamepad, data, size)
 }
@@ -1749,24 +1753,32 @@ func (renderer *Renderer) Properties() PropertiesID {
 	return iGetRendererProperties(renderer)
 }
 
-func (renderer *Renderer) RenderOutputSize(w *int, h *int) bool {
+func (renderer *Renderer) RenderOutputSize(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetRenderOutputSize(renderer, w, h)
 }
 
-func (renderer *Renderer) CurrentRenderOutputSize(w *int, h *int) bool {
+func (renderer *Renderer) CurrentRenderOutputSize(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetCurrentRenderOutputSize(renderer, w, h)
 }
 
-func (renderer *Renderer) CreateTexture(format PixelFormat, access TextureAccess, w int, h int) *Texture {
-	panic("not implemented")
-	return iCreateTexture(renderer, format, access, w, h)
+func (renderer *Renderer) CreateTexture(format PixelFormat, access TextureAccess, w, h int) (*Texture, error) {
+	texture := iCreateTexture(renderer, format, access, int32(w), int32(h))
+	if texture == nil {
+		return nil, lastError()
+	}
+
+	return texture, nil
 }
 
-func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) *Texture {
-	panic("not implemented")
-	return iCreateTextureFromSurface(renderer, surface)
+func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, error) {
+	texture := iCreateTextureFromSurface(renderer, surface)
+	if texture == nil {
+		return nil, lastError()
+	}
+
+	return texture, nil
 }
 
 func (renderer *Renderer) CreateTextureWithProperties(props PropertiesID) *Texture {
@@ -1784,12 +1796,12 @@ func (renderer *Renderer) RenderTarget() *Texture {
 	return iGetRenderTarget(renderer)
 }
 
-func (renderer *Renderer) SetRenderLogicalPresentation(w int, h int, mode RendererLogicalPresentation) bool {
+func (renderer *Renderer) SetRenderLogicalPresentation(w int32, h int32, mode RendererLogicalPresentation) bool {
 	panic("not implemented")
 	return iSetRenderLogicalPresentation(renderer, w, h, mode)
 }
 
-func (renderer *Renderer) RenderLogicalPresentation(w *int, h *int, mode *RendererLogicalPresentation) bool {
+func (renderer *Renderer) RenderLogicalPresentation(w *int32, h *int32, mode *RendererLogicalPresentation) bool {
 	panic("not implemented")
 	return iGetRenderLogicalPresentation(renderer, w, h, mode)
 }
@@ -1923,7 +1935,7 @@ func (renderer *Renderer) RenderPoint(x float32, y float32) bool {
 }
 
 func (renderer *Renderer) RenderPoints(points []FPoint) error {
-	if !iRenderPoints(renderer, unsafe.SliceData(points), len(points)) {
+	if !iRenderPoints(renderer, unsafe.SliceData(points), int32(len(points))) {
 		return lastError()
 	}
 
@@ -1939,7 +1951,7 @@ func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 floa
 }
 
 func (renderer *Renderer) RenderLines(points []FPoint) error {
-	if !iRenderLines(renderer, unsafe.SliceData(points), len(points)) {
+	if !iRenderLines(renderer, unsafe.SliceData(points), int32(len(points))) {
 		return lastError()
 	}
 
@@ -1954,9 +1966,12 @@ func (renderer *Renderer) RenderRect(rect *FRect) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderRects(rects *FRect, count int) bool {
-	panic("not implemented")
-	return iRenderRects(renderer, rects, count)
+func (renderer *Renderer) RenderRects(rects []FRect) error {
+	if !iRenderRects(renderer, unsafe.SliceData(rects), int32(len(rects))) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderFillRect(rect *FRect) error {
@@ -1967,14 +1982,20 @@ func (renderer *Renderer) RenderFillRect(rect *FRect) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderFillRects(rects *FRect, count int) bool {
-	panic("not implemented")
-	return iRenderFillRects(renderer, rects, count)
+func (renderer *Renderer) RenderFillRects(rects []FRect) error {
+	if !iRenderFillRects(renderer, unsafe.SliceData(rects), int32(len(rects))) {
+		return lastError()
+	}
+
+	return nil
 }
 
-func (renderer *Renderer) RenderTexture(texture *Texture, srcrect *FRect, dstrect *FRect) bool {
-	panic("not implemented")
-	return iRenderTexture(renderer, texture, srcrect, dstrect)
+func (renderer *Renderer) RenderTexture(texture *Texture, srcrect *FRect, dstrect *FRect) error {
+	if !iRenderTexture(renderer, texture, srcrect, dstrect) {
+		return lastError()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderTextureRotated(texture *Texture, srcrect *FRect, dstrect *FRect, angle float64, center *FPoint, flip FlipMode) bool {
@@ -1997,12 +2018,12 @@ func (renderer *Renderer) RenderTexture9Grid(texture *Texture, srcrect *FRect, l
 	return iRenderTexture9Grid(renderer, texture, srcrect, left_width, right_width, top_height, bottom_height, scale, dstrect)
 }
 
-func (renderer *Renderer) RenderGeometry(texture *Texture, vertices *Vertex, num_vertices int, indices *int, num_indices int) bool {
+func (renderer *Renderer) RenderGeometry(texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool {
 	panic("not implemented")
 	return iRenderGeometry(renderer, texture, vertices, num_vertices, indices, num_indices)
 }
 
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int, color *FColor, color_stride int, uv *float32, uv_stride int, num_vertices int, indices *byte, num_indices int, size_indices int) bool {
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices *byte, num_indices int32, size_indices int32) bool {
 	panic("not implemented")
 	//return iRenderGeometryRaw(renderer, texture, xy, xy_stride, color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices)
 }
@@ -2043,12 +2064,12 @@ func (renderer *Renderer) AddVulkanRenderSemaphores(wait_stage_mask uint32, wait
 	return iAddVulkanRenderSemaphores(renderer, wait_stage_mask, wait_semaphore, signal_semaphore)
 }
 
-func (renderer *Renderer) SetRenderVSync(vsync int) bool {
+func (renderer *Renderer) SetRenderVSync(vsync int32) bool {
 	panic("not implemented")
 	return iSetRenderVSync(renderer, vsync)
 }
 
-func (renderer *Renderer) RenderVSync(vsync *int) bool {
+func (renderer *Renderer) RenderVSync(vsync *int32) bool {
 	panic("not implemented")
 	return iGetRenderVSync(renderer, vsync)
 }
@@ -2120,7 +2141,7 @@ func (state *InitState) SetInitialized(initialized bool) {
 
 // CameraID
 
-func (instance_id CameraID) CameraSupportedFormats(count *int) **CameraSpec {
+func (instance_id CameraID) CameraSupportedFormats(count *int32) **CameraSpec {
 	panic("not implemented")
 	//return iGetCameraSupportedFormats(instance_id, count)
 }
@@ -2177,12 +2198,12 @@ func (displayID DisplayID) DisplayContentScale() float32 {
 	return iGetDisplayContentScale(displayID)
 }
 
-func (displayID DisplayID) FullscreenDisplayModes(count *int) **DisplayMode {
+func (displayID DisplayID) FullscreenDisplayModes(count *int32) **DisplayMode {
 	panic("not implemented")
 	//return iGetFullscreenDisplayModes(displayID, count)
 }
 
-func (displayID DisplayID) ClosestFullscreenDisplayMode(w int, h int, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool {
+func (displayID DisplayID) ClosestFullscreenDisplayMode(w int32, h int32, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool {
 	panic("not implemented")
 	return iGetClosestFullscreenDisplayMode(displayID, w, h, refresh_rate, include_high_density_modes, closest)
 }
@@ -2265,42 +2286,42 @@ func (stream *AudioStream) SetGain(gain float32) bool {
 	return iSetAudioStreamGain(stream, gain)
 }
 
-func (stream *AudioStream) InputChannelMap(count *int) *int {
+func (stream *AudioStream) InputChannelMap(count *int32) *int {
 	panic("not implemented")
 	//return iGetAudioStreamInputChannelMap(stream, count)
 }
 
-func (stream *AudioStream) OutputChannelMap(count *int) *int {
+func (stream *AudioStream) OutputChannelMap(count *int32) *int {
 	panic("not implemented")
 	//return iGetAudioStreamOutputChannelMap(stream, count)
 }
 
-func (stream *AudioStream) SetInputChannelMap(chmap *int, count int) bool {
+func (stream *AudioStream) SetInputChannelMap(chmap *int32, count int32) bool {
 	panic("not implemented")
 	return iSetAudioStreamInputChannelMap(stream, chmap, count)
 }
 
-func (stream *AudioStream) SetOutputChannelMap(chmap *int, count int) bool {
+func (stream *AudioStream) SetOutputChannelMap(chmap *int32, count int32) bool {
 	panic("not implemented")
 	return iSetAudioStreamOutputChannelMap(stream, chmap, count)
 }
 
-func (stream *AudioStream) PutData(buf *byte, len int) bool {
+func (stream *AudioStream) PutData(buf *byte, len int32) bool {
 	panic("not implemented")
 	//return iPutAudioStreamData(stream, buf, len)
 }
 
-func (stream *AudioStream) Data(buf *byte, len int) int {
+func (stream *AudioStream) Data(buf *byte, len int32) int32 {
 	panic("not implemented")
 	//return iGetAudioStreamData(stream, buf, len)
 }
 
-func (stream *AudioStream) Available() int {
+func (stream *AudioStream) Available() int32 {
 	panic("not implemented")
 	return iGetAudioStreamAvailable(stream)
 }
 
-func (stream *AudioStream) Queued() int {
+func (stream *AudioStream) Queued() int32 {
 	panic("not implemented")
 	return iGetAudioStreamQueued(stream)
 }
@@ -2443,7 +2464,7 @@ func (window *Window) PixelFormat() PixelFormat {
 	return iGetWindowPixelFormat(window)
 }
 
-func (parent *Window) CreatePopup(offset_x int, offset_y int, w int, h int, flags WindowFlags) *Window {
+func (parent *Window) CreatePopup(offset_x int32, offset_y int32, w int32, h int32, flags WindowFlags) *Window {
 	panic("not implemented")
 	return iCreatePopupWindow(parent, offset_x, offset_y, w, h, flags)
 }
@@ -2483,22 +2504,22 @@ func (window *Window) SetIcon(icon *Surface) bool {
 	return iSetWindowIcon(window, icon)
 }
 
-func (window *Window) SetPosition(x int, y int) bool {
+func (window *Window) SetPosition(x int32, y int32) bool {
 	panic("not implemented")
 	return iSetWindowPosition(window, x, y)
 }
 
-func (window *Window) Position(x *int, y *int) bool {
+func (window *Window) Position(x *int32, y *int32) bool {
 	panic("not implemented")
 	return iGetWindowPosition(window, x, y)
 }
 
-func (window *Window) SetSize(w int, h int) bool {
+func (window *Window) SetSize(w int32, h int32) bool {
 	panic("not implemented")
 	return iSetWindowSize(window, w, h)
 }
 
-func (window *Window) Size(w *int, h *int) bool {
+func (window *Window) Size(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetWindowSize(window, w, h)
 }
@@ -2518,32 +2539,32 @@ func (window *Window) AspectRatio(min_aspect *float32, max_aspect *float32) bool
 	return iGetWindowAspectRatio(window, min_aspect, max_aspect)
 }
 
-func (window *Window) BordersSize(top *int, left *int, bottom *int, right *int) bool {
+func (window *Window) BordersSize(top *int32, left *int32, bottom *int32, right *int32) bool {
 	panic("not implemented")
 	return iGetWindowBordersSize(window, top, left, bottom, right)
 }
 
-func (window *Window) SizeInPixels(w *int, h *int) bool {
+func (window *Window) SizeInPixels(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetWindowSizeInPixels(window, w, h)
 }
 
-func (window *Window) SetMinimumSize(min_w int, min_h int) bool {
+func (window *Window) SetMinimumSize(min_w int32, min_h int32) bool {
 	panic("not implemented")
 	return iSetWindowMinimumSize(window, min_w, min_h)
 }
 
-func (window *Window) MinimumSize(w *int, h *int) bool {
+func (window *Window) MinimumSize(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetWindowMinimumSize(window, w, h)
 }
 
-func (window *Window) SetMaximumSize(max_w int, max_h int) bool {
+func (window *Window) SetMaximumSize(max_w int32, max_h int32) bool {
 	panic("not implemented")
 	return iSetWindowMaximumSize(window, max_w, max_h)
 }
 
-func (window *Window) MaximumSize(w *int, h *int) bool {
+func (window *Window) MaximumSize(w *int32, h *int32) bool {
 	panic("not implemented")
 	return iGetWindowMaximumSize(window, w, h)
 }
@@ -2613,12 +2634,12 @@ func (window *Window) Surface() *Surface {
 	return iGetWindowSurface(window)
 }
 
-func (window *Window) SetSurfaceVSync(vsync int) bool {
+func (window *Window) SetSurfaceVSync(vsync int32) bool {
 	panic("not implemented")
 	return iSetWindowSurfaceVSync(window, vsync)
 }
 
-func (window *Window) SurfaceVSync(vsync *int) bool {
+func (window *Window) SurfaceVSync(vsync *int32) bool {
 	panic("not implemented")
 	return iGetWindowSurfaceVSync(window, vsync)
 }
@@ -2628,7 +2649,7 @@ func (window *Window) UpdateSurface() bool {
 	return iUpdateWindowSurface(window)
 }
 
-func (window *Window) UpdateSurfaceRects(rects *Rect, numrects int) bool {
+func (window *Window) UpdateSurfaceRects(rects *Rect, numrects int32) bool {
 	panic("not implemented")
 	return iUpdateWindowSurfaceRects(window, rects, numrects)
 }
@@ -2693,7 +2714,7 @@ func (window *Window) SetFocusable(focusable bool) bool {
 	return iSetWindowFocusable(window, focusable)
 }
 
-func (window *Window) ShowSystemMenu(x int, y int) bool {
+func (window *Window) ShowSystemMenu(x int32, y int32) bool {
 	panic("not implemented")
 	return iShowWindowSystemMenu(window, x, y)
 }
@@ -2762,12 +2783,12 @@ func (window *Window) ClearComposition() bool {
 	return iClearComposition(window)
 }
 
-func (window *Window) SetTextInputArea(rect *Rect, cursor int) bool {
+func (window *Window) SetTextInputArea(rect *Rect, cursor int32) bool {
 	panic("not implemented")
 	return iSetTextInputArea(window, rect, cursor)
 }
 
-func (window *Window) TextInputArea(rect *Rect, cursor *int) bool {
+func (window *Window) TextInputArea(rect *Rect, cursor *int32) bool {
 	panic("not implemented")
 	return iGetTextInputArea(window, rect, cursor)
 }
@@ -2812,12 +2833,12 @@ func (window *Window) Renderer() *Renderer {
 
 // GLAttr
 
-func (attr GLAttr) GL_SetAttribute(value int) bool {
+func (attr GLAttr) GL_SetAttribute(value int32) bool {
 	panic("not implemented")
 	return iGL_SetAttribute(attr, value)
 }
 
-func (attr GLAttr) GL_GetAttribute(value *int) bool {
+func (attr GLAttr) GL_GetAttribute(value *int32) bool {
 	panic("not implemented")
 	return iGL_GetAttribute(attr, value)
 }
@@ -3075,14 +3096,14 @@ func (src *IOStream) LoadBMP_IO(closeio bool) *Surface {
 	return iLoadBMP_IO(src, closeio)
 }
 
-func (src *IOStream) AddGamepadMappingsFromIO(closeio bool) int {
+func (src *IOStream) AddGamepadMappingsFromIO(closeio bool) int32 {
 	panic("not implemented")
 	return iAddGamepadMappingsFromIO(src, closeio)
 }
 
 // Palette
 
-func (palette *Palette) SetColors(colors *Color, firstcolor int, ncolors int) bool {
+func (palette *Palette) SetColors(colors *Color, firstcolor int32, ncolors int32) bool {
 	panic("not implemented")
 	return iSetPaletteColors(palette, colors, firstcolor, ncolors)
 }
@@ -3094,32 +3115,32 @@ func (palette *Palette) Destroy() {
 
 // Joystick
 
-func (joystick *Joystick) SetVirtualAxis(axis int, value int16) bool {
+func (joystick *Joystick) SetVirtualAxis(axis int32, value int16) bool {
 	panic("not implemented")
 	return iSetJoystickVirtualAxis(joystick, axis, value)
 }
 
-func (joystick *Joystick) SetVirtualBall(ball int, xrel int16, yrel int16) bool {
+func (joystick *Joystick) SetVirtualBall(ball int32, xrel int16, yrel int16) bool {
 	panic("not implemented")
 	return iSetJoystickVirtualBall(joystick, ball, xrel, yrel)
 }
 
-func (joystick *Joystick) SetVirtualButton(button int, down bool) bool {
+func (joystick *Joystick) SetVirtualButton(button int32, down bool) bool {
 	panic("not implemented")
 	return iSetJoystickVirtualButton(joystick, button, down)
 }
 
-func (joystick *Joystick) SetVirtualHat(hat int, value uint8) bool {
+func (joystick *Joystick) SetVirtualHat(hat int32, value uint8) bool {
 	panic("not implemented")
 	return iSetJoystickVirtualHat(joystick, hat, value)
 }
 
-func (joystick *Joystick) SetVirtualTouchpad(touchpad int, finger int, down bool, x float32, y float32, pressure float32) bool {
+func (joystick *Joystick) SetVirtualTouchpad(touchpad int32, finger int32, down bool, x float32, y float32, pressure float32) bool {
 	panic("not implemented")
 	return iSetJoystickVirtualTouchpad(joystick, touchpad, finger, down, x, y, pressure)
 }
 
-func (joystick *Joystick) SendVirtualSensorData(typ SensorType, sensor_timestamp uint64, data *float32, num_values int) bool {
+func (joystick *Joystick) SendVirtualSensorData(typ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool {
 	panic("not implemented")
 	return iSendJoystickVirtualSensorData(joystick, typ, sensor_timestamp, data, num_values)
 }
@@ -3139,12 +3160,12 @@ func (joystick *Joystick) Path() string {
 	return iGetJoystickPath(joystick)
 }
 
-func (joystick *Joystick) PlayerIndex() int {
+func (joystick *Joystick) PlayerIndex() int32 {
 	panic("not implemented")
 	return iGetJoystickPlayerIndex(joystick)
 }
 
-func (joystick *Joystick) SetPlayerIndex(player_index int) bool {
+func (joystick *Joystick) SetPlayerIndex(player_index int32) bool {
 	panic("not implemented")
 	return iSetJoystickPlayerIndex(joystick, player_index)
 }
@@ -3194,47 +3215,47 @@ func (joystick *Joystick) ID() JoystickID {
 	return iGetJoystickID(joystick)
 }
 
-func (joystick *Joystick) NumAxes() int {
+func (joystick *Joystick) NumAxes() int32 {
 	panic("not implemented")
 	return iGetNumJoystickAxes(joystick)
 }
 
-func (joystick *Joystick) NumBalls() int {
+func (joystick *Joystick) NumBalls() int32 {
 	panic("not implemented")
 	return iGetNumJoystickBalls(joystick)
 }
 
-func (joystick *Joystick) NumHats() int {
+func (joystick *Joystick) NumHats() int32 {
 	panic("not implemented")
 	return iGetNumJoystickHats(joystick)
 }
 
-func (joystick *Joystick) NumButtons() int {
+func (joystick *Joystick) NumButtons() int32 {
 	panic("not implemented")
 	return iGetNumJoystickButtons(joystick)
 }
 
-func (joystick *Joystick) Axis(axis int) int16 {
+func (joystick *Joystick) Axis(axis int32) int16 {
 	panic("not implemented")
 	return iGetJoystickAxis(joystick, axis)
 }
 
-func (joystick *Joystick) AxisInitialState(axis int, state *int16) bool {
+func (joystick *Joystick) AxisInitialState(axis int32, state *int16) bool {
 	panic("not implemented")
 	return iGetJoystickAxisInitialState(joystick, axis, state)
 }
 
-func (joystick *Joystick) Ball(ball int, dx *int, dy *int) bool {
+func (joystick *Joystick) Ball(ball int32, dx *int32, dy *int32) bool {
 	panic("not implemented")
 	return iGetJoystickBall(joystick, ball, dx, dy)
 }
 
-func (joystick *Joystick) Hat(hat int) uint8 {
+func (joystick *Joystick) Hat(hat int32) uint8 {
 	panic("not implemented")
 	return iGetJoystickHat(joystick, hat)
 }
 
-func (joystick *Joystick) Button(button int) bool {
+func (joystick *Joystick) Button(button int32) bool {
 	panic("not implemented")
 	return iGetJoystickButton(joystick, button)
 }
@@ -3254,7 +3275,7 @@ func (joystick *Joystick) SetLED(red uint8, green uint8, blue uint8) bool {
 	return iSetJoystickLED(joystick, red, green, blue)
 }
 
-func (joystick *Joystick) SendEffect(data *byte, size int) bool {
+func (joystick *Joystick) SendEffect(data *byte, size int32) bool {
 	panic("not implemented")
 	//return iSendJoystickEffect(joystick, data, size)
 }
@@ -3269,7 +3290,7 @@ func (joystick *Joystick) ConnectionState() JoystickConnectionState {
 	return iGetJoystickConnectionState(joystick)
 }
 
-func (joystick *Joystick) PowerInfo(percent *int) PowerState {
+func (joystick *Joystick) PowerInfo(percent *int32) PowerState {
 	panic("not implemented")
 	return iGetJoystickPowerInfo(joystick, percent)
 }
@@ -3327,7 +3348,7 @@ func (mutex *Mutex) Destroy() {
 
 // MessageBoxData
 
-func (messageboxdata *MessageBoxData) ShowMessageBox(buttonid *int) bool {
+func (messageboxdata *MessageBoxData) ShowMessageBox(buttonid *int32) bool {
 	panic("not implemented")
 	return iShowMessageBox(messageboxdata, buttonid)
 }
@@ -3519,15 +3540,19 @@ func (format PixelFormat) Name() string {
 	return iGetPixelFormatName(format)
 }
 
-func (format PixelFormat) Masks(bpp *int, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool {
+func (format PixelFormat) Masks(bpp *int32, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool {
 	// TODO: make it return (color.RGBA, error) or something
 	panic("not implemented")
 	return iGetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask)
 }
 
-func (format PixelFormat) Details() *PixelFormatDetails {
-	panic("not implemented")
-	return iGetPixelFormatDetails(format)
+func (format PixelFormat) Details() (*PixelFormatDetails, error) {
+	details := iGetPixelFormatDetails(format)
+	if details == nil {
+		return nil, lastError()
+	}
+
+	return details, nil
 }
 
 // EGLAttribArrayCallback
@@ -3539,12 +3564,12 @@ func (platformAttribCallback EGLAttribArrayCallback) EGL_SetAttributeCallbacks(s
 
 // DialogFileCallback
 
-func (callback DialogFileCallback) ShowOpenFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int, default_location string, allow_many bool) {
+func (callback DialogFileCallback) ShowOpenFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
 	panic("not implemented")
 	//iShowOpenFileDialog(callback, userdata, window, filters, nfilters, default_location, allow_many)
 }
 
-func (callback DialogFileCallback) ShowSaveFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int, default_location string) {
+func (callback DialogFileCallback) ShowSaveFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
 	panic("not implemented")
 	//iShowSaveFileDialog(callback, userdata, window, filters, nfilters, default_location)
 }
@@ -3698,7 +3723,7 @@ func (process *Process) Properties() PropertiesID {
 	return iGetProcessProperties(process)
 }
 
-func (process *Process) Read(datasize *uintptr, exitcode *int) *byte {
+func (process *Process) Read(datasize *uintptr, exitcode *int32) *byte {
 	panic("not implemented")
 	//return iReadProcess(process, datasize, exitcode)
 }
@@ -3718,7 +3743,7 @@ func (process *Process) Kill(force bool) bool {
 	return iKillProcess(process, force)
 }
 
-func (process *Process) Wait(block bool, exitcode *int) bool {
+func (process *Process) Wait(block bool, exitcode *int32) bool {
 	panic("not implemented")
 	return iWaitProcess(process, block, exitcode)
 }
@@ -3730,7 +3755,7 @@ func (process *Process) Destroy() {
 
 // FPoint
 
-func (points *FPoint) RectEnclosingPointsFloat(count int, clip *FRect, result *FRect) bool {
+func (points *FPoint) RectEnclosingPointsFloat(count int32, clip *FRect, result *FRect) bool {
 	panic("not implemented")
 	return iGetRectEnclosingPointsFloat(points, count, clip, result)
 }
@@ -3747,7 +3772,7 @@ func (instance_id SensorID) SensorTypeForID() SensorType {
 	return iGetSensorTypeForID(instance_id)
 }
 
-func (instance_id SensorID) SensorNonPortableTypeForID() int {
+func (instance_id SensorID) SensorNonPortableTypeForID() int32 {
 	panic("not implemented")
 	return iGetSensorNonPortableTypeForID(instance_id)
 }
