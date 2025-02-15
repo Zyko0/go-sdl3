@@ -18,7 +18,7 @@ tasks:
         deps: [dependencies, generate-ffi]
         cmds:
             # Generate go bindings from ffi.json file 
-            - go run ./cmd/ffi2go
+            - go run ./cmd/ffi2go --config "cmd/ffi2go/config/sdl.json" --ffi "cmd/ffi2go/ffi/sdl.json"
             - purego-gen --no-warnings --function-name "initialize" --input "./sdl_functions.gen.go" --extra "./sdl_structs.gen.go,./sdl_types.gen.go,./sdl_enums.gen.go,./extra.go"
 
     generate-methods:

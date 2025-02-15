@@ -1,0 +1,75 @@
+{
+    "out_dir": "",
+    "library_name": "sdl",
+    "prefix":"SDL_",
+    "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3/QuickReference.md",
+    "allowed_include": "/usr/include/SDL3/",
+    "ignored_headers": [
+        "SDL_oldnames.h",
+        "SDL_bits.h",
+        "SDL_intrin.h",
+        "SDL_main_impl.h",
+        "SDL_assert.h",
+        "SDL_stdinc.h",
+        "SDL_endian.h"
+    ],
+    "ignored_types": [
+        "GamepadBinding",
+        "GUID"
+    ],
+    "ignored_functions": [
+        "SDL_SetLinuxThreadPriority",
+        "SDL_SetLinuxThreadPriorityAndPolicy",
+        "SDL_SetGPUBlendConstants"
+    ],
+    "allowlisted_functions": [
+        "SDL_free"
+    ],
+    "allowlisted_type_prefixes": [
+        "SDL_",
+        "Vk",
+        "X"
+    ],
+    "base_types": [
+        "SDL_Event"
+    ],
+    "sdl_free_functions": [
+        "SDL_GetDisplays",
+		"SDL_GetFullscreenDisplayModes",
+		"SDL_GetWindowICCProfile",
+		"SDL_GetWindows",
+		"SDL_GetKeyboards",
+		"SDL_GetMice",
+		"SDL_GetTouchDevices",
+		"SDL_GetTouchFingers",
+		"SDL_GetGamepads",
+		"SDL_GetGamepadMappings",
+		"SDL_GetGamepadMappingForGUID",
+		"SDL_GetGamepadMapping",
+		"SDL_GetGamepadMappingForID",
+		"SDL_GetGamepadBindings",
+		"SDL_GetJoysticks",
+		"SDL_GetHaptics",
+		"SDL_GetAudioPlaybackDevices",
+		"SDL_GetAudioRecordingDevices",
+		"SDL_GetAudioDeviceChannelMap",
+		"SDL_GetAudioStreamInputChannelMap",
+		"SDL_GetAudioStreamOutputChannelMap",
+		"SDL_GetPrefPath",
+		"SDL_GlobDirectory",
+		"SDL_GetCurrentDirectory",
+		"SDL_LoadFile_IO",
+		"SDL_LoadFile",
+		"SDL_GlobStorageDirectory",
+		"SDL_GetSurfaceImages",
+		"SDL_GetCameras",
+		"SDL_GetCameraSupportedFormats",
+		"SDL_GetClipboardText",
+		"SDL_GetPrimarySelectionText",
+		"SDL_GetClipboardData",
+		"SDL_GetClipboardMimeTypes",
+		"SDL_GetSensors",
+		"SDL_GetPreferredLocales"
+    ]
+
+}
