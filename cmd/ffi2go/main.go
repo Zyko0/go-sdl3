@@ -113,11 +113,13 @@ func sanitizeVarName(s string) string {
 }
 
 func sanitizeArgName(s string) string {
-	switch {
-	case s == "func":
+	switch s {
+	case "func":
 		return "function"
-	case s == "type":
+	case "type":
 		return "typ"
+	case "chan":
+		return "chann"
 	default:
 		return s
 	}
@@ -132,6 +134,9 @@ func convType(s string, bitSize int) string {
 		default:
 			return ret
 		}
+	}
+	if cfg.LibraryName != "sdl" && strings.HasPrefix(s, "SDL_") {
+		return "sdl." + s[4:]
 	}
 	return s
 }
@@ -179,6 +184,15 @@ func trimPrefix(e *FFIEntry) {
 	}
 	for _, ee := range e.Parameters {
 		trimPrefix(ee)
+	}
+}
+
+func ensureSDLImport(f *jen.File) {
+	if cfg.LibraryName != "sdl" {
+		/*f.Id("import").Parens(
+			jen.Id("sdl \"github.com/Zyko0/go-sdl3\""),
+		)*/
+		f.ImportAlias("github.com/Zyko0/go-sdl3", "sdl")
 	}
 }
 
@@ -252,6 +266,31 @@ func AllTypesFromAPIRef() {
 			delete(uniqueTypes, tp)
 		}
 	}
+}
+
+func jenType(stmt *jen.Statement, typ string) *jen.Statement {
+	if strings.Contains(typ, ".") {
+		var prefix string
+		parts := strings.SplitN(typ, ".", 2)
+		idx := strings.LastIndexAny(parts[0], "]*")
+		if idx != -1 {
+			prefix = parts[0][:idx+1]
+			parts[0] = parts[0][idx+1:]
+		}
+		path := parts[0]
+		if path == "sdl" {
+			path = "github.com/Zyko0/go-sdl3"
+		}
+		if prefix != "" {
+			stmt.Id(prefix).Qual(path, parts[1])
+		} else {
+			stmt.Qual(path, parts[1])
+		}
+	} else {
+		stmt.Id(typ)
+	}
+
+	return stmt
 }
 
 func main() {
@@ -391,6 +430,7 @@ func main() {
 	apifunc := map[string]struct{}{}
 	f := jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
+	ensureSDLImport(f)
 	f.Var().DefsFunc(func(g *jen.Group) {
 		g.Comment(fmt.Sprintf("//puregogen:library path:windows=%s.dll path:unix=%s.so alias=%s",
 			cfg.LibraryName, cfg.LibraryName, cfg.LibraryName,
@@ -407,7 +447,7 @@ func main() {
 				fn.ParamsFunc(func(h *jen.Group) {
 					for _, ee := range e.Parameters {
 						h.Add(
-							jen.Id(sanitizeArgName(ee.Name)).Id(extractType(ee.Type)),
+							jenType(jen.Id(sanitizeArgName(ee.Name)), extractType(ee.Type)),
 						)
 					}
 				})
@@ -415,7 +455,7 @@ func main() {
 					if slices.Contains(cfg.SDLFreeFunctions, cfg.Prefix+e.Name) {
 						fn.Uintptr()
 					} else {
-						fn.Id(extractType(e.ReturnType))
+						jenType(fn, extractType(e.ReturnType))
 					}
 				}
 				if e.symbolHasPrefix {
@@ -441,6 +481,7 @@ func main() {
 	// Enums
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
+	ensureSDLImport(f)
 	for _, e := range ffiEntries {
 		if e.Tag != "enum" {
 			continue
@@ -462,6 +503,7 @@ func main() {
 	// Structs
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
+	ensureSDLImport(f)
 	for _, e := range ffiEntries {
 		if e.Tag != "struct" {
 			continue
@@ -475,7 +517,7 @@ func main() {
 		f.Type().Id(e.Name).StructFunc(func(g *jen.Group) {
 			for _, ee := range e.Fields {
 				g.Add(
-					jen.Id(sanitizeVarName(ee.Name)).Id(extractType(ee.Type)),
+					jenType(jen.Id(sanitizeVarName(ee.Name)), extractType(ee.Type)),
 				)
 			}
 		}).Line()
@@ -485,6 +527,7 @@ func main() {
 	// Types
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
+	ensureSDLImport(f)
 	f.Type().DefsFunc(func(g *jen.Group) {
 		for _, e := range ffiEntries {
 			switch {
@@ -505,7 +548,7 @@ func main() {
 			if e.Name == typ {
 				continue
 			}
-			g.Id(e.Name).Id(typ)
+			jenType(g.Id(e.Name), typ)
 		}
 	})
 	os.WriteFile(filepath.Join(dir, cfg.LibraryName+"_types.gen.go"), []byte(f.GoString()), 0666)

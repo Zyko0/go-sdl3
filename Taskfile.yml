@@ -13,6 +13,7 @@ tasks:
             - docker create --name tmp sdl3ffi
             - docker cp tmp:/sdl_ffi.json ./cmd/ffi2go/ffi/sdl.json
             - docker cp tmp:/ttf_ffi.json ./cmd/ffi2go/ffi/ttf.json
+            - docker cp tmp:/mixer_ffi.json ./cmd/ffi2go/ffi/mixer.json
             - docker rm -f tmp
     
     gen-bindings:
@@ -20,7 +21,7 @@ tasks:
         requires:
             vars: [LIBRARY]
         vars:
-            DIR: '.{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
             INPUT:
                 '{{.DIR}}/{{.LIBRARY}}_functions.gen.go'
             EXTRA:

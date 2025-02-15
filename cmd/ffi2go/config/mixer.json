@@ -1,0 +1,25 @@
+{
+    "out_dir": "mixer",
+    "library_name": "mixer",
+    "prefix":"Mix_",
+    "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3_mixer/QuickReference.md",
+    "allowed_include": "/usr/include/SDL3_mixer/",
+    "ignored_headers": [
+    ],
+    "ignored_types": [
+        "MIX_InitFlags"
+    ],
+    "ignored_functions": [
+        
+    ],
+    "allowlisted_functions": [
+    ],
+    "allowlisted_type_prefixes": [
+        "Mix_"
+    ],
+    "base_types": [        
+    ],
+    "sdl_free_functions": [
+        
+    ]
+}

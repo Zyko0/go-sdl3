@@ -24,7 +24,7 @@ RUN cd c2ffi && git checkout llvm-18.1.0
 RUN cd c2ffi && mkdir -p build && cd build && \
         cmake -DBUILD_CONFIG=Release .. && make
 
-# Clone sdl repository
+# Clone SDL repository
 RUN git clone https://github.com/libsdl-org/SDL.git && \
         cd SDL && git checkout tags/release-3.2.2 && \
         cp -r include/SDL3 /usr/include/SDL3
@@ -33,11 +33,20 @@ RUN git clone https://github.com/libsdl-org/SDL.git && \
 RUN echo "#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>" > sdl.c
 RUN /c2ffi/build/bin/c2ffi sdl.c > sdl_ffi.json
 
-# Clone sdl repository
+# Clone SDL_ttf repository
 RUN git clone https://github.com/libsdl-org/SDL_ttf.git && \
         cd SDL_ttf && git checkout tags/preview-3.1.0 && \
         cp -r include/SDL3_ttf /usr/include/SDL3_ttf
 
-# Generate SDL ffi
+# Generate SDL_ttf ffi
 RUN echo "#include <SDL3_ttf/SDL_ttf.h>\n#include <SDL3_ttf/SDL_textengine.h>" > ttf.c
 RUN /c2ffi/build/bin/c2ffi ttf.c > ttf_ffi.json
+
+# Clone SDL_mixer repository
+RUN git clone https://github.com/libsdl-org/SDL_mixer.git && \
+        cd SDL_mixer && \
+        cp -r include/SDL3_mixer/ /usr/include/SDL3_mixer/
+
+# Generate SDL_mixer ffi
+RUN echo "#include <SDL3_mixer/SDL_mixer.h>\n" > mixer.c
+RUN /c2ffi/build/bin/c2ffi mixer.c > mixer_ffi.json

@@ -1,0 +1,38 @@
+{
+    "out_dir": "ttf",
+    "library_name": "ttf",
+    "prefix":"TTF_",
+    "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3_ttf/QuickReference.md",
+    "allowed_include": "/usr/include/SDL3_ttf/",
+    "ignored_headers": [
+    ],
+    "ignored_types": [
+        "TextData",
+        "TextEngine"
+    ],
+    "ignored_functions": [
+        "TTF_RenderText_Solid",
+        "TTF_RenderText_Solid_Wrapped",
+        "TTF_RenderGlyph_Solid",
+        "TTF_RenderText_Shaded",
+        "TTF_RenderText_Shaded_Wrapped",
+        "TTF_RenderGlyph_Shaded",
+        "TTF_RenderText_Blended",
+        "TTF_RenderText_Blended_Wrapped",
+        "TTF_RenderGlyph_Blended",
+        "TTF_RenderText_LCD",
+        "TTF_RenderText_LCD_Wrapped",
+        "TTF_RenderGlyph_LCD"
+    ],
+    "allowlisted_functions": [
+    ],
+    "allowlisted_type_prefixes": [
+        "TTF_"
+    ],
+    "base_types": [
+        "TTF_DrawOperation"
+    ],
+    "sdl_free_functions": [
+        
+    ]
+}
