@@ -1,27 +1,43 @@
 version: '3'
 
 tasks:
-    dependencies:
+    tools:
         cmds:
             # Install purego-gen
             - go install github.com/Zyko0/purego-gen/cmd/purego-gen@latest
     
-    generate-ffi:
+    gen-ffi:        
         cmds:
-            # Generate ffi.json file
+            # Generate ffi.json files
             - docker build . -t sdl3ffi
             - docker create --name tmp sdl3ffi
-            - docker cp tmp:/ffi.json ./cmd/ffi2go/ffi.json
+            - docker cp tmp:/sdl_ffi.json ./cmd/ffi2go/ffi/sdl.json
+            - docker cp tmp:/ttf_ffi.json ./cmd/ffi2go/ffi/ttf.json
             - docker rm -f tmp
     
-    generate-bindings:
-        deps: [dependencies, generate-ffi]
+    gen-bindings:
+        deps: [tools, gen-ffi]
+        requires:
+            vars: [LIBRARY]
+        vars:
+            DIR: '.{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            INPUT:
+                '{{.DIR}}/{{.LIBRARY}}_functions.gen.go'
+            EXTRA:
+                - '{{.DIR}}/{{.LIBRARY}}_structs.gen.go'
+                - '{{.DIR}}/{{.LIBRARY}}_types.gen.go'
+                - '{{.DIR}}/{{.LIBRARY}}_enums.gen.go'
+                - '{{.DIR}}/extra.go'
         cmds:
-            # Generate go bindings from ffi.json file 
-            - go run ./cmd/ffi2go --config "cmd/ffi2go/config/sdl.json" --ffi "cmd/ffi2go/ffi/sdl.json"
-            - purego-gen --no-warnings --function-name "initialize" --input "./sdl_functions.gen.go" --extra "./sdl_structs.gen.go,./sdl_types.gen.go,./sdl_enums.gen.go,./extra.go"
+            # Generate SDL3 bindings 
+            - go run ./cmd/ffi2go --config "cmd/ffi2go/config/{{.LIBRARY}}.json" --ffi "cmd/ffi2go/ffi/{{.LIBRARY}}.json"
+            - purego-gen --no-warnings --function-name "initialize" --input {{.INPUT}} --extra {{.EXTRA | join ","}}
 
-    generate-methods:
+    gen-methods:
+        requires:
+          vars: [LIBRARY]
+        vars:
+            DIR: '{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
         cmds:
-            # Generate methods heuristically as a starting point
-            - go run ./cmd/methodgen
+            # Generate SDL3 methods heuristically as a starting point
+            - go run ./cmd/methodgen --dir DIR --library LIBRARY

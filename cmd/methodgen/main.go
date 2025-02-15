@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -26,11 +27,20 @@ type Function struct {
 }
 
 func main() {
+	var (
+		libraryName string
+		dir         string
+	)
+
+	flag.StringVar(&dir, "dir", "", "base directory to generate from/to")
+	flag.StringVar(&libraryName, "library", "", "library name (e.g: sdl)")
+	flag.Parse()
+
 	path, err := os.Getwd()
 	if err != nil {
 		log.Fatal("err: ", err)
 	}
-	path = filepath.Join(path, "sdl_functions.gen.go")
+	path = filepath.Join(path, dir, libraryName+"_functions.gen.go")
 
 	fset := token.NewFileSet()
 	root, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
@@ -49,8 +59,8 @@ func main() {
 				for _, s := range tn.Specs {
 					switch ts := s.(type) {
 					case *ast.ValueSpec:
-						name := ts.Names[0].Name[1:]  // Remove "i" prefix
-						switch tt := ts.Type.(type) { //ts.Values[0].(type) {
+						name := ts.Names[0].Name[1:] // Remove "i" prefix
+						switch tt := ts.Type.(type) {
 						case *ast.FuncType:
 							fn := &Function{
 								Name: name,
@@ -110,7 +120,6 @@ func main() {
 										})
 									}
 								}
-								fmt.Println()
 							}
 							if fn.Receiver != nil {
 								funcsByReceiver[fn.Receiver.Type] = append(funcsByReceiver[fn.Receiver.Type], fn)
@@ -129,7 +138,7 @@ func main() {
 	}
 	fmt.Println("count:", len(funcsByReceiver), "total methods:", count)
 
-	f := jen.NewFile("sdl")
+	f := jen.NewFile(libraryName)
 	for receiver, funcs := range funcsByReceiver {
 		receiver = strings.ReplaceAll(receiver, "*", "")
 		f.Comment("// " + receiver).Line()
