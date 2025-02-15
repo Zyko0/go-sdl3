@@ -18,4 +18,4 @@ Also to help re-organize, rename, refactor, as some directions have been taken a
 ## Generate
 
 - `go install github.com/go-task/task/v3/cmd/task@latest`
-- `task generate-bindings`
+- `task gen-bindings LIBRARY="sdl"`
