@@ -1,6 +1,10 @@
 package ttf
 
-import sdl "github.com/Zyko0/go-sdl3"
+import (
+	"unsafe"
+
+	sdl "github.com/Zyko0/go-sdl3"
+)
 
 // Types
 
@@ -8,6 +12,14 @@ import sdl "github.com/Zyko0/go-sdl3"
 type DrawOperation struct {
 	Cmd  DrawCommand
 	data [60]byte
+}
+
+func (d *DrawOperation) CopyOperation() *CopyOperation {
+	return *(**CopyOperation)(unsafe.Pointer(&d))
+}
+
+func (d *DrawOperation) FillOperation() *FillOperation {
+	return *(**FillOperation)(unsafe.Pointer(&d))
 }
 
 type TextData struct {
