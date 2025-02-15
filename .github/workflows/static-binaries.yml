@@ -1,0 +1,65 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: Build static binaries
+
+on:
+  workflow_dispatch:
+
+env:
+  SDL3_VERSION: 3.2.0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+
+      matrix:
+        include:
+          - os: ubuntu-latest
+            filename: libSDL3.so
+            version: $SDL3_VERSION
+            deps: |
+              sudo apt-get update
+              sudo apt-get install build-essential git make autoconf automake libtool \
+              pkg-config cmake ninja-build gnome-desktop-testing libasound2-dev libpulse-dev \
+              libaudio-dev libjack-dev libsndio-dev libsamplerate0-dev libx11-dev libxext-dev \
+              libxrandr-dev libxcursor-dev libxfixes-dev libxi-dev libxss-dev libwayland-dev \
+              libxkbcommon-dev libdrm-dev libgbm-dev libgl1-mesa-dev libgles2-mesa-dev \
+              libegl1-mesa-dev libdbus-1-dev libibus-1.0-dev libudev-dev fcitx-libs-dev
+          - os: windows-2025
+            filename: Release/SDL3.dll
+            version: $env:SDL3_VERSION
+          - os: macos-latest
+            filename: libSDL3.dylib
+            version: $SDL3_VERSION
+        
+    steps:
+    - uses: actions/checkout@v4
+    - name: Clone SDL3
+      run: git clone --depth 1 --branch release-${{ matrix.version }} https://github.com/libsdl-org/SDL.git
+    - name: Install dependencies
+      if: ${{ matrix.deps }} != ''
+      run: ${{ matrix.deps }}
+    - name: CMake configure
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cd SDL &&
+        cmake -S . -B build
+        -DCMAKE_C_COMPILER=clang
+        -DCMAKE_BUILD_TYPE=Release
+        -DSDL_SHARED=ON
+        -DSDL_DISABLE_INSTALL=ON
+        -DSDL_DISABLE_INSTALL_DOCS=ON
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: >
+        cd SDL &&
+        cmake --build build --config Release
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Binary ${{ matrix.os }}
+        path: SDL/build/${{ matrix.filename }}
