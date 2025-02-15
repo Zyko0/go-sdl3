@@ -6,6 +6,14 @@ import "unsafe"
 // generated automatically.
 // It includes union types, function callbacks, #defines and more.
 
+// Functions
+
+// Free frees an sdl-allocated pointer via SDL_free.
+// This function should never be called by the user.
+func Free(ptr uintptr) {
+	ifree(ptr)
+}
+
 // Types
 
 type Time int64

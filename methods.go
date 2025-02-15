@@ -1570,7 +1570,7 @@ func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[*GamepadBinding](ptr, int(count)), nil
 }

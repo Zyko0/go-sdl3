@@ -17,7 +17,7 @@ func GetKeyboards() ([]KeyboardID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[KeyboardID](ptr, int(count)), nil
 }
@@ -59,7 +59,7 @@ func GetMice() ([]MouseID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[MouseID](ptr, int(count)), nil
 }
@@ -171,7 +171,7 @@ func GetTouchDevices() ([]TouchID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[TouchID](ptr, int(count)), nil
 }
@@ -209,7 +209,7 @@ func GetGamepadMappings() ([]string, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[string](ptr, int(count)), nil
 }
@@ -225,7 +225,7 @@ func GetGamepads() ([]JoystickID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[JoystickID](ptr, int(count)), nil
 }
@@ -275,7 +275,7 @@ func GetJoysticks() ([]JoystickID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[JoystickID](ptr, int(count)), nil
 }
@@ -325,7 +325,7 @@ func GetCameras() ([]CameraID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[CameraID](ptr, int(count)), nil
 }
@@ -345,7 +345,7 @@ func GetClipboardText() (string, error) {
 	if ptr == 0 {
 		return "", lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrString(ptr), nil
 }

@@ -27,7 +27,7 @@ func GetDisplays() ([]DisplayID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[DisplayID](ptr, int(count)), nil
 }
@@ -55,7 +55,7 @@ func GetWindows() ([]*Window, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[*Window](ptr, int(count)), nil
 }
@@ -121,7 +121,7 @@ func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
@@ -133,7 +133,7 @@ func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
@@ -159,7 +159,7 @@ func LoadWAV_IO(src *IOStream, closeIO bool, spec *AudioSpec) ([]byte, error) {
 	if !iLoadWAV_IO(src, closeIO, spec, &ptr, &count) {
 		return nil, lastError()
 	}
-	defer sdlFree(uintptr(unsafe.Pointer(ptr)))
+	defer Free(uintptr(unsafe.Pointer(ptr)))
 
 	return clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
@@ -171,7 +171,7 @@ func LoadWAV(path string, spec *AudioSpec) ([]byte, error) {
 	if !iLoadWAV(path, spec, &ptr, &count) {
 		return nil, lastError()
 	}
-	defer sdlFree(uintptr(unsafe.Pointer(ptr)))
+	defer Free(uintptr(unsafe.Pointer(ptr)))
 
 	return clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
@@ -196,7 +196,7 @@ func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte
 	) {
 		return nil, nil, lastError()
 	}
-	defer sdlFree(uintptr(unsafe.Pointer(ptr)))
+	defer Free(uintptr(unsafe.Pointer(ptr)))
 
 	return dstSpec, clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }

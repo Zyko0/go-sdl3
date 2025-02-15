@@ -15,11 +15,6 @@ func lastError() error {
 	return nil
 }
 
-// sdlFree frees an sdl-allocated pointer via SDL_free
-func sdlFree(ptr uintptr) {
-	ifree(ptr)
-}
-
 // clonePtrSlice returns a newly allocated slice from a uintptr
 func clonePtrSlice[T any](ptr uintptr, count int) []T {
 	var s []T

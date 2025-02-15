@@ -65,7 +65,7 @@ func GetSensors() ([]SensorID, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[SensorID](ptr, int(count)), nil
 }
@@ -103,7 +103,7 @@ func GetPreferredLocales() ([]*Locale, error) {
 	if ptr == 0 {
 		return nil, lastError()
 	}
-	defer sdlFree(ptr)
+	defer Free(ptr)
 
 	return clonePtrSlice[*Locale](ptr, int(count)), nil
 }
