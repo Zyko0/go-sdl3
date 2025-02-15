@@ -1,5 +1,7 @@
 package sdl
 
+import "github.com/Zyko0/go-sdl3/internal"
+
 // Time
 
 // TODO:
@@ -31,7 +33,7 @@ func GetTicks() uint64 {
 
 func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *Window) error {
 	if !iShowSimpleMessageBox(flags, title, message, window) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -50,7 +52,7 @@ func GetPowerInfo() (PowerInfo, error) {
 
 	info.State = iGetPowerInfo(&info.Seconds, &info.Percent)
 	if info.State == POWERSTATE_ERROR {
-		return info, lastError()
+		return info, internal.LastErr()
 	}
 
 	return info, nil
@@ -63,11 +65,11 @@ func GetSensors() ([]SensorID, error) {
 
 	ptr := iGetSensors(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[SensorID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[SensorID](ptr, int(count)), nil
 }
 
 func UpdateSensors() {
@@ -101,11 +103,11 @@ func GetPreferredLocales() ([]*Locale, error) {
 
 	ptr := iGetPreferredLocales(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[*Locale](ptr, int(count)), nil
+	return internal.ClonePtrSlice[*Locale](ptr, int(count)), nil
 }
 
 // System

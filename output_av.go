@@ -1,6 +1,10 @@
 package sdl
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
+)
 
 // Video
 
@@ -25,11 +29,11 @@ func GetDisplays() ([]DisplayID, error) {
 
 	ptr := iGetDisplays(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[DisplayID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[DisplayID](ptr, int(count)), nil
 }
 
 func GetPrimaryDisplay() DisplayID {
@@ -53,17 +57,17 @@ func GetWindows() ([]*Window, error) {
 
 	ptr := iGetWindows(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[*Window](ptr, int(count)), nil
+	return internal.ClonePtrSlice[*Window](ptr, int(count)), nil
 }
 
 func CreateWindow(title string, width, height int, flags WindowFlags) (*Window, error) {
 	window := iCreateWindow(title, int32(width), int32(height), flags)
 	if window == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return window, nil
@@ -72,7 +76,7 @@ func CreateWindow(title string, width, height int, flags WindowFlags) (*Window, 
 func CreateWindowWithProperties(props PropertiesID) (*Window, error) {
 	window := iCreateWindowWithProperties(props)
 	if window == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return window, nil
@@ -88,7 +92,7 @@ func ScreenSaverEnabled() bool {
 
 func EnableScreenSaver() error {
 	if !iEnableScreenSaver() {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -96,7 +100,7 @@ func EnableScreenSaver() error {
 
 func DisableScreenSaver() error {
 	if !iDisableScreenSaver() {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -119,11 +123,11 @@ func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
 
 	ptr := iGetAudioPlaybackDevices(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
 
 func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
@@ -131,11 +135,11 @@ func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
 
 	ptr := iGetAudioRecordingDevices(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[AudioDeviceID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[AudioDeviceID](ptr, int(count)), nil
 }
 
 func UnbindAudioStreams(streams []*AudioStream) {
@@ -146,7 +150,7 @@ func CreateAudioStream(srcSpec *AudioSpec) (*AudioStream, *AudioSpec, error) {
 	dstSpec := &AudioSpec{}
 	stream := iCreateAudioStream(srcSpec, dstSpec)
 	if stream == nil {
-		return nil, nil, lastError()
+		return nil, nil, internal.LastErr()
 	}
 
 	return stream, dstSpec, nil
@@ -157,11 +161,11 @@ func LoadWAV_IO(src *IOStream, closeIO bool, spec *AudioSpec) ([]byte, error) {
 	var ptr *byte
 
 	if !iLoadWAV_IO(src, closeIO, spec, &ptr, &count) {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(uintptr(unsafe.Pointer(ptr)))
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 func LoadWAV(path string, spec *AudioSpec) ([]byte, error) {
@@ -169,17 +173,17 @@ func LoadWAV(path string, spec *AudioSpec) ([]byte, error) {
 	var ptr *byte
 
 	if !iLoadWAV(path, spec, &ptr, &count) {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(uintptr(unsafe.Pointer(ptr)))
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 func MixAudio(src []byte, format AudioFormat, volume float32) ([]byte, error) {
 	dst := make([]byte, len(src))
 	if !iMixAudio(unsafe.SliceData(dst), unsafe.SliceData(src), format, uint32(len(src)), volume) {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return dst, nil
@@ -194,9 +198,9 @@ func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte
 		srcSpec, unsafe.SliceData(srcData), int32(len(srcData)),
 		dstSpec, &ptr, &count,
 	) {
-		return nil, nil, lastError()
+		return nil, nil, internal.LastErr()
 	}
-	defer Free(uintptr(unsafe.Pointer(ptr)))
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return dstSpec, clonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return dstSpec, internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }

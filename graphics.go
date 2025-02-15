@@ -1,5 +1,7 @@
 package sdl
 
+import "github.com/Zyko0/go-sdl3/internal"
+
 // Render
 
 func GetNumRenderDrivers() int {
@@ -15,7 +17,7 @@ func CreateWindowAndRenderer(title string, width, height int, flags WindowFlags)
 	var renderer *Renderer
 
 	if !iCreateWindowAndRenderer(title, int32(width), int32(height), flags, &window, &renderer) {
-		return nil, nil, lastError()
+		return nil, nil, internal.LastErr()
 	}
 
 	return window, renderer, nil
@@ -24,7 +26,7 @@ func CreateWindowAndRenderer(title string, width, height int, flags WindowFlags)
 func CreateRendererWithProperties(props PropertiesID) (*Renderer, error) {
 	renderer := iCreateRendererWithProperties(props)
 	if renderer == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return renderer, nil
@@ -39,7 +41,7 @@ func GetPixelFormatForMasks(bpp int, rmask, gmask, bmask, amask uint32) PixelFor
 func CreatePalette(numColors int) (*Palette, error) {
 	palette := iCreatePalette(int32(numColors))
 	if palette == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return palette, nil
@@ -70,7 +72,7 @@ func GetRGBA(pixel uint32, format *PixelFormatDetails, palette *Palette) (r, g, 
 func CreateSurface(width, height int, format PixelFormat) (*Surface, error) {
 	surface := iCreateSurface(int32(width), int32(height), format)
 	if surface == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return surface, nil
@@ -81,7 +83,7 @@ func CreateSurface(width, height int, format PixelFormat) (*Surface, error) {
 func CreateSurfaceFrom(width, height int, format PixelFormat, pixels []uint32) (*Surface, error) {
 	surface := iCreateSurface(width, height, format)
 	if surface == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return surface, nil
@@ -90,7 +92,7 @@ func CreateSurfaceFrom(width, height int, format PixelFormat, pixels []uint32) (
 func LoadBMP_IO(src *IOStream, closeIO bool) (*Surface, error) {
 	surface := iLoadBMP_IO(src, closeIO)
 	if surface == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return surface, nil
@@ -99,7 +101,7 @@ func LoadBMP_IO(src *IOStream, closeIO bool) (*Surface, error) {
 func LoadBMP(file string) (*Surface, error) {
 	surface := iLoadBMP(file)
 	if surface == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return surface, nil

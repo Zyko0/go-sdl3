@@ -1,12 +1,16 @@
 package sdl
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
+)
 
 // Init
 
 func Init(flags InitFlags) error {
 	if !iInit(flags) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -14,7 +18,7 @@ func Init(flags InitFlags) error {
 
 func InitSubSystem(flags InitFlags) error {
 	if !iInitSubSystem(flags) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -42,7 +46,7 @@ func Quit() {
 
 func SetHintWithPriority(name, value string, priority HintPriority) error {
 	if !iSetHintWithPriority(name, value, priority) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -50,7 +54,7 @@ func SetHintWithPriority(name, value string, priority HintPriority) error {
 
 func SetHint(name, value string) error {
 	if !iSetHint(name, value) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -58,7 +62,7 @@ func SetHint(name, value string) error {
 
 func ResetHint(name string) error {
 	if !iResetHint(name) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -88,7 +92,7 @@ func GetHintBoolean(name string, defaultValue bool) bool {
 func GetGlobalProperties() (PropertiesID, error) {
 	properties := iGetGlobalProperties()
 	if properties == 0 {
-		return 0, lastError()
+		return 0, internal.LastErr()
 	}
 
 	return properties, nil
@@ -97,7 +101,7 @@ func GetGlobalProperties() (PropertiesID, error) {
 func CreateProperties() (PropertiesID, error) {
 	properties := iCreateProperties()
 	if properties == 0 {
-		return 0, lastError()
+		return 0, internal.LastErr()
 	}
 
 	return properties, nil
@@ -137,7 +141,7 @@ func PollEvent(event *Event) bool {
 
 func WaitEvent(event *Event) error {
 	if !iWaitEvent(event) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -149,7 +153,7 @@ func WaitEventTimeout(event *Event, timeoutMS int32) bool {
 
 func PushEvent(event *Event) error {
 	if !iPushEvent(event) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -197,7 +201,7 @@ func IOFromConstMem(mem []byte) (*IOStream, error) {
 		uintptr(len(mem)),
 	)
 	if stream == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return stream, nil

@@ -1,6 +1,11 @@
 package sdl
 
-import puregogen "github.com/Zyko0/purego-gen"
+import (
+	"errors"
+
+	"github.com/Zyko0/go-sdl3/internal"
+	puregogen "github.com/Zyko0/purego-gen"
+)
 
 // LoadLibrary loads SDL library and initializes all functions.
 func LoadLibrary(path string) error {
@@ -12,6 +17,15 @@ func LoadLibrary(path string) error {
 	}
 
 	initialize()
+
+	// Set free, error functions
+	internal.SetSDLFreeFunc(ifree)
+	internal.SetSDLLastErrFunc(func() error {
+		if msg := iGetError(); msg != "" {
+			return errors.New(msg)
+		}
+		return nil
+	})
 
 	return nil
 }

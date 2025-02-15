@@ -2,6 +2,8 @@ package sdl
 
 import (
 	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
 )
 
 // Keyboard
@@ -15,11 +17,11 @@ func GetKeyboards() ([]KeyboardID, error) {
 
 	ptr := iGetKeyboards(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[KeyboardID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[KeyboardID](ptr, int(count)), nil
 }
 
 func GetKeyboardState() []bool {
@@ -27,7 +29,7 @@ func GetKeyboardState() []bool {
 
 	ptr := iGetKeyboardState(&count)
 
-	return ptrToSlice[bool](uintptr(unsafe.Pointer(ptr)), int(count))
+	return internal.PtrToSlice[bool](uintptr(unsafe.Pointer(ptr)), int(count))
 }
 
 func ResetKeyboard() {
@@ -57,11 +59,11 @@ func GetMice() ([]MouseID, error) {
 
 	ptr := iGetMice(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[MouseID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[MouseID](ptr, int(count)), nil
 }
 
 func GetMouseFocus() *Window {
@@ -94,7 +96,7 @@ func GetRelativeMouseState() (MouseButtonFlags, float32, float32) {
 
 func WarpMouseGlobal(x, y float32) error {
 	if !iWarpMouseGlobal(x, y) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -102,7 +104,7 @@ func WarpMouseGlobal(x, y float32) error {
 
 func CaptureMouse(enabled bool) error {
 	if !iCaptureMouse(enabled) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -115,7 +117,7 @@ func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, er
 		int32(width), int32(height), int32(hotX), int32(hotY),
 	)
 	if cursor == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return cursor, nil
@@ -123,7 +125,7 @@ func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, er
 
 func SetCursor(cursor *Cursor) error {
 	if !iSetCursor(cursor) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -136,7 +138,7 @@ func GetCursor() *Cursor {
 func GetDefaultCursor() (*Cursor, error) {
 	cursor := iGetDefaultCursor()
 	if cursor == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return cursor, nil
@@ -144,7 +146,7 @@ func GetDefaultCursor() (*Cursor, error) {
 
 func ShowCursor() error {
 	if !iShowCursor() {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -152,7 +154,7 @@ func ShowCursor() error {
 
 func HideCursor() error {
 	if !iHideCursor() {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -169,18 +171,18 @@ func GetTouchDevices() ([]TouchID, error) {
 
 	ptr := iGetTouchDevices(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[TouchID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[TouchID](ptr, int(count)), nil
 }
 
 // Gamepad
 
 func AddGamepadMapping(mapping string) error {
 	if iAddGamepadMapping(mapping) == -1 {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -188,7 +190,7 @@ func AddGamepadMapping(mapping string) error {
 
 func AddGamepadMappingsFromFile(file string) error {
 	if iAddGamepadMappingsFromFile(file) == -1 {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -196,7 +198,7 @@ func AddGamepadMappingsFromFile(file string) error {
 
 func ReloadGamepadMappings() error {
 	if !iReloadGamepadMappings() {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -207,11 +209,11 @@ func GetGamepadMappings() ([]string, error) {
 
 	ptr := iGetGamepadMappings(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[string](ptr, int(count)), nil
+	return internal.ClonePtrSlice[string](ptr, int(count)), nil
 }
 
 func HasGamepad() bool {
@@ -223,11 +225,11 @@ func GetGamepads() ([]JoystickID, error) {
 
 	ptr := iGetGamepads(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[JoystickID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[JoystickID](ptr, int(count)), nil
 }
 
 func GetGamepadFromPlayerIndex(playerIndex int) *Gamepad {
@@ -273,11 +275,11 @@ func GetJoysticks() ([]JoystickID, error) {
 
 	ptr := iGetJoysticks(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[JoystickID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[JoystickID](ptr, int(count)), nil
 }
 
 func GetJoystickFromPlayerIndex(playerIndex int) *Joystick {
@@ -323,18 +325,18 @@ func GetCameras() ([]CameraID, error) {
 
 	ptr := iGetCameras(&count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[CameraID](ptr, int(count)), nil
+	return internal.ClonePtrSlice[CameraID](ptr, int(count)), nil
 }
 
 // Clipboard
 
 func SetClipboardText(text string) error {
 	if !iSetClipboardText(text) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -343,9 +345,9 @@ func SetClipboardText(text string) error {
 func GetClipboardText() (string, error) {
 	ptr := iGetClipboardText()
 	if ptr == 0 {
-		return "", lastError()
+		return "", internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrString(ptr), nil
+	return internal.ClonePtrString(ptr), nil
 }

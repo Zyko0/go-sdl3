@@ -12,6 +12,8 @@ package sdl
 import (
 	"image/color"
 	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
 )
 
 // ThreadPriority
@@ -702,7 +704,7 @@ func (texture *Texture) Lock(rect *Rect, pixels **byte, pitch *int32) bool {
 
 func (texture *Texture) LockToSurface(rect *Rect, surface **Surface) error {
 	if !iLockTextureToSurface(texture, rect, surface) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1067,7 +1069,7 @@ func (surface *Surface) Clear(r float32, g float32, b float32, a float32) bool {
 
 func (dst *Surface) FillRect(rect *Rect, color uint32) error {
 	if !iFillSurfaceRect(dst, rect, color) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1568,11 +1570,11 @@ func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
 
 	ptr := iGetGamepadBindings(gamepad, &count)
 	if ptr == 0 {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
-	defer Free(ptr)
+	defer internal.Free(ptr)
 
-	return clonePtrSlice[*GamepadBinding](ptr, int(count)), nil
+	return internal.ClonePtrSlice[*GamepadBinding](ptr, int(count)), nil
 }
 
 func (gamepad *Gamepad) HasAxis(axis GamepadAxis) bool {
@@ -1766,7 +1768,7 @@ func (renderer *Renderer) CurrentRenderOutputSize(w *int32, h *int32) bool {
 func (renderer *Renderer) CreateTexture(format PixelFormat, access TextureAccess, w, h int) (*Texture, error) {
 	texture := iCreateTexture(renderer, format, access, int32(w), int32(h))
 	if texture == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return texture, nil
@@ -1775,7 +1777,7 @@ func (renderer *Renderer) CreateTexture(format PixelFormat, access TextureAccess
 func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, error) {
 	texture := iCreateTextureFromSurface(renderer, surface)
 	if texture == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return texture, nil
@@ -1873,7 +1875,7 @@ func (renderer *Renderer) RenderScale(scaleX *float32, scaleY *float32) bool {
 
 func (renderer *Renderer) SetRenderDrawColor(r, g, b, a uint8) error {
 	if !iSetRenderDrawColor(renderer, r, g, b, a) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1881,7 +1883,7 @@ func (renderer *Renderer) SetRenderDrawColor(r, g, b, a uint8) error {
 
 func (renderer *Renderer) SetRenderDrawColorFloat(r float32, g float32, b float32, a float32) error {
 	if !iSetRenderDrawColorFloat(renderer, r, g, b, a) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1891,7 +1893,7 @@ func (renderer *Renderer) RenderDrawColor(r *uint8, g *uint8, b *uint8, a *uint8
 	var clr color.RGBA
 
 	if !iGetRenderDrawColor(renderer, &clr.R, &clr.G, &clr.B, &clr.A) {
-		return clr, lastError()
+		return clr, internal.LastErr()
 	}
 
 	return clr, nil
@@ -1924,7 +1926,7 @@ func (renderer *Renderer) RenderDrawBlendMode(blendMode *BlendMode) bool {
 
 func (renderer *Renderer) RenderClear() error {
 	if !iRenderClear(renderer) {
-		return lastError()
+		return internal.LastErr()
 	}
 	return nil
 }
@@ -1936,7 +1938,7 @@ func (renderer *Renderer) RenderPoint(x float32, y float32) bool {
 
 func (renderer *Renderer) RenderPoints(points []FPoint) error {
 	if !iRenderPoints(renderer, unsafe.SliceData(points), int32(len(points))) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1944,7 +1946,7 @@ func (renderer *Renderer) RenderPoints(points []FPoint) error {
 
 func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 float32) error {
 	if !iRenderLine(renderer, x1, y1, x2, y2) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1952,7 +1954,7 @@ func (renderer *Renderer) RenderLine(x1 float32, y1 float32, x2 float32, y2 floa
 
 func (renderer *Renderer) RenderLines(points []FPoint) error {
 	if !iRenderLines(renderer, unsafe.SliceData(points), int32(len(points))) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1960,7 +1962,7 @@ func (renderer *Renderer) RenderLines(points []FPoint) error {
 
 func (renderer *Renderer) RenderRect(rect *FRect) error {
 	if !iRenderRect(renderer, rect) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1968,7 +1970,7 @@ func (renderer *Renderer) RenderRect(rect *FRect) error {
 
 func (renderer *Renderer) RenderRects(rects []FRect) error {
 	if !iRenderRects(renderer, unsafe.SliceData(rects), int32(len(rects))) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1976,7 +1978,7 @@ func (renderer *Renderer) RenderRects(rects []FRect) error {
 
 func (renderer *Renderer) RenderFillRect(rect *FRect) error {
 	if !iRenderFillRect(renderer, rect) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1984,7 +1986,7 @@ func (renderer *Renderer) RenderFillRect(rect *FRect) error {
 
 func (renderer *Renderer) RenderFillRects(rects []FRect) error {
 	if !iRenderFillRects(renderer, unsafe.SliceData(rects), int32(len(rects))) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1992,7 +1994,7 @@ func (renderer *Renderer) RenderFillRects(rects []FRect) error {
 
 func (renderer *Renderer) RenderTexture(texture *Texture, srcrect *FRect, dstrect *FRect) error {
 	if !iRenderTexture(renderer, texture, srcrect, dstrect) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -2035,7 +2037,7 @@ func (renderer *Renderer) RenderReadPixels(rect *Rect) *Surface {
 
 func (renderer *Renderer) RenderPresent() error {
 	if !iRenderPresent(renderer) {
-		return lastError()
+		return internal.LastErr()
 	}
 	return nil
 }
@@ -2076,7 +2078,7 @@ func (renderer *Renderer) RenderVSync(vsync *int32) bool {
 
 func (renderer *Renderer) RenderDebugText(x float32, y float32, str string) error {
 	if !iRenderDebugText(renderer, x, y, str) {
-		return lastError()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -2821,7 +2823,7 @@ func (window *Window) Metal_CreateView() MetalView {
 func (window *Window) CreateRenderer(name string) (*Renderer, error) {
 	renderer := iCreateRenderer(window, name)
 	if renderer == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return renderer, nil
@@ -3549,7 +3551,7 @@ func (format PixelFormat) Masks(bpp *int32, Rmask *uint32, Gmask *uint32, Bmask 
 func (format PixelFormat) Details() (*PixelFormatDetails, error) {
 	details := iGetPixelFormatDetails(format)
 	if details == nil {
-		return nil, lastError()
+		return nil, internal.LastErr()
 	}
 
 	return details, nil
