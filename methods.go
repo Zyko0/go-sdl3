@@ -2023,9 +2023,12 @@ func (renderer *Renderer) RenderTexture9Grid(texture *Texture, srcrect *FRect, l
 	return iRenderTexture9Grid(renderer, texture, srcrect, left_width, right_width, top_height, bottom_height, scale, dstrect)
 }
 
-func (renderer *Renderer) RenderGeometry(texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool {
-	panic("not implemented")
-	return iRenderGeometry(renderer, texture, vertices, num_vertices, indices, num_indices)
+func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, indices []int32) error {
+	if !iRenderGeometry(renderer, texture, unsafe.SliceData(vertices), int32(len(vertices)), unsafe.SliceData(indices), int32(len(indices))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices *byte, num_indices int32, size_indices int32) bool {
