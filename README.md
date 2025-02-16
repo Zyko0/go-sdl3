@@ -26,7 +26,7 @@ import (
 )
 
 func main() {
-	sdl.LoadLibrary("SDL3.dll")
+	defer binsdl.Load().Unload() // sdl.LoadLibrary("SDL3.dll")
 
 	runtime.LockOSThread()
 
@@ -46,10 +46,7 @@ func main() {
 	defer renderer.Destroy()
 	defer window.Destroy()
 
-	err = renderer.SetRenderDrawColor(255, 255, 255, 255)
-	if err != nil {
-		panic(err)
-	}
+	renderer.SetRenderDrawColor(255, 255, 255, 255)
 
 	running := true
 	for running {

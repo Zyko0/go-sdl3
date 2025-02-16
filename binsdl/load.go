@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/internal"
 )
 
 type library struct {
@@ -13,7 +14,7 @@ type library struct {
 }
 
 func Load() library {
-	tmp, err := os.MkdirTemp("", "")
+	tmp, err := internal.TmpDir()
 	if err != nil {
 		log.Fatal("binary: couldn't create a temporary directory: " + err.Error())
 	}
@@ -39,8 +40,5 @@ func (l library) Unload() {
 	if err != nil {
 		log.Fatal("binary: couldn't close library: ", err.Error())
 	}
-	err = os.RemoveAll(l.dir)
-	if err != nil {
-		log.Fatal("binary: couldn't remove temporary directory "+l.dir+": ", err)
-	}
+	internal.RemoveTmpDir()
 }
