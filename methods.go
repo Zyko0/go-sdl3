@@ -1831,9 +1831,12 @@ func (renderer *Renderer) ConvertEventToRenderCoordinates(event *Event) bool {
 	return iConvertEventToRenderCoordinates(renderer, event)
 }
 
-func (renderer *Renderer) SetRenderViewport(rect *Rect) bool {
-	panic("not implemented")
-	return iSetRenderViewport(renderer, rect)
+func (renderer *Renderer) SetRenderViewport(rect *Rect) error {
+	if !iSetRenderViewport(renderer, rect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderViewport(rect *Rect) bool {
