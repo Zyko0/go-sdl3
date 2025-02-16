@@ -1,4 +1,4 @@
-// https://examples.libsdl.org/SDL3/renderer/08-rotating-textures/
+// https://examples.libsdl.org/SDL3/renderer/09-scaling-textures/
 
 package main
 
@@ -26,7 +26,7 @@ func main() {
 		panic(err)
 	}
 
-	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/08-rotating-textures", WindowWidth, WindowHeight, 0)
+	window, renderer, err := sdl.CreateWindowAndRenderer("examples/renderer/09-scaling-textures", WindowWidth, WindowHeight, 0)
 	if err != nil {
 		panic(err)
 	}
@@ -67,27 +67,29 @@ func main() {
 
 		// Rendering
 
-		var center sdl.FPoint
 		var dstRect sdl.FRect
 		now := sdl.GetTicks()
 
-		/* we'll have a texture rotate around over 2 seconds (2000 milliseconds). 360 degrees in a circle! */
-		rotation := float32(now%2000) / 2000 * 360
+		/* we'll have the texture grow and shrink over a few seconds. */
+		var direction float32
+		if now%2000 >= 1000 {
+			direction = 1
+		} else {
+			direction = -1
+		}
+		scale := (float32(int(now%1000)-500) / 500) * direction
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
 		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
 		renderer.RenderClear()                    /* start with a blank canvas. */
 
-		/* Center this one, and draw it with some rotation so it spins! */
-		dstRect.X = float32(WindowWidth-texture.W) / 2
-		dstRect.Y = float32(WindowHeight-texture.H) / 2
-		dstRect.W = float32(texture.W)
-		dstRect.H = float32(texture.H)
-		/* rotate it around the center of the texture; you can rotate it from a different point, too! */
-		center.X = float32(texture.W) / 2
-		center.Y = float32(texture.H) / 2
+		/* center this one and make it grow and shrink. */
+		dstRect.W = float32(texture.W) + float32(texture.W)*scale
+		dstRect.H = float32(texture.H) + float32(texture.H)*scale
+		dstRect.X = float32(WindowWidth-dstRect.W) / 2
+		dstRect.Y = float32(WindowHeight-dstRect.H) / 2
 
-		renderer.RenderTextureRotated(texture, nil, &dstRect, float64(rotation), &center, sdl.FLIP_NONE)
+		renderer.RenderTexture(texture, nil, &dstRect)
 
 		renderer.RenderPresent() /* put it all on the screen! */
 	}
