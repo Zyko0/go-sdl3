@@ -685,9 +685,12 @@ func (texture *Texture) ScaleMode(scaleMode *ScaleMode) bool {
 	return iGetTextureScaleMode(texture, scaleMode)
 }
 
-func (texture *Texture) Update(rect *Rect, pixels *byte, pitch int32) bool {
-	panic("not implemented")
-	//return iUpdateTexture(texture, rect, pixels, pitch)
+func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int32) error {
+	if !iUpdateTexture(texture, rect, uintptr(unsafe.Pointer(unsafe.SliceData(pixels))), pitch) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (texture *Texture) UpdateYUV(rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
@@ -718,7 +721,6 @@ func (texture *Texture) Unlock() {
 }
 
 func (texture *Texture) Destroy() {
-	panic("not implemented")
 	iDestroyTexture(texture)
 }
 
@@ -1050,9 +1052,13 @@ func (surface *Surface) Scale(width int32, height int32, scaleMode ScaleMode) *S
 	return iScaleSurface(surface, width, height, scaleMode)
 }
 
-func (surface *Surface) Convert(format PixelFormat) *Surface {
-	panic("not implemented")
-	return iConvertSurface(surface, format)
+func (surface *Surface) Convert(format PixelFormat) (*Surface, error) {
+	s := iConvertSurface(surface, format)
+	if s == nil {
+		return nil, internal.LastErr()
+	}
+
+	return s, nil
 }
 
 func (surface *Surface) ConvertAndColorspace(format PixelFormat, palette *Palette, colorspace Colorspace, props PropertiesID) *Surface {
@@ -2045,9 +2051,13 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_st
 	//return iRenderGeometryRaw(renderer, texture, xy, xy_stride, color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices)
 }
 
-func (renderer *Renderer) RenderReadPixels(rect *Rect) *Surface {
-	panic("not implemented")
-	return iRenderReadPixels(renderer, rect)
+func (renderer *Renderer) RenderReadPixels(rect *Rect) (*Surface, error) {
+	surface := iRenderReadPixels(renderer, rect)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
 }
 
 func (renderer *Renderer) RenderPresent() error {

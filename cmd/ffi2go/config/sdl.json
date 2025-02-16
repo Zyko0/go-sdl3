@@ -15,7 +15,8 @@
     ],
     "ignored_types": [
         "GamepadBinding",
-        "GUID"
+        "GUID",
+        "Surface"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",

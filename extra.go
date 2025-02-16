@@ -1,6 +1,10 @@
 package sdl
 
-import "unsafe"
+import (
+	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
+)
 
 // This file contains extra glue code for types and enums that couldn't be
 // generated automatically.
@@ -182,6 +186,24 @@ type HapticEffect struct {
 type HitTest uintptr // TODO: supposed to be a callback but can't find the signature
 
 type va_list uintptr // TODO: not done yet
+
+type Surface struct {
+	Flags    SurfaceFlags
+	Format   PixelFormat
+	W        int32
+	H        int32
+	Pitch    int32
+	pixels   *byte
+	Refcount int32
+	Reserved uintptr
+}
+
+func (s *Surface) Pixels() []byte {
+	return internal.PtrToSlice[byte](
+		uintptr(unsafe.Pointer(s.pixels)),
+		int(s.H*s.Pitch),
+	)
+}
 
 // Callback types
 

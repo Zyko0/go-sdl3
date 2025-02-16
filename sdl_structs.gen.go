@@ -125,17 +125,6 @@ type FRect struct {
 	H float32
 }
 
-type Surface struct {
-	Flags    SurfaceFlags
-	Format   PixelFormat
-	W        int32
-	H        int32
-	Pitch    int32
-	Pixels   uintptr
-	Refcount int32
-	Reserved uintptr
-}
-
 type Camera struct{}
 
 type CameraSpec struct {
