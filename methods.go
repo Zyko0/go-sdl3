@@ -1878,9 +1878,12 @@ func (renderer *Renderer) RenderClipEnabled() bool {
 	return iRenderClipEnabled(renderer)
 }
 
-func (renderer *Renderer) SetRenderScale(scaleX float32, scaleY float32) bool {
-	panic("not implemented")
-	return iSetRenderScale(renderer, scaleX, scaleY)
+func (renderer *Renderer) SetRenderScale(scaleX, scaleY float32) error {
+	if !iSetRenderScale(renderer, scaleX, scaleY) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderScale(scaleX *float32, scaleY *float32) bool {
