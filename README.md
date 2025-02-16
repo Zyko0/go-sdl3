@@ -42,7 +42,7 @@ import (
 )
 
 func main() {
-	defer binsdl.Load().Unload() // sdl.LoadLibrary("SDL3.dll")
+	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
 
 	runtime.LockOSThread()
 
@@ -62,7 +62,7 @@ func main() {
 	defer renderer.Destroy()
 	defer window.Destroy()
 
-	renderer.SetRenderDrawColor(255, 255, 255, 255)
+	renderer.SetDrawColor(255, 255, 255, 255)
 
 	running := true
 	for running {
@@ -74,8 +74,8 @@ func main() {
 			}
 		}
 
-		renderer.RenderDebugText(50, 50, "Hello world")
-		renderer.RenderPresent()
+		renderer.DebugText(50, 50, "Hello world")
+		renderer.Present()
 	}
 }
 ```

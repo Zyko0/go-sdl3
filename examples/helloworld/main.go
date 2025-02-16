@@ -28,10 +28,7 @@ func main() {
 	defer renderer.Destroy()
 	defer window.Destroy()
 
-	err = renderer.SetDrawColor(255, 255, 255, 255)
-	if err != nil {
-		panic(err)
-	}
+	renderer.SetDrawColor(255, 255, 255, 255)
 
 	running := true
 	for running {
@@ -43,7 +40,7 @@ func main() {
 			}
 		}
 
-		renderer.RenderDebugText(50, 50, "Hello world")
+		renderer.DebugText(50, 50, "Hello world")
 		renderer.Present()
 	}
 }

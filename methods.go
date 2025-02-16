@@ -2146,7 +2146,7 @@ func (renderer *Renderer) RenderVSync(vsync *int32) bool {
 	return iGetRenderVSync(renderer, vsync)
 }
 
-func (renderer *Renderer) RenderDebugText(x float32, y float32, str string) error {
+func (renderer *Renderer) DebugText(x float32, y float32, str string) error {
 	if !iRenderDebugText(renderer, x, y, str) {
 		return internal.LastErr()
 	}
@@ -2154,7 +2154,7 @@ func (renderer *Renderer) RenderDebugText(x float32, y float32, str string) erro
 	return nil
 }
 
-func (renderer *Renderer) RenderDebugTextFormat(x float32, y float32, format string, values ...any) bool {
+func (renderer *Renderer) DebugTextFormat(x float32, y float32, format string, values ...any) bool {
 	return iRenderDebugText(renderer, x, y, fmt.Sprintf(format, values...))
 }
 
