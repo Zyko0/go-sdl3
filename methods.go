@@ -1854,9 +1854,12 @@ func (renderer *Renderer) RenderSafeArea(rect *Rect) bool {
 	return iGetRenderSafeArea(renderer, rect)
 }
 
-func (renderer *Renderer) SetRenderClipRect(rect *Rect) bool {
-	panic("not implemented")
-	return iSetRenderClipRect(renderer, rect)
+func (renderer *Renderer) SetRenderClipRect(rect *Rect) error {
+	if !iSetRenderClipRect(renderer, rect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderClipRect(rect *Rect) bool {
