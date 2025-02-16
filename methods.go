@@ -627,9 +627,12 @@ func (texture *Texture) SetColorMod(r uint8, g uint8, b uint8) bool {
 	return iSetTextureColorMod(texture, r, g, b)
 }
 
-func (texture *Texture) SetColorModFloat(r float32, g float32, b float32) bool {
-	panic("not implemented")
-	return iSetTextureColorModFloat(texture, r, g, b)
+func (texture *Texture) SetColorModFloat(r float32, g float32, b float32) error {
+	if !iSetTextureColorModFloat(texture, r, g, b) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (texture *Texture) ColorMod(r *uint8, g *uint8, b *uint8) bool {
