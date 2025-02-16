@@ -1,4 +1,4 @@
-// https://examples.libsdl.org/SDL3/renderer/06-streaming-textures/
+// https://examples.libsdl.org/SDL3/renderer/07-streaming-textures/
 
 package main
 

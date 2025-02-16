@@ -2000,9 +2000,12 @@ func (renderer *Renderer) RenderTexture(texture *Texture, srcrect *FRect, dstrec
 	return nil
 }
 
-func (renderer *Renderer) RenderTextureRotated(texture *Texture, srcrect *FRect, dstrect *FRect, angle float64, center *FPoint, flip FlipMode) bool {
-	panic("not implemented")
-	return iRenderTextureRotated(renderer, texture, srcrect, dstrect, angle, center, flip)
+func (renderer *Renderer) RenderTextureRotated(texture *Texture, srcrect *FRect, dstrect *FRect, angle float64, center *FPoint, flip FlipMode) error {
+	if !iRenderTextureRotated(renderer, texture, srcrect, dstrect, angle, center, flip) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderTextureAffine(texture *Texture, srcrect *FRect, origin *FPoint, right *FPoint, down *FPoint) bool {
