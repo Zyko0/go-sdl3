@@ -15,11 +15,11 @@ type DrawOperation struct {
 }
 
 func (d *DrawOperation) CopyOperation() *CopyOperation {
-	return *(**CopyOperation)(unsafe.Pointer(&d))
+	return (*CopyOperation)(unsafe.Pointer(d))
 }
 
 func (d *DrawOperation) FillOperation() *FillOperation {
-	return *(**FillOperation)(unsafe.Pointer(&d))
+	return (*FillOperation)(unsafe.Pointer(d))
 }
 
 type TextData struct {
@@ -42,8 +42,18 @@ type TextData struct {
 }
 
 type TextEngine struct {
-	Version     uint32
-	Userdata    uintptr
-	CreateText  uintptr
-	DestroyText uintptr
+	Version         uint32
+	Userdata        uintptr
+	CreateTextFunc  uintptr
+	DestroyTextFunc uintptr
+}
+
+// Custom
+
+type GlyphMetrics struct {
+	MinX    int32
+	MaxX    int32
+	MinY    int32
+	MaxY    int32
+	Advance int32
 }

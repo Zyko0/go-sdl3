@@ -38,143 +38,143 @@ type Event struct {
 }
 
 func (e *Event) CommonEvent() *CommonEvent {
-	return *(**CommonEvent)(unsafe.Pointer(&e))
+	return (*CommonEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) DisplayEvent() *DisplayEvent {
-	return *(**DisplayEvent)(unsafe.Pointer(&e))
+	return (*DisplayEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) WindowEvent() *WindowEvent {
-	return *(**WindowEvent)(unsafe.Pointer(&e))
+	return (*WindowEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) KeyboardDeviceEvent() *KeyboardDeviceEvent {
-	return *(**KeyboardDeviceEvent)(unsafe.Pointer(&e))
+	return (*KeyboardDeviceEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) KeyboardEvent() *KeyboardEvent {
-	return *(**KeyboardEvent)(unsafe.Pointer(&e))
+	return (*KeyboardEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) TextEditingEvent() *TextEditingEvent {
-	return *(**TextEditingEvent)(unsafe.Pointer(&e))
+	return (*TextEditingEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) TextEditingCandidatesEvent() *TextEditingCandidatesEvent {
-	return *(**TextEditingCandidatesEvent)(unsafe.Pointer(&e))
+	return (*TextEditingCandidatesEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) TextInputEvent() *TextInputEvent {
-	return *(**TextInputEvent)(unsafe.Pointer(&e))
+	return (*TextInputEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) MouseMotionEvent() *MouseMotionEvent {
-	return *(**MouseMotionEvent)(unsafe.Pointer(&e))
+	return (*MouseMotionEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) MouseButtonEvent() *MouseButtonEvent {
-	return *(**MouseButtonEvent)(unsafe.Pointer(&e))
+	return (*MouseButtonEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) MouseWheelEvent() *MouseWheelEvent {
-	return *(**MouseWheelEvent)(unsafe.Pointer(&e))
+	return (*MouseWheelEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) JoyAxisEvent() *JoyAxisEvent {
-	return *(**JoyAxisEvent)(unsafe.Pointer(&e))
+	return (*JoyAxisEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) JoyBallEvent() *JoyBallEvent {
-	return *(**JoyBallEvent)(unsafe.Pointer(&e))
+	return (*JoyBallEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) JoyHatEvent() *JoyHatEvent {
-	return *(**JoyHatEvent)(unsafe.Pointer(&e))
+	return (*JoyHatEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) JoyButtonEvent() *JoyButtonEvent {
-	return *(**JoyButtonEvent)(unsafe.Pointer(&e))
+	return (*JoyButtonEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) JoyDeviceEvent() *JoyDeviceEvent {
-	return *(**JoyDeviceEvent)(unsafe.Pointer(&e))
+	return (*JoyDeviceEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) GamepadAxisEvent() *GamepadAxisEvent {
-	return *(**GamepadAxisEvent)(unsafe.Pointer(&e))
+	return (*GamepadAxisEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) GamepadButtonEvent() *GamepadButtonEvent {
-	return *(**GamepadButtonEvent)(unsafe.Pointer(&e))
+	return (*GamepadButtonEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) GamepadDeviceEvent() *GamepadDeviceEvent {
-	return *(**GamepadDeviceEvent)(unsafe.Pointer(&e))
+	return (*GamepadDeviceEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) GamepadTouchpadEvent() *GamepadTouchpadEvent {
-	return *(**GamepadTouchpadEvent)(unsafe.Pointer(&e))
+	return (*GamepadTouchpadEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) GamepadSensorEvent() *GamepadSensorEvent {
-	return *(**GamepadSensorEvent)(unsafe.Pointer(&e))
+	return (*GamepadSensorEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) AudioDeviceEvent() *AudioDeviceEvent {
-	return *(**AudioDeviceEvent)(unsafe.Pointer(&e))
+	return (*AudioDeviceEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) CameraDeviceEvent() *CameraDeviceEvent {
-	return *(**CameraDeviceEvent)(unsafe.Pointer(&e))
+	return (*CameraDeviceEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) RenderEvent() *RenderEvent {
-	return *(**RenderEvent)(unsafe.Pointer(&e))
+	return (*RenderEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) TouchFingerEvent() *TouchFingerEvent {
-	return *(**TouchFingerEvent)(unsafe.Pointer(&e))
+	return (*TouchFingerEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) PenProximityEvent() *PenProximityEvent {
-	return *(**PenProximityEvent)(unsafe.Pointer(&e))
+	return (*PenProximityEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) PenMotionEvent() *PenMotionEvent {
-	return *(**PenMotionEvent)(unsafe.Pointer(&e))
+	return (*PenMotionEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) PenTouchEvent() *PenTouchEvent {
-	return *(**PenTouchEvent)(unsafe.Pointer(&e))
+	return (*PenTouchEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) PenButtonEvent() *PenButtonEvent {
-	return *(**PenButtonEvent)(unsafe.Pointer(&e))
+	return (*PenButtonEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) PenAxisEvent() *PenAxisEvent {
-	return *(**PenAxisEvent)(unsafe.Pointer(&e))
+	return (*PenAxisEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) DropEvent() *DropEvent {
-	return *(**DropEvent)(unsafe.Pointer(&e))
+	return (*DropEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) ClipboardEvent() *ClipboardEvent {
-	return *(**ClipboardEvent)(unsafe.Pointer(&e))
+	return (*ClipboardEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) SensorEvent() *SensorEvent {
-	return *(**SensorEvent)(unsafe.Pointer(&e))
+	return (*SensorEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) QuitEvent() *QuitEvent {
-	return *(**QuitEvent)(unsafe.Pointer(&e))
+	return (*QuitEvent)(unsafe.Pointer(e))
 }
 
 func (e *Event) UserEvent() *UserEvent {
-	return *(**UserEvent)(unsafe.Pointer(&e))
+	return (*UserEvent)(unsafe.Pointer(e))
 }
 
 // TODO: union type

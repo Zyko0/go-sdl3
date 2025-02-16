@@ -73,12 +73,16 @@ func main() {
 										switch xt := ft.X.(type) {
 										case *ast.StarExpr:
 											typ = fmt.Sprintf("**%v", xt.X)
+										case *ast.SelectorExpr:
+											typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
 										default:
 											raw := fmt.Sprintf("%v", xt)
 											typ = "*" + raw
 										}
 									case *ast.SliceExpr:
 										typ = fmt.Sprintf("[]%v", ft.X)
+									case *ast.SelectorExpr:
+										typ = fmt.Sprintf("%v.%v", ft.X, ft.Sel)
 									}
 									fn.Return = &FuncArg{
 										Type: typ,
@@ -93,6 +97,8 @@ func main() {
 										switch xt := ft.X.(type) {
 										case *ast.StarExpr:
 											typ = fmt.Sprintf("**%v", xt.X)
+										case *ast.SelectorExpr:
+											typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
 										default:
 											raw := fmt.Sprintf("%v", xt)
 											typ = "*" + raw
@@ -105,6 +111,8 @@ func main() {
 										}
 									case *ast.SliceExpr:
 										typ = fmt.Sprintf("[]%v", ft.X)
+									case *ast.SelectorExpr:
+										typ = fmt.Sprintf("*%v.%v", ft.X, ft.Sel)
 									default:
 										if i == 0 && typ[0] >= 'A' && typ[0] <= 'Z' {
 											fn.Receiver = &FuncArg{
@@ -131,12 +139,6 @@ func main() {
 		}
 		return true
 	})
-
-	count := 0
-	for _, funcs := range funcsByReceiver {
-		count += len(funcs)
-	}
-	fmt.Println("count:", len(funcsByReceiver), "total methods:", count)
 
 	f := jen.NewFile(libraryName)
 	for receiver, funcs := range funcsByReceiver {
