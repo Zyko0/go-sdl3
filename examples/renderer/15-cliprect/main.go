@@ -42,7 +42,7 @@ func main() {
 		X: 1,
 		Y: 1,
 	}
-	lastTime := sdl.GetTicks()
+	lastTime := sdl.Ticks()
 
 	/* Textures are pixel data that we upload to the video hardware for fast drawing. Lots of 2D
 	   engines refer to these as "sprites." We'll do a static texture (upload once, draw many
@@ -84,7 +84,7 @@ func main() {
 			W: ClipRectSize,
 			H: ClipRectSize,
 		}
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 		elapsed := float32(now-lastTime) / 1000 /* seconds since last iteration */
 		distance := elapsed * ClipRectSpeed
 
@@ -106,20 +106,20 @@ func main() {
 			clipRectPosition.Y = (WindowHeight - ClipRectSize) - 1
 			clipRectDirection.Y = -1
 		}
-		renderer.SetRenderClipRect(&cliprect)
+		renderer.SetClipRect(&cliprect)
 
 		lastTime = now
 
 		/* okay, now draw! */
 
 		/* Note that SDL_RenderClear is _not_ affected by the clipping rectangle! */
-		renderer.SetRenderDrawColor(33, 33, 33, 255) /* grey, full alpha */
-		renderer.RenderClear()                       /* start with a blank canvas. */
+		renderer.SetDrawColor(33, 33, 33, 255) /* grey, full alpha */
+		renderer.Clear()                       /* start with a blank canvas. */
 
 		/* stretch the texture across the entire window. Only the piece in the
 		   clipping rectangle will actually render, though! */
 		renderer.RenderTexture(texture, nil, nil)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

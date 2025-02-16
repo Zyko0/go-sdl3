@@ -67,7 +67,7 @@ func main() {
 
 		// Rendering
 
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 
 		/* we'll have the texture grow and shrink over a few seconds. */
 		var direction float32
@@ -82,8 +82,8 @@ func main() {
 		var vertices [4]sdl.Vertex
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* Draw a single triangle with a different color at each vertex. Center this one and make it grow and shrink. */
 		/* You always draw triangles with this, but you can string triangles together to form polygons. */
@@ -155,6 +155,6 @@ func main() {
 		indices := []int32{0, 1, 2, 1, 2, 3}
 		renderer.RenderGeometry(texture, vertices[:], indices)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

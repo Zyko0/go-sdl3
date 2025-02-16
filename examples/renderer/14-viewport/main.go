@@ -80,15 +80,15 @@ func main() {
 		   window. It does _not_ scale rendering to fit the viewport. */
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* Draw once with the whole window as the viewport. */
 		viewport.X = 0
 		viewport.Y = 0
 		viewport.W = WindowWidth / 2
 		viewport.H = WindowHeight / 2
-		renderer.SetRenderViewport(nil) /* NULL means "use the whole window" */
+		renderer.SetViewport(nil) /* NULL means "use the whole window" */
 		renderer.RenderTexture(texture, nil, &dstRect)
 
 		/* top right quarter of the window. */
@@ -96,7 +96,7 @@ func main() {
 		viewport.Y = WindowHeight / 2
 		viewport.W = WindowWidth / 2
 		viewport.H = WindowHeight / 2
-		renderer.SetRenderViewport(&viewport)
+		renderer.SetViewport(&viewport)
 		renderer.RenderTexture(texture, nil, &dstRect)
 
 		/* bottom 20% of the window. Note it clips the width! */
@@ -104,7 +104,7 @@ func main() {
 		viewport.Y = WindowHeight - (WindowHeight / 5)
 		viewport.W = WindowWidth / 5
 		viewport.H = WindowHeight / 5
-		renderer.SetRenderViewport(&viewport)
+		renderer.SetViewport(&viewport)
 		renderer.RenderTexture(texture, nil, &dstRect)
 
 		/* what happens if you try to draw above the viewport? It should clip! */
@@ -112,10 +112,10 @@ func main() {
 		viewport.Y = 200
 		viewport.W = WindowWidth
 		viewport.H = WindowHeight
-		renderer.SetRenderViewport(&viewport)
+		renderer.SetViewport(&viewport)
 		dstRect.Y = -50
 		renderer.RenderTexture(texture, nil, &dstRect)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

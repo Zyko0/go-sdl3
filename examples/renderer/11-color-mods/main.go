@@ -69,15 +69,15 @@ func main() {
 		// Rendering
 
 		var dstRect sdl.FRect
-		now := float64(sdl.GetTicks()) / 1000 /* convert from milliseconds to seconds. */
+		now := float64(sdl.Ticks()) / 1000 /* convert from milliseconds to seconds. */
 		/* choose the modulation values for the center texture. The sine wave trick makes it fade between colors smoothly. */
 		red := float32(0.5 + 0.5*math.Sin(now))
 		green := float32(0.5 + 0.5*math.Sin(now+math.Pi*2/3))
 		blue := float32(0.5 + 0.5*math.Sin(now+math.Pi*4/3))
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* Just draw the static texture a few times. You can think of it like a
 		   stamp, there isn't a limit to the number of times you can draw with it. */
@@ -110,6 +110,6 @@ func main() {
 		texture.SetColorModFloat(1, 0, 0) /* kill all green and blue. */
 		renderer.RenderTexture(texture, nil, &dstRect)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

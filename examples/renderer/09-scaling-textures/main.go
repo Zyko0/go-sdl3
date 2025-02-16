@@ -68,7 +68,7 @@ func main() {
 		// Rendering
 
 		var dstRect sdl.FRect
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 
 		/* we'll have the texture grow and shrink over a few seconds. */
 		var direction float32
@@ -80,8 +80,8 @@ func main() {
 		scale := (float32(int(now%1000)-500) / 500) * direction
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* center this one and make it grow and shrink. */
 		dstRect.W = float32(texture.W) + float32(texture.W)*scale
@@ -91,6 +91,6 @@ func main() {
 
 		renderer.RenderTexture(texture, nil, &dstRect)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

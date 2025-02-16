@@ -10,7 +10,7 @@ on the documentation.
 package sdl
 
 import (
-	"image/color"
+	"fmt"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -1754,13 +1754,16 @@ func (renderer *Renderer) RenderWindow() *Window {
 	return iGetRenderWindow(renderer)
 }
 
-func (renderer *Renderer) Name() string {
-	panic("not implemented")
-	return iGetRendererName(renderer)
+func (renderer *Renderer) Name() (string, error) {
+	name := iGetRendererName(renderer)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 func (renderer *Renderer) Properties() PropertiesID {
-	panic("not implemented")
 	return iGetRendererProperties(renderer)
 }
 
@@ -1837,7 +1840,7 @@ func (renderer *Renderer) ConvertEventToRenderCoordinates(event *Event) bool {
 	return iConvertEventToRenderCoordinates(renderer, event)
 }
 
-func (renderer *Renderer) SetRenderViewport(rect *Rect) error {
+func (renderer *Renderer) SetViewport(rect *Rect) error {
 	if !iSetRenderViewport(renderer, rect) {
 		return internal.LastErr()
 	}
@@ -1845,22 +1848,31 @@ func (renderer *Renderer) SetRenderViewport(rect *Rect) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderViewport(rect *Rect) bool {
-	panic("not implemented")
-	return iGetRenderViewport(renderer, rect)
+func (renderer *Renderer) Viewport() (Rect, error) {
+	var r Rect
+
+	if !iGetRenderViewport(renderer, &r) {
+		return r, internal.LastErr()
+	}
+
+	return r, nil
 }
 
-func (renderer *Renderer) RenderViewportSet() bool {
-	panic("not implemented")
+func (renderer *Renderer) ViewportSet() bool {
 	return iRenderViewportSet(renderer)
 }
 
-func (renderer *Renderer) RenderSafeArea(rect *Rect) bool {
-	panic("not implemented")
-	return iGetRenderSafeArea(renderer, rect)
+func (renderer *Renderer) SafeArea() (Rect, error) {
+	var r Rect
+
+	if !iGetRenderSafeArea(renderer, &r) {
+		return r, internal.LastErr()
+	}
+
+	return r, nil
 }
 
-func (renderer *Renderer) SetRenderClipRect(rect *Rect) error {
+func (renderer *Renderer) SetClipRect(rect *Rect) error {
 	if !iSetRenderClipRect(renderer, rect) {
 		return internal.LastErr()
 	}
@@ -1868,17 +1880,25 @@ func (renderer *Renderer) SetRenderClipRect(rect *Rect) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderClipRect(rect *Rect) bool {
-	panic("not implemented")
-	return iGetRenderClipRect(renderer, rect)
+func (renderer *Renderer) ClipRect() (Rect, error) {
+	var r Rect
+
+	if !iGetRenderClipRect(renderer, &r) {
+		return r, internal.LastErr()
+	}
+
+	return r, nil
 }
 
-func (renderer *Renderer) RenderClipEnabled() bool {
-	panic("not implemented")
-	return iRenderClipEnabled(renderer)
+func (renderer *Renderer) ClipEnabled() error {
+	if !iRenderClipEnabled(renderer) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (renderer *Renderer) SetRenderScale(scaleX, scaleY float32) error {
+func (renderer *Renderer) SetScale(scaleX, scaleY float32) error {
 	if !iSetRenderScale(renderer, scaleX, scaleY) {
 		return internal.LastErr()
 	}
@@ -1886,12 +1906,17 @@ func (renderer *Renderer) SetRenderScale(scaleX, scaleY float32) error {
 	return nil
 }
 
-func (renderer *Renderer) RenderScale(scaleX *float32, scaleY *float32) bool {
-	panic("not implemented")
-	return iGetRenderScale(renderer, scaleX, scaleY)
+func (renderer *Renderer) Scale() (float32, float32, error) {
+	var scaleX, scaleY float32
+
+	if !iGetRenderScale(renderer, &scaleX, &scaleY) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return scaleX, scaleY, nil
 }
 
-func (renderer *Renderer) SetRenderDrawColor(r, g, b, a uint8) error {
+func (renderer *Renderer) SetDrawColor(r, g, b, a uint8) error {
 	if !iSetRenderDrawColor(renderer, r, g, b, a) {
 		return internal.LastErr()
 	}
@@ -1899,7 +1924,7 @@ func (renderer *Renderer) SetRenderDrawColor(r, g, b, a uint8) error {
 	return nil
 }
 
-func (renderer *Renderer) SetRenderDrawColorFloat(r float32, g float32, b float32, a float32) error {
+func (renderer *Renderer) SetDrawColorFloat(r, g, b, a float32) error {
 	if !iSetRenderDrawColorFloat(renderer, r, g, b, a) {
 		return internal.LastErr()
 	}
@@ -1907,8 +1932,8 @@ func (renderer *Renderer) SetRenderDrawColorFloat(r float32, g float32, b float3
 	return nil
 }
 
-func (renderer *Renderer) RenderDrawColor(r *uint8, g *uint8, b *uint8, a *uint8) (color.RGBA, error) {
-	var clr color.RGBA
+func (renderer *Renderer) DrawColor() (Color, error) {
+	var clr Color
 
 	if !iGetRenderDrawColor(renderer, &clr.R, &clr.G, &clr.B, &clr.A) {
 		return clr, internal.LastErr()
@@ -1917,19 +1942,32 @@ func (renderer *Renderer) RenderDrawColor(r *uint8, g *uint8, b *uint8, a *uint8
 	return clr, nil
 }
 
-func (renderer *Renderer) RenderDrawColorFloat(r *float32, g *float32, b *float32, a *float32) bool {
-	panic("not implemented")
-	return iGetRenderDrawColorFloat(renderer, r, g, b, a)
+func (renderer *Renderer) DrawColorFloat() (FColor, error) {
+	var clr FColor
+
+	if !iGetRenderDrawColorFloat(renderer, &clr.R, &clr.G, &clr.B, &clr.A) {
+		return clr, internal.LastErr()
+	}
+
+	return clr, nil
 }
 
-func (renderer *Renderer) SetRenderColorScale(scale float32) bool {
-	panic("not implemented")
-	return iSetRenderColorScale(renderer, scale)
+func (renderer *Renderer) SetColorScale(scale float32) error {
+	if !iSetRenderColorScale(renderer, scale) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (renderer *Renderer) RenderColorScale(scale *float32) bool {
-	panic("not implemented")
-	return iGetRenderColorScale(renderer, scale)
+func (renderer *Renderer) ColorScale() (float32, error) {
+	var scale float32
+
+	if !iGetRenderColorScale(renderer, &scale) {
+		return 0, internal.LastErr()
+	}
+
+	return scale, nil
 }
 
 func (renderer *Renderer) SetRenderDrawBlendMode(blendMode BlendMode) bool {
@@ -1942,7 +1980,7 @@ func (renderer *Renderer) RenderDrawBlendMode(blendMode *BlendMode) bool {
 	return iGetRenderDrawBlendMode(renderer, blendMode)
 }
 
-func (renderer *Renderer) RenderClear() error {
+func (renderer *Renderer) Clear() error {
 	if !iRenderClear(renderer) {
 		return internal.LastErr()
 	}
@@ -2054,7 +2092,7 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_st
 	//return iRenderGeometryRaw(renderer, texture, xy, xy_stride, color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices)
 }
 
-func (renderer *Renderer) RenderReadPixels(rect *Rect) (*Surface, error) {
+func (renderer *Renderer) ReadPixels(rect *Rect) (*Surface, error) {
 	surface := iRenderReadPixels(renderer, rect)
 	if surface == nil {
 		return nil, internal.LastErr()
@@ -2063,10 +2101,11 @@ func (renderer *Renderer) RenderReadPixels(rect *Rect) (*Surface, error) {
 	return surface, nil
 }
 
-func (renderer *Renderer) RenderPresent() error {
+func (renderer *Renderer) Present() error {
 	if !iRenderPresent(renderer) {
 		return internal.LastErr()
 	}
+
 	return nil
 }
 
@@ -2074,9 +2113,12 @@ func (renderer *Renderer) Destroy() {
 	iDestroyRenderer(renderer)
 }
 
-func (renderer *Renderer) Flush() bool {
-	panic("not implemented")
-	return iFlushRenderer(renderer)
+func (renderer *Renderer) Flush() error {
+	if !iFlushRenderer(renderer) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (renderer *Renderer) RenderMetalLayer() *byte {
@@ -2112,8 +2154,8 @@ func (renderer *Renderer) RenderDebugText(x float32, y float32, str string) erro
 	return nil
 }
 
-func (renderer *Renderer) RenderDebugTextFormat(x float32, y float32, fmt string) bool {
-	return iRenderDebugTextFormat(renderer, x, y, fmt)
+func (renderer *Renderer) RenderDebugTextFormat(x float32, y float32, format string, values ...any) bool {
+	return iRenderDebugText(renderer, x, y, fmt.Sprintf(format, values...))
 }
 
 // DateFormat

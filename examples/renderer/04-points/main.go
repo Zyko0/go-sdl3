@@ -50,7 +50,7 @@ func main() {
 		pointSpeeds[i] = MinPixelsPerSecond + rand.Float32()*(MaxPixelsPerSecond-MinPixelsPerSecond)
 	}
 
-	lastTime = sdl.GetTicks()
+	lastTime = sdl.Ticks()
 
 	running := true
 	for running {
@@ -64,7 +64,7 @@ func main() {
 
 		// Rendering
 
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 		elapsed := float32(now-lastTime) / 1000
 
 		/* let's move all our points a little for a new frame. */
@@ -88,14 +88,14 @@ func main() {
 		lastTime = now
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255)       /* black, full alpha */
-		renderer.RenderClear()                          /* start with a blank canvas. */
-		renderer.SetRenderDrawColor(255, 255, 255, 255) /* white, full alpha */
-		renderer.RenderPoints(points[:])                /* draw all the points! */
+		renderer.SetDrawColor(0, 0, 0, 255)       /* black, full alpha */
+		renderer.Clear()                          /* start with a blank canvas. */
+		renderer.SetDrawColor(255, 255, 255, 255) /* white, full alpha */
+		renderer.RenderPoints(points[:])          /* draw all the points! */
 
 		/* You can also draw single points with SDL_RenderPoint(), but it's
 		   cheaper (sometimes significantly so) to do them all at once. */
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

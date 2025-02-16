@@ -52,7 +52,7 @@ func main() {
 		// Rendering
 
 		var dstRect sdl.FRect
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 		var surface *sdl.Surface
 
 		/* we'll have some color move around over a few seconds. */
@@ -87,8 +87,8 @@ func main() {
 		}
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(66, 66, 66, 255) /* grey, full alpha */
-		renderer.RenderClear()                       /* start with a blank canvas. */
+		renderer.SetDrawColor(66, 66, 66, 255) /* grey, full alpha */
+		renderer.Clear()                       /* start with a blank canvas. */
 
 		/* Just draw the static texture a few times. You can think of it like a
 		   stamp, there isn't a limit to the number of times you can draw with it. */
@@ -99,6 +99,6 @@ func main() {
 		dstRect.W, dstRect.H = TextureSize, TextureSize
 		renderer.RenderTexture(texture, nil, &dstRect)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

@@ -6,7 +6,7 @@ import "github.com/Zyko0/go-sdl3/internal"
 
 // TODO:
 
-func GetTicks() uint64 {
+func Ticks() uint64 {
 	return iGetTicks()
 }
 

@@ -69,14 +69,14 @@ func main() {
 
 		var center sdl.FPoint
 		var dstRect sdl.FRect
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 
 		/* we'll have a texture rotate around over 2 seconds (2000 milliseconds). 360 degrees in a circle! */
 		rotation := float32(now%2000) / 2000 * 360
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* Center this one, and draw it with some rotation so it spins! */
 		dstRect.X = float32(WindowWidth-texture.W) / 2
@@ -89,6 +89,6 @@ func main() {
 
 		renderer.RenderTextureRotated(texture, nil, &dstRect, float64(rotation), &center, sdl.FLIP_NONE)
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }

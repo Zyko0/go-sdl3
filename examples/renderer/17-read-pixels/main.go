@@ -70,7 +70,7 @@ func main() {
 
 		// Rendering
 
-		now := sdl.GetTicks()
+		now := sdl.Ticks()
 		var center sdl.FPoint
 		var dstRect sdl.FRect
 
@@ -78,8 +78,8 @@ func main() {
 		rotation := float64(now%2000) / 2000 * 360
 
 		/* as you can see from this, rendering draws over whatever was drawn before it. */
-		renderer.SetRenderDrawColor(0, 0, 0, 255) /* black, full alpha */
-		renderer.RenderClear()                    /* start with a blank canvas. */
+		renderer.SetDrawColor(0, 0, 0, 255) /* black, full alpha */
+		renderer.Clear()                    /* start with a blank canvas. */
 
 		/* Center this one, and draw it with some rotation so it spins! */
 		dstRect.X = float32(WindowWidth-texture.W) / 2
@@ -95,7 +95,7 @@ func main() {
 
 		/* Download the pixels of what has just been rendered. This has to wait for the GPU to finish rendering it and everything before it,
 		   and then make an expensive copy from the GPU to system RAM! */
-		surface, _ = renderer.RenderReadPixels(nil)
+		surface, _ = renderer.ReadPixels(nil)
 
 		/* This is also expensive, but easier: convert the pixels to a format we want. */
 		if surface != nil && surface.Format != sdl.PIXELFORMAT_RGBA8888 && surface.Format != sdl.PIXELFORMAT_BGRA8888 {
@@ -154,6 +154,6 @@ func main() {
 			renderer.RenderTexture(convertedTexture, nil, &dstRect)
 		}
 
-		renderer.RenderPresent() /* put it all on the screen! */
+		renderer.Present() /* put it all on the screen! */
 	}
 }
