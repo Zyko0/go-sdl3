@@ -1,4 +1,4 @@
-package binary
+package binsdl
 
 import (
 	"log"
@@ -18,7 +18,7 @@ func Load() library {
 		log.Fatal("binary: couldn't create a temporary directory: " + err.Error())
 	}
 
-	sdlPath := filepath.Join(tmp, "sdl.a")
+	sdlPath := filepath.Join(tmp, sdlLibName)
 	err = os.WriteFile(sdlPath, sdlBlob, 0666)
 	if err != nil {
 		log.Fatal("binary: couldn't write sdl library to disk: " + err.Error())

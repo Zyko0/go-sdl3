@@ -1,6 +1,6 @@
 //go:build windows
 
-package binary
+package binsdl
 
 import (
 	_ "embed"
@@ -8,5 +8,6 @@ import (
 
 var (
 	//go:embed assets/sdl.dll
-	sdlBlob []byte
+	sdlBlob    []byte
+	sdlLibName = "sdl.dll"
 )

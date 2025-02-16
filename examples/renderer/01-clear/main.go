@@ -7,11 +7,11 @@ import (
 	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
-	"github.com/Zyko0/go-sdl3/binary"
+	"github.com/Zyko0/go-sdl3/binsdl"
 )
 
 func main() {
-	defer binary.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
+	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
 
 	runtime.LockOSThread()
 
