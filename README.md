@@ -4,18 +4,33 @@
 
 [SDL3](https://wiki.libsdl.org/SDL3/FrontPage) bindings for Go in pure Go (thanks to [ebitengine/purego](https://github.com/ebitengine/purego)).
 
-# Status
+## Status
 
 > [!NOTE]
 > The API is currently subject to many changes / refactors, many method functions are also exposed but not implemented yet (need human validation).
 
-- Only tested on Windows at the moment.
+- Tested on Windows and Ubuntu at the moment.
 - A lot of methods from [methods.go](methods.go) still `panic`, because they need to be refactored as idiomatic Go, and checked against documentation (necessity of `SDL_free()`, `error` return for example).
 - Other functions might simply not be exposed, but most likely [generated](sdl_functions.gen_impl.go).
 - Help is appreciated! (see [CONTRIBUTE.md](CONTRIBUTE.md).)
 
-# Usage
+## Usage
 
+The library is linked dynamically with [purego](https://github.com/ebitengine/purego) (does not require CGo).
+- Automatic
+
+If the platform is supported (if a binary exists for it), the code below will write the library to a temporary folder, and remove it when the `main` function returns.
+```go
+defer binsdl.Load().Unload()
+```
+- Manual
+
+The binary is already installed and/or its location is known (e.g: same folder), so it can be loaded by its path.
+```go
+sdl.LoadLibrary("SDL3.dll") // "libSDL3.so", "libSDL3.dylib"
+```
+
+Example:
 ```go
 package main
 
@@ -23,6 +38,7 @@ import (
 	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/binsdl"
 )
 
 func main() {
@@ -63,3 +79,14 @@ func main() {
 	}
 }
 ```
+
+## Examples
+
+The [examples](./examples/) folder contains the offical examples that can be found here https://examples.libsdl.org/SDL3, and a few more.
+
+## Libraries
+
+- SDL3
+- SDL3_ttf (TBD)
+- SDL3_mixer (TBD)
+- SDL3_shadercross (TBD)
