@@ -42,3 +42,12 @@ tasks:
         cmds:
             # Generate SDL3 methods heuristically as a starting point
             - go run ./cmd/methodgen --dir {{ .DIR }} --library {{ .LIBRARY }}
+    
+    gen-doc:
+        requires:
+          vars: [LIBRARY]
+        vars:
+            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+        cmds:
+            # Generate SDL3 documentations on top of functions
+            - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}

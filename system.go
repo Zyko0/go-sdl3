@@ -6,6 +6,8 @@ import "github.com/Zyko0/go-sdl3/internal"
 
 // TODO:
 
+// SDL_GetTicks - Get the number of milliseconds since SDL library initialization.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTicks)
 func Ticks() uint64 {
 	return iGetTicks()
 }
@@ -31,6 +33,8 @@ func Ticks() uint64 {
 // "buttonid => the pointer to which user id of hit button should be copied."
 // I don't understand https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox
 
+// SDL_ShowSimpleMessageBox - Display a simple modal message box.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox)
 func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *Window) error {
 	if !iShowSimpleMessageBox(flags, title, message, window) {
 		return internal.LastErr()
@@ -47,6 +51,8 @@ type PowerInfo struct {
 	State   PowerState
 }
 
+// SDL_GetPowerInfo - Get the current power supply details.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPowerInfo)
 func GetPowerInfo() (PowerInfo, error) {
 	var info PowerInfo
 
@@ -60,6 +66,8 @@ func GetPowerInfo() (PowerInfo, error) {
 
 // Sensor
 
+// SDL_GetSensors - Get a list of currently connected sensors.
+// (https://wiki.libsdl.org/SDL3/SDL_GetSensors)
 func GetSensors() ([]SensorID, error) {
 	var count int32
 
@@ -72,6 +80,8 @@ func GetSensors() ([]SensorID, error) {
 	return internal.ClonePtrSlice[SensorID](ptr, int(count)), nil
 }
 
+// SDL_UpdateSensors - Update the current state of the open sensors.
+// (https://wiki.libsdl.org/SDL3/SDL_UpdateSensors)
 func UpdateSensors() {
 	iUpdateSensors()
 }
@@ -98,6 +108,8 @@ func UpdateSensors() {
 
 // Locale
 
+// SDL_GetPreferredLocales - Report the user's preferred locale.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales)
 func GetPreferredLocales() ([]*Locale, error) {
 	var count int32
 
