@@ -116,28 +116,41 @@ func (storage *Storage) EnumerateDirectory(path string, callback EnumerateDirect
 	//return iEnumerateStorageDirectory(storage, path, callback, userdata)
 }
 
-func (storage *Storage) RemovePath(path string) bool {
-	panic("not implemented")
-	return iRemoveStoragePath(storage, path)
+func (storage *Storage) RemovePath(path string) error {
+	if !iRemoveStoragePath(storage, path) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (storage *Storage) RenamePath(oldpath string, newpath string) bool {
-	panic("not implemented")
-	return iRenameStoragePath(storage, oldpath, newpath)
+func (storage *Storage) RenamePath(oldpath, newpath string) error {
+	if !iRenameStoragePath(storage, oldpath, newpath) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (storage *Storage) CopyFile(oldpath string, newpath string) bool {
-	panic("not implemented")
-	return iCopyStorageFile(storage, oldpath, newpath)
+func (storage *Storage) CopyFile(oldpath, newpath string) error {
+	if !iCopyStorageFile(storage, oldpath, newpath) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (storage *Storage) PathInfo(path string, info *PathInfo) bool {
-	panic("not implemented")
-	return iGetStoragePathInfo(storage, path, info)
+func (storage *Storage) PathInfo(path string) (*PathInfo, error) {
+	var info PathInfo
+
+	if !iGetStoragePathInfo(storage, path, &info) {
+		return nil, internal.LastErr()
+	}
+
+	return &info, nil
 }
 
 func (storage *Storage) SpaceRemaining() uint64 {
-	panic("not implemented")
 	return iGetStorageSpaceRemaining(storage)
 }
 
@@ -149,7 +162,6 @@ func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFla
 // AudioDeviceID
 
 func (devid AudioDeviceID) AudioDeviceName() string {
-	panic("not implemented")
 	return iGetAudioDeviceName(devid)
 }
 
