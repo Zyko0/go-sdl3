@@ -632,9 +632,13 @@ func (instance_id JoystickID) JoystickTypeForID() JoystickType {
 
 // SDL_OpenJoystick - Open a joystick for use.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenJoystick)
-func (instance_id JoystickID) OpenJoystick() *Joystick {
-	panic("not implemented")
-	return iOpenJoystick(instance_id)
+func (id JoystickID) OpenJoystick() (*Joystick, error) {
+	joystick := iOpenJoystick(id)
+	if joystick == nil {
+		return nil, internal.LastErr()
+	}
+
+	return joystick, nil
 }
 
 // SDL_GetJoystickFromID - Get the SDL_Joystick associated with an instance ID, if it has been opened.
@@ -3543,9 +3547,14 @@ func (window *Window) SetSize(w int32, h int32) bool {
 
 // SDL_GetWindowSize - Get the size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowSize)
-func (window *Window) Size(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetWindowSize(window, w, h)
+func (window *Window) Size() (int32, int32, error) {
+	var w, h int32
+
+	if !iGetWindowSize(window, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_GetWindowSafeArea - Get the safe area for this window.
@@ -4420,9 +4429,13 @@ func (joystick *Joystick) Properties() PropertiesID {
 
 // SDL_GetJoystickName - Get the implementation dependent name of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickName)
-func (joystick *Joystick) Name() string {
-	panic("not implemented")
-	return iGetJoystickName(joystick)
+func (joystick *Joystick) Name() (string, error) {
+	name := iGetJoystickName(joystick)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetJoystickPath - Get the implementation dependent path of a joystick.
@@ -4504,16 +4517,24 @@ func (joystick *Joystick) Connected() bool {
 
 // SDL_GetJoystickID - Get the instance ID of an opened joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickID)
-func (joystick *Joystick) ID() JoystickID {
-	panic("not implemented")
-	return iGetJoystickID(joystick)
+func (joystick *Joystick) ID() (JoystickID, error) {
+	id := iGetJoystickID(joystick)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetNumJoystickAxes - Get the number of general axis controls on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickAxes)
-func (joystick *Joystick) NumAxes() int32 {
-	panic("not implemented")
-	return iGetNumJoystickAxes(joystick)
+func (joystick *Joystick) NumAxes() (int32, error) {
+	num := iGetNumJoystickAxes(joystick)
+	if num == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return num, nil
 }
 
 // SDL_GetNumJoystickBalls - Get the number of trackballs on a joystick.
@@ -4525,23 +4546,35 @@ func (joystick *Joystick) NumBalls() int32 {
 
 // SDL_GetNumJoystickHats - Get the number of POV hats on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickHats)
-func (joystick *Joystick) NumHats() int32 {
-	panic("not implemented")
-	return iGetNumJoystickHats(joystick)
+func (joystick *Joystick) NumHats() (int32, error) {
+	num := iGetNumJoystickHats(joystick)
+	if num == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return num, nil
 }
 
 // SDL_GetNumJoystickButtons - Get the number of buttons on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickButtons)
-func (joystick *Joystick) NumButtons() int32 {
-	panic("not implemented")
-	return iGetNumJoystickButtons(joystick)
+func (joystick *Joystick) NumButtons() (int32, error) {
+	num := iGetNumJoystickButtons(joystick)
+	if num == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return num, nil
 }
 
 // SDL_GetJoystickAxis - Get the current state of an axis control on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxis)
-func (joystick *Joystick) Axis(axis int32) int16 {
-	panic("not implemented")
-	return iGetJoystickAxis(joystick, axis)
+func (joystick *Joystick) Axis(axis int32) (int16, error) {
+	res := iGetJoystickAxis(joystick, axis)
+	if res == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return res, nil
 }
 
 // SDL_GetJoystickAxisInitialState - Get the initial state of an axis control on a joystick.
@@ -4561,14 +4594,12 @@ func (joystick *Joystick) Ball(ball int32, dx *int32, dy *int32) bool {
 // SDL_GetJoystickHat - Get the current state of a POV hat on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickHat)
 func (joystick *Joystick) Hat(hat int32) uint8 {
-	panic("not implemented")
 	return iGetJoystickHat(joystick, hat)
 }
 
 // SDL_GetJoystickButton - Get the current state of a button on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickButton)
 func (joystick *Joystick) Button(button int32) bool {
-	panic("not implemented")
 	return iGetJoystickButton(joystick, button)
 }
 
@@ -4603,7 +4634,6 @@ func (joystick *Joystick) SendEffect(data *byte, size int32) bool {
 // SDL_CloseJoystick - Close a joystick previously opened with SDL_OpenJoystick().
 // (https://wiki.libsdl.org/SDL3/SDL_CloseJoystick)
 func (joystick *Joystick) Close() {
-	panic("not implemented")
 	iCloseJoystick(joystick)
 }
 

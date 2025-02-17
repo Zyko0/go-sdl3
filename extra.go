@@ -285,4 +285,16 @@ const (
 	WINDOW_NOT_FOCUSABLE       WindowFlags = 0x0000000080000000
 )
 
+const (
+	HAT_CENTERED  uint8 = 0x00
+	HAT_UP        uint8 = 0x01
+	HAT_RIGHT     uint8 = 0x02
+	HAT_DOWN      uint8 = 0x04
+	HAT_LEFT      uint8 = 0x08
+	HAT_RIGHTUP   uint8 = HAT_RIGHT | HAT_UP
+	HAT_RIGHTDOWN uint8 = HAT_RIGHT | HAT_DOWN
+	HAT_LEFTUP    uint8 = HAT_LEFT | HAT_UP
+	HAT_LEFTDOWN  uint8 = HAT_LEFT | HAT_DOWN
+)
+
 const DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
