@@ -2,6 +2,8 @@ github.com/Zyko0/purego-gen v0.0.0-20250215180847-b464f8debea4 h1:QYsc7R7fu3KANE
 github.com/Zyko0/purego-gen v0.0.0-20250215180847-b464f8debea4/go.mod h1:yJn8avSZmgophSwHMUDhlEIzdkB9uUTEctszmQmjxDo=
 github.com/Zyko0/purego-gen v0.0.0-20250215183732-54e37a740c0c h1:/rmS42IrYPtCwn2W8viHmd0j8e1pQ5HHKqsBZR+1jBA=
 github.com/Zyko0/purego-gen v0.0.0-20250215183732-54e37a740c0c/go.mod h1:yJn8avSZmgophSwHMUDhlEIzdkB9uUTEctszmQmjxDo=
+github.com/Zyko0/purego-gen v0.0.0-20250217230141-c752cce82336 h1:ixEhUXV50zGYqU6AK2hxCEgbsKWYMNMbSuyUntmsE8c=
+github.com/Zyko0/purego-gen v0.0.0-20250217230141-c752cce82336/go.mod h1:yJn8avSZmgophSwHMUDhlEIzdkB9uUTEctszmQmjxDo=
 github.com/dave/jennifer v1.7.0 h1:uRbSBH9UTS64yXbh4FrMHfgfY762RD+C7bUPKODpSJE=
 github.com/dave/jennifer v1.7.0/go.mod h1:nXbxhEmQfOZhWml3D1cDK5M1FLnMSozpbFN/m3RmGZc=
 github.com/ebitengine/purego v0.9.0-alpha.2.0.20250124174847-29f0104e3c2b h1:/KAOJuXR4cWaQIiA9xBMDSQJ1JXq5gZHdSK8prrtUqQ=

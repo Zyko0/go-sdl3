@@ -126,6 +126,16 @@ var (
 	//puregogen:function symbol=TTF_GetFontHinting
 	iGetFontHinting func(font *Font) HintingFlags
 
+	// TTF_SetFontSDF => Enable Signed Distance Field rendering for a font.
+	//
+	//puregogen:function symbol=TTF_SetFontSDF
+	iSetFontSDF func(font *Font, enabled bool) bool
+
+	// TTF_GetFontSDF => Query whether Signed Distance Field rendering is enabled for a font.
+	//
+	//puregogen:function symbol=TTF_GetFontSDF
+	iGetFontSDF func(font *Font) bool
+
 	// TTF_SetFontWrapAlignment => Set a font's current wrap alignment option.
 	//
 	//puregogen:function symbol=TTF_SetFontWrapAlignment
@@ -176,6 +186,11 @@ var (
 	//puregogen:function symbol=TTF_FontIsFixedWidth
 	iFontIsFixedWidth func(font *Font) bool
 
+	// TTF_FontIsScalable => Query whether a font is scalable or not.
+	//
+	//puregogen:function symbol=TTF_FontIsScalable
+	iFontIsScalable func(font *Font) bool
+
 	// TTF_GetFontFamilyName => Query a font's family name.
 	//
 	//puregogen:function symbol=TTF_GetFontFamilyName
@@ -211,6 +226,11 @@ var (
 	//puregogen:function symbol=TTF_GetGlyphScript
 	iGetGlyphScript func(ch uint32) uint32
 
+	// TTF_SetFontLanguage => Set language to be used for text shaping by a font.
+	//
+	//puregogen:function symbol=TTF_SetFontLanguage
+	iSetFontLanguage func(font *Font, language_bcp47 string) bool
+
 	// TTF_FontHasGlyph => Check whether a glyph is provided by the font for a UNICODE codepoint.
 	//
 	//puregogen:function symbol=TTF_FontHasGlyph
@@ -230,6 +250,11 @@ var (
 	//
 	//puregogen:function symbol=TTF_GetGlyphMetrics
 	iGetGlyphMetrics func(font *Font, ch uint32, minx *int32, maxx *int32, miny *int32, maxy *int32, advance *int32) bool
+
+	// TTF_GetGlyphKerning => Query the kerning size between the glyphs of two UNICODE codepoints.
+	//
+	//puregogen:function symbol=TTF_GetGlyphKerning
+	iGetGlyphKerning func(font *Font, previous_ch uint32, ch uint32, kerning *int32) bool
 
 	// TTF_GetStringSize => Calculate the dimensions of a rendered string of UTF-8 text.
 	//

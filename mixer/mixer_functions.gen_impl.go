@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package mixer
 
@@ -6,7 +6,6 @@ import (
 	sdl "github.com/Zyko0/go-sdl3"
 	puregogen "github.com/Zyko0/purego-gen"
 	purego "github.com/ebitengine/purego"
-	"runtime"
 	"unsafe"
 )
 
@@ -470,8 +469,7 @@ func initialize() {
 		return __r0
 	}
 	iInit = func(flags MIX_InitFlags) MIX_InitFlags {
-		_flags := uintptr(flags)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_Init, _flags)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_Init, uintptr(flags))
 		__r0 := MIX_InitFlags(_r0)
 		return __r0
 	}
@@ -479,95 +477,63 @@ func initialize() {
 		purego.SyscallN(_addr_Mix_Quit)
 	}
 	iOpenAudio = func(devid sdl.AudioDeviceID, spec *sdl.AudioSpec) bool {
-		_devid := uintptr(devid)
-		_spec := uintptr(unsafe.Pointer(spec))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_OpenAudio, _devid, _spec)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_OpenAudio, uintptr(devid), uintptr(unsafe.Pointer(spec)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iPauseAudio = func(pause_on int32) {
-		_pause_on := uintptr(pause_on)
-		purego.SyscallN(_addr_Mix_PauseAudio, _pause_on)
+		purego.SyscallN(_addr_Mix_PauseAudio, uintptr(pause_on))
 	}
 	iQuerySpec = func(frequency *int32, format *sdl.AudioFormat, channels *int32) bool {
-		_frequency := uintptr(unsafe.Pointer(frequency))
-		_format := uintptr(unsafe.Pointer(format))
-		_channels := uintptr(unsafe.Pointer(channels))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_QuerySpec, _frequency, _format, _channels)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_QuerySpec, uintptr(unsafe.Pointer(frequency)), uintptr(unsafe.Pointer(format)), uintptr(unsafe.Pointer(channels)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iAllocateChannels = func(numchans int32) int32 {
-		_numchans := uintptr(numchans)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_AllocateChannels, _numchans)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_AllocateChannels, uintptr(numchans))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iLoadWAV_IO = func(src *sdl.IOStream, closeio bool) *Chunk {
-		_src := uintptr(unsafe.Pointer(src))
-		_closeio := uintptr(0)
-		if closeio {
-			_closeio = 1
-		}
-		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadWAV_IO, _src, _closeio)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadWAV_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio))
 		__r0 := (*Chunk)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iLoadWAV = func(file string) *Chunk {
-		_file := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file)))
-		defer runtime.KeepAlive(_file)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadWAV, _file)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadWAV, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := (*Chunk)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iLoadMUS = func(file string) *Music {
-		_file := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file)))
-		defer runtime.KeepAlive(_file)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUS, _file)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUS, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := (*Music)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iLoadMUS_IO = func(src *sdl.IOStream, closeio bool) *Music {
-		_src := uintptr(unsafe.Pointer(src))
-		_closeio := uintptr(0)
-		if closeio {
-			_closeio = 1
-		}
-		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUS_IO, _src, _closeio)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUS_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio))
 		__r0 := (*Music)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iLoadMUSType_IO = func(src *sdl.IOStream, typ MusicType, closeio bool) *Music {
-		_src := uintptr(unsafe.Pointer(src))
-		_typ := uintptr(typ)
-		_closeio := uintptr(0)
-		if closeio {
-			_closeio = 1
-		}
-		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUSType_IO, _src, _typ, _closeio)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_LoadMUSType_IO, uintptr(unsafe.Pointer(src)), uintptr(typ), puregogen.BoolToUintptr(closeio))
 		__r0 := (*Music)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iQuickLoad_WAV = func(mem *uint8) *Chunk {
-		_mem := uintptr(unsafe.Pointer(mem))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_QuickLoad_WAV, _mem)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_QuickLoad_WAV, uintptr(unsafe.Pointer(mem)))
 		__r0 := (*Chunk)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iQuickLoad_RAW = func(mem *uint8, len uint32) *Chunk {
-		_mem := uintptr(unsafe.Pointer(mem))
-		_len := uintptr(len)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_QuickLoad_RAW, _mem, _len)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_QuickLoad_RAW, uintptr(unsafe.Pointer(mem)), uintptr(len))
 		__r0 := (*Chunk)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iFreeChunk = func(chunk *Chunk) {
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		purego.SyscallN(_addr_Mix_FreeChunk, _chunk)
+		purego.SyscallN(_addr_Mix_FreeChunk, uintptr(unsafe.Pointer(chunk)))
 	}
 	iFreeMusic = func(music *Music) {
-		_music := uintptr(unsafe.Pointer(music))
-		purego.SyscallN(_addr_Mix_FreeMusic, _music)
+		purego.SyscallN(_addr_Mix_FreeMusic, uintptr(unsafe.Pointer(music)))
 	}
 	iGetNumChunkDecoders = func() int32 {
 		_r0, _, _ := purego.SyscallN(_addr_Mix_GetNumChunkDecoders)
@@ -575,15 +541,12 @@ func initialize() {
 		return __r0
 	}
 	iGetChunkDecoder = func(index int32) string {
-		_index := uintptr(index)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetChunkDecoder, _index)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetChunkDecoder, uintptr(index))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iHasChunkDecoder = func(name string) bool {
-		_name := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name)))
-		defer runtime.KeepAlive(_name)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_HasChunkDecoder, _name)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_HasChunkDecoder, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -593,67 +556,53 @@ func initialize() {
 		return __r0
 	}
 	iGetMusicDecoder = func(index int32) string {
-		_index := uintptr(index)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicDecoder, _index)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicDecoder, uintptr(index))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iHasMusicDecoder = func(name string) bool {
-		_name := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name)))
-		defer runtime.KeepAlive(_name)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_HasMusicDecoder, _name)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_HasMusicDecoder, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetMusicType = func(music *Music) MusicType {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicType, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicType, uintptr(unsafe.Pointer(music)))
 		__r0 := MusicType(_r0)
 		return __r0
 	}
 	iGetMusicTitle = func(music *Music) string {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicTitle, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicTitle, uintptr(unsafe.Pointer(music)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetMusicTitleTag = func(music *Music) string {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicTitleTag, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicTitleTag, uintptr(unsafe.Pointer(music)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetMusicArtistTag = func(music *Music) string {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicArtistTag, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicArtistTag, uintptr(unsafe.Pointer(music)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetMusicAlbumTag = func(music *Music) string {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicAlbumTag, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicAlbumTag, uintptr(unsafe.Pointer(music)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetMusicCopyrightTag = func(music *Music) string {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicCopyrightTag, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicCopyrightTag, uintptr(unsafe.Pointer(music)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iSetPostMix = func(mix_func MixCallback, arg uintptr) {
-		_mix_func := purego.NewCallback(mix_func)
-		_arg := uintptr(arg)
-		purego.SyscallN(_addr_Mix_SetPostMix, _mix_func, _arg)
+		purego.SyscallN(_addr_Mix_SetPostMix, purego.NewCallback(mix_func), uintptr(arg))
 	}
 	iHookMusic = func(mix_func MixCallback, arg uintptr) {
-		_mix_func := purego.NewCallback(mix_func)
-		_arg := uintptr(arg)
-		purego.SyscallN(_addr_Mix_HookMusic, _mix_func, _arg)
+		purego.SyscallN(_addr_Mix_HookMusic, purego.NewCallback(mix_func), uintptr(arg))
 	}
 	iHookMusicFinished = func(music_finished MusicFinishedCallback) {
-		_music_finished := purego.NewCallback(music_finished)
-		purego.SyscallN(_addr_Mix_HookMusicFinished, _music_finished)
+		purego.SyscallN(_addr_Mix_HookMusicFinished, purego.NewCallback(music_finished))
 	}
 	iGetMusicHookData = func() uintptr {
 		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicHookData)
@@ -661,225 +610,160 @@ func initialize() {
 		return __r0
 	}
 	iChannelFinished = func(channel_finished ChannelFinishedCallback) {
-		_channel_finished := purego.NewCallback(channel_finished)
-		purego.SyscallN(_addr_Mix_ChannelFinished, _channel_finished)
+		purego.SyscallN(_addr_Mix_ChannelFinished, purego.NewCallback(channel_finished))
 	}
 	iRegisterEffect = func(chann int32, f EffectFunc_t, d EffectDone_t, arg uintptr) bool {
-		_chann := uintptr(chann)
-		_f := purego.NewCallback(f)
-		_d := purego.NewCallback(d)
-		_arg := uintptr(arg)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_RegisterEffect, _chann, _f, _d, _arg)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_RegisterEffect, uintptr(chann), purego.NewCallback(f), purego.NewCallback(d), uintptr(arg))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iUnregisterEffect = func(channel int32, f EffectFunc_t) bool {
-		_channel := uintptr(channel)
-		_f := purego.NewCallback(f)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_UnregisterEffect, _channel, _f)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_UnregisterEffect, uintptr(channel), purego.NewCallback(f))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iUnregisterAllEffects = func(channel int32) bool {
-		_channel := uintptr(channel)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_UnregisterAllEffects, _channel)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_UnregisterAllEffects, uintptr(channel))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetPanning = func(channel int32, left uint8, right uint8) bool {
-		_channel := uintptr(channel)
-		_left := uintptr(left)
-		_right := uintptr(right)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetPanning, _channel, _left, _right)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetPanning, uintptr(channel), uintptr(left), uintptr(right))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetPosition = func(channel int32, angle int16, distance uint8) bool {
-		_channel := uintptr(channel)
-		_angle := uintptr(angle)
-		_distance := uintptr(distance)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetPosition, _channel, _angle, _distance)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetPosition, uintptr(channel), uintptr(angle), uintptr(distance))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetDistance = func(channel int32, distance uint8) bool {
-		_channel := uintptr(channel)
-		_distance := uintptr(distance)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetDistance, _channel, _distance)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetDistance, uintptr(channel), uintptr(distance))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetReverseStereo = func(channel int32, flip int32) bool {
-		_channel := uintptr(channel)
-		_flip := uintptr(flip)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetReverseStereo, _channel, _flip)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetReverseStereo, uintptr(channel), uintptr(flip))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iReserveChannels = func(num int32) int32 {
-		_num := uintptr(num)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_ReserveChannels, _num)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_ReserveChannels, uintptr(num))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGroupChannel = func(which int32, tag int32) bool {
-		_which := uintptr(which)
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupChannel, _which, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupChannel, uintptr(which), uintptr(tag))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGroupChannels = func(from int32, to int32, tag int32) bool {
-		_from := uintptr(from)
-		_to := uintptr(to)
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupChannels, _from, _to, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupChannels, uintptr(from), uintptr(to), uintptr(tag))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGroupAvailable = func(tag int32) int32 {
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupAvailable, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupAvailable, uintptr(tag))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGroupCount = func(tag int32) int32 {
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupCount, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupCount, uintptr(tag))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGroupOldest = func(tag int32) int32 {
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupOldest, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupOldest, uintptr(tag))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGroupNewer = func(tag int32) int32 {
-		_tag := uintptr(tag)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupNewer, _tag)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GroupNewer, uintptr(tag))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iPlayChannel = func(channel int32, chunk *Chunk, loops int32) int32 {
-		_channel := uintptr(channel)
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		_loops := uintptr(loops)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayChannel, _channel, _chunk, _loops)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayChannel, uintptr(channel), uintptr(unsafe.Pointer(chunk)), uintptr(loops))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iPlayChannelTimed = func(channel int32, chunk *Chunk, loops int32, ticks int32) int32 {
-		_channel := uintptr(channel)
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		_loops := uintptr(loops)
-		_ticks := uintptr(ticks)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayChannelTimed, _channel, _chunk, _loops, _ticks)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayChannelTimed, uintptr(channel), uintptr(unsafe.Pointer(chunk)), uintptr(loops), uintptr(ticks))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iPlayMusic = func(music *Music, loops int32) bool {
-		_music := uintptr(unsafe.Pointer(music))
-		_loops := uintptr(loops)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayMusic, _music, _loops)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_PlayMusic, uintptr(unsafe.Pointer(music)), uintptr(loops))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iFadeInMusic = func(music *Music, loops int32, ms int32) bool {
-		_music := uintptr(unsafe.Pointer(music))
-		_loops := uintptr(loops)
-		_ms := uintptr(ms)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInMusic, _music, _loops, _ms)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInMusic, uintptr(unsafe.Pointer(music)), uintptr(loops), uintptr(ms))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	purego.RegisterLibFunc(&iFadeInMusicPos, _hnd_mixer, "Mix_FadeInMusicPos")
 	iFadeInChannel = func(channel int32, chunk *Chunk, loops int32, ms int32) int32 {
-		_channel := uintptr(channel)
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		_loops := uintptr(loops)
-		_ms := uintptr(ms)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInChannel, _channel, _chunk, _loops, _ms)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInChannel, uintptr(channel), uintptr(unsafe.Pointer(chunk)), uintptr(loops), uintptr(ms))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iFadeInChannelTimed = func(channel int32, chunk *Chunk, loops int32, ms int32, ticks int32) int32 {
-		_channel := uintptr(channel)
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		_loops := uintptr(loops)
-		_ms := uintptr(ms)
-		_ticks := uintptr(ticks)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInChannelTimed, _channel, _chunk, _loops, _ms, _ticks)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeInChannelTimed, uintptr(channel), uintptr(unsafe.Pointer(chunk)), uintptr(loops), uintptr(ms), uintptr(ticks))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iVolume = func(channel int32, volume int32) int32 {
-		_channel := uintptr(channel)
-		_volume := uintptr(volume)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_Volume, _channel, _volume)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_Volume, uintptr(channel), uintptr(volume))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iVolumeChunk = func(chunk *Chunk, volume int32) int32 {
-		_chunk := uintptr(unsafe.Pointer(chunk))
-		_volume := uintptr(volume)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_VolumeChunk, _chunk, _volume)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_VolumeChunk, uintptr(unsafe.Pointer(chunk)), uintptr(volume))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iVolumeMusic = func(volume int32) int32 {
-		_volume := uintptr(volume)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_VolumeMusic, _volume)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_VolumeMusic, uintptr(volume))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetMusicVolume = func(music *Music) int32 {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicVolume, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetMusicVolume, uintptr(unsafe.Pointer(music)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iMasterVolume = func(volume int32) int32 {
-		_volume := uintptr(volume)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_MasterVolume, _volume)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_MasterVolume, uintptr(volume))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iHaltChannel = func(channel int32) {
-		_channel := uintptr(channel)
-		purego.SyscallN(_addr_Mix_HaltChannel, _channel)
+		purego.SyscallN(_addr_Mix_HaltChannel, uintptr(channel))
 	}
 	iHaltGroup = func(tag int32) {
-		_tag := uintptr(tag)
-		purego.SyscallN(_addr_Mix_HaltGroup, _tag)
+		purego.SyscallN(_addr_Mix_HaltGroup, uintptr(tag))
 	}
 	iHaltMusic = func() {
 		purego.SyscallN(_addr_Mix_HaltMusic)
 	}
 	iExpireChannel = func(channel int32, ticks int32) int32 {
-		_channel := uintptr(channel)
-		_ticks := uintptr(ticks)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_ExpireChannel, _channel, _ticks)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_ExpireChannel, uintptr(channel), uintptr(ticks))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iFadeOutChannel = func(which int32, ms int32) int32 {
-		_which := uintptr(which)
-		_ms := uintptr(ms)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutChannel, _which, _ms)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutChannel, uintptr(which), uintptr(ms))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iFadeOutGroup = func(tag int32, ms int32) int32 {
-		_tag := uintptr(tag)
-		_ms := uintptr(ms)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutGroup, _tag, _ms)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutGroup, uintptr(tag), uintptr(ms))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iFadeOutMusic = func(ms int32) bool {
-		_ms := uintptr(ms)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutMusic, _ms)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadeOutMusic, uintptr(ms))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -889,30 +773,24 @@ func initialize() {
 		return __r0
 	}
 	iFadingChannel = func(which int32) Fading {
-		_which := uintptr(which)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_FadingChannel, _which)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_FadingChannel, uintptr(which))
 		__r0 := Fading(_r0)
 		return __r0
 	}
 	iPause = func(channel int32) {
-		_channel := uintptr(channel)
-		purego.SyscallN(_addr_Mix_Pause, _channel)
+		purego.SyscallN(_addr_Mix_Pause, uintptr(channel))
 	}
 	iPauseGroup = func(tag int32) {
-		_tag := uintptr(tag)
-		purego.SyscallN(_addr_Mix_PauseGroup, _tag)
+		purego.SyscallN(_addr_Mix_PauseGroup, uintptr(tag))
 	}
 	iResume = func(channel int32) {
-		_channel := uintptr(channel)
-		purego.SyscallN(_addr_Mix_Resume, _channel)
+		purego.SyscallN(_addr_Mix_Resume, uintptr(channel))
 	}
 	iResumeGroup = func(tag int32) {
-		_tag := uintptr(tag)
-		purego.SyscallN(_addr_Mix_ResumeGroup, _tag)
+		purego.SyscallN(_addr_Mix_ResumeGroup, uintptr(tag))
 	}
 	iPaused = func(channel int32) int32 {
-		_channel := uintptr(channel)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_Paused, _channel)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_Paused, uintptr(channel))
 		__r0 := int32(_r0)
 		return __r0
 	}
@@ -931,21 +809,17 @@ func initialize() {
 		return __r0
 	}
 	iModMusicJumpToOrder = func(order int32) bool {
-		_order := uintptr(order)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_ModMusicJumpToOrder, _order)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_ModMusicJumpToOrder, uintptr(order))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iStartTrack = func(music *Music, track int32) bool {
-		_music := uintptr(unsafe.Pointer(music))
-		_track := uintptr(track)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_StartTrack, _music, _track)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_StartTrack, uintptr(unsafe.Pointer(music)), uintptr(track))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetNumTracks = func(music *Music) int32 {
-		_music := uintptr(unsafe.Pointer(music))
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetNumTracks, _music)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetNumTracks, uintptr(unsafe.Pointer(music)))
 		__r0 := int32(_r0)
 		return __r0
 	}
@@ -956,8 +830,7 @@ func initialize() {
 	purego.RegisterLibFunc(&iGetMusicLoopEndTime, _hnd_mixer, "Mix_GetMusicLoopEndTime")
 	purego.RegisterLibFunc(&iGetMusicLoopLengthTime, _hnd_mixer, "Mix_GetMusicLoopLengthTime")
 	iPlaying = func(channel int32) int32 {
-		_channel := uintptr(channel)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_Playing, _channel)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_Playing, uintptr(channel))
 		__r0 := int32(_r0)
 		return __r0
 	}
@@ -967,9 +840,7 @@ func initialize() {
 		return __r0
 	}
 	iSetSoundFonts = func(paths string) bool {
-		_paths := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(paths)))
-		defer runtime.KeepAlive(_paths)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetSoundFonts, _paths)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetSoundFonts, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(paths))))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -979,16 +850,12 @@ func initialize() {
 		return __r0
 	}
 	iEachSoundFont = func(function EachSoundFontCallback, data uintptr) bool {
-		_function := purego.NewCallback(function)
-		_data := uintptr(data)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_EachSoundFont, _function, _data)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_EachSoundFont, purego.NewCallback(function), uintptr(data))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetTimidityCfg = func(path string) bool {
-		_path := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path)))
-		defer runtime.KeepAlive(_path)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_SetTimidityCfg, _path)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_SetTimidityCfg, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -998,8 +865,7 @@ func initialize() {
 		return __r0
 	}
 	iGetChunk = func(channel int32) *Chunk {
-		_channel := uintptr(channel)
-		_r0, _, _ := purego.SyscallN(_addr_Mix_GetChunk, _channel)
+		_r0, _, _ := purego.SyscallN(_addr_Mix_GetChunk, uintptr(channel))
 		__r0 := (*Chunk)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}

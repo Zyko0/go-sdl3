@@ -6,7 +6,6 @@ import (
 	sdl "github.com/Zyko0/go-sdl3"
 	puregogen "github.com/Zyko0/purego-gen"
 	purego "github.com/ebitengine/purego"
-	"runtime"
 	"unsafe"
 )
 
@@ -36,6 +35,8 @@ var (
 	_addr_TTF_SetFontHinting                         uintptr
 	_addr_TTF_GetNumFontFaces                        uintptr
 	_addr_TTF_GetFontHinting                         uintptr
+	_addr_TTF_SetFontSDF                             uintptr
+	_addr_TTF_GetFontSDF                             uintptr
 	_addr_TTF_SetFontWrapAlignment                   uintptr
 	_addr_TTF_GetFontWrapAlignment                   uintptr
 	_addr_TTF_GetFontHeight                          uintptr
@@ -46,6 +47,7 @@ var (
 	_addr_TTF_SetFontKerning                         uintptr
 	_addr_TTF_GetFontKerning                         uintptr
 	_addr_TTF_FontIsFixedWidth                       uintptr
+	_addr_TTF_FontIsScalable                         uintptr
 	_addr_TTF_GetFontFamilyName                      uintptr
 	_addr_TTF_GetFontStyleName                       uintptr
 	_addr_TTF_SetFontDirection                       uintptr
@@ -53,10 +55,12 @@ var (
 	_addr_TTF_SetFontScript                          uintptr
 	_addr_TTF_GetFontScript                          uintptr
 	_addr_TTF_GetGlyphScript                         uintptr
+	_addr_TTF_SetFontLanguage                        uintptr
 	_addr_TTF_FontHasGlyph                           uintptr
 	_addr_TTF_GetGlyphImage                          uintptr
 	_addr_TTF_GetGlyphImageForIndex                  uintptr
 	_addr_TTF_GetGlyphMetrics                        uintptr
+	_addr_TTF_GetGlyphKerning                        uintptr
 	_addr_TTF_GetStringSize                          uintptr
 	_addr_TTF_GetStringSizeWrapped                   uintptr
 	_addr_TTF_MeasureString                          uintptr
@@ -189,6 +193,14 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetFontHinting")
 	}
+	_addr_TTF_SetFontSDF, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_SetFontSDF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_SetFontSDF")
+	}
+	_addr_TTF_GetFontSDF, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetFontSDF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_GetFontSDF")
+	}
 	_addr_TTF_SetFontWrapAlignment, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_SetFontWrapAlignment")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_SetFontWrapAlignment")
@@ -229,6 +241,10 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_FontIsFixedWidth")
 	}
+	_addr_TTF_FontIsScalable, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_FontIsScalable")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_FontIsScalable")
+	}
 	_addr_TTF_GetFontFamilyName, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetFontFamilyName")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetFontFamilyName")
@@ -257,6 +273,10 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetGlyphScript")
 	}
+	_addr_TTF_SetFontLanguage, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_SetFontLanguage")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_SetFontLanguage")
+	}
 	_addr_TTF_FontHasGlyph, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_FontHasGlyph")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_FontHasGlyph")
@@ -272,6 +292,10 @@ func initialize() {
 	_addr_TTF_GetGlyphMetrics, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetGlyphMetrics")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetGlyphMetrics")
+	}
+	_addr_TTF_GetGlyphKerning, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetGlyphKerning")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_GetGlyphKerning")
 	}
 	_addr_TTF_GetStringSize, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetStringSize")
 	if err != nil {
@@ -480,16 +504,10 @@ func initialize() {
 		return __r0
 	}
 	iGetFreeTypeVersion = func(major *int32, minor *int32, patch *int32) {
-		_major := uintptr(unsafe.Pointer(major))
-		_minor := uintptr(unsafe.Pointer(minor))
-		_patch := uintptr(unsafe.Pointer(patch))
-		purego.SyscallN(_addr_TTF_GetFreeTypeVersion, _major, _minor, _patch)
+		purego.SyscallN(_addr_TTF_GetFreeTypeVersion, uintptr(unsafe.Pointer(major)), uintptr(unsafe.Pointer(minor)), uintptr(unsafe.Pointer(patch)))
 	}
 	iGetHarfBuzzVersion = func(major *int32, minor *int32, patch *int32) {
-		_major := uintptr(unsafe.Pointer(major))
-		_minor := uintptr(unsafe.Pointer(minor))
-		_patch := uintptr(unsafe.Pointer(patch))
-		purego.SyscallN(_addr_TTF_GetHarfBuzzVersion, _major, _minor, _patch)
+		purego.SyscallN(_addr_TTF_GetHarfBuzzVersion, uintptr(unsafe.Pointer(major)), uintptr(unsafe.Pointer(minor)), uintptr(unsafe.Pointer(patch)))
 	}
 	iInit = func() bool {
 		_r0, _, _ := purego.SyscallN(_addr_TTF_Init)
@@ -499,268 +517,211 @@ func initialize() {
 	purego.RegisterLibFunc(&iOpenFont, _hnd_ttf, "TTF_OpenFont")
 	purego.RegisterLibFunc(&iOpenFontIO, _hnd_ttf, "TTF_OpenFontIO")
 	iOpenFontWithProperties = func(props sdl.PropertiesID) *Font {
-		_props := uintptr(props)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_OpenFontWithProperties, _props)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_OpenFontWithProperties, uintptr(props))
 		__r0 := (*Font)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iCopyFont = func(existing_font *Font) *Font {
-		_existing_font := uintptr(unsafe.Pointer(existing_font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CopyFont, _existing_font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CopyFont, uintptr(unsafe.Pointer(existing_font)))
 		__r0 := (*Font)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetFontProperties = func(font *Font) sdl.PropertiesID {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontProperties, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontProperties, uintptr(unsafe.Pointer(font)))
 		__r0 := sdl.PropertiesID(_r0)
 		return __r0
 	}
 	iGetFontGeneration = func(font *Font) uint32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontGeneration, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontGeneration, uintptr(unsafe.Pointer(font)))
 		__r0 := uint32(_r0)
 		return __r0
 	}
 	iAddFallbackFont = func(font *Font, fallback *Font) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_fallback := uintptr(unsafe.Pointer(fallback))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_AddFallbackFont, _font, _fallback)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_AddFallbackFont, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(fallback)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iRemoveFallbackFont = func(font *Font, fallback *Font) {
-		_font := uintptr(unsafe.Pointer(font))
-		_fallback := uintptr(unsafe.Pointer(fallback))
-		purego.SyscallN(_addr_TTF_RemoveFallbackFont, _font, _fallback)
+		purego.SyscallN(_addr_TTF_RemoveFallbackFont, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(fallback)))
 	}
 	iClearFallbackFonts = func(font *Font) {
-		_font := uintptr(unsafe.Pointer(font))
-		purego.SyscallN(_addr_TTF_ClearFallbackFonts, _font)
+		purego.SyscallN(_addr_TTF_ClearFallbackFonts, uintptr(unsafe.Pointer(font)))
 	}
 	purego.RegisterLibFunc(&iSetFontSize, _hnd_ttf, "TTF_SetFontSize")
 	purego.RegisterLibFunc(&iSetFontSizeDPI, _hnd_ttf, "TTF_SetFontSizeDPI")
 	purego.RegisterLibFunc(&iGetFontSize, _hnd_ttf, "TTF_GetFontSize")
 	iGetFontDPI = func(font *Font, hdpi *int32, vdpi *int32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_hdpi := uintptr(unsafe.Pointer(hdpi))
-		_vdpi := uintptr(unsafe.Pointer(vdpi))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDPI, _font, _hdpi, _vdpi)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDPI, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(hdpi)), uintptr(unsafe.Pointer(vdpi)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetFontStyle = func(font *Font, style FontStyleFlags) {
-		_font := uintptr(unsafe.Pointer(font))
-		_style := uintptr(style)
-		purego.SyscallN(_addr_TTF_SetFontStyle, _font, _style)
+		purego.SyscallN(_addr_TTF_SetFontStyle, uintptr(unsafe.Pointer(font)), uintptr(style))
 	}
 	iGetFontStyle = func(font *Font) FontStyleFlags {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontStyle, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontStyle, uintptr(unsafe.Pointer(font)))
 		__r0 := FontStyleFlags(_r0)
 		return __r0
 	}
 	iSetFontOutline = func(font *Font, outline int32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_outline := uintptr(outline)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontOutline, _font, _outline)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontOutline, uintptr(unsafe.Pointer(font)), uintptr(outline))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetFontOutline = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontOutline, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontOutline, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iSetFontHinting = func(font *Font, hinting HintingFlags) {
-		_font := uintptr(unsafe.Pointer(font))
-		_hinting := uintptr(hinting)
-		purego.SyscallN(_addr_TTF_SetFontHinting, _font, _hinting)
+		purego.SyscallN(_addr_TTF_SetFontHinting, uintptr(unsafe.Pointer(font)), uintptr(hinting))
 	}
 	iGetNumFontFaces = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetNumFontFaces, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetNumFontFaces, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetFontHinting = func(font *Font) HintingFlags {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontHinting, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontHinting, uintptr(unsafe.Pointer(font)))
 		__r0 := HintingFlags(_r0)
 		return __r0
 	}
+	iSetFontSDF = func(font *Font, enabled bool) bool {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontSDF, uintptr(unsafe.Pointer(font)), puregogen.BoolToUintptr(enabled))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iGetFontSDF = func(font *Font) bool {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontSDF, uintptr(unsafe.Pointer(font)))
+		__r0 := _r0 != 0
+		return __r0
+	}
 	iSetFontWrapAlignment = func(font *Font, align HorizontalAlignment) {
-		_font := uintptr(unsafe.Pointer(font))
-		_align := uintptr(align)
-		purego.SyscallN(_addr_TTF_SetFontWrapAlignment, _font, _align)
+		purego.SyscallN(_addr_TTF_SetFontWrapAlignment, uintptr(unsafe.Pointer(font)), uintptr(align))
 	}
 	iGetFontWrapAlignment = func(font *Font) HorizontalAlignment {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontWrapAlignment, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontWrapAlignment, uintptr(unsafe.Pointer(font)))
 		__r0 := HorizontalAlignment(_r0)
 		return __r0
 	}
 	iGetFontHeight = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontHeight, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontHeight, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetFontAscent = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontAscent, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontAscent, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iGetFontDescent = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDescent, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDescent, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iSetFontLineSkip = func(font *Font, lineskip int32) {
-		_font := uintptr(unsafe.Pointer(font))
-		_lineskip := uintptr(lineskip)
-		purego.SyscallN(_addr_TTF_SetFontLineSkip, _font, _lineskip)
+		purego.SyscallN(_addr_TTF_SetFontLineSkip, uintptr(unsafe.Pointer(font)), uintptr(lineskip))
 	}
 	iGetFontLineSkip = func(font *Font) int32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontLineSkip, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontLineSkip, uintptr(unsafe.Pointer(font)))
 		__r0 := int32(_r0)
 		return __r0
 	}
 	iSetFontKerning = func(font *Font, enabled bool) {
-		_font := uintptr(unsafe.Pointer(font))
-		_enabled := uintptr(0)
-		if enabled {
-			_enabled = 1
-		}
-		purego.SyscallN(_addr_TTF_SetFontKerning, _font, _enabled)
+		purego.SyscallN(_addr_TTF_SetFontKerning, uintptr(unsafe.Pointer(font)), puregogen.BoolToUintptr(enabled))
 	}
 	iGetFontKerning = func(font *Font) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontKerning, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontKerning, uintptr(unsafe.Pointer(font)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iFontIsFixedWidth = func(font *Font) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_FontIsFixedWidth, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_FontIsFixedWidth, uintptr(unsafe.Pointer(font)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iFontIsScalable = func(font *Font) bool {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_FontIsScalable, uintptr(unsafe.Pointer(font)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetFontFamilyName = func(font *Font) string {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontFamilyName, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontFamilyName, uintptr(unsafe.Pointer(font)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetFontStyleName = func(font *Font) string {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontStyleName, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontStyleName, uintptr(unsafe.Pointer(font)))
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iSetFontDirection = func(font *Font, direction Direction) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_direction := uintptr(direction)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontDirection, _font, _direction)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontDirection, uintptr(unsafe.Pointer(font)), uintptr(direction))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetFontDirection = func(font *Font) Direction {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDirection, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDirection, uintptr(unsafe.Pointer(font)))
 		__r0 := Direction(_r0)
 		return __r0
 	}
 	iSetFontScript = func(font *Font, script uint32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_script := uintptr(script)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontScript, _font, _script)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontScript, uintptr(unsafe.Pointer(font)), uintptr(script))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetFontScript = func(font *Font) uint32 {
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontScript, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontScript, uintptr(unsafe.Pointer(font)))
 		__r0 := uint32(_r0)
 		return __r0
 	}
 	iGetGlyphScript = func(ch uint32) uint32 {
-		_ch := uintptr(ch)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphScript, _ch)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphScript, uintptr(ch))
 		__r0 := uint32(_r0)
 		return __r0
 	}
+	iSetFontLanguage = func(font *Font, language_bcp47 string) bool {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetFontLanguage, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(language_bcp47))))
+		__r0 := _r0 != 0
+		return __r0
+	}
 	iFontHasGlyph = func(font *Font, ch uint32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_ch := uintptr(ch)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_FontHasGlyph, _font, _ch)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_FontHasGlyph, uintptr(unsafe.Pointer(font)), uintptr(ch))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetGlyphImage = func(font *Font, ch uint32, image_type *ImageType) *sdl.Surface {
-		_font := uintptr(unsafe.Pointer(font))
-		_ch := uintptr(ch)
-		_image_type := uintptr(unsafe.Pointer(image_type))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphImage, _font, _ch, _image_type)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphImage, uintptr(unsafe.Pointer(font)), uintptr(ch), uintptr(unsafe.Pointer(image_type)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetGlyphImageForIndex = func(font *Font, glyph_index uint32, image_type *ImageType) *sdl.Surface {
-		_font := uintptr(unsafe.Pointer(font))
-		_glyph_index := uintptr(glyph_index)
-		_image_type := uintptr(unsafe.Pointer(image_type))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphImageForIndex, _font, _glyph_index, _image_type)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphImageForIndex, uintptr(unsafe.Pointer(font)), uintptr(glyph_index), uintptr(unsafe.Pointer(image_type)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetGlyphMetrics = func(font *Font, ch uint32, minx *int32, maxx *int32, miny *int32, maxy *int32, advance *int32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_ch := uintptr(ch)
-		_minx := uintptr(unsafe.Pointer(minx))
-		_maxx := uintptr(unsafe.Pointer(maxx))
-		_miny := uintptr(unsafe.Pointer(miny))
-		_maxy := uintptr(unsafe.Pointer(maxy))
-		_advance := uintptr(unsafe.Pointer(advance))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphMetrics, _font, _ch, _minx, _maxx, _miny, _maxy, _advance)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphMetrics, uintptr(unsafe.Pointer(font)), uintptr(ch), uintptr(unsafe.Pointer(minx)), uintptr(unsafe.Pointer(maxx)), uintptr(unsafe.Pointer(miny)), uintptr(unsafe.Pointer(maxy)), uintptr(unsafe.Pointer(advance)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iGetGlyphKerning = func(font *Font, previous_ch uint32, ch uint32, kerning *int32) bool {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGlyphKerning, uintptr(unsafe.Pointer(font)), uintptr(previous_ch), uintptr(ch), uintptr(unsafe.Pointer(kerning)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetStringSize = func(font *Font, text string, length uintptr, w *int32, h *int32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_text := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text)))
-		defer runtime.KeepAlive(_text)
-		_length := uintptr(length)
-		_w := uintptr(unsafe.Pointer(w))
-		_h := uintptr(unsafe.Pointer(h))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetStringSize, _font, _text, _length, _w, _h)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetStringSize, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text))), uintptr(length), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(h)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetStringSizeWrapped = func(font *Font, text string, length uintptr, wrap_width int32, w *int32, h *int32) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_text := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text)))
-		defer runtime.KeepAlive(_text)
-		_length := uintptr(length)
-		_wrap_width := uintptr(wrap_width)
-		_w := uintptr(unsafe.Pointer(w))
-		_h := uintptr(unsafe.Pointer(h))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetStringSizeWrapped, _font, _text, _length, _wrap_width, _w, _h)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetStringSizeWrapped, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text))), uintptr(length), uintptr(wrap_width), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(h)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iMeasureString = func(font *Font, text string, length uintptr, max_width int32, measured_width *int32, measured_length *uintptr) bool {
-		_font := uintptr(unsafe.Pointer(font))
-		_text := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text)))
-		defer runtime.KeepAlive(_text)
-		_length := uintptr(length)
-		_max_width := uintptr(max_width)
-		_measured_width := uintptr(unsafe.Pointer(measured_width))
-		_measured_length := uintptr(unsafe.Pointer(measured_length))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_MeasureString, _font, _text, _length, _max_width, _measured_width, _measured_length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_MeasureString, uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text))), uintptr(length), uintptr(max_width), uintptr(unsafe.Pointer(measured_width)), uintptr(unsafe.Pointer(measured_length)))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -770,320 +731,214 @@ func initialize() {
 		return __r0
 	}
 	iDrawSurfaceText = func(text *Text, x int32, y int32, surface *sdl.Surface) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_x := uintptr(x)
-		_y := uintptr(y)
-		_surface := uintptr(unsafe.Pointer(surface))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_DrawSurfaceText, _text, _x, _y, _surface)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_DrawSurfaceText, uintptr(unsafe.Pointer(text)), uintptr(x), uintptr(y), uintptr(unsafe.Pointer(surface)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iDestroySurfaceTextEngine = func(engine *TextEngine) {
-		_engine := uintptr(unsafe.Pointer(engine))
-		purego.SyscallN(_addr_TTF_DestroySurfaceTextEngine, _engine)
+		purego.SyscallN(_addr_TTF_DestroySurfaceTextEngine, uintptr(unsafe.Pointer(engine)))
 	}
 	iCreateRendererTextEngine = func(renderer *sdl.Renderer) *TextEngine {
-		_renderer := uintptr(unsafe.Pointer(renderer))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateRendererTextEngine, _renderer)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateRendererTextEngine, uintptr(unsafe.Pointer(renderer)))
 		__r0 := (*TextEngine)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iCreateRendererTextEngineWithProperties = func(props sdl.PropertiesID) *TextEngine {
-		_props := uintptr(props)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateRendererTextEngineWithProperties, _props)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateRendererTextEngineWithProperties, uintptr(props))
 		__r0 := (*TextEngine)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	purego.RegisterLibFunc(&iDrawRendererText, _hnd_ttf, "TTF_DrawRendererText")
 	iDestroyRendererTextEngine = func(engine *TextEngine) {
-		_engine := uintptr(unsafe.Pointer(engine))
-		purego.SyscallN(_addr_TTF_DestroyRendererTextEngine, _engine)
+		purego.SyscallN(_addr_TTF_DestroyRendererTextEngine, uintptr(unsafe.Pointer(engine)))
 	}
 	iCreateGPUTextEngine = func(device *sdl.GPUDevice) *TextEngine {
-		_device := uintptr(unsafe.Pointer(device))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateGPUTextEngine, _device)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateGPUTextEngine, uintptr(unsafe.Pointer(device)))
 		__r0 := (*TextEngine)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iCreateGPUTextEngineWithProperties = func(props sdl.PropertiesID) *TextEngine {
-		_props := uintptr(props)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateGPUTextEngineWithProperties, _props)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateGPUTextEngineWithProperties, uintptr(props))
 		__r0 := (*TextEngine)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetGPUTextDrawData = func(text *Text) *GPUAtlasDrawSequence {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGPUTextDrawData, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGPUTextDrawData, uintptr(unsafe.Pointer(text)))
 		__r0 := (*GPUAtlasDrawSequence)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iDestroyGPUTextEngine = func(engine *TextEngine) {
-		_engine := uintptr(unsafe.Pointer(engine))
-		purego.SyscallN(_addr_TTF_DestroyGPUTextEngine, _engine)
+		purego.SyscallN(_addr_TTF_DestroyGPUTextEngine, uintptr(unsafe.Pointer(engine)))
 	}
 	iSetGPUTextEngineWinding = func(engine *TextEngine, winding GPUTextEngineWinding) {
-		_engine := uintptr(unsafe.Pointer(engine))
-		_winding := uintptr(winding)
-		purego.SyscallN(_addr_TTF_SetGPUTextEngineWinding, _engine, _winding)
+		purego.SyscallN(_addr_TTF_SetGPUTextEngineWinding, uintptr(unsafe.Pointer(engine)), uintptr(winding))
 	}
 	iGetGPUTextEngineWinding = func(engine *TextEngine) GPUTextEngineWinding {
-		_engine := uintptr(unsafe.Pointer(engine))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGPUTextEngineWinding, _engine)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetGPUTextEngineWinding, uintptr(unsafe.Pointer(engine)))
 		__r0 := GPUTextEngineWinding(_r0)
 		return __r0
 	}
 	iCreateText = func(engine *TextEngine, font *Font, text string, length uintptr) *Text {
-		_engine := uintptr(unsafe.Pointer(engine))
-		_font := uintptr(unsafe.Pointer(font))
-		_text := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text)))
-		defer runtime.KeepAlive(_text)
-		_length := uintptr(length)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateText, _engine, _font, _text, _length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_CreateText, uintptr(unsafe.Pointer(engine)), uintptr(unsafe.Pointer(font)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(text))), uintptr(length))
 		__r0 := (*Text)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetTextProperties = func(text *Text) sdl.PropertiesID {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextProperties, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextProperties, uintptr(unsafe.Pointer(text)))
 		__r0 := sdl.PropertiesID(_r0)
 		return __r0
 	}
 	iSetTextEngine = func(text *Text, engine *TextEngine) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_engine := uintptr(unsafe.Pointer(engine))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextEngine, _text, _engine)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextEngine, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(engine)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextEngine = func(text *Text) *TextEngine {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextEngine, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextEngine, uintptr(unsafe.Pointer(text)))
 		__r0 := (*TextEngine)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iSetTextFont = func(text *Text, font *Font) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_font := uintptr(unsafe.Pointer(font))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextFont, _text, _font)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextFont, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(font)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextFont = func(text *Text) *Font {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextFont, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextFont, uintptr(unsafe.Pointer(text)))
 		__r0 := (*Font)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iSetTextDirection = func(text *Text, direction Direction) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_direction := uintptr(direction)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextDirection, _text, _direction)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextDirection, uintptr(unsafe.Pointer(text)), uintptr(direction))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextDirection = func(text *Text) Direction {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextDirection, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextDirection, uintptr(unsafe.Pointer(text)))
 		__r0 := Direction(_r0)
 		return __r0
 	}
 	iSetTextScript = func(text *Text, script uint32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_script := uintptr(script)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextScript, _text, _script)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextScript, uintptr(unsafe.Pointer(text)), uintptr(script))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextScript = func(text *Text) uint32 {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextScript, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextScript, uintptr(unsafe.Pointer(text)))
 		__r0 := uint32(_r0)
 		return __r0
 	}
 	iSetTextColor = func(text *Text, r uint8, g uint8, b uint8, a uint8) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_r := uintptr(r)
-		_g := uintptr(g)
-		_b := uintptr(b)
-		_a := uintptr(a)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextColor, _text, _r, _g, _b, _a)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextColor, uintptr(unsafe.Pointer(text)), uintptr(r), uintptr(g), uintptr(b), uintptr(a))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	purego.RegisterLibFunc(&iSetTextColorFloat, _hnd_ttf, "TTF_SetTextColorFloat")
 	iGetTextColor = func(text *Text, r *uint8, g *uint8, b *uint8, a *uint8) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_r := uintptr(unsafe.Pointer(r))
-		_g := uintptr(unsafe.Pointer(g))
-		_b := uintptr(unsafe.Pointer(b))
-		_a := uintptr(unsafe.Pointer(a))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextColor, _text, _r, _g, _b, _a)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextColor, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(r)), uintptr(unsafe.Pointer(g)), uintptr(unsafe.Pointer(b)), uintptr(unsafe.Pointer(a)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextColorFloat = func(text *Text, r *float32, g *float32, b *float32, a *float32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_r := uintptr(unsafe.Pointer(r))
-		_g := uintptr(unsafe.Pointer(g))
-		_b := uintptr(unsafe.Pointer(b))
-		_a := uintptr(unsafe.Pointer(a))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextColorFloat, _text, _r, _g, _b, _a)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextColorFloat, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(r)), uintptr(unsafe.Pointer(g)), uintptr(unsafe.Pointer(b)), uintptr(unsafe.Pointer(a)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetTextPosition = func(text *Text, x int32, y int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_x := uintptr(x)
-		_y := uintptr(y)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextPosition, _text, _x, _y)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextPosition, uintptr(unsafe.Pointer(text)), uintptr(x), uintptr(y))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextPosition = func(text *Text, x *int32, y *int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_x := uintptr(unsafe.Pointer(x))
-		_y := uintptr(unsafe.Pointer(y))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextPosition, _text, _x, _y)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextPosition, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(x)), uintptr(unsafe.Pointer(y)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetTextWrapWidth = func(text *Text, wrap_width int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_wrap_width := uintptr(wrap_width)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextWrapWidth, _text, _wrap_width)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextWrapWidth, uintptr(unsafe.Pointer(text)), uintptr(wrap_width))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextWrapWidth = func(text *Text, wrap_width *int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_wrap_width := uintptr(unsafe.Pointer(wrap_width))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextWrapWidth, _text, _wrap_width)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextWrapWidth, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(wrap_width)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetTextWrapWhitespaceVisible = func(text *Text, visible bool) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_visible := uintptr(0)
-		if visible {
-			_visible = 1
-		}
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextWrapWhitespaceVisible, _text, _visible)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextWrapWhitespaceVisible, uintptr(unsafe.Pointer(text)), puregogen.BoolToUintptr(visible))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iTextWrapWhitespaceVisible = func(text *Text) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_TextWrapWhitespaceVisible, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_TextWrapWhitespaceVisible, uintptr(unsafe.Pointer(text)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iSetTextString = func(text *Text, string string, length uintptr) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_string := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string)))
-		defer runtime.KeepAlive(_string)
-		_length := uintptr(length)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextString, _text, _string, _length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_SetTextString, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string))), uintptr(length))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iInsertTextString = func(text *Text, offset int32, string string, length uintptr) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_offset := uintptr(offset)
-		_string := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string)))
-		defer runtime.KeepAlive(_string)
-		_length := uintptr(length)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_InsertTextString, _text, _offset, _string, _length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_InsertTextString, uintptr(unsafe.Pointer(text)), uintptr(offset), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string))), uintptr(length))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iAppendTextString = func(text *Text, string string, length uintptr) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_string := uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string)))
-		defer runtime.KeepAlive(_string)
-		_length := uintptr(length)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_AppendTextString, _text, _string, _length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_AppendTextString, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string))), uintptr(length))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iDeleteTextString = func(text *Text, offset int32, length int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_offset := uintptr(offset)
-		_length := uintptr(length)
-		_r0, _, _ := purego.SyscallN(_addr_TTF_DeleteTextString, _text, _offset, _length)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_DeleteTextString, uintptr(unsafe.Pointer(text)), uintptr(offset), uintptr(length))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextSize = func(text *Text, w *int32, h *int32) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_w := uintptr(unsafe.Pointer(w))
-		_h := uintptr(unsafe.Pointer(h))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSize, _text, _w, _h)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSize, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(w)), uintptr(unsafe.Pointer(h)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextSubString = func(text *Text, offset int32, substring *SubString) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_offset := uintptr(offset)
-		_substring := uintptr(unsafe.Pointer(substring))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubString, _text, _offset, _substring)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubString, uintptr(unsafe.Pointer(text)), uintptr(offset), uintptr(unsafe.Pointer(substring)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextSubStringForLine = func(text *Text, line int32, substring *SubString) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_line := uintptr(line)
-		_substring := uintptr(unsafe.Pointer(substring))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringForLine, _text, _line, _substring)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringForLine, uintptr(unsafe.Pointer(text)), uintptr(line), uintptr(unsafe.Pointer(substring)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetTextSubStringsForRange = func(text *Text, offset int32, length int32, count *int32) **SubString {
-		_text := uintptr(unsafe.Pointer(text))
-		_offset := uintptr(offset)
-		_length := uintptr(length)
-		_count := uintptr(unsafe.Pointer(count))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringsForRange, _text, _offset, _length, _count)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringsForRange, uintptr(unsafe.Pointer(text)), uintptr(offset), uintptr(length), uintptr(unsafe.Pointer(count)))
 		__r0 := (**SubString)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
 	iGetTextSubStringForPoint = func(text *Text, x int32, y int32, substring *SubString) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_x := uintptr(x)
-		_y := uintptr(y)
-		_substring := uintptr(unsafe.Pointer(substring))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringForPoint, _text, _x, _y, _substring)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetTextSubStringForPoint, uintptr(unsafe.Pointer(text)), uintptr(x), uintptr(y), uintptr(unsafe.Pointer(substring)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetPreviousTextSubString = func(text *Text, substring *SubString, previous *SubString) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_substring := uintptr(unsafe.Pointer(substring))
-		_previous := uintptr(unsafe.Pointer(previous))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetPreviousTextSubString, _text, _substring, _previous)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetPreviousTextSubString, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(substring)), uintptr(unsafe.Pointer(previous)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iGetNextTextSubString = func(text *Text, substring *SubString, next *SubString) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_substring := uintptr(unsafe.Pointer(substring))
-		_next := uintptr(unsafe.Pointer(next))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_GetNextTextSubString, _text, _substring, _next)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetNextTextSubString, uintptr(unsafe.Pointer(text)), uintptr(unsafe.Pointer(substring)), uintptr(unsafe.Pointer(next)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iUpdateText = func(text *Text) bool {
-		_text := uintptr(unsafe.Pointer(text))
-		_r0, _, _ := purego.SyscallN(_addr_TTF_UpdateText, _text)
+		_r0, _, _ := purego.SyscallN(_addr_TTF_UpdateText, uintptr(unsafe.Pointer(text)))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iDestroyText = func(text *Text) {
-		_text := uintptr(unsafe.Pointer(text))
-		purego.SyscallN(_addr_TTF_DestroyText, _text)
+		purego.SyscallN(_addr_TTF_DestroyText, uintptr(unsafe.Pointer(text)))
 	}
 	iCloseFont = func(font *Font) {
-		_font := uintptr(unsafe.Pointer(font))
-		purego.SyscallN(_addr_TTF_CloseFont, _font)
+		purego.SyscallN(_addr_TTF_CloseFont, uintptr(unsafe.Pointer(font)))
 	}
 	iQuit = func() {
 		purego.SyscallN(_addr_TTF_Quit)
