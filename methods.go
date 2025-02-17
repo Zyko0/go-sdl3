@@ -643,9 +643,13 @@ func (id JoystickID) OpenJoystick() (*Joystick, error) {
 
 // SDL_GetJoystickFromID - Get the SDL_Joystick associated with an instance ID, if it has been opened.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickFromID)
-func (instance_id JoystickID) JoystickFromID() *Joystick {
-	panic("not implemented")
-	return iGetJoystickFromID(instance_id)
+func (id JoystickID) Joystick() (*Joystick, error) {
+	joystick := iGetJoystickFromID(id)
+	if joystick == nil {
+		return nil, internal.LastErr()
+	}
+
+	return joystick, nil
 }
 
 // SDL_DetachVirtualJoystick - Detach a virtual joystick.

@@ -101,6 +101,10 @@ func (e *Event) JoyDeviceEvent() *JoyDeviceEvent {
 	return (*JoyDeviceEvent)(unsafe.Pointer(e))
 }
 
+func (e *Event) JoyBatteryEvent() *JoyBatteryEvent {
+	return (*JoyBatteryEvent)(unsafe.Pointer(e))
+}
+
 func (e *Event) GamepadAxisEvent() *GamepadAxisEvent {
 	return (*GamepadAxisEvent)(unsafe.Pointer(e))
 }
