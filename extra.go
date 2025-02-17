@@ -205,6 +205,14 @@ func (s *Surface) Pixels() []byte {
 	)
 }
 
+// Custom types
+
+type SwapchainTexture struct {
+	Texture *GPUTexture
+	Width   uint32
+	Height  uint32
+}
+
 // Callback types
 
 type (

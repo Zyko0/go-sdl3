@@ -116,3 +116,18 @@ func LoadBMP(file string) (*Surface, error) {
 func ComposeCustomBlendMode(srcFactor, dstFactor BlendFactor, colorOp BlendOperation, srcAlphaFactor, dstAlphaFactor BlendFactor, alphaOp BlendOperation) BlendMode {
 	return iComposeCustomBlendMode(srcFactor, dstFactor, colorOp, srcAlphaFactor, dstAlphaFactor, alphaOp)
 }
+
+// GPU
+
+func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
+	return iGPUSupportsShaderFormats(formatFlags, name)
+}
+
+func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (*GPUDevice, error) {
+	device := iCreateGPUDevice(formatFlags, debugMode, name)
+	if device == nil {
+		return nil, internal.LastErr()
+	}
+
+	return device, nil
+}

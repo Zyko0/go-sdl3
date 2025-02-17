@@ -46,9 +46,6 @@ func main() {
 
 	runtime.LockOSThread()
 
-	if err := sdl.SetHint("SDL_RENDER_VSYNC", "1"); err != nil {
-		panic(err)
-	}
 	defer sdl.Quit()
 
 	if err := sdl.Init(sdl.INIT_VIDEO); err != nil {

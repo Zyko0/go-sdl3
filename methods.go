@@ -61,48 +61,54 @@ func (touchID TouchID) TouchFingers(count *int32) **Finger {
 	//return iGetTouchFingers(touchID, count)
 }
 
-// GPUShaderFormat
-
-func (format_flags GPUShaderFormat) GPUSupportsShaderFormats(name string) bool {
-	panic("not implemented")
-	return iGPUSupportsShaderFormats(format_flags, name)
-}
-
-func (format_flags GPUShaderFormat) CreateGPUDevice(debug_mode bool, name string) *GPUDevice {
-	panic("not implemented")
-	return iCreateGPUDevice(format_flags, debug_mode, name)
-}
-
 // Storage
 
-func (storage *Storage) Close() bool {
-	panic("not implemented")
-	return iCloseStorage(storage)
+func (storage *Storage) Close() error {
+	if !iCloseStorage(storage) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (storage *Storage) Ready() bool {
-	panic("not implemented")
 	return iStorageReady(storage)
 }
 
-func (storage *Storage) FileSize(path string, length *uint64) bool {
-	panic("not implemented")
-	return iGetStorageFileSize(storage, path, length)
+func (storage *Storage) FileSize(path string) (uint64, error) {
+	var length uint64
+
+	if !iGetStorageFileSize(storage, path, &length) {
+		return 0, internal.LastErr()
+	}
+
+	return length, nil
 }
 
-func (storage *Storage) ReadFile(path string, destination *byte, length uint64) bool {
-	panic("not implemented")
-	//return iReadStorageFile(storage, path, destination, length)
+func (storage *Storage) ReadFile(path string, length uint64) ([]byte, error) {
+	data := make([]byte, length)
+
+	if !iReadStorageFile(storage, path, uintptr(unsafe.Pointer(unsafe.SliceData(data))), length) {
+		return nil, internal.LastErr()
+	}
+
+	return data, nil
 }
 
-func (storage *Storage) WriteFile(path string, source *byte, length uint64) bool {
-	panic("not implemented")
-	//return iWriteStorageFile(storage, path, source, length)
+func (storage *Storage) WriteFile(path string, source []byte) error {
+	if !iWriteStorageFile(storage, path, uintptr(unsafe.Pointer(unsafe.SliceData(source))), uint64(len(source))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (storage *Storage) CreateDirectory(path string) bool {
-	panic("not implemented")
-	return iCreateStorageDirectory(storage, path)
+func (storage *Storage) CreateDirectory(path string) error {
+	if !iCreateStorageDirectory(storage, path) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 func (storage *Storage) EnumerateDirectory(path string, callback EnumerateDirectoryCallback, userdata *byte) bool {
@@ -3668,130 +3674,107 @@ func (dt *DateTime) ToTime(ticks *Time) bool {
 // Keycode
 
 func (key Keycode) ScancodeFromKey(modstate *Keymod) Scancode {
-	panic("not implemented")
 	return iGetScancodeFromKey(key, modstate)
 }
 
 func (key Keycode) KeyName() string {
-	panic("not implemented")
 	return iGetKeyName(key)
-}
-
-// EventFilter
-
-func (filter EventFilter) Set(userdata *byte) {
-	panic("not implemented")
-	//iSetEventFilter(filter, userdata)
-}
-
-func (filter EventFilter) AddEventWatch(userdata *byte) bool {
-	panic("not implemented")
-	//return iAddEventWatch(filter, userdata)
-}
-
-func (filter EventFilter) RemoveEventWatch(userdata *byte) {
-	panic("not implemented")
-	//iRemoveEventWatch(filter, userdata)
-}
-
-func (filter EventFilter) FilterEvents(userdata *byte) {
-	panic("not implemented")
-	//iFilterEvents(filter, userdata)
-}
-
-// Folder
-
-func (folder Folder) User() string {
-	panic("not implemented")
-	return iGetUserFolder(folder)
 }
 
 // GPUCommandBuffer
 
-func (command_buffer *GPUCommandBuffer) InsertGPUDebugLabel(text string) {
-	panic("not implemented")
-	iInsertGPUDebugLabel(command_buffer, text)
+func (cb *GPUCommandBuffer) InsertDebugLabel(text string) {
+	iInsertGPUDebugLabel(cb, text)
 }
 
-func (command_buffer *GPUCommandBuffer) PushGPUDebugGroup(name string) {
-	panic("not implemented")
-	iPushGPUDebugGroup(command_buffer, name)
+func (cb *GPUCommandBuffer) PushDebugGroup(name string) {
+	iPushGPUDebugGroup(cb, name)
 }
 
-func (command_buffer *GPUCommandBuffer) PopGPUDebugGroup() {
-	panic("not implemented")
-	iPopGPUDebugGroup(command_buffer)
+func (cb *GPUCommandBuffer) PopDebugGroup() {
+	iPopGPUDebugGroup(cb)
 }
 
-func (command_buffer *GPUCommandBuffer) PushGPUVertexUniformData(slot_index uint32, data *byte, length uint32) {
-	panic("not implemented")
-	//iPushGPUVertexUniformData(command_buffer, slot_index, data, length)
+func (cb *GPUCommandBuffer) PushVertexUniformData(slotIndex uint32, data []byte) {
+	iPushGPUVertexUniformData(cb, slotIndex, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uint32(len(data)))
 }
 
-func (command_buffer *GPUCommandBuffer) PushGPUFragmentUniformData(slot_index uint32, data *byte, length uint32) {
-	panic("not implemented")
-	//iPushGPUFragmentUniformData(command_buffer, slot_index, data, length)
+func (cb *GPUCommandBuffer) PushFragmentUniformData(slotIndex uint32, data []byte) {
+	iPushGPUFragmentUniformData(cb, slotIndex, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uint32(len(data)))
 }
 
-func (command_buffer *GPUCommandBuffer) PushGPUComputeUniformData(slot_index uint32, data *byte, length uint32) {
-	panic("not implemented")
-	//iPushGPUComputeUniformData(command_buffer, slot_index, data, length)
+func (cb *GPUCommandBuffer) PushComputeUniformData(slotIndex uint32, data []byte) {
+	iPushGPUComputeUniformData(cb, slotIndex, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uint32(len(data)))
 }
 
-func (command_buffer *GPUCommandBuffer) BeginGPURenderPass(color_target_infos *GPUColorTargetInfo, num_color_targets uint32, depth_stencil_target_info *GPUDepthStencilTargetInfo) *GPURenderPass {
-	panic("not implemented")
-	//return iBeginGPURenderPass(command_buffer, color_target_infos, num_color_targets, depth_stencil_target_info)
+func (cb *GPUCommandBuffer) BeginRenderPass(colorTargetInfos []GPUColorTargetInfo, depthStencilTargetInfo *GPUDepthStencilTargetInfo) *GPURenderPass {
+	return iBeginGPURenderPass(cb, unsafe.SliceData(colorTargetInfos), uint32(len(colorTargetInfos)), depthStencilTargetInfo)
 }
 
-func (command_buffer *GPUCommandBuffer) BeginGPUComputePass(storage_texture_bindings *GPUStorageTextureReadWriteBinding, num_storage_texture_bindings uint32, storage_buffer_bindings *GPUStorageBufferReadWriteBinding, num_storage_buffer_bindings uint32) *GPUComputePass {
-	panic("not implemented")
-	return iBeginGPUComputePass(command_buffer, storage_texture_bindings, num_storage_texture_bindings, storage_buffer_bindings, num_storage_buffer_bindings)
+func (cb *GPUCommandBuffer) BeginComputePass(storageTextureBindings []GPUStorageTextureReadWriteBinding, storageBufferBindings []GPUStorageBufferReadWriteBinding) *GPUComputePass {
+	return iBeginGPUComputePass(cb, unsafe.SliceData(storageTextureBindings), uint32(len(storageTextureBindings)), unsafe.SliceData(storageBufferBindings), uint32(len(storageBufferBindings)))
 }
 
-func (command_buffer *GPUCommandBuffer) BeginGPUCopyPass() *GPUCopyPass {
-	panic("not implemented")
-	return iBeginGPUCopyPass(command_buffer)
+func (cb *GPUCommandBuffer) BeginCopyPass() *GPUCopyPass {
+	return iBeginGPUCopyPass(cb)
 }
 
-func (command_buffer *GPUCommandBuffer) GenerateMipmapsForGPUTexture(texture *GPUTexture) {
-	panic("not implemented")
-	iGenerateMipmapsForGPUTexture(command_buffer, texture)
+func (cb *GPUCommandBuffer) GenerateMipmapsForGPUTexture(texture *GPUTexture) {
+	iGenerateMipmapsForGPUTexture(cb, texture)
 }
 
-func (command_buffer *GPUCommandBuffer) BlitGPUTexture(info *GPUBlitInfo) {
-	panic("not implemented")
-	iBlitGPUTexture(command_buffer, info)
+func (cb *GPUCommandBuffer) BlitGPUTexture(info *GPUBlitInfo) {
+	iBlitGPUTexture(cb, info)
 }
 
-func (command_buffer *GPUCommandBuffer) AcquireGPUSwapchainTexture(window *Window, swapchain_texture **GPUTexture, swapchain_texture_width *uint32, swapchain_texture_height *uint32) bool {
-	panic("not implemented")
-	return iAcquireGPUSwapchainTexture(command_buffer, window, swapchain_texture, swapchain_texture_width, swapchain_texture_height)
+func (cb *GPUCommandBuffer) AcquireGPUSwapchainTexture(window *Window) (*SwapchainTexture, error) {
+	var texture SwapchainTexture
+
+	if !iAcquireGPUSwapchainTexture(cb, window, &texture.Texture, &texture.Width, &texture.Height) {
+		return nil, internal.LastErr()
+	}
+
+	return &texture, nil
 }
 
-func (command_buffer *GPUCommandBuffer) WaitAndAcquireGPUSwapchainTexture(window *Window, swapchain_texture **GPUTexture, swapchain_texture_width *uint32, swapchain_texture_height *uint32) bool {
-	panic("not implemented")
-	return iWaitAndAcquireGPUSwapchainTexture(command_buffer, window, swapchain_texture, swapchain_texture_width, swapchain_texture_height)
+func (cb *GPUCommandBuffer) WaitAndAcquireGPUSwapchainTexture(window *Window) (*SwapchainTexture, error) {
+	var texture SwapchainTexture
+
+	if !iWaitAndAcquireGPUSwapchainTexture(cb, window, &texture.Texture, &texture.Width, &texture.Height) {
+		return nil, internal.LastErr()
+	}
+
+	return &texture, nil
 }
 
-func (command_buffer *GPUCommandBuffer) Submit() bool {
-	panic("not implemented")
-	return iSubmitGPUCommandBuffer(command_buffer)
+func (cb *GPUCommandBuffer) Submit() error {
+	if !iSubmitGPUCommandBuffer(cb) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
-func (command_buffer *GPUCommandBuffer) SubmitAndAcquireFence() *GPUFence {
-	panic("not implemented")
-	return iSubmitGPUCommandBufferAndAcquireFence(command_buffer)
+func (cb *GPUCommandBuffer) SubmitAndAcquireFence() (*GPUFence, error) {
+	fence := iSubmitGPUCommandBufferAndAcquireFence(cb)
+	if fence == nil {
+		return nil, internal.LastErr()
+	}
+
+	return fence, nil
 }
 
-func (command_buffer *GPUCommandBuffer) Cancel() bool {
-	panic("not implemented")
-	return iCancelGPUCommandBuffer(command_buffer)
+func (cb *GPUCommandBuffer) Cancel() error {
+	if !iCancelGPUCommandBuffer(cb) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // Process
 
 func (process *Process) Properties() PropertiesID {
-	panic("not implemented")
 	return iGetProcessProperties(process)
 }
 
