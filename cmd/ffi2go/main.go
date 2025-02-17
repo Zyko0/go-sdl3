@@ -13,49 +13,13 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/Zyko0/go-sdl3/cmd/internal/assets"
 	"github.com/dave/jennifer/jen"
 )
 
-type Config struct {
-	OutDir                  string   `json:"out_dir"`
-	LibraryName             string   `json:"library_name"`
-	Prefix                  string   `json:"prefix"`
-	QuickAPIRefURL          string   `json:"quick_api_ref_url"`
-	AllowedInclude          string   `json:"allowed_include"`
-	IgnoredHeaders          []string `json:"ignored_headers"`
-	IgnoredTypes            []string `json:"ignored_types"`
-	IgnoredFunctions        []string `json:"ignored_functions"`
-	AllowlistedFunctions    []string `json:"allowlisted_functions"`
-	AllowlistedTypePrefixes []string `json:"allowlisted_type_prefixes"`
-	BaseTypes               []string `json:"base_types"`
-	SDLFreeFunctions        []string `json:"sdl_free_functions"`
-}
-
-type FFIEntry struct {
-	Name         string      `json:"name"`
-	Ns           int         `json:"ns"`
-	Tag          string      `json:"tag"`
-	Type         *FFIEntry   `json:"type"`
-	Value        int         `json:"value"`
-	Size         int         `json:"size"`
-	Fields       []*FFIEntry `json:"fields"`
-	StorageClass string      `json:"storage-class"`
-	Variadic     bool        `json:"variadic"`
-	Inline       bool        `json:"inline"`
-	ReturnType   *FFIEntry   `json:"return-type"`
-	Parameters   []*FFIEntry `json:"parameters"`
-	BitOffset    int         `json:"bit-offset"`
-	BitSize      int         `json:"bit-size"`
-	BitAlignment int         `json:"bit-alignment"`
-	ID           int         `json:"id"`
-	Location     string      `json:"location"`
-
-	symbolHasPrefix bool
-}
-
 var (
-	cfg        Config
-	ffiEntries []*FFIEntry
+	cfg        assets.Config
+	ffiEntries []*assets.FFIEntry
 	apiRefCode string
 )
 
@@ -152,7 +116,7 @@ func postConvertType(s string) string {
 	}
 }
 
-func extractType(e *FFIEntry) string {
+func extractType(e *assets.FFIEntry) string {
 	var typ string
 	switch e.Tag {
 	case ":array":
@@ -170,7 +134,7 @@ func extractType(e *FFIEntry) string {
 	return postConvertType(typ)
 }
 
-func trimPrefix(e *FFIEntry) {
+func trimPrefix(e *assets.FFIEntry) {
 	e.Tag = strings.TrimPrefix(e.Tag, cfg.Prefix)
 	e.Name = strings.TrimPrefix(e.Name, cfg.Prefix)
 	if e.Type != nil {
@@ -189,9 +153,6 @@ func trimPrefix(e *FFIEntry) {
 
 func ensureSDLImport(f *jen.File) {
 	if cfg.LibraryName != "sdl" {
-		/*f.Id("import").Parens(
-			jen.Id("sdl \"github.com/Zyko0/go-sdl3\""),
-		)*/
 		f.ImportAlias("github.com/Zyko0/go-sdl3", "sdl")
 	}
 }
@@ -350,7 +311,7 @@ func main() {
 		}
 		// Trim prefixes
 		if strings.HasPrefix(e.Name, cfg.Prefix) {
-			e.symbolHasPrefix = true
+			e.SymbolHasPrefix = true
 		}
 		trimPrefix(e)
 		var allowlisted bool
@@ -380,7 +341,7 @@ func main() {
 	ffiEntries = ffiEntries[:n]
 
 	// Register used types
-	var regUsedTypes = func(e *FFIEntry) bool {
+	var regUsedTypes = func(e *assets.FFIEntry) bool {
 		var registration bool
 		for _, f := range e.Fields {
 			// Remove pointer or array potential prefix
@@ -458,7 +419,7 @@ func main() {
 						jenType(fn, extractType(e.ReturnType))
 					}
 				}
-				if e.symbolHasPrefix {
+				if e.SymbolHasPrefix {
 					g.Add(jen.Comment(
 						"//puregogen:function symbol=" + cfg.Prefix + e.Name,
 					))

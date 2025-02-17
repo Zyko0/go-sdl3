@@ -11,9 +11,9 @@ tasks:
             # Generate ffi.json files
             - docker build . -t sdl3ffi
             - docker create --name tmp sdl3ffi
-            - docker cp tmp:/sdl_ffi.json ./cmd/ffi2go/ffi/sdl.json
-            - docker cp tmp:/ttf_ffi.json ./cmd/ffi2go/ffi/ttf.json
-            - docker cp tmp:/mixer_ffi.json ./cmd/ffi2go/ffi/mixer.json
+            - docker cp tmp:/sdl_ffi.json ./cmd/internal/assets/ffi/sdl.json
+            - docker cp tmp:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
+            - docker cp tmp:/mixer_ffi.json ./cmd/internal/assets/ffi/mixer.json
             - docker rm -f tmp
     
     gen-bindings:
@@ -31,7 +31,7 @@ tasks:
                 - '{{.DIR}}/extra.go'
         cmds:
             # Generate SDL3 bindings 
-            - go run ./cmd/ffi2go --config "cmd/ffi2go/config/{{.LIBRARY}}.json" --ffi "cmd/ffi2go/ffi/{{.LIBRARY}}.json"
+            - go run ./cmd/ffi2go --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json"
             - purego-gen --no-warnings --function-name "initialize" --input {{.INPUT}} --extra {{.EXTRA | join ","}}
 
     gen-methods:
