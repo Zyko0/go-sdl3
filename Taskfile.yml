@@ -49,5 +49,5 @@ tasks:
         vars:
             DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
         cmds:
-            # Generate SDL3 documentations on top of functions
+            # Generate SDL3 documentation on top of functions
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}

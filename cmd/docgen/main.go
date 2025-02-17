@@ -139,6 +139,11 @@ func main() {
 		log.Fatal("err: ", err)
 	}
 
+	var urlLibrarySuffix string
+	if cfg.LibraryName != "sdl" {
+		urlLibrarySuffix = "_" + cfg.LibraryName
+	}
+
 	var annotations int
 
 	for _, e := range entries {
@@ -188,7 +193,7 @@ func main() {
 							"// %s - %s", funcName, uniqueAPIFunctions[funcName].Description,
 						))
 						outLines = append(outLines, fmt.Sprintf(
-							"// (https://wiki.libsdl.org/SDL3/%s)", funcName,
+							"// (https://wiki.libsdl.org/SDL3%s/%s)", urlLibrarySuffix, funcName,
 						))
 						annotations++
 						edited = true
