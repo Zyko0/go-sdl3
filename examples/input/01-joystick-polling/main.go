@@ -7,7 +7,6 @@ import (
 	"math"
 	"math/rand/v2"
 	"os"
-	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
@@ -15,9 +14,6 @@ import (
 
 func main() {
 	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
-
-	runtime.LockOSThread()
-
 	defer sdl.Quit()
 	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_JOYSTICK)
 	if err != nil {

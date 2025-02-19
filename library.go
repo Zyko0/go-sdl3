@@ -2,6 +2,7 @@ package sdl
 
 import (
 	"errors"
+	"runtime"
 
 	"github.com/Zyko0/go-sdl3/internal"
 	puregogen "github.com/Zyko0/purego-gen"
@@ -10,6 +11,8 @@ import (
 // LoadLibrary loads SDL library and initializes all functions.
 func LoadLibrary(path string) error {
 	var err error
+
+	runtime.LockOSThread()
 
 	_hnd_sdl, err = puregogen.OpenLibrary(path)
 	if err != nil {

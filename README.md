@@ -35,17 +35,12 @@ Example:
 package main
 
 import (
-	"runtime"
-
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 )
 
 func main() {
 	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
-
-	runtime.LockOSThread()
-
 	defer sdl.Quit()
 
 	if err := sdl.Init(sdl.INIT_VIDEO); err != nil {

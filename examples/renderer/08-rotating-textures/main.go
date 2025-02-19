@@ -3,8 +3,6 @@
 package main
 
 import (
-	"runtime"
-
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 	assets "github.com/Zyko0/go-sdl3/examples/renderer/_assets"
@@ -17,10 +15,8 @@ const (
 
 func main() {
 	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
-
-	runtime.LockOSThread()
-
 	defer sdl.Quit()
+
 	err := sdl.Init(sdl.INIT_VIDEO)
 	if err != nil {
 		panic(err)

@@ -5,7 +5,6 @@ package main
 import (
 	"math"
 	"math/rand/v2"
-	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
@@ -20,10 +19,8 @@ var (
 
 func main() {
 	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
-
-	runtime.LockOSThread()
-
 	defer sdl.Quit()
+
 	err := sdl.Init(sdl.INIT_VIDEO)
 	if err != nil {
 		panic(err)

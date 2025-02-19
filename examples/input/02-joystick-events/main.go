@@ -5,7 +5,6 @@ package main
 import (
 	"fmt"
 	"math/rand/v2"
-	"runtime"
 
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
@@ -82,9 +81,6 @@ func AddMessage(jid sdl.JoystickID, format string, values ...any) {
 
 func main() {
 	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
-
-	runtime.LockOSThread()
-
 	defer sdl.Quit()
 	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_JOYSTICK)
 	if err != nil {
