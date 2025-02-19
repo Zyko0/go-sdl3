@@ -1,6 +1,4 @@
-# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
-# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: Build static binaries
+name: Build SDL static binaries
 
 on:
   workflow_dispatch:
@@ -28,6 +26,7 @@ jobs:
           - os: macos-latest
             filename: libSDL3.dylib
             version: $SDL3_VERSION
+            flags: -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
         
     steps:
     - uses: actions/checkout@v4
@@ -47,6 +46,7 @@ jobs:
         -DSDL_SHARED=ON
         -DSDL_DISABLE_INSTALL=ON
         -DSDL_DISABLE_INSTALL_DOCS=ON
+        {{ matrix.flags }}
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: >
