@@ -1,0 +1,45 @@
+name: Build WASM+js
+
+on:
+  workflow_dispatch:
+
+env:
+  SDL3_VERSION: 3.2.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+        
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get Emscripten
+      run: |
+        git clone https://github.com/emscripten-core/emsdk.git --depth=1
+        cd emsdk
+        ./emsdk install tot
+        ./emsdk activate tot
+    - name: Clone SDL3
+      run: git clone --depth 1 --branch release-$SDL3_VERSION https://github.com/libsdl-org/SDL.git
+    - name: Build
+      run: |
+        source emsdk/emsdk_env.sh
+        cd SDL
+        mkdir build
+        cd build
+        emcmake cmake ..
+        emmake make -j4
+        emcc -s LINKABLE=1 -s EXPORTED_RUNTIME_METHODS="['addFunction', 'allocateUTF8','UTF8ToString', 'stringToUTF8', 'getValue', 'setValue', 'ccall', 'cwrap']" -s ALLOW_MEMORY_GROWTH=1 -s ALLOW_TABLE_GROWTH=1 -s MAXIMUM_MEMORY=1gb -s EXPORT_ALL -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$addFunction' libSDL3.a -o sdl.html
+    - name: Prepare for upload
+      run: |
+        mkdir _site
+        mv SDL/build/sdl* _site/
+    - name: Fix permissions
+      run: |
+        chmod -c -R +rX "_site/" | while read line; do
+          echo "::warning title=Invalid file permissions automatically fixed::$line"
+        done
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Binary WASM+js
+        path: _site
