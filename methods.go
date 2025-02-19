@@ -47,32 +47,46 @@ func (callback ClipboardDataCallback) SetClipboardData(cleanup ClipboardCleanupC
 
 // SDL_GetWindowFromID - Get a window from a stored ID.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowFromID)
-func (id WindowID) WindowFromID() *Window {
-	panic("not implemented")
-	return iGetWindowFromID(id)
+func (id WindowID) Window() (*Window, error) {
+	window := iGetWindowFromID(id)
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
 }
 
 // TouchID
 
 // SDL_GetTouchDeviceName - Get the touch device name as reported from the driver.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTouchDeviceName)
-func (touchID TouchID) TouchDeviceName() string {
-	panic("not implemented")
-	return iGetTouchDeviceName(touchID)
+func (touchID TouchID) DeviceName() (string, error) {
+	name := iGetTouchDeviceName(touchID)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetTouchDeviceType - Get the type of the given touch device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTouchDeviceType)
-func (touchID TouchID) TouchDeviceType() TouchDeviceType {
-	panic("not implemented")
+func (touchID TouchID) DeviceType() TouchDeviceType {
 	return iGetTouchDeviceType(touchID)
 }
 
 // SDL_GetTouchFingers - Get a list of active fingers for a given touch device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTouchFingers)
-func (touchID TouchID) TouchFingers(count *int32) **Finger {
-	panic("not implemented")
-	//return iGetTouchFingers(touchID, count)
+func (touchID TouchID) Fingers() ([]*Finger, error) {
+	var count int32
+
+	ptr := iGetTouchFingers(touchID, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[*Finger](ptr, int(count)), nil
 }
 
 // Storage
@@ -203,99 +217,136 @@ func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFla
 
 // SDL_GetAudioDeviceName - Get the human-readable name of a specific audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioDeviceName)
-func (devid AudioDeviceID) AudioDeviceName() string {
-	return iGetAudioDeviceName(devid)
+func (devid AudioDeviceID) Name() (string, error) {
+	name := iGetAudioDeviceName(devid)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetAudioDeviceFormat - Get the current audio format of a specific audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioDeviceFormat)
-func (devid AudioDeviceID) AudioDeviceFormat(spec *AudioSpec, sample_frames *int32) bool {
-	panic("not implemented")
-	return iGetAudioDeviceFormat(devid, spec, sample_frames)
+func (devid AudioDeviceID) Format() (*AudioSpec, int32, error) {
+	var spec AudioSpec
+	var sampleFrames int32
+
+	if !iGetAudioDeviceFormat(devid, &spec, &sampleFrames) {
+		return nil, 0, internal.LastErr()
+	}
+
+	return &spec, sampleFrames, nil
 }
 
 // SDL_GetAudioDeviceChannelMap - Get the current channel map of an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioDeviceChannelMap)
-func (devid AudioDeviceID) AudioDeviceChannelMap(count *int32) *int {
-	panic("not implemented")
-	//return iGetAudioDeviceChannelMap(devid, count)
+func (devid AudioDeviceID) ChannelMap() []int {
+	var count int32
+
+	ptr := iGetAudioDeviceChannelMap(devid, &count)
+	if ptr == 0 {
+		return nil
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[int](ptr, int(count))
 }
 
 // SDL_OpenAudioDevice - Open a specific audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenAudioDevice)
-func (devid AudioDeviceID) OpenAudioDevice(spec *AudioSpec) AudioDeviceID {
-	panic("not implemented")
-	return iOpenAudioDevice(devid, spec)
+func (devid AudioDeviceID) OpenAudioDevice(spec *AudioSpec) (AudioDeviceID, error) {
+	ret := iOpenAudioDevice(devid, spec)
+	if ret == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return ret, nil
 }
 
 // SDL_IsAudioDevicePhysical - Determine if an audio device is physical (instead of logical).
 // (https://wiki.libsdl.org/SDL3/SDL_IsAudioDevicePhysical)
-func (devid AudioDeviceID) IsAudioDevicePhysical() bool {
-	panic("not implemented")
+func (devid AudioDeviceID) IsPhysical() bool {
 	return iIsAudioDevicePhysical(devid)
 }
 
 // SDL_IsAudioDevicePlayback - Determine if an audio device is a playback device (instead of recording).
 // (https://wiki.libsdl.org/SDL3/SDL_IsAudioDevicePlayback)
-func (devid AudioDeviceID) IsAudioDevicePlayback() bool {
-	panic("not implemented")
+func (devid AudioDeviceID) IsPlayback() bool {
 	return iIsAudioDevicePlayback(devid)
 }
 
 // SDL_PauseAudioDevice - Use this function to pause audio playback on a specified device.
 // (https://wiki.libsdl.org/SDL3/SDL_PauseAudioDevice)
-func (devid AudioDeviceID) PauseAudioDevice() bool {
-	panic("not implemented")
-	return iPauseAudioDevice(devid)
+func (devid AudioDeviceID) Pause() error {
+	if !iPauseAudioDevice(devid) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ResumeAudioDevice - Use this function to unpause audio playback on a specified device.
 // (https://wiki.libsdl.org/SDL3/SDL_ResumeAudioDevice)
-func (devid AudioDeviceID) ResumeAudioDevice() bool {
-	panic("not implemented")
-	return iResumeAudioDevice(devid)
+func (devid AudioDeviceID) Resume() error {
+	if !iResumeAudioDevice(devid) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_AudioDevicePaused - Use this function to query if an audio device is paused.
 // (https://wiki.libsdl.org/SDL3/SDL_AudioDevicePaused)
-func (devid AudioDeviceID) AudioDevicePaused() bool {
-	panic("not implemented")
+func (devid AudioDeviceID) Paused() bool {
 	return iAudioDevicePaused(devid)
 }
 
 // SDL_GetAudioDeviceGain - Get the gain of an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioDeviceGain)
-func (devid AudioDeviceID) AudioDeviceGain() float32 {
-	panic("not implemented")
-	return iGetAudioDeviceGain(devid)
+func (devid AudioDeviceID) Gain() (float32, error) {
+	gain := iGetAudioDeviceGain(devid)
+	if gain == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return gain, nil
 }
 
 // SDL_SetAudioDeviceGain - Change the gain of an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioDeviceGain)
-func (devid AudioDeviceID) SetAudioDeviceGain(gain float32) bool {
-	panic("not implemented")
-	return iSetAudioDeviceGain(devid, gain)
+func (devid AudioDeviceID) SetGain(gain float32) error {
+	if !iSetAudioDeviceGain(devid, gain) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_CloseAudioDevice - Close a previously-opened audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_CloseAudioDevice)
-func (devid AudioDeviceID) CloseAudioDevice() {
-	panic("not implemented")
+func (devid AudioDeviceID) Close() {
 	iCloseAudioDevice(devid)
 }
 
 // SDL_BindAudioStreams - Bind a list of audio streams to an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_BindAudioStreams)
-func (devid AudioDeviceID) BindAudioStreams(streams **AudioStream, num_streams int32) bool {
-	panic("not implemented")
-	return iBindAudioStreams(devid, streams, num_streams)
+func (devid AudioDeviceID) BindAudioStreams(streams []*AudioStream) error {
+	if !iBindAudioStreams(devid, unsafe.SliceData(streams), int32(len(streams))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BindAudioStream - Bind a single audio stream to an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_BindAudioStream)
-func (devid AudioDeviceID) BindAudioStream(stream *AudioStream) bool {
-	panic("not implemented")
-	return iBindAudioStream(devid, stream)
+func (devid AudioDeviceID) BindAudioStream(stream *AudioStream) error {
+	if !iBindAudioStream(devid, stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_OpenAudioDeviceStream - Convenience function for straightforward audio init for the common case.
@@ -317,49 +368,65 @@ func (devid AudioDeviceID) SetAudioPostmixCallback(callback AudioPostmixCallback
 // SDL_GetCameraPermissionState - Query if camera access has been approved by the user.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraPermissionState)
 func (camera *Camera) PermissionState() int32 {
-	panic("not implemented")
 	return iGetCameraPermissionState(camera)
 }
 
 // SDL_GetCameraID - Get the instance ID of an opened camera.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraID)
-func (camera *Camera) ID() CameraID {
-	panic("not implemented")
-	return iGetCameraID(camera)
+func (camera *Camera) ID() (CameraID, error) {
+	id := iGetCameraID(camera)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetCameraProperties - Get the properties associated with an opened camera.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraProperties)
-func (camera *Camera) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetCameraProperties(camera)
+func (camera *Camera) Properties() (PropertiesID, error) {
+	props := iGetCameraProperties(camera)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetCameraFormat - Get the spec that a camera is using when generating images.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraFormat)
-func (camera *Camera) Format(spec *CameraSpec) bool {
-	panic("not implemented")
-	return iGetCameraFormat(camera, spec)
+func (camera *Camera) Format() (*CameraSpec, error) {
+	var spec CameraSpec
+
+	if !iGetCameraFormat(camera, &spec) {
+		return nil, internal.LastErr()
+	}
+
+	return &spec, nil
 }
 
 // SDL_AcquireCameraFrame - Acquire a frame.
 // (https://wiki.libsdl.org/SDL3/SDL_AcquireCameraFrame)
-func (camera *Camera) AcquireFrame(timestampNS *uint64) *Surface {
-	panic("not implemented")
-	return iAcquireCameraFrame(camera, timestampNS)
+func (camera *Camera) AcquireFrame() (*Surface, uint64, error) {
+	var timestampNS uint64
+
+	surface := iAcquireCameraFrame(camera, &timestampNS)
+	if timestampNS == 0 {
+		return nil, 0, internal.LastErr()
+	}
+
+	return surface, timestampNS, nil
 }
 
 // SDL_ReleaseCameraFrame - Release a frame of video acquired from a camera.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseCameraFrame)
 func (camera *Camera) ReleaseFrame(frame *Surface) {
-	panic("not implemented")
 	iReleaseCameraFrame(camera, frame)
 }
 
 // SDL_CloseCamera - Use this function to shut down camera processing and close the camera device.
 // (https://wiki.libsdl.org/SDL3/SDL_CloseCamera)
 func (camera *Camera) Close() {
-	panic("not implemented")
 	iCloseCamera(camera)
 }
 
@@ -368,7 +435,6 @@ func (camera *Camera) Close() {
 // SDL_GetGamepadStringForButton - Convert from an SDL_GamepadButton enum to a string.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForButton)
 func (button GamepadButton) GamepadStringForButton() string {
-	panic("not implemented")
 	return iGetGamepadStringForButton(button)
 }
 
@@ -377,15 +443,13 @@ func (button GamepadButton) GamepadStringForButton() string {
 // SDL_GPUTextureFormatTexelBlockSize - Obtains the texel block size for a texture format.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureFormatTexelBlockSize)
 func (format GPUTextureFormat) TexelBlockSize() uint32 {
-	panic("not implemented")
 	return iGPUTextureFormatTexelBlockSize(format)
 }
 
 // SDL_CalculateGPUTextureFormatSize - Calculate the size in bytes of a texture format with dimensions.
 // (https://wiki.libsdl.org/SDL3/SDL_CalculateGPUTextureFormatSize)
-func (format GPUTextureFormat) CalculateSize(width uint32, height uint32, depth_or_layer_count uint32) uint32 {
-	panic("not implemented")
-	return iCalculateGPUTextureFormatSize(format, width, height, depth_or_layer_count)
+func (format GPUTextureFormat) CalculateSize(width, height, depthOrLayerCount uint32) uint32 {
+	return iCalculateGPUTextureFormatSize(format, width, height, depthOrLayerCount)
 }
 
 // SpinLock
@@ -3059,97 +3123,145 @@ func (instance_id CameraID) OpenCamera(spec *CameraSpec) *Camera {
 
 // SDL_GetDisplayProperties - Get the properties associated with a display.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDisplayProperties)
-func (displayID DisplayID) DisplayProperties() PropertiesID {
-	panic("not implemented")
-	return iGetDisplayProperties(displayID)
+func (displayID DisplayID) Properties() (PropertiesID, error) {
+	props := iGetDisplayProperties(displayID)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetDisplayName - Get the name of a display in UTF-8 encoding.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDisplayName)
-func (displayID DisplayID) DisplayName() string {
-	panic("not implemented")
-	return iGetDisplayName(displayID)
+func (displayID DisplayID) Name() (string, error) {
+	name := iGetDisplayName(displayID)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetDisplayBounds - Get the desktop area represented by a display.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDisplayBounds)
-func (displayID DisplayID) DisplayBounds(rect *Rect) bool {
-	panic("not implemented")
-	return iGetDisplayBounds(displayID, rect)
+func (displayID DisplayID) Bounds() (*Rect, error) {
+	var r Rect
+
+	if !iGetDisplayBounds(displayID, &r) {
+		return nil, internal.LastErr()
+	}
+
+	return &r, nil
 }
 
 // SDL_GetDisplayUsableBounds - Get the usable desktop area represented by a display, in screen coordinates.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDisplayUsableBounds)
-func (displayID DisplayID) DisplayUsableBounds(rect *Rect) bool {
-	panic("not implemented")
-	return iGetDisplayUsableBounds(displayID, rect)
+func (displayID DisplayID) UsableBounds() (*Rect, error) {
+	var r Rect
+
+	if !iGetDisplayUsableBounds(displayID, &r) {
+		return nil, internal.LastErr()
+	}
+
+	return &r, nil
 }
 
 // SDL_GetNaturalDisplayOrientation - Get the orientation of a display when it is unrotated.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNaturalDisplayOrientation)
 func (displayID DisplayID) NaturalDisplayOrientation() DisplayOrientation {
-	panic("not implemented")
 	return iGetNaturalDisplayOrientation(displayID)
 }
 
 // SDL_GetCurrentDisplayOrientation - Get the orientation of a display.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayOrientation)
 func (displayID DisplayID) CurrentDisplayOrientation() DisplayOrientation {
-	panic("not implemented")
 	return iGetCurrentDisplayOrientation(displayID)
 }
 
 // SDL_GetDisplayContentScale - Get the content scale of a display.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDisplayContentScale)
-func (displayID DisplayID) DisplayContentScale() float32 {
-	panic("not implemented")
-	return iGetDisplayContentScale(displayID)
+func (displayID DisplayID) ContentScale() (float32, error) {
+	scale := iGetDisplayContentScale(displayID)
+	if scale == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return scale, nil
 }
 
 // SDL_GetFullscreenDisplayModes - Get a list of fullscreen display modes available on a display.
 // (https://wiki.libsdl.org/SDL3/SDL_GetFullscreenDisplayModes)
-func (displayID DisplayID) FullscreenDisplayModes(count *int32) **DisplayMode {
-	panic("not implemented")
-	//return iGetFullscreenDisplayModes(displayID, count)
+func (displayID DisplayID) FullscreenDisplayModes() ([]*DisplayMode, error) {
+	var count int32
+
+	ptr := iGetFullscreenDisplayModes(displayID, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[*DisplayMode](ptr, int(count)), nil
 }
 
 // SDL_GetClosestFullscreenDisplayMode - Get the closest match to the requested display mode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetClosestFullscreenDisplayMode)
-func (displayID DisplayID) ClosestFullscreenDisplayMode(w int32, h int32, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool {
-	panic("not implemented")
-	return iGetClosestFullscreenDisplayMode(displayID, w, h, refresh_rate, include_high_density_modes, closest)
+func (displayID DisplayID) ClosestFullscreenDisplayMode(w, h int32, refreshRate float32, includeHighDensityModes bool) (*DisplayMode, error) {
+	var mode DisplayMode
+
+	if !iGetClosestFullscreenDisplayMode(displayID, w, h, refreshRate, includeHighDensityModes, &mode) {
+		return nil, internal.LastErr()
+	}
+
+	return &mode, nil
 }
 
 // SDL_GetDesktopDisplayMode - Get information about the desktop's display mode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetDesktopDisplayMode)
-func (displayID DisplayID) DesktopDisplayMode() *DisplayMode {
-	panic("not implemented")
-	return iGetDesktopDisplayMode(displayID)
+func (displayID DisplayID) DesktopDisplayMode() (*DisplayMode, error) {
+	mode := iGetDesktopDisplayMode(displayID)
+	if mode == nil {
+		return nil, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // SDL_GetCurrentDisplayMode - Get information about the current display mode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayMode)
-func (displayID DisplayID) CurrentDisplayMode() *DisplayMode {
-	panic("not implemented")
-	return iGetCurrentDisplayMode(displayID)
+func (displayID DisplayID) CurrentDisplayMode() (*DisplayMode, error) {
+	mode := iGetCurrentDisplayMode(displayID)
+	if mode == nil {
+		return nil, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // KeyboardID
 
 // SDL_GetKeyboardNameForID - Get the name of a keyboard.
 // (https://wiki.libsdl.org/SDL3/SDL_GetKeyboardNameForID)
-func (instance_id KeyboardID) KeyboardNameForID() string {
-	panic("not implemented")
-	return iGetKeyboardNameForID(instance_id)
+func (id KeyboardID) Name() (string, error) {
+	name := iGetKeyboardNameForID(id)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // MouseID
 
 // SDL_GetMouseNameForID - Get the name of a mouse.
 // (https://wiki.libsdl.org/SDL3/SDL_GetMouseNameForID)
-func (instance_id MouseID) MouseNameForID() string {
-	panic("not implemented")
-	return iGetMouseNameForID(instance_id)
+func (id MouseID) Name() (string, error) {
+	name := iGetMouseNameForID(id)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // EventFilter
@@ -3166,22 +3278,24 @@ func (filter *EventFilter) Get(userdata **byte) bool {
 // SDL_UnbindAudioStream - Unbind a single audio stream from its audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_UnbindAudioStream)
 func (stream *AudioStream) Unbind() {
-	panic("not implemented")
 	iUnbindAudioStream(stream)
 }
 
 // SDL_GetAudioStreamDevice - Query an audio stream for its currently-bound device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamDevice)
 func (stream *AudioStream) Device() AudioDeviceID {
-	panic("not implemented")
 	return iGetAudioStreamDevice(stream)
 }
 
 // SDL_GetAudioStreamProperties - Get the properties associated with an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamProperties)
-func (stream *AudioStream) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetAudioStreamProperties(stream)
+func (stream *AudioStream) Properties() (PropertiesID, error) {
+	props := iGetAudioStreamProperties(stream)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetAudioStreamFormat - Query the current format of an audio stream.
@@ -3200,135 +3314,201 @@ func (stream *AudioStream) SetFormat(src_spec *AudioSpec, dst_spec *AudioSpec) b
 
 // SDL_GetAudioStreamFrequencyRatio - Get the frequency ratio of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFrequencyRatio)
-func (stream *AudioStream) FrequencyRatio() float32 {
-	panic("not implemented")
-	return iGetAudioStreamFrequencyRatio(stream)
+func (stream *AudioStream) FrequencyRatio() (float32, error) {
+	ratio := iGetAudioStreamFrequencyRatio(stream)
+	if ratio == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return ratio, nil
 }
 
 // SDL_SetAudioStreamFrequencyRatio - Change the frequency ratio of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFrequencyRatio)
-func (stream *AudioStream) SetFrequencyRatio(ratio float32) bool {
-	panic("not implemented")
-	return iSetAudioStreamFrequencyRatio(stream, ratio)
+func (stream *AudioStream) SetFrequencyRatio(ratio float32) error {
+	if !iSetAudioStreamFrequencyRatio(stream, ratio) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetAudioStreamGain - Get the gain of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamGain)
-func (stream *AudioStream) Gain() float32 {
-	panic("not implemented")
-	return iGetAudioStreamGain(stream)
+func (stream *AudioStream) Gain() (float32, error) {
+	gain := iGetAudioStreamGain(stream)
+	if gain == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return gain, nil
 }
 
 // SDL_SetAudioStreamGain - Change the gain of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGain)
-func (stream *AudioStream) SetGain(gain float32) bool {
-	panic("not implemented")
-	return iSetAudioStreamGain(stream, gain)
+func (stream *AudioStream) SetGain(gain float32) error {
+	if !iSetAudioStreamGain(stream, gain) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetAudioStreamInputChannelMap - Get the current input channel map of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamInputChannelMap)
-func (stream *AudioStream) InputChannelMap(count *int32) *int {
-	panic("not implemented")
-	//return iGetAudioStreamInputChannelMap(stream, count)
+func (stream *AudioStream) InputChannelMap() []int {
+	var count int32
+
+	ptr := iGetAudioStreamInputChannelMap(stream, &count)
+	if ptr == 0 {
+		return nil
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[int](ptr, int(count))
 }
 
 // SDL_GetAudioStreamOutputChannelMap - Get the current output channel map of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamOutputChannelMap)
-func (stream *AudioStream) OutputChannelMap(count *int32) *int {
-	panic("not implemented")
-	//return iGetAudioStreamOutputChannelMap(stream, count)
+func (stream *AudioStream) OutputChannelMap() []int {
+	var count int32
+
+	ptr := iGetAudioStreamOutputChannelMap(stream, &count)
+	if ptr == 0 {
+		return nil
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[int](ptr, int(count))
 }
 
 // SDL_SetAudioStreamInputChannelMap - Set the current input channel map of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamInputChannelMap)
-func (stream *AudioStream) SetInputChannelMap(chmap *int32, count int32) bool {
-	panic("not implemented")
-	return iSetAudioStreamInputChannelMap(stream, chmap, count)
+func (stream *AudioStream) SetInputChannelMap(chmap []int32) error {
+	if !iSetAudioStreamInputChannelMap(stream, unsafe.SliceData(chmap), int32(len(chmap))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetAudioStreamOutputChannelMap - Set the current output channel map of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamOutputChannelMap)
-func (stream *AudioStream) SetOutputChannelMap(chmap *int32, count int32) bool {
-	panic("not implemented")
-	return iSetAudioStreamOutputChannelMap(stream, chmap, count)
+func (stream *AudioStream) SetOutputChannelMap(chmap []int32) error {
+	if !iSetAudioStreamOutputChannelMap(stream, unsafe.SliceData(chmap), int32(len(chmap))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_PutAudioStreamData - Add data to the stream.
 // (https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamData)
-func (stream *AudioStream) PutData(buf *byte, len int32) bool {
-	panic("not implemented")
-	//return iPutAudioStreamData(stream, buf, len)
+func (stream *AudioStream) PutData(buf []byte) error {
+	if !iPutAudioStreamData(stream, uintptr(unsafe.Pointer(unsafe.SliceData(buf))), int32(len(buf))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetAudioStreamData - Get converted/resampled data from the stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamData)
-func (stream *AudioStream) Data(buf *byte, len int32) int32 {
-	panic("not implemented")
-	//return iGetAudioStreamData(stream, buf, len)
+func (stream *AudioStream) Data(buf []byte) (int32, error) {
+	count := iGetAudioStreamData(stream, uintptr(unsafe.Pointer(unsafe.SliceData(buf))), int32(len(buf)))
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_GetAudioStreamAvailable - Get the number of converted/resampled bytes available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamAvailable)
-func (stream *AudioStream) Available() int32 {
-	panic("not implemented")
-	return iGetAudioStreamAvailable(stream)
+func (stream *AudioStream) Available() (int32, error) {
+	count := iGetAudioStreamAvailable(stream)
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_GetAudioStreamQueued - Get the number of bytes currently queued.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamQueued)
-func (stream *AudioStream) Queued() int32 {
-	panic("not implemented")
-	return iGetAudioStreamQueued(stream)
+func (stream *AudioStream) Queued() (int32, error) {
+	count := iGetAudioStreamQueued(stream)
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_FlushAudioStream - Tell the stream that you're done sending data, and anything being buffered should be converted/resampled and made available immediately.
 // (https://wiki.libsdl.org/SDL3/SDL_FlushAudioStream)
-func (stream *AudioStream) Flush() bool {
-	panic("not implemented")
-	return iFlushAudioStream(stream)
+func (stream *AudioStream) Flush() error {
+	if !iFlushAudioStream(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ClearAudioStream - Clear any pending data in the stream.
 // (https://wiki.libsdl.org/SDL3/SDL_ClearAudioStream)
-func (stream *AudioStream) Clear() bool {
-	panic("not implemented")
-	return iClearAudioStream(stream)
+func (stream *AudioStream) Clear() error {
+	if !iClearAudioStream(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_PauseAudioStreamDevice - Use this function to pause audio playback on the audio device associated with an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_PauseAudioStreamDevice)
-func (stream *AudioStream) PauseDevice() bool {
-	panic("not implemented")
-	return iPauseAudioStreamDevice(stream)
+func (stream *AudioStream) PauseDevice() error {
+	if !iPauseAudioStreamDevice(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ResumeAudioStreamDevice - Use this function to unpause audio playback on the audio device associated with an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_ResumeAudioStreamDevice)
-func (stream *AudioStream) ResumeDevice() bool {
-	panic("not implemented")
-	return iResumeAudioStreamDevice(stream)
+func (stream *AudioStream) ResumeDevice() error {
+	if !iResumeAudioStreamDevice(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_AudioStreamDevicePaused - Use this function to query if an audio device associated with a stream is paused.
 // (https://wiki.libsdl.org/SDL3/SDL_AudioStreamDevicePaused)
 func (stream *AudioStream) DevicePaused() bool {
-	panic("not implemented")
 	return iAudioStreamDevicePaused(stream)
 }
 
 // SDL_LockAudioStream - Lock an audio stream for serialized access.
 // (https://wiki.libsdl.org/SDL3/SDL_LockAudioStream)
-func (stream *AudioStream) Lock() bool {
-	panic("not implemented")
-	return iLockAudioStream(stream)
+func (stream *AudioStream) Lock() error {
+	if !iLockAudioStream(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_UnlockAudioStream - Unlock an audio stream for serialized access.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockAudioStream)
-func (stream *AudioStream) Unlock() bool {
-	panic("not implemented")
-	return iUnlockAudioStream(stream)
+func (stream *AudioStream) Unlock() error {
+	if !iUnlockAudioStream(stream) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetAudioStreamGetCallback - Set a callback that runs when data is requested from an audio stream.
@@ -3432,121 +3612,168 @@ func (cond *Condition) WaitTimeout(mutex *Mutex, timeoutMS int32) bool {
 
 // SDL_GetWindowPixelDensity - Get the pixel density of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelDensity)
-func (window *Window) PixelDensity() float32 {
-	panic("not implemented")
-	return iGetWindowPixelDensity(window)
+func (window *Window) PixelDensity() (float32, error) {
+	density := iGetWindowPixelDensity(window)
+	if density == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return density, nil
 }
 
 // SDL_GetWindowDisplayScale - Get the content display scale relative to a window's pixel size.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowDisplayScale)
-func (window *Window) DisplayScale() float32 {
-	panic("not implemented")
-	return iGetWindowDisplayScale(window)
+func (window *Window) DisplayScale() (float32, error) {
+	scale := iGetWindowDisplayScale(window)
+	if scale == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return scale, nil
 }
 
 // SDL_SetWindowFullscreenMode - Set the display mode to use when a window is visible and fullscreen.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreenMode)
-func (window *Window) SetFullscreenMode(mode *DisplayMode) bool {
-	panic("not implemented")
-	return iSetWindowFullscreenMode(window, mode)
+func (window *Window) SetFullscreenMode(mode *DisplayMode) error {
+	if !iSetWindowFullscreenMode(window, mode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowFullscreenMode - Query the display mode to use when a window is visible at fullscreen.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowFullscreenMode)
 func (window *Window) FullscreenMode() *DisplayMode {
-	panic("not implemented")
 	return iGetWindowFullscreenMode(window)
 }
 
 // SDL_GetWindowICCProfile - Get the raw ICC profile data for the screen the window is currently on.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowICCProfile)
-func (window *Window) ICCProfile(size *uintptr) *byte {
-	panic("not implemented")
-	//return iGetWindowICCProfile(window, size)
+func (window *Window) ICCProfile() ([]byte, error) {
+	var size uintptr
+
+	ptr := iGetWindowICCProfile(window, &size)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[byte](ptr, int(size)), nil
 }
 
 // SDL_GetWindowPixelFormat - Get the pixel format associated with the window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelFormat)
-func (window *Window) PixelFormat() PixelFormat {
-	panic("not implemented")
-	return iGetWindowPixelFormat(window)
+func (window *Window) PixelFormat() (PixelFormat, error) {
+	format := iGetWindowPixelFormat(window)
+	if format == PIXELFORMAT_UNKNOWN {
+		return PIXELFORMAT_UNKNOWN, internal.LastErr()
+	}
+
+	return format, nil
 }
 
 // SDL_CreatePopupWindow - Create a child popup window of the specified parent window.
 // (https://wiki.libsdl.org/SDL3/SDL_CreatePopupWindow)
-func (parent *Window) CreatePopup(offset_x int32, offset_y int32, w int32, h int32, flags WindowFlags) *Window {
-	panic("not implemented")
-	return iCreatePopupWindow(parent, offset_x, offset_y, w, h, flags)
+func (parent *Window) CreatePopup(offsetX, offsetY, w, h int32, flags WindowFlags) (*Window, error) {
+	window := iCreatePopupWindow(parent, offsetX, offsetY, w, h, flags)
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
 }
 
 // SDL_GetWindowID - Get the numeric ID of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowID)
-func (window *Window) ID() WindowID {
-	panic("not implemented")
-	return iGetWindowID(window)
+func (window *Window) ID() (WindowID, error) {
+	id := iGetWindowID(window)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetWindowParent - Get parent of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowParent)
 func (window *Window) Parent() *Window {
-	panic("not implemented")
 	return iGetWindowParent(window)
 }
 
 // SDL_GetWindowProperties - Get the properties associated with a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowProperties)
-func (window *Window) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetWindowProperties(window)
+func (window *Window) Properties() (PropertiesID, error) {
+	props := iGetWindowProperties(window)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetWindowFlags - Get the window flags.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowFlags)
 func (window *Window) Flags() WindowFlags {
-	panic("not implemented")
 	return iGetWindowFlags(window)
 }
 
 // SDL_SetWindowTitle - Set the title of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowTitle)
-func (window *Window) SetTitle(title string) bool {
-	panic("not implemented")
-	return iSetWindowTitle(window, title)
+func (window *Window) SetTitle(title string) error {
+	if !iSetWindowTitle(window, title) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowTitle - Get the title of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowTitle)
 func (window *Window) Title() string {
-	panic("not implemented")
 	return iGetWindowTitle(window)
 }
 
 // SDL_SetWindowIcon - Set the icon for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowIcon)
-func (window *Window) SetIcon(icon *Surface) bool {
-	panic("not implemented")
-	return iSetWindowIcon(window, icon)
+func (window *Window) SetIcon(icon *Surface) error {
+	if !iSetWindowIcon(window, icon) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowPosition - Request that the window's position be set.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowPosition)
-func (window *Window) SetPosition(x int32, y int32) bool {
-	panic("not implemented")
-	return iSetWindowPosition(window, x, y)
+func (window *Window) SetPosition(x, y int32) error {
+	if !iSetWindowPosition(window, x, y) {
+		return internal.LastErr()
+	}
+
+	return internal.LastErr()
 }
 
 // SDL_GetWindowPosition - Get the position of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowPosition)
-func (window *Window) Position(x *int32, y *int32) bool {
-	panic("not implemented")
-	return iGetWindowPosition(window, x, y)
+func (window *Window) Position() (int32, int32, error) {
+	var x, y int32
+
+	if !iGetWindowPosition(window, &x, &y) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return x, y, nil
 }
 
 // SDL_SetWindowSize - Request that the size of a window's client area be set.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowSize)
-func (window *Window) SetSize(w int32, h int32) bool {
-	panic("not implemented")
-	return iSetWindowSize(window, w, h)
+func (window *Window) SetSize(w, h int32) error {
+	if !iSetWindowSize(window, w, h) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowSize - Get the size of a window's client area.
@@ -3563,275 +3790,387 @@ func (window *Window) Size() (int32, int32, error) {
 
 // SDL_GetWindowSafeArea - Get the safe area for this window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowSafeArea)
-func (window *Window) SafeArea(rect *Rect) bool {
-	panic("not implemented")
-	return iGetWindowSafeArea(window, rect)
+func (window *Window) SafeArea() (Rect, error) {
+	var r Rect
+
+	if !iGetWindowSafeArea(window, &r) {
+		return r, internal.LastErr()
+	}
+
+	return r, nil
 }
 
 // SDL_SetWindowAspectRatio - Request that the aspect ratio of a window's client area be set.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowAspectRatio)
-func (window *Window) SetAspectRatio(min_aspect float32, max_aspect float32) bool {
-	panic("not implemented")
-	return iSetWindowAspectRatio(window, min_aspect, max_aspect)
+func (window *Window) SetAspectRatio(minAspect, maxAspect float32) error {
+	if !iSetWindowAspectRatio(window, minAspect, maxAspect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowAspectRatio - Get the size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowAspectRatio)
-func (window *Window) AspectRatio(min_aspect *float32, max_aspect *float32) bool {
-	panic("not implemented")
-	return iGetWindowAspectRatio(window, min_aspect, max_aspect)
+func (window *Window) AspectRatio() (float32, float32, error) {
+	var minAspect, maxAspect float32
+
+	if !iGetWindowAspectRatio(window, &minAspect, &maxAspect) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return minAspect, maxAspect, nil
 }
 
 // SDL_GetWindowBordersSize - Get the size of a window's borders (decorations) around the client area.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowBordersSize)
-func (window *Window) BordersSize(top *int32, left *int32, bottom *int32, right *int32) bool {
-	panic("not implemented")
-	return iGetWindowBordersSize(window, top, left, bottom, right)
+func (window *Window) BordersSize() (BorderSize, error) {
+	var size BorderSize
+
+	if !iGetWindowBordersSize(window, &size.Top, &size.Left, &size.Bottom, &size.Right) {
+		return size, internal.LastErr()
+	}
+
+	return size, nil
 }
 
 // SDL_GetWindowSizeInPixels - Get the size of a window's client area, in pixels.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowSizeInPixels)
-func (window *Window) SizeInPixels(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetWindowSizeInPixels(window, w, h)
+func (window *Window) SizeInPixels() (int32, int32, error) {
+	var w, h int32
+
+	if !iGetWindowSizeInPixels(window, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_SetWindowMinimumSize - Set the minimum size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowMinimumSize)
-func (window *Window) SetMinimumSize(min_w int32, min_h int32) bool {
-	panic("not implemented")
-	return iSetWindowMinimumSize(window, min_w, min_h)
+func (window *Window) SetMinimumSize(minW, minH int32) error {
+	if !iSetWindowMinimumSize(window, minW, minH) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowMinimumSize - Get the minimum size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowMinimumSize)
-func (window *Window) MinimumSize(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetWindowMinimumSize(window, w, h)
+func (window *Window) MinimumSize() (int32, int32, error) {
+	var w, h int32
+
+	if !iGetWindowMinimumSize(window, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_SetWindowMaximumSize - Set the maximum size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowMaximumSize)
-func (window *Window) SetMaximumSize(max_w int32, max_h int32) bool {
-	panic("not implemented")
-	return iSetWindowMaximumSize(window, max_w, max_h)
+func (window *Window) SetMaximumSize(maxW, maxH int32) error {
+	if !iSetWindowMaximumSize(window, maxW, maxH) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowMaximumSize - Get the maximum size of a window's client area.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowMaximumSize)
-func (window *Window) MaximumSize(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetWindowMaximumSize(window, w, h)
+func (window *Window) MaximumSize() (int32, int32, error) {
+	var w, h int32
+
+	if !iGetWindowMaximumSize(window, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_SetWindowBordered - Set the border state of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowBordered)
-func (window *Window) SetBordered(bordered bool) bool {
-	panic("not implemented")
-	return iSetWindowBordered(window, bordered)
+func (window *Window) SetBordered(bordered bool) error {
+	if !iSetWindowBordered(window, bordered) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowResizable - Set the user-resizable state of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowResizable)
-func (window *Window) SetResizable(resizable bool) bool {
-	panic("not implemented")
-	return iSetWindowResizable(window, resizable)
+func (window *Window) SetResizable(resizable bool) error {
+	if !iSetWindowResizable(window, resizable) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowAlwaysOnTop - Set the window to always be above the others.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowAlwaysOnTop)
-func (window *Window) SetAlwaysOnTop(on_top bool) bool {
-	panic("not implemented")
-	return iSetWindowAlwaysOnTop(window, on_top)
+func (window *Window) SetAlwaysOnTop(onTop bool) error {
+	if !iSetWindowAlwaysOnTop(window, onTop) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ShowWindow - Show a window.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowWindow)
-func (window *Window) Show() bool {
-	panic("not implemented")
-	return iShowWindow(window)
+func (window *Window) Show() error {
+	if !iShowWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_HideWindow - Hide a window.
 // (https://wiki.libsdl.org/SDL3/SDL_HideWindow)
-func (window *Window) Hide() bool {
-	panic("not implemented")
-	return iHideWindow(window)
+func (window *Window) Hide() error {
+	if !iHideWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RaiseWindow - Request that a window be raised above other windows and gain the input focus.
 // (https://wiki.libsdl.org/SDL3/SDL_RaiseWindow)
-func (window *Window) Raise() bool {
-	panic("not implemented")
-	return iRaiseWindow(window)
+func (window *Window) Raise() error {
+	if !iRaiseWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_MaximizeWindow - Request that the window be made as large as possible.
 // (https://wiki.libsdl.org/SDL3/SDL_MaximizeWindow)
-func (window *Window) Maximize() bool {
-	panic("not implemented")
-	return iMaximizeWindow(window)
+func (window *Window) Maximize() error {
+	if !iMaximizeWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_MinimizeWindow - Request that the window be minimized to an iconic representation.
 // (https://wiki.libsdl.org/SDL3/SDL_MinimizeWindow)
-func (window *Window) Minimize() bool {
-	panic("not implemented")
-	return iMinimizeWindow(window)
+func (window *Window) Minimize() error {
+	if !iMinimizeWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RestoreWindow - Request that the size and position of a minimized or maximized window be restored.
 // (https://wiki.libsdl.org/SDL3/SDL_RestoreWindow)
-func (window *Window) Restore() bool {
-	panic("not implemented")
-	return iRestoreWindow(window)
+func (window *Window) Restore() error {
+	if !iRestoreWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowFullscreen - Request that the window's fullscreen state be changed.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen)
-func (window *Window) SetFullscreen(fullscreen bool) bool {
-	panic("not implemented")
-	return iSetWindowFullscreen(window, fullscreen)
+func (window *Window) SetFullscreen(fullscreen bool) error {
+	if !iSetWindowFullscreen(window, fullscreen) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SyncWindow - Block until any pending window state is finalized.
 // (https://wiki.libsdl.org/SDL3/SDL_SyncWindow)
-func (window *Window) Sync() bool {
-	panic("not implemented")
-	return iSyncWindow(window)
+func (window *Window) Sync() error {
+	if !iSyncWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WindowHasSurface - Return whether the window has a surface associated with it.
 // (https://wiki.libsdl.org/SDL3/SDL_WindowHasSurface)
 func (window *Window) HasSurface() bool {
-	panic("not implemented")
 	return iWindowHasSurface(window)
 }
 
 // SDL_GetWindowSurface - Get the SDL surface associated with the window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowSurface)
-func (window *Window) Surface() *Surface {
-	panic("not implemented")
-	return iGetWindowSurface(window)
+func (window *Window) Surface() (*Surface, error) {
+	surface := iGetWindowSurface(window)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
 }
 
 // SDL_SetWindowSurfaceVSync - Toggle VSync for the window surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowSurfaceVSync)
-func (window *Window) SetSurfaceVSync(vsync int32) bool {
-	panic("not implemented")
-	return iSetWindowSurfaceVSync(window, vsync)
+func (window *Window) SetSurfaceVSync(vsync int32) error {
+	if !iSetWindowSurfaceVSync(window, vsync) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowSurfaceVSync - Get VSync for the window surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowSurfaceVSync)
-func (window *Window) SurfaceVSync(vsync *int32) bool {
-	panic("not implemented")
-	return iGetWindowSurfaceVSync(window, vsync)
+func (window *Window) SurfaceVSync() (int32, error) {
+	var vsync int32
+
+	if !iGetWindowSurfaceVSync(window, &vsync) {
+		return 0, internal.LastErr()
+	}
+
+	return vsync, nil
 }
 
 // SDL_UpdateWindowSurface - Copy the window surface to the screen.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurface)
-func (window *Window) UpdateSurface() bool {
-	panic("not implemented")
-	return iUpdateWindowSurface(window)
+func (window *Window) UpdateSurface() error {
+	if !iUpdateWindowSurface(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_UpdateWindowSurfaceRects - Copy areas of the window surface to the screen.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurfaceRects)
-func (window *Window) UpdateSurfaceRects(rects *Rect, numrects int32) bool {
-	panic("not implemented")
-	return iUpdateWindowSurfaceRects(window, rects, numrects)
+func (window *Window) UpdateSurfaceRects(rects []Rect) error {
+	if !iUpdateWindowSurfaceRects(window, unsafe.SliceData(rects), int32(len(rects))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_DestroyWindowSurface - Destroy the surface associated with the window.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyWindowSurface)
-func (window *Window) DestroySurface() bool {
-	panic("not implemented")
-	return iDestroyWindowSurface(window)
+func (window *Window) DestroySurface() error {
+	if !iDestroyWindowSurface(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowKeyboardGrab - Set a window's keyboard grab mode.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowKeyboardGrab)
-func (window *Window) SetKeyboardGrab(grabbed bool) bool {
-	panic("not implemented")
-	return iSetWindowKeyboardGrab(window, grabbed)
+func (window *Window) SetKeyboardGrab(grabbed bool) error {
+	if !iSetWindowKeyboardGrab(window, grabbed) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowMouseGrab - Set a window's mouse grab mode.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseGrab)
-func (window *Window) SetMouseGrab(grabbed bool) bool {
-	panic("not implemented")
-	return iSetWindowMouseGrab(window, grabbed)
+func (window *Window) SetMouseGrab(grabbed bool) error {
+	if !iSetWindowMouseGrab(window, grabbed) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowKeyboardGrab - Get a window's keyboard grab mode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowKeyboardGrab)
 func (window *Window) KeyboardGrab() bool {
-	panic("not implemented")
 	return iGetWindowKeyboardGrab(window)
 }
 
 // SDL_GetWindowMouseGrab - Get a window's mouse grab mode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseGrab)
 func (window *Window) MouseGrab() bool {
-	panic("not implemented")
 	return iGetWindowMouseGrab(window)
 }
 
 // SDL_SetWindowMouseRect - Confines the cursor to the specified area of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseRect)
-func (window *Window) SetMouseRect(rect *Rect) bool {
-	panic("not implemented")
-	return iSetWindowMouseRect(window, rect)
+func (window *Window) SetMouseRect(rect *Rect) error {
+	if !iSetWindowMouseRect(window, rect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowMouseRect - Get the mouse confinement rectangle of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseRect)
 func (window *Window) MouseRect() *Rect {
-	panic("not implemented")
 	return iGetWindowMouseRect(window)
 }
 
 // SDL_SetWindowOpacity - Set the opacity for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowOpacity)
-func (window *Window) SetOpacity(opacity float32) bool {
-	panic("not implemented")
-	return iSetWindowOpacity(window, opacity)
+func (window *Window) SetOpacity(opacity float32) error {
+	if !iSetWindowOpacity(window, opacity) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowOpacity - Get the opacity of a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowOpacity)
 func (window *Window) Opacity() float32 {
-	panic("not implemented")
 	return iGetWindowOpacity(window)
 }
 
 // SDL_SetWindowParent - Set the window as a child of a parent window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowParent)
-func (window *Window) SetParent(parent *Window) bool {
-	panic("not implemented")
-	return iSetWindowParent(window, parent)
+func (window *Window) SetParent(parent *Window) error {
+	if !iSetWindowParent(window, parent) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowModal - Toggle the state of the window as modal.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowModal)
-func (window *Window) SetModal(modal bool) bool {
-	panic("not implemented")
-	return iSetWindowModal(window, modal)
+func (window *Window) SetModal(modal bool) error {
+	if !iSetWindowModal(window, modal) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowFocusable - Set whether the window may have input focus.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowFocusable)
-func (window *Window) SetFocusable(focusable bool) bool {
-	panic("not implemented")
-	return iSetWindowFocusable(window, focusable)
+func (window *Window) SetFocusable(focusable bool) error {
+	if !iSetWindowFocusable(window, focusable) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ShowWindowSystemMenu - Display the system-level window menu.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowWindowSystemMenu)
-func (window *Window) ShowSystemMenu(x int32, y int32) bool {
-	panic("not implemented")
-	return iShowWindowSystemMenu(window, x, y)
+func (window *Window) ShowSystemMenu(x, y int32) error {
+	if !iShowWindowSystemMenu(window, x, y) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowHitTest - Provide a callback that decides if a window region has special properties.
@@ -3843,16 +4182,22 @@ func (window *Window) SetHitTest(callback HitTest, callback_data *byte) bool {
 
 // SDL_SetWindowShape - Set the shape of a transparent window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowShape)
-func (window *Window) SetShape(shape *Surface) bool {
-	panic("not implemented")
-	return iSetWindowShape(window, shape)
+func (window *Window) SetShape(shape *Surface) error {
+	if !iSetWindowShape(window, shape) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_FlashWindow - Request a window to demand attention from the user.
 // (https://wiki.libsdl.org/SDL3/SDL_FlashWindow)
-func (window *Window) Flash(operation FlashOperation) bool {
-	panic("not implemented")
-	return iFlashWindow(window, operation)
+func (window *Window) Flash(operation FlashOperation) error {
+	if !iFlashWindow(window, operation) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_DestroyWindow - Destroy a window.
@@ -3891,30 +4236,38 @@ func (window *Window) GL_Swap() bool {
 
 // SDL_StartTextInput - Start accepting Unicode text input events in a window.
 // (https://wiki.libsdl.org/SDL3/SDL_StartTextInput)
-func (window *Window) StartTextInput() bool {
-	panic("not implemented")
-	return iStartTextInput(window)
+func (window *Window) StartTextInput() error {
+	if !iStartTextInput(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_StartTextInputWithProperties - Start accepting Unicode text input events in a window, with properties describing the input.
 // (https://wiki.libsdl.org/SDL3/SDL_StartTextInputWithProperties)
-func (window *Window) StartTextInputWithProperties(props PropertiesID) bool {
-	panic("not implemented")
-	return iStartTextInputWithProperties(window, props)
+func (window *Window) StartTextInputWithProperties(props PropertiesID) error {
+	if !iStartTextInputWithProperties(window, props) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_TextInputActive - Check whether or not Unicode text input events are enabled for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_TextInputActive)
 func (window *Window) TextInputActive() bool {
-	panic("not implemented")
 	return iTextInputActive(window)
 }
 
 // SDL_StopTextInput - Stop receiving any text input events in a window.
 // (https://wiki.libsdl.org/SDL3/SDL_StopTextInput)
-func (window *Window) StopTextInput() bool {
-	panic("not implemented")
-	return iStopTextInput(window)
+func (window *Window) StopTextInput() error {
+	if !iStopTextInput(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ClearComposition - Dismiss the composition window/IME without disabling the subsystem.
@@ -3926,43 +4279,52 @@ func (window *Window) ClearComposition() bool {
 
 // SDL_SetTextInputArea - Set the area used to type Unicode text input.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextInputArea)
-func (window *Window) SetTextInputArea(rect *Rect, cursor int32) bool {
-	panic("not implemented")
-	return iSetTextInputArea(window, rect, cursor)
+func (window *Window) SetTextInputArea(rect *Rect, cursor int32) error {
+	if !iSetTextInputArea(window, rect, cursor) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetTextInputArea - Get the area used to type Unicode text input.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextInputArea)
-func (window *Window) TextInputArea(rect *Rect, cursor *int32) bool {
-	panic("not implemented")
-	return iGetTextInputArea(window, rect, cursor)
+func (window *Window) TextInputArea() (Rect, int32, error) {
+	var r Rect
+	var cursor int32
+
+	if !iGetTextInputArea(window, &r, &cursor) {
+		return r, 0, internal.LastErr()
+	}
+
+	return r, cursor, nil
 }
 
 // SDL_ScreenKeyboardShown - Check whether the screen keyboard is shown for given window.
 // (https://wiki.libsdl.org/SDL3/SDL_ScreenKeyboardShown)
 func (window *Window) ScreenKeyboardShown() bool {
-	panic("not implemented")
 	return iScreenKeyboardShown(window)
 }
 
 // SDL_WarpMouseInWindow - Move the mouse cursor to the given position within the window.
 // (https://wiki.libsdl.org/SDL3/SDL_WarpMouseInWindow)
 func (window *Window) WarpMouseIn(x float32, y float32) {
-	panic("not implemented")
 	iWarpMouseInWindow(window, x, y)
 }
 
 // SDL_SetWindowRelativeMouseMode - Set relative mouse mode for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowRelativeMouseMode)
-func (window *Window) SetRelativeMouseMode(enabled bool) bool {
-	panic("not implemented")
-	return iSetWindowRelativeMouseMode(window, enabled)
+func (window *Window) SetRelativeMouseMode(enabled bool) error {
+	if !iSetWindowRelativeMouseMode(window, enabled) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetWindowRelativeMouseMode - Query whether relative mouse mode is enabled for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowRelativeMouseMode)
 func (window *Window) RelativeMouseMode() bool {
-	panic("not implemented")
 	return iGetWindowRelativeMouseMode(window)
 }
 
@@ -4010,22 +4372,23 @@ func (attr GLAttr) GL_GetAttribute(value *int32) bool {
 
 // SDL_GetKeyFromScancode - Get the key code corresponding to the given scancode according to the current keyboard layout.
 // (https://wiki.libsdl.org/SDL3/SDL_GetKeyFromScancode)
-func (scancode Scancode) KeyFrom(modstate Keymod, key_event bool) Keycode {
-	panic("not implemented")
-	return iGetKeyFromScancode(scancode, modstate, key_event)
+func (scancode Scancode) KeyFrom(modstate Keymod, keyEvent bool) Keycode {
+	return iGetKeyFromScancode(scancode, modstate, keyEvent)
 }
 
 // SDL_SetScancodeName - Set a human-readable name for a scancode.
 // (https://wiki.libsdl.org/SDL3/SDL_SetScancodeName)
-func (scancode Scancode) SetName(name string) bool {
-	panic("not implemented")
-	return iSetScancodeName(scancode, name)
+func (scancode Scancode) SetName(name string) error {
+	if !iSetScancodeName(scancode, name) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetScancodeName - Get a human-readable name for a scancode.
 // (https://wiki.libsdl.org/SDL3/SDL_GetScancodeName)
 func (scancode Scancode) Name() string {
-	panic("not implemented")
 	return iGetScancodeName(scancode)
 }
 
@@ -4058,79 +4421,100 @@ func (id TimerID) RemoveTimer() bool {
 
 // SDL_CloseIO - Close and free an allocated SDL_IOStream structure.
 // (https://wiki.libsdl.org/SDL3/SDL_CloseIO)
-func (context *IOStream) CloseIO() bool {
-	panic("not implemented")
-	return iCloseIO(context)
+func (context *IOStream) CloseIO() error {
+	if !iCloseIO(context) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetIOProperties - Get the properties associated with an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOProperties)
-func (context *IOStream) IOProperties() PropertiesID {
-	panic("not implemented")
-	return iGetIOProperties(context)
+func (context *IOStream) IOProperties() (PropertiesID, error) {
+	props := iGetIOProperties(context)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetIOStatus - Query the stream status of an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOStatus)
 func (context *IOStream) IOStatus() IOStatus {
-	panic("not implemented")
 	return iGetIOStatus(context)
 }
 
 // SDL_GetIOSize - Use this function to get the size of the data stream in an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOSize)
-func (context *IOStream) IOSize() int64 {
-	panic("not implemented")
-	return iGetIOSize(context)
+func (context *IOStream) IOSize() (int64, error) {
+	size := iGetIOSize(context)
+	if size < 0 {
+		return -1, internal.LastErr()
+	}
+
+	return size, nil
 }
 
 // SDL_SeekIO - Seek within an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SeekIO)
-func (context *IOStream) SeekIO(offset int64, whence IOWhence) int64 {
-	panic("not implemented")
-	return iSeekIO(context, offset, whence)
+func (context *IOStream) SeekIO(offset int64, whence IOWhence) (int64, error) {
+	seek := iSeekIO(context, offset, whence)
+	if seek == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return seek, nil
 }
 
 // SDL_TellIO - Determine the current read/write offset in an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_TellIO)
 func (context *IOStream) TellIO() int64 {
-	panic("not implemented")
 	return iTellIO(context)
 }
 
 // SDL_ReadIO - Read from a data source.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadIO)
-func (context *IOStream) ReadIO(ptr *byte, size uintptr) uintptr {
-	panic("not implemented")
-	//return iReadIO(context, ptr, size)
+func (context *IOStream) ReadIO(available []byte) (uint64, error) {
+	count := iReadIO(context, uintptr(unsafe.Pointer(unsafe.SliceData(available))), uintptr(len(available)))
+	if count == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return uint64(count), nil
 }
 
 // SDL_WriteIO - Write to an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteIO)
-func (context *IOStream) WriteIO(ptr *byte, size uintptr) uintptr {
-	panic("not implemented")
-	//return iWriteIO(context, ptr, size)
+func (context *IOStream) WriteIO(data []byte) (uint64, error) {
+	count := iWriteIO(context, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uintptr(len(data)))
+	if count < uintptr(len(data)) {
+		return uint64(count), internal.LastErr()
+	}
+
+	return uint64(count), nil
 }
 
 // SDL_IOprintf - Print to an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOprintf)
-func (context *IOStream) IOprintf(fmt string) uintptr {
-	panic("not implemented")
-	return iIOprintf(context, fmt)
-}
+func (context *IOStream) IOprintf(format string, values ...any) (uint64, error) {
+	count := iIOprintf(context, fmt.Sprintf(format, values...))
+	if count == 0 {
+		return 0, internal.LastErr()
+	}
 
-// SDL_IOvprintf - Print to an SDL_IOStream data stream.
-// (https://wiki.libsdl.org/SDL3/SDL_IOvprintf)
-func (context *IOStream) IOvprintf(fmt string, ap va_list) uintptr {
-	panic("not implemented")
-	return iIOvprintf(context, fmt, ap)
+	return uint64(count), nil
 }
 
 // SDL_FlushIO - Flush any buffered data in the stream.
 // (https://wiki.libsdl.org/SDL3/SDL_FlushIO)
-func (context *IOStream) FlushIO() bool {
-	panic("not implemented")
-	return iFlushIO(context)
+func (context *IOStream) FlushIO() error {
+	if !iFlushIO(context) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_LoadFile_IO - Load all the data from an SDL data stream.
@@ -4149,234 +4533,327 @@ func (src *IOStream) SaveFile_IO(data *byte, datasize uintptr, closeio bool) boo
 
 // SDL_ReadU8 - Use this function to read a byte from an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU8)
-func (src *IOStream) ReadU8(value *uint8) bool {
-	panic("not implemented")
-	return iReadU8(src, value)
+func (src *IOStream) ReadU8() (uint8, error) {
+	var value uint8
+
+	if !iReadU8(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS8 - Use this function to read a signed byte from an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS8)
-func (src *IOStream) ReadS8(value *int8) bool {
-	panic("not implemented")
-	return iReadS8(src, value)
+func (src *IOStream) ReadS8() (int8, error) {
+	var value int8
+
+	if !iReadS8(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU16LE - Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU16LE)
-func (src *IOStream) ReadU16LE(value *uint16) bool {
-	panic("not implemented")
-	return iReadU16LE(src, value)
+func (src *IOStream) ReadU16LE() (uint16, error) {
+	var value uint16
+
+	if !iReadU16LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS16LE - Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS16LE)
-func (src *IOStream) ReadS16LE(value *int16) bool {
-	panic("not implemented")
-	return iReadS16LE(src, value)
+func (src *IOStream) ReadS16LE() (int16, error) {
+	var value int16
+
+	if !iReadS16LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU16BE - Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU16BE)
-func (src *IOStream) ReadU16BE(value *uint16) bool {
-	panic("not implemented")
-	return iReadU16BE(src, value)
+func (src *IOStream) ReadU16BE() (uint16, error) {
+	var value uint16
+
+	if !iReadU16BE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS16BE - Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS16BE)
-func (src *IOStream) ReadS16BE(value *int16) bool {
-	panic("not implemented")
-	return iReadS16BE(src, value)
+func (src *IOStream) ReadS16BE() (int16, error) {
+	var value int16
+
+	if !iReadS16BE(src, &value) {
+		return 0, nil
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU32LE - Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU32LE)
-func (src *IOStream) ReadU32LE(value *uint32) bool {
-	panic("not implemented")
-	return iReadU32LE(src, value)
+func (src *IOStream) ReadU32LE() (uint32, error) {
+	var value uint32
+
+	if !iReadU32LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS32LE - Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS32LE)
-func (src *IOStream) ReadS32LE(value *int32) bool {
-	panic("not implemented")
-	return iReadS32LE(src, value)
+func (src *IOStream) ReadS32LE() (int32, error) {
+	var value int32
+
+	if !iReadS32LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU32BE - Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU32BE)
-func (src *IOStream) ReadU32BE(value *uint32) bool {
-	panic("not implemented")
-	return iReadU32BE(src, value)
+func (src *IOStream) ReadU32BE() (uint32, error) {
+	var value uint32
+
+	if !iReadU32BE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS32BE - Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS32BE)
-func (src *IOStream) ReadS32BE(value *int32) bool {
-	panic("not implemented")
-	return iReadS32BE(src, value)
+func (src *IOStream) ReadS32BE() (int32, error) {
+	var value int32
+
+	if !iReadS32BE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU64LE - Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU64LE)
-func (src *IOStream) ReadU64LE(value *uint64) bool {
-	panic("not implemented")
-	return iReadU64LE(src, value)
+func (src *IOStream) ReadU64LE() (uint64, error) {
+	var value uint64
+
+	if !iReadU64LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS64LE - Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS64LE)
-func (src *IOStream) ReadS64LE(value *int64) bool {
-	panic("not implemented")
-	return iReadS64LE(src, value)
+func (src *IOStream) ReadS64LE() (int64, error) {
+	var value int64
+
+	if !iReadS64LE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadU64BE - Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadU64BE)
-func (src *IOStream) ReadU64BE(value *uint64) bool {
-	panic("not implemented")
-	return iReadU64BE(src, value)
+func (src *IOStream) ReadU64BE() (uint64, error) {
+	var value uint64
+
+	if !iReadU64BE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_ReadS64BE - Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadS64BE)
-func (src *IOStream) ReadS64BE(value *int64) bool {
-	panic("not implemented")
-	return iReadS64BE(src, value)
+func (src *IOStream) ReadS64BE() (int64, error) {
+	var value int64
+
+	if !iReadS64BE(src, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_WriteU8 - Use this function to write a byte to an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU8)
-func (dst *IOStream) WriteU8(value uint8) bool {
-	panic("not implemented")
-	return iWriteU8(dst, value)
+func (dst *IOStream) WriteU8(value uint8) error {
+	if !iWriteU8(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS8 - Use this function to write a signed byte to an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS8)
-func (dst *IOStream) WriteS8(value int8) bool {
-	panic("not implemented")
-	return iWriteS8(dst, value)
+func (dst *IOStream) WriteS8(value int8) error {
+	if !iWriteS8(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU16LE - Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU16LE)
-func (dst *IOStream) WriteU16LE(value uint16) bool {
-	panic("not implemented")
-	return iWriteU16LE(dst, value)
+func (dst *IOStream) WriteU16LE(value uint16) error {
+	if !iWriteU16LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS16LE - Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS16LE)
-func (dst *IOStream) WriteS16LE(value int16) bool {
-	panic("not implemented")
-	return iWriteS16LE(dst, value)
+func (dst *IOStream) WriteS16LE(value int16) error {
+	if !iWriteS16LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU16BE - Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU16BE)
-func (dst *IOStream) WriteU16BE(value uint16) bool {
-	panic("not implemented")
-	return iWriteU16BE(dst, value)
+func (dst *IOStream) WriteU16BE(value uint16) error {
+	if !iWriteU16BE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS16BE - Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS16BE)
-func (dst *IOStream) WriteS16BE(value int16) bool {
-	panic("not implemented")
-	return iWriteS16BE(dst, value)
+func (dst *IOStream) WriteS16BE(value int16) error {
+	if !iWriteS16BE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU32LE - Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU32LE)
-func (dst *IOStream) WriteU32LE(value uint32) bool {
-	panic("not implemented")
-	return iWriteU32LE(dst, value)
+func (dst *IOStream) WriteU32LE(value uint32) error {
+	if !iWriteU32LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS32LE - Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS32LE)
-func (dst *IOStream) WriteS32LE(value int32) bool {
-	panic("not implemented")
-	return iWriteS32LE(dst, value)
+func (dst *IOStream) WriteS32LE(value int32) error {
+	if !iWriteS32LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU32BE - Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU32BE)
-func (dst *IOStream) WriteU32BE(value uint32) bool {
-	panic("not implemented")
-	return iWriteU32BE(dst, value)
+func (dst *IOStream) WriteU32BE(value uint32) error {
+	if !iWriteU32BE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS32BE - Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS32BE)
-func (dst *IOStream) WriteS32BE(value int32) bool {
-	panic("not implemented")
-	return iWriteS32BE(dst, value)
+func (dst *IOStream) WriteS32BE(value int32) error {
+	if !iWriteS32BE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU64LE - Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU64LE)
-func (dst *IOStream) WriteU64LE(value uint64) bool {
-	panic("not implemented")
-	return iWriteU64LE(dst, value)
+func (dst *IOStream) WriteU64LE(value uint64) error {
+	if !iWriteU64LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS64LE - Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS64LE)
-func (dst *IOStream) WriteS64LE(value int64) bool {
-	panic("not implemented")
-	return iWriteS64LE(dst, value)
+func (dst *IOStream) WriteS64LE(value int64) error {
+	if !iWriteS64LE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteU64BE - Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteU64BE)
-func (dst *IOStream) WriteU64BE(value uint64) bool {
-	panic("not implemented")
-	return iWriteU64BE(dst, value)
+func (dst *IOStream) WriteU64BE(value uint64) error {
+	if !iWriteU64BE(dst, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteS64BE - Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteS64BE)
-func (dst *IOStream) WriteS64BE(value int64) bool {
-	panic("not implemented")
-	return iWriteS64BE(dst, value)
-}
+func (dst *IOStream) WriteS64BE(value int64) error {
+	if !iWriteS64BE(dst, value) {
+		return internal.LastErr()
+	}
 
-// SDL_LoadWAV_IO - Load the audio data of a WAVE file into memory.
-// (https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO)
-func (src *IOStream) LoadWAV_IO(closeio bool, spec *AudioSpec, audio_buf **uint8, audio_len *uint32) bool {
-	panic("not implemented")
-	return iLoadWAV_IO(src, closeio, spec, audio_buf, audio_len)
-}
-
-// SDL_LoadBMP_IO - Load a BMP image from a seekable SDL data stream.
-// (https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO)
-func (src *IOStream) LoadBMP_IO(closeio bool) *Surface {
-	panic("not implemented")
-	return iLoadBMP_IO(src, closeio)
-}
-
-// SDL_AddGamepadMappingsFromIO - Load a set of gamepad mappings from an SDL_IOStream.
-// (https://wiki.libsdl.org/SDL3/SDL_AddGamepadMappingsFromIO)
-func (src *IOStream) AddGamepadMappingsFromIO(closeio bool) int32 {
-	panic("not implemented")
-	return iAddGamepadMappingsFromIO(src, closeio)
+	return nil
 }
 
 // Palette
 
 // SDL_SetPaletteColors - Set a range of colors in a palette.
 // (https://wiki.libsdl.org/SDL3/SDL_SetPaletteColors)
-func (palette *Palette) SetColors(colors *Color, firstcolor int32, ncolors int32) bool {
-	panic("not implemented")
-	return iSetPaletteColors(palette, colors, firstcolor, ncolors)
+func (palette *Palette) SetColors(colors []Color, firstcolor int32) error {
+	if !iSetPaletteColors(palette, unsafe.SliceData(colors), firstcolor, int32(len(colors))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_DestroyPalette - Free a palette created with SDL_CreatePalette().
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyPalette)
 func (palette *Palette) Destroy() {
-	panic("not implemented")
 	iDestroyPalette(palette)
 }
 
@@ -4384,51 +4861,73 @@ func (palette *Palette) Destroy() {
 
 // SDL_SetJoystickVirtualAxis - Set the state of an axis on an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualAxis)
-func (joystick *Joystick) SetVirtualAxis(axis int32, value int16) bool {
-	panic("not implemented")
-	return iSetJoystickVirtualAxis(joystick, axis, value)
+func (joystick *Joystick) SetVirtualAxis(axis int32, value int16) error {
+	if !iSetJoystickVirtualAxis(joystick, axis, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetJoystickVirtualBall - Generate ball motion on an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualBall)
-func (joystick *Joystick) SetVirtualBall(ball int32, xrel int16, yrel int16) bool {
-	panic("not implemented")
-	return iSetJoystickVirtualBall(joystick, ball, xrel, yrel)
+func (joystick *Joystick) SetVirtualBall(ball int32, xrel, yrel int16) error {
+	if !iSetJoystickVirtualBall(joystick, ball, xrel, yrel) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetJoystickVirtualButton - Set the state of a button on an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualButton)
-func (joystick *Joystick) SetVirtualButton(button int32, down bool) bool {
-	panic("not implemented")
-	return iSetJoystickVirtualButton(joystick, button, down)
+func (joystick *Joystick) SetVirtualButton(button int32, down bool) error {
+	if !iSetJoystickVirtualButton(joystick, button, down) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetJoystickVirtualHat - Set the state of a hat on an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualHat)
-func (joystick *Joystick) SetVirtualHat(hat int32, value uint8) bool {
-	panic("not implemented")
-	return iSetJoystickVirtualHat(joystick, hat, value)
+func (joystick *Joystick) SetVirtualHat(hat int32, value uint8) error {
+	if !iSetJoystickVirtualHat(joystick, hat, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetJoystickVirtualTouchpad - Set touchpad finger state on an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualTouchpad)
-func (joystick *Joystick) SetVirtualTouchpad(touchpad int32, finger int32, down bool, x float32, y float32, pressure float32) bool {
-	panic("not implemented")
-	return iSetJoystickVirtualTouchpad(joystick, touchpad, finger, down, x, y, pressure)
+func (joystick *Joystick) SetVirtualTouchpad(touchpad int32, finger int32, down bool, x, y, pressure float32) error {
+	if !iSetJoystickVirtualTouchpad(joystick, touchpad, finger, down, x, y, pressure) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SendJoystickVirtualSensorData - Send a sensor update for an opened virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SendJoystickVirtualSensorData)
-func (joystick *Joystick) SendVirtualSensorData(typ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool {
-	panic("not implemented")
-	return iSendJoystickVirtualSensorData(joystick, typ, sensor_timestamp, data, num_values)
+func (joystick *Joystick) SendVirtualSensorData(typ SensorType, sensorTimestamp uint64, data []float32) error {
+	if !iSendJoystickVirtualSensorData(joystick, typ, sensorTimestamp, unsafe.SliceData(data), int32(len(data))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetJoystickProperties - Get the properties associated with a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickProperties)
-func (joystick *Joystick) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetJoystickProperties(joystick)
+func (joystick *Joystick) Properties() (PropertiesID, error) {
+	props := iGetJoystickProperties(joystick)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetJoystickName - Get the implementation dependent name of a joystick.
@@ -4444,23 +4943,29 @@ func (joystick *Joystick) Name() (string, error) {
 
 // SDL_GetJoystickPath - Get the implementation dependent path of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickPath)
-func (joystick *Joystick) Path() string {
-	panic("not implemented")
-	return iGetJoystickPath(joystick)
+func (joystick *Joystick) Path() (string, error) {
+	path := iGetJoystickPath(joystick)
+	if path == "" {
+		return "", internal.LastErr()
+	}
+
+	return path, nil
 }
 
 // SDL_GetJoystickPlayerIndex - Get the player index of an opened joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickPlayerIndex)
 func (joystick *Joystick) PlayerIndex() int32 {
-	panic("not implemented")
 	return iGetJoystickPlayerIndex(joystick)
 }
 
 // SDL_SetJoystickPlayerIndex - Set the player index of an opened joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickPlayerIndex)
-func (joystick *Joystick) SetPlayerIndex(player_index int32) bool {
-	panic("not implemented")
-	return iSetJoystickPlayerIndex(joystick, player_index)
+func (joystick *Joystick) SetPlayerIndex(playerIndex int32) error {
+	if !iSetJoystickPlayerIndex(joystick, playerIndex) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetJoystickGUID - Get the implementation-dependent GUID for the joystick.
@@ -4473,49 +4978,42 @@ func (joystick *Joystick) GUID() GUID {
 // SDL_GetJoystickVendor - Get the USB vendor ID of an opened joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickVendor)
 func (joystick *Joystick) Vendor() uint16 {
-	panic("not implemented")
 	return iGetJoystickVendor(joystick)
 }
 
 // SDL_GetJoystickProduct - Get the USB product ID of an opened joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickProduct)
 func (joystick *Joystick) Product() uint16 {
-	panic("not implemented")
 	return iGetJoystickProduct(joystick)
 }
 
 // SDL_GetJoystickProductVersion - Get the product version of an opened joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickProductVersion)
 func (joystick *Joystick) ProductVersion() uint16 {
-	panic("not implemented")
 	return iGetJoystickProductVersion(joystick)
 }
 
 // SDL_GetJoystickFirmwareVersion - Get the firmware version of an opened joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickFirmwareVersion)
 func (joystick *Joystick) FirmwareVersion() uint16 {
-	panic("not implemented")
 	return iGetJoystickFirmwareVersion(joystick)
 }
 
 // SDL_GetJoystickSerial - Get the serial number of an opened joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickSerial)
 func (joystick *Joystick) Serial() string {
-	panic("not implemented")
 	return iGetJoystickSerial(joystick)
 }
 
 // SDL_GetJoystickType - Get the type of an opened joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickType)
 func (joystick *Joystick) Type() JoystickType {
-	panic("not implemented")
 	return iGetJoystickType(joystick)
 }
 
 // SDL_JoystickConnected - Get the status of a specified joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_JoystickConnected)
 func (joystick *Joystick) Connected() bool {
-	panic("not implemented")
 	return iJoystickConnected(joystick)
 }
 
@@ -4543,9 +5041,13 @@ func (joystick *Joystick) NumAxes() (int32, error) {
 
 // SDL_GetNumJoystickBalls - Get the number of trackballs on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickBalls)
-func (joystick *Joystick) NumBalls() int32 {
-	panic("not implemented")
-	return iGetNumJoystickBalls(joystick)
+func (joystick *Joystick) NumBalls() (int32, error) {
+	num := iGetNumJoystickBalls(joystick)
+	if num == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return num, nil
 }
 
 // SDL_GetNumJoystickHats - Get the number of POV hats on a joystick.
@@ -4583,16 +5085,23 @@ func (joystick *Joystick) Axis(axis int32) (int16, error) {
 
 // SDL_GetJoystickAxisInitialState - Get the initial state of an axis control on a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxisInitialState)
-func (joystick *Joystick) AxisInitialState(axis int32, state *int16) bool {
-	panic("not implemented")
-	return iGetJoystickAxisInitialState(joystick, axis, state)
+func (joystick *Joystick) AxisInitialState(axis int32) (int16, bool) {
+	var state int16
+
+	has := iGetJoystickAxisInitialState(joystick, axis, &state)
+	return state, has
 }
 
 // SDL_GetJoystickBall - Get the ball axis change since the last poll.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickBall)
-func (joystick *Joystick) Ball(ball int32, dx *int32, dy *int32) bool {
-	panic("not implemented")
-	return iGetJoystickBall(joystick, ball, dx, dy)
+func (joystick *Joystick) Ball(ball int32) (int32, int32, error) {
+	var dx, dy int32
+
+	if !iGetJoystickBall(joystick, ball, &dx, &dy) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return dx, dy, nil
 }
 
 // SDL_GetJoystickHat - Get the current state of a POV hat on a joystick.
@@ -4609,30 +5118,38 @@ func (joystick *Joystick) Button(button int32) bool {
 
 // SDL_RumbleJoystick - Start a rumble effect.
 // (https://wiki.libsdl.org/SDL3/SDL_RumbleJoystick)
-func (joystick *Joystick) Rumble(low_frequency_rumble uint16, high_frequency_rumble uint16, duration_ms uint32) bool {
-	panic("not implemented")
-	return iRumbleJoystick(joystick, low_frequency_rumble, high_frequency_rumble, duration_ms)
+func (joystick *Joystick) Rumble(lowFreqencyRumble, highFrequencyRumble uint16, durationMS uint32) bool {
+	return iRumbleJoystick(joystick, lowFreqencyRumble, highFrequencyRumble, durationMS)
 }
 
 // SDL_RumbleJoystickTriggers - Start a rumble effect in the joystick's triggers.
 // (https://wiki.libsdl.org/SDL3/SDL_RumbleJoystickTriggers)
-func (joystick *Joystick) RumbleTriggers(left_rumble uint16, right_rumble uint16, duration_ms uint32) bool {
-	panic("not implemented")
-	return iRumbleJoystickTriggers(joystick, left_rumble, right_rumble, duration_ms)
+func (joystick *Joystick) RumbleTriggers(leftRumble, rightRumble uint16, durationMS uint32) error {
+	if !iRumbleJoystickTriggers(joystick, leftRumble, rightRumble, durationMS) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetJoystickLED - Update a joystick's LED color.
 // (https://wiki.libsdl.org/SDL3/SDL_SetJoystickLED)
-func (joystick *Joystick) SetLED(red uint8, green uint8, blue uint8) bool {
-	panic("not implemented")
-	return iSetJoystickLED(joystick, red, green, blue)
+func (joystick *Joystick) SetLED(red, green, blue uint8) error {
+	if !iSetJoystickLED(joystick, red, green, blue) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SendJoystickEffect - Send a joystick specific effect packet.
 // (https://wiki.libsdl.org/SDL3/SDL_SendJoystickEffect)
-func (joystick *Joystick) SendEffect(data *byte, size int32) bool {
-	panic("not implemented")
-	//return iSendJoystickEffect(joystick, data, size)
+func (joystick *Joystick) SendEffect(data []byte) error {
+	if !iSendJoystickEffect(joystick, uintptr(unsafe.Pointer(unsafe.SliceData(data))), int32(len(data))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_CloseJoystick - Close a joystick previously opened with SDL_OpenJoystick().
@@ -4643,30 +5160,43 @@ func (joystick *Joystick) Close() {
 
 // SDL_GetJoystickConnectionState - Get the connection state of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickConnectionState)
-func (joystick *Joystick) ConnectionState() JoystickConnectionState {
-	panic("not implemented")
-	return iGetJoystickConnectionState(joystick)
+func (joystick *Joystick) ConnectionState() (JoystickConnectionState, error) {
+	state := iGetJoystickConnectionState(joystick)
+	if state == JOYSTICK_CONNECTION_INVALID {
+		return JOYSTICK_CONNECTION_INVALID, internal.LastErr()
+	}
+
+	return state, nil
 }
 
 // SDL_GetJoystickPowerInfo - Get the battery state of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickPowerInfo)
-func (joystick *Joystick) PowerInfo(percent *int32) PowerState {
-	panic("not implemented")
-	return iGetJoystickPowerInfo(joystick, percent)
+func (joystick *Joystick) PowerInfo(percent *int32) (*PowerInfo, error) {
+	var info PowerInfo
+
+	info.State = iGetJoystickPowerInfo(joystick, &info.Percent)
+	if info.State == POWERSTATE_ERROR {
+		return nil, internal.LastErr()
+	}
+
+	return &info, nil
 }
 
 // SDL_IsJoystickHaptic - Query if a joystick has haptic features.
 // (https://wiki.libsdl.org/SDL3/SDL_IsJoystickHaptic)
 func (joystick *Joystick) IsHaptic() bool {
-	panic("not implemented")
 	return iIsJoystickHaptic(joystick)
 }
 
 // SDL_OpenHapticFromJoystick - Open a haptic device for use from a joystick device.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenHapticFromJoystick)
-func (joystick *Joystick) OpenHapticFrom() *Haptic {
-	panic("not implemented")
-	return iOpenHapticFromJoystick(joystick)
+func (joystick *Joystick) OpenHapticFrom() (*Haptic, error) {
+	haptic := iOpenHapticFromJoystick(joystick)
+	if haptic == nil {
+		return nil, internal.LastErr()
+	}
+
+	return haptic, nil
 }
 
 // GamepadType
@@ -4674,14 +5204,12 @@ func (joystick *Joystick) OpenHapticFrom() *Haptic {
 // SDL_GetGamepadStringForType - Convert from an SDL_GamepadType enum to a string.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForType)
 func (typ GamepadType) GamepadStringForType() string {
-	panic("not implemented")
 	return iGetGamepadStringForType(typ)
 }
 
 // SDL_GetGamepadButtonLabelForType - Get the label of a button on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabelForType)
 func (typ GamepadType) GamepadButtonLabelForType(button GamepadButton) GamepadButtonLabel {
-	panic("not implemented")
 	return iGetGamepadButtonLabelForType(typ, button)
 }
 
@@ -4699,47 +5227,25 @@ func (iface *StorageInterface) OpenStorage(userdata *byte) *Storage {
 // SDL_LockMutex - Lock the mutex.
 // (https://wiki.libsdl.org/SDL3/SDL_LockMutex)
 func (mutex *Mutex) Lock() {
-	panic("not implemented")
 	iLockMutex(mutex)
 }
 
 // SDL_TryLockMutex - Try to lock a mutex without blocking.
 // (https://wiki.libsdl.org/SDL3/SDL_TryLockMutex)
 func (mutex *Mutex) TryLock() bool {
-	panic("not implemented")
 	return iTryLockMutex(mutex)
 }
 
 // SDL_UnlockMutex - Unlock the mutex.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockMutex)
 func (mutex *Mutex) Unlock() {
-	panic("not implemented")
 	iUnlockMutex(mutex)
 }
 
 // SDL_DestroyMutex - Destroy a mutex created with SDL_CreateMutex().
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyMutex)
 func (mutex *Mutex) Destroy() {
-	panic("not implemented")
 	iDestroyMutex(mutex)
-}
-
-// MessageBoxData
-
-// SDL_ShowMessageBox - Create a modal message box.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox)
-func (messageboxdata *MessageBoxData) ShowMessageBox(buttonid *int32) bool {
-	panic("not implemented")
-	return iShowMessageBox(messageboxdata, buttonid)
-}
-
-// MessageBoxFlags
-
-// SDL_ShowSimpleMessageBox - Display a simple modal message box.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox)
-func (flags MessageBoxFlags) ShowSimpleMessageBox(title string, message string, window *Window) bool {
-	panic("not implemented")
-	return iShowSimpleMessageBox(flags, title, message, window)
 }
 
 // Time
@@ -4986,7 +5492,6 @@ func (sem *Semaphore) Value() uint32 {
 // SDL_GetPixelFormatName - Get the human readable name of a pixel format.
 // (https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatName)
 func (format PixelFormat) Name() string {
-	panic("not implemented")
 	return iGetPixelFormatName(format)
 }
 
@@ -5009,54 +5514,18 @@ func (format PixelFormat) Details() (*PixelFormatDetails, error) {
 	return details, nil
 }
 
-// EGLAttribArrayCallback
-
-// SDL_EGL_SetAttributeCallbacks - Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.
-// (https://wiki.libsdl.org/SDL3/SDL_EGL_SetAttributeCallbacks)
-func (platformAttribCallback EGLAttribArrayCallback) EGL_SetAttributeCallbacks(surfaceAttribCallback EGLIntArrayCallback, contextAttribCallback EGLIntArrayCallback, userdata *byte) {
-	panic("not implemented")
-	//iEGL_SetAttributeCallbacks(platformAttribCallback, surfaceAttribCallback, contextAttribCallback, userdata)
-}
-
-// DialogFileCallback
-
-// SDL_ShowOpenFileDialog - Displays a dialog that lets the user select a file on their filesystem.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFileDialog)
-func (callback DialogFileCallback) ShowOpenFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
-	panic("not implemented")
-	//iShowOpenFileDialog(callback, userdata, window, filters, nfilters, default_location, allow_many)
-}
-
-// SDL_ShowSaveFileDialog - Displays a dialog that lets the user choose a new or existing file on their filesystem.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowSaveFileDialog)
-func (callback DialogFileCallback) ShowSaveFileDialog(userdata *byte, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
-	panic("not implemented")
-	//iShowSaveFileDialog(callback, userdata, window, filters, nfilters, default_location)
-}
-
-// SDL_ShowOpenFolderDialog - Displays a dialog that lets the user select a folder on their filesystem.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFolderDialog)
-func (callback DialogFileCallback) ShowOpenFolderDialog(userdata *byte, window *Window, default_location string, allow_many bool) {
-	panic("not implemented")
-	//iShowOpenFolderDialog(callback, userdata, window, default_location, allow_many)
-}
-
-// LogOutputFunction
-
-// SDL_GetLogOutputFunction - Get the current log output function.
-// (https://wiki.libsdl.org/SDL3/SDL_GetLogOutputFunction)
-func (callback *LogOutputFunction) Get(userdata **byte) {
-	panic("not implemented")
-	//iGetLogOutputFunction(callback, userdata)
-}
-
 // DateTime
 
 // SDL_DateTimeToTime - Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
 // (https://wiki.libsdl.org/SDL3/SDL_DateTimeToTime)
-func (dt *DateTime) ToTime(ticks *Time) bool {
-	panic("not implemented")
-	return iDateTimeToTime(dt, ticks)
+func (dt *DateTime) ToTime() (Time, error) {
+	var ticks Time
+
+	if !iDateTimeToTime(dt, &ticks) {
+		return 0, internal.LastErr()
+	}
+
+	return ticks, nil
 }
 
 // Keycode
@@ -5200,119 +5669,119 @@ func (cb *GPUCommandBuffer) Cancel() error {
 
 // SDL_GetProcessProperties - Get the properties associated with a process.
 // (https://wiki.libsdl.org/SDL3/SDL_GetProcessProperties)
-func (process *Process) Properties() PropertiesID {
-	return iGetProcessProperties(process)
+func (process *Process) Properties() (PropertiesID, error) {
+	props := iGetProcessProperties(process)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_ReadProcess - Read all the output from a process.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadProcess)
-func (process *Process) Read(datasize *uintptr, exitcode *int32) *byte {
-	panic("not implemented")
-	//return iReadProcess(process, datasize, exitcode)
+func (process *Process) Read() (*ProcessData, error) {
+	var exitCode int32
+	var size uintptr
+
+	ptr := iReadProcess(process, &size, &exitCode)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return &ProcessData{
+		ExitCode: exitCode,
+		Data:     internal.ClonePtrSlice[byte](ptr, int(size)),
+	}, nil
 }
 
 // SDL_GetProcessInput - Get the SDL_IOStream associated with process standard input.
 // (https://wiki.libsdl.org/SDL3/SDL_GetProcessInput)
-func (process *Process) Input() *IOStream {
-	panic("not implemented")
-	return iGetProcessInput(process)
+func (process *Process) Input() (*IOStream, error) {
+	input := iGetProcessInput(process)
+	if input == nil {
+		return nil, internal.LastErr()
+	}
+
+	return input, nil
 }
 
 // SDL_GetProcessOutput - Get the SDL_IOStream associated with process standard output.
 // (https://wiki.libsdl.org/SDL3/SDL_GetProcessOutput)
-func (process *Process) Output() *IOStream {
-	panic("not implemented")
-	return iGetProcessOutput(process)
+func (process *Process) Output() (*IOStream, error) {
+	output := iGetProcessOutput(process)
+	if output == nil {
+		return nil, internal.LastErr()
+	}
+
+	return output, nil
 }
 
 // SDL_KillProcess - Stop a process.
 // (https://wiki.libsdl.org/SDL3/SDL_KillProcess)
-func (process *Process) Kill(force bool) bool {
-	panic("not implemented")
-	return iKillProcess(process, force)
+func (process *Process) Kill(force bool) error {
+	if !iKillProcess(process, force) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WaitProcess - Wait for a process to finish.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitProcess)
-func (process *Process) Wait(block bool, exitcode *int32) bool {
-	panic("not implemented")
-	return iWaitProcess(process, block, exitcode)
+func (process *Process) Wait(block bool) (int32, bool) {
+	var exitCode int32
+
+	ret := iWaitProcess(process, block, &exitCode)
+
+	return exitCode, ret
 }
 
 // SDL_DestroyProcess - Destroy a previously created process object.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyProcess)
 func (process *Process) Destroy() {
-	panic("not implemented")
 	iDestroyProcess(process)
-}
-
-// FPoint
-
-// SDL_GetRectEnclosingPointsFloat - Calculate a minimal rectangle enclosing a set of points with float precision.
-// (https://wiki.libsdl.org/SDL3/SDL_GetRectEnclosingPointsFloat)
-func (points *FPoint) RectEnclosingPointsFloat(count int32, clip *FRect, result *FRect) bool {
-	panic("not implemented")
-	return iGetRectEnclosingPointsFloat(points, count, clip, result)
 }
 
 // SensorID
 
 // SDL_GetSensorNameForID - Get the implementation dependent name of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorNameForID)
-func (instance_id SensorID) SensorNameForID() string {
-	panic("not implemented")
-	return iGetSensorNameForID(instance_id)
+func (id SensorID) SensorName() string {
+	return iGetSensorNameForID(id)
 }
 
 // SDL_GetSensorTypeForID - Get the type of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorTypeForID)
-func (instance_id SensorID) SensorTypeForID() SensorType {
-	panic("not implemented")
-	return iGetSensorTypeForID(instance_id)
+func (id SensorID) SensorType() SensorType {
+	return iGetSensorTypeForID(id)
 }
 
 // SDL_GetSensorNonPortableTypeForID - Get the platform dependent type of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorNonPortableTypeForID)
-func (instance_id SensorID) SensorNonPortableTypeForID() int32 {
-	panic("not implemented")
-	return iGetSensorNonPortableTypeForID(instance_id)
+func (id SensorID) SensorNonPortableType() int32 {
+	return iGetSensorNonPortableTypeForID(id)
 }
 
 // SDL_OpenSensor - Open a sensor for use.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenSensor)
-func (instance_id SensorID) OpenSensor() *Sensor {
-	panic("not implemented")
-	return iOpenSensor(instance_id)
+func (id SensorID) OpenSensor() (*Sensor, error) {
+	sensor := iOpenSensor(id)
+	if sensor == nil {
+		return nil, internal.LastErr()
+	}
+
+	return sensor, nil
 }
 
 // SDL_GetSensorFromID - Return the SDL_Sensor associated with an instance ID.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorFromID)
-func (instance_id SensorID) SensorFromID() *Sensor {
-	panic("not implemented")
-	return iGetSensorFromID(instance_id)
-}
+func (id SensorID) Sensor() (*Sensor, error) {
+	sensor := iGetSensorFromID(id)
+	if sensor == nil {
+		return nil, internal.LastErr()
+	}
 
-// SystemCursor
-
-// SDL_CreateSystemCursor - Create a system cursor.
-// (https://wiki.libsdl.org/SDL3/SDL_CreateSystemCursor)
-func (id SystemCursor) Create() *Cursor {
-	panic("not implemented")
-	return iCreateSystemCursor(id)
-}
-
-// LogPriority
-
-// SDL_SetLogPriorities - Set the priority of all log categories.
-// (https://wiki.libsdl.org/SDL3/SDL_SetLogPriorities)
-func (priority LogPriority) SetLogPriorities() {
-	panic("not implemented")
-	iSetLogPriorities(priority)
-}
-
-// SDL_SetLogPriorityPrefix - Set the text prepended to log messages of a given priority.
-// (https://wiki.libsdl.org/SDL3/SDL_SetLogPriorityPrefix)
-func (priority LogPriority) SetPrefix(prefix string) bool {
-	panic("not implemented")
-	return iSetLogPriorityPrefix(priority, prefix)
+	return sensor, nil
 }
