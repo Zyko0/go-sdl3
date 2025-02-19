@@ -217,6 +217,18 @@ type SwapchainTexture struct {
 	Height  uint32
 }
 
+type BorderSize struct {
+	Top    int32
+	Left   int32
+	Bottom int32
+	Right  int32
+}
+
+type ProcessData struct {
+	ExitCode int32
+	Data []byte
+}
+
 // Callback types
 
 type (
@@ -302,3 +314,8 @@ const (
 )
 
 const DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
+
+const (
+	WINDOW_SURFACE_VSYNC_DISABLED = 0
+	WINDOW_SURFACE_VSYNC_ADAPTIVE = -1
+)
