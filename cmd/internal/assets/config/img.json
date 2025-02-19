@@ -1,0 +1,22 @@
+{
+    "out_dir": "img",
+    "library_name": "img",
+    "prefix":"IMG_",
+    "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3_image/QuickReference.md",
+    "allowed_include": "/usr/include/SDL3_image/",
+    "ignored_headers": [
+    ],
+    "ignored_types": [
+    ],
+    "ignored_functions": [
+    ],
+    "allowlisted_functions": [
+    ],
+    "allowlisted_type_prefixes": [
+        "IMG_"
+    ],
+    "base_types": [
+    ],
+    "sdl_free_functions": [
+    ]
+}

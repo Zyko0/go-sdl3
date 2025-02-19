@@ -14,6 +14,7 @@ tasks:
             - docker cp tmp:/sdl_ffi.json ./cmd/internal/assets/ffi/sdl.json
             - docker cp tmp:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
             - docker cp tmp:/mixer_ffi.json ./cmd/internal/assets/ffi/mixer.json
+            - docker cp tmp:/image_ffi.json ./cmd/internal/assets/ffi/image.json
             - docker rm -f tmp
     
     gen-bindings:

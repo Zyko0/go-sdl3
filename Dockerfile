@@ -50,3 +50,12 @@ RUN git clone https://github.com/libsdl-org/SDL_mixer.git && \
 # Generate SDL_mixer ffi
 RUN echo "#include <SDL3_mixer/SDL_mixer.h>\n" > mixer.c
 RUN /c2ffi/build/bin/c2ffi mixer.c > mixer_ffi.json
+
+# Clone SDL_image repository
+RUN git clone https://github.com/libsdl-org/SDL_image.git && \
+        cd SDL_image && \
+        cp -r include/SDL3_image/ /usr/include/SDL3_image/
+
+# Generate SDL_image ffi
+RUN echo "#include <SDL3_image/SDL_image.h>\n" > image.c
+RUN /c2ffi/build/bin/c2ffi image.c > image_ffi.json
