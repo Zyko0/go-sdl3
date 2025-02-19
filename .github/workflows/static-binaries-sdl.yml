@@ -46,7 +46,7 @@ jobs:
         -DSDL_SHARED=ON
         -DSDL_DISABLE_INSTALL=ON
         -DSDL_DISABLE_INSTALL_DOCS=ON
-        {{ matrix.flags }}
+        ${{ matrix.flags }}
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: >
