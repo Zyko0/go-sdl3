@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 )
@@ -22,17 +24,18 @@ func main() {
 
 	renderer.SetDrawColor(255, 255, 255, 255)
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return errors.New("quit")
 			}
 		}
 
 		renderer.DebugText(50, 50, "Hello world")
 		renderer.Present()
-	}
+
+		return nil
+	})
 }

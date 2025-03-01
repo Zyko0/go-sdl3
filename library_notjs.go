@@ -1,3 +1,5 @@
+//go:build !js
+
 package sdl
 
 import (
@@ -36,4 +38,14 @@ func LoadLibrary(path string) error {
 // CloseLibrary releases resources associated with the library.
 func CloseLibrary() error {
 	return puregogen.CloseLibrary(_hnd_sdl)
+}
+
+func RunLoop(updateFunc func() error) error {
+	// TODO: take an update function that returns for a way to break the loop
+	// as a user
+	for {
+		if err := updateFunc(); err != nil {
+			return err
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package sdl
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -253,6 +254,8 @@ func IOFromConstMem(mem []byte) (*IOStream, error) {
 	if stream == nil {
 		return nil, internal.LastErr()
 	}
+
+	runtime.KeepAlive(mem)
 
 	return stream, nil
 }
