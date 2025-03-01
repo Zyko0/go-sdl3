@@ -30,11 +30,14 @@ The binary is already installed and/or its location is known (e.g: same folder),
 sdl.LoadLibrary("SDL3.dll") // "libSDL3.so", "libSDL3.dylib"
 ```
 
-Example:
+**Example:**
+> Note that you do not have to pass your update function `sdl.RunLoop`, however doing so allows you to target `GOOS=js`/`GOARCH=wasm`, see [wasmsdl](cmd/wasmsdl/). 
 ```go
 package main
 
 import (
+	"errors"
+
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 )
@@ -56,19 +59,20 @@ func main() {
 
 	renderer.SetDrawColor(255, 255, 255, 255)
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return errors.New("quit")
 			}
 		}
 
 		renderer.DebugText(50, 50, "Hello world")
 		renderer.Present()
-	}
+
+		return nil
+	})
 }
 ```
 
