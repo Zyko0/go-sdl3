@@ -1484,7 +1484,7 @@ func initialize() {
 	}
 
 	iIOFromConstMem = func(mem, size uintptr) *IOStream {
-		_mem := internal.CloneSliceOnHeapGoToJS(
+		_mem := internal.CloneByteSliceOnHeapGoToJS(
 			unsafe.Slice(*(**byte)(unsafe.Pointer(&mem)), int(size)),
 		)
 		_size := int32(size)
@@ -3457,18 +3457,14 @@ func initialize() {
 	}
 
 	iGetPixelFormatDetails = func(format PixelFormat) *PixelFormatDetails {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_format := int32(format)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPixelFormatDetails",
 			_format,
 		)
 
-		_obj := &PixelFormatDetails{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
+		_obj := internal.NewPointer[PixelFormatDetails](ret)
+
 		return _obj
 	}
 
@@ -3528,16 +3524,16 @@ func initialize() {
 	}
 
 	iMapRGB = func(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+
 		_format, ok := internal.GetJSPointer(format)
 		if !ok {
-			_format = internal.StackAlloc(int(unsafe.Sizeof(*format)))
+			_format = internal.CloneOnStackGoToJS(format)
 		}
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			_palette = internal.CloneOnStackGoToJS(palette)
 		}
 		_r := int32(r)
 		_g := int32(g)
@@ -4605,12 +4601,9 @@ func initialize() {
 	}
 
 	iConvertSurface = func(surface *Surface, format PixelFormat) *Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_surface, ok := internal.GetJSPointer(surface)
 		if !ok {
-			_surface = internal.StackAlloc(int(unsafe.Sizeof(*surface)))
+			panic("nil surface")
 		}
 		_format := int32(format)
 		ret := js.Global().Get("Module").Call(
@@ -4619,9 +4612,8 @@ func initialize() {
 			_format,
 		)
 
-		_obj := &Surface{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
+		_obj := internal.NewPointer[Surface](ret)
+
 		return _obj
 	}
 
@@ -4789,23 +4781,19 @@ func initialize() {
 	}
 
 	iFillSurfaceRect = func(dst *Surface, rect *Rect, color uint32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+
 		_dst, ok := internal.GetJSPointer(dst)
 		if !ok {
-			_dst = internal.StackAlloc(int(unsafe.Sizeof(*dst)))
+			panic("nil surface")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
-		_color := int32(color)
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_FillSurfaceRect",
 			_dst,
 			_rect,
-			_color,
+			color,
 		)
 
 		return internal.GetBool(ret)
@@ -5120,31 +5108,18 @@ func initialize() {
 	}
 
 	iReadSurfacePixel = func(surface *Surface, x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_surface, ok := internal.GetJSPointer(surface)
 		if !ok {
-			_surface = internal.StackAlloc(int(unsafe.Sizeof(*surface)))
+			panic("nil surface")
 		}
 		_x := int32(x)
 		_y := int32(y)
-		_r, ok := internal.GetJSPointer(r)
-		if !ok {
-			_r = internal.StackAlloc(int(unsafe.Sizeof(*r)))
-		}
-		_g, ok := internal.GetJSPointer(g)
-		if !ok {
-			_g = internal.StackAlloc(int(unsafe.Sizeof(*g)))
-		}
-		_b, ok := internal.GetJSPointer(b)
-		if !ok {
-			_b = internal.StackAlloc(int(unsafe.Sizeof(*b)))
-		}
-		_a, ok := internal.GetJSPointer(a)
-		if !ok {
-			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
-		}
+		_r := internal.StackAlloc(4)
+		_g := internal.StackAlloc(4)
+		_b := internal.StackAlloc(4)
+		_a := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ReadSurfacePixel",
 			_surface,
@@ -5155,6 +5130,10 @@ func initialize() {
 			_b,
 			_a,
 		)
+		*r = uint8(internal.GetValue(_r, "i8").Int())
+		*g = uint8(internal.GetValue(_r, "i8").Int())
+		*b = uint8(internal.GetValue(_r, "i8").Int())
+		*a = uint8(internal.GetValue(_r, "i8").Int())
 
 		return internal.GetBool(ret)
 	}
@@ -11087,7 +11066,7 @@ func initialize() {
 			"_SDL_PollEvent",
 			_event,
 		)
-		internal.CloneOnStackJSToGo(event, _event)
+		internal.ExtractJSToGo(event, _event)
 
 		return internal.GetBool(ret)
 	}
@@ -14705,10 +14684,6 @@ func initialize() {
 		rendererPtr := internal.GetValue(_renderer, "*")
 		*window = internal.NewPointer[Window](windowPtr)
 		*renderer = internal.NewPointer[Renderer](rendererPtr)
-		//*window = &Window{}
-		//*renderer = &Renderer{}
-		//internal.StoreJSPointer(*window, windowPtr)
-		//internal.StoreJSPointer(*renderer, rendererPtr)
 
 		return internal.GetBool(ret)
 	}
@@ -14892,12 +14867,9 @@ func initialize() {
 	}
 
 	iCreateTexture = func(renderer *Renderer, format PixelFormat, access TextureAccess, w int32, h int32) *Texture {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_format := int32(format)
 		_access := int32(access)
@@ -14911,17 +14883,13 @@ func initialize() {
 			_w,
 			_h,
 		)
-		_ = ret
 
-		_obj := &Texture{}
-		// internal.StoreJSPointer(_obj, ret)
+		_obj := internal.NewPointer[Texture](ret)
+
 		return _obj
 	}
 
 	iCreateTextureFromSurface = func(renderer *Renderer, surface *Surface) *Texture {
-		internal.StackSave()
-		defer internal.StackRestore()
-
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
 			panic("nil renderer")
@@ -15046,22 +15014,16 @@ func initialize() {
 	}
 
 	iSetTextureColorModFloat = func(texture *Texture, r float32, g float32, b float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
-		_r := int32(r)
-		_g := int32(g)
-		_b := int32(b)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetTextureColorModFloat",
 			_texture,
-			_r,
-			_g,
-			_b,
+			r,
+			g,
+			b,
 		)
 
 		return internal.GetBool(ret)
@@ -15286,18 +15248,15 @@ func initialize() {
 	}
 
 	iUpdateTexture = func(texture *Texture, rect *Rect, pixels uintptr, pitch int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
-		_pixels := internal.NewBigInt(pixels)
+		_rect := internal.CloneOnStackGoToJS(rect)
+		_pixels, free := internal.ClonePtrArrayOnHeapGoToJS(*(**byte)(unsafe.Pointer(&pixels)), int(texture.H*pitch))
+		defer free()
 		_pitch := int32(pitch)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_UpdateTexture",
@@ -15306,6 +15265,8 @@ func initialize() {
 			_pixels,
 			_pitch,
 		)
+
+		internal.ExtractJSToGo(texture, _texture)
 
 		return internal.GetBool(ret)
 	}
@@ -15419,38 +15380,31 @@ func initialize() {
 	}
 
 	iLockTextureToSurface = func(texture *Texture, rect *Rect, surface **Surface) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
-		_surface, ok := internal.GetJSPointer(surface)
-		if !ok {
-			_surface = internal.StackAlloc(4)
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
+		_surface := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_LockTextureToSurface",
 			_texture,
 			_rect,
 			_surface,
 		)
+		surfacePtr := internal.GetValue(_surface, "*")
+		*surface = internal.NewPointer[Surface](surfacePtr)
 
 		return internal.GetBool(ret)
 	}
 
 	iUnlockTexture = func(texture *Texture) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_UnlockTexture",
@@ -15654,17 +15608,13 @@ func initialize() {
 	}
 
 	iSetRenderViewport = func(renderer *Renderer, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRenderViewport",
 			_renderer,
@@ -15733,17 +15683,13 @@ func initialize() {
 	}
 
 	iSetRenderClipRect = func(renderer *Renderer, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRenderClipRect",
 			_renderer,
@@ -15791,12 +15737,9 @@ func initialize() {
 	}
 
 	iSetRenderScale = func(renderer *Renderer, scaleX float32, scaleY float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_scaleX := int32(scaleX)
 		_scaleY := int32(scaleY)
@@ -15859,24 +15802,17 @@ func initialize() {
 	}
 
 	iSetRenderDrawColorFloat = func(renderer *Renderer, r float32, g float32, b float32, a float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_r := int32(r)
-		_g := int32(g)
-		_b := int32(b)
-		_a := int32(a)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRenderDrawColorFloat",
 			_renderer,
-			_r,
-			_g,
-			_b,
-			_a,
+			r,
+			g,
+			b,
+			a,
 		)
 
 		return internal.GetBool(ret)
@@ -16066,17 +16002,12 @@ func initialize() {
 	}
 
 	iRenderPoints = func(renderer *Renderer, points *FPoint, count int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_points, ok := internal.GetJSPointer(points)
-		if !ok {
-			_points = internal.StackAlloc(int(unsafe.Sizeof(*points)))
-		}
+		_points, free := internal.ClonePtrArrayOnHeapGoToJS(points, int(count))
+		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderPoints",
@@ -16089,41 +16020,29 @@ func initialize() {
 	}
 
 	iRenderLine = func(renderer *Renderer, x1 float32, y1 float32, x2 float32, y2 float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_x1 := int32(x1)
-		_y1 := int32(y1)
-		_x2 := int32(x2)
-		_y2 := int32(y2)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderLine",
 			_renderer,
-			_x1,
-			_y1,
-			_x2,
-			_y2,
+			x1,
+			y1,
+			x2,
+			y2,
 		)
 
 		return internal.GetBool(ret)
 	}
 
 	iRenderLines = func(renderer *Renderer, points *FPoint, count int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_points, ok := internal.GetJSPointer(points)
-		if !ok {
-			_points = internal.StackAlloc(int(unsafe.Sizeof(*points)))
-		}
+		_points, free := internal.ClonePtrArrayOnHeapGoToJS(points, int(count))
+		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderLines",
@@ -16136,17 +16055,13 @@ func initialize() {
 	}
 
 	iRenderRect = func(renderer *Renderer, rect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderRect",
 			_renderer,
@@ -16157,17 +16072,12 @@ func initialize() {
 	}
 
 	iRenderRects = func(renderer *Renderer, rects *FRect, count int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rects, ok := internal.GetJSPointer(rects)
-		if !ok {
-			_rects = internal.StackAlloc(int(unsafe.Sizeof(*rects)))
-		}
+		_rects, free := internal.ClonePtrArrayOnHeapGoToJS(rects, int(count))
+		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderRects",
@@ -16180,17 +16090,13 @@ func initialize() {
 	}
 
 	iRenderFillRect = func(renderer *Renderer, rect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderFillRect",
 			_renderer,
@@ -16201,17 +16107,12 @@ func initialize() {
 	}
 
 	iRenderFillRects = func(renderer *Renderer, rects *FRect, count int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rects, ok := internal.GetJSPointer(rects)
-		if !ok {
-			_rects = internal.StackAlloc(int(unsafe.Sizeof(*rects)))
-		}
+		_rects, free := internal.ClonePtrArrayOnHeapGoToJS(rects, int(count))
+		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderFillRects",
@@ -16224,25 +16125,18 @@ func initialize() {
 	}
 
 	iRenderTexture = func(renderer *Renderer, texture *Texture, srcrect *FRect, dstrect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
-		_srcrect, ok := internal.GetJSPointer(srcrect)
-		if !ok {
-			_srcrect = internal.StackAlloc(int(unsafe.Sizeof(*srcrect)))
-		}
-		_dstrect, ok := internal.GetJSPointer(dstrect)
-		if !ok {
-			_dstrect = internal.StackAlloc(int(unsafe.Sizeof(*dstrect)))
-		}
+		_srcrect := internal.CloneOnStackGoToJS(srcrect)
+		_dstrect := internal.CloneOnStackGoToJS(dstrect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTexture",
 			_renderer,
@@ -16400,26 +16294,18 @@ func initialize() {
 	}
 
 	iRenderGeometry = func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_texture, ok := internal.GetJSPointer(texture)
-		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
-		}
-		_vertices, ok := internal.GetJSPointer(vertices)
-		if !ok {
-			_vertices = internal.StackAlloc(int(unsafe.Sizeof(*vertices)))
-		}
+		_texture, _ := internal.GetJSPointer(texture)
+		_vertices, freeVertices := internal.ClonePtrArrayOnHeapGoToJS(vertices, int(num_vertices))
+		defer freeVertices()
 		_num_vertices := int32(num_vertices)
-		_indices, ok := internal.GetJSPointer(indices)
-		if !ok {
-			_indices = internal.StackAlloc(int(unsafe.Sizeof(*indices)))
-		}
+		_indices, freeIndices := internal.ClonePtrArrayOnHeapGoToJS(indices, int(num_indices))
+		defer freeIndices()
 		_num_indices := int32(num_indices)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderGeometry",
@@ -16485,26 +16371,21 @@ func initialize() {
 	}
 
 	iRenderReadPixels = func(renderer *Renderer, rect *Rect) *Surface {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
+		_rect := internal.CloneOnStackGoToJS(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderReadPixels",
 			_renderer,
 			_rect,
 		)
-		_ = ret
 
-		_obj := &Surface{}
-		// internal.StoreJSPointer(_obj, ret)
+		_obj := internal.NewPointer[Surface](ret)
+
 		return _obj
 	}
 
@@ -16522,17 +16403,15 @@ func initialize() {
 	}
 
 	iDestroyTexture = func(texture *Texture) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_DestroyTexture",
 			_texture,
 		)
+		internal.DeletePointerReference(uintptr(unsafe.Pointer(texture)))
 	}
 
 	iDestroyRenderer = func(renderer *Renderer) {

@@ -11,6 +11,7 @@ package sdl
 
 import (
 	"fmt"
+	"runtime"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -1026,6 +1027,8 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int32) error {
 		return internal.LastErr()
 	}
 
+	runtime.KeepAlive(pixels)
+
 	return nil
 }
 
@@ -1069,6 +1072,9 @@ func (texture *Texture) Unlock() {
 // SDL_DestroyTexture - Destroy the specified texture.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyTexture)
 func (texture *Texture) Destroy() {
+	if texture == nil {
+		return
+	}
 	iDestroyTexture(texture)
 }
 
@@ -1313,6 +1319,9 @@ func (format *PixelFormatDetails) MapRGBA(palette *Palette, r uint8, g uint8, b 
 // SDL_DestroySurface - Free a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroySurface)
 func (surface *Surface) Destroy() {
+	if surface == nil {
+		return
+	}
 	iDestroySurface(surface)
 }
 

@@ -35,13 +35,12 @@ func main() {
 		points[i].Y = (rand.Float32() * 280) + 100
 	}
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -78,5 +77,7 @@ func main() {
 		renderer.RenderLine(0, 480, 640, 0)
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }

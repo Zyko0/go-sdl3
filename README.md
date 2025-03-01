@@ -36,8 +36,6 @@ sdl.LoadLibrary("SDL3.dll") // "libSDL3.so", "libSDL3.dylib"
 package main
 
 import (
-	"errors"
-
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 )
@@ -64,7 +62,7 @@ func main() {
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				return errors.New("quit")
+				return sdl.EndLoop
 			}
 		}
 

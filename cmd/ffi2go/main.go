@@ -477,6 +477,11 @@ func main() {
 		}
 		f.Type().Id(e.Name).StructFunc(func(g *jen.Group) {
 			for _, ee := range e.Fields {
+				typ := extractType(ee.Type)
+				// Replacement for structs only to account for offset/alignment in wasm
+				if typ == "uintptr" {
+					typ = "Pointer"
+				}
 				g.Add(
 					jenType(jen.Id(sanitizeVarName(ee.Name)), extractType(ee.Type)),
 				)

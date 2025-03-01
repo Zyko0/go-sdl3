@@ -4409,7 +4409,7 @@ var (
 	//puregogen:function symbol=SDL_GetRenderTarget
 	iGetRenderTarget func(renderer *Renderer) *Texture
 
-	// SDL_SetRenderLogicalPresentation => Set a device independent resolution and presentation mode for rendering.
+	// SDL_SetRenderLogicalPresentation => Set a device-independent resolution and presentation mode for rendering.
 	//
 	//puregogen:function symbol=SDL_SetRenderLogicalPresentation
 	iSetRenderLogicalPresentation func(renderer *Renderer, w int32, h int32, mode RendererLogicalPresentation) bool
@@ -4469,7 +4469,7 @@ var (
 	//puregogen:function symbol=SDL_GetRenderClipRect
 	iGetRenderClipRect func(renderer *Renderer, rect *Rect) bool
 
-	// SDL_RenderClipEnabled => Get whether clipping is enabled on the given renderer.
+	// SDL_RenderClipEnabled => Get whether clipping is enabled on the given render target.
 	//
 	//puregogen:function symbol=SDL_RenderClipEnabled
 	iRenderClipEnabled func(renderer *Renderer) bool

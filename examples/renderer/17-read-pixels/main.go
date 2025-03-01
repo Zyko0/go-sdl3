@@ -54,13 +54,12 @@ func main() {
 
 	surface.Destroy()
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -91,7 +90,7 @@ func main() {
 
 		/* Download the pixels of what has just been rendered. This has to wait for the GPU to finish rendering it and everything before it,
 		   and then make an expensive copy from the GPU to system RAM! */
-		surface, _ = renderer.ReadPixels(nil)
+		surface, _ := renderer.ReadPixels(nil)
 
 		/* This is also expensive, but easier: convert the pixels to a format we want. */
 		if surface != nil && surface.Format != sdl.PIXELFORMAT_RGBA8888 && surface.Format != sdl.PIXELFORMAT_BGRA8888 {
@@ -111,14 +110,14 @@ func main() {
 				convertedTextureWidth = surface.W
 				convertedTextureHeight = surface.H
 			}
-
 			/* Turn each pixel into either black or white. This is a lousy technique but it works here.
 			   In real life, something like Floyd-Steinberg dithering might work
 			   better: https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering*/
+			pixels := surface.Pixels()
 			for y := range surface.H {
-				pixels := surface.Pixels()[y*surface.Pitch:]
+				row := pixels[y*surface.Pitch:]
 				for x := range surface.W {
-					p := pixels[x*4 : x*4+4]
+					p := row[x*4 : x*4+4]
 					average := (uint32(p[1]) + uint32(p[2]) + uint32(p[3])) / 3
 					if average == 0 {
 						/* make pure black pixels red. */
@@ -138,9 +137,8 @@ func main() {
 					}
 				}
 			}
-
 			/* upload the processed pixels back into a texture. */
-			convertedTexture.Update(nil, surface.Pixels(), surface.Pitch)
+			convertedTexture.Update(nil, pixels, surface.Pitch)
 			surface.Destroy()
 
 			/* draw the texture to the top-left of the screen. */
@@ -151,5 +149,7 @@ func main() {
 		}
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }

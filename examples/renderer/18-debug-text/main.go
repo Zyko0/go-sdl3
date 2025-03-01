@@ -30,13 +30,12 @@ func main() {
 	defer window.Destroy()
 	defer renderer.Destroy()
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -64,5 +63,7 @@ func main() {
 		renderer.DebugText(float32(WindowWidth-charSize*46)/2, 400, fmt.Sprintf("(This program has been running for %d seconds.)", sdl.Ticks()/1000))
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }

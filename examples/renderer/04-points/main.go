@@ -49,13 +49,12 @@ func main() {
 
 	lastTime = sdl.Ticks()
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -94,5 +93,7 @@ func main() {
 		   cheaper (sometimes significantly so) to do them all at once. */
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }

@@ -3,6 +3,7 @@
 package internal
 
 import (
+	"runtime"
 	"slices"
 	"strconv"
 	"strings"
@@ -10,6 +11,8 @@ import (
 	"syscall/js"
 	"unsafe"
 )
+
+type Pointer = int32
 
 var (
 	heapU8 = js.Global().Get("Module").Get("HEAPU8")
@@ -75,7 +78,7 @@ func StackAlloc(n int) js.Value {
 
 func CloneOnStackGoToJS[T any](obj *T) js.Value {
 	if obj == nil {
-		return js.ValueOf(0)
+		return js.Null()
 	}
 	size := unsafe.Sizeof(*obj)
 	ptr := stackAlloc.Invoke(int32(size))
@@ -85,18 +88,31 @@ func CloneOnStackGoToJS[T any](obj *T) js.Value {
 	return ptr
 }
 
-func CloneOnStackJSToGo[T any](obj *T, ptr js.Value) {
+func ExtractJSToGo[T any](obj *T, ptr js.Value) {
 	size := unsafe.Sizeof(*obj)
 	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+int(size))
 	js.CopyBytesToGo(unsafe.Slice((*byte)(unsafe.Pointer(obj)), size), arr)
 }
 
-func CloneSliceOnHeapGoToJS(s []byte) js.Value {
+func CloneByteSliceOnHeapGoToJS(s []byte) js.Value {
 	ptr := js.Global().Call("_malloc", len(s))
 	arr := heapU8.Call("subarray", ptr.Int(), ptr.Int()+len(s))
 	js.CopyBytesToJS(arr, s)
 
 	return ptr
+}
+
+func ClonePtrArrayOnHeapGoToJS[T any](ptr *T, count int) (js.Value, func()) {
+	if ptr == nil || count <= 0 {
+		return js.Null(), func() {}
+	}
+	size := int(count) * int(unsafe.Sizeof(*ptr))
+	s := unsafe.Slice((*byte)(unsafe.Pointer(ptr)), size)
+	arr := CloneByteSliceOnHeapGoToJS(s)
+	runtime.KeepAlive(s)
+	return arr, func() {
+		js.Global().Call("_free", arr)
+	}
 }
 
 func StringOnStackGoToJS(str string) js.Value {
@@ -119,12 +135,24 @@ func GetValue(ptr js.Value, typ string) js.Value {
 	}
 }
 
+func SetValue(ptr js.Value, value js.Value, typ string) {
+	if strings.HasPrefix(typ, "*") {
+		typ = "*"
+	}
+	switch typ {
+	case "i1", "i8", "i16", "i32", "*", "float", "double":
+		setValue.Invoke(ptr, value, typ)
+	default:
+		panic("unknown incoming js type")
+	}
+}
+
 func GetJSPointerFromUintptr(ptr uintptr) (js.Value, bool) {
 	v, ok := jsPtrsByObject[ptr]
 	if ok {
 		return v.value, true
 	}
-	return js.Value{}, false
+	return js.Null(), false
 }
 
 func GetJSPointer[T any](obj *T) (js.Value, bool) {
@@ -132,7 +160,7 @@ func GetJSPointer[T any](obj *T) (js.Value, bool) {
 	if ok {
 		return v.value, true
 	}
-	return js.Value{}, false
+	return js.Null(), false
 }
 
 func NewPointer[T any](ptr js.Value) *T {
@@ -147,6 +175,12 @@ func NewPointer[T any](ptr js.Value) *T {
 		delete(jsPtrsByObject, uintptr(objPtr))
 		pool.Put(obj)
 	})
+	runtime.SetFinalizer(obj, func(o *object) {
+		for _, fn := range o.finalizers {
+			fn()
+		}
+	})
+
 	jsPtrsByObject[uintptr(objPtr)] = obj
 	ret := (*T)(objPtr)
 
@@ -154,13 +188,11 @@ func NewPointer[T any](ptr js.Value) *T {
 }
 
 func DeletePointerReference(ptr uintptr) {
-	obj, ok := jsPtrsByObject[ptr]
+	_, ok := jsPtrsByObject[ptr]
 	if !ok {
 		return
 	}
-	for _, fn := range obj.finalizers {
-		fn()
-	}
+	delete(jsPtrsByObject, ptr)
 }
 
 func AttachFinalizer[T any](obj *T, fn func()) {
@@ -188,4 +220,12 @@ func GetInt64(v js.Value) int64 {
 	n, _ := strconv.ParseInt(str, 10, 64)
 
 	return n
+}
+
+func GetByteSliceFromJSPtr(ptr js.Value, count int) []byte {
+	s := make([]byte, count)
+	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+count)
+	js.CopyBytesToGo(s, arr)
+
+	return s
 }

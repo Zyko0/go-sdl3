@@ -1,10 +1,13 @@
 package sdl
 
 import (
+	"errors"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
 )
+
+var EndLoop = errors.New("graceful termination")
 
 // This file contains extra glue code for types and enums that couldn't be
 // generated automatically.
@@ -13,6 +16,8 @@ import (
 // Functions
 
 // Types
+
+type Pointer = internal.Pointer
 
 type Time int64
 
@@ -197,16 +202,9 @@ type Surface struct {
 	W        int32
 	H        int32
 	Pitch    int32
-	pixels   *byte
+	pixels   Pointer
 	Refcount int32
-	Reserved uintptr
-}
-
-func (s *Surface) Pixels() []byte {
-	return internal.PtrToSlice[byte](
-		uintptr(unsafe.Pointer(s.pixels)),
-		int(s.H*s.Pitch),
-	)
+	Reserved Pointer
 }
 
 // Custom types
@@ -226,7 +224,7 @@ type BorderSize struct {
 
 type ProcessData struct {
 	ExitCode int32
-	Data []byte
+	Data     []byte
 }
 
 // Callback types

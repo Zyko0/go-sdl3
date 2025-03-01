@@ -4,9 +4,12 @@ import (
 	"unsafe"
 
 	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/internal"
 )
 
 // Types
+
+type Pointer = internal.Pointer
 
 // union type
 type DrawOperation struct {

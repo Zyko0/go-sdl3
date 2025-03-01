@@ -3,6 +3,8 @@
 package main
 
 import (
+	"fmt"
+
 	sdl "github.com/Zyko0/go-sdl3"
 	"github.com/Zyko0/go-sdl3/binsdl"
 	assets "github.com/Zyko0/go-sdl3/examples/renderer/_assets"
@@ -51,13 +53,12 @@ func main() {
 
 	surface.Destroy()
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -87,7 +88,10 @@ func main() {
 		dstRect.Y = 0
 		dstRect.W = float32(texture.W)
 		dstRect.H = float32(texture.H)
-		renderer.RenderTexture(texture, nil, &dstRect)
+		err := renderer.RenderTexture(texture, nil, &dstRect)
+		if err != nil {
+			fmt.Println("err:", err)
+		}
 
 		/* center this one. */
 		dstRect.X = float32(WindowWidth-texture.W) / 2
@@ -104,5 +108,7 @@ func main() {
 		renderer.RenderTexture(texture, nil, &dstRect)
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }

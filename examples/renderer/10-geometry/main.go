@@ -51,13 +51,12 @@ func main() {
 
 	surface.Destroy()
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {
 			if event.Type == sdl.EVENT_QUIT {
-				running = false
+				return sdl.EndLoop
 			}
 		}
 
@@ -152,5 +151,7 @@ func main() {
 		renderer.RenderGeometry(texture, vertices[:], indices)
 
 		renderer.Present() /* put it all on the screen! */
-	}
+
+		return nil
+	})
 }
