@@ -9,7 +9,7 @@
 > [!NOTE]
 > The API is currently subject to many changes / refactors, many method functions are also exposed but not implemented yet (need human validation).
 
-- Tested on Windows and Ubuntu at the moment.
+- Tested on Windows, Ubuntu, WebAssembly (wasm/js) at the moment.
 - A lot of methods from [methods.go](methods.go) still `panic`, because they need to be refactored as idiomatic Go, and checked against documentation (necessity of `SDL_free()`, `error` return for example).
 - Other functions might simply not be exposed, but most likely [generated](sdl_functions.gen_impl.go).
 - Help is appreciated! (see [CONTRIBUTE.md](CONTRIBUTE.md).)
