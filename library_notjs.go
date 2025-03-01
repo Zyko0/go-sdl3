@@ -41,10 +41,11 @@ func CloseLibrary() error {
 }
 
 func RunLoop(updateFunc func() error) error {
-	// TODO: take an update function that returns for a way to break the loop
-	// as a user
 	for {
 		if err := updateFunc(); err != nil {
+			if errors.Is(err, EndLoop) {
+				return nil
+			}
 			return err
 		}
 	}

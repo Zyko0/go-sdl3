@@ -1,0 +1,1255 @@
+package sdl
+
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/internal"
+)
+
+// Init
+
+// SDL_Init - Initialize the SDL library.
+// (https://wiki.libsdl.org/SDL3/SDL_Init)
+func Init(flags InitFlags) error {
+	if !iInit(flags) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_InitSubSystem - Compatibility function to initialize the SDL library.
+// (https://wiki.libsdl.org/SDL3/SDL_InitSubSystem)
+func InitSubSystem(flags InitFlags) error {
+	if !iInitSubSystem(flags) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_QuitSubSystem - Shut down specific SDL subsystems.
+// (https://wiki.libsdl.org/SDL3/SDL_QuitSubSystem)
+func QuitSubSystem(flags InitFlags) {
+	iQuitSubSystem(flags)
+}
+
+// SDL_WasInit - Get a mask of the specified subsystems which are currently initialized.
+// (https://wiki.libsdl.org/SDL3/SDL_WasInit)
+func WasInit(flags InitFlags) InitFlags {
+	return iWasInit(flags)
+}
+
+// SDL_Quit - Clean up all initialized subsystems.
+// (https://wiki.libsdl.org/SDL3/SDL_Quit)
+func Quit() {
+	iQuit()
+}
+
+// TODO: IsMainThread
+// TODO: RunOnMainThread
+// TODO: SetAppMetadata
+// TODO: SetAppMetadataProperty
+// TODO: GetAppMetadataProperty
+
+// Hints
+
+// SDL_SetHintWithPriority - Set a hint with a specific priority.
+// (https://wiki.libsdl.org/SDL3/SDL_SetHintWithPriority)
+func SetHintWithPriority(name, value string, priority HintPriority) error {
+	if !iSetHintWithPriority(name, value, priority) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_SetHint - Set a hint with normal priority.
+// (https://wiki.libsdl.org/SDL3/SDL_SetHint)
+func SetHint(name, value string) error {
+	if !iSetHint(name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_ResetHint - Reset a hint to the default value.
+// (https://wiki.libsdl.org/SDL3/SDL_ResetHint)
+func ResetHint(name string) error {
+	if !iResetHint(name) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_ResetHints - Reset all hints to the default values.
+// (https://wiki.libsdl.org/SDL3/SDL_ResetHints)
+func ResetHints() {
+	iResetHints()
+}
+
+// SDL_GetHint - Get the value of a hint.
+// (https://wiki.libsdl.org/SDL3/SDL_GetHint)
+func GetHint(name string) string {
+	return iGetHint(name)
+}
+
+// SDL_GetHintBoolean - Get the boolean value of a hint variable.
+// (https://wiki.libsdl.org/SDL3/SDL_GetHintBoolean)
+func GetHintBoolean(name string, defaultValue bool) bool {
+	return iGetHintBoolean(name, defaultValue)
+}
+
+// TODO: AddHintCallback
+// TODO: RemoveHintCallback
+
+// Error
+
+// TODO: is there a need?
+
+// Properties
+
+// SDL_GetGlobalProperties - Get the global SDL properties.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGlobalProperties)
+func GetGlobalProperties() (PropertiesID, error) {
+	properties := iGetGlobalProperties()
+	if properties == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return properties, nil
+}
+
+// SDL_CreateProperties - Create a group of properties.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateProperties)
+func CreateProperties() (PropertiesID, error) {
+	properties := iCreateProperties()
+	if properties == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return properties, nil
+}
+
+// Log
+
+// TODO: is there a need?
+
+// Events
+
+// SDL_PumpEvents - Pump the event loop, gathering events from the input devices.
+// (https://wiki.libsdl.org/SDL3/SDL_PumpEvents)
+func PumpEvents() {
+	iPumpEvents()
+}
+
+// TODO: PeepEvents
+
+// SDL_HasEvent - Check for the existence of a certain event type in the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_HasEvent)
+func HasEvent(typ EventType) bool {
+	return iHasEvent(uint32(typ))
+}
+
+// SDL_HasEvents - Check for the existence of certain event types in the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_HasEvents)
+func HasEvents(minType, maxType EventType) bool {
+	return iHasEvents(uint32(minType), uint32(maxType))
+}
+
+// SDL_FlushEvent - Clear events of a specific type from the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_FlushEvent)
+func FlushEvent(typ EventType) {
+	iFlushEvent(uint32(typ))
+}
+
+// SDL_FlushEvents - Clear events of a range of types from the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_FlushEvents)
+func FlushEvents(minType, maxType EventType) {
+	iFlushEvents(uint32(minType), uint32(maxType))
+}
+
+// SDL_PollEvent - Poll for currently pending events.
+// (https://wiki.libsdl.org/SDL3/SDL_PollEvent)
+func PollEvent(event *Event) bool {
+	return iPollEvent(event)
+}
+
+// SDL_WaitEvent - Wait indefinitely for the next available event.
+// (https://wiki.libsdl.org/SDL3/SDL_WaitEvent)
+func WaitEvent(event *Event) error {
+	if !iWaitEvent(event) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_WaitEventTimeout - Wait until the specified timeout (in milliseconds) for the next available event.
+// (https://wiki.libsdl.org/SDL3/SDL_WaitEventTimeout)
+func WaitEventTimeout(event *Event, timeoutMS int32) bool {
+	return iWaitEventTimeout(event, timeoutMS)
+}
+
+// SDL_PushEvent - Add an event to the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_PushEvent)
+func PushEvent(event *Event) error {
+	if !iPushEvent(event) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// TODO: SetEventFilter
+// TODO: GetEventFilter
+// TODO: AddEventWatch
+// TODO: RemoveEventWatch
+// TODO: FilterEvents
+
+// SDL_SetEventEnabled - Set the state of processing events by type.
+// (https://wiki.libsdl.org/SDL3/SDL_SetEventEnabled)
+func SetEventEnabled(typ EventType, enabled bool) {
+	iSetEventEnabled(uint32(typ), enabled)
+}
+
+// SDL_EventEnabled - Query the state of processing events by type.
+// (https://wiki.libsdl.org/SDL3/SDL_EventEnabled)
+func EventEnabled(typ EventType) bool {
+	return iEventEnabled(uint32(typ))
+}
+
+// Timer
+
+// TODO:
+
+// Shared object
+
+// TODO:
+
+// Thread
+
+// TODO:
+
+// Mutex
+
+// TODO:
+
+// Atomic
+
+// TODO:
+
+// IOStream
+
+// SDL_IOFromConstMem - Use this function to prepare a read-only memory buffer for use with SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem)
+func IOFromConstMem(mem []byte) (*IOStream, error) {
+	stream := iIOFromConstMem(
+		uintptr(unsafe.Pointer(unsafe.SliceData(mem))),
+		uintptr(len(mem)),
+	)
+	if stream == nil {
+		return nil, internal.LastErr()
+	}
+
+	runtime.KeepAlive(mem)
+
+	return stream, nil
+}
+
+// TODO:
+
+// AsyncIO
+
+// TODO:
+
+// Main
+
+// TODO: is this needed?
+
+// Render
+
+// SDL_GetNumRenderDrivers - Get the number of 2D rendering drivers available for the current display.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumRenderDrivers)
+func GetNumRenderDrivers() int {
+	return int(iGetNumRenderDrivers())
+}
+
+// SDL_GetRenderDriver - Use this function to get the name of a built in 2D rendering driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetRenderDriver)
+func GetRenderDriver(index int) string {
+	return iGetRenderDriver(int32(index))
+}
+
+// SDL_CreateWindowAndRenderer - Create a window and default renderer.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateWindowAndRenderer)
+func CreateWindowAndRenderer(title string, width, height int, flags WindowFlags) (*Window, *Renderer, error) {
+	var window *Window
+	var renderer *Renderer
+
+	if !iCreateWindowAndRenderer(title, int32(width), int32(height), flags, &window, &renderer) {
+		return nil, nil, internal.LastErr()
+	}
+
+	return window, renderer, nil
+}
+
+// SDL_CreateRendererWithProperties - Create a 2D rendering context for a window, with the specified properties.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateRendererWithProperties)
+func CreateRendererWithProperties(props PropertiesID) (*Renderer, error) {
+	renderer := iCreateRendererWithProperties(props)
+	if renderer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return renderer, nil
+}
+
+// Pixels
+
+// SDL_GetPixelFormatForMasks - Convert a bpp value and RGBA masks to an enumerated pixel format.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatForMasks)
+func GetPixelFormatForMasks(bpp int, rmask, gmask, bmask, amask uint32) PixelFormat {
+	return iGetPixelFormatForMasks(int32(bpp), rmask, gmask, bmask, amask)
+}
+
+// SDL_CreatePalette - Create a palette structure with the specified number of color entries.
+// (https://wiki.libsdl.org/SDL3/SDL_CreatePalette)
+func CreatePalette(numColors int) (*Palette, error) {
+	palette := iCreatePalette(int32(numColors))
+	if palette == nil {
+		return nil, internal.LastErr()
+	}
+
+	return palette, nil
+}
+
+// SDL_MapRGB - Map an RGB triple to an opaque pixel value for a given pixel format.
+// (https://wiki.libsdl.org/SDL3/SDL_MapRGB)
+func MapRGB(format *PixelFormatDetails, palette *Palette, r, g, b byte) uint32 {
+	return iMapRGB(format, palette, r, g, b)
+}
+
+// SDL_MapRGBA - Map an RGBA quadruple to a pixel value for a given pixel format.
+// (https://wiki.libsdl.org/SDL3/SDL_MapRGBA)
+func MapRGBA(format *PixelFormatDetails, palette *Palette, r, g, b, a byte) uint32 {
+	return iMapRGBA(format, palette, r, g, b, a)
+}
+
+// SDL_GetRGB - Get RGB values from a pixel in the specified format.
+// (https://wiki.libsdl.org/SDL3/SDL_GetRGB)
+func GetRGB(pixel uint32, format *PixelFormatDetails, palette *Palette) (r, g, b uint8) {
+	iGetRGB(pixel, format, palette, &r, &g, &b)
+
+	return r, g, b
+}
+
+// SDL_GetRGBA - Get RGBA values from a pixel in the specified format.
+// (https://wiki.libsdl.org/SDL3/SDL_GetRGBA)
+func GetRGBA(pixel uint32, format *PixelFormatDetails, palette *Palette) (r, g, b, a uint8) {
+	iGetRGBA(pixel, format, palette, &r, &g, &b, &a)
+
+	return r, g, b, a
+}
+
+// Surface
+
+// SDL_CreateSurface - Allocate a new surface with a specific pixel format.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateSurface)
+func CreateSurface(width, height int, format PixelFormat) (*Surface, error) {
+	surface := iCreateSurface(int32(width), int32(height), format)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+/*
+// TODO: idk about the void* pixels since the primitive type might depend on PixelFormat
+func CreateSurfaceFrom(width, height int, format PixelFormat, pixels []uint32) (*Surface, error) {
+	surface := iCreateSurface(width, height, format)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}*/
+
+// SDL_LoadBMP_IO - Load a BMP image from a seekable SDL data stream.
+// (https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO)
+func LoadBMP_IO(src *IOStream, closeIO bool) (*Surface, error) {
+	surface := iLoadBMP_IO(src, closeIO)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// SDL_LoadBMP - Load a BMP image from a file.
+// (https://wiki.libsdl.org/SDL3/SDL_LoadBMP)
+func LoadBMP(file string) (*Surface, error) {
+	surface := iLoadBMP(file)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TODO: ConvertPixels => void* data
+// TODO: ConvertPixelsAndColorspace => ^
+// TODO: PremultiplyAlpha => ^
+
+// Blend mode
+
+// SDL_ComposeCustomBlendMode - Compose a custom blend mode for renderers.
+// (https://wiki.libsdl.org/SDL3/SDL_ComposeCustomBlendMode)
+func ComposeCustomBlendMode(srcFactor, dstFactor BlendFactor, colorOp BlendOperation, srcAlphaFactor, dstAlphaFactor BlendFactor, alphaOp BlendOperation) BlendMode {
+	return iComposeCustomBlendMode(srcFactor, dstFactor, colorOp, srcAlphaFactor, dstAlphaFactor, alphaOp)
+}
+
+// GPU
+
+// SDL_GPUSupportsShaderFormats - Checks for GPU runtime support.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUSupportsShaderFormats)
+func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
+	return iGPUSupportsShaderFormats(formatFlags, name)
+}
+
+// SDL_CreateGPUDevice - Creates a GPU context.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateGPUDevice)
+func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (*GPUDevice, error) {
+	device := iCreateGPUDevice(formatFlags, debugMode, name)
+	if device == nil {
+		return nil, internal.LastErr()
+	}
+
+	return device, nil
+}
+
+
+// Video
+
+// SDL_GetNumVideoDrivers - Get the number of video drivers compiled into SDL.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumVideoDrivers)
+func GetNumVideoDrivers() int {
+	return int(iGetNumVideoDrivers())
+}
+
+// SDL_GetVideoDriver - Get the name of a built in video driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetVideoDriver)
+func GetVideoDriver(index int) string {
+	return iGetVideoDriver(int32(index))
+}
+
+// SDL_GetCurrentVideoDriver - Get the name of the currently initialized video driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCurrentVideoDriver)
+func GetCurrentVideoDriver() string {
+	return iGetCurrentVideoDriver()
+}
+
+// SDL_GetSystemTheme - Get the current system theme.
+// (https://wiki.libsdl.org/SDL3/SDL_GetSystemTheme)
+func GetSystemTheme() SystemTheme {
+	return iGetSystemTheme()
+}
+
+// SDL_GetDisplays - Get a list of currently connected displays.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDisplays)
+func GetDisplays() ([]DisplayID, error) {
+	var count int32
+
+	ptr := iGetDisplays(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[DisplayID](ptr, int(count)), nil
+}
+
+// SDL_GetPrimaryDisplay - Return the primary display.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPrimaryDisplay)
+func GetPrimaryDisplay() DisplayID {
+	return iGetPrimaryDisplay()
+}
+
+// SDL_GetDisplayForPoint - Get the display containing a point.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDisplayForPoint)
+func GetDisplayForPoint(point *Point) DisplayID {
+	return iGetDisplayForPoint(point)
+}
+
+// SDL_GetDisplayForRect - Get the display primarily containing a rect.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDisplayForRect)
+func GetDisplayForRect(rect *Rect) DisplayID {
+	return iGetDisplayForRect(rect)
+}
+
+// SDL_GetDisplayForWindow - Get the display associated with a window.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDisplayForWindow)
+func GetDisplayForWindow(window *Window) DisplayID {
+	return iGetDisplayForWindow(window)
+}
+
+// SDL_GetWindows - Get a list of valid windows.
+// (https://wiki.libsdl.org/SDL3/SDL_GetWindows)
+func GetWindows() ([]*Window, error) {
+	var count int32
+
+	ptr := iGetWindows(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[*Window](ptr, int(count)), nil
+}
+
+// SDL_CreateWindow - Create a window with the specified dimensions and flags.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateWindow)
+func CreateWindow(title string, width, height int, flags WindowFlags) (*Window, error) {
+	window := iCreateWindow(title, int32(width), int32(height), flags)
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
+}
+
+// SDL_CreateWindowWithProperties - Create a window with the specified properties.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateWindowWithProperties)
+func CreateWindowWithProperties(props PropertiesID) (*Window, error) {
+	window := iCreateWindowWithProperties(props)
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
+}
+
+// SDL_GetGrabbedWindow - Get the window that currently has an input grab enabled.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGrabbedWindow)
+func GetGrabbedWindow() *Window {
+	return iGetGrabbedWindow()
+}
+
+// SDL_ScreenSaverEnabled - Check whether the screensaver is currently enabled.
+// (https://wiki.libsdl.org/SDL3/SDL_ScreenSaverEnabled)
+func ScreenSaverEnabled() bool {
+	return iScreenSaverEnabled()
+}
+
+// SDL_EnableScreenSaver - Allow the screen to be blanked by a screen saver.
+// (https://wiki.libsdl.org/SDL3/SDL_EnableScreenSaver)
+func EnableScreenSaver() error {
+	if !iEnableScreenSaver() {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_DisableScreenSaver - Prevent the screen from being blanked by a screen saver.
+// (https://wiki.libsdl.org/SDL3/SDL_DisableScreenSaver)
+func DisableScreenSaver() error {
+	if !iDisableScreenSaver() {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// TODO: GL_ functions??
+
+// Audio
+
+// SDL_GetNumAudioDrivers - Use this function to get the number of built-in audio drivers.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumAudioDrivers)
+func GetNumAudioDrivers() int {
+	return int(iGetNumAudioDrivers())
+}
+
+// SDL_GetAudioDriver - Use this function to get the name of a built in audio driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetAudioDriver)
+func GetAudioDriver(index int) string {
+	return iGetAudioDriver(int32(index))
+}
+
+// SDL_GetAudioPlaybackDevices - Get a list of currently-connected audio playback devices.
+// (https://wiki.libsdl.org/SDL3/SDL_GetAudioPlaybackDevices)
+func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
+	var count int32
+
+	ptr := iGetAudioPlaybackDevices(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[AudioDeviceID](ptr, int(count)), nil
+}
+
+// SDL_GetAudioRecordingDevices - Get a list of currently-connected audio recording devices.
+// (https://wiki.libsdl.org/SDL3/SDL_GetAudioRecordingDevices)
+func GetAudioRecordingDevices() ([]AudioDeviceID, error) {
+	var count int32
+
+	ptr := iGetAudioRecordingDevices(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[AudioDeviceID](ptr, int(count)), nil
+}
+
+// SDL_UnbindAudioStreams - Unbind a list of audio streams from their audio devices.
+// (https://wiki.libsdl.org/SDL3/SDL_UnbindAudioStreams)
+func UnbindAudioStreams(streams []*AudioStream) {
+	iUnbindAudioStreams(unsafe.SliceData(streams), int32(len(streams)))
+}
+
+// SDL_CreateAudioStream - Create a new audio stream.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateAudioStream)
+func CreateAudioStream(srcSpec *AudioSpec) (*AudioStream, *AudioSpec, error) {
+	dstSpec := &AudioSpec{}
+	stream := iCreateAudioStream(srcSpec, dstSpec)
+	if stream == nil {
+		return nil, nil, internal.LastErr()
+	}
+
+	return stream, dstSpec, nil
+}
+
+// SDL_LoadWAV_IO - Load the audio data of a WAVE file into memory.
+// (https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO)
+func LoadWAV_IO(src *IOStream, closeIO bool, spec *AudioSpec) ([]byte, error) {
+	var count uint32
+	var ptr *byte
+
+	if !iLoadWAV_IO(src, closeIO, spec, &ptr, &count) {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
+
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+}
+
+// SDL_LoadWAV - Loads a WAV from a file path.
+// (https://wiki.libsdl.org/SDL3/SDL_LoadWAV)
+func LoadWAV(path string, spec *AudioSpec) ([]byte, error) {
+	var count uint32
+	var ptr *byte
+
+	if !iLoadWAV(path, spec, &ptr, &count) {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
+
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+}
+
+// SDL_MixAudio - Mix audio data in a specified format.
+// (https://wiki.libsdl.org/SDL3/SDL_MixAudio)
+func MixAudio(src []byte, format AudioFormat, volume float32) ([]byte, error) {
+	dst := make([]byte, len(src))
+	if !iMixAudio(unsafe.SliceData(dst), unsafe.SliceData(src), format, uint32(len(src)), volume) {
+		return nil, internal.LastErr()
+	}
+
+	return dst, nil
+}
+
+// SDL_ConvertAudioSamples - Convert some audio data of one format to another format.
+// (https://wiki.libsdl.org/SDL3/SDL_ConvertAudioSamples)
+func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte, error) {
+	var ptr *byte
+	var count int32
+	dstSpec := &AudioSpec{}
+
+	if !iConvertAudioSamples(
+		srcSpec, unsafe.SliceData(srcData), int32(len(srcData)),
+		dstSpec, &ptr, &count,
+	) {
+		return nil, nil, internal.LastErr()
+	}
+	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
+
+	return dstSpec, internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+}
+
+// Time
+
+// TODO:
+
+// SDL_GetTicks - Get the number of milliseconds since SDL library initialization.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTicks)
+func Ticks() uint64 {
+	return iGetTicks()
+}
+
+// Filesystem
+
+// TODO:
+
+// Storage
+
+// TODO:
+
+// Dialog
+
+// TODO: ShowOpenFileDialog
+// TODO: ShowSaveFileDialog
+// TODO: ShowOpenFolderDialog
+// TODO: ShowFileDialogWithProperties
+
+// Message
+
+// TODO: func ShowMessageBox(data *MessageBoxData)
+// "buttonid => the pointer to which user id of hit button should be copied."
+// I don't understand https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox
+
+// SDL_ShowSimpleMessageBox - Display a simple modal message box.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox)
+func ShowSimpleMessageBox(flags MessageBoxFlags, title, message string, window *Window) error {
+	if !iShowSimpleMessageBox(flags, title, message, window) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// Power
+
+type PowerInfo struct {
+	Seconds int32
+	Percent int32
+	State   PowerState
+}
+
+// SDL_GetPowerInfo - Get the current power supply details.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPowerInfo)
+func GetPowerInfo() (PowerInfo, error) {
+	var info PowerInfo
+
+	info.State = iGetPowerInfo(&info.Seconds, &info.Percent)
+	if info.State == POWERSTATE_ERROR {
+		return info, internal.LastErr()
+	}
+
+	return info, nil
+}
+
+// Sensor
+
+// SDL_GetSensors - Get a list of currently connected sensors.
+// (https://wiki.libsdl.org/SDL3/SDL_GetSensors)
+func GetSensors() ([]SensorID, error) {
+	var count int32
+
+	ptr := iGetSensors(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[SensorID](ptr, int(count)), nil
+}
+
+// SDL_UpdateSensors - Update the current state of the open sensors.
+// (https://wiki.libsdl.org/SDL3/SDL_UpdateSensors)
+func UpdateSensors() {
+	iUpdateSensors()
+}
+
+// Process
+
+// TODO: is this needed?
+
+// Bits
+
+// TODO: is this needed?
+
+// Endian
+
+// TODO: is this needed?
+
+// Assert
+
+// TODO: is this needed?
+
+// CPU Info
+
+// TODO: only intrinsics, how does that help in Go?
+
+// Locale
+
+// SDL_GetPreferredLocales - Report the user's preferred locale.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales)
+func GetPreferredLocales() ([]*Locale, error) {
+	var count int32
+
+	ptr := iGetPreferredLocales(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[*Locale](ptr, int(count)), nil
+}
+
+// System
+
+// TODO: platform specific stuff
+
+// Keyboard
+
+// SDL_HasKeyboard - Return whether a keyboard is currently connected.
+// (https://wiki.libsdl.org/SDL3/SDL_HasKeyboard)
+func HasKeyboard() bool {
+	return iHasKeyboard()
+}
+
+// SDL_GetKeyboards - Get a list of currently connected keyboards.
+// (https://wiki.libsdl.org/SDL3/SDL_GetKeyboards)
+func GetKeyboards() ([]KeyboardID, error) {
+	var count int32
+
+	ptr := iGetKeyboards(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[KeyboardID](ptr, int(count)), nil
+}
+
+// SDL_GetKeyboardState - Get a snapshot of the current state of the keyboard.
+// (https://wiki.libsdl.org/SDL3/SDL_GetKeyboardState)
+func GetKeyboardState() []bool {
+	var count int32
+
+	ptr := iGetKeyboardState(&count)
+
+	return internal.PtrToSlice[bool](uintptr(unsafe.Pointer(ptr)), int(count))
+}
+
+// SDL_ResetKeyboard - Clear the state of the keyboard.
+// (https://wiki.libsdl.org/SDL3/SDL_ResetKeyboard)
+func ResetKeyboard() {
+	iResetKeyboard()
+}
+
+// SDL_GetScancodeFromName - Get a scancode from a human-readable name.
+// (https://wiki.libsdl.org/SDL3/SDL_GetScancodeFromName)
+func GetScancodeFromName(name string) Scancode {
+	return iGetScancodeFromName(name)
+}
+
+// SDL_GetKeyFromName - Get a key code from a human-readable name.
+// (https://wiki.libsdl.org/SDL3/SDL_GetKeyFromName)
+func GetKeyFromName(name string) Keycode {
+	return iGetKeyFromName(name)
+}
+
+// SDL_HasScreenKeyboardSupport - Check whether the platform has screen keyboard support.
+// (https://wiki.libsdl.org/SDL3/SDL_HasScreenKeyboardSupport)
+func HasScreenKeyboardSupport() bool {
+	return iHasScreenKeyboardSupport()
+}
+
+// Mouse
+
+// SDL_HasMouse - Return whether a mouse is currently connected.
+// (https://wiki.libsdl.org/SDL3/SDL_HasMouse)
+func HasMouse() bool {
+	return iHasMouse()
+}
+
+// SDL_GetMice - Get a list of currently connected mice.
+// (https://wiki.libsdl.org/SDL3/SDL_GetMice)
+func GetMice() ([]MouseID, error) {
+	var count int32
+
+	ptr := iGetMice(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[MouseID](ptr, int(count)), nil
+}
+
+// SDL_GetMouseFocus - Get the window which currently has mouse focus.
+// (https://wiki.libsdl.org/SDL3/SDL_GetMouseFocus)
+func GetMouseFocus() *Window {
+	return iGetMouseFocus()
+}
+
+// SDL_GetMouseState - Query SDL's cache for the synchronous mouse button state and the window-relative SDL-cursor position.
+// (https://wiki.libsdl.org/SDL3/SDL_GetMouseState)
+func GetMouseState() (MouseButtonFlags, float32, float32) {
+	var x, y float32
+
+	flags := iGetMouseState(&x, &y)
+
+	return flags, x, y
+}
+
+// SDL_GetGlobalMouseState - Query the platform for the asynchronous mouse button state and the desktop-relative platform-cursor position.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGlobalMouseState)
+func GetGlobalMouseState() (MouseButtonFlags, float32, float32) {
+	var x, y float32
+
+	flags := iGetGlobalMouseState(&x, &y)
+
+	return flags, x, y
+}
+
+// SDL_GetRelativeMouseState - Query SDL's cache for the synchronous mouse button state and accumulated mouse delta since last call.
+// (https://wiki.libsdl.org/SDL3/SDL_GetRelativeMouseState)
+func GetRelativeMouseState() (MouseButtonFlags, float32, float32) {
+	var x, y float32
+
+	flags := iGetRelativeMouseState(&x, &y)
+
+	return flags, x, y
+}
+
+// SDL_WarpMouseGlobal - Move the mouse to the given position in global screen space.
+// (https://wiki.libsdl.org/SDL3/SDL_WarpMouseGlobal)
+func WarpMouseGlobal(x, y float32) error {
+	if !iWarpMouseGlobal(x, y) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_CaptureMouse - Capture the mouse and to track input outside an SDL window.
+// (https://wiki.libsdl.org/SDL3/SDL_CaptureMouse)
+func CaptureMouse(enabled bool) error {
+	if !iCaptureMouse(enabled) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_CreateCursor - Create a cursor using the specified bitmap data and mask (in MSB format).
+// (https://wiki.libsdl.org/SDL3/SDL_CreateCursor)
+func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, error) {
+	cursor := iCreateCursor(
+		unsafe.SliceData(data),
+		unsafe.SliceData(mask),
+		int32(width), int32(height), int32(hotX), int32(hotY),
+	)
+	if cursor == nil {
+		return nil, internal.LastErr()
+	}
+
+	return cursor, nil
+}
+
+// SDL_SetCursor - Set the active cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_SetCursor)
+func SetCursor(cursor *Cursor) error {
+	if !iSetCursor(cursor) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetCursor - Get the active cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCursor)
+func GetCursor() *Cursor {
+	return iGetCursor()
+}
+
+// SDL_GetDefaultCursor - Get the default cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDefaultCursor)
+func GetDefaultCursor() (*Cursor, error) {
+	cursor := iGetDefaultCursor()
+	if cursor == nil {
+		return nil, internal.LastErr()
+	}
+
+	return cursor, nil
+}
+
+// SDL_ShowCursor - Show the cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowCursor)
+func ShowCursor() error {
+	if !iShowCursor() {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_HideCursor - Hide the cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_HideCursor)
+func HideCursor() error {
+	if !iHideCursor() {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_CursorVisible - Return whether the cursor is currently being shown.
+// (https://wiki.libsdl.org/SDL3/SDL_CursorVisible)
+func CursorVisible() bool {
+	return iCursorVisible()
+}
+
+// Touch
+
+// SDL_GetTouchDevices - Get a list of registered touch devices.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTouchDevices)
+func GetTouchDevices() ([]TouchID, error) {
+	var count int32
+
+	ptr := iGetTouchDevices(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[TouchID](ptr, int(count)), nil
+}
+
+// Gamepad
+
+// SDL_AddGamepadMapping - Add support for gamepads that SDL is unaware of or change the binding of an existing gamepad.
+// (https://wiki.libsdl.org/SDL3/SDL_AddGamepadMapping)
+func AddGamepadMapping(mapping string) error {
+	if iAddGamepadMapping(mapping) == -1 {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_AddGamepadMappingsFromFile - Load a set of gamepad mappings from a file.
+// (https://wiki.libsdl.org/SDL3/SDL_AddGamepadMappingsFromFile)
+func AddGamepadMappingsFromFile(file string) error {
+	if iAddGamepadMappingsFromFile(file) == -1 {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_ReloadGamepadMappings - Reinitialize the SDL mapping database to its initial state.
+// (https://wiki.libsdl.org/SDL3/SDL_ReloadGamepadMappings)
+func ReloadGamepadMappings() error {
+	if !iReloadGamepadMappings() {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetGamepadMappings - Get the current gamepad mappings.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepadMappings)
+func GetGamepadMappings() ([]string, error) {
+	var count int32
+
+	ptr := iGetGamepadMappings(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[string](ptr, int(count)), nil
+}
+
+// SDL_HasGamepad - Return whether a gamepad is currently connected.
+// (https://wiki.libsdl.org/SDL3/SDL_HasGamepad)
+func HasGamepad() bool {
+	return iHasGamepad()
+}
+
+// SDL_GetGamepads - Get a list of currently connected gamepads.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepads)
+func GetGamepads() ([]JoystickID, error) {
+	var count int32
+
+	ptr := iGetGamepads(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[JoystickID](ptr, int(count)), nil
+}
+
+// SDL_GetGamepadFromPlayerIndex - Get the SDL_Gamepad associated with a player index.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepadFromPlayerIndex)
+func GetGamepadFromPlayerIndex(playerIndex int) *Gamepad {
+	return iGetGamepadFromPlayerIndex(int32(playerIndex))
+}
+
+// SDL_SetGamepadEventsEnabled - Set the state of gamepad event processing.
+// (https://wiki.libsdl.org/SDL3/SDL_SetGamepadEventsEnabled)
+func SetGamepadEventsEnabled(enabled bool) {
+	iSetGamepadEventsEnabled(enabled)
+}
+
+// SDL_GamepadEventsEnabled - Query the state of gamepad event processing.
+// (https://wiki.libsdl.org/SDL3/SDL_GamepadEventsEnabled)
+func GamepadEventsEnabled() bool {
+	return iGamepadEventsEnabled()
+}
+
+// SDL_UpdateGamepads - Manually pump gamepad updates if not using the loop.
+// (https://wiki.libsdl.org/SDL3/SDL_UpdateGamepads)
+func UpdateGamepads() {
+	iUpdateGamepads()
+}
+
+// SDL_GetGamepadAxisFromString - Convert a string into SDL_GamepadAxis enum.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepadAxisFromString)
+func GetGamepadAxisFromString(str string) GamepadAxis {
+	return iGetGamepadAxisFromString(str)
+}
+
+// SDL_GetGamepadButtonFromString - Convert a string into an SDL_GamepadButton enum.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonFromString)
+func GetGamepadButtonFromString(str string) GamepadButton {
+	return iGetGamepadButtonFromString(str)
+}
+
+// Joystick
+
+// SDL_LockJoysticks - Locking for atomic access to the joystick API.
+// (https://wiki.libsdl.org/SDL3/SDL_LockJoysticks)
+func LockJoysticks() {
+	iLockJoysticks()
+}
+
+// SDL_UnlockJoysticks - Unlocking for atomic access to the joystick API.
+// (https://wiki.libsdl.org/SDL3/SDL_UnlockJoysticks)
+func UnlockJoysticks() {
+	iUnlockJoysticks()
+}
+
+// SDL_HasJoystick - Return whether a joystick is currently connected.
+// (https://wiki.libsdl.org/SDL3/SDL_HasJoystick)
+func HasJoystick() bool {
+	return iHasJoystick()
+}
+
+// SDL_GetJoysticks - Get a list of currently connected joysticks.
+// (https://wiki.libsdl.org/SDL3/SDL_GetJoysticks)
+func GetJoysticks() ([]JoystickID, error) {
+	var count int32
+
+	ptr := iGetJoysticks(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[JoystickID](ptr, int(count)), nil
+}
+
+// SDL_GetJoystickFromPlayerIndex - Get the SDL_Joystick associated with a player index.
+// (https://wiki.libsdl.org/SDL3/SDL_GetJoystickFromPlayerIndex)
+func GetJoystickFromPlayerIndex(playerIndex int) *Joystick {
+	return iGetJoystickFromPlayerIndex(int32(playerIndex))
+}
+
+// SDL_AttachVirtualJoystick - Attach a new virtual joystick.
+// (https://wiki.libsdl.org/SDL3/SDL_AttachVirtualJoystick)
+func AttachVirtualJoystick(desc *VirtualJoystickDesc) JoystickID {
+	return iAttachVirtualJoystick(desc)
+}
+
+// SDL_SetJoystickEventsEnabled - Set the state of joystick event processing.
+// (https://wiki.libsdl.org/SDL3/SDL_SetJoystickEventsEnabled)
+func SetJoystickEventsEnabled(enabled bool) {
+	iSetJoystickEventsEnabled(enabled)
+}
+
+// SDL_JoystickEventsEnabled - Query the state of joystick event processing.
+// (https://wiki.libsdl.org/SDL3/SDL_JoystickEventsEnabled)
+func JoystickEventsEnabled() bool {
+	return iJoystickEventsEnabled()
+}
+
+// SDL_UpdateJoysticks - Update the current state of the open joysticks.
+// (https://wiki.libsdl.org/SDL3/SDL_UpdateJoysticks)
+func UpdateJoysticks() {
+	iUpdateJoysticks()
+}
+
+// Haptic
+
+// TODO:
+
+// Camera
+
+// SDL_GetNumCameraDrivers - Use this function to get the number of built-in camera drivers.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumCameraDrivers)
+func GetNumCameraDrivers() int {
+	return int(iGetNumCameraDrivers())
+}
+
+// SDL_GetCameraDriver - Use this function to get the name of a built in camera driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCameraDriver)
+func GetCameraDriver(index int) string {
+	return iGetCameraDriver(int32(index))
+}
+
+// SDL_GetCurrentCameraDriver - Get the name of the current camera driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCurrentCameraDriver)
+func GetCurrentCameraDriver() string {
+	return iGetCurrentCameraDriver()
+}
+
+// SDL_GetCameras - Get a list of currently connected camera devices.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCameras)
+func GetCameras() ([]CameraID, error) {
+	var count int32
+
+	ptr := iGetCameras(&count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[CameraID](ptr, int(count)), nil
+}
+
+// Clipboard
+
+// SDL_SetClipboardText - Put UTF-8 text into the clipboard.
+// (https://wiki.libsdl.org/SDL3/SDL_SetClipboardText)
+func SetClipboardText(text string) error {
+	if !iSetClipboardText(text) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetClipboardText - Get UTF-8 text from the clipboard.
+// (https://wiki.libsdl.org/SDL3/SDL_GetClipboardText)
+func GetClipboardText() (string, error) {
+	ptr := iGetClipboardText()
+	if ptr == 0 {
+		return "", internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrString(ptr), nil
+}

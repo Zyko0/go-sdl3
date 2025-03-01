@@ -57,5 +57,8 @@ func RunLoop(updateFunc func() error) error {
 
 	err := <-ch
 
+	if errors.Is(err, EndLoop) {
+		return nil
+	}
 	return err
 }
