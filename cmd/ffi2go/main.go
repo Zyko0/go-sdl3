@@ -483,7 +483,7 @@ func main() {
 					typ = "Pointer"
 				}
 				g.Add(
-					jenType(jen.Id(sanitizeVarName(ee.Name)), extractType(ee.Type)),
+					jenType(jen.Id(sanitizeVarName(ee.Name)), typ),
 				)
 			}
 		}).Line()

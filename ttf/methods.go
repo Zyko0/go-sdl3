@@ -669,7 +669,7 @@ func (font *Font) GlyphImageForIndex(glyphIndex uint32) (*sdl.Surface, ImageType
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GetGlyphMetrics)
 func (font *Font) GlyphMetrics(ch uint32) (*GlyphMetrics, error) {
 	var m GlyphMetrics
-	
+
 	if !iGetGlyphMetrics(font, ch, &m.MinX, &m.MaxX, &m.MinY, &m.MaxY, &m.Advance) {
 		return nil, internal.LastErr()
 	}

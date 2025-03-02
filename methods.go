@@ -5559,7 +5559,7 @@ func (cb *GPUCommandBuffer) InsertDebugLabel(text string) {
 	iInsertGPUDebugLabel(cb, text)
 }
 
-// SDL_PushGPUDebugGroup - Begins a debug group with an arbitary name.
+// SDL_PushGPUDebugGroup - Begins a debug group with an arbitrary name.
 // (https://wiki.libsdl.org/SDL3/SDL_PushGPUDebugGroup)
 func (cb *GPUCommandBuffer) PushDebugGroup(name string) {
 	iPushGPUDebugGroup(cb, name)

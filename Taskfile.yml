@@ -52,3 +52,8 @@ tasks:
         cmds:
             # Generate SDL3 documentation on top of functions
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
+    
+    fmt:
+        cmds:
+            # go fmt code
+            - go fmt github.com/Zyko0/go-sdl3/...

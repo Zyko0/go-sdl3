@@ -117,7 +117,7 @@ func main() {
 		renderer.RenderTexture(texture, nil, nil)
 
 		renderer.Present() /* put it all on the screen! */
-		
+
 		return nil
 	})
 }

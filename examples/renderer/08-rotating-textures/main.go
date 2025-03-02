@@ -51,7 +51,7 @@ func main() {
 
 	surface.Destroy()
 
-	sdl.RunLoop(func () error {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {

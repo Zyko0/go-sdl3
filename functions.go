@@ -432,7 +432,6 @@ func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (
 	return device, nil
 }
 
-
 // Video
 
 // SDL_GetNumVideoDrivers - Get the number of video drivers compiled into SDL.

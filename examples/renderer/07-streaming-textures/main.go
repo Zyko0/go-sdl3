@@ -61,7 +61,7 @@ func main() {
 
 		/* To update a streaming texture, you need to lock it first. This gets you access to the pixels.
 		   Note that this is considered a _write-only_ operation: the buffer you get from locking
-		   might not acutally have the existing contents of the texture, and you have to write to every
+		   might not actually have the existing contents of the texture, and you have to write to every
 		   locked pixel! */
 
 		/* You can use SDL_LockTexture() to get an array of raw pixels, but we're going to use

@@ -25,7 +25,7 @@ func main() {
 	defer window.Destroy()
 	defer renderer.Destroy()
 
-	sdl.RunLoop(func () error {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 
 		for sdl.PollEvent(&event) {

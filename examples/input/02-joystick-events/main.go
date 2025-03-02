@@ -168,12 +168,10 @@ func main() {
 		now := sdl.Ticks()
 		msgLifetime := 3500.
 		prevY := float32(0)
-		winw := int32(640)
-		winh := int32(480)
 
 		renderer.SetDrawColor(0, 0, 0, 255)
 		renderer.Clear()
-		winw, winh, _ = window.Size()
+		winw, winh, _ := window.Size()
 
 		start := 0
 		for i, msg := range messages {
