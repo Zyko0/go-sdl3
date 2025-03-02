@@ -11,6 +11,7 @@ This library wraps SDL3 to more idiomatic go by:
 - Replacing `bool` return values by `error` instead of requiring you to call `SDL_GetError` in C.
 - Removes the `SDL_` prefix from all types, variables, function names.
 - Move global functions to methods when it is possible and/or when it makes sense.
+- Turn some pointer function parameters into return values. Since Go allows for multiple return values we do not always need to pass pointers to be filled by functions, the C way.
 
 If you are looking for pure Go bindings that are closer to the original API, please have a look at https://github.com/JupiterRider/purego-sdl3. 
 
@@ -91,6 +92,7 @@ The [examples](./examples/) folder contains the offical examples that can be fou
 ## Libraries
 
 - SDL3
-- SDL3_ttf (TBD)
-- SDL3_mixer (TBD)
+- SDL3_ttf
+- SDL3_image
+- SDL3_mixer
 - SDL3_shadercross (TBD)
