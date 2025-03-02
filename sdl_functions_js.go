@@ -6521,27 +6521,23 @@ func initialize() {
 	}
 
 	iGetWindowSize = func(window *Window, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
-		_w, ok := internal.GetJSPointer(w)
-		if !ok {
-			_w = internal.StackAlloc(int(unsafe.Sizeof(*w)))
-		}
-		_h, ok := internal.GetJSPointer(h)
-		if !ok {
-			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
-		}
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowSize",
 			_window,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 
 		return internal.GetBool(ret)
 	}
@@ -8199,34 +8195,28 @@ func initialize() {
 	}
 
 	iOpenJoystick = func(instance_id JoystickID) *Joystick {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_instance_id := int32(instance_id)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenJoystick",
 			_instance_id,
 		)
 
-		_obj := &Joystick{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
+		_obj := internal.NewPointer[Joystick](ret)
+
 		return _obj
 	}
 
 	iGetJoystickFromID = func(instance_id JoystickID) *Joystick {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_instance_id := int32(instance_id)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickFromID",
 			_instance_id,
 		)
 
-		_obj := &Joystick{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
+		// TODO: Add a getPointerFromJSValue, pretty sure the same
+		// joystick is returned for the same id
+		_obj := internal.NewPointer[Joystick](ret)
+
 		return _obj
 	}
 
@@ -8442,12 +8432,9 @@ func initialize() {
 	}
 
 	iGetJoystickName = func(joystick *Joystick) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickName",
@@ -8667,12 +8654,9 @@ func initialize() {
 	}
 
 	iGetJoystickID = func(joystick *Joystick) JoystickID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickID",
@@ -8683,12 +8667,9 @@ func initialize() {
 	}
 
 	iGetNumJoystickAxes = func(joystick *Joystick) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetNumJoystickAxes",
@@ -8715,12 +8696,9 @@ func initialize() {
 	}
 
 	iGetNumJoystickHats = func(joystick *Joystick) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetNumJoystickHats",
@@ -8731,12 +8709,9 @@ func initialize() {
 	}
 
 	iGetNumJoystickButtons = func(joystick *Joystick) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetNumJoystickButtons",
@@ -8778,12 +8753,9 @@ func initialize() {
 	}
 
 	iGetJoystickAxis = func(joystick *Joystick, axis int32) int16 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		_axis := int32(axis)
 		ret := js.Global().Get("Module").Call(
@@ -8847,12 +8819,9 @@ func initialize() {
 	}
 
 	iGetJoystickHat = func(joystick *Joystick, hat int32) uint8 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		_hat := int32(hat)
 		ret := js.Global().Get("Module").Call(
@@ -8865,12 +8834,9 @@ func initialize() {
 	}
 
 	iGetJoystickButton = func(joystick *Joystick, button int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		_button := int32(button)
 		ret := js.Global().Get("Module").Call(
@@ -8969,17 +8935,16 @@ func initialize() {
 	}
 
 	iCloseJoystick = func(joystick *Joystick) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, ok := internal.GetJSPointer(joystick)
 		if !ok {
-			_joystick = internal.StackAlloc(int(unsafe.Sizeof(*joystick)))
+			panic("nil joystick")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_CloseJoystick",
 			_joystick,
 		)
+
+		internal.DeletePointerReference(uintptr(unsafe.Pointer(joystick)))
 	}
 
 	iGetJoystickConnectionState = func(joystick *Joystick) JoystickConnectionState {

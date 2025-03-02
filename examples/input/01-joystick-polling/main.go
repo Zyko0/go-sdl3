@@ -37,15 +37,14 @@ func main() {
 		colors[i].A = 255
 	}
 
-	running := true
-	for running {
+	sdl.RunLoop(func() error {
 		var event sdl.Event
 		var err error
 
 		for sdl.PollEvent(&event) {
 			switch event.Type {
 			case sdl.EVENT_QUIT:
-				running = false
+				return sdl.EndLoop
 			case sdl.EVENT_JOYSTICK_ADDED:
 				/* this event is sent for each hotplugged stick, but also each already-connected joystick during SDL_Init(). */
 				evt := event.JoyDeviceEvent()
@@ -205,5 +204,7 @@ func main() {
 
 		/* put the newly-cleared rendering on the screen. */
 		renderer.Present()
-	}
+
+		return nil
+	})
 }
