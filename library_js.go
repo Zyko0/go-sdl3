@@ -22,7 +22,7 @@ func init() {
 	// Set free, error functions
 	internal.SetSDLFreeFunc(func(mem uintptr) {
 		ifree(mem)
-		internal.DeletePointerReference(mem)
+		internal.DeleteJSPointer(mem)
 	})
 	internal.SetSDLLastErrFunc(func() error {
 		if msg := iGetError(); msg != "" {

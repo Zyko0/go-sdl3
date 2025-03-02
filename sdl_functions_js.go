@@ -11,7 +11,7 @@ import (
 
 func initialize() {
 	ifree = func(mem uintptr) {
-		_mem, ok := internal.GetJSPointerFromUintptr(mem)
+		_mem, ok := internal.GetJSPoiterFromUintptr(mem)
 		if !ok {
 			panic("free invalid pointer target")
 		}
@@ -25,8 +25,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
-		_mode := internal.StringOnStackGoToJS(mode)
+		_file := internal.StringOnJSStack(file)
+		_mode := internal.StringOnJSStack(mode)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AsyncIOFromFile",
 			_file,
@@ -228,7 +228,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		_queue, ok := internal.GetJSPointer(queue)
 		if !ok {
 			_queue = internal.StackAlloc(int(unsafe.Sizeof(*queue)))
@@ -490,7 +490,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetError",
 			_fmt,
@@ -503,7 +503,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		_ap := int32(ap)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetErrorV",
@@ -530,7 +530,7 @@ func initialize() {
 			"_SDL_GetError",
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iClearError = func() bool {
@@ -631,7 +631,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_value := internal.NewBigInt(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetPointerProperty",
@@ -648,8 +648,8 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
-		_value := internal.StringOnStackGoToJS(value)
+		_name := internal.StringOnJSStack(name)
+		_value := internal.StringOnJSStack(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetStringProperty",
 			_props,
@@ -665,7 +665,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_value := internal.NewBigInt(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetNumberProperty",
@@ -682,7 +682,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_value := int32(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetFloatProperty",
@@ -699,7 +699,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_value := internal.NewBoolean(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetBooleanProperty",
@@ -716,7 +716,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasProperty",
 			_props,
@@ -731,7 +731,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPropertyType",
 			_props,
@@ -746,7 +746,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_default_value := internal.NewBigInt(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPointerProperty",
@@ -763,8 +763,8 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
-		_default_value := internal.StringOnStackGoToJS(default_value)
+		_name := internal.StringOnJSStack(name)
+		_default_value := internal.StringOnJSStack(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetStringProperty",
 			_props,
@@ -772,7 +772,7 @@ func initialize() {
 			_default_value,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetNumberProperty = func(props PropertiesID, name string, default_value int64) int64 {
@@ -780,7 +780,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_default_value := internal.NewBigInt(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetNumberProperty",
@@ -797,7 +797,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_default_value := int32(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetFloatProperty",
@@ -814,7 +814,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_default_value := internal.NewBoolean(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetBooleanProperty",
@@ -831,7 +831,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ClearProperty",
 			_props,
@@ -882,7 +882,7 @@ func initialize() {
 			_thread,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCurrentThreadID = func() ThreadID {
@@ -1451,8 +1451,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
-		_mode := internal.StringOnStackGoToJS(mode)
+		_file := internal.StringOnJSStack(file)
+		_mode := internal.StringOnJSStack(mode)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_IOFromFile",
 			_file,
@@ -1484,7 +1484,7 @@ func initialize() {
 	}
 
 	iIOFromConstMem = func(mem, size uintptr) *IOStream {
-		_mem := internal.CloneByteSliceOnHeapGoToJS(
+		_mem := internal.CloneByteSliceToJSHeap(
 			unsafe.Slice(*(**byte)(unsafe.Pointer(&mem)), int(size)),
 		)
 		_size := int32(size)
@@ -1495,7 +1495,7 @@ func initialize() {
 			_size,
 		)
 
-		_obj := internal.NewPointer[IOStream](ret)
+		_obj := internal.NewObject[IOStream](ret)
 		internal.AttachFinalizer(_obj, func() {
 			js.Global().Call("_free", _mem)
 		})
@@ -1683,7 +1683,7 @@ func initialize() {
 		if !ok {
 			_context = internal.StackAlloc(int(unsafe.Sizeof(*context)))
 		}
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_IOprintf",
 			_context,
@@ -1701,7 +1701,7 @@ func initialize() {
 		if !ok {
 			_context = internal.StackAlloc(int(unsafe.Sizeof(*context)))
 		}
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		_ap := int32(ap)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_IOvprintf",
@@ -1756,7 +1756,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		_datasize, ok := internal.GetJSPointer(datasize)
 		if !ok {
 			_datasize = internal.StackAlloc(int(unsafe.Sizeof(*datasize)))
@@ -1796,7 +1796,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		_data := internal.NewBigInt(data)
 		_datasize := internal.NewBigInt(datasize)
 		ret := js.Global().Get("Module").Call(
@@ -2376,7 +2376,7 @@ func initialize() {
 			_index,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCurrentAudioDriver = func() string {
@@ -2387,7 +2387,7 @@ func initialize() {
 			"_SDL_GetCurrentAudioDriver",
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetAudioPlaybackDevices = func(count *int32) uintptr {
@@ -2432,7 +2432,7 @@ func initialize() {
 			_devid,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetAudioDeviceFormat = func(devid AudioDeviceID, spec *AudioSpec, sample_frames *int32) bool {
@@ -3246,7 +3246,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_spec, ok := internal.GetJSPointer(spec)
 		if !ok {
 			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
@@ -3345,7 +3345,7 @@ func initialize() {
 			_format,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetSilenceValueForFormat = func(format AudioFormat) int32 {
@@ -3394,7 +3394,7 @@ func initialize() {
 			_format,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetMasksForPixelFormat = func(format PixelFormat, bpp *int32, Rmask *uint32, Gmask *uint32, Bmask *uint32, Amask *uint32) bool {
@@ -3463,7 +3463,7 @@ func initialize() {
 			_format,
 		)
 
-		_obj := internal.NewPointer[PixelFormatDetails](ret)
+		_obj := internal.NewObject[PixelFormatDetails](ret)
 
 		return _obj
 	}
@@ -3529,11 +3529,11 @@ func initialize() {
 
 		_format, ok := internal.GetJSPointer(format)
 		if !ok {
-			_format = internal.CloneOnStackGoToJS(format)
+			_format = internal.CloneObjectToJSStack(format)
 		}
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.CloneOnStackGoToJS(palette)
+			_palette = internal.CloneObjectToJSStack(palette)
 		}
 		_r := int32(r)
 		_g := int32(g)
@@ -3983,7 +3983,7 @@ func initialize() {
 			"_SDL_DestroySurface",
 			_surface,
 		)
-		internal.DeletePointerReference(uintptr(unsafe.Pointer(surface)))
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(surface)))
 	}
 
 	iGetSurfaceProperties = func(surface *Surface) PropertiesID {
@@ -4212,7 +4212,7 @@ func initialize() {
 			_closeio,
 		)
 
-		_obj := internal.NewPointer[Surface](ret)
+		_obj := internal.NewObject[Surface](ret)
 
 		return _obj
 	}
@@ -4221,7 +4221,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_LoadBMP",
 			_file,
@@ -4264,7 +4264,7 @@ func initialize() {
 		if !ok {
 			_surface = internal.StackAlloc(int(unsafe.Sizeof(*surface)))
 		}
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SaveBMP",
 			_surface,
@@ -4612,7 +4612,7 @@ func initialize() {
 			_format,
 		)
 
-		_obj := internal.NewPointer[Surface](ret)
+		_obj := internal.NewObject[Surface](ret)
 
 		return _obj
 	}
@@ -4788,7 +4788,7 @@ func initialize() {
 		if !ok {
 			panic("nil surface")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_FillSurfaceRect",
 			_dst,
@@ -5255,7 +5255,7 @@ func initialize() {
 			_index,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCurrentCameraDriver = func() string {
@@ -5266,7 +5266,7 @@ func initialize() {
 			"_SDL_GetCurrentCameraDriver",
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCameras = func(count *int32) uintptr {
@@ -5313,7 +5313,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCameraPosition = func(instance_id CameraID) CameraPosition {
@@ -5480,7 +5480,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text := internal.StringOnStackGoToJS(text)
+		_text := internal.StringOnJSStack(text)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetClipboardText",
 			_text,
@@ -5515,7 +5515,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text := internal.StringOnStackGoToJS(text)
+		_text := internal.StringOnJSStack(text)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetPrimarySelectionText",
 			_text,
@@ -5585,7 +5585,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_mime_type := internal.StringOnStackGoToJS(mime_type)
+		_mime_type := internal.StringOnJSStack(mime_type)
 		_size, ok := internal.GetJSPointer(size)
 		if !ok {
 			_size = internal.StackAlloc(int(unsafe.Sizeof(*size)))
@@ -5603,7 +5603,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_mime_type := internal.StringOnStackGoToJS(mime_type)
+		_mime_type := internal.StringOnJSStack(mime_type)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasClipboardData",
 			_mime_type,
@@ -5847,7 +5847,7 @@ func initialize() {
 			_index,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCurrentVideoDriver = func() string {
@@ -5858,7 +5858,7 @@ func initialize() {
 			"_SDL_GetCurrentVideoDriver",
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetSystemTheme = func() SystemTheme {
@@ -5922,7 +5922,7 @@ func initialize() {
 			_displayID,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetDisplayBounds = func(displayID DisplayID, rect *Rect) bool {
@@ -6253,7 +6253,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_title := internal.StringOnStackGoToJS(title)
+		_title := internal.StringOnJSStack(title)
 		_w := int32(w)
 		_h := int32(h)
 		_flags := int32(flags)
@@ -6407,7 +6407,7 @@ func initialize() {
 		if !ok {
 			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
 		}
-		_title := internal.StringOnStackGoToJS(title)
+		_title := internal.StringOnJSStack(title)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetWindowTitle",
 			_window,
@@ -6430,7 +6430,7 @@ func initialize() {
 			_window,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iSetWindowIcon = func(window *Window, icon *Surface) bool {
@@ -7377,7 +7377,7 @@ func initialize() {
 			"_SDL_DestroyWindow",
 			_window,
 		)
-		internal.DeletePointerReference(uintptr(unsafe.Pointer(window)))
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(window)))
 	}
 
 	iScreenSaverEnabled = func() bool {
@@ -7417,7 +7417,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_LoadLibrary",
 			_path,
@@ -7465,7 +7465,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_extension := internal.StringOnStackGoToJS(extension)
+		_extension := internal.StringOnJSStack(extension)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_ExtensionSupported",
 			_extension,
@@ -7858,7 +7858,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetSensorTypeForID = func(instance_id SensorID) SensorType {
@@ -7948,7 +7948,7 @@ func initialize() {
 			_sensor,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetSensorType = func(sensor *Sensor) SensorType {
@@ -8100,7 +8100,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetJoystickPathForID = func(instance_id JoystickID) string {
@@ -8113,7 +8113,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetJoystickPlayerIndexForID = func(instance_id JoystickID) int32 {
@@ -8201,7 +8201,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		_obj := internal.NewPointer[Joystick](ret)
+		_obj := internal.NewObject[Joystick](ret)
 
 		return _obj
 	}
@@ -8215,7 +8215,7 @@ func initialize() {
 
 		// TODO: Add a getPointerFromJSValue, pretty sure the same
 		// joystick is returned for the same id
-		_obj := internal.NewPointer[Joystick](ret)
+		_obj := internal.NewObject[Joystick](ret)
 
 		return _obj
 	}
@@ -8441,7 +8441,7 @@ func initialize() {
 			_joystick,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetJoystickPath = func(joystick *Joystick) string {
@@ -8457,7 +8457,7 @@ func initialize() {
 			_joystick,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetJoystickPlayerIndex = func(joystick *Joystick) int32 {
@@ -8587,7 +8587,7 @@ func initialize() {
 			_joystick,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetJoystickType = func(joystick *Joystick) JoystickType {
@@ -8944,7 +8944,7 @@ func initialize() {
 			_joystick,
 		)
 
-		internal.DeletePointerReference(uintptr(unsafe.Pointer(joystick)))
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(joystick)))
 	}
 
 	iGetJoystickConnectionState = func(joystick *Joystick) JoystickConnectionState {
@@ -8988,7 +8988,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_mapping := internal.StringOnStackGoToJS(mapping)
+		_mapping := internal.StringOnJSStack(mapping)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AddGamepadMapping",
 			_mapping,
@@ -9019,7 +9019,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnStackGoToJS(file)
+		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AddGamepadMappingsFromFile",
 			_file,
@@ -9089,7 +9089,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_instance_id := int32(instance_id)
-		_mapping := internal.StringOnStackGoToJS(mapping)
+		_mapping := internal.StringOnJSStack(mapping)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetGamepadMapping",
 			_instance_id,
@@ -9149,7 +9149,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadPathForID = func(instance_id JoystickID) string {
@@ -9162,7 +9162,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadPlayerIndexForID = func(instance_id JoystickID) int32 {
@@ -9362,7 +9362,7 @@ func initialize() {
 			_gamepad,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadPath = func(gamepad *Gamepad) string {
@@ -9378,7 +9378,7 @@ func initialize() {
 			_gamepad,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadType = func(gamepad *Gamepad) GamepadType {
@@ -9524,7 +9524,7 @@ func initialize() {
 			_gamepad,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadSteamHandle = func(gamepad *Gamepad) uint64 {
@@ -9671,7 +9671,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_str := internal.StringOnStackGoToJS(str)
+		_str := internal.StringOnJSStack(str)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadTypeFromString",
 			_str,
@@ -9690,14 +9690,14 @@ func initialize() {
 			_typ,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadAxisFromString = func(str string) GamepadAxis {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_str := internal.StringOnStackGoToJS(str)
+		_str := internal.StringOnJSStack(str)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadAxisFromString",
 			_str,
@@ -9716,7 +9716,7 @@ func initialize() {
 			_axis,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGamepadHasAxis = func(gamepad *Gamepad, axis GamepadAxis) bool {
@@ -9759,7 +9759,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_str := internal.StringOnStackGoToJS(str)
+		_str := internal.StringOnJSStack(str)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadButtonFromString",
 			_str,
@@ -9778,7 +9778,7 @@ func initialize() {
 			_button,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGamepadHasButton = func(gamepad *Gamepad, button GamepadButton) bool {
@@ -10138,7 +10138,7 @@ func initialize() {
 			_button,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGamepadAppleSFSymbolsNameForAxis = func(gamepad *Gamepad, axis GamepadAxis) string {
@@ -10156,7 +10156,7 @@ func initialize() {
 			_axis,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iHasKeyboard = func() bool {
@@ -10196,7 +10196,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetKeyboardFocus = func() *Window {
@@ -10302,7 +10302,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_scancode := int32(scancode)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetScancodeName",
 			_scancode,
@@ -10322,14 +10322,14 @@ func initialize() {
 			_scancode,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetScancodeFromName = func(name string) Scancode {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetScancodeFromName",
 			_name,
@@ -10345,14 +10345,14 @@ func initialize() {
 			_key,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetKeyFromName = func(name string) Keycode {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetKeyFromName",
 			_name,
@@ -10556,7 +10556,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetMouseFocus = func() *Window {
@@ -10904,7 +10904,7 @@ func initialize() {
 			_touchID,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetTouchDeviceType = func(touchID TouchID) TouchDeviceType {
@@ -11031,7 +11031,7 @@ func initialize() {
 			"_SDL_PollEvent",
 			_event,
 		)
-		internal.ExtractJSToGo(event, _event)
+		internal.CopyJSToObject(event, _event)
 
 		return internal.GetBool(ret)
 	}
@@ -11227,15 +11227,15 @@ func initialize() {
 			"_SDL_GetBasePath",
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetPrefPath = func(org string, app string) uintptr {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_org := internal.StringOnStackGoToJS(org)
-		_app := internal.StringOnStackGoToJS(app)
+		_org := internal.StringOnJSStack(org)
+		_app := internal.StringOnJSStack(app)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPrefPath",
 			_org,
@@ -11255,14 +11255,14 @@ func initialize() {
 			_folder,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iCreateDirectory = func(path string) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreateDirectory",
 			_path,
@@ -11292,7 +11292,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RemovePath",
 			_path,
@@ -11305,8 +11305,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_oldpath := internal.StringOnStackGoToJS(oldpath)
-		_newpath := internal.StringOnStackGoToJS(newpath)
+		_oldpath := internal.StringOnJSStack(oldpath)
+		_newpath := internal.StringOnJSStack(newpath)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenamePath",
 			_oldpath,
@@ -11320,8 +11320,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_oldpath := internal.StringOnStackGoToJS(oldpath)
-		_newpath := internal.StringOnStackGoToJS(newpath)
+		_oldpath := internal.StringOnJSStack(oldpath)
+		_newpath := internal.StringOnJSStack(newpath)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CopyFile",
 			_oldpath,
@@ -11335,7 +11335,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_info, ok := internal.GetJSPointer(info)
 		if !ok {
 			_info = internal.StackAlloc(int(unsafe.Sizeof(*info)))
@@ -11353,8 +11353,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
-		_pattern := internal.StringOnStackGoToJS(pattern)
+		_path := internal.StringOnJSStack(path)
+		_pattern := internal.StringOnJSStack(pattern)
 		_flags := int32(flags)
 		_count, ok := internal.GetJSPointer(count)
 		if !ok {
@@ -11387,7 +11387,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_format_flags := int32(format_flags)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GPUSupportsShaderFormats",
 			_format_flags,
@@ -11416,7 +11416,7 @@ func initialize() {
 		defer internal.StackRestore()
 		_format_flags := int32(format_flags)
 		_debug_mode := internal.NewBoolean(debug_mode)
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreateGPUDevice",
 			_format_flags,
@@ -11481,7 +11481,7 @@ func initialize() {
 			_index,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGPUDeviceDriver = func(device *GPUDevice) string {
@@ -11497,7 +11497,7 @@ func initialize() {
 			_device,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetGPUShaderFormats = func(device *GPUDevice) GPUShaderFormat {
@@ -11696,7 +11696,7 @@ func initialize() {
 		if !ok {
 			_buffer = internal.StackAlloc(int(unsafe.Sizeof(*buffer)))
 		}
-		_text := internal.StringOnStackGoToJS(text)
+		_text := internal.StringOnJSStack(text)
 		js.Global().Get("Module").Call(
 			"_SDL_SetGPUBufferName",
 			_device,
@@ -11717,7 +11717,7 @@ func initialize() {
 		if !ok {
 			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
 		}
-		_text := internal.StringOnStackGoToJS(text)
+		_text := internal.StringOnJSStack(text)
 		js.Global().Get("Module").Call(
 			"_SDL_SetGPUTextureName",
 			_device,
@@ -11734,7 +11734,7 @@ func initialize() {
 		if !ok {
 			_command_buffer = internal.StackAlloc(int(unsafe.Sizeof(*command_buffer)))
 		}
-		_text := internal.StringOnStackGoToJS(text)
+		_text := internal.StringOnJSStack(text)
 		js.Global().Get("Module").Call(
 			"_SDL_InsertGPUDebugLabel",
 			_command_buffer,
@@ -11750,7 +11750,7 @@ func initialize() {
 		if !ok {
 			_command_buffer = internal.StackAlloc(int(unsafe.Sizeof(*command_buffer)))
 		}
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		js.Global().Get("Module").Call(
 			"_SDL_PushGPUDebugGroup",
 			_command_buffer,
@@ -13300,7 +13300,7 @@ func initialize() {
 			_instance_id,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iOpenHaptic = func(instance_id HapticID) *Haptic {
@@ -13364,7 +13364,7 @@ func initialize() {
 			_haptic,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iIsMouseHaptic = func() bool {
@@ -13798,8 +13798,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
-		_value := internal.StringOnStackGoToJS(value)
+		_name := internal.StringOnJSStack(name)
+		_value := internal.StringOnJSStack(value)
 		_priority := int32(priority)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetHintWithPriority",
@@ -13815,8 +13815,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
-		_value := internal.StringOnStackGoToJS(value)
+		_name := internal.StringOnJSStack(name)
+		_value := internal.StringOnJSStack(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetHint",
 			_name,
@@ -13830,7 +13830,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ResetHint",
 			_name,
@@ -13852,20 +13852,20 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetHint",
 			_name,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetHintBoolean = func(name string, default_value bool) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		_default_value := internal.NewBoolean(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetHintBoolean",
@@ -13991,9 +13991,9 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_appname := internal.StringOnStackGoToJS(appname)
-		_appversion := internal.StringOnStackGoToJS(appversion)
-		_appidentifier := internal.StringOnStackGoToJS(appidentifier)
+		_appname := internal.StringOnJSStack(appname)
+		_appversion := internal.StringOnJSStack(appversion)
+		_appidentifier := internal.StringOnJSStack(appidentifier)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetAppMetadata",
 			_appname,
@@ -14008,8 +14008,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
-		_value := internal.StringOnStackGoToJS(value)
+		_name := internal.StringOnJSStack(name)
+		_value := internal.StringOnJSStack(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetAppMetadataProperty",
 			_name,
@@ -14023,20 +14023,20 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetAppMetadataProperty",
 			_name,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iLoadObject = func(sofile string) *SharedObject {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_sofile := internal.StringOnStackGoToJS(sofile)
+		_sofile := internal.StringOnJSStack(sofile)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_LoadObject",
 			_sofile,
@@ -14147,7 +14147,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_priority := int32(priority)
-		_prefix := internal.StringOnStackGoToJS(prefix)
+		_prefix := internal.StringOnJSStack(prefix)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetLogPriorityPrefix",
 			_priority,
@@ -14161,7 +14161,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_Log",
 			_fmt,
@@ -14173,7 +14173,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogTrace",
 			_category,
@@ -14186,7 +14186,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogVerbose",
 			_category,
@@ -14199,7 +14199,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogDebug",
 			_category,
@@ -14212,7 +14212,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogInfo",
 			_category,
@@ -14225,7 +14225,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogWarn",
 			_category,
@@ -14238,7 +14238,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogError",
 			_category,
@@ -14251,7 +14251,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_category := int32(category)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogCritical",
 			_category,
@@ -14265,7 +14265,7 @@ func initialize() {
 		defer internal.StackRestore()
 		_category := int32(category)
 		_priority := int32(priority)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		js.Global().Get("Module").Call(
 			"_SDL_LogMessage",
 			_category,
@@ -14280,7 +14280,7 @@ func initialize() {
 		defer internal.StackRestore()
 		_category := int32(category)
 		_priority := int32(priority)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		_ap := int32(ap)
 		js.Global().Get("Module").Call(
 			"_SDL_LogMessageV",
@@ -14360,8 +14360,8 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_flags := int32(flags)
-		_title := internal.StringOnStackGoToJS(title)
-		_message := internal.StringOnStackGoToJS(message)
+		_title := internal.StringOnJSStack(title)
+		_message := internal.StringOnJSStack(message)
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
 			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
@@ -14421,7 +14421,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_url := internal.StringOnStackGoToJS(url)
+		_url := internal.StringOnJSStack(url)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenURL",
 			_url,
@@ -14622,14 +14622,14 @@ func initialize() {
 			_index,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iCreateWindowAndRenderer = func(title string, width int32, height int32, window_flags WindowFlags, window **Window, renderer **Renderer) bool {
 		internal.StackSave()
 		defer internal.StackRestore()
 
-		_title := internal.StringOnStackGoToJS(title)
+		_title := internal.StringOnJSStack(title)
 		_width := int32(width)
 		_height := int32(height)
 		_window_flags := internal.NewBigInt(uint64(window_flags))
@@ -14647,8 +14647,8 @@ func initialize() {
 		)
 		windowPtr := internal.GetValue(_window, "*")
 		rendererPtr := internal.GetValue(_renderer, "*")
-		*window = internal.NewPointer[Window](windowPtr)
-		*renderer = internal.NewPointer[Renderer](rendererPtr)
+		*window = internal.NewObject[Window](windowPtr)
+		*renderer = internal.NewObject[Renderer](rendererPtr)
 
 		return internal.GetBool(ret)
 	}
@@ -14661,7 +14661,7 @@ func initialize() {
 		if !ok {
 			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
 		}
-		_name := internal.StringOnStackGoToJS(name)
+		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreateRenderer",
 			_window,
@@ -14760,7 +14760,7 @@ func initialize() {
 			_renderer,
 		)
 
-		return internal.UTF8ToStringJSToGo(ret)
+		return internal.UTF8JSToString(ret)
 	}
 
 	iGetRendererProperties = func(renderer *Renderer) PropertiesID {
@@ -14849,7 +14849,7 @@ func initialize() {
 			_h,
 		)
 
-		_obj := internal.NewPointer[Texture](ret)
+		_obj := internal.NewObject[Texture](ret)
 
 		return _obj
 	}
@@ -14869,7 +14869,7 @@ func initialize() {
 			_surface,
 		)
 
-		_obj := internal.NewPointer[Texture](ret)
+		_obj := internal.NewObject[Texture](ret)
 
 		return _obj
 	}
@@ -15219,8 +15219,8 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
-		_pixels, free := internal.ClonePtrArrayOnHeapGoToJS(*(**byte)(unsafe.Pointer(&pixels)), int(texture.H*pitch))
+		_rect := internal.CloneObjectToJSStack(rect)
+		_pixels, free := internal.ClonePtrArrayToJSHeap(*(**byte)(unsafe.Pointer(&pixels)), int(texture.H*pitch))
 		defer free()
 		_pitch := int32(pitch)
 		ret := js.Global().Get("Module").Call(
@@ -15231,7 +15231,7 @@ func initialize() {
 			_pitch,
 		)
 
-		internal.ExtractJSToGo(texture, _texture)
+		internal.CopyJSToObject(texture, _texture)
 
 		return internal.GetBool(ret)
 	}
@@ -15352,7 +15352,7 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		_surface := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_LockTextureToSurface",
@@ -15361,7 +15361,7 @@ func initialize() {
 			_surface,
 		)
 		surfacePtr := internal.GetValue(_surface, "*")
-		*surface = internal.NewPointer[Surface](surfacePtr)
+		*surface = internal.NewObject[Surface](surfacePtr)
 
 		return internal.GetBool(ret)
 	}
@@ -15579,7 +15579,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRenderViewport",
 			_renderer,
@@ -15654,7 +15654,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRenderClipRect",
 			_renderer,
@@ -15971,7 +15971,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_points, free := internal.ClonePtrArrayOnHeapGoToJS(points, int(count))
+		_points, free := internal.ClonePtrArrayToJSHeap(points, int(count))
 		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
@@ -16006,7 +16006,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_points, free := internal.ClonePtrArrayOnHeapGoToJS(points, int(count))
+		_points, free := internal.ClonePtrArrayToJSHeap(points, int(count))
 		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
@@ -16026,7 +16026,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderRect",
 			_renderer,
@@ -16041,7 +16041,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rects, free := internal.ClonePtrArrayOnHeapGoToJS(rects, int(count))
+		_rects, free := internal.ClonePtrArrayToJSHeap(rects, int(count))
 		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
@@ -16061,7 +16061,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderFillRect",
 			_renderer,
@@ -16076,7 +16076,7 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rects, free := internal.ClonePtrArrayOnHeapGoToJS(rects, int(count))
+		_rects, free := internal.ClonePtrArrayToJSHeap(rects, int(count))
 		defer free()
 		_count := int32(count)
 		ret := js.Global().Get("Module").Call(
@@ -16100,8 +16100,8 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
-		_srcrect := internal.CloneOnStackGoToJS(srcrect)
-		_dstrect := internal.CloneOnStackGoToJS(dstrect)
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_dstrect := internal.CloneObjectToJSStack(dstrect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTexture",
 			_renderer,
@@ -16124,10 +16124,10 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
-		_srcrect := internal.CloneOnStackGoToJS(srcrect)
-		_dstrect := internal.CloneOnStackGoToJS(dstrect)
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_dstrect := internal.CloneObjectToJSStack(dstrect)
 		_angle := angle
-		_center := internal.CloneOnStackGoToJS(center)
+		_center := internal.CloneObjectToJSStack(center)
 		_flip := int32(flip)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTextureRotated",
@@ -16266,10 +16266,10 @@ func initialize() {
 			panic("nil renderer")
 		}
 		_texture, _ := internal.GetJSPointer(texture)
-		_vertices, freeVertices := internal.ClonePtrArrayOnHeapGoToJS(vertices, int(num_vertices))
+		_vertices, freeVertices := internal.ClonePtrArrayToJSHeap(vertices, int(num_vertices))
 		defer freeVertices()
 		_num_vertices := int32(num_vertices)
-		_indices, freeIndices := internal.ClonePtrArrayOnHeapGoToJS(indices, int(num_indices))
+		_indices, freeIndices := internal.ClonePtrArrayToJSHeap(indices, int(num_indices))
 		defer freeIndices()
 		_num_indices := int32(num_indices)
 		ret := js.Global().Get("Module").Call(
@@ -16342,14 +16342,14 @@ func initialize() {
 		if !ok {
 			panic("nil renderer")
 		}
-		_rect := internal.CloneOnStackGoToJS(rect)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderReadPixels",
 			_renderer,
 			_rect,
 		)
 
-		_obj := internal.NewPointer[Surface](ret)
+		_obj := internal.NewObject[Surface](ret)
 
 		return _obj
 	}
@@ -16376,7 +16376,7 @@ func initialize() {
 			"_SDL_DestroyTexture",
 			_texture,
 		)
-		internal.DeletePointerReference(uintptr(unsafe.Pointer(texture)))
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(texture)))
 	}
 
 	iDestroyRenderer = func(renderer *Renderer) {
@@ -16388,7 +16388,7 @@ func initialize() {
 			"_SDL_DestroyRenderer",
 			_renderer,
 		)
-		internal.DeletePointerReference(uintptr(unsafe.Pointer(renderer)))
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(renderer)))
 	}
 
 	iFlushRenderer = func(renderer *Renderer) bool {
@@ -16508,7 +16508,7 @@ func initialize() {
 		// TODO: can we pass float instead of int32s?
 		_x := int32(x)
 		_y := int32(y)
-		_str := internal.StringOnStackGoToJS(str)
+		_str := internal.StringOnJSStack(str)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderDebugText",
 			_renderer,
@@ -16530,7 +16530,7 @@ func initialize() {
 		}
 		_x := int32(x)
 		_y := int32(y)
-		_fmt := internal.StringOnStackGoToJS(fmt)
+		_fmt := internal.StringOnJSStack(fmt)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderDebugTextFormat",
 			_renderer,
@@ -16546,7 +16546,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_override := internal.StringOnStackGoToJS(override)
+		_override := internal.StringOnJSStack(override)
 		_props := int32(props)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenTitleStorage",
@@ -16564,8 +16564,8 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_org := internal.StringOnStackGoToJS(org)
-		_app := internal.StringOnStackGoToJS(app)
+		_org := internal.StringOnJSStack(org)
+		_app := internal.StringOnJSStack(app)
 		_props := int32(props)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenUserStorage",
@@ -16584,7 +16584,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenFileStorage",
 			_path,
@@ -16657,7 +16657,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_length, ok := internal.GetJSPointer(length)
 		if !ok {
 			_length = internal.StackAlloc(int(unsafe.Sizeof(*length)))
@@ -16680,7 +16680,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_destination := internal.NewBigInt(destination)
 		_length := internal.NewBigInt(length)
 		ret := js.Global().Get("Module").Call(
@@ -16702,7 +16702,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_source := internal.NewBigInt(source)
 		_length := internal.NewBigInt(length)
 		ret := js.Global().Get("Module").Call(
@@ -16724,7 +16724,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreateStorageDirectory",
 			_storage,
@@ -16764,7 +16764,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RemoveStoragePath",
 			_storage,
@@ -16782,8 +16782,8 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_oldpath := internal.StringOnStackGoToJS(oldpath)
-		_newpath := internal.StringOnStackGoToJS(newpath)
+		_oldpath := internal.StringOnJSStack(oldpath)
+		_newpath := internal.StringOnJSStack(newpath)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenameStoragePath",
 			_storage,
@@ -16802,8 +16802,8 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_oldpath := internal.StringOnStackGoToJS(oldpath)
-		_newpath := internal.StringOnStackGoToJS(newpath)
+		_oldpath := internal.StringOnJSStack(oldpath)
+		_newpath := internal.StringOnJSStack(newpath)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CopyStorageFile",
 			_storage,
@@ -16822,7 +16822,7 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
+		_path := internal.StringOnJSStack(path)
 		_info, ok := internal.GetJSPointer(info)
 		if !ok {
 			_info = internal.StackAlloc(int(unsafe.Sizeof(*info)))
@@ -16861,8 +16861,8 @@ func initialize() {
 		if !ok {
 			_storage = internal.StackAlloc(int(unsafe.Sizeof(*storage)))
 		}
-		_path := internal.StringOnStackGoToJS(path)
-		_pattern := internal.StringOnStackGoToJS(pattern)
+		_path := internal.StringOnJSStack(path)
+		_pattern := internal.StringOnJSStack(pattern)
 		_flags := int32(flags)
 		_count, ok := internal.GetJSPointer(count)
 		if !ok {

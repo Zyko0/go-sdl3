@@ -76,7 +76,7 @@ func StackAlloc(n int) js.Value {
 	return stackAlloc.Invoke(int32(n))
 }
 
-func CloneOnStackGoToJS[T any](obj *T) js.Value {
+func CloneObjectToJSStack[T any](obj *T) js.Value {
 	if obj == nil {
 		return js.Null()
 	}
@@ -88,13 +88,13 @@ func CloneOnStackGoToJS[T any](obj *T) js.Value {
 	return ptr
 }
 
-func ExtractJSToGo[T any](obj *T, ptr js.Value) {
+func CopyJSToObject[T any](obj *T, ptr js.Value) {
 	size := unsafe.Sizeof(*obj)
 	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+int(size))
 	js.CopyBytesToGo(unsafe.Slice((*byte)(unsafe.Pointer(obj)), size), arr)
 }
 
-func CloneByteSliceOnHeapGoToJS(s []byte) js.Value {
+func CloneByteSliceToJSHeap(s []byte) js.Value {
 	ptr := js.Global().Call("_malloc", len(s))
 	arr := heapU8.Call("subarray", ptr.Int(), ptr.Int()+len(s))
 	js.CopyBytesToJS(arr, s)
@@ -102,24 +102,24 @@ func CloneByteSliceOnHeapGoToJS(s []byte) js.Value {
 	return ptr
 }
 
-func ClonePtrArrayOnHeapGoToJS[T any](ptr *T, count int) (js.Value, func()) {
+func ClonePtrArrayToJSHeap[T any](ptr *T, count int) (js.Value, func()) {
 	if ptr == nil || count <= 0 {
 		return js.Null(), func() {}
 	}
 	size := int(count) * int(unsafe.Sizeof(*ptr))
 	s := unsafe.Slice((*byte)(unsafe.Pointer(ptr)), size)
-	arr := CloneByteSliceOnHeapGoToJS(s)
+	arr := CloneByteSliceToJSHeap(s)
 	runtime.KeepAlive(s)
 	return arr, func() {
 		js.Global().Call("_free", arr)
 	}
 }
 
-func StringOnStackGoToJS(str string) js.Value {
+func StringOnJSStack(str string) js.Value {
 	return stackString.Invoke(str)
 }
 
-func UTF8ToStringJSToGo(ptr js.Value) string {
+func UTF8JSToString(ptr js.Value) string {
 	return utf8String.Invoke(ptr).String()
 }
 
@@ -147,7 +147,7 @@ func SetValue(ptr js.Value, value js.Value, typ string) {
 	}
 }
 
-func GetJSPointerFromUintptr(ptr uintptr) (js.Value, bool) {
+func GetJSPoiterFromUintptr(ptr uintptr) (js.Value, bool) {
 	v, ok := jsPtrsByObject[ptr]
 	if ok {
 		return v.value, true
@@ -163,7 +163,7 @@ func GetJSPointer[T any](obj *T) (js.Value, bool) {
 	return js.Null(), false
 }
 
-func NewPointer[T any](ptr js.Value) *T {
+func NewObject[T any](ptr js.Value) *T {
 	var t T
 
 	obj := pool.Get().(*object)
@@ -187,7 +187,7 @@ func NewPointer[T any](ptr js.Value) *T {
 	return ret
 }
 
-func DeletePointerReference(ptr uintptr) {
+func DeleteJSPointer(ptr uintptr) {
 	_, ok := jsPtrsByObject[ptr]
 	if !ok {
 		return

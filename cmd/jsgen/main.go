@@ -187,7 +187,7 @@ func main() {
 							case "string":
 								h.Add(
 									jen.Id("_"+arg.Name).Op(":=").
-										Qual(internalQual, "StringOnStackGoToJS").
+										Qual(internalQual, "StringOnJSStack").
 										Call(jen.Id(arg.Name)),
 								)
 							default:
@@ -233,13 +233,13 @@ func main() {
 							))
 							// TODO: ^
 						case "string":
-							h.Return(jen.Qual(internalQual, "UTF8ToStringJSToGo").
+							h.Return(jen.Qual(internalQual, "UTF8JSToString").
 								Call(jen.Id("ret")),
 							)
 						default:
 							switch {
 							case strings.HasPrefix(fn.Return.Type, "*"):
-								h.Id("_obj").Op(":=").Qual(internalQual, "NewPointer").
+								h.Id("_obj").Op(":=").Qual(internalQual, "NewObject").
 									Types(jen.Id(strings.ReplaceAll(fn.Return.Type, "*", ""))).
 									Call(jen.Id("ret"))
 								h.Return(jen.Id("_obj"))
