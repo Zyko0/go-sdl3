@@ -11,23 +11,33 @@ import (
 
 // TTF_DrawSurfaceText - Draw text to an SDL surface.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_DrawSurfaceText)
-func (text *Text) DrawSurface(x int32, y int32, surface *sdl.Surface) bool {
-	panic("not implemented")
-	return iDrawSurfaceText(text, x, y, surface)
+func (text *Text) DrawSurface(x, y int32, surface *sdl.Surface) error {
+	if !iDrawSurfaceText(text, x, y, surface) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // TTF_DrawRendererText - Draw text to an SDL renderer.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_DrawRendererText)
-func (text *Text) DrawRenderer(x float32, y float32) bool {
-	panic("not implemented")
-	return iDrawRendererText(text, x, y)
+func (text *Text) DrawRenderer(x, y float32) error {
+	if !iDrawRendererText(text, x, y) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // TTF_GetGPUTextDrawData - Get the geometry data needed for drawing the text.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GetGPUTextDrawData)
-func (text *Text) GPUDrawData() *GPUAtlasDrawSequence {
-	panic("not implemented")
-	return iGetGPUTextDrawData(text)
+func (text *Text) GPUDrawData() (*GPUAtlasDrawSequence, error) {
+	seq := iGetGPUTextDrawData(text)
+	if seq == nil {
+		return nil, internal.LastErr()
+	}
+
+	return seq, nil
 }
 
 // TTF_GetTextProperties - Get the properties associated with a text object.
@@ -702,15 +712,21 @@ func (font *Font) StringSizeWrapped(text string, wrapWidth int32) (int32, int32,
 }
 
 // TTF_MeasureString - Calculate how much of a UTF-8 string will fit in a given width.
+// Returns the measured_width, measured_length
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_MeasureString)
-func (font *Font) MeasureString(text string, maxWidth int32, measured_width *int32, measured_length *uintptr) bool {
-	panic("not implemented")
-	return iMeasureString(font, text, uintptr(len(text)), maxWidth, measured_width, measured_length)
+func (font *Font) MeasureString(text string, maxWidth int32) (int32, uintptr, error) {
+	var width int32
+	var length uintptr
+
+	if !iMeasureString(font, text, uintptr(len(text)), maxWidth, &width, &length) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return width, length, nil
 }
 
 // TTF_CloseFont - Dispose of a previously-created font.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_CloseFont)
 func (font *Font) Close() {
-	panic("not implemented")
 	iCloseFont(font)
 }
