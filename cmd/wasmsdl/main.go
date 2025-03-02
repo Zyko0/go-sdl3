@@ -92,7 +92,7 @@ func getWasmExecJS() ([]byte, error) {
 
 type Files map[string][]byte
 
-func GetFiles(htmlPath string) (Files, error) {
+func GetFiles(buildDir, htmlPath string) (Files, error) {
 	// index.html content
 	htmlContent := indexHTML
 	_ = htmlContent
@@ -110,7 +110,7 @@ func GetFiles(htmlPath string) (Files, error) {
 	}
 	// Build
 	wasmFileName := fmt.Sprintf("main_%d.wasm", time.Now().UnixNano())
-	cmd := exec.Command("go", "build", "-o", wasmFileName, ".")
+	cmd := exec.Command("go", "build", "-o", wasmFileName, buildDir)
 	cmd.Env = append(os.Environ(), "GOOS=js", "GOARCH=wasm")
 
 	var stderr bytes.Buffer
@@ -165,7 +165,11 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		files, err := GetFiles(htmlPath)
+		dir := "."
+		if cmdFlags.Arg(0) != "" {
+			dir = cmdFlags.Arg(0)
+		}
+		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -192,7 +196,11 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		files, err := GetFiles(htmlPath)
+		dir := "."
+		if cmdFlags.Arg(0) != "" {
+			dir = cmdFlags.Arg(0)
+		}
+		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -219,7 +227,7 @@ Commands:
 		}
 		err = zipw.Flush()
 		if err != nil {
-			log.Fatal("couldn't flush remaining data to archive: %v", err)
+			log.Fatalf("couldn't flush remaining data to archive: %v", err)
 		}
 		fmt.Printf("Created archive '%s'\n", out)
 	case "serve":
@@ -227,7 +235,11 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		files, err := GetFiles(htmlPath)
+		dir := "."
+		if cmdFlags.Arg(0) != "" {
+			dir = cmdFlags.Arg(0)
+		}
+		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
 			log.Fatal(err)
 		}
