@@ -1,6 +1,7 @@
 # go-sdl3
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/zyko0/go-sdl3.svg)](https://pkg.go.dev/github.com/zyko0/go-sdl3)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Zyko0/go-sdl3)](https://goreportcard.com/report/github.com/Zyko0/go-sdl3)
 
 [SDL3](https://wiki.libsdl.org/SDL3/FrontPage) bindings for Go in pure Go (thanks to [ebitengine/purego](https://github.com/ebitengine/purego)).
 
