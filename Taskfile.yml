@@ -52,6 +52,15 @@ tasks:
         cmds:
             # Generate SDL3 documentation on top of functions
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
+
+    coverage:
+        requires:
+          vars: [LIBRARY]
+        vars:
+            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+        cmds:
+            # Generate coverage of sdl functions
+            - go run ./cmd/coverage --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
     
     fmt:
         cmds:
