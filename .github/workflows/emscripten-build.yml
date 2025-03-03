@@ -4,11 +4,15 @@ on:
   workflow_dispatch:
 
 env:
-  SDL3_VERSION: 3.2.0
+  SDL3_VERSION: 3.2.6
+  TTF_VERSION: 3.2.0
+  IMAGE_VERSION: 3.2.0
+  MIXER_VERSION: 2.8.1
+
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
         
     steps:
     - uses: actions/checkout@v4
@@ -18,21 +22,24 @@ jobs:
         cd emsdk
         ./emsdk install tot
         ./emsdk activate tot
-    - name: Clone SDL3
-      run: git clone --depth 1 --branch release-$SDL3_VERSION https://github.com/libsdl-org/SDL.git
+    - name: Clone SDL, SDL_ttf, SDL_image, SDL_mixer
+      run: |
+        git clone --depth 1 --branch release-$SDL3_VERSION https://github.com/libsdl-org/SDL.git
+        git clone --depth 1 --recurse-submodules --branch release-$TTF_VERSION https://github.com/libsdl-org/SDL_ttf.git
+        git clone --depth 1 --branch release-$IMAGE_VERSION https://github.com/libsdl-org/SDL_image.git
+        git clone --depth 1 --branch release-$MIXER_VERSION https://github.com/libsdl-org/SDL_mixer.git
     - name: Build
       run: |
         source emsdk/emsdk_env.sh
-        cd SDL
-        mkdir build
-        cd build
-        emcmake cmake ..
-        emmake make -j4
-        emcc -s LINKABLE=1 -s EXPORTED_RUNTIME_METHODS="['addFunction', 'allocateUTF8','UTF8ToString', 'stringToUTF8', 'getValue', 'setValue', 'ccall', 'cwrap']" -s ALLOW_MEMORY_GROWTH=1 -s ALLOW_TABLE_GROWTH=1 -s MAXIMUM_MEMORY=1gb -s EXPORT_ALL -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$addFunction' libSDL3.a -o sdl.html
+        mkdir SDL/build; cd SDL/build; export SDL3_DIR=$(pwd); emcmake cmake ..; emmake make -j4; cd ../..
+        sudo apt-get update
+        sudo apt-get -y install cmake file fonts-dejavu-core libfreetype-dev libharfbuzz-dev pkg-config
+        mkdir SDL_ttf/build; cd SDL_ttf/build; emcmake cmake -DSDL3_DIR=$SDL3_DIR -DSDLTTF_HARFBUZZ=ON -DCMAKE_BUILD_TYPE=Release ..; emmake make -j4; ls -l; cd ../..
+        emcc -s LINKABLE=1 -s EXPORTED_RUNTIME_METHODS="['addFunction', 'allocateUTF8','UTF8ToString', 'stringToUTF8', 'getValue', 'setValue']" -s ALLOW_MEMORY_GROWTH=1 -s ALLOW_TABLE_GROWTH=1 -s EXPORT_ALL -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$addFunction' SDL/build/libSDL3.a -o sdl.html
     - name: Prepare for upload
       run: |
         mkdir _site
-        mv SDL/build/sdl* _site/
+        mv sdl* _site/
     - name: Fix permissions
       run: |
         chmod -c -R +rX "_site/" | while read line; do
