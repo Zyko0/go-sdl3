@@ -7,11 +7,11 @@
 
 ## About
 
-This library wraps SDL3 to more idiomatic go by:
-- Replacing `bool` return values by `error` instead of requiring you to call `SDL_GetError` in C.
-- Removes the `SDL_` prefix from all types, variables, function names.
-- Move global functions to methods when it is possible and/or when it makes sense.
-- Turn some pointer function parameters into return values. Since Go allows for multiple return values we do not always need to pass pointers to be filled by functions, the C way.
+This library wraps SDL3 to more idiomatic go and:
+- Changes return values from `bool` to `error` (`SDL_GetError`).
+- Trims `SDL_` prefix from all types, variables, function names.
+- Make methods from global functions when it is possible.
+- Turn some pointer function parameters into return values.
 
 If you are looking for pure Go bindings that are closer to the original API, please have a look at https://github.com/JupiterRider/purego-sdl3. 
 

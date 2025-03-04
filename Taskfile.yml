@@ -54,13 +54,25 @@ tasks:
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
 
     coverage:
-        requires:
-          vars: [LIBRARY]
         vars:
-            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            INDICES: [0,1,2,3]
+            LIBS: [sdl, ttf, img, mixer]
+            DIRS: ['.', './ttf', './img', './mixer']
         cmds:
+            - for:
+                var: INDICES
+              cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{index .LIBS .ITEM}}.json" --dir {{index .DIRS .ITEM}}
+
+            #- task: coverage-lib
+                
+
+            # - '{{range $index, $lib := .LIBS}}echo {{index .LIBS $index}};{{end}}'
             # Generate coverage of sdl functions
-            - go run ./cmd/coverage --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
+            ##-   for: ['0','1','2','3']
+            ##    cmd: echo {{index .LIBS .ITEM}}
+
+                # cmd: echo {{ .INDEX }}
+                # cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{.ITEM}}.json" --dir {{ index .DIRS .KEY }}
     
     fmt:
         cmds:

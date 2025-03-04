@@ -1,6 +1,6 @@
 # Contribute
 
-- Embed static binaries for other platforms?
+See [COVERAGE.md](COVERAGE.md) for the list of fonctions that are and are not implemented yet.
 
 ## Structure
 
@@ -18,8 +18,14 @@ Also to help re-organize, rename, refactor, as some directions have been taken a
 
 ## Generate
 
+### Bindings
 - `go install github.com/go-task/task/v3/cmd/task@latest`
 - `task gen-bindings LIBRARY="sdl"`
 - `task gen-bindings LIBRARY="ttf"`
-- `task gen-bindings LIBRARY="mixer"`
 - `task gen-bindings LIBRARY="img"`
+- `task gen-bindings LIBRARY="mixer"`
+
+### Other commands
+- `task gen-ffi LIBRARY="sdl"`
+- `task gen-doc LIBRARY="sdl"`
+- `task coverage`
