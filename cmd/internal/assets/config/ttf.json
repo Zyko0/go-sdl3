@@ -1,6 +1,7 @@
 {
     "out_dir": "ttf",
     "library_name": "ttf",
+    "url_library_suffix": "_ttf",
     "prefix":"TTF_",
     "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3_ttf/QuickReference.md",
     "allowed_include": "/usr/include/SDL3_ttf/",

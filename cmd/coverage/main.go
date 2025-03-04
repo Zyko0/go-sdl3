@@ -50,16 +50,21 @@ type refFunc struct {
 }
 
 var (
-	categories = []string{
-		"Init", "Hints", "Error", "Properties", "Log", "Video",
-		"Events", "Keyboard", "Mouse", "Touch", "Gamepad", "Joystick",
-		"Haptic", "Audio", "Time", "Timer", "Render", "SharedObject",
-		"Thread", "Mutex", "Atomic", "Filesystem", "IOStream", "AsyncIO",
-		"Storage", "Pixels", "Surface", "BlendMode", "Rect", "Camera",
-		"Clipboard", "Dialog", "GPU", "MessageBox", "Vulkan", "Metal",
-		"Platform", "Power", "Sensor", "Process", "Bits", "Endian",
-		"Assert", "CPUInfo", "Intrinsics", "Locale", "System", "Misc",
-		"GUID", "Main", "Stdinc",
+	categories = map[string][]string{
+		"sdl": {
+			"Init", "Hints", "Error", "Properties", "Log", "Video",
+			"Events", "Keyboard", "Mouse", "Touch", "Gamepad", "Joystick",
+			"Haptic", "Audio", "Time", "Timer", "Render", "SharedObject",
+			"Thread", "Mutex", "Atomic", "Filesystem", "IOStream", "AsyncIO",
+			"Storage", "Pixels", "Surface", "BlendMode", "Rect", "Camera",
+			"Clipboard", "Dialog", "GPU", "MessageBox", "Vulkan", "Metal",
+			"Platform", "Power", "Sensor", "Process", "Bits", "Endian",
+			"Assert", "CPUInfo", "Intrinsics", "Locale", "System", "Misc",
+			"GUID", "Main", "Stdinc",
+		},
+		"img":   {"Image"},
+		"ttf":   {"TTF"},
+		"mixer": {"Mixer"},
 	}
 	uniqueAPIFunctions = map[string]*refFunc{}
 	functions          []*refFunc
@@ -150,11 +155,6 @@ func main() {
 		log.Fatal("err: ", err)
 	}
 
-	var urlLibrarySuffix string
-	if cfg.LibraryName != "sdl" {
-		urlLibrarySuffix = "_" + cfg.LibraryName
-	}
-
 	for _, e := range entries {
 		if !strings.HasSuffix(e.Name(), ".go") {
 			continue
@@ -193,7 +193,7 @@ func main() {
 								funcName = name
 								fn.Desktop.Exposed = True()
 								fn.Desktop.Line = lineIndex
-								fn.Desktop.Filename = filepath.Join(path, e.Name())
+								fn.Desktop.Filename = dir + "/" + e.Name()
 							}
 						}
 					case isJS && regJS.MatchString(l):
@@ -208,7 +208,7 @@ func main() {
 							if found {
 								funcName = name
 								fn.JS.Line = lineIndex
-								fn.JS.Filename = filepath.Join(path, e.Name())
+								fn.JS.Filename = dir + "/" + e.Name()
 							}
 						}
 					case isJS && strings.Contains(l, "panic(\"not implemented on js\")"):
@@ -253,16 +253,26 @@ func main() {
 	var sb strings.Builder
 	categoryIndex := -1
 
-	sb.WriteString("# API Coverage\n\n")
+	if cfg.LibraryName == "sdl" {
+		sb.WriteString("# API Coverage\n\n")
+		sb.WriteString(`
+This file tracks the functions that have been wrapped.<br>
+The following emojis mean (they are clickable and should link to the code implementation):
+- :heavy_check_mark: = implemented
+- :x: = not implemented yet
+- :question: = not planned / don't know about integrating it or not
+`)
+	}
+	sb.WriteString("\n## " + strings.ToUpper(cfg.LibraryName) + "\n\n")
 	for _, fn := range functions {
 		if fn.CategoryIndex != categoryIndex {
 			categoryIndex = fn.CategoryIndex
-			sb.WriteString("## " + categories[fn.CategoryIndex] + "\n")
+			sb.WriteString("### " + categories[cfg.LibraryName][fn.CategoryIndex] + "\n\n")
 			sb.WriteString("|Function|Desktop|WASM/js|\n")
 			sb.WriteString("|:--|:--:|:--:|\n")
 		}
 
-		fn.URL = fmt.Sprintf("https://wiki.libsdl.org/SDL3%s/%s", urlLibrarySuffix, fn.Name)
+		fn.URL = fmt.Sprintf("https://wiki.libsdl.org/SDL3%s/%s", cfg.URLLibrarySuffix, fn.Name)
 
 		desktop := ":question:"
 		js := ":question:"
@@ -280,13 +290,36 @@ func main() {
 				js = ":x:"
 			}
 		}
+		var urlDesktop, urlJS string
+		if fn.Desktop.Filename != "" && fn.Desktop.Line != 0 {
+			urlDesktop = fmt.Sprintf("%s#L%d", fn.Desktop.Filename, fn.Desktop.Line)
+		}
+		if fn.JS.Filename != "" && fn.JS.Line != 0 {
+			urlJS = fmt.Sprintf("%s#L%d", fn.JS.Filename, fn.JS.Line)
+		}
 		sb.WriteString(fmt.Sprintf(
-			"|[%s](%s)|[%s](%s)|[%s](%s)|\n",
+			"| [%s](%s) | [%s](%s) | [%s](%s) |\n",
 			fn.Name, fn.URL,
-			desktop, fn.Desktop.Filename,
-			js, fn.JS.Filename,
+			desktop, urlDesktop,
+			js, urlJS,
 		))
 	}
 
-	os.WriteFile("COVERAGE.md", []byte(sb.String()), 0666)
+	var f *os.File
+	if cfg.LibraryName == "sdl" {
+		f, err = os.Create("COVERAGE.md")
+		if err != nil {
+			log.Fatal("couldn't create file: ", err)
+		}
+	} else {
+		f, err = os.OpenFile("COVERAGE.md", os.O_APPEND, os.ModeAppend)
+		if err != nil {
+			log.Fatal("couldn't open file: ", err)
+		}
+	}
+	defer f.Close()
+	_, err = f.Write([]byte(sb.String()))
+	if err != nil {
+		log.Fatal("couldn't write file: ", err)
+	}
 }

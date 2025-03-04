@@ -1,6 +1,7 @@
 {
     "out_dir": "",
     "library_name": "sdl",
+    "url_library_suffix": "",
     "prefix":"SDL_",
     "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3/QuickReference.md",
     "allowed_include": "/usr/include/SDL3/",

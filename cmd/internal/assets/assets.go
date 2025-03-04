@@ -3,6 +3,7 @@ package assets
 type Config struct {
 	OutDir                  string   `json:"out_dir"`
 	LibraryName             string   `json:"library_name"`
+	URLLibrarySuffix        string   `json:"url_library_suffix"`
 	Prefix                  string   `json:"prefix"`
 	QuickAPIRefURL          string   `json:"quick_api_ref_url"`
 	AllowedInclude          string   `json:"allowed_include"`
