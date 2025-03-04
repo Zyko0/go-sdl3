@@ -580,6 +580,12 @@ func GetAudioDriver(index int) string {
 	return iGetAudioDriver(int32(index))
 }
 
+// SDL_GetCurrentAudioDriver - Get the name of the current audio driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetCurrentAudioDriver)
+func GetCurrentAudioDriver() string {
+	return iGetCurrentAudioDriver()
+}
+
 // SDL_GetAudioPlaybackDevices - Get a list of currently-connected audio playback devices.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioPlaybackDevices)
 func GetAudioPlaybackDevices() ([]AudioDeviceID, error) {
@@ -691,6 +697,42 @@ func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte
 // (https://wiki.libsdl.org/SDL3/SDL_GetTicks)
 func Ticks() uint64 {
 	return iGetTicks()
+}
+
+// SDL_GetTicksNS - Get the number of nanoseconds since SDL library initialization.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTicksNS)
+func TicksNS() uint64 {
+	return iGetTicksNS()
+}
+
+// SDL_GetPerformanceCounter - Get the current value of the high resolution counter.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPerformanceCounter)
+func GetPerformanceCounter() uint64 {
+	return iGetPerformanceCounter()
+}
+
+// SDL_GetPerformanceFrequency - Get the count per second of the high resolution counter.
+// (https://wiki.libsdl.org/SDL3/SDL_GetPerformanceFrequency)
+func GetPerformanceFrequency() uint64 {
+	return iGetPerformanceFrequency()
+}
+
+// SDL_Delay - Wait a specified number of milliseconds before returning.
+// (https://wiki.libsdl.org/SDL3/SDL_Delay)
+func Delay(ms uint32) {
+	iDelay(ms)
+}
+
+// SDL_DelayNS - Wait a specified number of nanoseconds before returning.
+// (https://wiki.libsdl.org/SDL3/SDL_DelayNS)
+func DelayNS(ns uint64) {
+	iDelayNS(ns)
+}
+
+// SDL_DelayPrecise - Wait a specified number of nanoseconds before returning.
+// (https://wiki.libsdl.org/SDL3/SDL_DelayPrecise)
+func DelayPrecise(ns uint64) {
+	iDelayPrecise(ns)
 }
 
 // Filesystem

@@ -18,14 +18,14 @@ Also to help re-organize, rename, refactor, as some directions have been taken a
 
 ## Generate
 
+`go install github.com/go-task/task/v3/cmd/task@latest`
+
+### Commands
+
+`task --list-all`
+
 ### Bindings
-- `go install github.com/go-task/task/v3/cmd/task@latest`
 - `task gen-bindings LIBRARY="sdl"`
 - `task gen-bindings LIBRARY="ttf"`
 - `task gen-bindings LIBRARY="img"`
 - `task gen-bindings LIBRARY="mixer"`
-
-### Other commands
-- `task gen-ffi LIBRARY="sdl"`
-- `task gen-doc LIBRARY="sdl"`
-- `task coverage`

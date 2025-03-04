@@ -1684,9 +1684,13 @@ func (surface *Surface) CreateColorCursor(hot_x int32, hot_y int32) *Cursor {
 
 // SDL_CreateSoftwareRenderer - Create a 2D software rendering context for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateSoftwareRenderer)
-func (surface *Surface) CreateSoftwareRenderer() *Renderer {
-	panic("not implemented")
-	return iCreateSoftwareRenderer(surface)
+func (surface *Surface) CreateSoftwareRenderer() (*Renderer, error) {
+	renderer := iCreateSoftwareRenderer(surface)
+	if renderer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return renderer, nil
 }
 
 // Event
@@ -2500,9 +2504,13 @@ func (instance_id HapticID) HapticFromID() *Haptic {
 
 // SDL_GetRenderWindow - Get the window associated with a renderer.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderWindow)
-func (renderer *Renderer) RenderWindow() *Window {
-	panic("not implemented")
-	return iGetRenderWindow(renderer)
+func (renderer *Renderer) Window() (*Window, error) {
+	window := iGetRenderWindow(renderer)
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
 }
 
 // SDL_GetRendererName - Get the name of a renderer.
@@ -2524,16 +2532,24 @@ func (renderer *Renderer) Properties() PropertiesID {
 
 // SDL_GetRenderOutputSize - Get the output size in pixels of a rendering context.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderOutputSize)
-func (renderer *Renderer) RenderOutputSize(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetRenderOutputSize(renderer, w, h)
+func (renderer *Renderer) RenderOutputSize() (int32, int32, error) {
+	var w, h int32
+	if !iGetRenderOutputSize(renderer, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_GetCurrentRenderOutputSize - Get the current output size in pixels of a rendering context.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCurrentRenderOutputSize)
-func (renderer *Renderer) CurrentRenderOutputSize(w *int32, h *int32) bool {
-	panic("not implemented")
-	return iGetCurrentRenderOutputSize(renderer, w, h)
+func (renderer *Renderer) CurrentOutputSize() (int32, int32, error) {
+	var w, h int32
+	if !iGetCurrentRenderOutputSize(renderer, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_CreateTexture - Create a texture for a rendering context.
@@ -2560,44 +2576,63 @@ func (renderer *Renderer) CreateTextureFromSurface(surface *Surface) (*Texture, 
 
 // SDL_CreateTextureWithProperties - Create a texture for a rendering context with the specified properties.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateTextureWithProperties)
-func (renderer *Renderer) CreateTextureWithProperties(props PropertiesID) *Texture {
-	panic("not implemented")
-	return iCreateTextureWithProperties(renderer, props)
+func (renderer *Renderer) CreateTextureWithProperties(props PropertiesID) (*Texture, error) {
+	texture := iCreateTextureWithProperties(renderer, props)
+	if texture == nil {
+		return nil, internal.LastErr()
+	}
+
+	return texture, nil
 }
 
 // SDL_SetRenderTarget - Set a texture as the current rendering target.
 // (https://wiki.libsdl.org/SDL3/SDL_SetRenderTarget)
-func (renderer *Renderer) SetRenderTarget(texture *Texture) bool {
-	panic("not implemented")
-	return iSetRenderTarget(renderer, texture)
+func (renderer *Renderer) SetRenderTarget(texture *Texture) error {
+	if !iSetRenderTarget(renderer, texture) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetRenderTarget - Get the current render target.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderTarget)
 func (renderer *Renderer) RenderTarget() *Texture {
-	panic("not implemented")
 	return iGetRenderTarget(renderer)
 }
 
 // SDL_SetRenderLogicalPresentation - Set a device independent resolution and presentation mode for rendering.
 // (https://wiki.libsdl.org/SDL3/SDL_SetRenderLogicalPresentation)
-func (renderer *Renderer) SetRenderLogicalPresentation(w int32, h int32, mode RendererLogicalPresentation) bool {
-	panic("not implemented")
-	return iSetRenderLogicalPresentation(renderer, w, h, mode)
+func (renderer *Renderer) SetLogicalPresentation(w int32, h int32, mode RendererLogicalPresentation) error {
+	if !iSetRenderLogicalPresentation(renderer, w, h, mode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetRenderLogicalPresentation - Get device independent resolution and presentation mode for rendering.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentation)
-func (renderer *Renderer) RenderLogicalPresentation(w *int32, h *int32, mode *RendererLogicalPresentation) bool {
-	panic("not implemented")
-	return iGetRenderLogicalPresentation(renderer, w, h, mode)
+func (renderer *Renderer) LogicalPresentation() (int32, int32, RendererLogicalPresentation, error) {
+	var w, h int32
+	var mode RendererLogicalPresentation
+
+	if !iGetRenderLogicalPresentation(renderer, &w, &h, &mode) {
+		return 0, 0, 0, internal.LastErr()
+	}
+	return w, h, mode, nil
 }
 
 // SDL_GetRenderLogicalPresentationRect - Get the final presentation rectangle for rendering.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentationRect)
-func (renderer *Renderer) RenderLogicalPresentationRect(rect *FRect) bool {
-	panic("not implemented")
-	return iGetRenderLogicalPresentationRect(renderer, rect)
+func (renderer *Renderer) LogicalPresentationRect() (*FRect, error) {
+	var rect FRect
+
+	if !iGetRenderLogicalPresentationRect(renderer, &rect) {
+		return nil, internal.LastErr()
+	}
+
+	return &rect, nil
 }
 
 // SDL_RenderCoordinatesFromWindow - Get a point in render coordinates when given a point in window coordinates.
@@ -3036,15 +3071,6 @@ func (dateFormat *DateFormat) DateTimeLocalePreferences(timeFormat *TimeFormat) 
 	return iGetDateTimeLocalePreferences(dateFormat, timeFormat)
 }
 
-// Time
-
-// SDL_GetCurrentTime - Gets the current value of the system realtime clock in nanoseconds since Jan 1, 1970 in Universal Coordinated Time (UTC).
-// (https://wiki.libsdl.org/SDL3/SDL_GetCurrentTime)
-func (ticks *Time) Current() bool {
-	panic("not implemented")
-	return iGetCurrentTime(ticks)
-}
-
 // AsyncIO
 
 // SDL_GetAsyncIOSize - Use this function to get the size of the data stream in an SDL_AsyncIO.
@@ -3309,16 +3335,22 @@ func (stream *AudioStream) Properties() (PropertiesID, error) {
 
 // SDL_GetAudioStreamFormat - Query the current format of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFormat)
-func (stream *AudioStream) Format(src_spec *AudioSpec, dst_spec *AudioSpec) bool {
-	panic("not implemented")
-	return iGetAudioStreamFormat(stream, src_spec, dst_spec)
+func (stream *AudioStream) Format(src, dst *AudioSpec) error {
+	if !iGetAudioStreamFormat(stream, src, dst) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetAudioStreamFormat - Change the input and output formats of an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFormat)
-func (stream *AudioStream) SetFormat(src_spec *AudioSpec, dst_spec *AudioSpec) bool {
-	panic("not implemented")
-	return iSetAudioStreamFormat(stream, src_spec, dst_spec)
+func (stream *AudioStream) SetFormat(src, dst *AudioSpec) error {
+	if !iSetAudioStreamFormat(stream, src, dst) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetAudioStreamFrequencyRatio - Get the frequency ratio of an audio stream.
@@ -3537,7 +3569,6 @@ func (stream *AudioStream) SetPutCallback(callback AudioStreamCallback, userdata
 // SDL_DestroyAudioStream - Free an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyAudioStream)
 func (stream *AudioStream) Destroy() {
-	panic("not implemented")
 	iDestroyAudioStream(stream)
 }
 
