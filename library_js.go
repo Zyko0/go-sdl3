@@ -10,6 +10,8 @@ import (
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
+// SDL_GetError - Retrieve a message about the last error that occurred on the current thread.
+// (https://wiki.libsdl.org/SDL3/SDL_GetError)
 func init() {
 	// Wait for runtime initialization
 	// TODO: find a cleaner way than loop+sleep?

@@ -209,9 +209,15 @@ func (storage *Storage) SpaceRemaining() uint64 {
 
 // SDL_GlobStorageDirectory - Enumerate a directory tree, filtered by pattern, and return a list.
 // (https://wiki.libsdl.org/SDL3/SDL_GlobStorageDirectory)
-func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFlags, count *int32) *string {
-	panic("not implemented")
-	//return iGlobStorageDirectory(storage, path, pattern, flags, count)
+func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFlags) ([]string, error) {
+	var count int32
+	ptr := iGlobStorageDirectory(storage, path, pattern, flags, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[string](ptr, int(count)), nil
 }
 
 // AudioDeviceID
@@ -457,22 +463,19 @@ func (format GPUTextureFormat) CalculateSize(width, height, depthOrLayerCount ui
 
 // SDL_TryLockSpinlock - Try to lock a spin lock by setting it to a non-zero value.
 // (https://wiki.libsdl.org/SDL3/SDL_TryLockSpinlock)
-func (lock *SpinLock) TryLockSpinlock() bool {
-	panic("not implemented")
+func (lock *SpinLock) TryLock() bool {
 	return iTryLockSpinlock(lock)
 }
 
 // SDL_LockSpinlock - Lock a spin lock by setting it to a non-zero value.
 // (https://wiki.libsdl.org/SDL3/SDL_LockSpinlock)
-func (lock *SpinLock) LockSpinlock() {
-	panic("not implemented")
+func (lock *SpinLock) Lock() {
 	iLockSpinlock(lock)
 }
 
 // SDL_UnlockSpinlock - Unlock a spin lock by setting it to 0.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockSpinlock)
-func (lock *SpinLock) UnlockSpinlock() {
-	panic("not implemented")
+func (lock *SpinLock) Unlock() {
 	iUnlockSpinlock(lock)
 }
 
@@ -517,50 +520,62 @@ func (thread *Thread) Detach() {
 
 // SDL_GetSensorProperties - Get the properties associated with a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorProperties)
-func (sensor *Sensor) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetSensorProperties(sensor)
+func (sensor *Sensor) Properties() (PropertiesID, error) {
+	props := iGetSensorProperties(sensor)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetSensorName - Get the implementation dependent name of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorName)
-func (sensor *Sensor) Name() string {
-	panic("not implemented")
-	return iGetSensorName(sensor)
+func (sensor *Sensor) Name() (string, error) {
+	name := iGetSensorName(sensor)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetSensorType - Get the type of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorType)
 func (sensor *Sensor) Type() SensorType {
-	panic("not implemented")
 	return iGetSensorType(sensor)
 }
 
 // SDL_GetSensorNonPortableType - Get the platform dependent type of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorNonPortableType)
 func (sensor *Sensor) NonPortableType() int32 {
-	panic("not implemented")
 	return iGetSensorNonPortableType(sensor)
 }
 
 // SDL_GetSensorID - Get the instance ID of a sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorID)
-func (sensor *Sensor) ID() SensorID {
-	panic("not implemented")
-	return iGetSensorID(sensor)
+func (sensor *Sensor) ID() (SensorID, error) {
+	id := iGetSensorID(sensor)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetSensorData - Get the current state of an opened sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSensorData)
-func (sensor *Sensor) Data(data *float32, num_values int32) bool {
-	panic("not implemented")
-	return iGetSensorData(sensor, data, num_values)
+func (sensor *Sensor) Data(data []float32, numValues int32) error {
+	if !iGetSensorData(sensor, unsafe.SliceData(data), numValues) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_CloseSensor - Close a sensor previously opened with SDL_OpenSensor().
 // (https://wiki.libsdl.org/SDL3/SDL_CloseSensor)
 func (sensor *Sensor) Close() {
-	panic("not implemented")
 	iCloseSensor(sensor)
 }
 
@@ -569,7 +584,6 @@ func (sensor *Sensor) Close() {
 // SDL_GetGamepadStringForAxis - Convert from an SDL_GamepadAxis enum to a string.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForAxis)
 func (axis GamepadAxis) GamepadStringForAxis() string {
-	panic("not implemented")
 	return iGetGamepadStringForAxis(axis)
 }
 
@@ -578,7 +592,6 @@ func (axis GamepadAxis) GamepadStringForAxis() string {
 // SDL_DestroyCursor - Free a previously-created cursor.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyCursor)
 func (cursor *Cursor) Destroy() {
-	panic("not implemented")
 	iDestroyCursor(cursor)
 }
 
@@ -611,88 +624,93 @@ func (id *TLSID) SetTLS(value *byte, destructor TLSDestructorCallback) bool {
 
 // SDL_HasRectIntersection - Determine whether two rectangles intersect.
 // (https://wiki.libsdl.org/SDL3/SDL_HasRectIntersection)
-func (A *Rect) HasIntersection(B *Rect) bool {
-	panic("not implemented")
-	return iHasRectIntersection(A, B)
+func (a *Rect) HasIntersection(b *Rect) bool {
+	return iHasRectIntersection(a, b)
 }
 
 // SDL_GetRectIntersection - Calculate the intersection of two rectangles.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRectIntersection)
-func (A *Rect) Intersection(B *Rect, result *Rect) bool {
-	panic("not implemented")
-	return iGetRectIntersection(A, B, result)
+func (a *Rect) Intersection(b *Rect) *Rect {
+	var result Rect
+
+	if !iGetRectIntersection(a, b, &result) {
+		return nil
+	}
+
+	return &result
 }
 
 // SDL_GetRectUnion - Calculate the union of two rectangles.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRectUnion)
-func (A *Rect) Union(B *Rect, result *Rect) bool {
-	panic("not implemented")
-	return iGetRectUnion(A, B, result)
-}
+func (a *Rect) Union(b *Rect) (*Rect, error) {
+	var result Rect
 
-// SDL_GetRectAndLineIntersection - Calculate the intersection of a rectangle and line segment.
-// (https://wiki.libsdl.org/SDL3/SDL_GetRectAndLineIntersection)
-func (rect *Rect) AndLineIntersection(X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool {
-	panic("not implemented")
-	return iGetRectAndLineIntersection(rect, X1, Y1, X2, Y2)
+	if !iGetRectUnion(a, b, &result) {
+		return nil, internal.LastErr()
+	}
+
+	return &result, nil
 }
 
 // JoystickID
 
 // SDL_GetJoystickNameForID - Get the implementation dependent name of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickNameForID)
-func (instance_id JoystickID) JoystickNameForID() string {
-	panic("not implemented")
-	return iGetJoystickNameForID(instance_id)
+func (id JoystickID) JoystickNameForID() (string, error) {
+	name := iGetJoystickNameForID(id)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetJoystickPathForID - Get the implementation dependent path of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickPathForID)
-func (instance_id JoystickID) JoystickPathForID() string {
-	panic("not implemented")
-	return iGetJoystickPathForID(instance_id)
+func (id JoystickID) JoystickPathForID() (string, error) {
+	path := iGetJoystickPathForID(id)
+	if path == "" {
+		return "", internal.LastErr()
+	}
+
+	return path, nil
 }
 
 // SDL_GetJoystickPlayerIndexForID - Get the player index of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickPlayerIndexForID)
-func (instance_id JoystickID) JoystickPlayerIndexForID() int32 {
-	panic("not implemented")
-	return iGetJoystickPlayerIndexForID(instance_id)
+func (id JoystickID) JoystickPlayerIndexForID() int32 {
+	return iGetJoystickPlayerIndexForID(id)
 }
 
 // SDL_GetJoystickGUIDForID - Get the implementation-dependent GUID of a joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickGUIDForID)
-func (instance_id JoystickID) JoystickGUIDForID() GUID {
+func (id JoystickID) JoystickGUIDForID() GUID {
 	panic("not implemented")
-	return iGetJoystickGUIDForID(instance_id)
+	return iGetJoystickGUIDForID(id)
 }
 
 // SDL_GetJoystickVendorForID - Get the USB vendor ID of a joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickVendorForID)
-func (instance_id JoystickID) JoystickVendorForID() uint16 {
-	panic("not implemented")
-	return iGetJoystickVendorForID(instance_id)
+func (id JoystickID) JoystickVendorForID() uint16 {
+	return iGetJoystickVendorForID(id)
 }
 
 // SDL_GetJoystickProductForID - Get the USB product ID of a joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickProductForID)
-func (instance_id JoystickID) JoystickProductForID() uint16 {
-	panic("not implemented")
-	return iGetJoystickProductForID(instance_id)
+func (id JoystickID) JoystickProductForID() uint16 {
+	return iGetJoystickProductForID(id)
 }
 
 // SDL_GetJoystickProductVersionForID - Get the product version of a joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickProductVersionForID)
-func (instance_id JoystickID) JoystickProductVersionForID() uint16 {
-	panic("not implemented")
-	return iGetJoystickProductVersionForID(instance_id)
+func (id JoystickID) JoystickProductVersionForID() uint16 {
+	return iGetJoystickProductVersionForID(id)
 }
 
 // SDL_GetJoystickTypeForID - Get the type of a joystick, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetJoystickTypeForID)
-func (instance_id JoystickID) JoystickTypeForID() JoystickType {
-	panic("not implemented")
-	return iGetJoystickTypeForID(instance_id)
+func (id JoystickID) JoystickTypeForID() JoystickType {
+	return iGetJoystickTypeForID(id)
 }
 
 // SDL_OpenJoystick - Open a joystick for use.
@@ -719,16 +737,18 @@ func (id JoystickID) Joystick() (*Joystick, error) {
 
 // SDL_DetachVirtualJoystick - Detach a virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_DetachVirtualJoystick)
-func (instance_id JoystickID) DetachVirtualJoystick() bool {
-	panic("not implemented")
-	return iDetachVirtualJoystick(instance_id)
+func (id JoystickID) DetachVirtualJoystick() error {
+	if !iDetachVirtualJoystick(id) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_IsJoystickVirtual - Query whether or not a joystick is virtual.
 // (https://wiki.libsdl.org/SDL3/SDL_IsJoystickVirtual)
-func (instance_id JoystickID) IsJoystickVirtual() bool {
-	panic("not implemented")
-	return iIsJoystickVirtual(instance_id)
+func (id JoystickID) IsJoystickVirtual() bool {
+	return iIsJoystickVirtual(id)
 }
 
 // SDL_SetGamepadMapping - Set the current mapping of a joystick or gamepad.
@@ -740,30 +760,36 @@ func (instance_id JoystickID) SetGamepadMapping(mapping string) bool {
 
 // SDL_IsGamepad - Check if the given joystick is supported by the gamepad interface.
 // (https://wiki.libsdl.org/SDL3/SDL_IsGamepad)
-func (instance_id JoystickID) IsGamepad() bool {
-	panic("not implemented")
-	return iIsGamepad(instance_id)
+func (id JoystickID) IsGamepad() bool {
+	return iIsGamepad(id)
 }
 
 // SDL_GetGamepadNameForID - Get the implementation dependent name of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadNameForID)
-func (instance_id JoystickID) GamepadNameForID() string {
-	panic("not implemented")
-	return iGetGamepadNameForID(instance_id)
+func (id JoystickID) GamepadName() (string, error) {
+	name := iGetGamepadNameForID(id)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_GetGamepadPathForID - Get the implementation dependent path of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadPathForID)
-func (instance_id JoystickID) GamepadPathForID() string {
-	panic("not implemented")
-	return iGetGamepadPathForID(instance_id)
+func (id JoystickID) GamepadPath() (string, error) {
+	path := iGetGamepadPathForID(id)
+	if path == "" {
+		return "", internal.LastErr()
+	}
+
+	return path, nil
 }
 
 // SDL_GetGamepadPlayerIndexForID - Get the player index of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadPlayerIndexForID)
-func (instance_id JoystickID) GamepadPlayerIndexForID() int32 {
-	panic("not implemented")
-	return iGetGamepadPlayerIndexForID(instance_id)
+func (id JoystickID) GamepadPlayerIndex() int32 {
+	return iGetGamepadPlayerIndexForID(id)
 }
 
 // SDL_GetGamepadGUIDForID - Get the implementation-dependent GUID of a gamepad.
@@ -775,87 +801,91 @@ func (instance_id JoystickID) GamepadGUIDForID() GUID {
 
 // SDL_GetGamepadVendorForID - Get the USB vendor ID of a gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadVendorForID)
-func (instance_id JoystickID) GamepadVendorForID() uint16 {
-	panic("not implemented")
-	return iGetGamepadVendorForID(instance_id)
+func (id JoystickID) GamepadVendor() uint16 {
+	return iGetGamepadVendorForID(id)
 }
 
 // SDL_GetGamepadProductForID - Get the USB product ID of a gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadProductForID)
-func (instance_id JoystickID) GamepadProductForID() uint16 {
-	panic("not implemented")
-	return iGetGamepadProductForID(instance_id)
+func (id JoystickID) GamepadProduct() uint16 {
+	return iGetGamepadProductForID(id)
 }
 
 // SDL_GetGamepadProductVersionForID - Get the product version of a gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadProductVersionForID)
-func (instance_id JoystickID) GamepadProductVersionForID() uint16 {
-	panic("not implemented")
-	return iGetGamepadProductVersionForID(instance_id)
+func (id JoystickID) GamepadProductVersion() uint16 {
+	return iGetGamepadProductVersionForID(id)
 }
 
 // SDL_GetGamepadTypeForID - Get the type of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadTypeForID)
-func (instance_id JoystickID) GamepadTypeForID() GamepadType {
-	panic("not implemented")
-	return iGetGamepadTypeForID(instance_id)
+func (id JoystickID) GamepadType() GamepadType {
+	return iGetGamepadTypeForID(id)
 }
 
 // SDL_GetRealGamepadTypeForID - Get the type of a gamepad, ignoring any mapping override.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRealGamepadTypeForID)
-func (instance_id JoystickID) RealGamepadTypeForID() GamepadType {
-	panic("not implemented")
-	return iGetRealGamepadTypeForID(instance_id)
+func (id JoystickID) RealGamepadType() GamepadType {
+	return iGetRealGamepadTypeForID(id)
 }
 
 // SDL_GetGamepadMappingForID - Get the mapping of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadMappingForID)
-func (instance_id JoystickID) GamepadMappingForID() string {
-	panic("not implemented")
-	//return iGetGamepadMappingForID(instance_id)
+func (id JoystickID) GamepadMapping() string {
+	ptr := iGetGamepadMappingForID(id)
+	if ptr == 0 {
+		return ""
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrString(ptr)
 }
 
 // SDL_OpenGamepad - Open a gamepad for use.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenGamepad)
-func (instance_id JoystickID) OpenGamepad() *Gamepad {
-	panic("not implemented")
-	return iOpenGamepad(instance_id)
+func (id JoystickID) OpenGamepad() (*Gamepad, error) {
+	gamepad := iOpenGamepad(id)
+	if gamepad == nil {
+		return nil, internal.LastErr()
+	}
+
+	return gamepad, nil
 }
 
 // SDL_GetGamepadFromID - Get the SDL_Gamepad associated with a joystick instance ID, if it has been opened.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadFromID)
-func (instance_id JoystickID) GamepadFromID() *Gamepad {
-	panic("not implemented")
-	return iGetGamepadFromID(instance_id)
+func (id JoystickID) Gamepad() (*Gamepad, error) {
+	gamepad := iGetGamepadFromID(id)
+	if gamepad == nil {
+		return nil, internal.LastErr()
+	}
+
+	return gamepad, nil
 }
 
 // AtomicInt
 
 // SDL_CompareAndSwapAtomicInt - Set an atomic variable to a new value if it is currently an old value.
 // (https://wiki.libsdl.org/SDL3/SDL_CompareAndSwapAtomicInt)
-func (a *AtomicInt) CompareAndSwap(oldval int32, newval int32) bool {
-	panic("not implemented")
+func (a *AtomicInt) CompareAndSwap(oldval, newval int32) bool {
 	return iCompareAndSwapAtomicInt(a, oldval, newval)
 }
 
 // SDL_SetAtomicInt - Set an atomic variable to a value.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAtomicInt)
 func (a *AtomicInt) Set(v int32) int32 {
-	panic("not implemented")
 	return iSetAtomicInt(a, v)
 }
 
 // SDL_GetAtomicInt - Get the value of an atomic variable.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAtomicInt)
 func (a *AtomicInt) Get() int32 {
-	panic("not implemented")
 	return iGetAtomicInt(a)
 }
 
 // SDL_AddAtomicInt - Add to an atomic variable.
 // (https://wiki.libsdl.org/SDL3/SDL_AddAtomicInt)
 func (a *AtomicInt) Add(v int32) int32 {
-	panic("not implemented")
 	return iAddAtomicInt(a, v)
 }
 
@@ -4392,22 +4422,6 @@ func (window *Window) Renderer() *Renderer {
 	return iGetRenderer(window)
 }
 
-// GLAttr
-
-// SDL_GL_SetAttribute - Set an OpenGL window attribute before window creation.
-// (https://wiki.libsdl.org/SDL3/SDL_GL_SetAttribute)
-func (attr GLAttr) GL_SetAttribute(value int32) bool {
-	panic("not implemented")
-	return iGL_SetAttribute(attr, value)
-}
-
-// SDL_GL_GetAttribute - Get the actual value for an attribute from the current context.
-// (https://wiki.libsdl.org/SDL3/SDL_GL_GetAttribute)
-func (attr GLAttr) GL_GetAttribute(value *int32) bool {
-	panic("not implemented")
-	return iGL_GetAttribute(attr, value)
-}
-
 // Scancode
 
 // SDL_GetKeyFromScancode - Get the key code corresponding to the given scancode according to the current keyboard layout.
@@ -4461,7 +4475,7 @@ func (id TimerID) RemoveTimer() bool {
 
 // SDL_CloseIO - Close and free an allocated SDL_IOStream structure.
 // (https://wiki.libsdl.org/SDL3/SDL_CloseIO)
-func (context *IOStream) CloseIO() error {
+func (context *IOStream) Close() error {
 	if !iCloseIO(context) {
 		return internal.LastErr()
 	}
@@ -4471,7 +4485,7 @@ func (context *IOStream) CloseIO() error {
 
 // SDL_GetIOProperties - Get the properties associated with an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOProperties)
-func (context *IOStream) IOProperties() (PropertiesID, error) {
+func (context *IOStream) Properties() (PropertiesID, error) {
 	props := iGetIOProperties(context)
 	if props == 0 {
 		return 0, internal.LastErr()
@@ -4482,13 +4496,13 @@ func (context *IOStream) IOProperties() (PropertiesID, error) {
 
 // SDL_GetIOStatus - Query the stream status of an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOStatus)
-func (context *IOStream) IOStatus() IOStatus {
+func (context *IOStream) Status() IOStatus {
 	return iGetIOStatus(context)
 }
 
 // SDL_GetIOSize - Use this function to get the size of the data stream in an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_GetIOSize)
-func (context *IOStream) IOSize() (int64, error) {
+func (context *IOStream) Size() (int64, error) {
 	size := iGetIOSize(context)
 	if size < 0 {
 		return -1, internal.LastErr()
@@ -4499,7 +4513,7 @@ func (context *IOStream) IOSize() (int64, error) {
 
 // SDL_SeekIO - Seek within an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SeekIO)
-func (context *IOStream) SeekIO(offset int64, whence IOWhence) (int64, error) {
+func (context *IOStream) Seek(offset int64, whence IOWhence) (int64, error) {
 	seek := iSeekIO(context, offset, whence)
 	if seek == -1 {
 		return -1, internal.LastErr()
@@ -4510,13 +4524,13 @@ func (context *IOStream) SeekIO(offset int64, whence IOWhence) (int64, error) {
 
 // SDL_TellIO - Determine the current read/write offset in an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_TellIO)
-func (context *IOStream) TellIO() int64 {
+func (context *IOStream) Tell() int64 {
 	return iTellIO(context)
 }
 
 // SDL_ReadIO - Read from a data source.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadIO)
-func (context *IOStream) ReadIO(available []byte) (uint64, error) {
+func (context *IOStream) Read(available []byte) (uint64, error) {
 	count := iReadIO(context, uintptr(unsafe.Pointer(unsafe.SliceData(available))), uintptr(len(available)))
 	if count == 0 {
 		return 0, internal.LastErr()
@@ -4527,7 +4541,7 @@ func (context *IOStream) ReadIO(available []byte) (uint64, error) {
 
 // SDL_WriteIO - Write to an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteIO)
-func (context *IOStream) WriteIO(data []byte) (uint64, error) {
+func (context *IOStream) Write(data []byte) (uint64, error) {
 	count := iWriteIO(context, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uintptr(len(data)))
 	if count < uintptr(len(data)) {
 		return uint64(count), internal.LastErr()
@@ -4538,7 +4552,7 @@ func (context *IOStream) WriteIO(data []byte) (uint64, error) {
 
 // SDL_IOprintf - Print to an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOprintf)
-func (context *IOStream) IOprintf(format string, values ...any) (uint64, error) {
+func (context *IOStream) Printf(format string, values ...any) (uint64, error) {
 	count := iIOprintf(context, fmt.Sprintf(format, values...))
 	if count == 0 {
 		return 0, internal.LastErr()
@@ -4549,7 +4563,7 @@ func (context *IOStream) IOprintf(format string, values ...any) (uint64, error) 
 
 // SDL_FlushIO - Flush any buffered data in the stream.
 // (https://wiki.libsdl.org/SDL3/SDL_FlushIO)
-func (context *IOStream) FlushIO() error {
+func (context *IOStream) Flush() error {
 	if !iFlushIO(context) {
 		return internal.LastErr()
 	}
@@ -4559,16 +4573,26 @@ func (context *IOStream) FlushIO() error {
 
 // SDL_LoadFile_IO - Load all the data from an SDL data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_LoadFile_IO)
-func (src *IOStream) LoadFile_IO(datasize *uintptr, closeio bool) *byte {
-	panic("not implemented")
-	//return iLoadFile_IO(src, datasize, closeio)
+func (src *IOStream) LoadFile(closeio bool) ([]byte, error) {
+	var size uintptr
+	ptr := iLoadFile_IO(src, &size, closeio)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[byte](ptr, int(size)), nil
 }
 
 // SDL_SaveFile_IO - Save all the data into an SDL data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SaveFile_IO)
-func (src *IOStream) SaveFile_IO(data *byte, datasize uintptr, closeio bool) bool {
-	panic("not implemented")
-	//return iSaveFile_IO(src, data, datasize, closeio)
+func (src *IOStream) SaveFile(data []byte, closeio bool) error {
+	if !iSaveFile_IO(src, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uintptr(len(data)), closeio) {
+		return internal.LastErr()
+	}
+	runtime.KeepAlive(data)
+
+	return nil
 }
 
 // SDL_ReadU8 - Use this function to read a byte from an SDL_IOStream.
@@ -5329,24 +5353,19 @@ func (a *AtomicU32) Get() uint32 {
 
 // PropertiesID
 
-// SDL_CopyProperties - Copy a group of properties.
-// (https://wiki.libsdl.org/SDL3/SDL_CopyProperties)
-func (src PropertiesID) CopyProperties(dst PropertiesID) bool {
-	panic("not implemented")
-	return iCopyProperties(src, dst)
-}
-
 // SDL_LockProperties - Lock a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_LockProperties)
-func (props PropertiesID) LockProperties() bool {
-	panic("not implemented")
-	return iLockProperties(props)
+func (props PropertiesID) Lock() error {
+	if !iLockProperties(props) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_UnlockProperties - Unlock a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockProperties)
-func (props PropertiesID) UnlockProperties() {
-	panic("not implemented")
+func (props PropertiesID) Unlock() {
 	iUnlockProperties(props)
 }
 
@@ -5366,43 +5385,53 @@ func (props PropertiesID) SetPointerProperty(name string, value *byte) bool {
 
 // SDL_SetStringProperty - Set a string property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetStringProperty)
-func (props PropertiesID) SetStringProperty(name string, value string) bool {
-	panic("not implemented")
-	return iSetStringProperty(props, name, value)
+func (props PropertiesID) SetStringProperty(name, value string) error {
+	if !iSetStringProperty(props, name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetNumberProperty - Set an integer property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetNumberProperty)
-func (props PropertiesID) SetNumberProperty(name string, value int64) bool {
-	panic("not implemented")
-	return iSetNumberProperty(props, name, value)
+func (props PropertiesID) SetNumberProperty(name string, value int64) error {
+	if !iSetNumberProperty(props, name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetFloatProperty - Set a floating point property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetFloatProperty)
-func (props PropertiesID) SetFloatProperty(name string, value float32) bool {
-	panic("not implemented")
-	return iSetFloatProperty(props, name, value)
+func (props PropertiesID) SetFloatProperty(name string, value float32) error {
+	if !iSetFloatProperty(props, name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetBooleanProperty - Set a boolean property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetBooleanProperty)
-func (props PropertiesID) SetBooleanProperty(name string, value bool) bool {
-	panic("not implemented")
-	return iSetBooleanProperty(props, name, value)
+func (props PropertiesID) SetBooleanProperty(name string, value bool) error {
+	if !iSetBooleanProperty(props, name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_HasProperty - Return whether a property exists in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_HasProperty)
 func (props PropertiesID) HasProperty(name string) bool {
-	panic("not implemented")
 	return iHasProperty(props, name)
 }
 
 // SDL_GetPropertyType - Get the type of a property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetPropertyType)
 func (props PropertiesID) PropertyType(name string) PropertyType {
-	panic("not implemented")
 	return iGetPropertyType(props, name)
 }
 
@@ -5415,37 +5444,36 @@ func (props PropertiesID) PointerProperty(name string, default_value *byte) *byt
 
 // SDL_GetStringProperty - Get a string property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetStringProperty)
-func (props PropertiesID) StringProperty(name string, default_value string) string {
-	panic("not implemented")
-	return iGetStringProperty(props, name, default_value)
+func (props PropertiesID) StringProperty(name, defaultValue string) string {
+	return iGetStringProperty(props, name, defaultValue)
 }
 
 // SDL_GetNumberProperty - Get a number property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumberProperty)
-func (props PropertiesID) NumberProperty(name string, default_value int64) int64 {
-	panic("not implemented")
-	return iGetNumberProperty(props, name, default_value)
+func (props PropertiesID) NumberProperty(name string, defaultValue int64) int64 {
+	return iGetNumberProperty(props, name, defaultValue)
 }
 
 // SDL_GetFloatProperty - Get a floating point property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetFloatProperty)
-func (props PropertiesID) FloatProperty(name string, default_value float32) float32 {
-	panic("not implemented")
-	return iGetFloatProperty(props, name, default_value)
+func (props PropertiesID) FloatProperty(name string, defaultValue float32) float32 {
+	return iGetFloatProperty(props, name, defaultValue)
 }
 
 // SDL_GetBooleanProperty - Get a boolean property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetBooleanProperty)
-func (props PropertiesID) BooleanProperty(name string, default_value bool) bool {
-	panic("not implemented")
-	return iGetBooleanProperty(props, name, default_value)
+func (props PropertiesID) BooleanProperty(name string, defaultValue bool) bool {
+	return iGetBooleanProperty(props, name, defaultValue)
 }
 
 // SDL_ClearProperty - Clear a property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_ClearProperty)
-func (props PropertiesID) ClearProperty(name string) bool {
-	panic("not implemented")
-	return iClearProperty(props, name)
+func (props PropertiesID) ClearProperty(name string) error {
+	if !iClearProperty(props, name) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_EnumerateProperties - Enumerate the properties contained in a group of properties.
@@ -5457,30 +5485,14 @@ func (props PropertiesID) EnumerateProperties(callback EnumeratePropertiesCallba
 
 // SDL_DestroyProperties - Destroy a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyProperties)
-func (props PropertiesID) DestroyProperties() {
-	panic("not implemented")
+func (props PropertiesID) Destroy() {
 	iDestroyProperties(props)
 }
 
 // SDL_GPUSupportsProperties - Checks for GPU runtime support.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUSupportsProperties)
-func (props PropertiesID) GPUSupportsProperties() bool {
-	panic("not implemented")
+func (props PropertiesID) GPUSupport() bool {
 	return iGPUSupportsProperties(props)
-}
-
-// SDL_CreateGPUDeviceWithProperties - Creates a GPU context.
-// (https://wiki.libsdl.org/SDL3/SDL_CreateGPUDeviceWithProperties)
-func (props PropertiesID) CreateGPUDeviceWithProperties() *GPUDevice {
-	panic("not implemented")
-	return iCreateGPUDeviceWithProperties(props)
-}
-
-// SDL_CreateProcessWithProperties - Create a new process with the specified properties.
-// (https://wiki.libsdl.org/SDL3/SDL_CreateProcessWithProperties)
-func (props PropertiesID) CreateProcessWithProperties() *Process {
-	panic("not implemented")
-	return iCreateProcessWithProperties(props)
 }
 
 // Semaphore
@@ -5488,42 +5500,36 @@ func (props PropertiesID) CreateProcessWithProperties() *Process {
 // SDL_DestroySemaphore - Destroy a semaphore.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroySemaphore)
 func (sem *Semaphore) Destroy() {
-	panic("not implemented")
 	iDestroySemaphore(sem)
 }
 
 // SDL_WaitSemaphore - Wait until a semaphore has a positive value and then decrements it.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitSemaphore)
 func (sem *Semaphore) Wait() {
-	panic("not implemented")
 	iWaitSemaphore(sem)
 }
 
 // SDL_TryWaitSemaphore - See if a semaphore has a positive value and decrement it if it does.
 // (https://wiki.libsdl.org/SDL3/SDL_TryWaitSemaphore)
 func (sem *Semaphore) TryWait() bool {
-	panic("not implemented")
 	return iTryWaitSemaphore(sem)
 }
 
 // SDL_WaitSemaphoreTimeout - Wait until a semaphore has a positive value and then decrements it.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitSemaphoreTimeout)
 func (sem *Semaphore) WaitTimeout(timeoutMS int32) bool {
-	panic("not implemented")
 	return iWaitSemaphoreTimeout(sem, timeoutMS)
 }
 
 // SDL_SignalSemaphore - Atomically increment a semaphore's value and wake waiting threads.
 // (https://wiki.libsdl.org/SDL3/SDL_SignalSemaphore)
 func (sem *Semaphore) Signal() {
-	panic("not implemented")
 	iSignalSemaphore(sem)
 }
 
 // SDL_GetSemaphoreValue - Get the current value of a semaphore.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSemaphoreValue)
 func (sem *Semaphore) Value() uint32 {
-	panic("not implemented")
 	return iGetSemaphoreValue(sem)
 }
 

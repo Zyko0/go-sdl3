@@ -49,9 +49,32 @@ func Quit() {
 
 // TODO: IsMainThread
 // TODO: RunOnMainThread
-// TODO: SetAppMetadata
-// TODO: SetAppMetadataProperty
-// TODO: GetAppMetadataProperty
+
+// SDL_SetAppMetadata - Specify basic metadata about your app.
+// (https://wiki.libsdl.org/SDL3/SDL_SetAppMetadata)
+func SetAppMetadata(appName, appVersion, appIdentifier string) error {
+	if !iSetAppMetadata(appName, appVersion, appIdentifier) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_SetAppMetadataProperty - Specify metadata about your app through a set of properties.
+// (https://wiki.libsdl.org/SDL3/SDL_SetAppMetadataProperty)
+func SetAppMetadataProperty(name, value string) error {
+	if !iSetAppMetadataProperty(name, value) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetAppMetadataProperty - Get metadata about your app.
+// (https://wiki.libsdl.org/SDL3/SDL_GetAppMetadataProperty)
+func GetAppMetadataProperty(name string) string {
+	return iGetAppMetadataProperty(name)
+}
 
 // Hints
 
@@ -108,7 +131,11 @@ func GetHintBoolean(name string, defaultValue bool) bool {
 
 // Error
 
-// TODO: is there a need?
+// SDL_OutOfMemory - Set an error indicating that memory allocation failed.
+// (https://wiki.libsdl.org/SDL3/SDL_OutOfMemory)
+func OutOfMemory() bool {
+	return iOutOfMemory()
+}
 
 // Properties
 
@@ -132,6 +159,16 @@ func CreateProperties() (PropertiesID, error) {
 	}
 
 	return properties, nil
+}
+
+// SDL_CopyProperties - Copy a group of properties.
+// (https://wiki.libsdl.org/SDL3/SDL_CopyProperties)
+func CopyProperties(src, dst PropertiesID) error {
+	if !iCopyProperties(src, dst) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // Log
@@ -432,6 +469,17 @@ func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (
 	return device, nil
 }
 
+// SDL_CreateGPUDeviceWithProperties - Creates a GPU context.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateGPUDeviceWithProperties)
+func CreateGPUDeviceWithProperties(props PropertiesID) (*GPUDevice, error) {
+	device := iCreateGPUDeviceWithProperties(props)
+	if device == nil {
+		return nil, internal.LastErr()
+	}
+
+	return device, nil
+}
+
 // Video
 
 // SDL_GetNumVideoDrivers - Get the number of video drivers compiled into SDL.
@@ -564,7 +612,104 @@ func DisableScreenSaver() error {
 	return nil
 }
 
-// TODO: GL_ functions??
+// SDL_GL_ExtensionSupported - Check if an OpenGL extension is supported for the current context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_ExtensionSupported)
+func GL_ExtensionSupported(extension string) bool {
+	return iGL_ExtensionSupported(extension)
+}
+
+// SDL_GL_ResetAttributes - Reset all previously set OpenGL context attributes to their default values.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_ResetAttributes)
+func GL_ResetAttributes() {
+	iGL_ResetAttributes()
+}
+
+// SDL_GL_SetAttribute - Set an OpenGL window attribute before window creation.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_SetAttribute)
+func GL_SetAttribute(attr GLAttr, value int32) error {
+	if !iGL_SetAttribute(attr, value) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GL_GetAttribute - Get the actual value for an attribute from the current context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_GetAttribute)
+func GL_GetAttribute(attr GLAttr) (int32, error) {
+	var value int32
+
+	if !iGL_GetAttribute(attr, &value) {
+		return 0, internal.LastErr()
+	}
+
+	return value, nil
+}
+
+// SDL_GL_GetCurrentWindow - Get the currently active OpenGL window.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_GetCurrentWindow)
+func GL_GetCurrentWindow() (*Window, error) {
+	window := iGL_GetCurrentWindow()
+	if window == nil {
+		return nil, internal.LastErr()
+	}
+
+	return window, nil
+}
+
+// SDL_GL_GetCurrentContext - Get the currently active OpenGL context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_GetCurrentContext)
+func GL_GetCurrentContext() (GLContext, error) {
+	ctx := iGL_GetCurrentContext()
+	if ctx == nil {
+		return nil, internal.LastErr()
+	}
+
+	return ctx, nil
+}
+
+// SDL_EGL_GetCurrentDisplay - Get the currently active EGL display.
+// (https://wiki.libsdl.org/SDL3/SDL_EGL_GetCurrentDisplay)
+func EGL_GetCurrentDisplay() (EGLDisplay, error) {
+	display := iEGL_GetCurrentDisplay()
+	if display == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return display, nil
+}
+
+// SDL_EGL_GetCurrentConfig - Get the currently active EGL config.
+// (https://wiki.libsdl.org/SDL3/SDL_EGL_GetCurrentConfig)
+func EGL_GetCurrentConfig() (EGLConfig, error) {
+	config := iEGL_GetCurrentConfig()
+	if config == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return config, nil
+}
+
+// SDL_GL_SetSwapInterval - Set the swap interval for the current OpenGL context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_SetSwapInterval)
+func GL_SetSwapInterval(interval int32) error {
+	if !iGL_SetSwapInterval(interval) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GL_GetSwapInterval - Get the swap interval for the current OpenGL context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_GetSwapInterval)
+func GL_GetSwapInterval() (int32, error) {
+	var interval int32
+	if !iGL_GetSwapInterval(&interval) {
+		return 0, internal.LastErr()
+	}
+
+	return interval, nil
+}
 
 // Audio
 
@@ -810,6 +955,12 @@ func UpdateSensors() {
 }
 
 // Process
+
+// SDL_CreateProcessWithProperties - Create a new process with the specified properties.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateProcessWithProperties)
+func CreateProcessWithProperties(props PropertiesID) *Process {
+	return iCreateProcessWithProperties(props)
+}
 
 // TODO: is this needed?
 
