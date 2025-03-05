@@ -1388,6 +1388,18 @@ func UpdateJoysticks() {
 
 // TODO:
 
+// Rect
+
+// SDL_GetRectEnclosingPoints - Calculate a minimal rectangle enclosing a set of points.
+// (https://wiki.libsdl.org/SDL3/SDL_GetRectEnclosingPoints)
+func GetRectEnclosingPoints(points []Point, clip *Rect) (*Rect, bool) {
+	var result Rect
+
+	ret := iGetRectEnclosingPoints(unsafe.SliceData(points), int32(len(points)), clip, &result)
+
+	return &result, ret
+}
+
 // Camera
 
 // SDL_GetNumCameraDrivers - Use this function to get the number of built-in camera drivers.

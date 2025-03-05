@@ -893,81 +893,89 @@ func (a *AtomicInt) Add(v int32) int32 {
 
 // SDL_BindGPUComputePipeline - Binds a compute pipeline on a command buffer for use in compute dispatch.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputePipeline)
-func (compute_pass *GPUComputePass) BindGPUComputePipeline(compute_pipeline *GPUComputePipeline) {
-	panic("not implemented")
-	iBindGPUComputePipeline(compute_pass, compute_pipeline)
+func (cp *GPUComputePass) BindGPUComputePipeline(pipeline *GPUComputePipeline) {
+	iBindGPUComputePipeline(cp, pipeline)
 }
 
 // SDL_BindGPUComputeSamplers - Binds texture-sampler pairs for use on the compute shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeSamplers)
-func (compute_pass *GPUComputePass) BindGPUComputeSamplers(first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUComputeSamplers(compute_pass, first_slot, texture_sampler_bindings, num_bindings)
+func (cp *GPUComputePass) BindSamplers(bindings []GPUTextureSamplerBinding) {
+	iBindGPUComputeSamplers(cp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
 }
 
 // SDL_BindGPUComputeStorageTextures - Binds storage textures as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageTextures)
-func (compute_pass *GPUComputePass) BindGPUComputeStorageTextures(first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUComputeStorageTextures(compute_pass, first_slot, storage_textures, num_bindings)
+func (cp *GPUComputePass) BindStorageTextures(textures []*GPUTexture) {
+	iBindGPUComputeStorageTextures(cp, 0, unsafe.SliceData(textures), uint32(len(textures)))
 }
 
 // SDL_BindGPUComputeStorageBuffers - Binds storage buffers as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageBuffers)
-func (compute_pass *GPUComputePass) BindGPUComputeStorageBuffers(first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUComputeStorageBuffers(compute_pass, first_slot, storage_buffers, num_bindings)
+func (cp *GPUComputePass) BindStorageBuffers(buffers []*GPUBuffer) {
+	iBindGPUComputeStorageBuffers(cp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
 }
 
 // SDL_DispatchGPUCompute - Dispatches compute work.
 // (https://wiki.libsdl.org/SDL3/SDL_DispatchGPUCompute)
-func (compute_pass *GPUComputePass) DispatchGPUCompute(groupcount_x uint32, groupcount_y uint32, groupcount_z uint32) {
-	panic("not implemented")
-	iDispatchGPUCompute(compute_pass, groupcount_x, groupcount_y, groupcount_z)
+func (cp *GPUComputePass) Dispatch(groupcountX, groupcountY, groupcountZ uint32) {
+	iDispatchGPUCompute(cp, groupcountX, groupcountY, groupcountZ)
 }
 
 // SDL_DispatchGPUComputeIndirect - Dispatches compute work with parameters set from a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_DispatchGPUComputeIndirect)
-func (compute_pass *GPUComputePass) DispatchGPUComputeIndirect(buffer *GPUBuffer, offset uint32) {
-	panic("not implemented")
-	iDispatchGPUComputeIndirect(compute_pass, buffer, offset)
+func (cp *GPUComputePass) DispatchIndirect(buffer *GPUBuffer, offset uint32) {
+	iDispatchGPUComputeIndirect(cp, buffer, offset)
 }
 
 // SDL_EndGPUComputePass - Ends the current compute pass.
 // (https://wiki.libsdl.org/SDL3/SDL_EndGPUComputePass)
-func (compute_pass *GPUComputePass) End() {
-	panic("not implemented")
-	iEndGPUComputePass(compute_pass)
+func (cp *GPUComputePass) End() {
+	iEndGPUComputePass(cp)
 }
 
 // Texture
 
 // SDL_GetTextureProperties - Get the properties associated with a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureProperties)
-func (texture *Texture) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetTextureProperties(texture)
+func (texture *Texture) Properties() (PropertiesID, error) {
+	props := iGetTextureProperties(texture)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetRendererFromTexture - Get the renderer that created an SDL_Texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRendererFromTexture)
-func (texture *Texture) RendererFrom() *Renderer {
-	panic("not implemented")
-	return iGetRendererFromTexture(texture)
+func (texture *Texture) Renderer() (*Renderer, error) {
+	renderer := iGetRendererFromTexture(texture)
+	if renderer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return renderer, nil
 }
 
 // SDL_GetTextureSize - Get the size of a texture, as floating point values.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureSize)
-func (texture *Texture) Size(w *float32, h *float32) bool {
-	panic("not implemented")
-	return iGetTextureSize(texture, w, h)
+func (texture *Texture) Size() (float32, float32, error) {
+	var w, h float32
+	if !iGetTextureSize(texture, &w, &h) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return w, h, nil
 }
 
 // SDL_SetTextureColorMod - Set an additional color value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextureColorMod)
-func (texture *Texture) SetColorMod(r uint8, g uint8, b uint8) bool {
-	panic("not implemented")
-	return iSetTextureColorMod(texture, r, g, b)
+func (texture *Texture) SetColorMod(r, g, b uint8) error {
+	if !iSetTextureColorMod(texture, r, g, b) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetTextureColorModFloat - Set an additional color value multiplied into render copy operations.
@@ -982,72 +990,108 @@ func (texture *Texture) SetColorModFloat(r float32, g float32, b float32) error 
 
 // SDL_GetTextureColorMod - Get the additional color value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureColorMod)
-func (texture *Texture) ColorMod(r *uint8, g *uint8, b *uint8) bool {
-	panic("not implemented")
-	return iGetTextureColorMod(texture, r, g, b)
+func (texture *Texture) ColorMod() (uint8, uint8, uint8, error) {
+	var r, g, b uint8
+	if !iGetTextureColorMod(texture, &r, &g, &b) {
+		return 0, 0, 0, internal.LastErr()
+	}
+
+	return r, g, b, nil
 }
 
 // SDL_GetTextureColorModFloat - Get the additional color value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureColorModFloat)
-func (texture *Texture) ColorModFloat(r *float32, g *float32, b *float32) bool {
-	panic("not implemented")
-	return iGetTextureColorModFloat(texture, r, g, b)
+func (texture *Texture) ColorModFloat() (float32, float32, float32, error) {
+	var r, g, b float32
+	if !iGetTextureColorModFloat(texture, &r, &g, &b) {
+		return 0, 0, 0, internal.LastErr()
+	}
+
+	return r, g, b, nil
 }
 
 // SDL_SetTextureAlphaMod - Set an additional alpha value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextureAlphaMod)
-func (texture *Texture) SetAlphaMod(alpha uint8) bool {
-	panic("not implemented")
-	return iSetTextureAlphaMod(texture, alpha)
+func (texture *Texture) SetAlphaMod(alpha uint8) error {
+	if !iSetTextureAlphaMod(texture, alpha) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetTextureAlphaModFloat - Set an additional alpha value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextureAlphaModFloat)
-func (texture *Texture) SetAlphaModFloat(alpha float32) bool {
-	panic("not implemented")
-	return iSetTextureAlphaModFloat(texture, alpha)
+func (texture *Texture) SetAlphaModFloat(alpha float32) error {
+	if !iSetTextureAlphaModFloat(texture, alpha) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetTextureAlphaMod - Get the additional alpha value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureAlphaMod)
-func (texture *Texture) AlphaMod(alpha *uint8) bool {
-	panic("not implemented")
-	return iGetTextureAlphaMod(texture, alpha)
+func (texture *Texture) AlphaMod() (uint8, error) {
+	var alpha uint8
+	if !iGetTextureAlphaMod(texture, &alpha) {
+		return 0, internal.LastErr()
+	}
+
+	return alpha, nil
 }
 
 // SDL_GetTextureAlphaModFloat - Get the additional alpha value multiplied into render copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureAlphaModFloat)
-func (texture *Texture) AlphaModFloat(alpha *float32) bool {
-	panic("not implemented")
-	return iGetTextureAlphaModFloat(texture, alpha)
+func (texture *Texture) AlphaModFloat() (float32, error) {
+	var alpha float32
+	if !iGetTextureAlphaModFloat(texture, &alpha) {
+		return 0, internal.LastErr()
+	}
+
+	return alpha, nil
 }
 
 // SDL_SetTextureBlendMode - Set the blend mode for a texture, used by SDL_RenderTexture().
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextureBlendMode)
-func (texture *Texture) SetBlendMode(blendMode BlendMode) bool {
-	panic("not implemented")
-	return iSetTextureBlendMode(texture, blendMode)
+func (texture *Texture) SetBlendMode(blendMode BlendMode) error {
+	if !iSetTextureBlendMode(texture, blendMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetTextureBlendMode - Get the blend mode used for texture copy operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureBlendMode)
-func (texture *Texture) BlendMode(blendMode *BlendMode) bool {
-	panic("not implemented")
-	return iGetTextureBlendMode(texture, blendMode)
+func (texture *Texture) BlendMode() (BlendMode, error) {
+	var mode BlendMode
+	if !iGetTextureBlendMode(texture, &mode) {
+		return mode, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // SDL_SetTextureScaleMode - Set the scale mode used for texture scale operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTextureScaleMode)
-func (texture *Texture) SetScaleMode(scaleMode ScaleMode) bool {
-	panic("not implemented")
-	return iSetTextureScaleMode(texture, scaleMode)
+func (texture *Texture) SetScaleMode(scaleMode ScaleMode) error {
+	if !iSetTextureScaleMode(texture, scaleMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetTextureScaleMode - Get the scale mode used for texture scale operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetTextureScaleMode)
-func (texture *Texture) ScaleMode(scaleMode *ScaleMode) bool {
-	panic("not implemented")
-	return iGetTextureScaleMode(texture, scaleMode)
+func (texture *Texture) ScaleMode() (ScaleMode, error) {
+	var mode ScaleMode
+	if !iGetTextureScaleMode(texture, &mode) {
+		return mode, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // SDL_UpdateTexture - Update the given texture rectangle with new pixel data.
@@ -1077,10 +1121,17 @@ func (texture *Texture) UpdateNV(rect *Rect, Yplane *uint8, Ypitch int32, UVplan
 }
 
 // SDL_LockTexture - Lock a portion of the texture for **write-only** pixel access.
+// Returns pixels data, pitch, error.
 // (https://wiki.libsdl.org/SDL3/SDL_LockTexture)
-func (texture *Texture) Lock(rect *Rect, pixels **byte, pitch *int32) bool {
-	panic("not implemented")
-	//return iLockTexture(texture, rect, pixels, pitch)
+func (texture *Texture) Lock(rect *Rect) ([]byte, int32, error) {
+	var ptr uintptr
+	var pitch int32
+
+	if !iLockTexture(texture, rect, &ptr, &pitch) {
+		return nil, 0, internal.LastErr()
+	}
+
+	return unsafe.Slice(*(**byte)(unsafe.Pointer(&ptr)), texture.H*pitch), pitch, nil
 }
 
 // SDL_LockTextureToSurface - Lock a portion of the texture for **write-only** pixel access, and expose it as a SDL surface.
@@ -1113,42 +1164,36 @@ func (texture *Texture) Destroy() {
 // SDL_LockRWLockForReading - Lock the read/write lock for _read only_ operations.
 // (https://wiki.libsdl.org/SDL3/SDL_LockRWLockForReading)
 func (rwlock *RWLock) LockForReading() {
-	panic("not implemented")
 	iLockRWLockForReading(rwlock)
 }
 
 // SDL_LockRWLockForWriting - Lock the read/write lock for _write_ operations.
 // (https://wiki.libsdl.org/SDL3/SDL_LockRWLockForWriting)
 func (rwlock *RWLock) LockForWriting() {
-	panic("not implemented")
 	iLockRWLockForWriting(rwlock)
 }
 
 // SDL_TryLockRWLockForReading - Try to lock a read/write lock _for reading_ without blocking.
 // (https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForReading)
 func (rwlock *RWLock) TryLockForReading() bool {
-	panic("not implemented")
 	return iTryLockRWLockForReading(rwlock)
 }
 
 // SDL_TryLockRWLockForWriting - Try to lock a read/write lock _for writing_ without blocking.
 // (https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForWriting)
 func (rwlock *RWLock) TryLockForWriting() bool {
-	panic("not implemented")
 	return iTryLockRWLockForWriting(rwlock)
 }
 
 // SDL_UnlockRWLock - Unlock the read/write lock.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockRWLock)
 func (rwlock *RWLock) Unlock() {
-	panic("not implemented")
 	iUnlockRWLock(rwlock)
 }
 
 // SDL_DestroyRWLock - Destroy a read/write lock created with SDL_CreateRWLock().
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyRWLock)
 func (rwlock *RWLock) Destroy() {
-	panic("not implemented")
 	iDestroyRWLock(rwlock)
 }
 
@@ -1157,145 +1202,117 @@ func (rwlock *RWLock) Destroy() {
 // SDL_GetAudioFormatName - Get the human readable name of an audio format.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAudioFormatName)
 func (format AudioFormat) Name() string {
-	panic("not implemented")
 	return iGetAudioFormatName(format)
 }
 
 // SDL_GetSilenceValueForFormat - Get the appropriate memset value for silencing an audio format.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSilenceValueForFormat)
 func (format AudioFormat) SilenceValueForFormat() int32 {
-	panic("not implemented")
 	return iGetSilenceValueForFormat(format)
-}
-
-// Point
-
-// SDL_GetRectEnclosingPoints - Calculate a minimal rectangle enclosing a set of points.
-// (https://wiki.libsdl.org/SDL3/SDL_GetRectEnclosingPoints)
-func (points *Point) RectEnclosings(count int32, clip *Rect, result *Rect) bool {
-	panic("not implemented")
-	return iGetRectEnclosingPoints(points, count, clip, result)
 }
 
 // GPURenderPass
 
 // SDL_BindGPUGraphicsPipeline - Binds a graphics pipeline on a render pass to be used in rendering.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUGraphicsPipeline)
-func (render_pass *GPURenderPass) BindGPUGraphicsPipeline(graphics_pipeline *GPUGraphicsPipeline) {
-	panic("not implemented")
-	iBindGPUGraphicsPipeline(render_pass, graphics_pipeline)
+func (rp *GPURenderPass) BindGraphicsPipeline(pipeline *GPUGraphicsPipeline) {
+	iBindGPUGraphicsPipeline(rp, pipeline)
 }
 
 // SDL_SetGPUViewport - Sets the current viewport state on a command buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUViewport)
-func (render_pass *GPURenderPass) SetGPUViewport(viewport *GPUViewport) {
-	panic("not implemented")
-	iSetGPUViewport(render_pass, viewport)
+func (rp *GPURenderPass) SetGPUViewport(viewport *GPUViewport) {
+	iSetGPUViewport(rp, viewport)
 }
 
 // SDL_SetGPUScissor - Sets the current scissor state on a command buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUScissor)
-func (render_pass *GPURenderPass) SetGPUScissor(scissor *Rect) {
-	panic("not implemented")
-	iSetGPUScissor(render_pass, scissor)
+func (rp *GPURenderPass) SetScissor(scissor *Rect) {
+	iSetGPUScissor(rp, scissor)
 }
 
 // SDL_SetGPUStencilReference - Sets the current stencil reference value on a command buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUStencilReference)
-func (render_pass *GPURenderPass) SetGPUStencilReference(reference uint8) {
-	panic("not implemented")
-	iSetGPUStencilReference(render_pass, reference)
+func (rp *GPURenderPass) SetStencilReference(reference uint8) {
+	iSetGPUStencilReference(rp, reference)
 }
 
 // SDL_BindGPUVertexBuffers - Binds vertex buffers on a command buffer for use with subsequent draw calls.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexBuffers)
-func (render_pass *GPURenderPass) BindGPUVertexBuffers(first_slot uint32, bindings *GPUBufferBinding, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUVertexBuffers(render_pass, first_slot, bindings, num_bindings)
+func (rp *GPURenderPass) BindVertexBuffers(bindings []GPUBufferBinding) {
+	iBindGPUVertexBuffers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
 }
 
 // SDL_BindGPUIndexBuffer - Binds an index buffer on a command buffer for use with subsequent draw calls.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUIndexBuffer)
-func (render_pass *GPURenderPass) BindGPUIndexBuffer(binding *GPUBufferBinding, index_element_size GPUIndexElementSize) {
-	panic("not implemented")
-	iBindGPUIndexBuffer(render_pass, binding, index_element_size)
+func (rp *GPURenderPass) BindIndexBuffer(binding *GPUBufferBinding, indexElementSize GPUIndexElementSize) {
+	iBindGPUIndexBuffer(rp, binding, indexElementSize)
 }
 
 // SDL_BindGPUVertexSamplers - Binds texture-sampler pairs for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexSamplers)
-func (render_pass *GPURenderPass) BindGPUVertexSamplers(first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUVertexSamplers(render_pass, first_slot, texture_sampler_bindings, num_bindings)
+func (rp *GPURenderPass) BindVertexSamplers(bindings []GPUTextureSamplerBinding) {
+	iBindGPUVertexSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
 }
 
 // SDL_BindGPUVertexStorageTextures - Binds storage textures for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageTextures)
-func (render_pass *GPURenderPass) BindGPUVertexStorageTextures(first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUVertexStorageTextures(render_pass, first_slot, storage_textures, num_bindings)
+func (rp *GPURenderPass) BindVertexStorageTextures(textures []*GPUTexture) {
+	iBindGPUVertexStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
 }
 
 // SDL_BindGPUVertexStorageBuffers - Binds storage buffers for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers)
-func (render_pass *GPURenderPass) BindGPUVertexStorageBuffers(first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUVertexStorageBuffers(render_pass, first_slot, storage_buffers, num_bindings)
+func (rp *GPURenderPass) BindVertexStorageBuffers(buffers []*GPUBuffer) {
+	iBindGPUVertexStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
 }
 
 // SDL_BindGPUFragmentSamplers - Binds texture-sampler pairs for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentSamplers)
-func (render_pass *GPURenderPass) BindGPUFragmentSamplers(first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUFragmentSamplers(render_pass, first_slot, texture_sampler_bindings, num_bindings)
+func (rp *GPURenderPass) BindFragmentSamplers(bindings []GPUTextureSamplerBinding) {
+	iBindGPUFragmentSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
 }
 
 // SDL_BindGPUFragmentStorageTextures - Binds storage textures for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageTextures)
-func (render_pass *GPURenderPass) BindGPUFragmentStorageTextures(first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUFragmentStorageTextures(render_pass, first_slot, storage_textures, num_bindings)
+func (rp *GPURenderPass) BindFragmentStorageTextures(textures []*GPUTexture) {
+	iBindGPUFragmentStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
 }
 
 // SDL_BindGPUFragmentStorageBuffers - Binds storage buffers for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers)
-func (render_pass *GPURenderPass) BindGPUFragmentStorageBuffers(first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-	panic("not implemented")
-	iBindGPUFragmentStorageBuffers(render_pass, first_slot, storage_buffers, num_bindings)
+func (rp *GPURenderPass) BindFragmentStorageBuffers(buffers []*GPUBuffer) {
+	iBindGPUFragmentStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
 }
 
 // SDL_DrawGPUIndexedPrimitives - Draws data using bound graphics state with an index buffer and instancing enabled.
 // (https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitives)
-func (render_pass *GPURenderPass) DrawGPUIndexedPrimitives(num_indices uint32, num_instances uint32, first_index uint32, vertex_offset int32, first_instance uint32) {
-	panic("not implemented")
-	iDrawGPUIndexedPrimitives(render_pass, num_indices, num_instances, first_index, vertex_offset, first_instance)
+func (rp *GPURenderPass) DrawIndexedPrimitives(numIndices, numInstances, firstIndex uint32, vertexOffset int32, firstInstance uint32) {
+	iDrawGPUIndexedPrimitives(rp, numIndices, numInstances, firstIndex, vertexOffset, firstInstance)
 }
 
 // SDL_DrawGPUPrimitives - Draws data using bound graphics state.
 // (https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitives)
-func (render_pass *GPURenderPass) DrawGPUPrimitives(num_vertices uint32, num_instances uint32, first_vertex uint32, first_instance uint32) {
-	panic("not implemented")
-	iDrawGPUPrimitives(render_pass, num_vertices, num_instances, first_vertex, first_instance)
+func (rp *GPURenderPass) DrawPrimitives(numVertices, numInstances, firstVertex, firstInstance uint32) {
+	iDrawGPUPrimitives(rp, numVertices, numInstances, firstVertex, firstInstance)
 }
 
 // SDL_DrawGPUPrimitivesIndirect - Draws data using bound graphics state and with draw parameters set from a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitivesIndirect)
-func (render_pass *GPURenderPass) DrawGPUPrimitivesIndirect(buffer *GPUBuffer, offset uint32, draw_count uint32) {
-	panic("not implemented")
-	iDrawGPUPrimitivesIndirect(render_pass, buffer, offset, draw_count)
+func (rp *GPURenderPass) DrawPrimitivesIndirect(buffer *GPUBuffer, offset, drawCount uint32) {
+	iDrawGPUPrimitivesIndirect(rp, buffer, offset, drawCount)
 }
 
 // SDL_DrawGPUIndexedPrimitivesIndirect - Draws data using bound graphics state with an index buffer enabled and with draw parameters set from a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitivesIndirect)
-func (render_pass *GPURenderPass) DrawGPUIndexedPrimitivesIndirect(buffer *GPUBuffer, offset uint32, draw_count uint32) {
-	panic("not implemented")
-	iDrawGPUIndexedPrimitivesIndirect(render_pass, buffer, offset, draw_count)
+func (rp *GPURenderPass) DrawIndexedPrimitivesIndirect(buffer *GPUBuffer, offset, drawCount uint32) {
+	iDrawGPUIndexedPrimitivesIndirect(rp, buffer, offset, drawCount)
 }
 
 // SDL_EndGPURenderPass - Ends the given render pass.
 // (https://wiki.libsdl.org/SDL3/SDL_EndGPURenderPass)
-func (render_pass *GPURenderPass) End() {
-	panic("not implemented")
-	iEndGPURenderPass(render_pass)
+func (rp *GPURenderPass) End() {
+	iEndGPURenderPass(rp)
 }
 
 // AsyncIOQueue
@@ -1303,28 +1320,32 @@ func (render_pass *GPURenderPass) End() {
 // SDL_DestroyAsyncIOQueue - Destroy a previously-created async I/O task queue.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyAsyncIOQueue)
 func (queue *AsyncIOQueue) Destroy() {
-	panic("not implemented")
 	iDestroyAsyncIOQueue(queue)
 }
 
 // SDL_GetAsyncIOResult - Query an async I/O task queue for completed tasks.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOResult)
-func (queue *AsyncIOQueue) AsyncIOResult(outcome *AsyncIOOutcome) bool {
-	panic("not implemented")
-	return iGetAsyncIOResult(queue, outcome)
+func (queue *AsyncIOQueue) Result() (*AsyncIOOutcome, bool) {
+	var outcome AsyncIOOutcome
+
+	ret := iGetAsyncIOResult(queue, &outcome)
+
+	return &outcome, ret
 }
 
 // SDL_WaitAsyncIOResult - Block until an async I/O task queue has a completed task.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitAsyncIOResult)
-func (queue *AsyncIOQueue) WaitAsyncIOResult(outcome *AsyncIOOutcome, timeoutMS int32) bool {
-	panic("not implemented")
-	return iWaitAsyncIOResult(queue, outcome, timeoutMS)
+func (queue *AsyncIOQueue) WaitAsyncIOResult(timeoutMS int32) (*AsyncIOOutcome, bool) {
+	var outcome AsyncIOOutcome
+
+	ret := iWaitAsyncIOResult(queue, &outcome, timeoutMS)
+
+	return &outcome, ret
 }
 
 // SDL_SignalAsyncIOQueue - Wake up any threads that are blocking in SDL_WaitAsyncIOResult().
 // (https://wiki.libsdl.org/SDL3/SDL_SignalAsyncIOQueue)
 func (queue *AsyncIOQueue) Signal() {
-	panic("not implemented")
 	iSignalAsyncIOQueue(queue)
 }
 
@@ -1332,15 +1353,13 @@ func (queue *AsyncIOQueue) Signal() {
 
 // SDL_MapRGB - Map an RGB triple to an opaque pixel value for a given pixel format.
 // (https://wiki.libsdl.org/SDL3/SDL_MapRGB)
-func (format *PixelFormatDetails) MapRGB(palette *Palette, r uint8, g uint8, b uint8) uint32 {
-	panic("not implemented")
+func (format *PixelFormatDetails) MapRGB(palette *Palette, r, g, b uint8) uint32 {
 	return iMapRGB(format, palette, r, g, b)
 }
 
 // SDL_MapRGBA - Map an RGBA quadruple to a pixel value for a given pixel format.
 // (https://wiki.libsdl.org/SDL3/SDL_MapRGBA)
-func (format *PixelFormatDetails) MapRGBA(palette *Palette, r uint8, g uint8, b uint8, a uint8) uint32 {
-	panic("not implemented")
+func (format *PixelFormatDetails) MapRGBA(palette *Palette, r, g, b, a uint8) uint32 {
 	return iMapRGBA(format, palette, r, g, b, a)
 }
 
@@ -1357,212 +1376,287 @@ func (surface *Surface) Destroy() {
 
 // SDL_GetSurfaceProperties - Get the properties associated with a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceProperties)
-func (surface *Surface) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetSurfaceProperties(surface)
+func (surface *Surface) Properties() (PropertiesID, error) {
+	props := iGetSurfaceProperties(surface)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_SetSurfaceColorspace - Set the colorspace used by a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorspace)
-func (surface *Surface) SetColorspace(colorspace Colorspace) bool {
-	panic("not implemented")
-	return iSetSurfaceColorspace(surface, colorspace)
+func (surface *Surface) SetColorspace(colorspace Colorspace) error {
+	if !iSetSurfaceColorspace(surface, colorspace) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetSurfaceColorspace - Get the colorspace used by a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorspace)
 func (surface *Surface) Colorspace() Colorspace {
-	panic("not implemented")
 	return iGetSurfaceColorspace(surface)
 }
 
 // SDL_CreateSurfacePalette - Create a palette and associate it with a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateSurfacePalette)
-func (surface *Surface) CreatePalette() *Palette {
-	panic("not implemented")
-	return iCreateSurfacePalette(surface)
+func (surface *Surface) CreatePalette() (*Palette, error) {
+	palette := iCreateSurfacePalette(surface)
+	if palette == nil {
+		return nil, internal.LastErr()
+	}
+
+	return palette, nil
 }
 
 // SDL_SetSurfacePalette - Set the palette used by a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfacePalette)
-func (surface *Surface) SetPalette(palette *Palette) bool {
-	panic("not implemented")
-	return iSetSurfacePalette(surface, palette)
+func (surface *Surface) SetPalette(palette *Palette) error {
+	if !iSetSurfacePalette(surface, palette) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetSurfacePalette - Get the palette used by a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfacePalette)
 func (surface *Surface) Palette() *Palette {
-	panic("not implemented")
 	return iGetSurfacePalette(surface)
 }
 
 // SDL_AddSurfaceAlternateImage - Add an alternate version of a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_AddSurfaceAlternateImage)
-func (surface *Surface) AddAlternateImage(image *Surface) bool {
-	panic("not implemented")
-	return iAddSurfaceAlternateImage(surface, image)
+func (surface *Surface) AddAlternateImage(image *Surface) error {
+	if !iAddSurfaceAlternateImage(surface, image) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SurfaceHasAlternateImages - Return whether a surface has alternate versions available.
 // (https://wiki.libsdl.org/SDL3/SDL_SurfaceHasAlternateImages)
 func (surface *Surface) HasAlternateImages() bool {
-	panic("not implemented")
 	return iSurfaceHasAlternateImages(surface)
 }
 
 // SDL_GetSurfaceImages - Get an array including all versions of a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceImages)
-func (surface *Surface) Images(count *int32) **Surface {
-	panic("not implemented")
-	//return iGetSurfaceImages(surface, count)
+func (surface *Surface) Images() ([]*Surface, error) {
+	var count int32
+
+	ptr := iGetSurfaceImages(surface, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[*Surface](ptr, int(count)), nil
 }
 
 // SDL_RemoveSurfaceAlternateImages - Remove all alternate versions of a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_RemoveSurfaceAlternateImages)
 func (surface *Surface) RemoveAlternateImages() {
-	panic("not implemented")
 	iRemoveSurfaceAlternateImages(surface)
 }
 
 // SDL_LockSurface - Set up a surface for directly accessing the pixels.
 // (https://wiki.libsdl.org/SDL3/SDL_LockSurface)
-func (surface *Surface) Lock() bool {
-	panic("not implemented")
-	return iLockSurface(surface)
+func (surface *Surface) Lock() error {
+	if !iLockSurface(surface) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_UnlockSurface - Release a surface after directly accessing the pixels.
 // (https://wiki.libsdl.org/SDL3/SDL_UnlockSurface)
 func (surface *Surface) Unlock() {
-	panic("not implemented")
 	iUnlockSurface(surface)
 }
 
 // SDL_SaveBMP_IO - Save a surface to a seekable SDL data stream in BMP format.
 // (https://wiki.libsdl.org/SDL3/SDL_SaveBMP_IO)
-func (surface *Surface) SaveBMP_IO(dst *IOStream, closeio bool) bool {
-	panic("not implemented")
-	return iSaveBMP_IO(surface, dst, closeio)
+func (surface *Surface) SaveBMP_IO(dst *IOStream, closeio bool) error {
+	if !iSaveBMP_IO(surface, dst, closeio) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SaveBMP - Save a surface to a file.
 // (https://wiki.libsdl.org/SDL3/SDL_SaveBMP)
-func (surface *Surface) SaveBMP(file string) bool {
-	panic("not implemented")
-	return iSaveBMP(surface, file)
+func (surface *Surface) SaveBMP(file string) error {
+	if !iSaveBMP(surface, file) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetSurfaceRLE - Set the RLE acceleration hint for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceRLE)
-func (surface *Surface) SetRLE(enabled bool) bool {
-	panic("not implemented")
-	return iSetSurfaceRLE(surface, enabled)
+func (surface *Surface) SetRLE(enabled bool) error {
+	if !iSetSurfaceRLE(surface, enabled) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SurfaceHasRLE - Returns whether the surface is RLE enabled.
 // (https://wiki.libsdl.org/SDL3/SDL_SurfaceHasRLE)
 func (surface *Surface) HasRLE() bool {
-	panic("not implemented")
 	return iSurfaceHasRLE(surface)
 }
 
 // SDL_SetSurfaceColorKey - Set the color key (transparent pixel) in a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorKey)
-func (surface *Surface) SetColorKey(enabled bool, key uint32) bool {
-	panic("not implemented")
-	return iSetSurfaceColorKey(surface, enabled, key)
+func (surface *Surface) SetColorKey(enabled bool, key uint32) error {
+	if !iSetSurfaceColorKey(surface, enabled, key) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SurfaceHasColorKey - Returns whether the surface has a color key.
 // (https://wiki.libsdl.org/SDL3/SDL_SurfaceHasColorKey)
 func (surface *Surface) HasColorKey() bool {
-	panic("not implemented")
 	return iSurfaceHasColorKey(surface)
 }
 
 // SDL_GetSurfaceColorKey - Get the color key (transparent pixel) for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorKey)
-func (surface *Surface) ColorKey(key *uint32) bool {
-	panic("not implemented")
-	return iGetSurfaceColorKey(surface, key)
+func (surface *Surface) ColorKey() (uint32, error) {
+	var key uint32
+	if !iGetSurfaceColorKey(surface, &key) {
+		return 0, internal.LastErr()
+	}
+
+	return key, nil
 }
 
 // SDL_SetSurfaceColorMod - Set an additional color value multiplied into blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorMod)
-func (surface *Surface) SetColorMod(r uint8, g uint8, b uint8) bool {
-	panic("not implemented")
-	return iSetSurfaceColorMod(surface, r, g, b)
+func (surface *Surface) SetColorMod(r, g, b uint8) error {
+	if !iSetSurfaceColorMod(surface, r, g, b) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetSurfaceColorMod - Get the additional color value multiplied into blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorMod)
-func (surface *Surface) ColorMod(r *uint8, g *uint8, b *uint8) bool {
-	panic("not implemented")
-	return iGetSurfaceColorMod(surface, r, g, b)
+func (surface *Surface) ColorMod() (uint8, uint8, uint8, error) {
+	var r, g, b uint8
+
+	if !iGetSurfaceColorMod(surface, &r, &g, &b) {
+		return 0, 0, 0, internal.LastErr()
+	}
+
+	return r, g, b, nil
 }
 
 // SDL_SetSurfaceAlphaMod - Set an additional alpha value used in blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceAlphaMod)
-func (surface *Surface) SetAlphaMod(alpha uint8) bool {
-	panic("not implemented")
-	return iSetSurfaceAlphaMod(surface, alpha)
+func (surface *Surface) SetAlphaMod(alpha uint8) error {
+	if !iSetSurfaceAlphaMod(surface, alpha) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetSurfaceAlphaMod - Get the additional alpha value used in blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceAlphaMod)
-func (surface *Surface) AlphaMod(alpha *uint8) bool {
-	panic("not implemented")
-	return iGetSurfaceAlphaMod(surface, alpha)
+func (surface *Surface) AlphaMod() (uint8, error) {
+	var alpha uint8
+
+	if !iGetSurfaceAlphaMod(surface, &alpha) {
+		return 0, internal.LastErr()
+	}
+
+	return alpha, nil
 }
 
 // SDL_SetSurfaceBlendMode - Set the blend mode used for blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceBlendMode)
-func (surface *Surface) SetBlendMode(blendMode BlendMode) bool {
-	panic("not implemented")
-	return iSetSurfaceBlendMode(surface, blendMode)
+func (surface *Surface) SetBlendMode(blendMode BlendMode) error {
+	if !iSetSurfaceBlendMode(surface, blendMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetSurfaceBlendMode - Get the blend mode used for blit operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceBlendMode)
-func (surface *Surface) BlendMode(blendMode *BlendMode) bool {
-	panic("not implemented")
-	return iGetSurfaceBlendMode(surface, blendMode)
+func (surface *Surface) BlendMode() (BlendMode, error) {
+	var mode BlendMode
+
+	if !iGetSurfaceBlendMode(surface, &mode) {
+		return mode, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // SDL_SetSurfaceClipRect - Set the clipping rectangle for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_SetSurfaceClipRect)
 func (surface *Surface) SetClipRect(rect *Rect) bool {
-	panic("not implemented")
 	return iSetSurfaceClipRect(surface, rect)
 }
 
 // SDL_GetSurfaceClipRect - Get the clipping rectangle for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_GetSurfaceClipRect)
-func (surface *Surface) ClipRect(rect *Rect) bool {
-	panic("not implemented")
-	return iGetSurfaceClipRect(surface, rect)
+func (surface *Surface) ClipRect() (*Rect, error) {
+	var rect Rect
+
+	if !iGetSurfaceClipRect(surface, &rect) {
+		return nil, internal.LastErr()
+	}
+
+	return &rect, nil
 }
 
 // SDL_FlipSurface - Flip a surface vertically or horizontally.
 // (https://wiki.libsdl.org/SDL3/SDL_FlipSurface)
-func (surface *Surface) Flip(flip FlipMode) bool {
-	panic("not implemented")
-	return iFlipSurface(surface, flip)
+func (surface *Surface) Flip(flip FlipMode) error {
+	if !iFlipSurface(surface, flip) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_DuplicateSurface - Creates a new surface identical to the existing surface.
 // (https://wiki.libsdl.org/SDL3/SDL_DuplicateSurface)
-func (surface *Surface) Duplicate() *Surface {
-	panic("not implemented")
-	return iDuplicateSurface(surface)
+func (surface *Surface) Duplicate() (*Surface, error) {
+	dup := iDuplicateSurface(surface)
+	if dup == nil {
+		return nil, internal.LastErr()
+	}
+
+	return dup, nil
 }
 
 // SDL_ScaleSurface - Creates a new surface identical to the existing surface, scaled to the desired size.
 // (https://wiki.libsdl.org/SDL3/SDL_ScaleSurface)
-func (surface *Surface) Scale(width int32, height int32, scaleMode ScaleMode) *Surface {
-	panic("not implemented")
-	return iScaleSurface(surface, width, height, scaleMode)
+func (surface *Surface) Scale(width, height int32, scaleMode ScaleMode) (*Surface, error) {
+	scaled := iScaleSurface(surface, width, height, scaleMode)
+	if scaled == nil {
+		return nil, internal.LastErr()
+	}
+
+	return scaled, nil
 }
 
 // SDL_ConvertSurface - Copy an existing surface to a new surface of the specified format.
@@ -1578,23 +1672,33 @@ func (surface *Surface) Convert(format PixelFormat) (*Surface, error) {
 
 // SDL_ConvertSurfaceAndColorspace - Copy an existing surface to a new surface of the specified format and colorspace.
 // (https://wiki.libsdl.org/SDL3/SDL_ConvertSurfaceAndColorspace)
-func (surface *Surface) ConvertAndColorspace(format PixelFormat, palette *Palette, colorspace Colorspace, props PropertiesID) *Surface {
-	panic("not implemented")
-	return iConvertSurfaceAndColorspace(surface, format, palette, colorspace, props)
+func (surface *Surface) ConvertWithColorspace(format PixelFormat, palette *Palette, colorspace Colorspace, props PropertiesID) (*Surface, error) {
+	converted := iConvertSurfaceAndColorspace(surface, format, palette, colorspace, props)
+	if converted == nil {
+		return nil, internal.LastErr()
+	}
+
+	return converted, nil
 }
 
 // SDL_PremultiplySurfaceAlpha - Premultiply the alpha in a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_PremultiplySurfaceAlpha)
-func (surface *Surface) PremultiplyAlpha(linear bool) bool {
-	panic("not implemented")
-	return iPremultiplySurfaceAlpha(surface, linear)
+func (surface *Surface) PremultiplyAlpha(linear bool) error {
+	if !iPremultiplySurfaceAlpha(surface, linear) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ClearSurface - Clear a surface with a specific color, with floating point precision.
 // (https://wiki.libsdl.org/SDL3/SDL_ClearSurface)
-func (surface *Surface) Clear(r float32, g float32, b float32, a float32) bool {
-	panic("not implemented")
-	return iClearSurface(surface, r, g, b, a)
+func (surface *Surface) Clear(r, g, b, a float32) error {
+	if !iClearSurface(surface, r, g, b, a) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_FillSurfaceRect - Perform a fast fill of a rectangle with a specific color.
@@ -1609,107 +1713,149 @@ func (dst *Surface) FillRect(rect *Rect, color uint32) error {
 
 // SDL_FillSurfaceRects - Perform a fast fill of a set of rectangles with a specific color.
 // (https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRects)
-func (dst *Surface) FillRects(rects *Rect, count int32, color uint32) bool {
-	panic("not implemented")
-	return iFillSurfaceRects(dst, rects, count, color)
+func (dst *Surface) FillRects(rects []Rect, color uint32) error {
+	if !iFillSurfaceRects(dst, unsafe.SliceData(rects), int32(len(rects)), color) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurface - Performs a fast blit from the source surface to the destination surface with clipping.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurface)
-func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) bool {
-	panic("not implemented")
-	return iBlitSurface(src, srcrect, dst, dstrect)
+func (src *Surface) Blit(srcrect *Rect, dst *Surface, dstrect *Rect) error {
+	if !iBlitSurface(src, srcrect, dst, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurfaceUnchecked - Perform low-level surface blitting only.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUnchecked)
-func (src *Surface) BlitUnchecked(srcrect *Rect, dst *Surface, dstrect *Rect) bool {
-	panic("not implemented")
-	return iBlitSurfaceUnchecked(src, srcrect, dst, dstrect)
+func (src *Surface) BlitUnchecked(srcrect *Rect, dst *Surface, dstrect *Rect) error {
+	if !iBlitSurfaceUnchecked(src, srcrect, dst, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurfaceScaled - Perform a scaled blit to a destination surface, which may be of a different format.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceScaled)
-func (src *Surface) BlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
-	panic("not implemented")
-	return iBlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode)
+func (src *Surface) BlitScaled(srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) error {
+	if !iBlitSurfaceScaled(src, srcrect, dst, dstrect, scaleMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurfaceUncheckedScaled - Perform low-level surface scaled blitting only.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUncheckedScaled)
-func (src *Surface) BlitUncheckedScaled(srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
-	panic("not implemented")
-	return iBlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode)
+func (src *Surface) BlitUncheckedScaled(srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) error {
+	if !iBlitSurfaceUncheckedScaled(src, srcrect, dst, dstrect, scaleMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurfaceTiled - Perform a tiled blit to a destination surface, which may be of a different format.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiled)
-func (src *Surface) BlitTiled(srcrect *Rect, dst *Surface, dstrect *Rect) bool {
-	panic("not implemented")
-	return iBlitSurfaceTiled(src, srcrect, dst, dstrect)
+func (src *Surface) BlitTiled(srcrect *Rect, dst *Surface, dstrect *Rect) error {
+	if !iBlitSurfaceTiled(src, srcrect, dst, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurfaceTiledWithScale - Perform a scaled and tiled blit to a destination surface, which may be of a different format.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiledWithScale)
-func (src *Surface) BlitTiledWithScale(srcrect *Rect, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool {
-	panic("not implemented")
-	return iBlitSurfaceTiledWithScale(src, srcrect, scale, scaleMode, dst, dstrect)
+func (src *Surface) BlitTiledWithScale(srcrect *Rect, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) error {
+	if !iBlitSurfaceTiledWithScale(src, srcrect, scale, scaleMode, dst, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_BlitSurface9Grid - Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format.
 // (https://wiki.libsdl.org/SDL3/SDL_BlitSurface9Grid)
-func (src *Surface) Blit9Grid(srcrect *Rect, left_width int32, right_width int32, top_height int32, bottom_height int32, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) bool {
-	panic("not implemented")
-	return iBlitSurface9Grid(src, srcrect, left_width, right_width, top_height, bottom_height, scale, scaleMode, dst, dstrect)
+func (src *Surface) Blit9Grid(srcrect *Rect, leftWidth, rightWidth, topHeight, bottomHeight int32, scale float32, scaleMode ScaleMode, dst *Surface, dstrect *Rect) error {
+	if !iBlitSurface9Grid(src, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, scaleMode, dst, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_MapSurfaceRGB - Map an RGB triple to an opaque pixel value for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGB)
-func (surface *Surface) MapRGB(r uint8, g uint8, b uint8) uint32 {
-	panic("not implemented")
+func (surface *Surface) MapRGB(r, g, b uint8) uint32 {
 	return iMapSurfaceRGB(surface, r, g, b)
 }
 
 // SDL_MapSurfaceRGBA - Map an RGBA quadruple to a pixel value for a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGBA)
-func (surface *Surface) MapRGBA(r uint8, g uint8, b uint8, a uint8) uint32 {
-	panic("not implemented")
+func (surface *Surface) MapRGBA(r, g, b, a uint8) uint32 {
 	return iMapSurfaceRGBA(surface, r, g, b, a)
 }
 
 // SDL_ReadSurfacePixel - Retrieves a single pixel from a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixel)
-func (surface *Surface) ReadPixel(x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool {
-	panic("not implemented")
-	return iReadSurfacePixel(surface, x, y, r, g, b, a)
+func (surface *Surface) ReadPixel(x, y int32) (uint8, uint8, uint8, uint8, error) {
+	var r, g, b, a uint8
+
+	if !iReadSurfacePixel(surface, x, y, &r, &g, &b, &a) {
+		return 0, 0, 0, 0, internal.LastErr()
+	}
+
+	return r, g, b, a, nil
 }
 
 // SDL_ReadSurfacePixelFloat - Retrieves a single pixel from a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixelFloat)
-func (surface *Surface) ReadPixelFloat(x int32, y int32, r *float32, g *float32, b *float32, a *float32) bool {
-	panic("not implemented")
-	return iReadSurfacePixelFloat(surface, x, y, r, g, b, a)
+func (surface *Surface) ReadPixelFloat(x, y int32) (float32, float32, float32, float32, error) {
+	var r, g, b, a float32
+
+	if !iReadSurfacePixelFloat(surface, x, y, &r, &g, &b, &a) {
+		return 0, 0, 0, 0, internal.LastErr()
+	}
+
+	return r, g, b, a, nil
 }
 
 // SDL_WriteSurfacePixel - Writes a single pixel to a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixel)
-func (surface *Surface) WritePixel(x int32, y int32, r uint8, g uint8, b uint8, a uint8) bool {
-	panic("not implemented")
-	return iWriteSurfacePixel(surface, x, y, r, g, b, a)
+func (surface *Surface) WritePixel(x, y int32, r, g, b, a uint8) error {
+	if !iWriteSurfacePixel(surface, x, y, r, g, b, a) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WriteSurfacePixelFloat - Writes a single pixel to a surface.
 // (https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixelFloat)
-func (surface *Surface) WritePixelFloat(x int32, y int32, r float32, g float32, b float32, a float32) bool {
-	panic("not implemented")
-	return iWriteSurfacePixelFloat(surface, x, y, r, g, b, a)
+func (surface *Surface) WritePixelFloat(x, y int32, r, g, b, a float32) error {
+	if !iWriteSurfacePixelFloat(surface, x, y, r, g, b, a) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_CreateColorCursor - Create a color cursor.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateColorCursor)
-func (surface *Surface) CreateColorCursor(hot_x int32, hot_y int32) *Cursor {
-	panic("not implemented")
-	return iCreateColorCursor(surface, hot_x, hot_y)
+func (surface *Surface) CreateColorCursor(hotX, hotY int32) (*Cursor, error) {
+	cursor := iCreateColorCursor(surface, hotX, hotY)
+	if cursor == nil {
+		return nil, internal.LastErr()
+	}
+
+	return cursor, nil
 }
 
 // SDL_CreateSoftwareRenderer - Create a 2D software rendering context for a surface.
@@ -1728,7 +1874,6 @@ func (surface *Surface) CreateSoftwareRenderer() (*Renderer, error) {
 // SDL_GetWindowFromEvent - Get window associated with an event.
 // (https://wiki.libsdl.org/SDL3/SDL_GetWindowFromEvent)
 func (event *Event) Window() *Window {
-	panic("not implemented")
 	return iGetWindowFromEvent(event)
 }
 
@@ -1737,416 +1882,500 @@ func (event *Event) Window() *Window {
 // SDL_DestroyGPUDevice - Destroys a GPU context previously returned by SDL_CreateGPUDevice.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyGPUDevice)
 func (device *GPUDevice) Destroy() {
-	panic("not implemented")
 	iDestroyGPUDevice(device)
 }
 
 // SDL_GetGPUDeviceDriver - Returns the name of the backend used to create this GPU context.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceDriver)
 func (device *GPUDevice) Driver() string {
-	panic("not implemented")
 	return iGetGPUDeviceDriver(device)
 }
 
 // SDL_GetGPUShaderFormats - Returns the supported shader formats for this GPU context.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats)
-func (device *GPUDevice) GPUShaderFormats() GPUShaderFormat {
-	panic("not implemented")
+func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 	return iGetGPUShaderFormats(device)
 }
 
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline)
-func (device *GPUDevice) CreateGPUComputePipeline(createinfo *GPUComputePipelineCreateInfo) *GPUComputePipeline {
-	panic("not implemented")
-	return iCreateGPUComputePipeline(device, createinfo)
+func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
+	pipeline := iCreateGPUComputePipeline(device, createinfo)
+	if pipeline == nil {
+		return nil, internal.LastErr()
+	}
+
+	return pipeline, nil
 }
 
 // SDL_CreateGPUGraphicsPipeline - Creates a pipeline object to be used in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline)
-func (device *GPUDevice) CreateGPUGraphicsPipeline(createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
-	panic("not implemented")
-	return iCreateGPUGraphicsPipeline(device, createinfo)
+func (device *GPUDevice) CreateGraphicsPipeline(createinfo *GPUGraphicsPipelineCreateInfo) (*GPUGraphicsPipeline, error) {
+	pipeline := iCreateGPUGraphicsPipeline(device, createinfo)
+	if pipeline == nil {
+		return nil, internal.LastErr()
+	}
+
+	return pipeline, nil
 }
 
 // SDL_CreateGPUSampler - Creates a sampler object to be used when binding textures in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUSampler)
-func (device *GPUDevice) CreateGPUSampler(createinfo *GPUSamplerCreateInfo) *GPUSampler {
-	panic("not implemented")
+func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) *GPUSampler {
 	return iCreateGPUSampler(device, createinfo)
 }
 
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader)
-func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) *GPUShader {
-	panic("not implemented")
-	return iCreateGPUShader(device, createinfo)
+func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) (*GPUShader, error) {
+	shader := iCreateGPUShader(device, createinfo)
+	if shader == nil {
+		return nil, internal.LastErr()
+	}
+
+	return shader, nil
 }
 
 // SDL_CreateGPUTexture - Creates a texture object to be used in graphics or compute workflows.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUTexture)
-func (device *GPUDevice) CreateGPUTexture(createinfo *GPUTextureCreateInfo) *GPUTexture {
-	panic("not implemented")
-	return iCreateGPUTexture(device, createinfo)
+func (device *GPUDevice) CreateTexture(createinfo *GPUTextureCreateInfo) (*GPUTexture, error) {
+	texture := iCreateGPUTexture(device, createinfo)
+	if texture == nil {
+		return nil, internal.LastErr()
+	}
+
+	return texture, nil
 }
 
 // SDL_CreateGPUBuffer - Creates a buffer object to be used in graphics or compute workflows.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUBuffer)
-func (device *GPUDevice) CreateGPUBuffer(createinfo *GPUBufferCreateInfo) *GPUBuffer {
-	panic("not implemented")
-	return iCreateGPUBuffer(device, createinfo)
+func (device *GPUDevice) CreateBuffer(createinfo *GPUBufferCreateInfo) (*GPUBuffer, error) {
+	buffer := iCreateGPUBuffer(device, createinfo)
+	if buffer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return buffer, nil
 }
 
 // SDL_CreateGPUTransferBuffer - Creates a transfer buffer to be used when uploading to or downloading from graphics resources.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUTransferBuffer)
-func (device *GPUDevice) CreateGPUTransferBuffer(createinfo *GPUTransferBufferCreateInfo) *GPUTransferBuffer {
-	panic("not implemented")
-	return iCreateGPUTransferBuffer(device, createinfo)
+func (device *GPUDevice) CreateTransferBuffer(createinfo *GPUTransferBufferCreateInfo) (*GPUTransferBuffer, error) {
+	buffer := iCreateGPUTransferBuffer(device, createinfo)
+	if buffer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return buffer, nil
 }
 
 // SDL_SetGPUBufferName - Sets an arbitrary string constant to label a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUBufferName)
-func (device *GPUDevice) SetGPUBufferName(buffer *GPUBuffer, text string) {
-	panic("not implemented")
+func (device *GPUDevice) SetBufferName(buffer *GPUBuffer, text string) {
 	iSetGPUBufferName(device, buffer, text)
 }
 
 // SDL_SetGPUTextureName - Sets an arbitrary string constant to label a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUTextureName)
-func (device *GPUDevice) SetGPUTextureName(texture *GPUTexture, text string) {
-	panic("not implemented")
+func (device *GPUDevice) SetTextureName(texture *GPUTexture, text string) {
 	iSetGPUTextureName(device, texture, text)
 }
 
 // SDL_ReleaseGPUTexture - Frees the given texture as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTexture)
-func (device *GPUDevice) ReleaseGPUTexture(texture *GPUTexture) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseTexture(texture *GPUTexture) {
 	iReleaseGPUTexture(device, texture)
 }
 
 // SDL_ReleaseGPUSampler - Frees the given sampler as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUSampler)
-func (device *GPUDevice) ReleaseGPUSampler(sampler *GPUSampler) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseSampler(sampler *GPUSampler) {
 	iReleaseGPUSampler(device, sampler)
 }
 
 // SDL_ReleaseGPUBuffer - Frees the given buffer as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUBuffer)
-func (device *GPUDevice) ReleaseGPUBuffer(buffer *GPUBuffer) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseBuffer(buffer *GPUBuffer) {
 	iReleaseGPUBuffer(device, buffer)
 }
 
 // SDL_ReleaseGPUTransferBuffer - Frees the given transfer buffer as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTransferBuffer)
-func (device *GPUDevice) ReleaseGPUTransferBuffer(transfer_buffer *GPUTransferBuffer) {
-	panic("not implemented")
-	iReleaseGPUTransferBuffer(device, transfer_buffer)
+func (device *GPUDevice) ReleaseTransferBuffer(buffer *GPUTransferBuffer) {
+	iReleaseGPUTransferBuffer(device, buffer)
 }
 
 // SDL_ReleaseGPUComputePipeline - Frees the given compute pipeline as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUComputePipeline)
-func (device *GPUDevice) ReleaseGPUComputePipeline(compute_pipeline *GPUComputePipeline) {
-	panic("not implemented")
-	iReleaseGPUComputePipeline(device, compute_pipeline)
+func (device *GPUDevice) ReleaseComputePipeline(pipeline *GPUComputePipeline) {
+	iReleaseGPUComputePipeline(device, pipeline)
 }
 
 // SDL_ReleaseGPUShader - Frees the given shader as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUShader)
-func (device *GPUDevice) ReleaseGPUShader(shader *GPUShader) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseShader(shader *GPUShader) {
 	iReleaseGPUShader(device, shader)
 }
 
 // SDL_ReleaseGPUGraphicsPipeline - Frees the given graphics pipeline as soon as it is safe to do so.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUGraphicsPipeline)
-func (device *GPUDevice) ReleaseGPUGraphicsPipeline(graphics_pipeline *GPUGraphicsPipeline) {
-	panic("not implemented")
-	iReleaseGPUGraphicsPipeline(device, graphics_pipeline)
+func (device *GPUDevice) ReleaseGraphicsPipeline(pipeline *GPUGraphicsPipeline) {
+	iReleaseGPUGraphicsPipeline(device, pipeline)
 }
 
 // SDL_AcquireGPUCommandBuffer - Acquire a command buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_AcquireGPUCommandBuffer)
-func (device *GPUDevice) AcquireGPUCommandBuffer() *GPUCommandBuffer {
-	panic("not implemented")
-	return iAcquireGPUCommandBuffer(device)
+func (device *GPUDevice) AcquireCommandBuffer() (*GPUCommandBuffer, error) {
+	buffer := iAcquireGPUCommandBuffer(device)
+	if buffer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return buffer, nil
 }
 
 // SDL_MapGPUTransferBuffer - Maps a transfer buffer into application address space.
 // (https://wiki.libsdl.org/SDL3/SDL_MapGPUTransferBuffer)
-func (device *GPUDevice) MapGPUTransferBuffer(transfer_buffer *GPUTransferBuffer, cycle bool) *byte {
-	panic("not implemented")
-	//return iMapGPUTransferBuffer(device, transfer_buffer, cycle)
+func (device *GPUDevice) MapTransferBuffer(buffer *GPUTransferBuffer, cycle bool) (uintptr, error) {
+	ptr := iMapGPUTransferBuffer(device, buffer, cycle)
+	if ptr == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return ptr, nil
 }
 
 // SDL_UnmapGPUTransferBuffer - Unmaps a previously mapped transfer buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_UnmapGPUTransferBuffer)
-func (device *GPUDevice) UnmapGPUTransferBuffer(transfer_buffer *GPUTransferBuffer) {
-	panic("not implemented")
-	iUnmapGPUTransferBuffer(device, transfer_buffer)
+func (device *GPUDevice) UnmapTransferBuffer(buffer *GPUTransferBuffer) {
+	iUnmapGPUTransferBuffer(device, buffer)
 }
 
 // SDL_WindowSupportsGPUSwapchainComposition - Determines whether a swapchain composition is supported by the window.
 // (https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUSwapchainComposition)
-func (device *GPUDevice) WindowSupportsGPUSwapchainComposition(window *Window, swapchain_composition GPUSwapchainComposition) bool {
-	panic("not implemented")
-	return iWindowSupportsGPUSwapchainComposition(device, window, swapchain_composition)
+func (device *GPUDevice) WindowSupportsSwapchainComposition(window *Window, swapchainComposition GPUSwapchainComposition) bool {
+	return iWindowSupportsGPUSwapchainComposition(device, window, swapchainComposition)
 }
 
 // SDL_WindowSupportsGPUPresentMode - Determines whether a presentation mode is supported by the window.
 // (https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUPresentMode)
-func (device *GPUDevice) WindowSupportsGPUPresentMode(window *Window, present_mode GPUPresentMode) bool {
-	panic("not implemented")
-	return iWindowSupportsGPUPresentMode(device, window, present_mode)
+func (device *GPUDevice) WindowSupportsPresentMode(window *Window, presentMode GPUPresentMode) bool {
+	return iWindowSupportsGPUPresentMode(device, window, presentMode)
 }
 
 // SDL_ClaimWindowForGPUDevice - Claims a window, creating a swapchain structure for it.
 // (https://wiki.libsdl.org/SDL3/SDL_ClaimWindowForGPUDevice)
-func (device *GPUDevice) ClaimWindowFor(window *Window) bool {
-	panic("not implemented")
-	return iClaimWindowForGPUDevice(device, window)
+func (device *GPUDevice) ClaimWindow(window *Window) error {
+	if !iClaimWindowForGPUDevice(device, window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ReleaseWindowFromGPUDevice - Unclaims a window, destroying its swapchain structure.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseWindowFromGPUDevice)
-func (device *GPUDevice) ReleaseWindowFrom(window *Window) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseWindow(window *Window) {
 	iReleaseWindowFromGPUDevice(device, window)
 }
 
 // SDL_SetGPUSwapchainParameters - Changes the swapchain parameters for the given claimed window.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUSwapchainParameters)
-func (device *GPUDevice) SetGPUSwapchainParameters(window *Window, swapchain_composition GPUSwapchainComposition, present_mode GPUPresentMode) bool {
-	panic("not implemented")
-	return iSetGPUSwapchainParameters(device, window, swapchain_composition, present_mode)
+func (device *GPUDevice) SetSwapchainParameters(window *Window, swapchainComposition GPUSwapchainComposition, presentMode GPUPresentMode) error {
+	if !iSetGPUSwapchainParameters(device, window, swapchainComposition, presentMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetGPUAllowedFramesInFlight - Configures the maximum allowed number of frames in flight.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGPUAllowedFramesInFlight)
-func (device *GPUDevice) SetGPUAllowedFramesInFlight(allowed_frames_in_flight uint32) bool {
-	panic("not implemented")
-	return iSetGPUAllowedFramesInFlight(device, allowed_frames_in_flight)
+func (device *GPUDevice) SetAllowedFramesInFlight(allowedFramesInFlight uint32) error {
+	if !iSetGPUAllowedFramesInFlight(device, allowedFramesInFlight) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetGPUSwapchainTextureFormat - Obtains the texture format of the swapchain for the given window.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGPUSwapchainTextureFormat)
-func (device *GPUDevice) GPUSwapchainTextureFormat(window *Window) GPUTextureFormat {
-	panic("not implemented")
+func (device *GPUDevice) SwapchainTextureFormat(window *Window) GPUTextureFormat {
 	return iGetGPUSwapchainTextureFormat(device, window)
 }
 
 // SDL_WaitForGPUSwapchain - Blocks the thread until a swapchain texture is available to be acquired.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitForGPUSwapchain)
-func (device *GPUDevice) WaitForGPUSwapchain(window *Window) bool {
-	panic("not implemented")
-	return iWaitForGPUSwapchain(device, window)
+func (device *GPUDevice) WaitForSwapchain(window *Window) error {
+	if !iWaitForGPUSwapchain(device, window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WaitForGPUIdle - Blocks the thread until the GPU is completely idle.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitForGPUIdle)
-func (device *GPUDevice) WaitForGPUIdle() bool {
-	panic("not implemented")
-	return iWaitForGPUIdle(device)
+func (device *GPUDevice) WaitForIdle() error {
+	if !iWaitForGPUIdle(device) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_WaitForGPUFences - Blocks the thread until the given fences are signaled.
 // (https://wiki.libsdl.org/SDL3/SDL_WaitForGPUFences)
-func (device *GPUDevice) WaitForGPUFences(wait_all bool, fences **GPUFence, num_fences uint32) bool {
-	panic("not implemented")
-	return iWaitForGPUFences(device, wait_all, fences, num_fences)
+func (device *GPUDevice) WaitForFences(waitAll bool, fences []*GPUFence) error {
+	if !iWaitForGPUFences(device, waitAll, unsafe.SliceData(fences), uint32(len(fences))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_QueryGPUFence - Checks the status of a fence.
 // (https://wiki.libsdl.org/SDL3/SDL_QueryGPUFence)
-func (device *GPUDevice) QueryGPUFence(fence *GPUFence) bool {
-	panic("not implemented")
+func (device *GPUDevice) QueryFence(fence *GPUFence) bool {
 	return iQueryGPUFence(device, fence)
 }
 
 // SDL_ReleaseGPUFence - Releases a fence obtained from SDL_SubmitGPUCommandBufferAndAcquireFence.
 // (https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUFence)
-func (device *GPUDevice) ReleaseGPUFence(fence *GPUFence) {
-	panic("not implemented")
+func (device *GPUDevice) ReleaseFence(fence *GPUFence) {
 	iReleaseGPUFence(device, fence)
 }
 
 // SDL_GPUTextureSupportsFormat - Determines whether a texture format is supported for a given type and usage.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsFormat)
-func (device *GPUDevice) GPUTextureSupportsFormat(format GPUTextureFormat, typ GPUTextureType, usage GPUTextureUsageFlags) bool {
-	panic("not implemented")
+func (device *GPUDevice) TextureSupportsFormat(format GPUTextureFormat, typ GPUTextureType, usage GPUTextureUsageFlags) bool {
 	return iGPUTextureSupportsFormat(device, format, typ, usage)
 }
 
 // SDL_GPUTextureSupportsSampleCount - Determines if a sample count for a texture format is supported.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsSampleCount)
-func (device *GPUDevice) GPUTextureSupportsSampleCount(format GPUTextureFormat, sample_count GPUSampleCount) bool {
-	panic("not implemented")
-	return iGPUTextureSupportsSampleCount(device, format, sample_count)
+func (device *GPUDevice) TextureSupportsSampleCount(format GPUTextureFormat, sampleCount GPUSampleCount) bool {
+	return iGPUTextureSupportsSampleCount(device, format, sampleCount)
 }
 
 // Haptic
 
 // SDL_GetHapticID - Get the instance ID of an opened haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticID)
-func (haptic *Haptic) ID() HapticID {
-	panic("not implemented")
-	return iGetHapticID(haptic)
+func (haptic *Haptic) ID() (HapticID, error) {
+	id := iGetHapticID(haptic)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetHapticName - Get the implementation dependent name of a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticName)
-func (haptic *Haptic) Name() string {
-	panic("not implemented")
-	return iGetHapticName(haptic)
+func (haptic *Haptic) Name() (string, error) {
+	name := iGetHapticName(haptic)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_CloseHaptic - Close a haptic device previously opened with SDL_OpenHaptic().
 // (https://wiki.libsdl.org/SDL3/SDL_CloseHaptic)
 func (haptic *Haptic) Close() {
-	panic("not implemented")
 	iCloseHaptic(haptic)
 }
 
 // SDL_GetMaxHapticEffects - Get the number of effects a haptic device can store.
 // (https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffects)
-func (haptic *Haptic) MaxEffects() int32 {
-	panic("not implemented")
-	return iGetMaxHapticEffects(haptic)
+func (haptic *Haptic) MaxEffects() (int32, error) {
+	count := iGetMaxHapticEffects(haptic)
+	if count < 0 {
+		return count, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_GetMaxHapticEffectsPlaying - Get the number of effects a haptic device can play at the same time.
 // (https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffectsPlaying)
-func (haptic *Haptic) MaxEffectsPlaying() int32 {
-	panic("not implemented")
-	return iGetMaxHapticEffectsPlaying(haptic)
+func (haptic *Haptic) MaxEffectsPlaying() (int32, error) {
+	count := iGetMaxHapticEffectsPlaying(haptic)
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_GetHapticFeatures - Get the haptic device's supported features in bitwise manner.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticFeatures)
-func (haptic *Haptic) Features() uint32 {
-	panic("not implemented")
-	return iGetHapticFeatures(haptic)
+func (haptic *Haptic) Features() (uint32, error) {
+	mask := iGetHapticFeatures(haptic)
+	if mask == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return mask, nil
 }
 
 // SDL_GetNumHapticAxes - Get the number of haptic axes the device has.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumHapticAxes)
-func (haptic *Haptic) NumAxes() int32 {
-	panic("not implemented")
-	return iGetNumHapticAxes(haptic)
+func (haptic *Haptic) NumAxes() (int32, error) {
+	count := iGetNumHapticAxes(haptic)
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
 }
 
 // SDL_HapticEffectSupported - Check to see if an effect is supported by a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticEffectSupported)
 func (haptic *Haptic) EffectSupported(effect *HapticEffect) bool {
-	panic("not implemented")
 	return iHapticEffectSupported(haptic, effect)
 }
 
 // SDL_CreateHapticEffect - Create a new haptic effect on a specified device.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateHapticEffect)
-func (haptic *Haptic) CreateEffect(effect *HapticEffect) int32 {
-	panic("not implemented")
-	return iCreateHapticEffect(haptic, effect)
+func (haptic *Haptic) CreateEffect(effect *HapticEffect) (int32, error) {
+	id := iCreateHapticEffect(haptic, effect)
+	if id == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_UpdateHapticEffect - Update the properties of an effect.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateHapticEffect)
-func (haptic *Haptic) UpdateEffect(effect int32, data *HapticEffect) bool {
-	panic("not implemented")
-	return iUpdateHapticEffect(haptic, effect, data)
+func (haptic *Haptic) UpdateEffect(effect int32, data *HapticEffect) error {
+	if !iUpdateHapticEffect(haptic, effect, data) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RunHapticEffect - Run the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_RunHapticEffect)
-func (haptic *Haptic) RunEffect(effect int32, iterations uint32) bool {
-	panic("not implemented")
-	return iRunHapticEffect(haptic, effect, iterations)
+func (haptic *Haptic) RunEffect(effect int32, iterations uint32) error {
+	if !iRunHapticEffect(haptic, effect, iterations) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_StopHapticEffect - Stop the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_StopHapticEffect)
-func (haptic *Haptic) StopEffect(effect int32) bool {
-	panic("not implemented")
-	return iStopHapticEffect(haptic, effect)
+func (haptic *Haptic) StopEffect(effect int32) error {
+	if !iStopHapticEffect(haptic, effect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_DestroyHapticEffect - Destroy a haptic effect on the device.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyHapticEffect)
 func (haptic *Haptic) DestroyEffect(effect int32) {
-	panic("not implemented")
 	iDestroyHapticEffect(haptic, effect)
 }
 
 // SDL_GetHapticEffectStatus - Get the status of the current effect on the specified haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticEffectStatus)
 func (haptic *Haptic) EffectStatus(effect int32) bool {
-	panic("not implemented")
 	return iGetHapticEffectStatus(haptic, effect)
 }
 
 // SDL_SetHapticGain - Set the global gain of the specified haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_SetHapticGain)
-func (haptic *Haptic) SetGain(gain int32) bool {
-	panic("not implemented")
-	return iSetHapticGain(haptic, gain)
+func (haptic *Haptic) SetGain(gain int32) error {
+	if !iSetHapticGain(haptic, gain) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetHapticAutocenter - Set the global autocenter of the device.
 // (https://wiki.libsdl.org/SDL3/SDL_SetHapticAutocenter)
-func (haptic *Haptic) SetAutocenter(autocenter int32) bool {
-	panic("not implemented")
-	return iSetHapticAutocenter(haptic, autocenter)
+func (haptic *Haptic) SetAutocenter(autocenter int32) error {
+	if !iSetHapticAutocenter(haptic, autocenter) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_PauseHaptic - Pause a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_PauseHaptic)
-func (haptic *Haptic) Pause() bool {
-	panic("not implemented")
-	return iPauseHaptic(haptic)
+func (haptic *Haptic) Pause() error {
+	if !iPauseHaptic(haptic) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_ResumeHaptic - Resume a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_ResumeHaptic)
-func (haptic *Haptic) Resume() bool {
-	panic("not implemented")
-	return iResumeHaptic(haptic)
+func (haptic *Haptic) Resume() error {
+	if !iResumeHaptic(haptic) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_StopHapticEffects - Stop all the currently playing effects on a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_StopHapticEffects)
-func (haptic *Haptic) StopEffects() bool {
-	panic("not implemented")
-	return iStopHapticEffects(haptic)
+func (haptic *Haptic) StopEffects() error {
+	if !iStopHapticEffects(haptic) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_HapticRumbleSupported - Check whether rumble is supported on a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticRumbleSupported)
 func (haptic *Haptic) RumbleSupported() bool {
-	panic("not implemented")
 	return iHapticRumbleSupported(haptic)
 }
 
 // SDL_InitHapticRumble - Initialize a haptic device for simple rumble playback.
 // (https://wiki.libsdl.org/SDL3/SDL_InitHapticRumble)
-func (haptic *Haptic) InitRumble() bool {
-	panic("not implemented")
-	return iInitHapticRumble(haptic)
+func (haptic *Haptic) InitRumble() error {
+	if !iInitHapticRumble(haptic) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_PlayHapticRumble - Run a simple rumble effect on a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_PlayHapticRumble)
-func (haptic *Haptic) PlayRumble(strength float32, length uint32) bool {
-	panic("not implemented")
-	return iPlayHapticRumble(haptic, strength, length)
+func (haptic *Haptic) PlayRumble(strength float32, length uint32) error {
+	if !iPlayHapticRumble(haptic, strength, length) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_StopHapticRumble - Stop the simple rumble on a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_StopHapticRumble)
-func (haptic *Haptic) StopRumble() bool {
-	panic("not implemented")
-	return iStopHapticRumble(haptic)
+func (haptic *Haptic) StopRumble() error {
+	if !iStopHapticRumble(haptic) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // FileDialogType
@@ -2162,135 +2391,151 @@ func (typ FileDialogType) ShowFileDialogWithProperties(callback DialogFileCallba
 
 // SDL_GetGamepadMapping - Get the current mapping of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadMapping)
-func (gamepad *Gamepad) Mapping() string {
-	panic("not implemented")
-	//return iGetGamepadMapping(gamepad)
+func (gamepad *Gamepad) Mapping() (string, error) {
+	ptr := iGetGamepadMapping(gamepad)
+	if ptr == 0 {
+		return "", internal.LastErr()
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrString(ptr), nil
 }
 
 // SDL_GetGamepadProperties - Get the properties associated with an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadProperties)
-func (gamepad *Gamepad) Properties() PropertiesID {
-	panic("not implemented")
-	return iGetGamepadProperties(gamepad)
+func (gamepad *Gamepad) Properties() (PropertiesID, error) {
+	props := iGetGamepadProperties(gamepad)
+	if props == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return props, nil
 }
 
 // SDL_GetGamepadID - Get the instance ID of an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadID)
-func (gamepad *Gamepad) ID() JoystickID {
-	panic("not implemented")
-	return iGetGamepadID(gamepad)
+func (gamepad *Gamepad) ID() (JoystickID, error) {
+	id := iGetGamepadID(gamepad)
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	return id, nil
 }
 
 // SDL_GetGamepadName - Get the implementation-dependent name for an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadName)
 func (gamepad *Gamepad) Name() string {
-	panic("not implemented")
 	return iGetGamepadName(gamepad)
 }
 
 // SDL_GetGamepadPath - Get the implementation-dependent path for an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadPath)
 func (gamepad *Gamepad) Path() string {
-	panic("not implemented")
 	return iGetGamepadPath(gamepad)
 }
 
 // SDL_GetGamepadType - Get the type of an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadType)
 func (gamepad *Gamepad) Type() GamepadType {
-	panic("not implemented")
 	return iGetGamepadType(gamepad)
 }
 
 // SDL_GetRealGamepadType - Get the type of an opened gamepad, ignoring any mapping override.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRealGamepadType)
 func (gamepad *Gamepad) RealType() GamepadType {
-	panic("not implemented")
 	return iGetRealGamepadType(gamepad)
 }
 
 // SDL_GetGamepadPlayerIndex - Get the player index of an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadPlayerIndex)
 func (gamepad *Gamepad) PlayerIndex() int32 {
-	panic("not implemented")
 	return iGetGamepadPlayerIndex(gamepad)
 }
 
 // SDL_SetGamepadPlayerIndex - Set the player index of an opened gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGamepadPlayerIndex)
-func (gamepad *Gamepad) SetPlayerIndex(player_index int32) bool {
-	panic("not implemented")
-	return iSetGamepadPlayerIndex(gamepad, player_index)
+func (gamepad *Gamepad) SetPlayerIndex(playerIndex int32) error {
+	if !iSetGamepadPlayerIndex(gamepad, playerIndex) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetGamepadVendor - Get the USB vendor ID of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadVendor)
 func (gamepad *Gamepad) Vendor() uint16 {
-	panic("not implemented")
 	return iGetGamepadVendor(gamepad)
 }
 
 // SDL_GetGamepadProduct - Get the USB product ID of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadProduct)
 func (gamepad *Gamepad) Product() uint16 {
-	panic("not implemented")
 	return iGetGamepadProduct(gamepad)
 }
 
 // SDL_GetGamepadProductVersion - Get the product version of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadProductVersion)
 func (gamepad *Gamepad) ProductVersion() uint16 {
-	panic("not implemented")
 	return iGetGamepadProductVersion(gamepad)
 }
 
 // SDL_GetGamepadFirmwareVersion - Get the firmware version of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadFirmwareVersion)
 func (gamepad *Gamepad) FirmwareVersion() uint16 {
-	panic("not implemented")
 	return iGetGamepadFirmwareVersion(gamepad)
 }
 
 // SDL_GetGamepadSerial - Get the serial number of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadSerial)
 func (gamepad *Gamepad) Serial() string {
-	panic("not implemented")
 	return iGetGamepadSerial(gamepad)
 }
 
 // SDL_GetGamepadSteamHandle - Get the Steam Input handle of an opened gamepad, if available.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadSteamHandle)
 func (gamepad *Gamepad) SteamHandle() uint64 {
-	panic("not implemented")
 	return iGetGamepadSteamHandle(gamepad)
 }
 
 // SDL_GetGamepadConnectionState - Get the connection state of a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadConnectionState)
-func (gamepad *Gamepad) ConnectionState() JoystickConnectionState {
-	panic("not implemented")
-	return iGetGamepadConnectionState(gamepad)
+func (gamepad *Gamepad) ConnectionState() (JoystickConnectionState, error) {
+	state := iGetGamepadConnectionState(gamepad)
+	if state == JOYSTICK_CONNECTION_INVALID {
+		return JOYSTICK_CONNECTION_INVALID, internal.LastErr()
+	}
+
+	return state, nil
 }
 
 // SDL_GetGamepadPowerInfo - Get the battery state of a gamepad.
+// Returns power state, percent.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadPowerInfo)
-func (gamepad *Gamepad) PowerInfo(percent *int32) PowerState {
-	panic("not implemented")
-	return iGetGamepadPowerInfo(gamepad, percent)
+func (gamepad *Gamepad) PowerInfo() (PowerState, int32) {
+	var percent int32
+
+	state := iGetGamepadPowerInfo(gamepad, &percent)
+
+	return state, percent
 }
 
 // SDL_GamepadConnected - Check if a gamepad has been opened and is currently connected.
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadConnected)
 func (gamepad *Gamepad) Connected() bool {
-	panic("not implemented")
 	return iGamepadConnected(gamepad)
 }
 
 // SDL_GetGamepadJoystick - Get the underlying joystick from a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadJoystick)
-func (gamepad *Gamepad) Joystick() *Joystick {
-	panic("not implemented")
-	return iGetGamepadJoystick(gamepad)
+func (gamepad *Gamepad) Joystick() (*Joystick, error) {
+	joystick := iGetGamepadJoystick(gamepad)
+	if joystick == nil {
+		return nil, internal.LastErr()
+	}
+
+	return joystick, nil
 }
 
 // SDL_GetGamepadBindings - Get the SDL joystick layer bindings for a gamepad.
@@ -2310,49 +2555,42 @@ func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
 // SDL_GamepadHasAxis - Query whether a gamepad has a given axis.
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadHasAxis)
 func (gamepad *Gamepad) HasAxis(axis GamepadAxis) bool {
-	panic("not implemented")
 	return iGamepadHasAxis(gamepad, axis)
 }
 
 // SDL_GetGamepadAxis - Get the current state of an axis control on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadAxis)
 func (gamepad *Gamepad) Axis(axis GamepadAxis) int16 {
-	panic("not implemented")
 	return iGetGamepadAxis(gamepad, axis)
 }
 
 // SDL_GamepadHasButton - Query whether a gamepad has a given button.
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadHasButton)
 func (gamepad *Gamepad) HasButton(button GamepadButton) bool {
-	panic("not implemented")
 	return iGamepadHasButton(gamepad, button)
 }
 
 // SDL_GetGamepadButton - Get the current state of a button on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadButton)
 func (gamepad *Gamepad) Button(button GamepadButton) bool {
-	panic("not implemented")
 	return iGetGamepadButton(gamepad, button)
 }
 
 // SDL_GetGamepadButtonLabel - Get the label of a button on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabel)
 func (gamepad *Gamepad) ButtonLabel(button GamepadButton) GamepadButtonLabel {
-	panic("not implemented")
 	return iGetGamepadButtonLabel(gamepad, button)
 }
 
 // SDL_GetNumGamepadTouchpads - Get the number of touchpads on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpads)
 func (gamepad *Gamepad) NumTouchpads() int32 {
-	panic("not implemented")
 	return iGetNumGamepadTouchpads(gamepad)
 }
 
 // SDL_GetNumGamepadTouchpadFingers - Get the number of supported simultaneous fingers on a touchpad on a game gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpadFingers)
 func (gamepad *Gamepad) NumTouchpadFingers(touchpad int32) int32 {
-	panic("not implemented")
 	return iGetNumGamepadTouchpadFingers(gamepad, touchpad)
 }
 
@@ -2366,28 +2604,28 @@ func (gamepad *Gamepad) TouchpadFinger(touchpad int32, finger int32, down *bool,
 // SDL_GamepadHasSensor - Return whether a gamepad has a particular sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadHasSensor)
 func (gamepad *Gamepad) HasSensor(typ SensorType) bool {
-	panic("not implemented")
 	return iGamepadHasSensor(gamepad, typ)
 }
 
 // SDL_SetGamepadSensorEnabled - Set whether data reporting for a gamepad sensor is enabled.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGamepadSensorEnabled)
-func (gamepad *Gamepad) SetSensorEnabled(typ SensorType, enabled bool) bool {
-	panic("not implemented")
-	return iSetGamepadSensorEnabled(gamepad, typ, enabled)
+func (gamepad *Gamepad) SetSensorEnabled(typ SensorType, enabled bool) error {
+	if !iSetGamepadSensorEnabled(gamepad, typ, enabled) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GamepadSensorEnabled - Query whether sensor data reporting is enabled for a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEnabled)
 func (gamepad *Gamepad) SensorEnabled(typ SensorType) bool {
-	panic("not implemented")
 	return iGamepadSensorEnabled(gamepad, typ)
 }
 
 // SDL_GetGamepadSensorDataRate - Get the data rate (number of events per second) of a gamepad sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadSensorDataRate)
 func (gamepad *Gamepad) SensorDataRate(typ SensorType) float32 {
-	panic("not implemented")
 	return iGetGamepadSensorDataRate(gamepad, typ)
 }
 
@@ -2400,36 +2638,48 @@ func (gamepad *Gamepad) SensorData(typ SensorType, data *float32, num_values int
 
 // SDL_RumbleGamepad - Start a rumble effect on a gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_RumbleGamepad)
-func (gamepad *Gamepad) Rumble(low_frequency_rumble uint16, high_frequency_rumble uint16, duration_ms uint32) bool {
-	panic("not implemented")
-	return iRumbleGamepad(gamepad, low_frequency_rumble, high_frequency_rumble, duration_ms)
+func (gamepad *Gamepad) Rumble(lowFrequency, highFrequency uint16, durationMS uint32) error {
+	if !iRumbleGamepad(gamepad, lowFrequency, highFrequency, durationMS) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RumbleGamepadTriggers - Start a rumble effect in the gamepad's triggers.
 // (https://wiki.libsdl.org/SDL3/SDL_RumbleGamepadTriggers)
-func (gamepad *Gamepad) RumbleTriggers(left_rumble uint16, right_rumble uint16, duration_ms uint32) bool {
-	panic("not implemented")
-	return iRumbleGamepadTriggers(gamepad, left_rumble, right_rumble, duration_ms)
+func (gamepad *Gamepad) RumbleTriggers(left, right uint16, durationMS uint32) error {
+	if !iRumbleGamepadTriggers(gamepad, left, right, durationMS) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetGamepadLED - Update a gamepad's LED color.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGamepadLED)
-func (gamepad *Gamepad) SetLED(red uint8, green uint8, blue uint8) bool {
-	panic("not implemented")
-	return iSetGamepadLED(gamepad, red, green, blue)
+func (gamepad *Gamepad) SetLED(red, green, blue uint8) error {
+	if !iSetGamepadLED(gamepad, red, green, blue) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SendGamepadEffect - Send a gamepad specific effect packet.
 // (https://wiki.libsdl.org/SDL3/SDL_SendGamepadEffect)
-func (gamepad *Gamepad) SendEffect(data *byte, size int32) bool {
-	panic("not implemented")
-	//return iSendGamepadEffect(gamepad, data, size)
+func (gamepad *Gamepad) SendEffect(data []byte) error {
+	if !iSendGamepadEffect(gamepad, uintptr(unsafe.Pointer(unsafe.SliceData(data))), int32(len(data))) {
+		return internal.LastErr()
+	}
+	runtime.KeepAlive(data)
+
+	return nil
 }
 
 // SDL_CloseGamepad - Close a gamepad previously opened with SDL_OpenGamepad().
 // (https://wiki.libsdl.org/SDL3/SDL_CloseGamepad)
 func (gamepad *Gamepad) Close() {
-	panic("not implemented")
 	iCloseGamepad(gamepad)
 }
 
