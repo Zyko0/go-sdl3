@@ -13,7 +13,7 @@ const (
 )
 
 func main() {
-	defer binsdl.Load().Unload() // sdl.LoadLibrary(pathToSDLBinary)
+	defer binsdl.Load().Unload() // sdl.LoadLibrary(sdl.Path())
 	defer sdl.Quit()
 
 	err := sdl.Init(sdl.INIT_VIDEO)

@@ -10,6 +10,21 @@ import (
 	puregogen "github.com/Zyko0/purego-gen"
 )
 
+// Path returns the library installation path based on the operating
+// system
+func Path() string {
+	switch runtime.GOOS {
+	case "windows":
+		return "SDL3.dll"
+	case "linux", "freebsd":
+		return "libSDL3.so.0"
+	case "darwin":
+		return "libSDL3.dylib"
+	default:
+		return ""
+	}
+}
+
 // LoadLibrary loads SDL library and initializes all functions.
 func LoadLibrary(path string) error {
 	var err error

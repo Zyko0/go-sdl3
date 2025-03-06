@@ -10,8 +10,7 @@ import (
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
-// SDL_GetError - Retrieve a message about the last error that occurred on the current thread.
-// (https://wiki.libsdl.org/SDL3/SDL_GetError)
+// We can just initialize everything here in js/wasm env
 func init() {
 	// Wait for runtime initialization
 	// TODO: find a cleaner way than loop+sleep?
@@ -32,6 +31,11 @@ func init() {
 		}
 		return nil
 	})
+}
+
+// Path returns an empty string in js/wasm environment.
+func Path() string {
+	return ""
 }
 
 // LoadLibrary does nothing in js/wasm environment.
