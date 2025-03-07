@@ -11,7 +11,7 @@ See [COVERAGE.md](COVERAGE.md) for the list of fonctions that are and are not im
 - [methods.go](methods.go) contains pointer receiver functions, some don't make sense as they have been generated as a starting point by [cmd/methodgen](cmd/methodgen/) and need tweaking. Most of these methods `panic` and need a developer input to be sanitized (idiomatic Go) and checked against SDL3 spec.
 - [sdl_functions_js.go](sdl_functions_js.go) is in a similar state as methods.go, most of the code has been generated as a starting point but need to be fixed, sanitized and mostly tested. For this reason most of the functions panic by default.
 - Functions are defined unexposed (with a `i` prefix) and registered to [purego](https://github.com/ebitengine/purego), they have a comment when they require a call to `internal.Free` (you can also find the list of functions requiring sdlFree, in ffi2go/config json files).
-- [extra.go](extra.go) contains glue code that couldn't be generated efficiently.
+- [glue.go](glue.go) contains glue code that couldn't be generated efficiently.
 
 Feel free, to help for testing, examples, expose some functions.
 Also to help re-organize, rename, refactor, as some directions have been taken arbitrarily.

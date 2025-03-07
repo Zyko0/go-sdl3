@@ -270,6 +270,7 @@ var (
 	_addr_SDL_BlitSurfaceUnchecked                  uintptr
 	_addr_SDL_BlitSurfaceScaled                     uintptr
 	_addr_SDL_BlitSurfaceUncheckedScaled            uintptr
+	_addr_SDL_StretchSurface                        uintptr
 	_addr_SDL_BlitSurfaceTiled                      uintptr
 	_addr_SDL_MapSurfaceRGB                         uintptr
 	_addr_SDL_MapSurfaceRGBA                        uintptr
@@ -1972,6 +1973,10 @@ func initialize() {
 	_addr_SDL_BlitSurfaceUncheckedScaled, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_BlitSurfaceUncheckedScaled")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_BlitSurfaceUncheckedScaled")
+	}
+	_addr_SDL_StretchSurface, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_StretchSurface")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_StretchSurface")
 	}
 	_addr_SDL_BlitSurfaceTiled, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_BlitSurfaceTiled")
 	if err != nil {
@@ -5890,6 +5895,11 @@ func initialize() {
 	}
 	iBlitSurfaceUncheckedScaled = func(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_BlitSurfaceUncheckedScaled, uintptr(unsafe.Pointer(src)), uintptr(unsafe.Pointer(srcrect)), uintptr(unsafe.Pointer(dst)), uintptr(unsafe.Pointer(dstrect)), uintptr(scaleMode))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iStretchSurface = func(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_StretchSurface, uintptr(unsafe.Pointer(src)), uintptr(unsafe.Pointer(srcrect)), uintptr(unsafe.Pointer(dst)), uintptr(unsafe.Pointer(dstrect)), uintptr(scaleMode))
 		__r0 := _r0 != 0
 		return __r0
 	}

@@ -29,11 +29,12 @@ tasks:
                 - '{{.DIR}}/{{.LIBRARY}}_structs.gen.go'
                 - '{{.DIR}}/{{.LIBRARY}}_types.gen.go'
                 - '{{.DIR}}/{{.LIBRARY}}_enums.gen.go'
-                - '{{.DIR}}/extra.go'
+                - '{{.DIR}}/glue.go'
         cmds:
             # Generate SDL3 bindings 
             - go run ./cmd/ffi2go --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json"
             - purego-gen --no-warnings --function-name "initialize" --input {{.INPUT}} --extra {{.EXTRA | join ","}}
+            - '{{if eq .LIBRARY "ttf"}}purego-gen --no-warnings --function-name "initialize_ex" --input {{.DIR}}/{{.LIBRARY}}_functions_ex.go --extra {{.EXTRA | join ","}}{{end}}'
 
     gen-methods:
         requires:

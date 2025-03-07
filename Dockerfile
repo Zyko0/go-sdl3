@@ -17,7 +17,7 @@ RUN pip3 install --upgrade cmake
 
 # Clone c2ffi repository
 RUN apt-get install -y git
-RUN git clone https://github.com/rpav/c2ffi.git
+RUN git clone https://github.com/rpav/c2ffi.git --depth 1
 RUN cd c2ffi && git checkout llvm-18.1.0
 
 # Build c2ffi
@@ -26,7 +26,7 @@ RUN cd c2ffi && mkdir -p build && cd build && \
 
 # Clone SDL repository
 RUN git clone https://github.com/libsdl-org/SDL.git && \
-        cd SDL && git checkout tags/release-3.2.2 && \
+        cd SDL && git checkout tags/release-3.2.8 && \
         cp -r include/SDL3 /usr/include/SDL3
 
 # Generate SDL ffi
@@ -35,7 +35,7 @@ RUN /c2ffi/build/bin/c2ffi sdl.c > sdl_ffi.json
 
 # Clone SDL_ttf repository
 RUN git clone https://github.com/libsdl-org/SDL_ttf.git && \
-        cd SDL_ttf && git checkout tags/preview-3.1.0 && \
+        cd SDL_ttf && git checkout tags/release-3.2.0 && \
         cp -r include/SDL3_ttf /usr/include/SDL3_ttf
 
 # Generate SDL_ttf ffi
@@ -53,7 +53,7 @@ RUN /c2ffi/build/bin/c2ffi mixer.c > mixer_ffi.json
 
 # Clone SDL_image repository
 RUN git clone https://github.com/libsdl-org/SDL_image.git && \
-        cd SDL_image && \
+        cd SDL_image && git checkout tags/release-3.2.4 && \
         cp -r include/SDL3_image/ /usr/include/SDL3_image/
 
 # Generate SDL_image ffi

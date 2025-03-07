@@ -8,11 +8,11 @@ type AsyncIOOutcome struct {
 	Asyncio          *AsyncIO
 	Type             AsyncIOTaskType
 	Result           AsyncIOResult
-	Buffer           uintptr
+	Buffer           Pointer
 	Offset           uint64
 	BytesRequested   uint64
 	BytesTransferred uint64
-	Userdata         uintptr
+	Userdata         Pointer
 }
 
 type AsyncIOQueue struct{}
@@ -38,17 +38,17 @@ type Condition struct{}
 type InitState struct {
 	Status   AtomicInt
 	Thread   ThreadID
-	Reserved uintptr
+	Reserved Pointer
 }
 
 type IOStreamInterface struct {
 	Version uint32
-	Size    uintptr
-	Seek    uintptr
-	Read    uintptr
-	Write   uintptr
-	Flush   uintptr
-	Close   uintptr
+	Size    Pointer
+	Seek    Pointer
+	Read    Pointer
+	Write   Pointer
+	Flush   Pointer
+	Close   Pointer
 }
 
 type IOStream struct{}
@@ -191,15 +191,15 @@ type VirtualJoystickDesc struct {
 	Name              string
 	Touchpads         *VirtualJoystickTouchpadDesc
 	Sensors           *VirtualJoystickSensorDesc
-	Userdata          uintptr
-	Update            uintptr
-	SetPlayerIndex    uintptr
-	Rumble            uintptr
-	RumbleTriggers    uintptr
-	SetLED            uintptr
-	SendEffect        uintptr
-	SetSensorsEnabled uintptr
-	Cleanup           uintptr
+	Userdata          Pointer
+	Update            Pointer
+	SetPlayerIndex    Pointer
+	Rumble            Pointer
+	RumbleTriggers    Pointer
+	SetLED            Pointer
+	SendEffect        Pointer
+	SetSensorsEnabled Pointer
+	Cleanup           Pointer
 }
 
 type Gamepad struct{}
@@ -592,8 +592,8 @@ type UserEvent struct {
 	Timestamp uint64
 	WindowID  WindowID
 	Code      int32
-	Data1     uintptr
-	Data2     uintptr
+	Data1     Pointer
+	Data2     Pointer
 }
 
 type PathInfo struct {
@@ -755,7 +755,7 @@ type GPUColorTargetBlendState struct {
 }
 
 type GPUShaderCreateInfo struct {
-	CodeSize           uintptr
+	CodeSize           Pointer
 	Code               *uint8
 	Entrypoint         string
 	Format             GPUShaderFormat
@@ -855,7 +855,7 @@ type GPUGraphicsPipelineCreateInfo struct {
 }
 
 type GPUComputePipelineCreateInfo struct {
-	CodeSize                    uintptr
+	CodeSize                    Pointer
 	Code                        *uint8
 	Entrypoint                  string
 	Format                      GPUShaderFormat
@@ -1085,17 +1085,17 @@ type Texture struct {
 
 type StorageInterface struct {
 	Version        uint32
-	Close          uintptr
-	Ready          uintptr
-	Enumerate      uintptr
-	Info           uintptr
-	ReadFile       uintptr
-	WriteFile      uintptr
-	Mkdir          uintptr
-	Remove         uintptr
-	Rename         uintptr
-	Copy           uintptr
-	SpaceRemaining uintptr
+	Close          Pointer
+	Ready          Pointer
+	Enumerate      Pointer
+	Info           Pointer
+	ReadFile       Pointer
+	WriteFile      Pointer
+	Mkdir          Pointer
+	Remove         Pointer
+	Rename         Pointer
+	Copy           Pointer
+	SpaceRemaining Pointer
 }
 
 type Storage struct{}

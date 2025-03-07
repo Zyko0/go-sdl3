@@ -1337,6 +1337,11 @@ var (
 	//puregogen:function symbol=SDL_BlitSurfaceUncheckedScaled
 	iBlitSurfaceUncheckedScaled func(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool
 
+	// SDL_StretchSurface => Perform a stretched pixel copy from one surface to another.
+	//
+	//puregogen:function symbol=SDL_StretchSurface
+	iStretchSurface func(src *Surface, srcrect *Rect, dst *Surface, dstrect *Rect, scaleMode ScaleMode) bool
+
 	// SDL_BlitSurfaceTiled => Perform a tiled blit to a destination surface, which may be of a different format.
 	//
 	//puregogen:function symbol=SDL_BlitSurfaceTiled
@@ -4845,7 +4850,7 @@ var (
 	//puregogen:function symbol=SDL_GetDayOfWeek
 	iGetDayOfWeek func(year int32, month int32, day int32) int32
 
-	// SDL_GetTicks => Get the number of milliseconds since SDL library initialization.
+	// SDL_GetTicks => Get the number of milliseconds that have elapsed since the SDL library initialization.
 	//
 	//puregogen:function symbol=SDL_GetTicks
 	iGetTicks func() uint64
