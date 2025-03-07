@@ -147,7 +147,7 @@ func SetValue(ptr js.Value, value js.Value, typ string) {
 	}
 }
 
-func GetJSPoiterFromUintptr(ptr uintptr) (js.Value, bool) {
+func GetJSPointerFromUintptr(ptr uintptr) (js.Value, bool) {
 	v, ok := jsPtrsByObject[ptr]
 	if ok {
 		return v.value, true
@@ -228,4 +228,29 @@ func GetByteSliceFromJSPtr(ptr js.Value, count int) []byte {
 	js.CopyBytesToGo(s, arr)
 
 	return s
+}
+
+type Numeric interface {
+	~int8 | ~int16 | ~int32 | ~int64 | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~float32 | ~float64
+}
+
+func GetNumericSliceFromJSPtr[T Numeric](ptr js.Value, count int) []T {
+	s := make([]T, count)
+	bytesCount := count * int(unsafe.Sizeof(T(0)))
+	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+bytesCount)
+	js.CopyBytesToGo(unsafe.Slice((*byte)(unsafe.Pointer(unsafe.SliceData(s))), bytesCount), arr)
+
+	return s
+}
+
+func GetObjectSliceFromJSPtr[T any](ptr js.Value, count int) []*T {
+	ptrs := GetNumericSliceFromJSPtr[int32](ptr, count)
+	ret := make([]*T, count)
+	for i := range ptrs {
+		var obj T
+		CopyJSToObject(&obj, js.ValueOf(ptrs[i]))
+		ret[i] = &obj
+	}
+
+	return ret
 }

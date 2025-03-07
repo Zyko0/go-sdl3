@@ -8,6 +8,7 @@
     "ignored_headers": [
     ],
     "ignored_types": [
+        "Animation"
     ],
     "ignored_functions": [
     ],

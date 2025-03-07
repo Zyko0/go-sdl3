@@ -11,7 +11,7 @@ import (
 
 func initialize() {
 	ifree = func(mem uintptr) {
-		_mem, ok := internal.GetJSPoiterFromUintptr(mem)
+		_mem, ok := internal.GetJSPointerFromUintptr(mem)
 		if !ok {
 			panic("free invalid pointer target")
 		}
