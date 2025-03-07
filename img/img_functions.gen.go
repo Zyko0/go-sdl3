@@ -41,6 +41,96 @@ var (
 	//puregogen:function symbol=IMG_LoadTextureTyped_IO
 	iLoadTextureTyped_IO func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) *sdl.Texture
 
+	// IMG_isAVIF => Detect AVIF image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isAVIF
+	iisAVIF func(src *sdl.IOStream) bool
+
+	// IMG_isICO => Detect ICO image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isICO
+	iisICO func(src *sdl.IOStream) bool
+
+	// IMG_isCUR => Detect CUR image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isCUR
+	iisCUR func(src *sdl.IOStream) bool
+
+	// IMG_isBMP => Detect BMP image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isBMP
+	iisBMP func(src *sdl.IOStream) bool
+
+	// IMG_isGIF => Detect GIF image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isGIF
+	iisGIF func(src *sdl.IOStream) bool
+
+	// IMG_isJPG => Detect JPG image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isJPG
+	iisJPG func(src *sdl.IOStream) bool
+
+	// IMG_isJXL => Detect JXL image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isJXL
+	iisJXL func(src *sdl.IOStream) bool
+
+	// IMG_isLBM => Detect LBM image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isLBM
+	iisLBM func(src *sdl.IOStream) bool
+
+	// IMG_isPCX => Detect PCX image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isPCX
+	iisPCX func(src *sdl.IOStream) bool
+
+	// IMG_isPNG => Detect PNG image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isPNG
+	iisPNG func(src *sdl.IOStream) bool
+
+	// IMG_isPNM => Detect PNM image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isPNM
+	iisPNM func(src *sdl.IOStream) bool
+
+	// IMG_isSVG => Detect SVG image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isSVG
+	iisSVG func(src *sdl.IOStream) bool
+
+	// IMG_isQOI => Detect QOI image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isQOI
+	iisQOI func(src *sdl.IOStream) bool
+
+	// IMG_isTIF => Detect TIFF image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isTIF
+	iisTIF func(src *sdl.IOStream) bool
+
+	// IMG_isXCF => Detect XCF image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isXCF
+	iisXCF func(src *sdl.IOStream) bool
+
+	// IMG_isXPM => Detect XPM image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isXPM
+	iisXPM func(src *sdl.IOStream) bool
+
+	// IMG_isXV => Detect XV image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isXV
+	iisXV func(src *sdl.IOStream) bool
+
+	// IMG_isWEBP => Detect WEBP image data on a readable/seekable SDL_IOStream.
+	//
+	//puregogen:function symbol=IMG_isWEBP
+	iisWEBP func(src *sdl.IOStream) bool
+
 	// IMG_LoadAVIF_IO => Load a AVIF image directly.
 	//
 	//puregogen:function symbol=IMG_LoadAVIF_IO

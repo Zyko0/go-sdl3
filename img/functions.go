@@ -15,7 +15,7 @@ func Version() int32 {
 
 // IMG_LoadTyped_IO - Load an image from an SDL data source into a software surface.
 // (https://wiki.libsdl.org/SDL3_img/IMG_LoadTyped_IO)
-func LoadTyped_IO(src *sdl.IOStream, closeio bool, typ string) (*sdl.Surface, error) {
+func LoadTypedIO(src *sdl.IOStream, closeio bool, typ string) (*sdl.Surface, error) {
 	surface := iLoadTyped_IO(src, closeio, typ)
 	if surface == nil {
 		return nil, internal.LastErr()
@@ -37,7 +37,7 @@ func Load(file string) (*sdl.Surface, error) {
 
 // IMG_Load_IO - Load an image from an SDL data source into a software surface.
 // (https://wiki.libsdl.org/SDL3_img/IMG_Load_IO)
-func Load_IO(src *sdl.IOStream, closeio bool) (*sdl.Surface, error) {
+func LoadIO(src *sdl.IOStream, closeio bool) (*sdl.Surface, error) {
 	surface := iLoad_IO(src, closeio)
 	if surface == nil {
 		return nil, internal.LastErr()
@@ -59,7 +59,7 @@ func LoadTexture(renderer *sdl.Renderer, file string) (*sdl.Texture, error) {
 
 // IMG_LoadTexture_IO - Load an image from an SDL data source into a GPU texture.
 // (https://wiki.libsdl.org/SDL3_img/IMG_LoadTexture_IO)
-func LoadTexture_IO(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) (*sdl.Texture, error) {
+func LoadTextureIO(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) (*sdl.Texture, error) {
 	texture := iLoadTexture_IO(renderer, src, closeio)
 	if texture == nil {
 		return nil, internal.LastErr()
@@ -70,13 +70,121 @@ func LoadTexture_IO(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) (*s
 
 // IMG_LoadTextureTyped_IO - Load an image from an SDL data source into a GPU texture.
 // (https://wiki.libsdl.org/SDL3_img/IMG_LoadTextureTyped_IO)
-func LoadTextureTyped_IO(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) (*sdl.Texture, error) {
+func LoadTextureTypedIO(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) (*sdl.Texture, error) {
 	texture := iLoadTextureTyped_IO(renderer, src, closeio, typ)
 	if texture == nil {
 		return nil, internal.LastErr()
 	}
 
 	return texture, nil
+}
+
+// IMG_isAVIF - Detect AVIF image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isAVIF)
+func IsAVIF(src *sdl.IOStream) bool {
+	return iisAVIF(src)
+}
+
+// IMG_isICO - Detect ICO image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isICO)
+func IsICO(src *sdl.IOStream) bool {
+	return iisICO(src)
+}
+
+// IMG_isCUR - Detect CUR image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isCUR)
+func IsCUR(src *sdl.IOStream) bool {
+	return iisCUR(src)
+}
+
+// IMG_isBMP - Detect BMP image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isBMP)
+func IsBMP(src *sdl.IOStream) bool {
+	return iisBMP(src)
+}
+
+// IMG_isGIF - Detect GIF image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isGIF)
+func IsGIF(src *sdl.IOStream) bool {
+	return iisGIF(src)
+}
+
+// IMG_isJPG - Detect JPG image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isJPG)
+func IsJPG(src *sdl.IOStream) bool {
+	return iisJPG(src)
+}
+
+// IMG_isJXL - Detect JXL image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isJXL)
+func IsJXL(src *sdl.IOStream) bool {
+	return iisJXL(src)
+}
+
+// IMG_isLBM - Detect LBM image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isLBM)
+func IsLBM(src *sdl.IOStream) bool {
+	return iisLBM(src)
+}
+
+// IMG_isPCX - Detect PCX image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isPCX)
+func IsPCX(src *sdl.IOStream) bool {
+	return iisPCX(src)
+}
+
+// IMG_isPNG - Detect PNG image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isPNG)
+func IsPNG(src *sdl.IOStream) bool {
+	return iisPNG(src)
+}
+
+// IMG_isPNM - Detect PNM image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isPNM)
+func IsPNM(src *sdl.IOStream) bool {
+	return iisPNM(src)
+}
+
+// IMG_isSVG - Detect SVG image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isSVG)
+func IsSVG(src *sdl.IOStream) bool {
+	return iisSVG(src)
+}
+
+// IMG_isQOI - Detect QOI image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isQOI)
+func IsQOI(src *sdl.IOStream) bool {
+	return iisQOI(src)
+}
+
+// IMG_isTIF - Detect TIFF image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isTIF)
+func IsTIF(src *sdl.IOStream) bool {
+	return iisTIF(src)
+}
+
+// IMG_isXCF - Detect XCF image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isXCF)
+func IsXCF(src *sdl.IOStream) bool {
+	return iisXCF(src)
+}
+
+// IMG_isXPM - Detect XPM image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isXPM)
+func IsXPM(src *sdl.IOStream) bool {
+	return iisXPM(src)
+}
+
+// IMG_isXV - Detect XV image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isXV)
+func IsXV(src *sdl.IOStream) bool {
+	return iisXV(src)
+}
+
+// IMG_isWEBP - Detect WEBP image data on a readable/seekable SDL_IOStream.
+// (https://wiki.libsdl.org/SDL3_image/IMG_isWEBP)
+func IsWEBP(src *sdl.IOStream) bool {
+	return iisWEBP(src)
 }
 
 // IMG_LoadAVIF_IO - Load a AVIF image directly.

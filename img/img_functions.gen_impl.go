@@ -23,6 +23,24 @@ var (
 	_addr_IMG_LoadTexture              uintptr
 	_addr_IMG_LoadTexture_IO           uintptr
 	_addr_IMG_LoadTextureTyped_IO      uintptr
+	_addr_IMG_isAVIF                   uintptr
+	_addr_IMG_isICO                    uintptr
+	_addr_IMG_isCUR                    uintptr
+	_addr_IMG_isBMP                    uintptr
+	_addr_IMG_isGIF                    uintptr
+	_addr_IMG_isJPG                    uintptr
+	_addr_IMG_isJXL                    uintptr
+	_addr_IMG_isLBM                    uintptr
+	_addr_IMG_isPCX                    uintptr
+	_addr_IMG_isPNG                    uintptr
+	_addr_IMG_isPNM                    uintptr
+	_addr_IMG_isSVG                    uintptr
+	_addr_IMG_isQOI                    uintptr
+	_addr_IMG_isTIF                    uintptr
+	_addr_IMG_isXCF                    uintptr
+	_addr_IMG_isXPM                    uintptr
+	_addr_IMG_isXV                     uintptr
+	_addr_IMG_isWEBP                   uintptr
 	_addr_IMG_LoadAVIF_IO              uintptr
 	_addr_IMG_LoadICO_IO               uintptr
 	_addr_IMG_LoadCUR_IO               uintptr
@@ -90,6 +108,78 @@ func initialize() {
 	_addr_IMG_LoadTextureTyped_IO, err = puregogen.OpenSymbol(_hnd_img, "IMG_LoadTextureTyped_IO")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: IMG_LoadTextureTyped_IO")
+	}
+	_addr_IMG_isAVIF, err = puregogen.OpenSymbol(_hnd_img, "IMG_isAVIF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isAVIF")
+	}
+	_addr_IMG_isICO, err = puregogen.OpenSymbol(_hnd_img, "IMG_isICO")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isICO")
+	}
+	_addr_IMG_isCUR, err = puregogen.OpenSymbol(_hnd_img, "IMG_isCUR")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isCUR")
+	}
+	_addr_IMG_isBMP, err = puregogen.OpenSymbol(_hnd_img, "IMG_isBMP")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isBMP")
+	}
+	_addr_IMG_isGIF, err = puregogen.OpenSymbol(_hnd_img, "IMG_isGIF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isGIF")
+	}
+	_addr_IMG_isJPG, err = puregogen.OpenSymbol(_hnd_img, "IMG_isJPG")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isJPG")
+	}
+	_addr_IMG_isJXL, err = puregogen.OpenSymbol(_hnd_img, "IMG_isJXL")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isJXL")
+	}
+	_addr_IMG_isLBM, err = puregogen.OpenSymbol(_hnd_img, "IMG_isLBM")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isLBM")
+	}
+	_addr_IMG_isPCX, err = puregogen.OpenSymbol(_hnd_img, "IMG_isPCX")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isPCX")
+	}
+	_addr_IMG_isPNG, err = puregogen.OpenSymbol(_hnd_img, "IMG_isPNG")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isPNG")
+	}
+	_addr_IMG_isPNM, err = puregogen.OpenSymbol(_hnd_img, "IMG_isPNM")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isPNM")
+	}
+	_addr_IMG_isSVG, err = puregogen.OpenSymbol(_hnd_img, "IMG_isSVG")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isSVG")
+	}
+	_addr_IMG_isQOI, err = puregogen.OpenSymbol(_hnd_img, "IMG_isQOI")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isQOI")
+	}
+	_addr_IMG_isTIF, err = puregogen.OpenSymbol(_hnd_img, "IMG_isTIF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isTIF")
+	}
+	_addr_IMG_isXCF, err = puregogen.OpenSymbol(_hnd_img, "IMG_isXCF")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isXCF")
+	}
+	_addr_IMG_isXPM, err = puregogen.OpenSymbol(_hnd_img, "IMG_isXPM")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isXPM")
+	}
+	_addr_IMG_isXV, err = puregogen.OpenSymbol(_hnd_img, "IMG_isXV")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isXV")
+	}
+	_addr_IMG_isWEBP, err = puregogen.OpenSymbol(_hnd_img, "IMG_isWEBP")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: IMG_isWEBP")
 	}
 	_addr_IMG_LoadAVIF_IO, err = puregogen.OpenSymbol(_hnd_img, "IMG_LoadAVIF_IO")
 	if err != nil {
@@ -261,6 +351,96 @@ func initialize() {
 	iLoadTextureTyped_IO = func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) *sdl.Texture {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTextureTyped_IO, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(typ))))
 		__r0 := (*sdl.Texture)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		return __r0
+	}
+	iisAVIF = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isAVIF, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisICO = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isICO, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisCUR = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isCUR, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisBMP = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isBMP, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisGIF = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isGIF, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisJPG = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isJPG, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisJXL = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isJXL, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisLBM = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isLBM, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisPCX = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isPCX, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisPNG = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNG, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisPNM = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNM, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisSVG = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isSVG, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisQOI = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isQOI, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisTIF = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isTIF, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisXCF = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isXCF, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisXPM = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isXPM, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisXV = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isXV, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
+		return __r0
+	}
+	iisWEBP = func(src *sdl.IOStream) bool {
+		_r0, _, _ := purego.SyscallN(_addr_IMG_isWEBP, uintptr(unsafe.Pointer(src)))
+		__r0 := _r0 != 0
 		return __r0
 	}
 	iLoadAVIF_IO = func(src *sdl.IOStream) *sdl.Surface {
