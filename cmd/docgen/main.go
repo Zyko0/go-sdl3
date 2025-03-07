@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	reg = regexp.MustCompile(`i([A-Z][A-Za-z_0-9]+)\(`)
+	reg = regexp.MustCompile(`i([A-Za-z][A-Za-z_0-9]+)\(`)
 
 	cfg        assets.Config
 	apiRefCode string

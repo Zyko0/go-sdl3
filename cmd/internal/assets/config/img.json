@@ -2,7 +2,7 @@
     "out_dir": "img",
     "library_name": "img",
     "url_library_suffix": "_image",
-    "prefix":"IMG_",
+    "prefix": "IMG_",
     "quick_api_ref_url": "https://raw.githubusercontent.com/libsdl-org/sdlwiki/refs/heads/main/SDL3_image/QuickReference.md",
     "allowed_include": "/usr/include/SDL3_image/",
     "ignored_headers": [
@@ -12,6 +12,24 @@
     "ignored_functions": [
     ],
     "allowlisted_functions": [
+        "IMG_isAVIF",
+        "IMG_isICO",
+        "IMG_isCUR",
+        "IMG_isBMP",
+        "IMG_isGIF",
+        "IMG_isJPG",
+        "IMG_isJXL",
+        "IMG_isLBM",
+        "IMG_isPCX",
+        "IMG_isPNG",
+        "IMG_isPNM",
+        "IMG_isSVG",
+        "IMG_isQOI",
+        "IMG_isTIF",
+        "IMG_isXCF",
+        "IMG_isXPM",
+        "IMG_isXV",
+        "IMG_isWEBP"
     ],
     "allowlisted_type_prefixes": [
         "IMG_"

@@ -1,11 +1,13 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -43,89 +45,96 @@ func main() {
 	if err != nil {
 		log.Fatal("err: ", err)
 	}
-	path = filepath.Join(path, dir, libraryName+"_functions.gen.go")
-
-	fset := token.NewFileSet()
-	root, err := parser.ParseFile(fset, path, nil, parser.AllErrors)
-	if err != nil {
-		log.Fatal("cannot parse "+path+": ", err)
-	}
 
 	var funcs []*Function
-	ast.Inspect(root, func(n ast.Node) bool {
-		if n == nil {
-			return true
+	for _, p := range []string{
+		filepath.Join(path, dir, libraryName+"_functions.gen.go"),
+		filepath.Join(path, dir, libraryName+"_functions_ex.go"),
+	} {
+		fset := token.NewFileSet()
+		root, err := parser.ParseFile(fset, p, nil, parser.AllErrors)
+		if err != nil {
+			if errors.Is(err, fs.ErrNotExist) {
+				continue
+			}
+			log.Fatal("cannot parse "+p+": ", err)
 		}
-		switch tn := n.(type) {
-		case *ast.GenDecl:
-			if tn.Tok == token.VAR {
-				for _, s := range tn.Specs {
-					switch ts := s.(type) {
-					case *ast.ValueSpec:
-						name := ts.Names[0].Name
-						switch tt := ts.Type.(type) {
-						case *ast.FuncType:
-							fn := &Function{
-								Name: name,
-							}
-							if tt.Results != nil && len(tt.Results.List) > 0 {
-								for _, f := range tt.Results.List {
-									typ := fmt.Sprintf("%v", f.Type)
-									switch ft := f.Type.(type) {
-									case *ast.StarExpr:
-										switch xt := ft.X.(type) {
+
+		ast.Inspect(root, func(n ast.Node) bool {
+			if n == nil {
+				return true
+			}
+			switch tn := n.(type) {
+			case *ast.GenDecl:
+				if tn.Tok == token.VAR {
+					for _, s := range tn.Specs {
+						switch ts := s.(type) {
+						case *ast.ValueSpec:
+							name := ts.Names[0].Name
+							switch tt := ts.Type.(type) {
+							case *ast.FuncType:
+								fn := &Function{
+									Name: name,
+								}
+								if tt.Results != nil && len(tt.Results.List) > 0 {
+									for _, f := range tt.Results.List {
+										typ := fmt.Sprintf("%v", f.Type)
+										switch ft := f.Type.(type) {
 										case *ast.StarExpr:
-											typ = fmt.Sprintf("**%v", xt.X)
+											switch xt := ft.X.(type) {
+											case *ast.StarExpr:
+												typ = fmt.Sprintf("**%v", xt.X)
+											case *ast.SelectorExpr:
+												typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
+											default:
+												raw := fmt.Sprintf("%v", xt)
+												typ = "*" + raw
+											}
+										case *ast.SliceExpr:
+											typ = fmt.Sprintf("[]%v", ft.X)
 										case *ast.SelectorExpr:
-											typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
-										default:
-											raw := fmt.Sprintf("%v", xt)
-											typ = "*" + raw
+											typ = fmt.Sprintf("%v.%v", ft.X, ft.Sel)
 										}
-									case *ast.SliceExpr:
-										typ = fmt.Sprintf("[]%v", ft.X)
-									case *ast.SelectorExpr:
-										typ = fmt.Sprintf("%v.%v", ft.X, ft.Sel)
-									}
-									fn.Return = &FuncArg{
-										Type: typ,
+										fn.Return = &FuncArg{
+											Type: typ,
+										}
 									}
 								}
-							}
-							if len(tt.Params.List) > 0 {
-								for _, f := range tt.Params.List {
-									typ := fmt.Sprintf("%v", f.Type)
-									switch ft := f.Type.(type) {
-									case *ast.StarExpr:
-										switch xt := ft.X.(type) {
+								if len(tt.Params.List) > 0 {
+									for _, f := range tt.Params.List {
+										typ := fmt.Sprintf("%v", f.Type)
+										switch ft := f.Type.(type) {
 										case *ast.StarExpr:
-											typ = fmt.Sprintf("**%v", xt.X)
+											switch xt := ft.X.(type) {
+											case *ast.StarExpr:
+												typ = fmt.Sprintf("**%v", xt.X)
+											case *ast.SelectorExpr:
+												typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
+											default:
+												raw := fmt.Sprintf("%v", xt)
+												typ = "*" + raw
+											}
+										case *ast.SliceExpr:
+											typ = fmt.Sprintf("[]%v", ft.X)
 										case *ast.SelectorExpr:
-											typ = fmt.Sprintf("*%v.%v", xt.X, xt.Sel)
+											typ = fmt.Sprintf("*%v.%v", ft.X, ft.Sel)
 										default:
-											raw := fmt.Sprintf("%v", xt)
-											typ = "*" + raw
 										}
-									case *ast.SliceExpr:
-										typ = fmt.Sprintf("[]%v", ft.X)
-									case *ast.SelectorExpr:
-										typ = fmt.Sprintf("*%v.%v", ft.X, ft.Sel)
-									default:
+										fn.Params = append(fn.Params, &FuncArg{
+											Name: f.Names[0].Name,
+											Type: typ,
+										})
 									}
-									fn.Params = append(fn.Params, &FuncArg{
-										Name: f.Names[0].Name,
-										Type: typ,
-									})
 								}
+								funcs = append(funcs, fn)
 							}
-							funcs = append(funcs, fn)
 						}
 					}
 				}
 			}
-		}
-		return true
-	})
+			return true
+		})
+	}
 
 	f := jen.NewFile(libraryName)
 	f.HeaderComment("//go:build js")
