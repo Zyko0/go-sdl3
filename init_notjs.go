@@ -10,6 +10,10 @@ import (
 	puregogen "github.com/Zyko0/purego-gen"
 )
 
+func init() {
+	runtime.LockOSThread()
+}
+
 // Path returns the library installation path based on the operating
 // system
 func Path() string {
@@ -28,8 +32,6 @@ func Path() string {
 // LoadLibrary loads SDL library and initializes all functions.
 func LoadLibrary(path string) error {
 	var err error
-
-	runtime.LockOSThread()
 
 	_hnd_sdl, err = puregogen.OpenLibrary(path)
 	if err != nil {

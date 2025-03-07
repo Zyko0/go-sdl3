@@ -1,4 +1,4 @@
-//go:build darwin
+//go:build darwin && arm64
 
 package binsdl
 
@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/sdl.dylib
+	//go:embed assets/sdl_arm64.dylib
 	sdlBlob    []byte
 	sdlLibName = "sdl.dylib"
 )

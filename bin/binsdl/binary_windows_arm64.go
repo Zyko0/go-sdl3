@@ -1,4 +1,4 @@
-//go:build windows
+//go:build windows && arm64
 
 package binsdl
 
@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/sdl.dll
+	//go:embed assets/sdl_arm64.dll
 	sdlBlob    []byte
 	sdlLibName = "sdl.dll"
 )

@@ -6,7 +6,7 @@ import (
 	"math"
 
 	sdl "github.com/Zyko0/go-sdl3"
-	"github.com/Zyko0/go-sdl3/binsdl"
+	"github.com/Zyko0/go-sdl3/bin/binsdl"
 )
 
 func main() {
