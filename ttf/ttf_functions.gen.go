@@ -211,6 +211,11 @@ var (
 	//puregogen:function symbol=TTF_GetFontDirection
 	iGetFontDirection func(font *Font) Direction
 
+	// TTF_StringToTag => Convert from a 4 character string to a 32-bit tag.
+	//
+	//puregogen:function symbol=TTF_StringToTag
+	iStringToTag func(string string) uint32
+
 	// TTF_SetFontScript => Set the script to be used for text shaping by a font.
 	//
 	//puregogen:function symbol=TTF_SetFontScript

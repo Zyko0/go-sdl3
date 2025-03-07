@@ -45,7 +45,7 @@ type CopyOperation struct {
 	GlyphIndex uint32
 	Src        sdl.Rect
 	Dst        sdl.Rect
-	Reserved   uintptr
+	Reserved   Pointer
 }
 
 type TextLayout struct{}

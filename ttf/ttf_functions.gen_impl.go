@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package ttf
 
@@ -52,6 +52,7 @@ var (
 	_addr_TTF_GetFontStyleName                       uintptr
 	_addr_TTF_SetFontDirection                       uintptr
 	_addr_TTF_GetFontDirection                       uintptr
+	_addr_TTF_StringToTag                            uintptr
 	_addr_TTF_SetFontScript                          uintptr
 	_addr_TTF_GetFontScript                          uintptr
 	_addr_TTF_GetGlyphScript                         uintptr
@@ -260,6 +261,10 @@ func initialize() {
 	_addr_TTF_GetFontDirection, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetFontDirection")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetFontDirection")
+	}
+	_addr_TTF_StringToTag, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_StringToTag")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_StringToTag")
 	}
 	_addr_TTF_SetFontScript, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_SetFontScript")
 	if err != nil {
@@ -663,6 +668,11 @@ func initialize() {
 	iGetFontDirection = func(font *Font) Direction {
 		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontDirection, uintptr(unsafe.Pointer(font)))
 		__r0 := Direction(_r0)
+		return __r0
+	}
+	iStringToTag = func(string string) uint32 {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_StringToTag, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(string))))
+		__r0 := uint32(_r0)
 		return __r0
 	}
 	iSetFontScript = func(font *Font, script uint32) bool {

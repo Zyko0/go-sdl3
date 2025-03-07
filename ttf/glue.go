@@ -7,6 +7,15 @@ import (
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
+// Utils
+
+func colorToUint32(clr sdl.Color) uint32 {
+	return uint32(clr.R)<<24 |
+		uint32(clr.G)<<16 |
+		uint32(clr.B)<<8 |
+		uint32(clr.A)
+}
+
 // Types
 
 type Pointer = internal.Pointer
@@ -25,6 +34,13 @@ func (d *DrawOperation) FillOperation() *FillOperation {
 	return (*FillOperation)(unsafe.Pointer(d))
 }
 
+type TextEngine struct {
+	Version         uint32
+	Userdata        Pointer
+	CreateTextFunc  Pointer
+	DestroyTextFunc Pointer
+}
+
 type TextData struct {
 	Font              *Font
 	Color             sdl.FColor
@@ -41,14 +57,7 @@ type TextData struct {
 	Props             sdl.PropertiesID
 	NeedsEngineUpdate bool
 	Engine            *TextEngine
-	EngineText        uintptr
-}
-
-type TextEngine struct {
-	Version         uint32
-	Userdata        uintptr
-	CreateTextFunc  uintptr
-	DestroyTextFunc uintptr
+	EngineText        Pointer
 }
 
 // Custom
@@ -59,4 +68,10 @@ type GlyphMetrics struct {
 	MinY    int32
 	MaxY    int32
 	Advance int32
+}
+
+type LibraryVersion struct {
+	Minor int32
+	Major int32
+	Patch int32
 }

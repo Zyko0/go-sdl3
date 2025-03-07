@@ -332,12 +332,12 @@ func (text *Text) PreviousSubString(substring *SubString) (*SubString, error) {
 	return &previous, nil
 }
 
-// TTF_GetPreviousTextSubString - Get the previous substring in a text object
-// (https://wiki.libsdl.org/SDL3_ttf/TTF_GetPreviousTextSubString)
+// TTF_GetNextTextSubString - Get the previous substring in a text object
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_GetNextTextSubString)
 func (text *Text) NextSubString(substring *SubString) (*SubString, error) {
 	var next SubString
 
-	if !iGetPreviousTextSubString(text, substring, &next) {
+	if !iGetNextTextSubString(text, substring, &next) {
 		return nil, internal.LastErr()
 	}
 
@@ -539,6 +539,22 @@ func (font *Font) Hinting() HintingFlags {
 	return iGetFontHinting(font)
 }
 
+// TTF_SetFontSDF - Enable Signed Distance Field rendering for a font.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontSDF)
+func (font *Font) SetSDF(enabled bool) error {
+	if !iSetFontSDF(font, enabled) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// TTF_GetFontSDF - Query whether Signed Distance Field rendering is enabled for a font.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontSDF)
+func (font *Font) SDF() bool {
+	return iGetFontSDF(font)
+}
+
 // TTF_SetFontWrapAlignment - Set a font's current wrap alignment option.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontWrapAlignment)
 func (font *Font) SetWrapAlignment(align HorizontalAlignment) {
@@ -599,6 +615,12 @@ func (font *Font) IsFixedWidth() bool {
 	return iFontIsFixedWidth(font)
 }
 
+// TTF_FontIsScalable - Query whether a font is scalable or not.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_FontIsScalable)
+func (font *Font) IsScalable() bool {
+	return iFontIsScalable(font)
+}
+
 // TTF_GetFontFamilyName - Query a font's family name.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontFamilyName)
 func (font *Font) FamilyName() string {
@@ -641,6 +663,16 @@ func (font *Font) SetScript(script uint32) error {
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontScript)
 func (font *Font) Script() uint32 {
 	return iGetFontScript(font)
+}
+
+// TTF_SetFontLanguage - Set language to be used for text shaping by a font.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontLanguage)
+func (font *Font) SetLanguage(languageBCP47 string) error {
+	if !iSetFontLanguage(font, languageBCP47) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // TTF_FontHasGlyph - Check whether a glyph is provided by the font for a UNICODE codepoint.
@@ -687,6 +719,18 @@ func (font *Font) GlyphMetrics(ch uint32) (*GlyphMetrics, error) {
 	return &m, nil
 }
 
+// TTF_GetGlyphKerning - Query the kerning size between the glyphs of two UNICODE codepoints.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_GetGlyphKerning)
+func (font *Font) GlyphKerning(previousCh, ch rune) (int32, error) {
+	var kerning int32
+
+	if !iGetGlyphKerning(font, uint32(previousCh), uint32(ch), &kerning) {
+		return 0, internal.LastErr()
+	}
+
+	return kerning, nil
+}
+
 // TTF_GetStringSize - Calculate the dimensions of a rendered string of UTF-8 text.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GetStringSize)
 func (font *Font) StringSize(text string) (int32, int32, error) {
@@ -723,6 +767,138 @@ func (font *Font) MeasureString(text string, maxWidth int32) (int32, uintptr, er
 	}
 
 	return width, length, nil
+}
+
+// TTF_RenderText_Solid - Render UTF-8 text at fast quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Solid)
+func (font *Font) RenderTextSolid(text string, fg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderText_Solid(font, text, uintptr(len(text)), colorToUint32(fg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_Solid_Wrapped - Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Solid_Wrapped)
+func (font *Font) RenderTextSolidWrapped(text string, fg sdl.Color, wrapLength int32) (*sdl.Surface, error) {
+	surface := iRenderText_Solid_Wrapped(font, text, uintptr(len(text)), colorToUint32(fg), wrapLength)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderGlyph_Solid - Render a single 32-bit glyph at fast quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderGlyph_Solid)
+func (font *Font) RenderGlyphSolid(glyph rune, fg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderGlyph_Solid(font, uint32(glyph), colorToUint32(fg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_Shaded - Render UTF-8 text at high quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Shaded)
+func (font *Font) RenderTextShaded(text string, fg, bg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderText_Shaded(font, text, uintptr(len(text)), colorToUint32(fg), colorToUint32(bg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_Shaded_Wrapped - Render word-wrapped UTF-8 text at high quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Shaded_Wrapped)
+func (font *Font) RenderTextShadedWrapped(text string, fg, bg sdl.Color, wrapWidth int32) (*sdl.Surface, error) {
+	surface := iRenderText_Shaded_Wrapped(font, text, uintptr(len(text)), colorToUint32(fg), colorToUint32(bg), wrapWidth)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderGlyph_Shaded - Render a single UNICODE codepoint at high quality to a new 8-bit surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderGlyph_Shaded)
+func (font *Font) RenderGlyphShaded(glyph rune, fg, bg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderGlyph_Shaded(font, uint32(glyph), colorToUint32(fg), colorToUint32(bg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_Blended - Render UTF-8 text at high quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Blended)
+func (font *Font) RenderTextBlended(text string, fg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderText_Blended(font, text, uintptr(len(text)), colorToUint32(fg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_Blended_Wrapped - Render word-wrapped UTF-8 text at high quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Blended_Wrapped)
+func (font *Font) RenderTextBlendedWrapped(text string, fg sdl.Color, wrapWidth int32) (*sdl.Surface, error) {
+	surface := iRenderText_Blended_Wrapped(font, text, uintptr(len(text)), colorToUint32(fg), wrapWidth)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderGlyph_Blended - Render a single UNICODE codepoint at high quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderGlyph_Blended)
+func (font *Font) RenderGlyphBlended(glyph rune, fg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderGlyph_Blended(font, uint32(glyph), colorToUint32(fg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_LCD - Render UTF-8 text at LCD subpixel quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_LCD)
+func (font *Font) RenderTextLCD(text string, fg, bg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderText_LCD(font, text, uintptr(len(text)), colorToUint32(fg), colorToUint32(bg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderText_LCD_Wrapped - Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_LCD_Wrapped)
+func (font *Font) RenderTextLCDWrapped(text string, fg, bg sdl.Color, wrapWidth int32) (*sdl.Surface, error) {
+	surface := iRenderText_LCD_Wrapped(font, text, uintptr(len(text)), colorToUint32(fg), colorToUint32(bg), wrapWidth)
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// TTF_RenderGlyph_LCD - Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_RenderGlyph_LCD)
+func (font *Font) RenderGlyphLCD(glyph rune, fg, bg sdl.Color) (*sdl.Surface, error) {
+	surface := iRenderGlyph_LCD(font, uint32(glyph), colorToUint32(fg), colorToUint32(bg))
+	if surface == nil {
+		return nil, internal.LastErr()
+	}
+
+	return surface, nil
 }
 
 // TTF_CloseFont - Dispose of a previously-created font.
