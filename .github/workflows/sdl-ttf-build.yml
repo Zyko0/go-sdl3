@@ -51,7 +51,7 @@ jobs:
         uses: libsdl-org/setup-sdl@main
         with:
           cmake-generator: Ninja
-          version: 3.2.8
+          version: 3-latest
           sdl-test: false
           shell: sh
           install-linux-dependencies: true
@@ -95,7 +95,7 @@ jobs:
         uses: libsdl-org/setup-sdl@main
         with:
           cmake-generator: Ninja
-          version: 3.2.8
+          version: 3-latest
           sdl-test: false
           shell: sh
       - name: Setup Macos dependencies
