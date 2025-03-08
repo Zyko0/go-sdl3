@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package img
 
@@ -6,6 +6,7 @@ import (
 	sdl "github.com/Zyko0/go-sdl3"
 	puregogen "github.com/Zyko0/purego-gen"
 	purego "github.com/ebitengine/purego"
+	"runtime"
 	"unsafe"
 )
 
@@ -326,289 +327,359 @@ func initialize() {
 	iLoadTyped_IO = func(src *sdl.IOStream, closeio bool, typ string) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTyped_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(typ))))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
+		runtime.KeepAlive(typ)
 		return __r0
 	}
 	iLoad = func(file string) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_Load, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iLoad_IO = func(src *sdl.IOStream, closeio bool) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_Load_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadTexture = func(renderer *sdl.Renderer, file string) *sdl.Texture {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTexture, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := (*sdl.Texture)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(renderer)
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iLoadTexture_IO = func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) *sdl.Texture {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTexture_IO, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio))
 		__r0 := (*sdl.Texture)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(renderer)
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadTextureTyped_IO = func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) *sdl.Texture {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTextureTyped_IO, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(typ))))
 		__r0 := (*sdl.Texture)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(renderer)
+		runtime.KeepAlive(src)
+		runtime.KeepAlive(typ)
 		return __r0
 	}
 	iisAVIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isAVIF, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisICO = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isICO, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisCUR = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isCUR, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisBMP = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isBMP, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisGIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isGIF, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisJPG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isJPG, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisJXL = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isJXL, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisLBM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isLBM, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPCX = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPCX, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPNG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNG, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPNM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNM, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisSVG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isSVG, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisQOI = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isQOI, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisTIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isTIF, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXCF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXCF, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXPM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXPM, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXV = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXV, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisWEBP = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isWEBP, uintptr(unsafe.Pointer(src)))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadAVIF_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadAVIF_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadICO_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadICO_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadCUR_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadCUR_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadBMP_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadBMP_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadGIF_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadGIF_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadJPG_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadJPG_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadJXL_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadJXL_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadLBM_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadLBM_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadPCX_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadPCX_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadPNG_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadPNG_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadPNM_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadPNM_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadSVG_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadSVG_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadQOI_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadQOI_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadTGA_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTGA_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadTIF_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadTIF_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadXCF_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadXCF_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadXPM_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadXPM_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadXV_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadXV_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadWEBP_IO = func(src *sdl.IOStream) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadWEBP_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadSizedSVG_IO = func(src *sdl.IOStream, width int32, height int32) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadSizedSVG_IO, uintptr(unsafe.Pointer(src)), uintptr(width), uintptr(height))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iReadXPMFromArray = func(xpm *string) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_ReadXPMFromArray, uintptr(unsafe.Pointer(xpm)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(xpm)
 		return __r0
 	}
 	iReadXPMFromArrayToRGB888 = func(xpm *string) *sdl.Surface {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_ReadXPMFromArrayToRGB888, uintptr(unsafe.Pointer(xpm)))
 		__r0 := (*sdl.Surface)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(xpm)
 		return __r0
 	}
 	iSaveAVIF = func(surface *sdl.Surface, file string, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveAVIF, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))), uintptr(quality))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSaveAVIF_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveAVIF_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio), uintptr(quality))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(dst)
 		return __r0
 	}
 	iSavePNG = func(surface *sdl.Surface, file string) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SavePNG, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSavePNG_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SavePNG_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(dst)
 		return __r0
 	}
 	iSaveJPG = func(surface *sdl.Surface, file string, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveJPG, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))), uintptr(quality))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSaveJPG_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveJPG_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio), uintptr(quality))
 		__r0 := _r0 != 0
+		runtime.KeepAlive(surface)
+		runtime.KeepAlive(dst)
 		return __r0
 	}
 	iLoadAnimation = func(file string) *Animation {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadAnimation, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
 		__r0 := (*Animation)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(file)
 		return __r0
 	}
 	iLoadAnimation_IO = func(src *sdl.IOStream, closeio bool) *Animation {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadAnimation_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio))
 		__r0 := (*Animation)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadAnimationTyped_IO = func(src *sdl.IOStream, closeio bool, typ string) *Animation {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadAnimationTyped_IO, uintptr(unsafe.Pointer(src)), puregogen.BoolToUintptr(closeio), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(typ))))
 		__r0 := (*Animation)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
+		runtime.KeepAlive(typ)
 		return __r0
 	}
 	iFreeAnimation = func(anim *Animation) {
 		purego.SyscallN(_addr_IMG_FreeAnimation, uintptr(unsafe.Pointer(anim)))
+		runtime.KeepAlive(anim)
 	}
 	iLoadGIFAnimation_IO = func(src *sdl.IOStream) *Animation {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadGIFAnimation_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*Animation)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 	iLoadWEBPAnimation_IO = func(src *sdl.IOStream) *Animation {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_LoadWEBPAnimation_IO, uintptr(unsafe.Pointer(src)))
 		__r0 := (*Animation)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(src)
 		return __r0
 	}
 }
