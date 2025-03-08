@@ -9,5 +9,5 @@ import (
 var (
 	//go:embed assets/sdl.so
 	sdlBlob    []byte
-	sdlLibName = "sdl.so"
+	sdlLibName = "libSDL3.so.0"
 )

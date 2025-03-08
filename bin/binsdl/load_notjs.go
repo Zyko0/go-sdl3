@@ -18,18 +18,18 @@ type library struct {
 func Load() library {
 	tmp, err := internal.TmpDir()
 	if err != nil {
-		log.Fatal("binary: couldn't create a temporary directory: " + err.Error())
+		log.Fatal("binsdl: couldn't create a temporary directory: " + err.Error())
 	}
 
 	sdlPath := filepath.Join(tmp, sdlLibName)
 	err = os.WriteFile(sdlPath, sdlBlob, 0666)
 	if err != nil {
-		log.Fatal("binary: couldn't write sdl library to disk: " + err.Error())
+		log.Fatal("binsdl: couldn't write sdl library to disk: " + err.Error())
 	}
 
 	err = sdl.LoadLibrary(sdlPath)
 	if err != nil {
-		log.Fatal("binary: couldn't sdl.LoadLibrary: ", err.Error())
+		log.Fatal("binsdl: couldn't sdl.LoadLibrary: ", err.Error())
 	}
 
 	return library{
@@ -40,7 +40,7 @@ func Load() library {
 func (l library) Unload() {
 	err := sdl.CloseLibrary()
 	if err != nil {
-		log.Fatal("binary: couldn't close library: ", err.Error())
+		log.Fatal("binsdl: couldn't close library: ", err.Error())
 	}
 	internal.RemoveTmpDir()
 }

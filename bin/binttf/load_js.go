@@ -1,6 +1,8 @@
 //go:build js
 
-package binsdl
+package binttf
+
+import "github.com/Zyko0/go-sdl3/ttf"
 
 type library struct{}
 
@@ -9,4 +11,5 @@ func Load() library {
 }
 
 func (l library) Unload() {
+	ttf.CloseLibrary()
 }

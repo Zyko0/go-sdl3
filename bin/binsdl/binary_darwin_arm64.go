@@ -9,5 +9,5 @@ import (
 var (
 	//go:embed assets/sdl_arm64.dylib
 	sdlBlob    []byte
-	sdlLibName = "sdl.dylib"
+	sdlLibName = "libSDL3.dylib"
 )

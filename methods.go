@@ -3098,16 +3098,24 @@ func (renderer *Renderer) ColorScale() (float32, error) {
 
 // SDL_SetRenderDrawBlendMode - Set the blend mode used for drawing operations (Fill and Line).
 // (https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawBlendMode)
-func (renderer *Renderer) SetRenderDrawBlendMode(blendMode BlendMode) bool {
-	panic("not implemented")
-	return iSetRenderDrawBlendMode(renderer, blendMode)
+func (renderer *Renderer) SetDrawBlendMode(blendMode BlendMode) error {
+	if !iSetRenderDrawBlendMode(renderer, blendMode) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetRenderDrawBlendMode - Get the blend mode used for drawing operations.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawBlendMode)
-func (renderer *Renderer) RenderDrawBlendMode(blendMode *BlendMode) bool {
-	panic("not implemented")
-	return iGetRenderDrawBlendMode(renderer, blendMode)
+func (renderer *Renderer) DrawBlendMode() (BlendMode, error) {
+	var mode BlendMode
+
+	if !iGetRenderDrawBlendMode(renderer, &mode) {
+		return mode, internal.LastErr()
+	}
+
+	return mode, nil
 }
 
 // SDL_RenderClear - Clear the current rendering target with the drawing color.
@@ -3314,16 +3322,24 @@ func (renderer *Renderer) AddVulkanRenderSemaphores(wait_stage_mask uint32, wait
 
 // SDL_SetRenderVSync - Toggle VSync of the given renderer.
 // (https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync)
-func (renderer *Renderer) SetRenderVSync(vsync int32) bool {
-	panic("not implemented")
-	return iSetRenderVSync(renderer, vsync)
+func (renderer *Renderer) SetVSync(vsync int32) error {
+	if !iSetRenderVSync(renderer, vsync) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetRenderVSync - Get VSync of the given renderer.
 // (https://wiki.libsdl.org/SDL3/SDL_GetRenderVSync)
-func (renderer *Renderer) RenderVSync(vsync *int32) bool {
-	panic("not implemented")
-	return iGetRenderVSync(renderer, vsync)
+func (renderer *Renderer) VSync() (int32, error) {
+	var vsync int32
+
+	if !iGetRenderVSync(renderer, &vsync) {
+		return 0, internal.LastErr()
+	}
+
+	return vsync, nil
 }
 
 // SDL_RenderDebugText - Draw debug text to an SDL_Renderer.
