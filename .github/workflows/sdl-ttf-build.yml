@@ -51,8 +51,8 @@ jobs:
         uses: libsdl-org/setup-sdl@main
         with:
           cmake-generator: Ninja
-          version: 3-latest
-          sdl-test: false
+          build-type: Release
+          version: 3-head
           shell: sh
           install-linux-dependencies: true
       - name: Clone SDL_ttf
@@ -95,10 +95,10 @@ jobs:
         uses: libsdl-org/setup-sdl@main
         with:
           cmake-generator: Ninja
-          version: 3-latest
-          sdl-test: false
+          build-type: Release
+          version: 3-head
           shell: sh
-      - name: Setup Macos dependencies
+      - name: Setup MacOS dependencies
         working-directory: .
         run: |
             brew install \
