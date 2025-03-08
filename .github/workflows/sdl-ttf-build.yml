@@ -1,0 +1,135 @@
+name: Build SDL_ttf binaries
+
+on:
+  workflow_dispatch:
+
+env:
+  TTF_VERSION: 3.2.0
+
+jobs:
+  build-windows:
+    name: Download Windows
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          arch: [x64, x86, arm64]
+
+    steps:
+      - name: Download release build
+        run: wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-${{ env.TTF_VERSION }}/SDL3_ttf-${{ env.TTF_VERSION }}-win32-${{ matrix.arch }}.zip
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-ttf-windows-${{ matrix.arch }}
+            path: SDL3_ttf-${{ env.TTF_VERSION }}-win32-${{ matrix.arch }}.zip
+
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    # container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
+    defaults:
+      run:
+        working-directory: SDL_ttf
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up Linux dependencies
+        working-directory: .
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+            cmake \
+            file \
+            fonts-dejavu-core \
+            libfreetype-dev \
+            libharfbuzz-dev \
+            pkg-config \
+            ${NULL+}
+      - name: Set up SDL
+        id: sdl
+        uses: libsdl-org/setup-sdl@main
+        with:
+          cmake-generator: Ninja
+          version: 3.2.8
+          sdl-test: false
+          shell: sh
+          install-linux-dependencies: true
+      - name: Clone SDL_ttf
+        working-directory: .
+        run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DSDL_SHARED=ON
+          -DSDL_STATIC=OFF
+          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL_DOCS=ON
+          -DSDL_INSTALL_TESTS=OFF
+          -DSDLTTF_VENDORED=ON -GNinja
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release && pwd && ls -l build
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-ttf-linux
+            path: SDL_ttf/build/*.so.0
+
+  build-macos:
+    name: Build for Apple
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: SDL_ttf
+    strategy:
+      fail-fast: false
+      matrix:
+          target: [iOS, '']
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        id: sdl
+        uses: libsdl-org/setup-sdl@main
+        with:
+          cmake-generator: Ninja
+          version: 3.2.8
+          sdl-test: false
+          shell: sh
+      - name: Setup Macos dependencies
+        working-directory: .
+        run: |
+            brew install \
+              freetype \
+              harfbuzz \
+              ${NULL+}
+      - name: Clone SDL_ttf
+        working-directory: .
+        run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
+      - name: Setup Xcode version
+        uses: maxim-lobanov/setup-xcode@v1.6.0
+        with:
+            xcode-version: "16.1"
+      - name: Configure
+        run: >
+          cmake -G "Xcode"
+          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          -DCMAKE_SYSTEM_NAME=${{ matrix.target }}
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          -DCMAKE_BUILD_TYPE=Release
+          -DSDL_SHARED=ON
+          -DSDL_STATIC=OFF
+          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL_DOCS=ON
+          -DSDL_INSTALL_TESTS=OFF
+          -DSDLTTF_VENDORED=ON -GNinja
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release && pwd && ls -l build
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-ttf-apple-${{ matrix.target }}
+            path: SDL_ttf/build/*
