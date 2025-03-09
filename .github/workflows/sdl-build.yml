@@ -30,7 +30,7 @@ jobs:
     container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
     defaults:
       run:
-        working-directory: ./SDL
+        working-directory: SDL
     steps:
       - name: Clone SDL3
         working-directory: .
@@ -58,7 +58,7 @@ jobs:
     runs-on: macos-14
     defaults:
       run:
-        working-directory: ./SDL
+        working-directory: SDL
     strategy:
       fail-fast: false
       matrix:
