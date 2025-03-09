@@ -26,8 +26,8 @@ jobs:
 
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-20.04
-    # container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
+    runs-on: ubuntu-latest
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
     defaults:
       run:
         working-directory: SDL_ttf
