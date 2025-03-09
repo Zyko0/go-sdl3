@@ -34,6 +34,13 @@ jobs:
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        uses: libsdl-org/setup-sdl@main
+        id: sdl
+        with:
+          cmake-generator: Ninja
+          version: 3-head
+          shell: sh
       - name: Set up Linux dependencies
         working-directory: .
         run: |
@@ -46,28 +53,27 @@ jobs:
             libharfbuzz-dev \
             pkg-config \
             ${NULL+}
-      - name: Set up SDL
-        id: sdl
-        uses: libsdl-org/setup-sdl@main
-        with:
-          cmake-generator: Ninja
-          build-type: Release
-          version: 3-head
-          shell: sh
-          install-linux-dependencies: true
       - name: Clone SDL_ttf
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
+      - name: Check that versioning is consistent
+        # We only need to run this once: arbitrarily use the Linux build
+        run: ./build-scripts/test-versioning.sh
       - name: Configure
         run: >
           cmake -G Ninja
+          -DBUILD_SHARED_LIBS=ON
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DSDLTTF_HARFBUZZ=ON
+          -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
           -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDL_INSTALL_TESTS=OFF
-          -DSDLTTF_VENDORED=ON -GNinja
+          -DSDLTTF_INSTALL_MAN=OFF
+          -DSDLTTF_VENDORED=ON
           -S . -B build
       - name: Build
         run: cmake --build build --config Release && pwd && ls -l build
@@ -95,7 +101,6 @@ jobs:
         uses: libsdl-org/setup-sdl@main
         with:
           cmake-generator: Ninja
-          build-type: Release
           version: 3-head
           shell: sh
       - name: Setup MacOS dependencies
@@ -108,23 +113,21 @@ jobs:
       - name: Clone SDL_ttf
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.6.0
-        with:
-            xcode-version: "16.1"
       - name: Configure
         run: >
-          cmake -G "Xcode"
-          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
-          -DCMAKE_SYSTEM_NAME=${{ matrix.target }}
-          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          cmake -G Ninja
+          -DBUILD_SHARED_LIBS=ON
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DSDLTTF_HARFBUZZ=ON
+          -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
           -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDL_INSTALL_TESTS=OFF
-          -DSDLTTF_VENDORED=ON -GNinja
+          -DSDLTTF_INSTALL_MAN=OFF
+          -DSDLTTF_VENDORED=ON
           -S . -B build
       - name: Build
         run: cmake --build build --config Release && pwd && ls -l build
