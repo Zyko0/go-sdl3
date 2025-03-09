@@ -85,13 +85,13 @@ jobs:
   build-macos:
     name: Build for Apple
     runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: SDL_ttf
     strategy:
       fail-fast: false
       matrix:
-          target: [iOS, '']
+          arch: [arm64, x86_64]
+    defaults:
+      run:
+        working-directory: SDL_ttf
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
@@ -101,8 +101,7 @@ jobs:
         with:
           cmake-generator: Ninja
           cmake-arguments: |
-            -DCMAKE_SYSTEM_NAME=${{ matrix.target }} \
-            -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" \
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
             -DSDL_DISABLE_INSTALL_DOCS=ON \
             -DSDL_INSTALL_TESTS=OFF
           version: 3-head
@@ -121,7 +120,7 @@ jobs:
         run: >
           cmake -G Ninja
           -DBUILD_SHARED_LIBS=ON
-          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DSDLTTF_HARFBUZZ=ON
           -DSDLTTF_WERROR=ON
@@ -139,5 +138,5 @@ jobs:
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-apple-${{ matrix.target }}
+            name: sdl-ttf-apple-macOS-${{ matrix.arch }}
             path: SDL_ttf/build/*
