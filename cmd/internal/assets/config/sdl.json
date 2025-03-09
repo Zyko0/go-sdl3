@@ -1,5 +1,5 @@
 {
-    "out_dir": "",
+    "out_dir": "sdl",
     "library_name": "sdl",
     "url_library_suffix": "",
     "prefix": "SDL_",

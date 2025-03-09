@@ -151,12 +151,6 @@ func trimPrefix(e *assets.FFIEntry) {
 	}
 }
 
-func ensureSDLImport(f *jen.File) {
-	if cfg.LibraryName != "sdl" {
-		f.ImportAlias("github.com/Zyko0/go-sdl3", "sdl")
-	}
-}
-
 type refFunc struct {
 	Name        string
 	Description string
@@ -240,7 +234,7 @@ func jenType(stmt *jen.Statement, typ string) *jen.Statement {
 		}
 		path := parts[0]
 		if path == "sdl" {
-			path = "github.com/Zyko0/go-sdl3"
+			path = "github.com/Zyko0/go-sdl3/sdl"
 		}
 		if prefix != "" {
 			stmt.Id(prefix).Qual(path, parts[1])
@@ -391,7 +385,6 @@ func main() {
 	apifunc := map[string]struct{}{}
 	f := jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
-	ensureSDLImport(f)
 	f.Var().DefsFunc(func(g *jen.Group) {
 		g.Comment(fmt.Sprintf("//puregogen:library path:windows=%s.dll path:unix=%s.so alias=%s",
 			cfg.LibraryName, cfg.LibraryName, cfg.LibraryName,
@@ -442,7 +435,6 @@ func main() {
 	// Enums
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
-	ensureSDLImport(f)
 	for _, e := range ffiEntries {
 		if e.Tag != "enum" {
 			continue
@@ -464,7 +456,6 @@ func main() {
 	// Structs
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
-	ensureSDLImport(f)
 	for _, e := range ffiEntries {
 		if e.Tag != "struct" {
 			continue
@@ -493,7 +484,6 @@ func main() {
 	// Types
 	f = jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
-	ensureSDLImport(f)
 	f.Type().DefsFunc(func(g *jen.Group) {
 		for _, e := range ffiEntries {
 			switch {

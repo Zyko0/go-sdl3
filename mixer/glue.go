@@ -1,7 +1,7 @@
 package mixer
 
 import (
-	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/sdl"
 	internal "github.com/Zyko0/go-sdl3/internal"
 )
 

@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
 )
 

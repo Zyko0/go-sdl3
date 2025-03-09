@@ -8,7 +8,7 @@ import (
 	"math/rand/v2"
 	"os"
 
-	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 )
 

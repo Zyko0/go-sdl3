@@ -3,7 +3,7 @@
 package ttf
 
 import (
-	sdl "github.com/Zyko0/go-sdl3"
+	sdl "github.com/Zyko0/go-sdl3/sdl"
 	puregogen "github.com/Zyko0/purego-gen"
 	purego "github.com/ebitengine/purego"
 	"runtime"

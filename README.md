@@ -7,6 +7,8 @@
 
 ## About
 
+The API is currently not stable, I might make some renames and packages refactor.
+
 This library wraps SDL3 to more idiomatic go and:
 - Changes return values from `bool` to `error` (`SDL_GetError`).
 - Trims `SDL_` prefix from all types, variables, function names.
@@ -47,7 +49,7 @@ sdl.LoadLibrary("SDL3.dll") // "libSDL3.so", "libSDL3.dylib"
 package main
 
 import (
-	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 )
 

@@ -22,7 +22,7 @@ tasks:
         requires:
             vars: [LIBRARY]
         vars:
-            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            DIR: '{{.LIBRARY}}'
             INPUT:
                 '{{.DIR}}/{{.LIBRARY}}_functions.gen.go'
             EXTRA:
@@ -40,7 +40,7 @@ tasks:
         requires:
           vars: [LIBRARY]
         vars:
-            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            DIR: '{{.LIBRARY"}}'
         cmds:
             # Generate SDL3 methods heuristically as a starting point
             - go run ./cmd/methodgen --dir {{ .DIR }} --library {{ .LIBRARY }}
@@ -49,20 +49,18 @@ tasks:
         requires:
           vars: [LIBRARY]
         vars:
-            DIR: './{{if eq .LIBRARY "sdl"}}{{""}}{{else}}{{.LIBRARY}}{{end}}'
+            DIR: '{{.LIBRARY}}'
         cmds:
             # Generate SDL3 documentation on top of functions
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
 
     coverage:
         vars:
-            INDICES: [0,1,2,3]
             LIBS: [sdl, ttf, img, mixer]
-            DIRS: ['.', './ttf', './img', './mixer']
         cmds:
             - for:
-                var: INDICES
-              cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{index .LIBS .ITEM}}.json" --dir {{index .DIRS .ITEM}}
+                var: LIBS
+              cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{.ITEM}}.json" --dir {{.ITEM}}
     
     fmt:
         cmds:

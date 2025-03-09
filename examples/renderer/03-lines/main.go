@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/rand/v2"
 
-	sdl "github.com/Zyko0/go-sdl3"
+	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 )
 

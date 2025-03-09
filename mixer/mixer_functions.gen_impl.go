@@ -1,9 +1,9 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package mixer
 
 import (
-	sdl "github.com/Zyko0/go-sdl3"
+	sdl "github.com/Zyko0/go-sdl3/sdl"
 	puregogen "github.com/Zyko0/purego-gen"
 	purego "github.com/ebitengine/purego"
 	"runtime"
