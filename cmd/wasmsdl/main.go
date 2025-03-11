@@ -32,8 +32,9 @@ var (
 )
 
 // Get the go version of the user module
-func goVersion() (string, error) {
+func goVersion(buildDir string) (string, error) {
 	cmd := exec.Command("go", "list", "-f", "go{{.Module.GoVersion}}")
+	cmd.Dir = buildDir
 	cmd.Env = append(os.Environ(), "GOOS=js", "GOARCH=wasm")
 	out, err := cmd.Output()
 	if err != nil {
@@ -50,7 +51,7 @@ func goVersion() (string, error) {
 	return v, nil
 }
 
-func getWasmExecJS() ([]byte, error) {
+func getWasmExecJS(buildDir string) ([]byte, error) {
 	// Try finding it locally
 	dir, ok := os.LookupEnv("GOROOT")
 	if ok {
@@ -66,7 +67,7 @@ func getWasmExecJS() ([]byte, error) {
 		}
 	}
 	// Try fetching it online
-	v, err := goVersion()
+	v, err := goVersion(buildDir)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +96,6 @@ type Files map[string][]byte
 func GetFiles(buildDir, htmlPath string) (Files, error) {
 	// index.html content
 	htmlContent := indexHTML
-	_ = htmlContent
 	if htmlPath != "" {
 		b, err := os.ReadFile(htmlPath)
 		if err != nil {
@@ -104,13 +104,14 @@ func GetFiles(buildDir, htmlPath string) (Files, error) {
 		htmlContent = b
 	}
 	// wasm_exec.js content
-	wasmExecContent, err := getWasmExecJS()
+	wasmExecContent, err := getWasmExecJS(buildDir)
 	if err != nil {
 		log.Fatal("couldn't get wasm_exec.js content: ", err)
 	}
 	// Build
 	wasmFileName := fmt.Sprintf("main_%d.wasm", time.Now().UnixNano())
-	cmd := exec.Command("go", "build", "-o", wasmFileName, buildDir)
+	cmd := exec.Command("go", "build", "-o", wasmFileName)
+	cmd.Dir = buildDir
 	cmd.Env = append(os.Environ(), "GOOS=js", "GOARCH=wasm")
 
 	var stderr bytes.Buffer
@@ -119,11 +120,11 @@ func GetFiles(buildDir, htmlPath string) (Files, error) {
 		return nil, fmt.Errorf("%s%w", stderr.String(), err)
 	}
 	// Read wasm binary and remove it from disk
-	wasmBytes, err := os.ReadFile(filepath.Join(wasmFileName))
+	wasmBytes, err := os.ReadFile(filepath.Join(buildDir, wasmFileName))
 	if err != nil {
 		return nil, err
 	}
-	if err := os.Remove(wasmFileName); err != nil {
+	if err := os.Remove(filepath.Join(buildDir, wasmFileName)); err != nil {
 		fmt.Fprintf(os.Stderr, "warn: couldn't remove wasm file '%s': %v\n", wasmFileName, err)
 	}
 
@@ -153,6 +154,10 @@ Commands:
 	if len(os.Args) <= 1 {
 		log.Fatal(usage)
 	}
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
 	cmd := os.Args[1]
 	cmdFlags := flag.NewFlagSet("wasmsdl "+cmd, flag.ContinueOnError)
 	cmdFlags.StringVar(&htmlPath, "html", "", "optional index.html file")
@@ -165,9 +170,8 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		dir := "."
 		if cmdFlags.Arg(0) != "" {
-			dir = cmdFlags.Arg(0)
+			dir, _ = filepath.Abs(cmdFlags.Arg(0))
 		}
 		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
@@ -196,9 +200,8 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		dir := "."
 		if cmdFlags.Arg(0) != "" {
-			dir = cmdFlags.Arg(0)
+			dir, _ = filepath.Abs(cmdFlags.Arg(0))
 		}
 		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
@@ -235,9 +238,8 @@ Commands:
 		if err != nil {
 			os.Exit(1)
 		}
-		dir := "."
 		if cmdFlags.Arg(0) != "" {
-			dir = cmdFlags.Arg(0)
+			dir, _ = filepath.Abs(cmdFlags.Arg(0))
 		}
 		files, err := GetFiles(dir, htmlPath)
 		if err != nil {
@@ -270,7 +272,6 @@ Commands:
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			fmt.Printf("couldn't listen and serve: %v\n", err)
 		}
-		_ = files
 	default:
 		fmt.Fprint(os.Stderr, usage)
 		os.Exit(2)

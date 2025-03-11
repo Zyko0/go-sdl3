@@ -6782,12 +6782,9 @@ func initialize() {
 	}
 
 	iSetWindowResizable = func(window *Window, resizable bool) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		_resizable := internal.NewBoolean(resizable)
 		ret := js.Global().Get("Module").Call(
@@ -10574,22 +10571,17 @@ func initialize() {
 	}
 
 	iGetMouseState = func(x *float32, y *float32) MouseButtonFlags {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_x, ok := internal.GetJSPointer(x)
-		if !ok {
-			_x = internal.StackAlloc(int(unsafe.Sizeof(*x)))
-		}
-		_y, ok := internal.GetJSPointer(y)
-		if !ok {
-			_y = internal.StackAlloc(int(unsafe.Sizeof(*y)))
-		}
+		_x := internal.StackAlloc(int(unsafe.Sizeof(float32(0))))
+		_y := internal.StackAlloc(int(unsafe.Sizeof(float32(0))))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetMouseState",
 			_x,
 			_y,
 		)
+		*x = float32(internal.GetValue(_x, "float").Float())
+		*y = float32(internal.GetValue(_y, "float").Float())
 
 		return MouseButtonFlags(ret.Int())
 	}
@@ -15895,12 +15887,9 @@ func initialize() {
 	}
 
 	iSetRenderDrawBlendMode = func(renderer *Renderer, blendMode BlendMode) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_blendMode := int32(blendMode)
 		ret := js.Global().Get("Module").Call(

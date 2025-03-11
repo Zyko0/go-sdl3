@@ -7,8 +7,6 @@
 
 ## About
 
-The API is currently not stable, I might make some renames and packages refactor.
-
 This library wraps SDL3 to more idiomatic go and:
 - Changes return values from `bool` to `error` (`SDL_GetError`).
 - Trims `SDL_` prefix from all types, variables, function names.
@@ -30,20 +28,17 @@ The list of currently supported functions can be found in [COVERAGE.md](COVERAGE
 ## Usage
 
 The library is linked dynamically with [purego](https://github.com/ebitengine/purego) (does not require CGo).
-- Automatic
 
-If the platform is supported (if a binary exists for it), the code below will write the library to a temporary folder, and remove it when the `main` function returns.
+<ins>Embedded:</ins> The code below will write the library to a temporary folder, and remove it when the `main` function returns.
 ```go
 defer binsdl.Load().Unload()
 ```
-- Manual
-
-The binary is already installed and/or its location is known (e.g: same folder), so it can be loaded by its path.
+<ins>Manual:</ins> If the library is installed or if the location is known (e.g: same folder), it can be loaded by its path.
 ```go
-sdl.LoadLibrary("SDL3.dll") // "libSDL3.so", "libSDL3.dylib"
+sdl.LoadLibrary(sdl.Path()) // "SDL3.dll", "libSDL3.so.0", "libSDL3.dylib"
 ```
 
-**Example:**
+<ins>**Example:**</ins>
 > Note that you do not have to pass your update function `sdl.RunLoop`, however doing so allows you to target `GOOS=js`/`GOARCH=wasm`, see [wasmsdl](cmd/wasmsdl/). 
 ```go
 package main

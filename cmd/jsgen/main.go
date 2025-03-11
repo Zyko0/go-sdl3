@@ -41,6 +41,18 @@ func main() {
 	flag.StringVar(&libraryName, "library", "", "library name (e.g: sdl)")
 	flag.Parse()
 
+	var prefix string
+	switch libraryName {
+	case "sdl":
+		prefix = "_SDL_"
+	case "ttf":
+		prefix = "_TTF_"
+	case "mixer":
+		prefix = "_Mix_"
+	case "img":
+		prefix = "_IMG_"
+	}
+
 	path, err := os.Getwd()
 	if err != nil {
 		log.Fatal("err: ", err)
@@ -216,7 +228,7 @@ func main() {
 					call.Qual("syscall/js", "Global").Call().Op(".").Id("Get").
 						Call(jen.Lit("Module")).Op(".").Id("Call").
 						CallFunc(func(i *jen.Group) {
-							i.Add(jen.Line().Lit("_SDL_" + fn.Name[1:]))
+							i.Add(jen.Line().Lit(prefix + fn.Name[1:]))
 							for _, a := range fn.Params {
 								i.Add(jen.Line().Id("_" + a.Name))
 							}

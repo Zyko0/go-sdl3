@@ -6,8 +6,8 @@ import (
 	js "syscall/js"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	internal "github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 func initialize() {
@@ -16,7 +16,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Version",
+			"_TTF_Version",
 		)
 
 		return int32(ret.Int())
@@ -39,7 +39,7 @@ func initialize() {
 			_patch = internal.StackAlloc(int(unsafe.Sizeof(*patch)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_GetFreeTypeVersion",
+			"_TTF_GetFreeTypeVersion",
 			_major,
 			_minor,
 			_patch,
@@ -63,7 +63,7 @@ func initialize() {
 			_patch = internal.StackAlloc(int(unsafe.Sizeof(*patch)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_GetHarfBuzzVersion",
+			"_TTF_GetHarfBuzzVersion",
 			_major,
 			_minor,
 			_patch,
@@ -71,11 +71,8 @@ func initialize() {
 	}
 
 	iInit = func() bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Init",
+			"_TTF_Init",
 		)
 
 		return internal.GetBool(ret)
@@ -88,7 +85,7 @@ func initialize() {
 		_file := internal.StringOnJSStack(file)
 		_ptsize := int32(ptsize)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_OpenFont",
+			"_TTF_OpenFont",
 			_file,
 			_ptsize,
 		)
@@ -98,17 +95,14 @@ func initialize() {
 	}
 
 	iOpenFontIO = func(src *sdl.IOStream, closeio bool, ptsize float32) *Font {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_src, ok := internal.GetJSPointer(src)
 		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
+			panic("nil stream")
 		}
 		_closeio := internal.NewBoolean(closeio)
 		_ptsize := int32(ptsize)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_OpenFontIO",
+			"_TTF_OpenFontIO",
 			_src,
 			_closeio,
 			_ptsize,
@@ -127,7 +121,7 @@ func initialize() {
 			_props = internal.StackAlloc(int(unsafe.Sizeof(*props)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_OpenFontWithProperties",
+			"_TTF_OpenFontWithProperties",
 			_props,
 		)
 
@@ -144,7 +138,7 @@ func initialize() {
 			_existing_font = internal.StackAlloc(int(unsafe.Sizeof(*existing_font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CopyFont",
+			"_TTF_CopyFont",
 			_existing_font,
 		)
 
@@ -161,7 +155,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontProperties",
+			"_TTF_GetFontProperties",
 			_font,
 		)
 
@@ -177,7 +171,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontGeneration",
+			"_TTF_GetFontGeneration",
 			_font,
 		)
 
@@ -197,7 +191,7 @@ func initialize() {
 			_fallback = internal.StackAlloc(int(unsafe.Sizeof(*fallback)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_AddFallbackFont",
+			"_TTF_AddFallbackFont",
 			_font,
 			_fallback,
 		)
@@ -218,7 +212,7 @@ func initialize() {
 			_fallback = internal.StackAlloc(int(unsafe.Sizeof(*fallback)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_RemoveFallbackFont",
+			"_TTF_RemoveFallbackFont",
 			_font,
 			_fallback,
 		)
@@ -233,7 +227,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_ClearFallbackFonts",
+			"_TTF_ClearFallbackFonts",
 			_font,
 		)
 	}
@@ -248,7 +242,7 @@ func initialize() {
 		}
 		_ptsize := int32(ptsize)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontSize",
+			"_TTF_SetFontSize",
 			_font,
 			_ptsize,
 		)
@@ -268,7 +262,7 @@ func initialize() {
 		_hdpi := int32(hdpi)
 		_vdpi := int32(vdpi)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontSizeDPI",
+			"_TTF_SetFontSizeDPI",
 			_font,
 			_ptsize,
 			_hdpi,
@@ -287,7 +281,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontSize",
+			"_TTF_GetFontSize",
 			_font,
 		)
 
@@ -311,7 +305,7 @@ func initialize() {
 			_vdpi = internal.StackAlloc(int(unsafe.Sizeof(*vdpi)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontDPI",
+			"_TTF_GetFontDPI",
 			_font,
 			_hdpi,
 			_vdpi,
@@ -330,7 +324,7 @@ func initialize() {
 		}
 		_style := int32(style)
 		js.Global().Get("Module").Call(
-			"_SDL_SetFontStyle",
+			"_TTF_SetFontStyle",
 			_font,
 			_style,
 		)
@@ -345,7 +339,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontStyle",
+			"_TTF_GetFontStyle",
 			_font,
 		)
 
@@ -362,7 +356,7 @@ func initialize() {
 		}
 		_outline := int32(outline)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontOutline",
+			"_TTF_SetFontOutline",
 			_font,
 			_outline,
 		)
@@ -379,7 +373,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontOutline",
+			"_TTF_GetFontOutline",
 			_font,
 		)
 
@@ -396,7 +390,7 @@ func initialize() {
 		}
 		_hinting := int32(hinting)
 		js.Global().Get("Module").Call(
-			"_SDL_SetFontHinting",
+			"_TTF_SetFontHinting",
 			_font,
 			_hinting,
 		)
@@ -411,7 +405,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetNumFontFaces",
+			"_TTF_GetNumFontFaces",
 			_font,
 		)
 
@@ -427,7 +421,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontHinting",
+			"_TTF_GetFontHinting",
 			_font,
 		)
 
@@ -444,7 +438,7 @@ func initialize() {
 		}
 		_enabled := internal.NewBoolean(enabled)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontSDF",
+			"_TTF_SetFontSDF",
 			_font,
 			_enabled,
 		)
@@ -461,7 +455,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontSDF",
+			"_TTF_GetFontSDF",
 			_font,
 		)
 
@@ -478,7 +472,7 @@ func initialize() {
 		}
 		_align := int32(align)
 		js.Global().Get("Module").Call(
-			"_SDL_SetFontWrapAlignment",
+			"_TTF_SetFontWrapAlignment",
 			_font,
 			_align,
 		)
@@ -493,7 +487,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontWrapAlignment",
+			"_TTF_GetFontWrapAlignment",
 			_font,
 		)
 
@@ -509,7 +503,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontHeight",
+			"_TTF_GetFontHeight",
 			_font,
 		)
 
@@ -525,7 +519,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontAscent",
+			"_TTF_GetFontAscent",
 			_font,
 		)
 
@@ -541,7 +535,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontDescent",
+			"_TTF_GetFontDescent",
 			_font,
 		)
 
@@ -558,7 +552,7 @@ func initialize() {
 		}
 		_lineskip := int32(lineskip)
 		js.Global().Get("Module").Call(
-			"_SDL_SetFontLineSkip",
+			"_TTF_SetFontLineSkip",
 			_font,
 			_lineskip,
 		)
@@ -573,7 +567,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontLineSkip",
+			"_TTF_GetFontLineSkip",
 			_font,
 		)
 
@@ -590,7 +584,7 @@ func initialize() {
 		}
 		_enabled := internal.NewBoolean(enabled)
 		js.Global().Get("Module").Call(
-			"_SDL_SetFontKerning",
+			"_TTF_SetFontKerning",
 			_font,
 			_enabled,
 		)
@@ -605,7 +599,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontKerning",
+			"_TTF_GetFontKerning",
 			_font,
 		)
 
@@ -621,7 +615,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FontIsFixedWidth",
+			"_TTF_FontIsFixedWidth",
 			_font,
 		)
 
@@ -637,7 +631,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FontIsScalable",
+			"_TTF_FontIsScalable",
 			_font,
 		)
 
@@ -653,7 +647,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontFamilyName",
+			"_TTF_GetFontFamilyName",
 			_font,
 		)
 
@@ -669,7 +663,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontStyleName",
+			"_TTF_GetFontStyleName",
 			_font,
 		)
 
@@ -686,7 +680,7 @@ func initialize() {
 		}
 		_direction := int32(direction)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontDirection",
+			"_TTF_SetFontDirection",
 			_font,
 			_direction,
 		)
@@ -703,7 +697,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontDirection",
+			"_TTF_GetFontDirection",
 			_font,
 		)
 
@@ -716,7 +710,7 @@ func initialize() {
 		defer internal.StackRestore()
 		_string := internal.StringOnJSStack(string)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_StringToTag",
+			"_TTF_StringToTag",
 			_string,
 		)
 
@@ -733,7 +727,7 @@ func initialize() {
 		}
 		_script := int32(script)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontScript",
+			"_TTF_SetFontScript",
 			_font,
 			_script,
 		)
@@ -750,7 +744,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetFontScript",
+			"_TTF_GetFontScript",
 			_font,
 		)
 
@@ -763,7 +757,7 @@ func initialize() {
 		defer internal.StackRestore()
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGlyphScript",
+			"_TTF_GetGlyphScript",
 			_ch,
 		)
 
@@ -780,7 +774,7 @@ func initialize() {
 		}
 		_language_bcp47 := internal.StringOnJSStack(language_bcp47)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetFontLanguage",
+			"_TTF_SetFontLanguage",
 			_font,
 			_language_bcp47,
 		)
@@ -798,7 +792,7 @@ func initialize() {
 		}
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FontHasGlyph",
+			"_TTF_FontHasGlyph",
 			_font,
 			_ch,
 		)
@@ -820,7 +814,7 @@ func initialize() {
 			_image_type = internal.StackAlloc(int(unsafe.Sizeof(*image_type)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGlyphImage",
+			"_TTF_GetGlyphImage",
 			_font,
 			_ch,
 			_image_type,
@@ -844,7 +838,7 @@ func initialize() {
 			_image_type = internal.StackAlloc(int(unsafe.Sizeof(*image_type)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGlyphImageForIndex",
+			"_TTF_GetGlyphImageForIndex",
 			_font,
 			_glyph_index,
 			_image_type,
@@ -884,7 +878,7 @@ func initialize() {
 			_advance = internal.StackAlloc(int(unsafe.Sizeof(*advance)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGlyphMetrics",
+			"_TTF_GetGlyphMetrics",
 			_font,
 			_ch,
 			_minx,
@@ -912,7 +906,7 @@ func initialize() {
 			_kerning = internal.StackAlloc(int(unsafe.Sizeof(*kerning)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGlyphKerning",
+			"_TTF_GetGlyphKerning",
 			_font,
 			_previous_ch,
 			_ch,
@@ -923,31 +917,26 @@ func initialize() {
 	}
 
 	iGetStringSize = func(font *Font, text string, length uintptr, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_font, ok := internal.GetJSPointer(font)
 		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
+			panic("nil font")
 		}
 		_text := internal.StringOnJSStack(text)
-		_length := internal.NewBigInt(length)
-		_w, ok := internal.GetJSPointer(w)
-		if !ok {
-			_w = internal.StackAlloc(int(unsafe.Sizeof(*w)))
-		}
-		_h, ok := internal.GetJSPointer(h)
-		if !ok {
-			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
-		}
+		_length := int32(length)
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetStringSize",
+			"_TTF_GetStringSize",
 			_font,
 			_text,
 			_length,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 
 		return internal.GetBool(ret)
 	}
@@ -972,7 +961,7 @@ func initialize() {
 			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetStringSizeWrapped",
+			"_TTF_GetStringSizeWrapped",
 			_font,
 			_text,
 			_length,
@@ -1004,7 +993,7 @@ func initialize() {
 			_measured_length = internal.StackAlloc(int(unsafe.Sizeof(*measured_length)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_MeasureString",
+			"_TTF_MeasureString",
 			_font,
 			_text,
 			_length,
@@ -1021,7 +1010,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateSurfaceTextEngine",
+			"_TTF_CreateSurfaceTextEngine",
 		)
 
 		_obj := internal.NewObject[TextEngine](ret)
@@ -1043,7 +1032,7 @@ func initialize() {
 			_surface = internal.StackAlloc(int(unsafe.Sizeof(*surface)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_DrawSurfaceText",
+			"_TTF_DrawSurfaceText",
 			_text,
 			_x,
 			_y,
@@ -1062,21 +1051,18 @@ func initialize() {
 			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_DestroySurfaceTextEngine",
+			"_TTF_DestroySurfaceTextEngine",
 			_engine,
 		)
 	}
 
 	iCreateRendererTextEngine = func(renderer *sdl.Renderer) *TextEngine {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateRendererTextEngine",
+			"_TTF_CreateRendererTextEngine",
 			_renderer,
 		)
 
@@ -1093,7 +1079,7 @@ func initialize() {
 			_props = internal.StackAlloc(int(unsafe.Sizeof(*props)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateRendererTextEngineWithProperties",
+			"_TTF_CreateRendererTextEngineWithProperties",
 			_props,
 		)
 
@@ -1102,17 +1088,14 @@ func initialize() {
 	}*/
 
 	iDrawRendererText = func(text *Text, x float32, y float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_text, ok := internal.GetJSPointer(text)
 		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
+			panic("nil text")
 		}
-		_x := int32(x)
+		_x := int32(x) // TODO: find out if int32 or float32
 		_y := int32(y)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_DrawRendererText",
+			"_TTF_DrawRendererText",
 			_text,
 			_x,
 			_y,
@@ -1130,7 +1113,7 @@ func initialize() {
 			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_DestroyRendererTextEngine",
+			"_TTF_DestroyRendererTextEngine",
 			_engine,
 		)
 	}
@@ -1144,7 +1127,7 @@ func initialize() {
 			_device = internal.StackAlloc(int(unsafe.Sizeof(*device)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUTextEngine",
+			"_TTF_CreateGPUTextEngine",
 			_device,
 		)
 
@@ -1161,7 +1144,7 @@ func initialize() {
 			_props = internal.StackAlloc(int(unsafe.Sizeof(*props)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUTextEngineWithProperties",
+			"_TTF_CreateGPUTextEngineWithProperties",
 			_props,
 		)
 
@@ -1178,7 +1161,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGPUTextDrawData",
+			"_TTF_GetGPUTextDrawData",
 			_text,
 		)
 
@@ -1195,7 +1178,7 @@ func initialize() {
 			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_DestroyGPUTextEngine",
+			"_TTF_DestroyGPUTextEngine",
 			_engine,
 		)
 	}
@@ -1210,7 +1193,7 @@ func initialize() {
 		}
 		_winding := int32(winding)
 		js.Global().Get("Module").Call(
-			"_SDL_SetGPUTextEngineWinding",
+			"_TTF_SetGPUTextEngineWinding",
 			_engine,
 			_winding,
 		)
@@ -1225,7 +1208,7 @@ func initialize() {
 			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetGPUTextEngineWinding",
+			"_TTF_GetGPUTextEngineWinding",
 			_engine,
 		)
 
@@ -1233,21 +1216,20 @@ func initialize() {
 	}
 
 	iCreateText = func(engine *TextEngine, font *Font, text string, length uintptr) *Text {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_engine, ok := internal.GetJSPointer(engine)
 		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
+			panic("nil engine")
 		}
 		_font, ok := internal.GetJSPointer(font)
 		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
+			panic("nil font")
 		}
 		_text := internal.StringOnJSStack(text)
-		_length := internal.NewBigInt(length)
+		_length := int32(length)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateText",
+			"_TTF_CreateText",
 			_engine,
 			_font,
 			_text,
@@ -1255,6 +1237,7 @@ func initialize() {
 		)
 
 		_obj := internal.NewObject[Text](ret)
+
 		return _obj
 	}
 
@@ -1267,7 +1250,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextProperties",
+			"_TTF_GetTextProperties",
 			_text,
 		)
 
@@ -1287,7 +1270,7 @@ func initialize() {
 			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextEngine",
+			"_TTF_SetTextEngine",
 			_text,
 			_engine,
 		)
@@ -1304,7 +1287,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextEngine",
+			"_TTF_GetTextEngine",
 			_text,
 		)
 
@@ -1325,7 +1308,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextFont",
+			"_TTF_SetTextFont",
 			_text,
 			_font,
 		)
@@ -1342,7 +1325,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextFont",
+			"_TTF_GetTextFont",
 			_text,
 		)
 
@@ -1360,7 +1343,7 @@ func initialize() {
 		}
 		_direction := int32(direction)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextDirection",
+			"_TTF_SetTextDirection",
 			_text,
 			_direction,
 		)
@@ -1377,7 +1360,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextDirection",
+			"_TTF_GetTextDirection",
 			_text,
 		)
 
@@ -1394,7 +1377,7 @@ func initialize() {
 		}
 		_script := int32(script)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextScript",
+			"_TTF_SetTextScript",
 			_text,
 			_script,
 		)
@@ -1411,7 +1394,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextScript",
+			"_TTF_GetTextScript",
 			_text,
 		)
 
@@ -1419,19 +1402,16 @@ func initialize() {
 	}
 
 	iSetTextColor = func(text *Text, r uint8, g uint8, b uint8, a uint8) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_text, ok := internal.GetJSPointer(text)
 		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
+			panic("nil text")
 		}
 		_r := int32(r)
 		_g := int32(g)
 		_b := int32(b)
 		_a := int32(a)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextColor",
+			"_TTF_SetTextColor",
 			_text,
 			_r,
 			_g,
@@ -1455,7 +1435,7 @@ func initialize() {
 		_b := int32(b)
 		_a := int32(a)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextColorFloat",
+			"_TTF_SetTextColorFloat",
 			_text,
 			_r,
 			_g,
@@ -1491,7 +1471,7 @@ func initialize() {
 			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextColor",
+			"_TTF_GetTextColor",
 			_text,
 			_r,
 			_g,
@@ -1527,7 +1507,7 @@ func initialize() {
 			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextColorFloat",
+			"_TTF_GetTextColorFloat",
 			_text,
 			_r,
 			_g,
@@ -1549,7 +1529,7 @@ func initialize() {
 		_x := int32(x)
 		_y := int32(y)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextPosition",
+			"_TTF_SetTextPosition",
 			_text,
 			_x,
 			_y,
@@ -1575,7 +1555,7 @@ func initialize() {
 			_y = internal.StackAlloc(int(unsafe.Sizeof(*y)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextPosition",
+			"_TTF_GetTextPosition",
 			_text,
 			_x,
 			_y,
@@ -1594,7 +1574,7 @@ func initialize() {
 		}
 		_wrap_width := int32(wrap_width)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextWrapWidth",
+			"_TTF_SetTextWrapWidth",
 			_text,
 			_wrap_width,
 		)
@@ -1615,7 +1595,7 @@ func initialize() {
 			_wrap_width = internal.StackAlloc(int(unsafe.Sizeof(*wrap_width)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextWrapWidth",
+			"_TTF_GetTextWrapWidth",
 			_text,
 			_wrap_width,
 		)
@@ -1633,7 +1613,7 @@ func initialize() {
 		}
 		_visible := internal.NewBoolean(visible)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextWrapWhitespaceVisible",
+			"_TTF_SetTextWrapWhitespaceVisible",
 			_text,
 			_visible,
 		)
@@ -1650,7 +1630,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_TextWrapWhitespaceVisible",
+			"_TTF_TextWrapWhitespaceVisible",
 			_text,
 		)
 
@@ -1668,7 +1648,7 @@ func initialize() {
 		_string := internal.StringOnJSStack(string)
 		_length := internal.NewBigInt(length)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTextString",
+			"_TTF_SetTextString",
 			_text,
 			_string,
 			_length,
@@ -1689,7 +1669,7 @@ func initialize() {
 		_string := internal.StringOnJSStack(string)
 		_length := internal.NewBigInt(length)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_InsertTextString",
+			"_TTF_InsertTextString",
 			_text,
 			_offset,
 			_string,
@@ -1710,7 +1690,7 @@ func initialize() {
 		_string := internal.StringOnJSStack(string)
 		_length := internal.NewBigInt(length)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_AppendTextString",
+			"_TTF_AppendTextString",
 			_text,
 			_string,
 			_length,
@@ -1730,7 +1710,7 @@ func initialize() {
 		_offset := int32(offset)
 		_length := int32(length)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_DeleteTextString",
+			"_TTF_DeleteTextString",
 			_text,
 			_offset,
 			_length,
@@ -1756,7 +1736,7 @@ func initialize() {
 			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextSize",
+			"_TTF_GetTextSize",
 			_text,
 			_w,
 			_h,
@@ -1779,7 +1759,7 @@ func initialize() {
 			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextSubString",
+			"_TTF_GetTextSubString",
 			_text,
 			_offset,
 			_substring,
@@ -1802,7 +1782,7 @@ func initialize() {
 			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextSubStringForLine",
+			"_TTF_GetTextSubStringForLine",
 			_text,
 			_line,
 			_substring,
@@ -1826,7 +1806,7 @@ func initialize() {
 			_count = internal.StackAlloc(int(unsafe.Sizeof(*count)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextSubStringsForRange",
+			"_TTF_GetTextSubStringsForRange",
 			_text,
 			_offset,
 			_length,
@@ -1852,7 +1832,7 @@ func initialize() {
 			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTextSubStringForPoint",
+			"_TTF_GetTextSubStringForPoint",
 			_text,
 			_x,
 			_y,
@@ -1879,7 +1859,7 @@ func initialize() {
 			_previous = internal.StackAlloc(int(unsafe.Sizeof(*previous)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetPreviousTextSubString",
+			"_TTF_GetPreviousTextSubString",
 			_text,
 			_substring,
 			_previous,
@@ -1905,7 +1885,7 @@ func initialize() {
 			_next = internal.StackAlloc(int(unsafe.Sizeof(*next)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetNextTextSubString",
+			"_TTF_GetNextTextSubString",
 			_text,
 			_substring,
 			_next,
@@ -1923,7 +1903,7 @@ func initialize() {
 			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_UpdateText",
+			"_TTF_UpdateText",
 			_text,
 		)
 
@@ -1931,17 +1911,15 @@ func initialize() {
 	}
 
 	iDestroyText = func(text *Text) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_text, ok := internal.GetJSPointer(text)
 		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
+			panic("nil text")
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_DestroyText",
+			"_TTF_DestroyText",
 			_text,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(text)))
 	}
 
 	iCloseFont = func(font *Font) {
@@ -1953,7 +1931,7 @@ func initialize() {
 			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_CloseFont",
+			"_TTF_CloseFont",
 			_font,
 		)
 	}
@@ -1963,7 +1941,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_Quit",
+			"_TTF_Quit",
 		)
 	}
 
@@ -1972,7 +1950,7 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_WasInit",
+			"_TTF_WasInit",
 		)
 
 		return int32(ret.Int())
@@ -1989,7 +1967,7 @@ func initialize() {
 		}
 		_size := internal.NewBigInt(size)
 		js.Global().Get("Module").Call(
-			"_SDL_TagToString",
+			"_TTF_TagToString",
 			_tag,
 			_str,
 			_size,
@@ -2008,7 +1986,7 @@ func initialize() {
 		_length := internal.NewBigInt(length)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Solid",
+			"_TTF_RenderText_Solid",
 			_font,
 			_str,
 			_length,
@@ -2032,7 +2010,7 @@ func initialize() {
 		_fg := int32(fg)
 		_wrapLength := int32(wrapLength)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Solid_Wrapped",
+			"_TTF_RenderText_Solid_Wrapped",
 			_font,
 			_str,
 			_length,
@@ -2054,7 +2032,7 @@ func initialize() {
 		}
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderGlyph_Solid",
+			"_TTF_RenderGlyph_Solid",
 			_font,
 			_ch,
 		)
@@ -2075,7 +2053,7 @@ func initialize() {
 		_length := internal.NewBigInt(length)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Shaded",
+			"_TTF_RenderText_Shaded",
 			_font,
 			_str,
 			_length,
@@ -2099,7 +2077,7 @@ func initialize() {
 		_fg := int32(fg)
 		_wrapWidth := int32(wrapWidth)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Shaded_Wrapped",
+			"_TTF_RenderText_Shaded_Wrapped",
 			_font,
 			_str,
 			_length,
@@ -2122,7 +2100,7 @@ func initialize() {
 		_ch := int32(ch)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderGlyph_Shaded",
+			"_TTF_RenderGlyph_Shaded",
 			_font,
 			_ch,
 			_fg,
@@ -2144,7 +2122,7 @@ func initialize() {
 		_length := internal.NewBigInt(length)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Blended",
+			"_TTF_RenderText_Blended",
 			_font,
 			_str,
 			_length,
@@ -2168,7 +2146,7 @@ func initialize() {
 		_fg := int32(fg)
 		_wrapWidth := int32(wrapWidth)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_Blended_Wrapped",
+			"_TTF_RenderText_Blended_Wrapped",
 			_font,
 			_str,
 			_length,
@@ -2190,7 +2168,7 @@ func initialize() {
 		}
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderGlyph_Blended",
+			"_TTF_RenderGlyph_Blended",
 			_font,
 			_ch,
 		)
@@ -2211,7 +2189,7 @@ func initialize() {
 		_length := internal.NewBigInt(length)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_LCD",
+			"_TTF_RenderText_LCD",
 			_font,
 			_str,
 			_length,
@@ -2235,7 +2213,7 @@ func initialize() {
 		_fg := int32(fg)
 		_wrapWidth := int32(wrapWidth)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderText_LCD_Wrapped",
+			"_TTF_RenderText_LCD_Wrapped",
 			_font,
 			_str,
 			_length,
@@ -2257,7 +2235,7 @@ func initialize() {
 		}
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RenderGlyph_LCD",
+			"_TTF_RenderGlyph_LCD",
 			_font,
 			_ch,
 		)
