@@ -16,7 +16,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Version",
+			"_IMG_Version",
 		)
 
 		return int32(ret.Int())
@@ -33,7 +33,7 @@ func init() {
 		_closeio := internal.NewBoolean(closeio)
 		_typ := internal.StringOnJSStack(typ)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTyped_IO",
+			"_IMG_LoadTyped_IO",
 			_src,
 			_closeio,
 			_typ,
@@ -49,7 +49,7 @@ func init() {
 		defer internal.StackRestore()
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Load",
+			"_IMG_Load",
 			_file,
 		)
 
@@ -67,7 +67,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Load_IO",
+			"_IMG_Load_IO",
 			_src,
 			_closeio,
 		)
@@ -86,7 +86,7 @@ func init() {
 		}
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTexture",
+			"_IMG_LoadTexture",
 			_renderer,
 			_file,
 		)
@@ -109,7 +109,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTexture_IO",
+			"_IMG_LoadTexture_IO",
 			_renderer,
 			_src,
 			_closeio,
@@ -134,7 +134,7 @@ func init() {
 		_closeio := internal.NewBoolean(closeio)
 		_typ := internal.StringOnJSStack(typ)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTextureTyped_IO",
+			"_IMG_LoadTextureTyped_IO",
 			_renderer,
 			_src,
 			_closeio,
@@ -154,7 +154,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadAVIF_IO",
+			"_IMG_LoadAVIF_IO",
 			_src,
 		)
 
@@ -171,7 +171,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadICO_IO",
+			"_IMG_LoadICO_IO",
 			_src,
 		)
 
@@ -188,7 +188,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadCUR_IO",
+			"_IMG_LoadCUR_IO",
 			_src,
 		)
 
@@ -205,7 +205,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadBMP_IO",
+			"_IMG_LoadBMP_IO",
 			_src,
 		)
 
@@ -222,7 +222,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadGIF_IO",
+			"_IMG_LoadGIF_IO",
 			_src,
 		)
 
@@ -239,7 +239,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadJPG_IO",
+			"_IMG_LoadJPG_IO",
 			_src,
 		)
 
@@ -256,7 +256,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadJXL_IO",
+			"_IMG_LoadJXL_IO",
 			_src,
 		)
 
@@ -273,7 +273,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadLBM_IO",
+			"_IMG_LoadLBM_IO",
 			_src,
 		)
 
@@ -290,7 +290,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadPCX_IO",
+			"_IMG_LoadPCX_IO",
 			_src,
 		)
 
@@ -307,7 +307,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadPNG_IO",
+			"_IMG_LoadPNG_IO",
 			_src,
 		)
 
@@ -324,7 +324,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadPNM_IO",
+			"_IMG_LoadPNM_IO",
 			_src,
 		)
 
@@ -341,7 +341,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadSVG_IO",
+			"_IMG_LoadSVG_IO",
 			_src,
 		)
 
@@ -358,7 +358,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadQOI_IO",
+			"_IMG_LoadQOI_IO",
 			_src,
 		)
 
@@ -375,7 +375,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTGA_IO",
+			"_IMG_LoadTGA_IO",
 			_src,
 		)
 
@@ -392,7 +392,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadTIF_IO",
+			"_IMG_LoadTIF_IO",
 			_src,
 		)
 
@@ -409,7 +409,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadXCF_IO",
+			"_IMG_LoadXCF_IO",
 			_src,
 		)
 
@@ -426,7 +426,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadXPM_IO",
+			"_IMG_LoadXPM_IO",
 			_src,
 		)
 
@@ -443,7 +443,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadXV_IO",
+			"_IMG_LoadXV_IO",
 			_src,
 		)
 
@@ -460,7 +460,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadWEBP_IO",
+			"_IMG_LoadWEBP_IO",
 			_src,
 		)
 
@@ -479,7 +479,7 @@ func init() {
 		_width := int32(width)
 		_height := int32(height)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadSizedSVG_IO",
+			"_IMG_LoadSizedSVG_IO",
 			_src,
 			_width,
 			_height,
@@ -498,7 +498,7 @@ func init() {
 			_xpm = internal.StackAlloc()
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_ReadXPMFromArray",
+			"_IMG_ReadXPMFromArray",
 			_xpm,
 		)
 
@@ -515,7 +515,7 @@ func init() {
 			_xpm = internal.StackAlloc()
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_ReadXPMFromArrayToRGB888",
+			"_IMG_ReadXPMFromArrayToRGB888",
 			_xpm,
 		)
 
@@ -534,7 +534,7 @@ func init() {
 		_file := internal.StringOnJSStack(file)
 		_quality := int32(quality)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SaveAVIF",
+			"_IMG_SaveAVIF",
 			_surface,
 			_file,
 			_quality,
@@ -558,7 +558,7 @@ func init() {
 		_closeio := internal.NewBoolean(closeio)
 		_quality := int32(quality)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SaveAVIF_IO",
+			"_IMG_SaveAVIF_IO",
 			_surface,
 			_dst,
 			_closeio,
@@ -578,7 +578,7 @@ func init() {
 		}
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SavePNG",
+			"_IMG_SavePNG",
 			_surface,
 			_file,
 		)
@@ -600,7 +600,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SavePNG_IO",
+			"_IMG_SavePNG_IO",
 			_surface,
 			_dst,
 			_closeio,
@@ -620,7 +620,7 @@ func init() {
 		_file := internal.StringOnJSStack(file)
 		_quality := int32(quality)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SaveJPG",
+			"_IMG_SaveJPG",
 			_surface,
 			_file,
 			_quality,
@@ -644,7 +644,7 @@ func init() {
 		_closeio := internal.NewBoolean(closeio)
 		_quality := int32(quality)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SaveJPG_IO",
+			"_IMG_SaveJPG_IO",
 			_surface,
 			_dst,
 			_closeio,
@@ -660,7 +660,7 @@ func init() {
 		defer internal.StackRestore()
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadAnimation",
+			"_IMG_LoadAnimation",
 			_file,
 		)
 
@@ -678,7 +678,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadAnimation_IO",
+			"_IMG_LoadAnimation_IO",
 			_src,
 			_closeio,
 		)
@@ -698,7 +698,7 @@ func init() {
 		_closeio := internal.NewBoolean(closeio)
 		_typ := internal.StringOnJSStack(typ)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadAnimationTyped_IO",
+			"_IMG_LoadAnimationTyped_IO",
 			_src,
 			_closeio,
 			_typ,
@@ -717,7 +717,7 @@ func init() {
 			_anim = internal.StackAlloc(int(unsafe.Sizeof(*anim)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_FreeAnimation",
+			"_IMG_FreeAnimation",
 			_anim,
 		)
 	}
@@ -731,7 +731,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadGIFAnimation_IO",
+			"_IMG_LoadGIFAnimation_IO",
 			_src,
 		)
 
@@ -748,7 +748,7 @@ func init() {
 			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadWEBPAnimation_IO",
+			"_IMG_LoadWEBPAnimation_IO",
 			_src,
 		)
 

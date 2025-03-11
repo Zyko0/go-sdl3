@@ -128,7 +128,10 @@ func main() {
 	if err != nil {
 		log.Fatal("couldn't unmarshal config file: ", err)
 	}
-	regJS = regexp.MustCompile(fmt.Sprintf(`"_%s([A-Z][A-Za-z_0-9]+)",`, cfg.Prefix))
+	regJS, err = regexp.Compile(fmt.Sprintf(`"_%s([A-Z][A-Za-z_0-9]+)",`, cfg.Prefix))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Download API ref code
 	resp, err := http.Get(cfg.QuickAPIRefURL)

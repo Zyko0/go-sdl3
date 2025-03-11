@@ -6,8 +6,8 @@ import (
 	js "syscall/js"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	internal "github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 func init() {
@@ -16,7 +16,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Version",
+			"_Mix_Version",
 		)
 
 		return int32(ret.Int())
@@ -28,7 +28,7 @@ func init() {
 		defer internal.StackRestore()
 		_flags := int32(flags)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Init",
+			"_Mix_Init",
 			_flags,
 		)
 
@@ -40,7 +40,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_Quit",
+			"_Mix_Quit",
 		)
 	}
 
@@ -57,7 +57,7 @@ func init() {
 			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_OpenAudio",
+			"_Mix_OpenAudio",
 			_devid,
 			_spec,
 		)
@@ -71,7 +71,7 @@ func init() {
 		defer internal.StackRestore()
 		_pause_on := int32(pause_on)
 		js.Global().Get("Module").Call(
-			"_SDL_PauseAudio",
+			"_Mix_PauseAudio",
 			_pause_on,
 		)
 	}
@@ -93,7 +93,7 @@ func init() {
 			_channels = internal.StackAlloc(int(unsafe.Sizeof(*channels)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_QuerySpec",
+			"_Mix_QuerySpec",
 			_frequency,
 			_format,
 			_channels,
@@ -108,7 +108,7 @@ func init() {
 		defer internal.StackRestore()
 		_numchans := int32(numchans)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_AllocateChannels",
+			"_Mix_AllocateChannels",
 			_numchans,
 		)
 
@@ -125,7 +125,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadWAV_IO",
+			"_Mix_LoadWAV_IO",
 			_src,
 			_closeio,
 		)
@@ -140,7 +140,7 @@ func init() {
 		defer internal.StackRestore()
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadWAV",
+			"_Mix_LoadWAV",
 			_file,
 		)
 
@@ -154,7 +154,7 @@ func init() {
 		defer internal.StackRestore()
 		_file := internal.StringOnJSStack(file)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadMUS",
+			"_Mix_LoadMUS",
 			_file,
 		)
 
@@ -172,7 +172,7 @@ func init() {
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadMUS_IO",
+			"_Mix_LoadMUS_IO",
 			_src,
 			_closeio,
 		)
@@ -192,7 +192,7 @@ func init() {
 		_typ := int32(typ)
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_LoadMUSType_IO",
+			"_Mix_LoadMUSType_IO",
 			_src,
 			_typ,
 			_closeio,
@@ -211,7 +211,7 @@ func init() {
 			_mem = internal.StackAlloc(int(unsafe.Sizeof(*mem)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_QuickLoad_WAV",
+			"_Mix_QuickLoad_WAV",
 			_mem,
 		)
 
@@ -229,7 +229,7 @@ func init() {
 		}
 		_len := int32(len)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_QuickLoad_RAW",
+			"_Mix_QuickLoad_RAW",
 			_mem,
 			_len,
 		)
@@ -247,7 +247,7 @@ func init() {
 			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_FreeChunk",
+			"_Mix_FreeChunk",
 			_chunk,
 		)
 	}
@@ -261,7 +261,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		js.Global().Get("Module").Call(
-			"_SDL_FreeMusic",
+			"_Mix_FreeMusic",
 			_music,
 		)
 	}
@@ -271,7 +271,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetNumChunkDecoders",
+			"_Mix_GetNumChunkDecoders",
 		)
 
 		return int32(ret.Int())
@@ -283,7 +283,7 @@ func init() {
 		defer internal.StackRestore()
 		_index := int32(index)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetChunkDecoder",
+			"_Mix_GetChunkDecoder",
 			_index,
 		)
 
@@ -296,7 +296,7 @@ func init() {
 		defer internal.StackRestore()
 		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_HasChunkDecoder",
+			"_Mix_HasChunkDecoder",
 			_name,
 		)
 
@@ -308,7 +308,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetNumMusicDecoders",
+			"_Mix_GetNumMusicDecoders",
 		)
 
 		return int32(ret.Int())
@@ -320,7 +320,7 @@ func init() {
 		defer internal.StackRestore()
 		_index := int32(index)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicDecoder",
+			"_Mix_GetMusicDecoder",
 			_index,
 		)
 
@@ -333,7 +333,7 @@ func init() {
 		defer internal.StackRestore()
 		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_HasMusicDecoder",
+			"_Mix_HasMusicDecoder",
 			_name,
 		)
 
@@ -349,7 +349,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicType",
+			"_Mix_GetMusicType",
 			_music,
 		)
 
@@ -365,7 +365,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicTitle",
+			"_Mix_GetMusicTitle",
 			_music,
 		)
 
@@ -381,7 +381,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicTitleTag",
+			"_Mix_GetMusicTitleTag",
 			_music,
 		)
 
@@ -397,7 +397,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicArtistTag",
+			"_Mix_GetMusicArtistTag",
 			_music,
 		)
 
@@ -413,7 +413,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicAlbumTag",
+			"_Mix_GetMusicAlbumTag",
 			_music,
 		)
 
@@ -429,7 +429,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicCopyrightTag",
+			"_Mix_GetMusicCopyrightTag",
 			_music,
 		)
 
@@ -443,7 +443,7 @@ func init() {
 		_mix_func := int32(mix_func)
 		_arg := internal.NewBigInt(arg)
 		js.Global().Get("Module").Call(
-			"_SDL_SetPostMix",
+			"_Mix_SetPostMix",
 			_mix_func,
 			_arg,
 		)
@@ -456,7 +456,7 @@ func init() {
 		_mix_func := int32(mix_func)
 		_arg := internal.NewBigInt(arg)
 		js.Global().Get("Module").Call(
-			"_SDL_HookMusic",
+			"_Mix_HookMusic",
 			_mix_func,
 			_arg,
 		)
@@ -468,7 +468,7 @@ func init() {
 		defer internal.StackRestore()
 		_music_finished := int32(music_finished)
 		js.Global().Get("Module").Call(
-			"_SDL_HookMusicFinished",
+			"_Mix_HookMusicFinished",
 			_music_finished,
 		)
 	}*/
@@ -478,7 +478,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicHookData",
+			"_Mix_GetMusicHookData",
 		)
 
 		return uintptr(internal.GetInt64(ret))
@@ -490,7 +490,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel_finished := int32(channel_finished)
 		js.Global().Get("Module").Call(
-			"_SDL_ChannelFinished",
+			"_Mix_ChannelFinished",
 			_channel_finished,
 		)
 	}*/
@@ -504,7 +504,7 @@ func init() {
 		_d := int32(d)
 		_arg := internal.NewBigInt(arg)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_RegisterEffect",
+			"_Mix_RegisterEffect",
 			_chann,
 			_f,
 			_d,
@@ -521,7 +521,7 @@ func init() {
 		_channel := int32(channel)
 		_f := int32(f)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_UnregisterEffect",
+			"_Mix_UnregisterEffect",
 			_channel,
 			_f,
 		)
@@ -535,7 +535,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_UnregisterAllEffects",
+			"_Mix_UnregisterAllEffects",
 			_channel,
 		)
 
@@ -550,7 +550,7 @@ func init() {
 		_left := int32(left)
 		_right := int32(right)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetPanning",
+			"_Mix_SetPanning",
 			_channel,
 			_left,
 			_right,
@@ -567,7 +567,7 @@ func init() {
 		_angle := int32(angle)
 		_distance := int32(distance)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetPosition",
+			"_Mix_SetPosition",
 			_channel,
 			_angle,
 			_distance,
@@ -583,7 +583,7 @@ func init() {
 		_channel := int32(channel)
 		_distance := int32(distance)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetDistance",
+			"_Mix_SetDistance",
 			_channel,
 			_distance,
 		)
@@ -598,7 +598,7 @@ func init() {
 		_channel := int32(channel)
 		_flip := int32(flip)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetReverseStereo",
+			"_Mix_SetReverseStereo",
 			_channel,
 			_flip,
 		)
@@ -612,7 +612,7 @@ func init() {
 		defer internal.StackRestore()
 		_num := int32(num)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_ReserveChannels",
+			"_Mix_ReserveChannels",
 			_num,
 		)
 
@@ -626,7 +626,7 @@ func init() {
 		_which := int32(which)
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupChannel",
+			"_Mix_GroupChannel",
 			_which,
 			_tag,
 		)
@@ -642,7 +642,7 @@ func init() {
 		_to := int32(to)
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupChannels",
+			"_Mix_GroupChannels",
 			_from,
 			_to,
 			_tag,
@@ -657,7 +657,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupAvailable",
+			"_Mix_GroupAvailable",
 			_tag,
 		)
 
@@ -670,7 +670,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupCount",
+			"_Mix_GroupCount",
 			_tag,
 		)
 
@@ -683,7 +683,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupOldest",
+			"_Mix_GroupOldest",
 			_tag,
 		)
 
@@ -696,7 +696,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GroupNewer",
+			"_Mix_GroupNewer",
 			_tag,
 		)
 
@@ -714,7 +714,7 @@ func init() {
 		}
 		_loops := int32(loops)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_PlayChannel",
+			"_Mix_PlayChannel",
 			_channel,
 			_chunk,
 			_loops,
@@ -735,7 +735,7 @@ func init() {
 		_loops := int32(loops)
 		_ticks := int32(ticks)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_PlayChannelTimed",
+			"_Mix_PlayChannelTimed",
 			_channel,
 			_chunk,
 			_loops,
@@ -755,7 +755,7 @@ func init() {
 		}
 		_loops := int32(loops)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_PlayMusic",
+			"_Mix_PlayMusic",
 			_music,
 			_loops,
 		)
@@ -774,7 +774,7 @@ func init() {
 		_loops := int32(loops)
 		_ms := int32(ms)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeInMusic",
+			"_Mix_FadeInMusic",
 			_music,
 			_loops,
 			_ms,
@@ -795,7 +795,7 @@ func init() {
 		_ms := int32(ms)
 		_position := int32(position)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeInMusicPos",
+			"_Mix_FadeInMusicPos",
 			_music,
 			_loops,
 			_ms,
@@ -817,7 +817,7 @@ func init() {
 		_loops := int32(loops)
 		_ms := int32(ms)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeInChannel",
+			"_Mix_FadeInChannel",
 			_channel,
 			_chunk,
 			_loops,
@@ -840,7 +840,7 @@ func init() {
 		_ms := int32(ms)
 		_ticks := int32(ticks)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeInChannelTimed",
+			"_Mix_FadeInChannelTimed",
 			_channel,
 			_chunk,
 			_loops,
@@ -858,7 +858,7 @@ func init() {
 		_channel := int32(channel)
 		_volume := int32(volume)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Volume",
+			"_Mix_Volume",
 			_channel,
 			_volume,
 		)
@@ -876,7 +876,7 @@ func init() {
 		}
 		_volume := int32(volume)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_VolumeChunk",
+			"_Mix_VolumeChunk",
 			_chunk,
 			_volume,
 		)
@@ -890,7 +890,7 @@ func init() {
 		defer internal.StackRestore()
 		_volume := int32(volume)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_VolumeMusic",
+			"_Mix_VolumeMusic",
 			_volume,
 		)
 
@@ -906,7 +906,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicVolume",
+			"_Mix_GetMusicVolume",
 			_music,
 		)
 
@@ -919,7 +919,7 @@ func init() {
 		defer internal.StackRestore()
 		_volume := int32(volume)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_MasterVolume",
+			"_Mix_MasterVolume",
 			_volume,
 		)
 
@@ -932,7 +932,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		js.Global().Get("Module").Call(
-			"_SDL_HaltChannel",
+			"_Mix_HaltChannel",
 			_channel,
 		)
 	}
@@ -943,7 +943,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		js.Global().Get("Module").Call(
-			"_SDL_HaltGroup",
+			"_Mix_HaltGroup",
 			_tag,
 		)
 	}
@@ -953,7 +953,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_HaltMusic",
+			"_Mix_HaltMusic",
 		)
 	}
 
@@ -964,7 +964,7 @@ func init() {
 		_channel := int32(channel)
 		_ticks := int32(ticks)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_ExpireChannel",
+			"_Mix_ExpireChannel",
 			_channel,
 			_ticks,
 		)
@@ -979,7 +979,7 @@ func init() {
 		_which := int32(which)
 		_ms := int32(ms)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeOutChannel",
+			"_Mix_FadeOutChannel",
 			_which,
 			_ms,
 		)
@@ -994,7 +994,7 @@ func init() {
 		_tag := int32(tag)
 		_ms := int32(ms)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeOutGroup",
+			"_Mix_FadeOutGroup",
 			_tag,
 			_ms,
 		)
@@ -1008,7 +1008,7 @@ func init() {
 		defer internal.StackRestore()
 		_ms := int32(ms)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadeOutMusic",
+			"_Mix_FadeOutMusic",
 			_ms,
 		)
 
@@ -1020,7 +1020,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadingMusic",
+			"_Mix_FadingMusic",
 		)
 
 		return Fading(ret.Int())
@@ -1032,7 +1032,7 @@ func init() {
 		defer internal.StackRestore()
 		_which := int32(which)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_FadingChannel",
+			"_Mix_FadingChannel",
 			_which,
 		)
 
@@ -1045,7 +1045,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		js.Global().Get("Module").Call(
-			"_SDL_Pause",
+			"_Mix_Pause",
 			_channel,
 		)
 	}
@@ -1056,7 +1056,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		js.Global().Get("Module").Call(
-			"_SDL_PauseGroup",
+			"_Mix_PauseGroup",
 			_tag,
 		)
 	}
@@ -1067,7 +1067,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		js.Global().Get("Module").Call(
-			"_SDL_Resume",
+			"_Mix_Resume",
 			_channel,
 		)
 	}
@@ -1078,7 +1078,7 @@ func init() {
 		defer internal.StackRestore()
 		_tag := int32(tag)
 		js.Global().Get("Module").Call(
-			"_SDL_ResumeGroup",
+			"_Mix_ResumeGroup",
 			_tag,
 		)
 	}
@@ -1089,7 +1089,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Paused",
+			"_Mix_Paused",
 			_channel,
 		)
 
@@ -1101,7 +1101,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_PauseMusic",
+			"_Mix_PauseMusic",
 		)
 	}
 
@@ -1110,7 +1110,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_ResumeMusic",
+			"_Mix_ResumeMusic",
 		)
 	}
 
@@ -1119,7 +1119,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_RewindMusic",
+			"_Mix_RewindMusic",
 		)
 	}
 
@@ -1128,7 +1128,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_PausedMusic",
+			"_Mix_PausedMusic",
 		)
 
 		return internal.GetBool(ret)
@@ -1140,7 +1140,7 @@ func init() {
 		defer internal.StackRestore()
 		_order := int32(order)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_ModMusicJumpToOrder",
+			"_Mix_ModMusicJumpToOrder",
 			_order,
 		)
 
@@ -1157,7 +1157,7 @@ func init() {
 		}
 		_track := int32(track)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_StartTrack",
+			"_Mix_StartTrack",
 			_music,
 			_track,
 		)
@@ -1174,7 +1174,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetNumTracks",
+			"_Mix_GetNumTracks",
 			_music,
 		)
 
@@ -1187,7 +1187,7 @@ func init() {
 		defer internal.StackRestore()
 		_position := int32(position)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetMusicPosition",
+			"_Mix_SetMusicPosition",
 			_position,
 		)
 
@@ -1203,7 +1203,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicPosition",
+			"_Mix_GetMusicPosition",
 			_music,
 		)
 
@@ -1219,7 +1219,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_MusicDuration",
+			"_Mix_MusicDuration",
 			_music,
 		)
 
@@ -1235,7 +1235,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicLoopStartTime",
+			"_Mix_GetMusicLoopStartTime",
 			_music,
 		)
 
@@ -1251,7 +1251,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicLoopEndTime",
+			"_Mix_GetMusicLoopEndTime",
 			_music,
 		)
 
@@ -1267,7 +1267,7 @@ func init() {
 			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetMusicLoopLengthTime",
+			"_Mix_GetMusicLoopLengthTime",
 			_music,
 		)
 
@@ -1280,7 +1280,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_Playing",
+			"_Mix_Playing",
 			_channel,
 		)
 
@@ -1292,7 +1292,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_PlayingMusic",
+			"_Mix_PlayingMusic",
 		)
 
 		return internal.GetBool(ret)
@@ -1304,7 +1304,7 @@ func init() {
 		defer internal.StackRestore()
 		_paths := internal.StringOnJSStack(paths)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetSoundFonts",
+			"_Mix_SetSoundFonts",
 			_paths,
 		)
 
@@ -1316,7 +1316,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetSoundFonts",
+			"_Mix_GetSoundFonts",
 		)
 
 		return internal.UTF8JSToString(ret)
@@ -1329,7 +1329,7 @@ func init() {
 		_function := int32(function)
 		_data := internal.NewBigInt(data)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_EachSoundFont",
+			"_Mix_EachSoundFont",
 			_function,
 			_data,
 		)
@@ -1343,7 +1343,7 @@ func init() {
 		defer internal.StackRestore()
 		_path := internal.StringOnJSStack(path)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_SetTimidityCfg",
+			"_Mix_SetTimidityCfg",
 			_path,
 		)
 
@@ -1355,7 +1355,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTimidityCfg",
+			"_Mix_GetTimidityCfg",
 		)
 
 		return internal.UTF8JSToString(ret)
@@ -1367,7 +1367,7 @@ func init() {
 		defer internal.StackRestore()
 		_channel := int32(channel)
 		ret := js.Global().Get("Module").Call(
-			"_SDL_GetChunk",
+			"_Mix_GetChunk",
 			_channel,
 		)
 
@@ -1380,7 +1380,7 @@ func init() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_SDL_CloseAudio",
+			"_Mix_CloseAudio",
 		)
 	}
 
