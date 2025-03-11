@@ -6,7 +6,7 @@ tasks:
             # Install purego-gen
             - go install github.com/Zyko0/purego-gen/cmd/purego-gen@latest
     
-    gen-ffi:        
+    gen-ffi:
         cmds:
             # Generate ffi.json files
             - docker build . -t sdl3ffi
@@ -15,6 +15,14 @@ tasks:
             - docker cp tmp:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
             - docker cp tmp:/mixer_ffi.json ./cmd/internal/assets/ffi/mixer.json
             - docker cp tmp:/image_ffi.json ./cmd/internal/assets/ffi/img.json
+            - docker rm -f tmp
+    
+    build-wasm-lib:
+        cmds:
+            # Generate ffi.json files
+            - docker build ./.github/workflows/emscripten-build/ -t sdl3wasm
+            - docker create --name tmp sdl3wasm
+            - docker cp tmp:/_out ./out_test
             - docker rm -f tmp
     
     gen-bindings:
