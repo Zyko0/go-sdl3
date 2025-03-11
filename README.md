@@ -86,6 +86,8 @@ func main() {
 
 The [examples](./examples/) folder contains the offical examples that can be found here https://examples.libsdl.org/SDL3, and a few more.
 
+- Clay UI renderer: https://github.com/TotallyGamerJet/clay/tree/main/examples/sdl3
+
 ## Libraries
 
 - SDL3

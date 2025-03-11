@@ -17,8 +17,8 @@ import (
 
 var (
 	regDesktop = regexp.MustCompile(`i([A-Z][A-Za-z_0-9]+)\(`)
-	regJS      = regexp.MustCompile(`"_SDL_([A-Z][A-Za-z_0-9]+)",`)
 	regJsFunc  = regexp.MustCompile(`.*\s=\sfunc`)
+	regJS      *regexp.Regexp
 
 	cfg        assets.Config
 	apiRefCode string
@@ -128,6 +128,7 @@ func main() {
 	if err != nil {
 		log.Fatal("couldn't unmarshal config file: ", err)
 	}
+	regJS = regexp.MustCompile(fmt.Sprintf(`"_%s([A-Z][A-Za-z_0-9]+)",`, cfg.Prefix))
 
 	// Download API ref code
 	resp, err := http.Get(cfg.QuickAPIRefURL)
