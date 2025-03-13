@@ -47,8 +47,11 @@ func Quit() {
 	iQuit()
 }
 
-// TODO: IsMainThread
-// TODO: RunOnMainThread
+// SDL_IsMainThread - Return whether this is the main thread.
+// (https://wiki.libsdl.org/SDL3/SDL_IsMainThread)
+func IsMainThread() bool {
+	return iIsMainThread()
+}
 
 // SDL_SetAppMetadata - Specify basic metadata about your app.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAppMetadata)
@@ -612,10 +615,69 @@ func DisableScreenSaver() error {
 	return nil
 }
 
+// SDL_GL_LoadLibrary - Dynamically load an OpenGL library.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_LoadLibrary)
+func GL_LoadLibrary(path string) error {
+	if !iGL_LoadLibrary(path) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
 // SDL_GL_ExtensionSupported - Check if an OpenGL extension is supported for the current context.
 // (https://wiki.libsdl.org/SDL3/SDL_GL_ExtensionSupported)
 func GL_ExtensionSupported(extension string) bool {
 	return iGL_ExtensionSupported(extension)
+}
+
+// SDL_GL_UnloadLibrary - Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().
+// (https://wiki.libsdl.org/SDL3/SDL_GL_UnloadLibrary)
+func GL_UnloadLibrary() {
+	iGL_UnloadLibrary()
+}
+
+// SDL_GL_CreateContext - Create an OpenGL context for an OpenGL window, and make it current.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_CreateContext)
+func GL_CreateContext(window *Window) (GLContext, error) {
+	ctx := iGL_CreateContext(window)
+	if ctx == nil {
+		return nil, internal.LastErr()
+	}
+
+	return ctx, nil
+}
+
+// SDL_GL_MakeCurrent - Set up an OpenGL context for rendering into an OpenGL window.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_MakeCurrent)
+func GL_MakeCurrent(window *Window, ctx GLContext) error {
+	if !iGL_MakeCurrent(window, ctx) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_EGL_GetWindowSurface - Get the EGL surface associated with the window.
+// (https://wiki.libsdl.org/SDL3/SDL_EGL_GetWindowSurface)
+func EGL_GetWindowSurface(window *Window) EGLSurface {
+	return iEGL_GetWindowSurface(window)
+}
+
+// SDL_GL_SwapWindow - Update a window with OpenGL rendering.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_SwapWindow)
+func GL_SwapWindow(window *Window) error {
+	if !iGL_SwapWindow(window) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GL_DestroyContext - Delete an OpenGL context.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_DestroyContext)
+func GL_DestroyContext(ctx GLContext) {
+	iGL_DestroyContext(ctx)
 }
 
 // SDL_GL_ResetAttributes - Reset all previously set OpenGL context attributes to their default values.
@@ -1386,7 +1448,36 @@ func UpdateJoysticks() {
 
 // Haptic
 
-// TODO:
+// SDL_GetHaptics - Get a list of currently connected haptic devices.
+// (https://wiki.libsdl.org/SDL3/SDL_GetHaptics)
+func GetHaptics() []HapticID {
+	var count int32
+
+	ptr := iGetHaptics(&count)
+	if ptr == 0 {
+		return nil
+	}
+	defer internal.Free(ptr)
+
+	return internal.ClonePtrSlice[HapticID](ptr, int(count))
+}
+
+// SDL_IsMouseHaptic - Query whether or not the current mouse has haptic capabilities.
+// (https://wiki.libsdl.org/SDL3/SDL_IsMouseHaptic)
+func IsMouseHaptic() bool {
+	return iIsMouseHaptic()
+}
+
+// SDL_OpenHapticFromMouse - Try to open a haptic device from the current mouse.
+// (https://wiki.libsdl.org/SDL3/SDL_OpenHapticFromMouse)
+func OpenHapticFromMouse() (*Haptic, error) {
+	haptic := iOpenHapticFromMouse()
+	if haptic == nil {
+		return nil, internal.LastErr()
+	}
+
+	return haptic, nil
+}
 
 // Rect
 

@@ -2761,23 +2761,35 @@ func (copy_pass *GPUCopyPass) End() {
 
 // SDL_GetHapticNameForID - Get the implementation dependent name of a haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticNameForID)
-func (instance_id HapticID) HapticNameForID() string {
-	panic("not implemented")
-	return iGetHapticNameForID(instance_id)
+func (id HapticID) HapticName() (string, error) {
+	name := iGetHapticNameForID(id)
+	if name == "" {
+		return "", internal.LastErr()
+	}
+
+	return name, nil
 }
 
 // SDL_OpenHaptic - Open a haptic device for use.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenHaptic)
-func (instance_id HapticID) OpenHaptic() *Haptic {
-	panic("not implemented")
-	return iOpenHaptic(instance_id)
+func (id HapticID) OpenHaptic() (*Haptic, error) {
+	device := iOpenHaptic(id)
+	if device == nil {
+		return nil, internal.LastErr()
+	}
+
+	return device, nil
 }
 
 // SDL_GetHapticFromID - Get the SDL_Haptic associated with an instance ID, if it has been opened.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticFromID)
-func (instance_id HapticID) HapticFromID() *Haptic {
-	panic("not implemented")
-	return iGetHapticFromID(instance_id)
+func (id HapticID) Haptic() (*Haptic, error) {
+	haptic := iGetHapticFromID(id)
+	if haptic == nil {
+		return nil, internal.LastErr()
+	}
+
+	return haptic, nil
 }
 
 // Renderer
@@ -3129,9 +3141,12 @@ func (renderer *Renderer) Clear() error {
 
 // SDL_RenderPoint - Draw a point on the current rendering target at subpixel precision.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderPoint)
-func (renderer *Renderer) RenderPoint(x float32, y float32) bool {
-	panic("not implemented")
-	return iRenderPoint(renderer, x, y)
+func (renderer *Renderer) RenderPoint(x, y float32) error {
+	if !iRenderPoint(renderer, x, y) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RenderPoints - Draw multiple points on the current rendering target at subpixel precision.
@@ -3226,23 +3241,32 @@ func (renderer *Renderer) RenderTextureRotated(texture *Texture, srcrect *FRect,
 
 // SDL_RenderTextureAffine - Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderTextureAffine)
-func (renderer *Renderer) RenderTextureAffine(texture *Texture, srcrect *FRect, origin *FPoint, right *FPoint, down *FPoint) bool {
-	panic("not implemented")
-	return iRenderTextureAffine(renderer, texture, srcrect, origin, right, down)
+func (renderer *Renderer) RenderTextureAffine(texture *Texture, srcrect *FRect, origin, right, down *FPoint) error {
+	if !iRenderTextureAffine(renderer, texture, srcrect, origin, right, down) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RenderTextureTiled - Tile a portion of the texture to the current rendering target at subpixel precision.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderTextureTiled)
-func (renderer *Renderer) RenderTextureTiled(texture *Texture, srcrect *FRect, scale float32, dstrect *FRect) bool {
-	panic("not implemented")
-	return iRenderTextureTiled(renderer, texture, srcrect, scale, dstrect)
+func (renderer *Renderer) RenderTextureTiled(texture *Texture, srcrect *FRect, scale float32, dstrect *FRect) error {
+	if !iRenderTextureTiled(renderer, texture, srcrect, scale, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RenderTexture9Grid - Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderTexture9Grid)
-func (renderer *Renderer) RenderTexture9Grid(texture *Texture, srcrect *FRect, left_width float32, right_width float32, top_height float32, bottom_height float32, scale float32, dstrect *FRect) bool {
-	panic("not implemented")
-	return iRenderTexture9Grid(renderer, texture, srcrect, left_width, right_width, top_height, bottom_height, scale, dstrect)
+func (renderer *Renderer) RenderTexture9Grid(texture *Texture, srcrect *FRect, leftWidth, rightWidth, topHeight, bottomHeight, scale float32, dstrect *FRect) error {
+	if !iRenderTexture9Grid(renderer, texture, srcrect, leftWidth, rightWidth, topHeight, bottomHeight, scale, dstrect) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RenderGeometry - Render a list of triangles, optionally using a texture and indices into the vertex array Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
@@ -3257,9 +3281,23 @@ func (renderer *Renderer) RenderGeometry(texture *Texture, vertices []Vertex, in
 
 // SDL_RenderGeometryRaw - Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
 // (https://wiki.libsdl.org/SDL3/SDL_RenderGeometryRaw)
-func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices *byte, num_indices int32, size_indices int32) bool {
-	panic("not implemented")
-	//return iRenderGeometryRaw(renderer, texture, xy, xy_stride, color, color_stride, uv, uv_stride, num_vertices, indices, num_indices, size_indices)
+func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xyStride int32, color []FColor, colorStride int32, uv []float32, uvStride int32, indices []uint16) error {
+	if !iRenderGeometryRaw(
+		renderer,
+		texture,
+		unsafe.SliceData(xy), xyStride,
+		unsafe.SliceData(color), colorStride,
+		unsafe.SliceData(uv), uvStride, int32(len(uv)/2),
+		uintptr(unsafe.Pointer(unsafe.SliceData(indices))), int32(len(indices)), 2,
+	) {
+		return internal.LastErr()
+	}
+	runtime.KeepAlive(xy)
+	runtime.KeepAlive(color)
+	runtime.KeepAlive(uv)
+	runtime.KeepAlive(indices)
+
+	return nil
 }
 
 // SDL_RenderReadPixels - Read pixels from the current rendering target.
@@ -4540,34 +4578,6 @@ func (window *Window) Flash(operation FlashOperation) error {
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyWindow)
 func (window *Window) Destroy() {
 	iDestroyWindow(window)
-}
-
-// SDL_GL_CreateContext - Create an OpenGL context for an OpenGL window, and make it current.
-// (https://wiki.libsdl.org/SDL3/SDL_GL_CreateContext)
-func (window *Window) GL_CreateContext() GLContext {
-	panic("not implemented")
-	return iGL_CreateContext(window)
-}
-
-// SDL_GL_MakeCurrent - Set up an OpenGL context for rendering into an OpenGL window.
-// (https://wiki.libsdl.org/SDL3/SDL_GL_MakeCurrent)
-func (window *Window) GL_MakeCurrent(context GLContext) bool {
-	panic("not implemented")
-	return iGL_MakeCurrent(window, context)
-}
-
-// SDL_EGL_GetWindowSurface - Get the EGL surface associated with the window.
-// (https://wiki.libsdl.org/SDL3/SDL_EGL_GetWindowSurface)
-func (window *Window) EGL_GetSurface() EGLSurface {
-	panic("not implemented")
-	return iEGL_GetWindowSurface(window)
-}
-
-// SDL_GL_SwapWindow - Update a window with OpenGL rendering.
-// (https://wiki.libsdl.org/SDL3/SDL_GL_SwapWindow)
-func (window *Window) GL_Swap() bool {
-	panic("not implemented")
-	return iGL_SwapWindow(window)
 }
 
 // SDL_StartTextInput - Start accepting Unicode text input events in a window.
