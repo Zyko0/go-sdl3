@@ -9,29 +9,48 @@ import (
 	"strings"
 	"sync"
 	"syscall/js"
+	"time"
 	"unsafe"
 )
 
 type Pointer = int32
 
 var (
-	heapU8 = js.Global().Get("Module").Get("HEAPU8")
+	heapU8 js.Value
 
-	stackAlloc   = js.Global().Get("Module").Get("stackAlloc")
-	stackString  = js.Global().Get("Module").Get("stringToUTF8OnStack")
-	utf8String   = js.Global().Get("Module").Get("UTF8ToString")
-	getValue     = js.Global().Get("getValue")
-	setValue     = js.Global().Get("setValue")
-	stackSave    = js.Global().Get("stackSave")
-	stackRestore = js.Global().Get("stackRestore")
+	stackAlloc   js.Value
+	stackString  js.Value
+	utf8String   js.Value
+	getValue     js.Value
+	setValue     js.Value
+	stackSave    js.Value
+	stackRestore js.Value
 
-	bigInt  = js.Global().Get("BigInt")
-	boolean = js.Global().Get("Boolean")
+	bigInt  js.Value
+	boolean js.Value
 
 	lastStackPtr js.Value
 
 	lock sync.Mutex
 )
+
+func init() {
+	for js.Global().Get("Module").Get("HEAPU8").IsUndefined() {
+		time.Sleep(1 * time.Millisecond)
+	}
+	heapU8 = js.Global().Get("Module").Get("HEAPU8")
+
+	stackAlloc = js.Global().Get("Module").Get("stackAlloc")
+	stackString = js.Global().Get("Module").Get("stringToUTF8OnStack")
+	utf8String = js.Global().Get("Module").Get("UTF8ToString")
+	getValue = js.Global().Get("getValue")
+	setValue = js.Global().Get("setValue")
+	stackSave = js.Global().Get("stackSave")
+	stackRestore = js.Global().Get("stackRestore")
+
+	bigInt = js.Global().Get("BigInt")
+	boolean = js.Global().Get("Boolean")
+}
 
 type object struct {
 	data       []byte

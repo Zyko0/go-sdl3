@@ -12,7 +12,7 @@ func init() {
 	// Wait for runtime initialization
 	// TODO: find a cleaner way than loop+sleep?
 	for !js.Global().Get("runtimeInitialized").Bool() {
-		time.Sleep(5 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 	}
 
 	initialize()

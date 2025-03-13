@@ -1,7 +1,13 @@
 <!doctype html>
 <html lang="en-us">
   <body>
-    <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+    <style>
+    html, body, div, canvas {
+      margin: 0;
+      padding: 0;
+    }
+    </style>
+    <canvas id="canvas" style="display: block;" oncontextmenu="event.preventDefault()"></canvas>
     <script type='text/javascript'>
       // As a default initial behavior, pop up an alert when webgl context is lost. To make your
       // application robust, you may want to override this behavior before shipping!
@@ -15,11 +21,6 @@
       var Module = {
         print(...args) {
           console.log(...args);
-          // These replacements are necessary if you render to raw HTML
-          //text = text.replace(/&/g, "&amp;");
-          //text = text.replace(/</g, "&lt;");
-          //text = text.replace(/>/g, "&gt;");
-          //text = text.replace('\n', '<br>', 'g');
         },
         canvas: canvasElement,
         setStatus(text) {
@@ -62,6 +63,6 @@
     WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(result => {
       go.run(result.instance);
     });
-</script>
+    </script>
   </body>
 </html>
