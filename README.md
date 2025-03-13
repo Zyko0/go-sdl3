@@ -22,8 +22,11 @@ If you are looking for pure Go bindings that are closer to the original API, ple
 
 The list of currently supported functions can be found in [COVERAGE.md](COVERAGE.md).
 
-- Tested on Windows, Ubuntu, WebAssembly (wasm/js) at the moment.
-- Help is appreciated! (see [CONTRIBUTE.md](CONTRIBUTE.md).)
+Platforms:
+- Windows (amd64, arm64)
+- Linux (amd64)
+- MacOS (amd64, arm64)
+- WebAssembly
 
 ## Usage
 
