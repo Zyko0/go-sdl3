@@ -1,4 +1,4 @@
-name: Build SDL binaries
+name: Build SDL
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Build SDL_ttf binaries
+name: Build SDL_ttf
 
 on:
   workflow_dispatch:

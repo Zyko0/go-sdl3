@@ -1,0 +1,171 @@
+name: Build SDL_mixer
+
+on:
+  workflow_dispatch:
+
+env:
+  MIXER_BRANCH: main
+
+jobs:
+# Windows only has binaries to download for the SDL2 version it seems
+#  build-windows:
+#    name: Download Windows
+#    runs-on: ubuntu-latest
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#          arch: [x64, x86]
+#    steps:
+#      - name: Download release build
+#        run: wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-${{ env.MIXER_VERSION }}/SDL2_mixer-${{ env.MIXER_VERSION }}-win32-${{ matrix.arch }}.zip
+#      - name: Upload Build
+#        uses: actions/upload-artifact@v4
+#        with: 
+#            name: sdl-mixer-windows-${{ matrix.arch }}
+#            path: SDL2_mixer-${{ env.MIXER_VERSION }}-win32-${{ matrix.arch }}.zip
+
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
+    defaults:
+      run:
+        working-directory: SDL_mixer
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        uses: libsdl-org/setup-sdl@main
+        id: sdl
+        with:
+          cmake-generator: Ninja
+          version: 3-head
+          shell: sh
+      - name: Set up Linux dependencies
+        working-directory: .
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+          cmake \
+          libasound2-dev \
+          libflac-dev \
+          libfluidsynth-dev \
+          libgme-dev \
+          libmpg123-dev \
+          libopusfile-dev \
+          libvorbis-dev \
+          libxmp-dev \
+          libwavpack-dev \
+          ninja-build \
+          pkg-config \
+          ${NULL+}
+      - name: Clone SDL_mixer
+        working-directory: .
+        run: git clone --recurse-submodules --branch ${{ env.MIXER_BRANCH }} https://github.com/libsdl-org/SDL_mixer.git
+      - name: Check that versioning is consistent
+        # We only need to run this once: arbitrarily use the Linux build
+        run: ./build-scripts/test-versioning.sh
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DSDLMIXER_FLAC=ON \
+          -DSDLMIXER_FLAC_LIBFLAC=ON \
+          -DSDLMIXER_GME=ON \
+          -DSDLMIXER_MOD_XMP=ON \
+          -DSDLMIXER_MP3_MPG123=ON \
+          -DSDLMIXER_OPUS=ON \
+          -DSDLMIXER_VORBIS=VORBISFILE \
+          -DBUILD_SHARED_LIBS=ON
+          -DSDL_SHARED=ON
+          -DSDL_STATIC=OFF
+          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL_DOCS=ON
+          -DSDLMIXER_SAMPLES=OFF
+          -DSDLMIXER_INSTALL=OFF
+          -DSDLMIXER_VENDORED=ON
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-mixer-linux
+            path: SDL_mixer/build/*.so.0
+
+  build-macos:
+    name: Build for Apple (${{ matrix.platform.arch }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          platform:
+          - {arch: 'arm64', flags: '-DSDL_CPU_ARM64=ON'}
+          - {arch: 'x86_64', flags: '-DSDL_CPU_X64=ON'}
+    defaults:
+      run:
+        working-directory: SDL_mixer
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        id: sdl
+        uses: libsdl-org/setup-sdl@main
+        with:
+          cmake-generator: Ninja
+          cmake-arguments: |
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}" \
+            -DSDL_DISABLE_INSTALL_DOCS=ON \
+            -DSDL_INSTALL_TESTS=OFF \
+            ${{ matrix.platform.flags }}
+          version: 3-head
+          shell: sh
+      - name: Setup MacOS dependencies
+        working-directory: .
+        run: |
+          brew install \
+          libtool \
+          ninja \
+          flac \
+          fluidsynth \
+          game-music-emu \
+          libvorbis \
+          libxmp \
+          mpg123 \
+          opusfile \
+          wavpack \
+          ${NULL+}
+      - name: Clone SDL_mixer
+        working-directory: .
+        run: git clone --recurse-submodules --branch ${{ env.MIXER_BRANCH }} https://github.com/libsdl-org/SDL_mixer.git
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}"
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DSDLMIXER_FLAC=ON \
+          -DSDLMIXER_FLAC_LIBFLAC=ON \
+          -DSDLMIXER_GME=ON \
+          -DSDLMIXER_MOD_XMP=ON \
+          -DSDLMIXER_MP3_MPG123=ON \
+          -DSDLMIXER_OPUS=ON \
+          -DSDLMIXER_VORBIS=VORBISFILE \
+          -DBUILD_SHARED_LIBS=ON
+          -DSDL_SHARED=ON
+          -DSDL_STATIC=OFF
+          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL_DOCS=ON
+          -DSDLMIXER_SAMPLES=OFF
+          -DSDLMIXER_INSTALL=OFF
+          -DSDLMIXER_VENDORED=ON
+          ${{ matrix.platform.flags }}
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-mixer-apple-macOS-${{ matrix.platform.arch }}
+            path: SDL_mixer/build/*
