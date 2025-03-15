@@ -54,10 +54,6 @@ jobs:
             -DSPIRV_CROSS_SHARED=ON \
             -DSPIRV_CROSS_STATIC=ON \
             -DCMAKE_INSTALL_PREFIX=${PWD}/spirv_cross_prefix \
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
-            -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
-            -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
-            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
           cmake --build spirv_cross_build
           cmake --install spirv_cross_build
           # spirv_cross_prefix=${PWD}/spirv_cross_prefix
@@ -107,6 +103,7 @@ jobs:
           cmake-generator: Ninja
           cmake-arguments: |
             -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
             -DSDL_DISABLE_INSTALL_DOCS=ON \
             -DSDL_INSTALL_TESTS=OFF
           version: 3-head
@@ -128,8 +125,6 @@ jobs:
             -DSPIRV_CROSS_STATIC=ON \
             -DCMAKE_INSTALL_PREFIX=${PWD}/spirv_cross_prefix \
             -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
-            -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
-            -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
             -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
           cmake --build spirv_cross_build
           cmake --install spirv_cross_build
@@ -139,8 +134,6 @@ jobs:
         run: >
           cmake -G Ninja
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
-          -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
-          -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
           -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
           -DCMAKE_BUILD_TYPE=Release \
           -DSDLSHADERCROSS_SHARED=ON \
