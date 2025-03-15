@@ -10,7 +10,7 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-func init() {
+func initialize() {
 	iVersion = func() int32 {
 		panic("not implemented on js")
 		internal.StackSave()

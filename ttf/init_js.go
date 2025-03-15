@@ -2,19 +2,8 @@
 
 package ttf
 
-import (
-	"syscall/js"
-	"time"
-)
-
 // We can just initialize everything here in js/wasm env
 func init() {
-	// Wait for runtime initialization
-	// TODO: find a cleaner way than loop+sleep?
-	for !js.Global().Get("runtimeInitialized").Bool() {
-		time.Sleep(1 * time.Millisecond)
-	}
-
 	initialize()
 }
 

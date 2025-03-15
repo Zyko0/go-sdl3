@@ -5,19 +5,12 @@ package sdl
 import (
 	"errors"
 	"syscall/js"
-	"time"
 
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
 // We can just initialize everything here in js/wasm env
 func init() {
-	// Wait for runtime initialization
-	// TODO: find a cleaner way than loop+sleep?
-	for !js.Global().Get("runtimeInitialized").Bool() {
-		time.Sleep(1 * time.Millisecond)
-	}
-
 	initialize()
 
 	// Set free, error functions

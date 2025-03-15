@@ -1,6 +1,6 @@
 //go:build js
 
-package img
+package mixer
 
 // We can just initialize everything here in js/wasm env
 func init() {

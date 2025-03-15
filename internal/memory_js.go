@@ -35,9 +35,15 @@ var (
 )
 
 func init() {
+	// Wait for runtime initialization
+	// TODO: find a cleaner way than loop+sleep?
+	for !js.Global().Get("runtimeInitialized").Bool() {
+		time.Sleep(1 * time.Millisecond)
+	}
 	for js.Global().Get("Module").Get("HEAPU8").IsUndefined() {
 		time.Sleep(1 * time.Millisecond)
 	}
+
 	heapU8 = js.Global().Get("Module").Get("HEAPU8")
 
 	stackAlloc = js.Global().Get("Module").Get("stackAlloc")
