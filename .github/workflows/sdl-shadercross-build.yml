@@ -1,0 +1,162 @@
+name: Build SDL_shadercross
+
+on:
+  workflow_dispatch:
+
+env:
+  BRANCH: main
+
+jobs:
+  # build-windows:
+  #   name: Download Windows
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #         arch: [x64, x86, arm64]
+  #   steps:
+  #     - name: Download release build
+  #       run: wget https://github.com/libsdl-org/SDL_shadercross/releases/download/release-${{ env.TTF_VERSION }}/SDL3_shadercross-${{ env.TTF_VERSION }}-win32-${{ matrix.arch }}.zip
+  #     - name: Upload Build
+  #       uses: actions/upload-artifact@v4
+  #       with: 
+  #           name: sdl-shadercross-windows-${{ matrix.arch }}
+  #           path: SDL3_shadercross-windows-${{ matrix.arch }}.zip
+
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
+    defaults:
+      run:
+        working-directory: SDL_shadercross
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        uses: libsdl-org/setup-sdl@main
+        id: sdl
+        with:
+          cmake-generator: Ninja
+          version: 3-head
+          shell: sh
+      - name: Set up Linux dependencies
+        working-directory: .
+        run: |
+          # None
+      - name: Clone SDL_shadercross
+        working-directory: .
+        run: git clone --recurse-submodules --branch ${{ env.BRANCH }} https://github.com/libsdl-org/SDL_shadercross.git
+      - name: Build SPIRV-Cross
+        run: |
+          cmake -S external/SPIRV-Cross -B spirv_cross_build -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSPIRV_CROSS_SHARED=ON \
+            -DSPIRV_CROSS_STATIC=ON \
+            -DCMAKE_INSTALL_PREFIX=${PWD}/spirv_cross_prefix \
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
+            -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
+            -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+          cmake --build spirv_cross_build
+          cmake --install spirv_cross_build
+          # spirv_cross_prefix=${PWD}/spirv_cross_prefix
+          # echo "spirv_cross_c_shared_ROOT=${spirv_cross_prefix}:${spirv_cross_prefix}/share/spirv_cross_c_shared" >>${GITHUB_ENV}
+      - name: Check that versioning is consistent
+        # We only need to run this once: arbitrarily use the Linux build
+        run: ./build-scripts/test-versioning.sh
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_BUILD_TYPE=Release \
+          -DSDLSHADERCROSS_SHARED=ON \
+          -DSDLSHADERCROSS_STATIC=OFF \
+          -DSDLSHADERCROSS_VENDORED=true \
+          -DSDLSHADERCROSS_CLI=OFF \
+          -DSDLSHADERCROSS_WERROR=ON \
+          -DSDLSHADERCROSS_INSTALL=OFF \
+          -DSDLSHADERCROSS_INSTALL_RUNTIME=OFF \
+          -DSDLSHADERCROSS_INSTALL_CPACK=OFF \
+          -DSDLSHADERCROSS_INSTALL_MAN=OFF \
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-shadercross-linux
+            path: SDL_shadercross/build/*.so.0
+
+  build-macos:
+    name: Build for Apple
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          arch: [arm64, x86_64]
+    defaults:
+      run:
+        working-directory: SDL_shadercross
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up SDL
+        id: sdl
+        uses: libsdl-org/setup-sdl@main
+        with:
+          cmake-generator: Ninja
+          cmake-arguments: |
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
+            -DSDL_DISABLE_INSTALL_DOCS=ON \
+            -DSDL_INSTALL_TESTS=OFF
+          version: 3-head
+          shell: sh
+      - name: Setup MacOS dependencies
+        working-directory: .
+        run: |
+            # bison is needed by vkd3d
+            brew install bison
+            echo "/opt/homebrew/opt/bison/bin" >>$GITHUB_PATH
+      - name: Clone SDL_shadercross
+        working-directory: .
+        run: git clone --recurse-submodules --branch ${{ env.BRANCH }} https://github.com/libsdl-org/SDL_shadercross.git
+      - name: Build SPIRV-Cross
+        run: |
+          cmake -S external/SPIRV-Cross -B spirv_cross_build -GNinja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DSPIRV_CROSS_SHARED=ON \
+            -DSPIRV_CROSS_STATIC=ON \
+            -DCMAKE_INSTALL_PREFIX=${PWD}/spirv_cross_prefix \
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
+            -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
+            -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+          cmake --build spirv_cross_build
+          cmake --install spirv_cross_build
+          # spirv_cross_prefix=${PWD}/spirv_cross_prefix
+          # echo "spirv_cross_c_shared_ROOT=${spirv_cross_prefix}:${spirv_cross_prefix}/share/spirv_cross_c_shared" >>${GITHUB_ENV}
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
+          -DCMAKE_C_FLAGS="-mmacosx-version-min=11.0"
+          -DCMAKE_CXX_FLAGS="-mmacosx-version-min=11.0"
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+          -DCMAKE_BUILD_TYPE=Release \
+          -DSDLSHADERCROSS_SHARED=ON \
+          -DSDLSHADERCROSS_STATIC=OFF \
+          -DSDLSHADERCROSS_VENDORED=true \
+          -DSDLSHADERCROSS_CLI=OFF \
+          -DSDLSHADERCROSS_WERROR=ON \
+          -DSDLSHADERCROSS_INSTALL=OFF \
+          -DSDLSHADERCROSS_INSTALL_RUNTIME=OFF \
+          -DSDLSHADERCROSS_INSTALL_CPACK=OFF \
+          -DSDLSHADERCROSS_INSTALL_MAN=OFF \
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-shadercross-apple-macOS-${{ matrix.arch }}
+            path: SDL_shadercross/build/*
