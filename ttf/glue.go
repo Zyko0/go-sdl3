@@ -3,17 +3,14 @@ package ttf
 import (
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 // Utils
 
 func colorToUint32(clr sdl.Color) uint32 {
-	return uint32(clr.R)<<24 |
-		uint32(clr.G)<<16 |
-		uint32(clr.B)<<8 |
-		uint32(clr.A)
+	return *(*uint32)(unsafe.Pointer(&clr))
 }
 
 // Types
