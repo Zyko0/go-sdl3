@@ -3,8 +3,8 @@ package ttf
 import (
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 // Text

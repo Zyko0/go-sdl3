@@ -6218,12 +6218,9 @@ func initialize() {
 	}
 
 	iGetWindowPixelFormat = func(window *Window) PixelFormat {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowPixelFormat",

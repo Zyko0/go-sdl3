@@ -408,16 +408,17 @@ func CreateSurface(width, height int, format PixelFormat) (*Surface, error) {
 	return surface, nil
 }
 
-/*
-// TODO: idk about the void* pixels since the primitive type might depend on PixelFormat
-func CreateSurfaceFrom(width, height int, format PixelFormat, pixels []uint32) (*Surface, error) {
-	surface := iCreateSurface(width, height, format)
+// SDL_CreateSurfaceFrom - Allocate a new surface with a specific pixel format and existing pixel data.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateSurfaceFrom)
+func CreateSurfaceFrom(width, height int, format PixelFormat, pixels []byte, pitch int) (*Surface, error) {
+	surface := iCreateSurfaceFrom(int32(width), int32(height), format, uintptr(unsafe.Pointer(unsafe.SliceData(pixels))), int32(pitch))
 	if surface == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(pixels)
 
 	return surface, nil
-}*/
+}
 
 // SDL_LoadBMP_IO - Load a BMP image from a seekable SDL data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO)

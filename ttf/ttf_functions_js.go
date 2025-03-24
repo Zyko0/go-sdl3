@@ -1975,12 +1975,11 @@ func initialize() {
 	}
 
 	iRenderText_Solid = func(font *Font, str string, length uintptr, fg uint32) *sdl.Surface {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_font, ok := internal.GetJSPointer(font)
 		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
+			panic("nil font")
 		}
 		_str := internal.StringOnJSStack(str)
 		_length := internal.NewBigInt(length)
@@ -2111,15 +2110,14 @@ func initialize() {
 	}*/
 
 	iRenderText_Blended = func(font *Font, str string, length uintptr, fg uint32) *sdl.Surface {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_font, ok := internal.GetJSPointer(font)
 		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
+			panic("nil font")
 		}
 		_str := internal.StringOnJSStack(str)
-		_length := internal.NewBigInt(length)
+		_length := int32(length)
 		_fg := int32(fg)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_RenderText_Blended",
