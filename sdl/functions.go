@@ -960,9 +960,17 @@ func DelayPrecise(ns uint64) {
 
 // Message
 
-// TODO: func ShowMessageBox(data *MessageBoxData)
-// "buttonid => the pointer to which user id of hit button should be copied."
-// I don't understand https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox
+// SDL_ShowMessageBox - Create a modal message box.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox)
+func ShowMessageBox(data *MessageBoxData) (int32, error) {
+	var buttonID int32
+
+	if !iShowMessageBox(data, &buttonID) {
+		return 0, internal.LastErr()
+	}
+
+	return buttonID, nil
+}
 
 // SDL_ShowSimpleMessageBox - Display a simple modal message box.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox)
