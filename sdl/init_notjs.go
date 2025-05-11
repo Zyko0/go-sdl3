@@ -39,6 +39,7 @@ func LoadLibrary(path string) error {
 	}
 
 	initialize()
+	initialize_ex()
 
 	// Set free, error functions
 	internal.SetSDLFreeFunc(ifree)

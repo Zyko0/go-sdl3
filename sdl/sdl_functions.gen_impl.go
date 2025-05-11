@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package sdl
 
@@ -809,7 +809,6 @@ var (
 	_addr_SDL_LogMessageV                           uintptr
 	_addr_SDL_GetLogOutputFunction                  uintptr
 	_addr_SDL_SetLogOutputFunction                  uintptr
-	_addr_SDL_ShowMessageBox                        uintptr
 	_addr_SDL_ShowSimpleMessageBox                  uintptr
 	_addr_SDL_Metal_CreateView                      uintptr
 	_addr_SDL_Metal_DestroyView                     uintptr
@@ -4126,10 +4125,6 @@ func initialize() {
 	_addr_SDL_SetLogOutputFunction, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetLogOutputFunction")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_SetLogOutputFunction")
-	}
-	_addr_SDL_ShowMessageBox, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowMessageBox")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_ShowMessageBox")
 	}
 	_addr_SDL_ShowSimpleMessageBox, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSimpleMessageBox")
 	if err != nil {
@@ -9257,13 +9252,6 @@ func initialize() {
 	}
 	iSetLogOutputFunction = func(callback LogOutputFunction, userdata uintptr) {
 		purego.SyscallN(_addr_SDL_SetLogOutputFunction, purego.NewCallback(callback), uintptr(userdata))
-	}
-	iShowMessageBox = func(messageboxdata *MessageBoxData, buttonid *int32) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowMessageBox, uintptr(unsafe.Pointer(messageboxdata)), uintptr(unsafe.Pointer(buttonid)))
-		__r0 := _r0 != 0
-		runtime.KeepAlive(messageboxdata)
-		runtime.KeepAlive(buttonid)
-		return __r0
 	}
 	iShowSimpleMessageBox = func(flags MessageBoxFlags, title string, message string, window *Window) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowSimpleMessageBox, uintptr(flags), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(title))), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(message))), uintptr(unsafe.Pointer(window)))

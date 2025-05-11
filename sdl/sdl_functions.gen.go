@@ -4149,11 +4149,6 @@ var (
 	//puregogen:function symbol=SDL_SetLogOutputFunction
 	iSetLogOutputFunction func(callback LogOutputFunction, userdata uintptr)
 
-	// SDL_ShowMessageBox => Create a modal message box.
-	//
-	//puregogen:function symbol=SDL_ShowMessageBox
-	iShowMessageBox func(messageboxdata *MessageBoxData, buttonid *int32) bool
-
 	// SDL_ShowSimpleMessageBox => Display a simple modal message box.
 	//
 	//puregogen:function symbol=SDL_ShowSimpleMessageBox

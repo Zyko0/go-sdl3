@@ -22,7 +22,8 @@
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",
         "SDL_SetLinuxThreadPriorityAndPolicy",
-        "SDL_SetGPUBlendConstants"
+        "SDL_SetGPUBlendConstants",
+        "SDL_ShowMessageBox"
     ],
     "allowlisted_functions": [
         "SDL_free"

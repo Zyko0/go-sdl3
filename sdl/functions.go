@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
+	puregogen "github.com/Zyko0/purego-gen"
 )
 
 // Init
@@ -960,12 +961,34 @@ func DelayPrecise(ns uint64) {
 
 // Message
 
+type messageBoxData struct {
+	Flags       MessageBoxFlags
+	Window      *Window
+	Title       *byte
+	Message     *byte
+	Numbuttons  int32
+	Buttons     *MessageBoxButtonData
+	ColorScheme *MessageBoxColorScheme
+}
+
 // SDL_ShowMessageBox - Create a modal message box.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox)
 func ShowMessageBox(data *MessageBoxData) (int32, error) {
 	var buttonID int32
 
-	if !iShowMessageBox(data, &buttonID) {
+	var iData *messageBoxData
+	if data != nil {
+		iData = &messageBoxData{
+			Flags:       data.Flags,
+			Window:      data.Window,
+			Title:       puregogen.BytePtrFromString(data.Title),
+			Message:     puregogen.BytePtrFromString(data.Message),
+			Numbuttons:  data.Numbuttons,
+			Buttons:     data.Buttons,
+			ColorScheme: data.ColorScheme,
+		}
+	}
+	if !iShowMessageBox(iData, &buttonID) {
 		return 0, internal.LastErr()
 	}
 
