@@ -17,7 +17,9 @@
     "ignored_types": [
         "GamepadBinding",
         "GUID",
-        "Surface"
+        "Surface",
+        "MessageBoxData",
+        "MessageBoxButtonData"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",

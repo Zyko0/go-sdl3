@@ -961,13 +961,19 @@ func DelayPrecise(ns uint64) {
 
 // Message
 
+type messageBoxButtonData struct {
+	Flags    MessageBoxButtonFlags
+	ButtonID int32
+	Text     *byte
+}
+
 type messageBoxData struct {
 	Flags       MessageBoxFlags
 	Window      *Window
 	Title       *byte
 	Message     *byte
 	Numbuttons  int32
-	Buttons     *MessageBoxButtonData
+	Buttons     *messageBoxButtonData
 	ColorScheme *MessageBoxColorScheme
 }
 
@@ -978,13 +984,22 @@ func ShowMessageBox(data *MessageBoxData) (int32, error) {
 
 	var iData *messageBoxData
 	if data != nil {
+		buttons := make([]messageBoxButtonData, len(data.Buttons))
+		for i, button := range data.Buttons {
+			buttons[i] = messageBoxButtonData{
+				Flags:    button.Flags,
+				ButtonID: button.ButtonID,
+				Text:     puregogen.BytePtrFromString(button.Text),
+			}
+		}
+		defer runtime.KeepAlive(buttons)
 		iData = &messageBoxData{
 			Flags:       data.Flags,
 			Window:      data.Window,
 			Title:       puregogen.BytePtrFromString(data.Title),
 			Message:     puregogen.BytePtrFromString(data.Message),
-			Numbuttons:  data.Numbuttons,
-			Buttons:     data.Buttons,
+			Numbuttons:  int32(len(buttons)),
+			Buttons:     unsafe.SliceData(buttons),
 			ColorScheme: data.ColorScheme,
 		}
 	}

@@ -1040,12 +1040,6 @@ type Locale struct {
 	Country  string
 }
 
-type MessageBoxButtonData struct {
-	Flags    MessageBoxButtonFlags
-	ButtonID int32
-	Text     string
-}
-
 type MessageBoxColor struct {
 	R uint8
 	G uint8
@@ -1054,16 +1048,6 @@ type MessageBoxColor struct {
 
 type MessageBoxColorScheme struct {
 	Colors [5]MessageBoxColor
-}
-
-type MessageBoxData struct {
-	Flags       MessageBoxFlags
-	Window      *Window
-	Title       string
-	Message     string
-	Numbuttons  int32
-	Buttons     *MessageBoxButtonData
-	ColorScheme *MessageBoxColorScheme
 }
 
 type Process struct{}

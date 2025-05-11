@@ -207,6 +207,21 @@ type Surface struct {
 	Reserved Pointer
 }
 
+type MessageBoxButtonData struct {
+	Flags    MessageBoxButtonFlags
+	ButtonID int32
+	Text     string
+}
+
+type MessageBoxData struct {
+	Flags       MessageBoxFlags
+	Window      *Window
+	Title       string
+	Message     string
+	Buttons     []MessageBoxButtonData
+	ColorScheme *MessageBoxColorScheme
+}
+
 // Custom types
 
 type SwapchainTexture struct {
