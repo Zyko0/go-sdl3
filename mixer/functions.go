@@ -3,8 +3,8 @@ package mixer
 import (
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	internal "github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 // Mix_Version - This function gets the version of the dynamically linked SDL_mixer library.
@@ -175,4 +175,56 @@ func GetMusicDecoder(index int32) string {
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_HasMusicDecoder)
 func HasMusicDecoder(name string) bool {
 	return iHasMusicDecoder(name)
+}
+
+// Mix_PlayChannel - Play an audio chunk on a specific channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannel)
+func PlayChannel(channel int32, chunk *Chunk, loops int32) (int32, error) {
+	selectedChannel := iPlayChannel(channel, chunk, loops)
+	if selectedChannel == -1 {
+		return selectedChannel, internal.LastErr()
+	}
+
+	return selectedChannel, nil
+}
+
+// Mix_PlayChannelTimed - Play an audio chunk on a specific channel for a maximum time.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed)
+func PlayChannelTimed(channel int32, chunk *Chunk, loops, ticks int32) (int32, error) {
+	selectedChannel := iPlayChannelTimed(channel, chunk, loops, ticks)
+	if selectedChannel == -1 {
+		return selectedChannel, internal.LastErr()
+	}
+
+	return selectedChannel, nil
+}
+
+// Mix_PlayingMusic - Check the playing status of the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic)
+func PlayingMusic() bool {
+	return iPlayingMusic()
+}
+
+// Mix_PausedMusic - Query whether the music stream is paused.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic)
+func PausedMusic() bool {
+	return iPausedMusic()
+}
+
+// Mix_PauseMusic - Pause the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic)
+func PauseMusic() {
+	iPauseMusic()
+}
+
+// Mix_ResumeMusic - Resume the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic)
+func ResumeMusic() {
+	iResumeMusic()
+}
+
+// Mix_HaltMusic - Halt playing of the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_HaltMusic)
+func HaltMusic() {
+	iHaltMusic()
 }

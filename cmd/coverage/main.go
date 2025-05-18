@@ -316,7 +316,7 @@ The following emojis mean (they are clickable and should link to the code implem
 			log.Fatal("couldn't create file: ", err)
 		}
 	} else {
-		f, err = os.OpenFile("COVERAGE.md", os.O_APPEND, os.ModeAppend)
+		f, err = os.OpenFile("COVERAGE.md", os.O_WRONLY|os.O_APPEND, os.ModeAppend)
 		if err != nil {
 			log.Fatal("couldn't open file: ", err)
 		}
