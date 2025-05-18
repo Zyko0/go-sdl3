@@ -430,7 +430,11 @@ func main() {
 		}
 	})
 	fmt.Println("count api functions:", len(uniqueAPIFunctions), len(apifunc))
-	os.WriteFile(filepath.Join(dir, cfg.LibraryName+"_functions.gen.go"), []byte(f.GoString()), 0666)
+	outputFileLocation := filepath.Join(dir, cfg.LibraryName+"_functions.gen.go")
+	err = os.WriteFile(outputFileLocation, []byte(f.GoString()), 0666)
+	if err != nil {
+		log.Fatalf("couldn't write file %s: %v", outputFileLocation, err)
+	}
 
 	// Enums
 	f = jen.NewFile(cfg.LibraryName)
@@ -451,7 +455,11 @@ func main() {
 			}
 		})
 	}
-	os.WriteFile(filepath.Join(dir, cfg.LibraryName+"_enums.gen.go"), []byte(f.GoString()), 0666)
+	outputFileLocation = filepath.Join(dir, cfg.LibraryName+"_enums.gen.go")
+	err = os.WriteFile(outputFileLocation, []byte(f.GoString()), 0666)
+	if err != nil {
+		log.Fatalf("couldn't write file %s: %v", outputFileLocation, err)
+	}
 
 	// Structs
 	f = jen.NewFile(cfg.LibraryName)
@@ -479,7 +487,11 @@ func main() {
 			}
 		}).Line()
 	}
-	os.WriteFile(filepath.Join(dir, cfg.LibraryName+"_structs.gen.go"), []byte(f.GoString()), 0666)
+	outputFileLocation = filepath.Join(dir, cfg.LibraryName+"_structs.gen.go")
+	err = os.WriteFile(outputFileLocation, []byte(f.GoString()), 0666)
+	if err != nil {
+		log.Fatalf("couldn't write file %s: %v", outputFileLocation, err)
+	}
 
 	// Types
 	f = jen.NewFile(cfg.LibraryName)
@@ -507,5 +519,9 @@ func main() {
 			jenType(g.Id(e.Name), typ)
 		}
 	})
-	os.WriteFile(filepath.Join(dir, cfg.LibraryName+"_types.gen.go"), []byte(f.GoString()), 0666)
+	outputFileLocation = filepath.Join(dir, cfg.LibraryName+"_types.gen.go")
+	err = os.WriteFile(outputFileLocation, []byte(f.GoString()), 0666)
+	if err != nil {
+		log.Fatalf("couldn't write file %s: %v", outputFileLocation, err)
+	}
 }

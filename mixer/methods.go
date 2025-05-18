@@ -1,5 +1,7 @@
 package mixer
 
+import internal "github.com/Zyko0/go-sdl3/internal"
+
 // MusicFinishedCallback
 
 // Mix_HookMusicFinished - Set a callback that runs when a music object has stopped playing.
@@ -41,7 +43,6 @@ func (flags MIX_InitFlags) Init() MIX_InitFlags {
 // Mix_FreeChunk - Free an audio chunk.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_FreeChunk)
 func (chunk *Chunk) Free() {
-	panic("not implemented")
 	iFreeChunk(chunk)
 }
 
@@ -55,7 +56,6 @@ func (chunk *Chunk) Free() {
 // Mix_FreeMusic - Free a music object.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_FreeMusic)
 func (music *Music) Free() {
-	panic("not implemented")
 	iFreeMusic(music)
 }
 
@@ -103,9 +103,12 @@ func (music *Music) CopyrightTag() string {
 
 // Mix_PlayMusic - Play a new music object.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayMusic)
-func (music *Music) Play(loops int32) bool {
-	panic("not implemented")
-	return iPlayMusic(music, loops)
+func (music *Music) Play(loops int32) error {
+	if !iPlayMusic(music, loops) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // Mix_FadeInMusic - Play a new music object, fading in the audio.
