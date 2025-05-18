@@ -179,8 +179,24 @@ func HasMusicDecoder(name string) bool {
 
 // Mix_PlayChannel - Play an audio chunk on a specific channel.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannel)
-func PlayChannel(channel int32, chunk *Chunk, loops int32) int32 {
-	return iPlayChannel(channel, chunk, loops)
+func PlayChannel(channel int32, chunk *Chunk, loops int32) (int32, error) {
+	selectedChannel := iPlayChannel(channel, chunk, loops)
+	if selectedChannel == -1 {
+		return selectedChannel, internal.LastErr()
+	}
+
+	return selectedChannel, nil
+}
+
+// Mix_PlayChannelTimed - Play an audio chunk on a specific channel for a maximum time.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed)
+func PlayChannelTimed(channel int32, chunk *Chunk, loops, ticks int32) (int32, error) {
+	selectedChannel := iPlayChannelTimed(channel, chunk, loops, ticks)
+	if selectedChannel == -1 {
+		return selectedChannel, internal.LastErr()
+	}
+
+	return selectedChannel, nil
 }
 
 // Mix_PlayingMusic - Check the playing status of the music stream.

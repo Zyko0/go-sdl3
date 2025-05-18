@@ -1674,7 +1674,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [Mix_GroupOldest](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupOldest) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L679) |
 | [Mix_GroupNewer](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupNewer) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L692) |
 | [Mix_PlayChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannel) | [:heavy_check_mark:](mixer/functions.go#L181) | [:x:](mixer/mixer_functions_js.go#L705) |
-| [Mix_PlayChannelTimed](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L725) |
+| [Mix_PlayChannelTimed](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed) | [:heavy_check_mark:](mixer/functions.go#L192) | [:x:](mixer/mixer_functions_js.go#L725) |
 | [Mix_PlayMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayMusic) | [:heavy_check_mark:](mixer/methods.go#L105) | [:x:](mixer/mixer_functions_js.go#L747) |
 | [Mix_FadeInMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusic) | [:x:](mixer/methods.go#L115) | [:x:](mixer/mixer_functions_js.go#L765) |
 | [Mix_FadeInMusicPos](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusicPos) | [:x:](mixer/methods.go#L122) | [:x:](mixer/mixer_functions_js.go#L785) |
@@ -1687,7 +1687,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [Mix_MasterVolume](https://wiki.libsdl.org/SDL3_mixer/Mix_MasterVolume) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L915) |
 | [Mix_HaltChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltChannel) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L928) |
 | [Mix_HaltGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltGroup) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L939) |
-| [Mix_HaltMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltMusic) | [:heavy_check_mark:](mixer/functions.go#L211) | [:x:](mixer/mixer_functions_js.go#L950) |
+| [Mix_HaltMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltMusic) | [:heavy_check_mark:](mixer/functions.go#L227) | [:x:](mixer/mixer_functions_js.go#L950) |
 | [Mix_ExpireChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_ExpireChannel) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L959) |
 | [Mix_FadeOutChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutChannel) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L974) |
 | [Mix_FadeOutGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutGroup) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L989) |
@@ -1699,10 +1699,10 @@ The following emojis mean (they are clickable and should link to the code implem
 | [Mix_Resume](https://wiki.libsdl.org/SDL3_mixer/Mix_Resume) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1063) |
 | [Mix_ResumeGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeGroup) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1074) |
 | [Mix_Paused](https://wiki.libsdl.org/SDL3_mixer/Mix_Paused) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1085) |
-| [Mix_PauseMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic) | [:heavy_check_mark:](mixer/functions.go#L199) | [:x:](mixer/mixer_functions_js.go#L1098) |
-| [Mix_ResumeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic) | [:heavy_check_mark:](mixer/functions.go#L205) | [:x:](mixer/mixer_functions_js.go#L1107) |
+| [Mix_PauseMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic) | [:heavy_check_mark:](mixer/functions.go#L215) | [:x:](mixer/mixer_functions_js.go#L1098) |
+| [Mix_ResumeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic) | [:heavy_check_mark:](mixer/functions.go#L221) | [:x:](mixer/mixer_functions_js.go#L1107) |
 | [Mix_RewindMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1116) |
-| [Mix_PausedMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic) | [:heavy_check_mark:](mixer/functions.go#L193) | [:x:](mixer/mixer_functions_js.go#L1125) |
+| [Mix_PausedMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic) | [:heavy_check_mark:](mixer/functions.go#L209) | [:x:](mixer/mixer_functions_js.go#L1125) |
 | [Mix_ModMusicJumpToOrder](https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1136) |
 | [Mix_StartTrack](https://wiki.libsdl.org/SDL3_mixer/Mix_StartTrack) | [:x:](mixer/methods.go#L136) | [:x:](mixer/mixer_functions_js.go#L1149) |
 | [Mix_GetNumTracks](https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumTracks) | [:x:](mixer/methods.go#L143) | [:x:](mixer/mixer_functions_js.go#L1167) |
@@ -1713,7 +1713,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [Mix_GetMusicLoopEndTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopEndTime) | [:x:](mixer/methods.go#L171) | [:x:](mixer/mixer_functions_js.go#L1244) |
 | [Mix_GetMusicLoopLengthTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopLengthTime) | [:x:](mixer/methods.go#L178) | [:x:](mixer/mixer_functions_js.go#L1260) |
 | [Mix_Playing](https://wiki.libsdl.org/SDL3_mixer/Mix_Playing) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1276) |
-| [Mix_PlayingMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic) | [:heavy_check_mark:](mixer/functions.go#L187) | [:x:](mixer/mixer_functions_js.go#L1289) |
+| [Mix_PlayingMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic) | [:heavy_check_mark:](mixer/functions.go#L203) | [:x:](mixer/mixer_functions_js.go#L1289) |
 | [Mix_SetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_SetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1300) |
 | [Mix_GetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_GetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1313) |
 | [Mix_EachSoundFont](https://wiki.libsdl.org/SDL3_mixer/Mix_EachSoundFont) | [:x:](mixer/methods.go#L26) | [:x:](mixer/mixer_functions_js.go#L1324) |
