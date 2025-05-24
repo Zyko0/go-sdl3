@@ -19,13 +19,18 @@
         "GUID",
         "Surface",
         "MessageBoxData",
-        "MessageBoxButtonData"
+        "GPUShaderCreateInfo",
+        "GPUComputePipelineCreateInfo",
+        "TextEditingCandidatesEvent",
+        "ClipboardEvent"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",
         "SDL_SetLinuxThreadPriorityAndPolicy",
         "SDL_SetGPUBlendConstants",
-        "SDL_ShowMessageBox"
+        "SDL_ShowMessageBox",
+        "SDL_CreateGPUShader",
+        "SDL_CreateGPUComputePipeline"
     ],
     "allowlisted_functions": [
         "SDL_free"
@@ -76,5 +81,4 @@
 		"SDL_GetSensors",
 		"SDL_GetPreferredLocales"
     ]
-
 }

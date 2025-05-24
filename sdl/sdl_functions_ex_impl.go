@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package sdl
 
@@ -14,7 +14,9 @@ import (
 var (
 	// Symbols
 	// sdl
-	_addr_SDL_ShowMessageBox uintptr
+	_addr_SDL_ShowMessageBox           uintptr
+	_addr_SDL_CreateGPUShader          uintptr
+	_addr_SDL_CreateGPUComputePipeline uintptr
 )
 
 func initialize_ex() {
@@ -25,12 +27,34 @@ func initialize_ex() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_ShowMessageBox")
 	}
+	_addr_SDL_CreateGPUShader, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUShader")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUShader")
+	}
+	_addr_SDL_CreateGPUComputePipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUComputePipeline")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUComputePipeline")
+	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowMessageBox, uintptr(unsafe.Pointer(data)), uintptr(unsafe.Pointer(buttonid)))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(data)
 		runtime.KeepAlive(buttonid)
+		return __r0
+	}
+	iCreateGPUShader = func(device *GPUDevice, createinfo *gpuShaderCreateInfo) *GPUShader {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUShader, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
+		__r0 := (*GPUShader)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(device)
+		runtime.KeepAlive(createinfo)
+		return __r0
+	}
+	iCreateGPUComputePipeline = func(device *GPUDevice, createinfo *gpuComputePipelineCreateInfo) *GPUComputePipeline {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUComputePipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
+		__r0 := (*GPUComputePipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(device)
+		runtime.KeepAlive(createinfo)
 		return __r0
 	}
 }

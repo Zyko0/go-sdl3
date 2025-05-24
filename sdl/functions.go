@@ -5,7 +5,6 @@ import (
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
-	puregogen "github.com/Zyko0/purego-gen"
 )
 
 // Init
@@ -989,15 +988,15 @@ func ShowMessageBox(data *MessageBoxData) (int32, error) {
 			buttons[i] = messageBoxButtonData{
 				Flags:    button.Flags,
 				ButtonID: button.ButtonID,
-				Text:     puregogen.BytePtrFromString(button.Text),
+				Text:     internal.StringToNullablePtr(button.Text),
 			}
 		}
 		defer runtime.KeepAlive(buttons)
 		iData = &messageBoxData{
 			Flags:       data.Flags,
 			Window:      data.Window,
-			Title:       puregogen.BytePtrFromString(data.Title),
-			Message:     puregogen.BytePtrFromString(data.Message),
+			Title:       internal.StringToNullablePtr(data.Title),
+			Message:     internal.StringToNullablePtr(data.Message),
 			Numbuttons:  int32(len(buttons)),
 			Buttons:     unsafe.SliceData(buttons),
 			ColorScheme: data.ColorScheme,
@@ -1102,7 +1101,16 @@ func GetPreferredLocales() ([]*Locale, error) {
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[*Locale](ptr, int(count)), nil
+	s := internal.PtrToSlice[*locale](ptr, int(count))
+	locales := make([]*Locale, len(s))
+	for i, loc := range s {
+		locales[i] = &Locale{
+			Language: internal.ClonePtrString(uintptr(unsafe.Pointer(loc.Language))),
+			Country:  internal.ClonePtrString(uintptr(unsafe.Pointer(loc.Country))),
+		}
+	}
+
+	return locales, nil
 }
 
 // System

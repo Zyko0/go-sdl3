@@ -268,20 +268,6 @@ type TextEditingEvent struct {
 	Length    int32
 }
 
-type TextEditingCandidatesEvent struct {
-	Type              EventType
-	Reserved          uint32
-	Timestamp         uint64
-	WindowID          WindowID
-	Candidates        *string
-	NumCandidates     int32
-	SelectedCandidate int32
-	Horizontal        bool
-	Padding1          uint8
-	Padding2          uint8
-	Padding3          uint8
-}
-
 type TextInputEvent struct {
 	Type      EventType
 	Reserved  uint32
@@ -562,15 +548,6 @@ type DropEvent struct {
 	Data      string
 }
 
-type ClipboardEvent struct {
-	Type         EventType
-	Reserved     uint32
-	Timestamp    uint64
-	Owner        bool
-	NumMimeTypes int32
-	MimeTypes    *string
-}
-
 type SensorEvent struct {
 	Type            EventType
 	Reserved        uint32
@@ -754,19 +731,6 @@ type GPUColorTargetBlendState struct {
 	Padding2             uint8
 }
 
-type GPUShaderCreateInfo struct {
-	CodeSize           Pointer
-	Code               *uint8
-	Entrypoint         string
-	Format             GPUShaderFormat
-	Stage              GPUShaderStage
-	NumSamplers        uint32
-	NumStorageTextures uint32
-	NumStorageBuffers  uint32
-	NumUniformBuffers  uint32
-	Props              PropertiesID
-}
-
 type GPUTextureCreateInfo struct {
 	Type              GPUTextureType
 	Format            GPUTextureFormat
@@ -852,23 +816,6 @@ type GPUGraphicsPipelineCreateInfo struct {
 	DepthStencilState GPUDepthStencilState
 	TargetInfo        GPUGraphicsPipelineTargetInfo
 	Props             PropertiesID
-}
-
-type GPUComputePipelineCreateInfo struct {
-	CodeSize                    Pointer
-	Code                        *uint8
-	Entrypoint                  string
-	Format                      GPUShaderFormat
-	NumSamplers                 uint32
-	NumReadonlyStorageTextures  uint32
-	NumReadonlyStorageBuffers   uint32
-	NumReadwriteStorageTextures uint32
-	NumReadwriteStorageBuffers  uint32
-	NumUniformBuffers           uint32
-	ThreadcountX                uint32
-	ThreadcountY                uint32
-	ThreadcountZ                uint32
-	Props                       PropertiesID
 }
 
 type GPUColorTargetInfo struct {
@@ -1038,6 +985,12 @@ type SharedObject struct{}
 type Locale struct {
 	Language string
 	Country  string
+}
+
+type MessageBoxButtonData struct {
+	Flags    MessageBoxButtonFlags
+	ButtonID int32
+	Text     string
 }
 
 type MessageBoxColor struct {

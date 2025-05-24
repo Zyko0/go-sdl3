@@ -1897,10 +1897,42 @@ func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 	return iGetGPUShaderFormats(device)
 }
 
+type gpuComputePipelineCreateInfo struct {
+	CodeSize                    uintptr
+	Code                        *byte
+	Entrypoint                  *byte
+	Format                      GPUShaderFormat
+	NumSamplers                 uint32
+	NumReadonlyStorageTextures  uint32
+	NumReadonlyStorageBuffers   uint32
+	NumReadwriteStorageTextures uint32
+	NumReadwriteStorageBuffers  uint32
+	NumUniformBuffers           uint32
+	ThreadcountX                uint32
+	ThreadcountY                uint32
+	ThreadcountZ                uint32
+	Props                       PropertiesID
+}
+
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline)
 func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
-	pipeline := iCreateGPUComputePipeline(device, createinfo)
+	pipeline := iCreateGPUComputePipeline(device, &gpuComputePipelineCreateInfo{
+		CodeSize:                    uintptr(createinfo.CodeSize),
+		Code:                        unsafe.SliceData(createinfo.Code),
+		Entrypoint:                  internal.StringToNullablePtr(createinfo.Entrypoint),
+		Format:                      createinfo.Format,
+		NumSamplers:                 createinfo.NumSamplers,
+		NumReadonlyStorageTextures:  createinfo.NumReadonlyStorageTextures,
+		NumReadonlyStorageBuffers:   createinfo.NumReadonlyStorageBuffers,
+		NumReadwriteStorageTextures: createinfo.NumReadwriteStorageTextures,
+		NumReadwriteStorageBuffers:  createinfo.NumReadwriteStorageBuffers,
+		NumUniformBuffers:           createinfo.NumUniformBuffers,
+		ThreadcountX:                createinfo.ThreadcountX,
+		ThreadcountY:                createinfo.ThreadcountY,
+		ThreadcountZ:                createinfo.ThreadcountZ,
+		Props:                       createinfo.Props,
+	})
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
@@ -1925,10 +1957,34 @@ func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) *GPUSam
 	return iCreateGPUSampler(device, createinfo)
 }
 
+type gpuShaderCreateInfo struct {
+	CodeSize           uintptr
+	Code               *uint8
+	Entrypoint         *byte
+	Format             GPUShaderFormat
+	Stage              GPUShaderStage
+	NumSamplers        uint32
+	NumStorageTextures uint32
+	NumStorageBuffers  uint32
+	NumUniformBuffers  uint32
+	Props              PropertiesID
+}
+
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader)
 func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) (*GPUShader, error) {
-	shader := iCreateGPUShader(device, createinfo)
+	shader := iCreateGPUShader(device, &gpuShaderCreateInfo{
+		CodeSize:           uintptr(createinfo.CodeSize),
+		Code:               unsafe.SliceData(createinfo.Code),
+		Entrypoint:         internal.StringToNullablePtr(createinfo.Entrypoint),
+		Format:             createinfo.Format,
+		Stage:              createinfo.Stage,
+		NumSamplers:        createinfo.NumSamplers,
+		NumStorageTextures: createinfo.NumStorageTextures,
+		NumStorageBuffers:  createinfo.NumStorageBuffers,
+		NumUniformBuffers:  createinfo.NumUniformBuffers,
+		Props:              createinfo.Props,
+	})
 	if shader == nil {
 		return nil, internal.LastErr()
 	}

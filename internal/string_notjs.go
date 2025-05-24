@@ -17,3 +17,16 @@ func ClonePtrString(ptr uintptr) string {
 func PtrToString(ptr uintptr) string {
 	return puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&ptr)))
 }
+
+// StringToNullablePtr returns a uintptr pointing to the provided string data
+func StringToNullablePtr(s string) *byte {
+	if len(s) == 0 {
+		return nil
+	}
+	return puregogen.BytePtrFromString(s)
+}
+
+// StringToPtr returns a uintptr pointing to the provided string data
+func StringToPtr(s string) *byte {
+	return puregogen.BytePtrFromString(s)
+}

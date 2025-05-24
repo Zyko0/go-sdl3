@@ -28,3 +28,13 @@ func PtrToString(ptr uintptr) string {
 	}
 	return string(unsafe.Slice(p, n))
 }
+
+// StringToNullablePtr returns a uintptr pointing to the provided string data
+func StringToNullablePtr(s string) *byte {
+	panic("not implemented on js")
+}
+
+// StringToPtr returns a uintptr pointing to the provided string data
+func StringToPtr(s string) *byte {
+	panic("not implemented on js")
+}

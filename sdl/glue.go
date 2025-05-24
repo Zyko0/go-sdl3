@@ -62,16 +62,100 @@ func (e *Event) KeyboardEvent() *KeyboardEvent {
 	return (*KeyboardEvent)(unsafe.Pointer(e))
 }
 
+// This is required because the original struct contains a string and since
+// it comes from C, we need to handle the pointer manually.
+type textEditingEvent struct {
+	Type      EventType
+	Reserved  uint32
+	Timestamp uint64
+	WindowID  WindowID
+	Text      *byte
+	Start     int32
+	Length    int32
+}
+
 func (e *Event) TextEditingEvent() *TextEditingEvent {
-	return (*TextEditingEvent)(unsafe.Pointer(e))
+	impl := (*textEditingEvent)(unsafe.Pointer(e))
+	if impl == nil {
+		return nil
+	}
+	return &TextEditingEvent{
+		Type:      impl.Type,
+		Reserved:  impl.Reserved,
+		Timestamp: impl.Timestamp,
+		WindowID:  impl.WindowID,
+		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
+		Start:     impl.Start,
+		Length:    impl.Length,
+	}
+}
+
+// The original structure contains a candidates pointer, we want to
+// turn it into a slice.
+type textEditingCandidatesEvent struct {
+	Type              EventType
+	Reserved          uint32
+	Timestamp         uint64
+	WindowID          WindowID
+	Candidates        *string
+	NumCandidates     int32
+	SelectedCandidate int32
+	Horizontal        bool
+	Padding1          uint8
+	Padding2          uint8
+	Padding3          uint8
+}
+
+type TextEditingCandidatesEvent struct {
+	Type              EventType
+	Reserved          uint32
+	Timestamp         uint64
+	WindowID          WindowID
+	Candidates        []string
+	NumCandidates     int32
+	SelectedCandidate int32
+	Horizontal        bool
 }
 
 func (e *Event) TextEditingCandidatesEvent() *TextEditingCandidatesEvent {
-	return (*TextEditingCandidatesEvent)(unsafe.Pointer(e))
+	impl := (*textEditingCandidatesEvent)(unsafe.Pointer(e))
+	if impl == nil {
+		return nil
+	}
+	return &TextEditingCandidatesEvent{
+		Type:              impl.Type,
+		Reserved:          impl.Reserved,
+		Timestamp:         impl.Timestamp,
+		WindowID:          impl.WindowID,
+		Candidates:        internal.ClonePtrSlice[string](uintptr(unsafe.Pointer(impl.Candidates)), int(impl.NumCandidates)),
+		SelectedCandidate: impl.SelectedCandidate,
+		NumCandidates:     impl.NumCandidates,
+		Horizontal:        impl.Horizontal,
+	}
+}
+
+// This is required because the original struct contains a string and since
+// it comes from C, we need to handle the pointer manually.
+type textInputEvent struct {
+	Type      EventType
+	Reserved  uint32
+	Timestamp uint64
+	WindowID  WindowID
+	Text      *byte
 }
 
 func (e *Event) TextInputEvent() *TextInputEvent {
-	return (*TextInputEvent)(unsafe.Pointer(e))
+	impl := (*textInputEvent)(unsafe.Pointer(e))
+	if impl == nil {
+		return nil
+	}
+	return &TextInputEvent{
+		Type:      impl.Type,
+		Reserved:  impl.Reserved,
+		Timestamp: impl.Timestamp,
+		WindowID:  impl.WindowID,
+		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
+	}
 }
 
 func (e *Event) MouseMotionEvent() *MouseMotionEvent {
@@ -166,12 +250,67 @@ func (e *Event) PenAxisEvent() *PenAxisEvent {
 	return (*PenAxisEvent)(unsafe.Pointer(e))
 }
 
+// This is required because the original struct contains a string and since
+// it comes from C, we need to handle the pointer manually.
+type dropEvent struct {
+	Type      EventType
+	Reserved  uint32
+	Timestamp uint64
+	WindowID  WindowID
+	X         float32
+	Y         float32
+	Source    *byte
+	Data      *byte
+}
+
 func (e *Event) DropEvent() *DropEvent {
-	return (*DropEvent)(unsafe.Pointer(e))
+	impl := (*dropEvent)(unsafe.Pointer(e))
+	if impl == nil {
+		return nil
+	}
+	return &DropEvent{
+		Type:      impl.Type,
+		Reserved:  impl.Reserved,
+		Timestamp: impl.Timestamp,
+		WindowID:  impl.WindowID,
+		X:         impl.X,
+		Y:         impl.Y,
+		Source:    internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Source))),
+		Data:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Data))),
+	}
+}
+
+type clipboardEvent struct {
+	Type         EventType
+	Reserved     uint32
+	Timestamp    uint64
+	Owner        bool
+	NumMimeTypes int32
+	MimeTypes    *string
+}
+
+type ClipboardEvent struct {
+	Type         EventType
+	Reserved     uint32
+	Timestamp    uint64
+	Owner        bool
+	NumMimeTypes int32
+	MimeTypes    []string
 }
 
 func (e *Event) ClipboardEvent() *ClipboardEvent {
-	return (*ClipboardEvent)(unsafe.Pointer(e))
+	impl := (*clipboardEvent)(unsafe.Pointer(e))
+	if impl == nil {
+		return nil
+	}
+	return &ClipboardEvent{
+		Type:         impl.Type,
+		Reserved:     impl.Reserved,
+		Timestamp:    impl.Timestamp,
+		Owner:        impl.Owner,
+		NumMimeTypes: impl.NumMimeTypes,
+		MimeTypes:    internal.ClonePtrSlice[string](uintptr(unsafe.Pointer(impl.MimeTypes)), int(impl.NumMimeTypes)),
+	}
 }
 
 func (e *Event) SensorEvent() *SensorEvent {
@@ -207,12 +346,6 @@ type Surface struct {
 	Reserved Pointer
 }
 
-type MessageBoxButtonData struct {
-	Flags    MessageBoxButtonFlags
-	ButtonID int32
-	Text     string
-}
-
 type MessageBoxData struct {
 	Flags       MessageBoxFlags
 	Window      *Window
@@ -220,6 +353,41 @@ type MessageBoxData struct {
 	Message     string
 	Buttons     []MessageBoxButtonData
 	ColorScheme *MessageBoxColorScheme
+}
+
+type GPUShaderCreateInfo struct {
+	CodeSize           uint64
+	Code               []byte
+	Entrypoint         string
+	Format             GPUShaderFormat
+	Stage              GPUShaderStage
+	NumSamplers        uint32
+	NumStorageTextures uint32
+	NumStorageBuffers  uint32
+	NumUniformBuffers  uint32
+	Props              PropertiesID
+}
+
+type GPUComputePipelineCreateInfo struct {
+	CodeSize                    uint64
+	Code                        []byte
+	Entrypoint                  string
+	Format                      GPUShaderFormat
+	NumSamplers                 uint32
+	NumReadonlyStorageTextures  uint32
+	NumReadonlyStorageBuffers   uint32
+	NumReadwriteStorageTextures uint32
+	NumReadwriteStorageBuffers  uint32
+	NumUniformBuffers           uint32
+	ThreadcountX                uint32
+	ThreadcountY                uint32
+	ThreadcountZ                uint32
+	Props                       PropertiesID
+}
+
+type locale struct {
+	Language *byte
+	Country  *byte
 }
 
 // Custom types

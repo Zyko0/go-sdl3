@@ -11577,7 +11577,7 @@ func initialize() {
 		return _obj
 	}
 
-	iCreateGPUShader = func(device *GPUDevice, createinfo *GPUShaderCreateInfo) *GPUShader {
+	/*iCreateGPUShader = func(device *GPUDevice, createinfo *GPUShaderCreateInfo) *GPUShader {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -11599,7 +11599,7 @@ func initialize() {
 		//internal.StoreJSPointer(_obj, ret)
 		_ = ret
 		return _obj
-	}
+	}*/
 
 	iCreateGPUTexture = func(device *GPUDevice, createinfo *GPUTextureCreateInfo) *GPUTexture {
 		panic("not implemented on js")
@@ -14323,25 +14323,19 @@ func initialize() {
 		)
 	}*/
 
-	iShowMessageBox = func(messageboxdata *MessageBoxData, buttonid *int32) bool {
+	iShowMessageBox = func(messageboxdata *messageBoxData, buttonid *int32) bool {
 		panic("not implemented on js")
-		internal.StackSave()
+		/*internal.StackSave()
 		defer internal.StackRestore()
-		_messageboxdata, ok := internal.GetJSPointer(messageboxdata)
-		if !ok {
-			_messageboxdata = internal.StackAlloc(int(unsafe.Sizeof(*messageboxdata)))
-		}
-		_buttonid, ok := internal.GetJSPointer(buttonid)
-		if !ok {
-			_buttonid = internal.StackAlloc(int(unsafe.Sizeof(*buttonid)))
-		}
+		_messageboxdata := internal.StackAlloc(int(unsafe.Sizeof(*messageboxdata)))
+		_buttonid := internal.StackAlloc(int(unsafe.Sizeof(*buttonid)))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ShowMessageBox",
 			_messageboxdata,
 			_buttonid,
 		)
 
-		return internal.GetBool(ret)
+		return internal.GetBool(ret)*/
 	}
 
 	iShowSimpleMessageBox = func(flags MessageBoxFlags, title string, message string, window *Window) bool {
