@@ -5,9 +5,9 @@ package main
 import (
 	"math"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 	assets "github.com/Zyko0/go-sdl3/examples/renderer/_assets"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 const (

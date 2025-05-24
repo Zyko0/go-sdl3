@@ -3,8 +3,8 @@
 package img
 
 import (
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 func (a *Animation) Frames() []*sdl.Surface {

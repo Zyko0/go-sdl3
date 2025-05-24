@@ -5,8 +5,8 @@ package main
 import (
 	"math/rand/v2"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 const (

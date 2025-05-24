@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 type library struct {

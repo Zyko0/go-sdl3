@@ -6,8 +6,8 @@ import (
 	js "syscall/js"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	internal "github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 func initialize() {

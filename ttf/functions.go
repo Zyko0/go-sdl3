@@ -3,8 +3,8 @@ package ttf
 import (
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/internal"
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
 // TTF_Version - This function gets the version of the dynamically linked SDL_ttf library.
