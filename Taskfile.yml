@@ -9,7 +9,7 @@ tasks:
     gen-ffi:
         cmds:
             # Generate ffi.json files
-            - docker build . -t sdl3ffi
+            - docker build ./.docker/ffi/ -t sdl3ffi
             - docker create --name tmp sdl3ffi
             - docker cp tmp:/sdl_ffi.json ./cmd/internal/assets/ffi/sdl.json
             - docker cp tmp:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
@@ -19,8 +19,8 @@ tasks:
     
     build-wasm-lib:
         cmds:
-            # Generate ffi.json files
-            - docker build ./.github/workflows/emscripten-build/ -t sdl3wasm
+            # Generate emscripten wasm binary file
+            - docker build ./.docker/emscripten-build/ -t sdl3wasm
             - docker create --name tmp sdl3wasm
             - docker cp tmp:/_out ./out_test
             - docker rm -f tmp
