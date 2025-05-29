@@ -19,6 +19,8 @@ var EndLoop = errors.New("graceful termination")
 
 type Pointer = internal.Pointer
 
+// SDL_Time - SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).
+// (https://wiki.libsdl.org/SDL3/SDL_Time)
 type Time int64
 
 // https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_guid.h#L61
@@ -106,6 +108,8 @@ type textEditingCandidatesEvent struct {
 	Padding3          uint8
 }
 
+// SDL_TextEditingCandidatesEvent - Keyboard IME candidates event structure (event.edit_candidates.*)
+// (https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent)
 type TextEditingCandidatesEvent struct {
 	Type              EventType
 	Reserved          uint32
@@ -289,6 +293,8 @@ type clipboardEvent struct {
 	MimeTypes    *string
 }
 
+// SDL_ClipboardEvent - An event triggered when the clipboard contents have changed (event.clipboard.*)
+// (https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent)
 type ClipboardEvent struct {
 	Type         EventType
 	Reserved     uint32
@@ -331,10 +337,14 @@ type HapticEffect struct {
 	HapticData [66]byte // 68 is full size of SDL_HapticCondition
 }
 
+// SDL_HitTest - Callback used for hit-testing.
+// (https://wiki.libsdl.org/SDL3/SDL_HitTest)
 type HitTest uintptr // TODO: supposed to be a callback but can't find the signature
 
 type va_list uintptr // TODO: not done yet
 
+// SDL_Surface - A collection of pixels used in software blitting.
+// (https://wiki.libsdl.org/SDL3/SDL_Surface)
 type Surface struct {
 	Flags    SurfaceFlags
 	Format   PixelFormat
@@ -346,6 +356,8 @@ type Surface struct {
 	Reserved Pointer
 }
 
+// SDL_MessageBoxData - MessageBox structure containing title, text, window, etc.
+// (https://wiki.libsdl.org/SDL3/SDL_MessageBoxData)
 type MessageBoxData struct {
 	Flags       MessageBoxFlags
 	Window      *Window
@@ -355,6 +367,8 @@ type MessageBoxData struct {
 	ColorScheme *MessageBoxColorScheme
 }
 
+// SDL_GPUShaderCreateInfo - A structure specifying code and metadata for creating a shader object.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo)
 type GPUShaderCreateInfo struct {
 	CodeSize           uint64
 	Code               []byte
@@ -368,6 +382,8 @@ type GPUShaderCreateInfo struct {
 	Props              PropertiesID
 }
 
+// SDL_GPUComputePipelineCreateInfo - A structure specifying the parameters of a compute pipeline state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo)
 type GPUComputePipelineCreateInfo struct {
 	CodeSize                    uint64
 	Code                        []byte
