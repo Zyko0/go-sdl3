@@ -17,6 +17,14 @@ tasks:
             - docker cp tmp:/image_ffi.json ./cmd/internal/assets/ffi/img.json
             - docker rm -f tmp
     
+    extract-wiki:
+        cmds:
+            # Extract SDL3 wiki annotations
+            - docker build ./.docker/wiki-annotations/ -t sdl3wiki
+            - docker create --name tmp sdl3wiki
+            - docker cp tmp:/go/annotations.csv ./cmd/internal/assets/wiki/annotations.csv
+            - docker rm -f tmp
+    
     build-wasm-lib:
         cmds:
             # Generate emscripten wasm binary file
