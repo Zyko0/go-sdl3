@@ -68,8 +68,8 @@ tasks:
         vars:
             DIR: '{{.LIBRARY}}'
         cmds:
-            # Generate SDL3 documentation on top of functions
-            - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }}
+            # Generate SDL3 documentation on top of functions and types
+            - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }} --annotations "cmd/internal/assets/wiki/annotations.csv"
 
     coverage:
         vars:

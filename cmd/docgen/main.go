@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
+	"encoding/csv"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -18,88 +18,28 @@ import (
 var (
 	reg = regexp.MustCompile(`i([A-Za-z][A-Za-z_0-9]+)\(`)
 
-	cfg        assets.Config
-	apiRefCode string
+	cfg assets.Config
 )
 
-type refFunc struct {
-	Name        string
+type Entry struct {
+	Id          string
 	Description string
+	URL         string
 }
 
 var (
-	uniqueTypes        = map[string]struct{}{}
-	uniqueAPIFunctions = map[string]refFunc{}
+	uniqueAPIIdentifiers = make(map[string]*Entry)
 )
-
-func AllTypesFromAPIRef() {
-	for _, l := range strings.Split(apiRefCode, "\n") {
-		l = strings.TrimSpace(l)
-		l = strings.ReplaceAll(l, "const ", "")
-		l = strings.ReplaceAll(l, " * ", "* ")
-		l = strings.ReplaceAll(l, " ** ", "** ")
-		l = strings.ReplaceAll(l, "* * ", "** ")
-		switch {
-		case strings.HasPrefix(l, "//"):
-			continue
-		case strings.HasPrefix(l, "#"):
-			continue
-		case l == "":
-			continue
-		default:
-			idx := strings.Index(l, "//")
-			comment := ""
-			if idx != -1 {
-				comment = strings.TrimSpace(l[idx+2:])
-				comment = strings.TrimSuffix(comment, "\n")
-				l = l[:idx]
-			}
-			// Parse function prototype
-			nameIdx := strings.Index(l[1:], cfg.Prefix)
-			// Function name
-			name := l[nameIdx+1 : strings.Index(l, "(")]
-			// Function comment
-			uniqueAPIFunctions[name] = refFunc{
-				Name:        name,
-				Description: comment,
-			}
-			// Return type
-			typ := strings.TrimSpace(l[:nameIdx])
-			typ = strings.ReplaceAll(typ, "*", "")
-			uniqueTypes[typ] = struct{}{}
-			// Argument types
-			args := l[strings.Index(l, "(")+1 : strings.Index(l, ")")]
-			argsParts := strings.Split(args, ", ")
-			for _, at := range argsParts {
-				argParts := strings.Split(at, " ")
-				typ = strings.TrimSpace(strings.Join(argParts[:len(argParts)-1], " "))
-				typ = strings.ReplaceAll(typ, "*", "")
-				typ = strings.ReplaceAll(typ, "struct ", "")
-				uniqueTypes[typ] = struct{}{}
-			}
-		}
-	}
-	for tp := range uniqueTypes {
-		var found bool
-		for _, prefix := range cfg.AllowlistedTypePrefixes {
-			if strings.HasPrefix(tp, prefix) {
-				found = true
-				break
-			}
-		}
-		if !found {
-			delete(uniqueTypes, tp)
-		}
-	}
-}
 
 func main() {
 	var (
-		configPath string
-		dir        string
+		configPath      string
+		annotationsPath string
+		dir             string
 	)
 
 	flag.StringVar(&configPath, "config", "", "path to config.json file")
+	flag.StringVar(&annotationsPath, "annotations", "", "path to annotations.csv file")
 	flag.StringVar(&dir, "dir", "", "base directory to generate from/to")
 	flag.Parse()
 
@@ -113,18 +53,24 @@ func main() {
 		log.Fatal("couldn't unmarshal config file: ", err)
 	}
 
-	// Download API ref code
-	resp, err := http.Get(cfg.QuickAPIRefURL)
+	// Parse annotations
+	b, err = os.ReadFile(annotationsPath)
 	if err != nil {
-		log.Fatal("couldn't download api ref: ", err)
+		log.Fatal("couldn't read annotations.csv file: ", err)
 	}
-	b, err = io.ReadAll(resp.Body)
+	csvr := csv.NewReader(bytes.NewReader(b))
+	records, err := csvr.ReadAll()
 	if err != nil {
-		log.Fatal("couldn't read http response body: ", err)
+		log.Fatal("couldn't read csv records: ", err)
 	}
-	apiRefCode = string(b)
-	_, apiRefCode, _ = strings.Cut(apiRefCode, "```c")
-	apiRefCode, _, _ = strings.Cut(apiRefCode, "```")
+
+	for _, record := range records[1:] { // Skip header
+		uniqueAPIIdentifiers[record[0]] = &Entry{
+			Id:          record[0],
+			Description: strings.ReplaceAll(record[1], "\n", ""),
+			URL:         record[2],
+		}
+	}
 
 	path, err := os.Getwd()
 	if err != nil {
@@ -132,16 +78,15 @@ func main() {
 	}
 	path = filepath.Join(path, dir)
 
-	AllTypesFromAPIRef()
-
-	entries, err := os.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal("err: ", err)
 	}
 
-	var annotations int
+	var fnAnnotations int
+	var typesAnnotations int
 
-	for _, e := range entries {
+	for _, e := range files {
 		if !strings.HasSuffix(e.Name(), ".go") {
 			continue
 		}
@@ -156,11 +101,35 @@ func main() {
 
 		var inFunc bool
 		var braces int
-		var funcName string
-		var lineIndex int
+		var fnName string
+		var fnLineIndex int
 
 		lines := strings.Split(string(b), "\n")
 		for i, l := range lines {
+			// Type
+			if strings.HasPrefix(l, "type ") {
+				if i > 0 && strings.TrimSpace(lines[i-1]) == "" {
+					parts := strings.Split(l, " ")
+					if len(parts) > 2 {
+						name := parts[1]
+						entry, found := uniqueAPIIdentifiers[cfg.Prefix+name]
+						if found {
+							// Add comments on top of the type
+							outLines = append(outLines, fmt.Sprintf(
+								"// %s - %s", entry.Id, entry.Description,
+							))
+							outLines = append(outLines, fmt.Sprintf(
+								"// (%s)", entry.URL,
+							))
+							typesAnnotations++
+							edited = true
+						}
+					}
+				}
+				outLines = append(outLines, l)
+				continue
+			}
+			// Function
 			if inFunc {
 				braces += strings.Count(l, "{")
 				braces -= strings.Count(l, "}")
@@ -169,13 +138,13 @@ func main() {
 						matches := reg.FindAll([]byte(l), -1)
 						for _, m := range matches {
 							name := string(m[1 : len(m)-1])
-							_, found := uniqueAPIFunctions[name]
+							_, found := uniqueAPIIdentifiers[name]
 							if !found {
 								name = cfg.Prefix + name
-								_, found = uniqueAPIFunctions[name]
+								_, found = uniqueAPIIdentifiers[name]
 							}
 							if found {
-								funcName = name
+								fnName = name
 							}
 						}
 					}
@@ -183,20 +152,21 @@ func main() {
 					inFunc = false
 					braces = 0
 					// Add comments + whole function
-					if funcName != "" {
+					entry, found := uniqueAPIIdentifiers[fnName]
+					if found {
 						outLines = append(outLines, fmt.Sprintf(
-							"// %s - %s", funcName, uniqueAPIFunctions[funcName].Description,
+							"// %s - %s", entry.Id, entry.Description,
 						))
 						outLines = append(outLines, fmt.Sprintf(
-							"// (https://wiki.libsdl.org/SDL3%s/%s)", cfg.URLLibrarySuffix, funcName,
+							"// (%s)", entry.URL,
 						))
-						annotations++
+						fnAnnotations++
 						edited = true
 					}
 					// Function lines
-					for lineIndex <= i {
-						outLines = append(outLines, lines[lineIndex])
-						lineIndex++
+					for fnLineIndex <= i {
+						outLines = append(outLines, lines[fnLineIndex])
+						fnLineIndex++
 					}
 				}
 				continue
@@ -214,8 +184,8 @@ func main() {
 			}
 			inFunc = true
 			braces = 1
-			funcName = ""
-			lineIndex = i
+			fnName = ""
+			fnLineIndex = i
 		}
 
 		// Write file if there has been some changes
@@ -227,5 +197,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("Total functions annotated:", annotations)
+	fmt.Println("Total functions annotated:", fnAnnotations)
+	fmt.Println("Total types annotated:", typesAnnotations)
 }

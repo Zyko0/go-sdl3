@@ -11,9 +11,9 @@ import (
 )
 
 type Entry struct {
-	Id      string
-	Content string
-	URL     string
+	Id          string
+	Description string
+	URL         string
 }
 
 func main() {
@@ -47,12 +47,12 @@ func main() {
 			}
 
 			lines := strings.Split(string(content), "\n")
-			var documentation string
+			var description string
 			var hasTitle bool
 			for i := 0; i < len(lines); i++ {
 				if lines[i] == "" {
 					// Documentation content ended
-					if documentation != "" {
+					if description != "" {
 						break
 					}
 					continue
@@ -66,19 +66,19 @@ func main() {
 						break
 					}
 					// Documentation line
-					documentation += lines[i] + "\n"
+					description += lines[i] + "\n"
 				}
 			}
 			// If no content was found, skip this file
-			if documentation == "" {
+			if description == "" {
 				continue
 			}
 
 			id := strings.TrimSuffix(file.Name(), ".md")
 			entries = append(entries, &Entry{
-				Id:      id,
-				Content: documentation,
-				URL:     fmt.Sprintf("https://wiki.libsdl.org/%s/%s", c.Library, id),
+				Id:          id,
+				Description: description,
+				URL:         fmt.Sprintf("https://wiki.libsdl.org/%s/%s", c.Library, id),
 			})
 		}
 	}
@@ -90,9 +90,9 @@ func main() {
 	defer f.Close()
 
 	w := csv.NewWriter(f)
-	w.Write([]string{"id", "content", "url"})
+	w.Write([]string{"id", "description", "url"})
 	for _, e := range entries {
-		if err := w.Write([]string{e.Id, e.Content, e.URL}); err != nil {
+		if err := w.Write([]string{e.Id, e.Description, e.URL}); err != nil {
 			log.Fatalf("couldn't write entry to csv writer: %v\n", err)
 		}
 	}
