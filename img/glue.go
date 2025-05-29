@@ -6,6 +6,8 @@ import "github.com/Zyko0/go-sdl3/internal"
 
 type Pointer = internal.Pointer
 
+// IMG_Animation - Animated image support
+// (https://wiki.libsdl.org/SDL3_image/IMG_Animation)
 type Animation struct {
 	W      int32
 	H      int32
