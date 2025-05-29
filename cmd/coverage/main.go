@@ -267,11 +267,21 @@ The following emojis mean (they are clickable and should link to the code implem
 - :question: = not planned / don't know about integrating it or not
 `)
 	}
-	sb.WriteString("\n## " + strings.ToUpper(cfg.LibraryName) + "\n\n")
+	sb.WriteString("<details open>\n")
+	sb.WriteString("<summary>")
+	sb.WriteString("<h2>" + strings.ToUpper(cfg.LibraryName) + "</h2>")
+	sb.WriteString("</summary>\n")
 	for _, fn := range functions {
 		if fn.CategoryIndex != categoryIndex {
+			if categoryIndex != -1 {
+				// Close the previous details category
+				sb.WriteString("</details>\n")
+			}
 			categoryIndex = fn.CategoryIndex
-			sb.WriteString("### " + categories[cfg.LibraryName][fn.CategoryIndex] + "\n\n")
+			sb.WriteString("<details open>\n")
+			sb.WriteString("<summary>")
+			sb.WriteString("<h3>" + categories[cfg.LibraryName][fn.CategoryIndex] + "</h3>")
+			sb.WriteString("</summary>\n\n")
 			sb.WriteString("|Function|Desktop|WASM/js|\n")
 			sb.WriteString("|:--|:--:|:--:|\n")
 		}
@@ -308,6 +318,8 @@ The following emojis mean (they are clickable and should link to the code implem
 			js, urlJS,
 		))
 	}
+	sb.WriteString("</details>\n")
+	sb.WriteString("</details>\n")
 
 	var f *os.File
 	if cfg.LibraryName == "sdl" {
