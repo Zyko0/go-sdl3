@@ -31,6 +31,8 @@ func (d *DrawOperation) FillOperation() *FillOperation {
 	return (*FillOperation)(unsafe.Pointer(d))
 }
 
+// TTF_TextEngine - A text engine used to create text objects.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_TextEngine)
 type TextEngine struct {
 	Version         uint32
 	Userdata        Pointer
@@ -38,6 +40,8 @@ type TextEngine struct {
 	DestroyTextFunc Pointer
 }
 
+// TTF_TextData - Internal data for [TTF_Text](TTF_Text)
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_TextData)
 type TextData struct {
 	Font              *Font
 	Color             sdl.FColor
