@@ -17,16 +17,14 @@ const (
 type MusicType uint32
 
 const (
-	MUS_NONE           MusicType = 0
-	MUS_WAV            MusicType = 1
-	MUS_MOD            MusicType = 2
-	MUS_MID            MusicType = 3
-	MUS_OGG            MusicType = 4
-	MUS_MP3            MusicType = 5
-	MUS_MP3_MAD_UNUSED MusicType = 6
-	MUS_FLAC           MusicType = 7
-	MUS_MODPLUG_UNUSED MusicType = 8
-	MUS_OPUS           MusicType = 9
-	MUS_WAVPACK        MusicType = 10
-	MUS_GME            MusicType = 11
+	MUS_NONE    MusicType = 0
+	MUS_WAV     MusicType = 1
+	MUS_MOD     MusicType = 2
+	MUS_MID     MusicType = 3
+	MUS_OGG     MusicType = 4
+	MUS_MP3     MusicType = 5
+	MUS_FLAC    MusicType = 6
+	MUS_OPUS    MusicType = 7
+	MUS_WAVPACK MusicType = 8
+	MUS_GME     MusicType = 9
 )
