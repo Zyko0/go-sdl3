@@ -495,8 +495,8 @@ func main() {
 
 	// Types
 	f = jen.NewFile(cfg.LibraryName)
-	f.Comment(genComment)
-	f.Type().DefsFunc(func(g *jen.Group) {
+	f.Comment(genComment).Line()
+	f.Do(func(stmt *jen.Statement) {
 		for _, e := range ffiEntries {
 			switch {
 			case e.Tag != "typedef",
@@ -516,7 +516,10 @@ func main() {
 			if e.Name == typ {
 				continue
 			}
-			jenType(g.Id(e.Name), typ)
+			stmt.Add(
+				// Add an extra line to allow documentation comments
+				jenType(jen.Type().Id(e.Name), typ).Line().Line(),
+			)
 		}
 	})
 	outputFileLocation = filepath.Join(dir, cfg.LibraryName+"_types.gen.go")
