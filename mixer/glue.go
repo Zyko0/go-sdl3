@@ -13,6 +13,8 @@ type MIX_InitFlags uint32
 
 type InitFlags MIX_InitFlags
 
+// Mix_Chunk - The internal format for an audio chunk
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Chunk)
 type Chunk struct {
 	Allocated int32
 	abuf      Pointer
