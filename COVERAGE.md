@@ -38,7 +38,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_AddHintCallback](https://wiki.libsdl.org/SDL3/SDL_AddHintCallback) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L13867) |
 | [SDL_RemoveHintCallback](https://wiki.libsdl.org/SDL3/SDL_RemoveHintCallback) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L13884) |
 </details>
-<details open>
+<details>
 <summary><h3>Error</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -76,7 +76,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_EnumerateProperties](https://wiki.libsdl.org/SDL3/SDL_EnumerateProperties) | [:x:](sdl/methods.go#L5812) | [:x:](sdl/sdl_functions_js.go#L843) |
 | [SDL_DestroyProperties](https://wiki.libsdl.org/SDL3/SDL_DestroyProperties) | [:heavy_check_mark:](sdl/methods.go#L5819) | [:x:](sdl/sdl_functions_js.go#L860) |
 </details>
-<details open>
+<details>
 <summary><h3>Log</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -559,7 +559,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetAudioFormatName](https://wiki.libsdl.org/SDL3/SDL_GetAudioFormatName) | [:heavy_check_mark:](sdl/methods.go#L1203) | [:x:](sdl/sdl_functions_js.go#L3337) |
 | [SDL_GetSilenceValueForFormat](https://wiki.libsdl.org/SDL3/SDL_GetSilenceValueForFormat) | [:heavy_check_mark:](sdl/methods.go#L1209) | [:x:](sdl/sdl_functions_js.go#L3350) |
 </details>
-<details open>
+<details>
 <summary><h3>Time</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -695,7 +695,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_SetRenderGPUState](https://wiki.libsdl.org/SDL3/SDL_SetRenderGPUState) | [:question:]() | [:question:]() |
 | [SDL_DestroyGPURenderState](https://wiki.libsdl.org/SDL3/SDL_DestroyGPURenderState) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>SharedObject</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -704,7 +704,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_LoadFunction](https://wiki.libsdl.org/SDL3/SDL_LoadFunction) | [:x:](sdl/methods.go#L4784) | [:x:](sdl/sdl_functions_js.go#L14039) |
 | [SDL_UnloadObject](https://wiki.libsdl.org/SDL3/SDL_UnloadObject) | [:x:](sdl/methods.go#L4791) | [:x:](sdl/sdl_functions_js.go#L14057) |
 </details>
-<details open>
+<details>
 <summary><h3>Thread</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -722,7 +722,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_SetTLS](https://wiki.libsdl.org/SDL3/SDL_SetTLS) | [:x:](sdl/methods.go#L617) | [:x:](sdl/sdl_functions_js.go#L992) |
 | [SDL_CleanupTLS](https://wiki.libsdl.org/SDL3/SDL_CleanupTLS) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1012) |
 </details>
-<details open>
+<details>
 <summary><h3>Mutex</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -756,7 +756,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_ShouldQuit](https://wiki.libsdl.org/SDL3/SDL_ShouldQuit) | [:x:](sdl/methods.go#L3504) | [:x:](sdl/sdl_functions_js.go#L1417) |
 | [SDL_SetInitialized](https://wiki.libsdl.org/SDL3/SDL_SetInitialized) | [:x:](sdl/methods.go#L3511) | [:x:](sdl/sdl_functions_js.go#L1433) |
 </details>
-<details open>
+<details>
 <summary><h3>Atomic</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -777,7 +777,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_SetAtomicPointer](https://wiki.libsdl.org/SDL3/SDL_SetAtomicPointer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L454) |
 | [SDL_GetAtomicPointer](https://wiki.libsdl.org/SDL3/SDL_GetAtomicPointer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L472) |
 </details>
-<details open>
+<details>
 <summary><h3>Filesystem</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1157,7 +1157,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_ShowMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox) | [:heavy_check_mark:](sdl/functions.go#L980) | [:x:](sdl/sdl_functions_js.go#L14325) |
 | [SDL_ShowSimpleMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox) | [:heavy_check_mark:](sdl/functions.go#L1013) | [:x:](sdl/sdl_functions_js.go#L14340) |
 </details>
-<details open>
+<details>
 <summary><h3>Vulkan</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1170,7 +1170,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_Vulkan_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_Vulkan_DestroySurface) | [:question:]() | [:question:]() |
 | [SDL_Vulkan_GetPresentationSupport](https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetPresentationSupport) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>Metal</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1221,7 +1221,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_WaitProcess](https://wiki.libsdl.org/SDL3/SDL_WaitProcess) | [:heavy_check_mark:](sdl/methods.go#L6110) | [:x:](sdl/sdl_functions_js.go#L14549) |
 | [SDL_DestroyProcess](https://wiki.libsdl.org/SDL3/SDL_DestroyProcess) | [:heavy_check_mark:](sdl/methods.go#L6120) | [:x:](sdl/sdl_functions_js.go#L14572) |
 </details>
-<details open>
+<details>
 <summary><h3>Process</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1229,7 +1229,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_MostSignificantBitIndex32](https://wiki.libsdl.org/SDL3/SDL_MostSignificantBitIndex32) | [:question:]() | [:question:]() |
 | [SDL_HasExactlyOneBitSet32](https://wiki.libsdl.org/SDL3/SDL_HasExactlyOneBitSet32) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>Bits</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1239,7 +1239,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_Swap32](https://wiki.libsdl.org/SDL3/SDL_Swap32) | [:question:]() | [:question:]() |
 | [SDL_Swap64](https://wiki.libsdl.org/SDL3/SDL_Swap64) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>Endian</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1251,7 +1251,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetAssertionReport](https://wiki.libsdl.org/SDL3/SDL_GetAssertionReport) | [:question:]() | [:question:]() |
 | [SDL_ResetAssertionReport](https://wiki.libsdl.org/SDL3/SDL_ResetAssertionReport) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>Assert</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1282,7 +1282,7 @@ The following emojis mean (they are clickable and should link to the code implem
 |:--|:--:|:--:|
 | [SDL_GetPreferredLocales](https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales) | [:heavy_check_mark:](sdl/functions.go#L1094) | [:x:](sdl/sdl_functions_js.go#L14071) |
 </details>
-<details open>
+<details>
 <summary><h3>Intrinsics</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1321,14 +1321,14 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetGDKTaskQueue](https://wiki.libsdl.org/SDL3/SDL_GetGDKTaskQueue) | [:question:]() | [:question:]() |
 | [SDL_GetGDKDefaultUser](https://wiki.libsdl.org/SDL3/SDL_GetGDKDefaultUser) | [:question:]() | [:question:]() |
 </details>
-<details open>
+<details>
 <summary><h3>Locale</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_OpenURL](https://wiki.libsdl.org/SDL3/SDL_OpenURL) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14402) |
 </details>
-<details open>
+<details>
 <summary><h3>System</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1336,7 +1336,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GUIDToString](https://wiki.libsdl.org/SDL3/SDL_GUIDToString) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7779) |
 | [SDL_StringToGUID](https://wiki.libsdl.org/SDL3/SDL_StringToGUID) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7794) |
 </details>
-<details open>
+<details>
 <summary><h3>Misc</h3></summary>
 
 |Function|Desktop|WASM/js|
@@ -1353,7 +1353,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_UnregisterApp](https://wiki.libsdl.org/SDL3/SDL_UnregisterApp) | [:question:]() | [:question:]() |
 | [SDL_GDKSuspendComplete](https://wiki.libsdl.org/SDL3/SDL_GDKSuspendComplete) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17303) |
 </details>
-<details open>
+<details>
 <summary><h3>GUID</h3></summary>
 
 |Function|Desktop|WASM/js|

@@ -66,6 +66,27 @@ var (
 		"ttf":   {"TTF"},
 		"mixer": {"Mixer"},
 	}
+	collapsedCategories = map[string]struct{}{
+		"Error":        {},
+		"Log":          {},
+		"Time":         {},
+		"SharedObject": {},
+		"Thread":       {},
+		"Mutex":        {},
+		"Atomic":       {},
+		"Filesystem":   {},
+		"Vulkan":       {},
+		"Metal":        {},
+		"Process":      {},
+		"Bits":         {},
+		"Endian":       {},
+		"Assert":       {},
+		"Intrinsics":   {},
+		"Locale":       {},
+		"System":       {},
+		"Misc":         {},
+		"GUID":         {},
+	}
 	uniqueAPIFunctions = map[string]*refFunc{}
 	functions          []*refFunc
 )
@@ -278,7 +299,11 @@ The following emojis mean (they are clickable and should link to the code implem
 				sb.WriteString("</details>\n")
 			}
 			categoryIndex = fn.CategoryIndex
-			sb.WriteString("<details open>\n")
+			if _, ok := collapsedCategories[categories[cfg.LibraryName][fn.CategoryIndex]]; ok {
+				sb.WriteString("<details>\n")
+			} else {
+				sb.WriteString("<details open>\n")
+			}
 			sb.WriteString("<summary>")
 			sb.WriteString("<h3>" + categories[cfg.LibraryName][fn.CategoryIndex] + "</h3>")
 			sb.WriteString("</summary>\n\n")
