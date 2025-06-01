@@ -2,11 +2,13 @@ version: '3'
 
 tasks:
     tools:
+        desc: Install required tools
         cmds:
             # Install purego-gen
             - go install github.com/Zyko0/purego-gen/cmd/purego-gen@latest
     
     gen-ffi:
+        desc: Generate ffi.json files for SDL3 libraries
         cmds:
             # Generate ffi.json files
             - docker build ./.docker/ffi/ -t sdl3ffi
@@ -18,6 +20,7 @@ tasks:
             - docker rm -f tmp
     
     extract-wiki:
+        desc: Extract documentation annotations from SDL3 wiki repository
         cmds:
             # Extract SDL3 wiki annotations
             - docker build ./.docker/wiki-annotations/ -t sdl3wiki
@@ -26,6 +29,7 @@ tasks:
             - docker rm -f tmp
     
     build-wasm-lib:
+        desc: Build SDL3 library as a wasm binary file
         cmds:
             # Generate emscripten wasm binary file
             - docker build ./.docker/emscripten-build/ -t sdl3wasm
@@ -34,6 +38,7 @@ tasks:
             - docker rm -f tmp
     
     gen-bindings:
+        desc: Generate Go bindings for a chosen SDL3 library
         deps: [tools, gen-ffi]
         requires:
             vars: [LIBRARY]
@@ -54,6 +59,7 @@ tasks:
             - '{{if eq .LIBRARY "ttf"}}purego-gen --no-warnings --function-name "initialize_ex" --input {{.DIR}}/{{.LIBRARY}}_functions_ex.go --extra {{.EXTRA | join ","}}{{end}}'
 
     gen-methods:
+        desc: Generate methods for SDL3 library (first pass)
         requires:
           vars: [LIBRARY]
         vars:
@@ -63,6 +69,8 @@ tasks:
             - go run ./cmd/methodgen --dir {{ .DIR }} --library {{ .LIBRARY }}
     
     gen-doc:
+        deps: [extract-wiki]
+        desc: Generate documentation for functions and types of the chosen SDL3 library
         requires:
           vars: [LIBRARY]
         vars:
@@ -72,6 +80,7 @@ tasks:
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }} --annotations "cmd/internal/assets/wiki/annotations.csv"
 
     coverage:
+        desc: Update the COVERAGE.md file with functions covered by the bindings for SDL3 libraries
         vars:
             LIBS: [sdl, ttf, img, mixer]
         cmds:
@@ -80,6 +89,7 @@ tasks:
               cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{.ITEM}}.json" --dir {{.ITEM}}
     
     fmt:
+        desc: Format go code
         cmds:
             # go fmt code
             - go fmt github.com/Zyko0/go-sdl3/...
