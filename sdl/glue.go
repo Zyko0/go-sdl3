@@ -367,6 +367,19 @@ type MessageBoxData struct {
 	ColorScheme *MessageBoxColorScheme
 }
 
+type gpuShaderCreateInfo struct {
+	CodeSize           uintptr
+	Code               *uint8
+	Entrypoint         *byte
+	Format             GPUShaderFormat
+	Stage              GPUShaderStage
+	NumSamplers        uint32
+	NumStorageTextures uint32
+	NumStorageBuffers  uint32
+	NumUniformBuffers  uint32
+	Props              PropertiesID
+}
+
 // SDL_GPUShaderCreateInfo - A structure specifying code and metadata for creating a shader object.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo)
 type GPUShaderCreateInfo struct {
@@ -380,6 +393,23 @@ type GPUShaderCreateInfo struct {
 	NumStorageBuffers  uint32
 	NumUniformBuffers  uint32
 	Props              PropertiesID
+}
+
+type gpuComputePipelineCreateInfo struct {
+	CodeSize                    uintptr
+	Code                        *byte
+	Entrypoint                  *byte
+	Format                      GPUShaderFormat
+	NumSamplers                 uint32
+	NumReadonlyStorageTextures  uint32
+	NumReadonlyStorageBuffers   uint32
+	NumReadwriteStorageTextures uint32
+	NumReadwriteStorageBuffers  uint32
+	NumUniformBuffers           uint32
+	ThreadcountX                uint32
+	ThreadcountY                uint32
+	ThreadcountZ                uint32
+	Props                       PropertiesID
 }
 
 // SDL_GPUComputePipelineCreateInfo - A structure specifying the parameters of a compute pipeline state.
@@ -401,12 +431,21 @@ type GPUComputePipelineCreateInfo struct {
 	Props                       PropertiesID
 }
 
+// SDL_Palette - A set of indexed colors representing a palette.
+// (https://wiki.libsdl.org/SDL3/SDL_Palette)
+type Palette struct {
+	ncolors  int32
+	colors   *Color
+	Version  uint32
+	Refcount int32
+}
+
+// Custom types
+
 type locale struct {
 	Language *byte
 	Country  *byte
 }
-
-// Custom types
 
 type SwapchainTexture struct {
 	Texture *GPUTexture

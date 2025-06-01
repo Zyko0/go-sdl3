@@ -22,7 +22,8 @@
         "GPUShaderCreateInfo",
         "GPUComputePipelineCreateInfo",
         "TextEditingCandidatesEvent",
-        "ClipboardEvent"
+        "ClipboardEvent",
+        "Palette"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",

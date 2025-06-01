@@ -109,15 +109,6 @@ type FColor struct {
 	A float32
 }
 
-// SDL_Palette - A set of indexed colors representing a palette.
-// (https://wiki.libsdl.org/SDL3/SDL_Palette)
-type Palette struct {
-	Ncolors  int32
-	Colors   *Color
-	Version  uint32
-	Refcount int32
-}
-
 // SDL_PixelFormatDetails - Details about the format of a pixel.
 // (https://wiki.libsdl.org/SDL3/SDL_PixelFormatDetails)
 type PixelFormatDetails struct {
