@@ -4748,6 +4748,10 @@ func (scancode Scancode) Name() string {
 	return iGetScancodeName(scancode)
 }
 
+func (scancode Scancode) ToKeycode() Keycode {
+	return Keycode(scancode | K_SCANCODE_MASK)
+}
+
 // SharedObject
 
 // SDL_LoadFunction - Look up the address of the named function in a shared object.
