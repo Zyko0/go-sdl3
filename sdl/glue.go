@@ -23,6 +23,10 @@ type Pointer = internal.Pointer
 // (https://wiki.libsdl.org/SDL3/SDL_Time)
 type Time int64
 
+// SDL_GLProfile - Possible values to be set for the [SDL_GL_CONTEXT_PROFILE_MASK](SDL_GL_CONTEXT_PROFILE_MASK) attribute.
+// (https://wiki.libsdl.org/SDL3/SDL_GLProfile)
+type GLProfile uint32
+
 // https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_guid.h#L61
 type GUID *[16]uint8
 

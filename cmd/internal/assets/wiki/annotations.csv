@@ -1491,7 +1491,7 @@ SDL_GetRendererName,"Get the name of a renderer.
 ",https://wiki.libsdl.org/SDL3/SDL_GetRendererName
 SDL_GetRendererProperties,"Get the properties associated with a renderer.
 ",https://wiki.libsdl.org/SDL3/SDL_GetRendererProperties
-SDL_GetRevision,"Get the code revision of SDL that is linked against your program.
+SDL_GetRevision,"Get the code revision of the SDL library that is linked against your program.
 ",https://wiki.libsdl.org/SDL3/SDL_GetRevision
 SDL_GetSIMDAlignment,"Report the alignment this system needs for SIMD allocations.
 ",https://wiki.libsdl.org/SDL3/SDL_GetSIMDAlignment
@@ -1621,7 +1621,7 @@ SDL_GetVersion,"Get the version of SDL that is linked against your program.
 ",https://wiki.libsdl.org/SDL3/SDL_GetVersion
 SDL_GetVideoDriver,"Get the name of a built in video driver.
 ",https://wiki.libsdl.org/SDL3/SDL_GetVideoDriver
-SDL_GetWindowAspectRatio,"Get the size of a window's client area.
+SDL_GetWindowAspectRatio,"Get the aspect ratio of a window's client area.
 ",https://wiki.libsdl.org/SDL3/SDL_GetWindowAspectRatio
 SDL_GetWindowBordersSize,"Get the size of a window's borders (decorations) around the client area.
 ",https://wiki.libsdl.org/SDL3/SDL_GetWindowBordersSize
