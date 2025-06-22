@@ -637,7 +637,7 @@ const (
 )
 
 const (
-	GL_CONTEXT_PROFILE_CORE          GLProfile = 0x0001 /**< OpenGL Core Profile context */
-	GL_CONTEXT_PROFILE_COMPATIBILITY GLProfile = 0x0002 /**< OpenGL Compatibility Profile context */
-	GL_CONTEXT_PROFILE_ES            GLProfile = 0x0004 /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
+	GL_CONTEXT_PROFILE_CORE          = 0x0001 /**< OpenGL Core Profile context */
+	GL_CONTEXT_PROFILE_COMPATIBILITY = 0x0002 /**< OpenGL Compatibility Profile context */
+	GL_CONTEXT_PROFILE_ES            = 0x0004 /**< GLX_CONTEXT_ES2_PROFILE_BIT_EXT */
 )
