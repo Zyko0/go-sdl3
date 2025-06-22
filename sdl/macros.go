@@ -614,3 +614,24 @@ const (
 	K_LHYPER               Keycode = 0x20000006 /**< Extended key Left Hyper */
 	K_RHYPER               Keycode = 0x20000007 /**< Extended key Right Hyper */
 )
+
+const (
+	KMOD_NONE   Keymod = 0x0000                      /**< no modifier is applicable. */
+	KMOD_LSHIFT Keymod = 0x0001                      /**< the left Shift key is down. */
+	KMOD_RSHIFT Keymod = 0x0002                      /**< the right Shift key is down. */
+	KMOD_LEVEL5 Keymod = 0x0004                      /**< the Level 5 Shift key is down. */
+	KMOD_LCTRL  Keymod = 0x0040                      /**< the left Ctrl (Control) key is down. */
+	KMOD_RCTRL  Keymod = 0x0080                      /**< the right Ctrl (Control) key is down. */
+	KMOD_LALT   Keymod = 0x0100                      /**< the left Alt key is down. */
+	KMOD_RALT   Keymod = 0x0200                      /**< the right Alt key is down. */
+	KMOD_LGUI   Keymod = 0x0400                      /**< the left GUI key (often the Windows key) is down. */
+	KMOD_RGUI   Keymod = 0x0800                      /**< the right GUI key (often the Windows key) is down. */
+	KMOD_NUM    Keymod = 0x1000                      /**< the Num Lock key (may be located on an extended keypad) is down. */
+	KMOD_CAPS   Keymod = 0x2000                      /**< the Caps Lock key is down. */
+	KMOD_MODE   Keymod = 0x4000                      /**< the !AltGr key is down. */
+	KMOD_SCROLL Keymod = 0x8000                      /**< the Scroll Lock key is down. */
+	KMOD_CTRL   Keymod = (KMOD_LCTRL | KMOD_RCTRL)   /**< Any Ctrl key is down. */
+	KMOD_SHIFT  Keymod = (KMOD_LSHIFT | KMOD_RSHIFT) /**< Any Shift key is down. */
+	KMOD_ALT    Keymod = (KMOD_LALT | KMOD_RALT)     /**< Any Alt key is down. */
+	KMOD_GUI    Keymod = (KMOD_LGUI | KMOD_RGUI)     /**< Any GUI key is down. */
+)
