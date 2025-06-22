@@ -1603,3 +1603,9 @@ func GetClipboardText() (string, error) {
 
 	return internal.ClonePtrString(ptr), nil
 }
+
+// SDL_GetVersion - Get the version of SDL that is linked against your program.
+// (https://wiki.libsdl.org/SDL3/SDL_GetVersion)
+func GetVersion() int32 {
+	return iGetVersion()
+}

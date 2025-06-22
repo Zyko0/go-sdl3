@@ -31,7 +31,8 @@
         "SDL_SetGPUBlendConstants",
         "SDL_ShowMessageBox",
         "SDL_CreateGPUShader",
-        "SDL_CreateGPUComputePipeline"
+        "SDL_CreateGPUComputePipeline",
+        "SDL_SetTrayEntryCallback"
     ],
     "allowlisted_functions": [
         "SDL_free"

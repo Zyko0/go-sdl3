@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package sdl
 
@@ -942,6 +942,28 @@ var (
 	_addr_SDL_AddTimer                              uintptr
 	_addr_SDL_AddTimerNS                            uintptr
 	_addr_SDL_RemoveTimer                           uintptr
+	_addr_SDL_CreateTray                            uintptr
+	_addr_SDL_SetTrayIcon                           uintptr
+	_addr_SDL_SetTrayTooltip                        uintptr
+	_addr_SDL_CreateTrayMenu                        uintptr
+	_addr_SDL_CreateTraySubmenu                     uintptr
+	_addr_SDL_GetTrayMenu                           uintptr
+	_addr_SDL_GetTraySubmenu                        uintptr
+	_addr_SDL_GetTrayEntries                        uintptr
+	_addr_SDL_RemoveTrayEntry                       uintptr
+	_addr_SDL_InsertTrayEntryAt                     uintptr
+	_addr_SDL_SetTrayEntryLabel                     uintptr
+	_addr_SDL_GetTrayEntryLabel                     uintptr
+	_addr_SDL_SetTrayEntryChecked                   uintptr
+	_addr_SDL_GetTrayEntryChecked                   uintptr
+	_addr_SDL_SetTrayEntryEnabled                   uintptr
+	_addr_SDL_GetTrayEntryEnabled                   uintptr
+	_addr_SDL_ClickTrayEntry                        uintptr
+	_addr_SDL_DestroyTray                           uintptr
+	_addr_SDL_GetTrayEntryParent                    uintptr
+	_addr_SDL_GetTrayMenuParentEntry                uintptr
+	_addr_SDL_GetTrayMenuParentTray                 uintptr
+	_addr_SDL_UpdateTrays                           uintptr
 	_addr_SDL_SetMainReady                          uintptr
 	_addr_SDL_RunApp                                uintptr
 	_addr_SDL_EnterAppMainCallbacks                 uintptr
@@ -4655,6 +4677,94 @@ func initialize() {
 	_addr_SDL_RemoveTimer, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_RemoveTimer")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_RemoveTimer")
+	}
+	_addr_SDL_CreateTray, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateTray")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateTray")
+	}
+	_addr_SDL_SetTrayIcon, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayIcon")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayIcon")
+	}
+	_addr_SDL_SetTrayTooltip, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayTooltip")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayTooltip")
+	}
+	_addr_SDL_CreateTrayMenu, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateTrayMenu")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateTrayMenu")
+	}
+	_addr_SDL_CreateTraySubmenu, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateTraySubmenu")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateTraySubmenu")
+	}
+	_addr_SDL_GetTrayMenu, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayMenu")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayMenu")
+	}
+	_addr_SDL_GetTraySubmenu, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTraySubmenu")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTraySubmenu")
+	}
+	_addr_SDL_GetTrayEntries, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntries")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntries")
+	}
+	_addr_SDL_RemoveTrayEntry, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_RemoveTrayEntry")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_RemoveTrayEntry")
+	}
+	_addr_SDL_InsertTrayEntryAt, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_InsertTrayEntryAt")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_InsertTrayEntryAt")
+	}
+	_addr_SDL_SetTrayEntryLabel, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayEntryLabel")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayEntryLabel")
+	}
+	_addr_SDL_GetTrayEntryLabel, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntryLabel")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntryLabel")
+	}
+	_addr_SDL_SetTrayEntryChecked, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayEntryChecked")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayEntryChecked")
+	}
+	_addr_SDL_GetTrayEntryChecked, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntryChecked")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntryChecked")
+	}
+	_addr_SDL_SetTrayEntryEnabled, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayEntryEnabled")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayEntryEnabled")
+	}
+	_addr_SDL_GetTrayEntryEnabled, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntryEnabled")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntryEnabled")
+	}
+	_addr_SDL_ClickTrayEntry, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ClickTrayEntry")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_ClickTrayEntry")
+	}
+	_addr_SDL_DestroyTray, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_DestroyTray")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_DestroyTray")
+	}
+	_addr_SDL_GetTrayEntryParent, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntryParent")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntryParent")
+	}
+	_addr_SDL_GetTrayMenuParentEntry, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayMenuParentEntry")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayMenuParentEntry")
+	}
+	_addr_SDL_GetTrayMenuParentTray, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayMenuParentTray")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetTrayMenuParentTray")
+	}
+	_addr_SDL_UpdateTrays, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_UpdateTrays")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_UpdateTrays")
 	}
 	_addr_SDL_SetMainReady, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetMainReady")
 	if err != nil {
@@ -10094,6 +10204,125 @@ func initialize() {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_RemoveTimer, uintptr(id))
 		__r0 := _r0 != 0
 		return __r0
+	}
+	iCreateTray = func(icon *Surface, tooltip string) *Tray {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateTray, uintptr(unsafe.Pointer(icon)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(tooltip))))
+		__r0 := (*Tray)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(icon)
+		runtime.KeepAlive(tooltip)
+		return __r0
+	}
+	iSetTrayIcon = func(tray *Tray, icon *Surface) {
+		purego.SyscallN(_addr_SDL_SetTrayIcon, uintptr(unsafe.Pointer(tray)), uintptr(unsafe.Pointer(icon)))
+		runtime.KeepAlive(tray)
+		runtime.KeepAlive(icon)
+	}
+	iSetTrayTooltip = func(tray *Tray, tooltip string) {
+		purego.SyscallN(_addr_SDL_SetTrayTooltip, uintptr(unsafe.Pointer(tray)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(tooltip))))
+		runtime.KeepAlive(tray)
+		runtime.KeepAlive(tooltip)
+	}
+	iCreateTrayMenu = func(tray *Tray) *TrayMenu {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateTrayMenu, uintptr(unsafe.Pointer(tray)))
+		__r0 := (*TrayMenu)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(tray)
+		return __r0
+	}
+	iCreateTraySubmenu = func(entry *TrayEntry) *TrayMenu {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateTraySubmenu, uintptr(unsafe.Pointer(entry)))
+		__r0 := (*TrayMenu)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iGetTrayMenu = func(tray *Tray) *TrayMenu {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayMenu, uintptr(unsafe.Pointer(tray)))
+		__r0 := (*TrayMenu)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(tray)
+		return __r0
+	}
+	iGetTraySubmenu = func(entry *TrayEntry) *TrayMenu {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTraySubmenu, uintptr(unsafe.Pointer(entry)))
+		__r0 := (*TrayMenu)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iGetTrayEntries = func(menu *TrayMenu, count *int32) **TrayEntry {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayEntries, uintptr(unsafe.Pointer(menu)), uintptr(unsafe.Pointer(count)))
+		__r0 := (**TrayEntry)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(menu)
+		runtime.KeepAlive(count)
+		return __r0
+	}
+	iRemoveTrayEntry = func(entry *TrayEntry) {
+		purego.SyscallN(_addr_SDL_RemoveTrayEntry, uintptr(unsafe.Pointer(entry)))
+		runtime.KeepAlive(entry)
+	}
+	iInsertTrayEntryAt = func(menu *TrayMenu, pos int32, label string, flags TrayEntryFlags) *TrayEntry {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_InsertTrayEntryAt, uintptr(unsafe.Pointer(menu)), uintptr(pos), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(label))), uintptr(flags))
+		__r0 := (*TrayEntry)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(menu)
+		runtime.KeepAlive(label)
+		return __r0
+	}
+	iSetTrayEntryLabel = func(entry *TrayEntry, label string) {
+		purego.SyscallN(_addr_SDL_SetTrayEntryLabel, uintptr(unsafe.Pointer(entry)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(label))))
+		runtime.KeepAlive(entry)
+		runtime.KeepAlive(label)
+	}
+	iGetTrayEntryLabel = func(entry *TrayEntry) string {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayEntryLabel, uintptr(unsafe.Pointer(entry)))
+		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iSetTrayEntryChecked = func(entry *TrayEntry, checked bool) {
+		purego.SyscallN(_addr_SDL_SetTrayEntryChecked, uintptr(unsafe.Pointer(entry)), puregogen.BoolToUintptr(checked))
+		runtime.KeepAlive(entry)
+	}
+	iGetTrayEntryChecked = func(entry *TrayEntry) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayEntryChecked, uintptr(unsafe.Pointer(entry)))
+		__r0 := _r0 != 0
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iSetTrayEntryEnabled = func(entry *TrayEntry, enabled bool) {
+		purego.SyscallN(_addr_SDL_SetTrayEntryEnabled, uintptr(unsafe.Pointer(entry)), puregogen.BoolToUintptr(enabled))
+		runtime.KeepAlive(entry)
+	}
+	iGetTrayEntryEnabled = func(entry *TrayEntry) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayEntryEnabled, uintptr(unsafe.Pointer(entry)))
+		__r0 := _r0 != 0
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iClickTrayEntry = func(entry *TrayEntry) {
+		purego.SyscallN(_addr_SDL_ClickTrayEntry, uintptr(unsafe.Pointer(entry)))
+		runtime.KeepAlive(entry)
+	}
+	iDestroyTray = func(tray *Tray) {
+		purego.SyscallN(_addr_SDL_DestroyTray, uintptr(unsafe.Pointer(tray)))
+		runtime.KeepAlive(tray)
+	}
+	iGetTrayEntryParent = func(entry *TrayEntry) *TrayMenu {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayEntryParent, uintptr(unsafe.Pointer(entry)))
+		__r0 := (*TrayMenu)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(entry)
+		return __r0
+	}
+	iGetTrayMenuParentEntry = func(menu *TrayMenu) *TrayEntry {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayMenuParentEntry, uintptr(unsafe.Pointer(menu)))
+		__r0 := (*TrayEntry)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(menu)
+		return __r0
+	}
+	iGetTrayMenuParentTray = func(menu *TrayMenu) *Tray {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetTrayMenuParentTray, uintptr(unsafe.Pointer(menu)))
+		__r0 := (*Tray)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(menu)
+		return __r0
+	}
+	iUpdateTrays = func() {
+		purego.SyscallN(_addr_SDL_UpdateTrays)
 	}
 	iSetMainReady = func() {
 		purego.SyscallN(_addr_SDL_SetMainReady)

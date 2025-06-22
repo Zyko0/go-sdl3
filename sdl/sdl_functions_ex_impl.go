@@ -17,6 +17,7 @@ var (
 	_addr_SDL_ShowMessageBox           uintptr
 	_addr_SDL_CreateGPUShader          uintptr
 	_addr_SDL_CreateGPUComputePipeline uintptr
+	_addr_SDL_GetVersion               uintptr
 )
 
 func initialize_ex() {
@@ -34,6 +35,10 @@ func initialize_ex() {
 	_addr_SDL_CreateGPUComputePipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUComputePipeline")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUComputePipeline")
+	}
+	_addr_SDL_GetVersion, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetVersion")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetVersion")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -55,6 +60,11 @@ func initialize_ex() {
 		__r0 := (*GPUComputePipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(device)
 		runtime.KeepAlive(createinfo)
+		return __r0
+	}
+	iGetVersion = func() int32 {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVersion)
+		__r0 := int32(_r0)
 		return __r0
 	}
 }

@@ -1311,3 +1311,15 @@ type DateTime struct {
 	DayOfWeek  int32
 	UtcOffset  int32
 }
+
+// SDL_Tray - An opaque handle representing a toplevel system tray object.
+// (https://wiki.libsdl.org/SDL3/SDL_Tray)
+type Tray struct{}
+
+// SDL_TrayMenu - An opaque handle representing a menu/submenu on a system tray object.
+// (https://wiki.libsdl.org/SDL3/SDL_TrayMenu)
+type TrayMenu struct{}
+
+// SDL_TrayEntry - An opaque handle representing an entry on a system tray object.
+// (https://wiki.libsdl.org/SDL3/SDL_TrayEntry)
+type TrayEntry struct{}

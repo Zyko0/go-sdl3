@@ -1837,7 +1837,7 @@ var (
 	//puregogen:function symbol=SDL_SetWindowAspectRatio
 	iSetWindowAspectRatio func(window *Window, min_aspect float32, max_aspect float32) bool
 
-	// SDL_GetWindowAspectRatio => Get the size of a window's client area.
+	// SDL_GetWindowAspectRatio => Get the aspect ratio of a window's client area.
 	//
 	//puregogen:function symbol=SDL_GetWindowAspectRatio
 	iGetWindowAspectRatio func(window *Window, min_aspect *float32, max_aspect *float32) bool
@@ -4884,6 +4884,116 @@ var (
 	//
 	//puregogen:function symbol=SDL_RemoveTimer
 	iRemoveTimer func(id TimerID) bool
+
+	// SDL_CreateTray => Create an icon to be placed in the operating system's tray, or equivalent.
+	//
+	//puregogen:function symbol=SDL_CreateTray
+	iCreateTray func(icon *Surface, tooltip string) *Tray
+
+	// SDL_SetTrayIcon => Updates the system tray icon's icon.
+	//
+	//puregogen:function symbol=SDL_SetTrayIcon
+	iSetTrayIcon func(tray *Tray, icon *Surface)
+
+	// SDL_SetTrayTooltip => Updates the system tray icon's tooltip.
+	//
+	//puregogen:function symbol=SDL_SetTrayTooltip
+	iSetTrayTooltip func(tray *Tray, tooltip string)
+
+	// SDL_CreateTrayMenu => Create a menu for a system tray.
+	//
+	//puregogen:function symbol=SDL_CreateTrayMenu
+	iCreateTrayMenu func(tray *Tray) *TrayMenu
+
+	// SDL_CreateTraySubmenu => Create a submenu for a system tray entry.
+	//
+	//puregogen:function symbol=SDL_CreateTraySubmenu
+	iCreateTraySubmenu func(entry *TrayEntry) *TrayMenu
+
+	// SDL_GetTrayMenu => Gets a previously created tray menu.
+	//
+	//puregogen:function symbol=SDL_GetTrayMenu
+	iGetTrayMenu func(tray *Tray) *TrayMenu
+
+	// SDL_GetTraySubmenu => Gets a previously created tray entry submenu.
+	//
+	//puregogen:function symbol=SDL_GetTraySubmenu
+	iGetTraySubmenu func(entry *TrayEntry) *TrayMenu
+
+	// SDL_GetTrayEntries => Returns a list of entries in the menu, in order.
+	//
+	//puregogen:function symbol=SDL_GetTrayEntries
+	iGetTrayEntries func(menu *TrayMenu, count *int32) **TrayEntry
+
+	// SDL_RemoveTrayEntry => Removes a tray entry.
+	//
+	//puregogen:function symbol=SDL_RemoveTrayEntry
+	iRemoveTrayEntry func(entry *TrayEntry)
+
+	// SDL_InsertTrayEntryAt => Insert a tray entry at a given position.
+	//
+	//puregogen:function symbol=SDL_InsertTrayEntryAt
+	iInsertTrayEntryAt func(menu *TrayMenu, pos int32, label string, flags TrayEntryFlags) *TrayEntry
+
+	// SDL_SetTrayEntryLabel => Sets the label of an entry.
+	//
+	//puregogen:function symbol=SDL_SetTrayEntryLabel
+	iSetTrayEntryLabel func(entry *TrayEntry, label string)
+
+	// SDL_GetTrayEntryLabel => Gets the label of an entry.
+	//
+	//puregogen:function symbol=SDL_GetTrayEntryLabel
+	iGetTrayEntryLabel func(entry *TrayEntry) string
+
+	// SDL_SetTrayEntryChecked => Sets whether or not an entry is checked.
+	//
+	//puregogen:function symbol=SDL_SetTrayEntryChecked
+	iSetTrayEntryChecked func(entry *TrayEntry, checked bool)
+
+	// SDL_GetTrayEntryChecked => Gets whether or not an entry is checked.
+	//
+	//puregogen:function symbol=SDL_GetTrayEntryChecked
+	iGetTrayEntryChecked func(entry *TrayEntry) bool
+
+	// SDL_SetTrayEntryEnabled => Sets whether or not an entry is enabled.
+	//
+	//puregogen:function symbol=SDL_SetTrayEntryEnabled
+	iSetTrayEntryEnabled func(entry *TrayEntry, enabled bool)
+
+	// SDL_GetTrayEntryEnabled => Gets whether or not an entry is enabled.
+	//
+	//puregogen:function symbol=SDL_GetTrayEntryEnabled
+	iGetTrayEntryEnabled func(entry *TrayEntry) bool
+
+	// SDL_ClickTrayEntry => Simulate a click on a tray entry.
+	//
+	//puregogen:function symbol=SDL_ClickTrayEntry
+	iClickTrayEntry func(entry *TrayEntry)
+
+	// SDL_DestroyTray => Destroys a tray object.
+	//
+	//puregogen:function symbol=SDL_DestroyTray
+	iDestroyTray func(tray *Tray)
+
+	// SDL_GetTrayEntryParent => Gets the menu containing a certain tray entry.
+	//
+	//puregogen:function symbol=SDL_GetTrayEntryParent
+	iGetTrayEntryParent func(entry *TrayEntry) *TrayMenu
+
+	// SDL_GetTrayMenuParentEntry => Gets the entry for which the menu is a submenu, if the current menu is a submenu.
+	//
+	//puregogen:function symbol=SDL_GetTrayMenuParentEntry
+	iGetTrayMenuParentEntry func(menu *TrayMenu) *TrayEntry
+
+	// SDL_GetTrayMenuParentTray => Gets the tray for which this menu is the first-level menu, if the current menu isn't a submenu.
+	//
+	//puregogen:function symbol=SDL_GetTrayMenuParentTray
+	iGetTrayMenuParentTray func(menu *TrayMenu) *Tray
+
+	// SDL_UpdateTrays => Update the trays.
+	//
+	//puregogen:function symbol=SDL_UpdateTrays
+	iUpdateTrays func()
 
 	// SDL_SetMainReady => Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.
 	//

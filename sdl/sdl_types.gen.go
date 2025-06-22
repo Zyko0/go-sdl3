@@ -149,3 +149,7 @@ type MetalView uintptr
 // SDL_TimerID - Definition of the timer ID type.
 // (https://wiki.libsdl.org/SDL3/SDL_TimerID)
 type TimerID uint32
+
+// SDL_TrayEntryFlags - Flags that control the creation of system tray entries.
+// (https://wiki.libsdl.org/SDL3/SDL_TrayEntryFlags)
+type TrayEntryFlags uint32
