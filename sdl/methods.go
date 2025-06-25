@@ -2737,14 +2737,12 @@ func (modstate Keymod) SetModState() {
 // SDL_UploadToGPUTexture - Uploads data from a transfer buffer to a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_UploadToGPUTexture)
 func (copy_pass *GPUCopyPass) UploadToGPUTexture(source *GPUTextureTransferInfo, destination *GPUTextureRegion, cycle bool) {
-	panic("not implemented")
 	iUploadToGPUTexture(copy_pass, source, destination, cycle)
 }
 
 // SDL_UploadToGPUBuffer - Uploads data from a transfer buffer to a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_UploadToGPUBuffer)
 func (copy_pass *GPUCopyPass) UploadToGPUBuffer(source *GPUTransferBufferLocation, destination *GPUBufferRegion, cycle bool) {
-	panic("not implemented")
 	iUploadToGPUBuffer(copy_pass, source, destination, cycle)
 }
 
@@ -2779,7 +2777,6 @@ func (copy_pass *GPUCopyPass) DownloadFromGPUBuffer(source *GPUBufferRegion, des
 // SDL_EndGPUCopyPass - Ends the current copy pass.
 // (https://wiki.libsdl.org/SDL3/SDL_EndGPUCopyPass)
 func (copy_pass *GPUCopyPass) End() {
-	panic("not implemented")
 	iEndGPUCopyPass(copy_pass)
 }
 

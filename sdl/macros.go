@@ -344,13 +344,78 @@ const (
 )
 
 const (
+	GPU_TEXTUREUSAGE_SAMPLER                                 GPUTextureUsageFlags = 1 << 0 /**< Texture supports sampling. */
+	GPU_TEXTUREUSAGE_COLOR_TARGET                            GPUTextureUsageFlags = 1 << 1 /**< Texture is a color render target. */
+	GPU_TEXTUREUSAGE_DEPTH_STENCIL_TARGET                    GPUTextureUsageFlags = 1 << 2 /**< Texture is a depth stencil target. */
+	GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ                   GPUTextureUsageFlags = 1 << 3 /**< Texture supports storage reads in graphics stages. */
+	GPU_TEXTUREUSAGE_COMPUTE_STORAGE_READ                    GPUTextureUsageFlags = 1 << 4 /**< Texture supports storage reads in the compute stage. */
+	GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE                   GPUTextureUsageFlags = 1 << 5 /**< Texture supports storage writes in the compute stage. */
+	GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE GPUTextureUsageFlags = 1 << 6 /**< Texture supports reads and writes in the same compute shader. This is NOT equivalent to READ | WRITE. */
+)
+
+const (
+	GPU_BUFFERUSAGE_VERTEX                GPUBufferUsageFlags = 1 << 0 /**< Buffer is a vertex buffer. */
+	GPU_BUFFERUSAGE_INDEX                 GPUBufferUsageFlags = 1 << 1 /**< Buffer is an index buffer. */
+	GPU_BUFFERUSAGE_INDIRECT              GPUBufferUsageFlags = 1 << 2 /**< Buffer is an indirect buffer. */
+	GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ GPUBufferUsageFlags = 1 << 3 /**< Buffer supports storage reads in graphics stages. */
+	GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ  GPUBufferUsageFlags = 1 << 4 /**< Buffer supports storage reads in the compute stage. */
+	GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE GPUBufferUsageFlags = 1 << 5 /**< Buffer supports storage writes in the compute stage. */
+)
+
+const (
 	GPU_SHADERFORMAT_INVALID  GPUShaderFormat = 0
-	GPU_SHADERFORMAT_PRIVATE  GPUShaderFormat = 1 << 0
-	GPU_SHADERFORMAT_SPIRV    GPUShaderFormat = 1 << 1
-	GPU_SHADERFORMAT_DXBC     GPUShaderFormat = 1 << 2
-	GPU_SHADERFORMAT_DXIL     GPUShaderFormat = 1 << 3
-	GPU_SHADERFORMAT_MSL      GPUShaderFormat = 1 << 4
-	GPU_SHADERFORMAT_METALLIB GPUShaderFormat = 1 << 5
+	GPU_SHADERFORMAT_PRIVATE  GPUShaderFormat = 1 << 0 /**< Shaders for NDA'd platforms. */
+	GPU_SHADERFORMAT_SPIRV    GPUShaderFormat = 1 << 1 /**< SPIR-V shaders for Vulkan. */
+	GPU_SHADERFORMAT_DXBC     GPUShaderFormat = 1 << 2 /**< DXBC SM5_1 shaders for D3D12. */
+	GPU_SHADERFORMAT_DXIL     GPUShaderFormat = 1 << 3 /**< DXIL SM6_0 shaders for D3D12. */
+	GPU_SHADERFORMAT_MSL      GPUShaderFormat = 1 << 4 /**< MSL shaders for Metal. */
+	GPU_SHADERFORMAT_METALLIB GPUShaderFormat = 1 << 5 /**< Precompiled metallib shaders for Metal. */
+)
+
+const (
+	PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN          = "SDL.gpu.device.create.debugmode"
+	PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN     = "SDL.gpu.device.create.preferlowpower"
+	PROP_GPU_DEVICE_CREATE_NAME_STRING                = "SDL.gpu.device.create.name"
+	PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN    = "SDL.gpu.device.create.shaders.private"
+	PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN      = "SDL.gpu.device.create.shaders.spirv"
+	PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN       = "SDL.gpu.device.create.shaders.dxbc"
+	PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN       = "SDL.gpu.device.create.shaders.dxil"
+	PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN        = "SDL.gpu.device.create.shaders.msl"
+	PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN   = "SDL.gpu.device.create.shaders.metallib"
+	PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic"
+)
+const (
+	PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING = "SDL.gpu.computepipeline.create.name"
+)
+
+const (
+	PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING = "SDL.gpu.graphicspipeline.create.name"
+)
+
+const (
+	PROP_GPU_SAMPLER_CREATE_NAME_STRING = "SDL.gpu.sampler.create.name"
+)
+
+const (
+	PROP_GPU_SHADER_CREATE_NAME_STRING = "SDL.gpu.shader.create.name"
+)
+
+const (
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.r"
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.g"
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.b"
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_A_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.a"
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT    = "SDL.gpu.texture.create.d3d12.clear.depth"
+	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER = "SDL.gpu.texture.create.d3d12.clear.stencil"
+	PROP_GPU_TEXTURE_CREATE_NAME_STRING                = "SDL.gpu.texture.create.name"
+)
+
+const (
+	PROP_GPU_BUFFER_CREATE_NAME_STRING = "SDL.gpu.buffer.create.name"
+)
+
+const (
+	PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name"
 )
 
 const (
