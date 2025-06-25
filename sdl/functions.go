@@ -881,20 +881,19 @@ func MixAudio(src []byte, format AudioFormat, volume float32) ([]byte, error) {
 
 // SDL_ConvertAudioSamples - Convert some audio data of one format to another format.
 // (https://wiki.libsdl.org/SDL3/SDL_ConvertAudioSamples)
-func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte, error) {
+func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte, dstSpec *AudioSpec) ([]byte, error) {
 	var ptr *byte
 	var count int32
-	dstSpec := &AudioSpec{}
 
 	if !iConvertAudioSamples(
 		srcSpec, unsafe.SliceData(srcData), int32(len(srcData)),
 		dstSpec, &ptr, &count,
 	) {
-		return nil, nil, internal.LastErr()
+		return nil, internal.LastErr()
 	}
 	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return dstSpec, internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 // Time
