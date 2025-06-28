@@ -3911,16 +3911,14 @@ func (stream *AudioStream) Unlock() error {
 
 // SDL_SetAudioStreamGetCallback - Set a callback that runs when data is requested from an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGetCallback)
-func (stream *AudioStream) SetGetCallback(callback AudioStreamCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iSetAudioStreamGetCallback(stream, callback, userdata)
+func (stream *AudioStream) SetGetCallback(callback AudioStreamCallback, userdata uintptr) bool {
+	return iSetAudioStreamGetCallback(stream, callback, userdata)
 }
 
 // SDL_SetAudioStreamPutCallback - Set a callback that runs when data is added to an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamPutCallback)
-func (stream *AudioStream) SetPutCallback(callback AudioStreamCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iSetAudioStreamPutCallback(stream, callback, userdata)
+func (stream *AudioStream) SetPutCallback(callback AudioStreamCallback, userdata uintptr) bool {
+	return iSetAudioStreamPutCallback(stream, callback, userdata)
 }
 
 // SDL_DestroyAudioStream - Free an audio stream.

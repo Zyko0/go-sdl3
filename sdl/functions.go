@@ -830,14 +830,13 @@ func UnbindAudioStreams(streams []*AudioStream) {
 
 // SDL_CreateAudioStream - Create a new audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateAudioStream)
-func CreateAudioStream(srcSpec *AudioSpec) (*AudioStream, *AudioSpec, error) {
-	dstSpec := &AudioSpec{}
+func CreateAudioStream(srcSpec *AudioSpec, dstSpec *AudioSpec) (*AudioStream, error) {
 	stream := iCreateAudioStream(srcSpec, dstSpec)
 	if stream == nil {
-		return nil, nil, internal.LastErr()
+		return nil, internal.LastErr()
 	}
 
-	return stream, dstSpec, nil
+	return stream, nil
 }
 
 // SDL_LoadWAV_IO - Load the audio data of a WAVE file into memory.
