@@ -6,15 +6,19 @@ import (
 	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreenmultiwindow"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var examples = []Example{
-	ClearScreenExample,
+var examples = []common.Example{
+	clearscreen.Example,
+	clearscreenmultiwindow.Example,
 }
 
 func main() {
-	var context Context
+	var context common.Context
 	var exampleIndex int = -1
 	var gotoExampleIndex int
 	var quit bool
@@ -130,7 +134,7 @@ func main() {
 		if gotoExampleIndex != -1 {
 			if exampleIndex != -1 {
 				examples[exampleIndex].Quit(&context)
-				context = Context{}
+				context = common.Context{}
 			}
 
 			exampleIndex = gotoExampleIndex
