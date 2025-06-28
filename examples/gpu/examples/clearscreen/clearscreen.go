@@ -1,20 +1,21 @@
-package main
+package clearscreen
 
 import (
 	"errors"
 
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-func Init(context *Context) error {
+func _init(context *common.Context) error {
 	return context.Init(sdl.WINDOW_RESIZABLE)
 }
 
-func Update(context *Context) error {
+func update(context *common.Context) error {
 	return nil
 }
 
-func Draw(context *Context) error {
+func draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("AcquireCommandBuffer failed: " + err.Error())
@@ -44,14 +45,14 @@ func Draw(context *Context) error {
 	return nil
 }
 
-func Quit(context *Context) {
+func quit(context *common.Context) {
 	context.Quit()
 }
 
-var ClearScreenExample = Example{
+var Example = common.Example{
 	Name:   "ClearScreen",
-	Init:   Init,
-	Update: Update,
-	Draw:   Draw,
-	Quit:   Quit,
+	Init:   _init,
+	Update: update,
+	Draw:   draw,
+	Quit:   quit,
 }
