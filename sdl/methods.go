@@ -5784,9 +5784,8 @@ func (props PropertiesID) ClearProperty(name string) error {
 
 // SDL_EnumerateProperties - Enumerate the properties contained in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_EnumerateProperties)
-func (props PropertiesID) EnumerateProperties(callback EnumeratePropertiesCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iEnumerateProperties(props, callback, userdata)
+func (props PropertiesID) EnumerateProperties(callback EnumeratePropertiesCallback, userdata uintptr) bool {
+	return iEnumerateProperties(props, callback, userdata)
 }
 
 // SDL_DestroyProperties - Destroy a group of properties.

@@ -3,6 +3,7 @@
 package sdl
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -16,25 +17,32 @@ func (s *Surface) Pixels() []byte {
 
 // Callbacks
 
-func NewCleanupPropertyCallback(fn func(userData, value uintptr)) CleanupPropertyCallback {
+func NewCleanupPropertyCallback(fn func(userData, value uintptr) uintptr) CleanupPropertyCallback {
 	return CleanupPropertyCallback(purego.NewCallback(fn))
 }
 
-func NewEnumeratePropertiesCallback(fn func(userData uintptr, name string)) EnumeratePropertiesCallback {
-	return EnumeratePropertiesCallback(purego.NewCallback(fn))
+func NewEnumeratePropertiesCallback(fn func(userData uintptr, name string) uintptr) EnumeratePropertiesCallback {
+	return EnumeratePropertiesCallback(purego.NewCallback(func(userData, name uintptr) uintptr {
+		fmt.Println("okay:", name)
+		str := internal.PtrToString(name)
+		v := fn(userData, str)
+		runtime.KeepAlive(str)
+		return v
+	}))
 }
 
-func NewTLSDestructorCallback(fn func(value uintptr)) TLSDestructorCallback {
+func NewTLSDestructorCallback(fn func(value uintptr) uintptr) TLSDestructorCallback {
 	return TLSDestructorCallback(purego.NewCallback(fn))
 }
 
-func NewAudioStreamCallback(fn func(userData uintptr, stream *AudioStream, additionalAmount, totalAmount int32)) AudioStreamCallback {
+func NewAudioStreamCallback(fn func(userData uintptr, stream *AudioStream, additionalAmount, totalAmount int32) uintptr) AudioStreamCallback {
 	return AudioStreamCallback(purego.NewCallback(fn))
 }
 
-func NewAudioPostmixCallback(fn func(userData uintptr, spec *AudioSpec, buffer []float32)) AudioPostmixCallback {
-	return AudioPostmixCallback(purego.NewCallback(func(userData uintptr, spec *AudioSpec, buffer *float32, bufLen int32) {
-		fn(userData, spec, unsafe.Slice(buffer, bufLen))
+func NewAudioPostmixCallback(fn func(userData uintptr, spec *AudioSpec, buffer []float32) uintptr) AudioPostmixCallback {
+	return AudioPostmixCallback(purego.NewCallback(func(userData uintptr, spec *AudioSpec, buffer *float32, bufLen int32) uintptr {
+		v := fn(userData, spec, unsafe.Slice(buffer, bufLen))
 		runtime.KeepAlive(buffer)
+		return v
 	}))
 }
