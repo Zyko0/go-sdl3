@@ -3,10 +3,9 @@ package common
 import (
 	"errors"
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
 
+	"github.com/Zyko0/go-sdl3/examples/gpu/content"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
@@ -27,7 +26,7 @@ func LoadShader(
 		return nil, errors.New("invalid shader stage")
 	}
 
-	fullPath := ""
+	path := ""
 	backendFormats := device.ShaderFormats()
 	format := sdl.GPU_SHADERFORMAT_INVALID
 	entrypoint := ""
@@ -35,24 +34,22 @@ func LoadShader(
 	// fmt.Printf("BACKEND FORMATS: %08b\n", backendFormats)
 
 	if backendFormats&sdl.GPU_SHADERFORMAT_SPIRV == sdl.GPU_SHADERFORMAT_SPIRV {
-		fullPath = fmt.Sprintf("content/shaders/compiled/spirv/%s.spv", shaderFilename)
+		path = fmt.Sprintf("shaders/compiled/spirv/%s.spv", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_SPIRV
 		entrypoint = "main"
 	} else if backendFormats&sdl.GPU_SHADERFORMAT_MSL == sdl.GPU_SHADERFORMAT_MSL {
-		fullPath = fmt.Sprintf("content/shaders/compiled/msl/%s.msl", shaderFilename)
+		path = fmt.Sprintf("shaders/compiled/msl/%s.msl", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_MSL
 		entrypoint = "main0"
 	} else if backendFormats&sdl.GPU_SHADERFORMAT_DXIL == sdl.GPU_SHADERFORMAT_DXIL {
-		fullPath = fmt.Sprintf("content/shaders/compiled/dxil/%s.dxil", shaderFilename)
+		path = fmt.Sprintf("shaders/compiled/dxil/%s.dxil", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_DXIL
 		entrypoint = "main"
 	} else {
 		return nil, errors.New("unrecognized backend shader format")
 	}
 
-	fullPath = filepath.Join(BasePath, fullPath)
-
-	code, err := os.ReadFile(fullPath)
+	code, err := content.ReadFile(path)
 	if err != nil {
 		return nil, errors.New("failed to open shader: " + err.Error())
 	}
