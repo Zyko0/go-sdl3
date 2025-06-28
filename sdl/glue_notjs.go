@@ -3,7 +3,6 @@
 package sdl
 
 import (
-	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -21,12 +20,9 @@ func NewCleanupPropertyCallback(fn func(userData, value uintptr) uintptr) Cleanu
 	return CleanupPropertyCallback(purego.NewCallback(fn))
 }
 
-func NewEnumeratePropertiesCallback(fn func(userData uintptr, name string) uintptr) EnumeratePropertiesCallback {
-	return EnumeratePropertiesCallback(purego.NewCallback(func(userData, name uintptr) uintptr {
-		fmt.Println("okay:", name)
-		str := internal.PtrToString(name)
-		v := fn(userData, str)
-		runtime.KeepAlive(str)
+func NewEnumeratePropertiesCallback(fn func(userData uintptr, props PropertiesID, name string) uintptr) EnumeratePropertiesCallback {
+	return EnumeratePropertiesCallback(purego.NewCallback(func(userData uintptr, props PropertiesID, name uintptr) uintptr {
+		v := fn(userData, props, internal.PtrToString(name))
 		return v
 	}))
 }
