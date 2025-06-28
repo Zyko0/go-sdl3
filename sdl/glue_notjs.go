@@ -16,29 +16,38 @@ func (s *Surface) Pixels() []byte {
 
 // Callbacks
 
-func NewCleanupPropertyCallback(fn func(userData, value uintptr) uintptr) CleanupPropertyCallback {
-	return CleanupPropertyCallback(purego.NewCallback(fn))
-}
-
-func NewEnumeratePropertiesCallback(fn func(userData uintptr, props PropertiesID, name string) uintptr) EnumeratePropertiesCallback {
-	return EnumeratePropertiesCallback(purego.NewCallback(func(userData uintptr, props PropertiesID, name uintptr) uintptr {
-		v := fn(userData, props, internal.PtrToString(name))
-		return v
+func NewCleanupPropertyCallback(fn func(value uintptr)) CleanupPropertyCallback {
+	return CleanupPropertyCallback(purego.NewCallback(func(userData, value uintptr) uintptr {
+		fn(value)
+		return 0
 	}))
 }
 
-func NewTLSDestructorCallback(fn func(value uintptr) uintptr) TLSDestructorCallback {
-	return TLSDestructorCallback(purego.NewCallback(fn))
+func NewEnumeratePropertiesCallback(fn func(props PropertiesID, name string)) EnumeratePropertiesCallback {
+	return EnumeratePropertiesCallback(purego.NewCallback(func(userData uintptr, props PropertiesID, name uintptr) uintptr {
+		fn(props, internal.PtrToString(name))
+		return 0
+	}))
 }
 
-func NewAudioStreamCallback(fn func(userData uintptr, stream *AudioStream, additionalAmount, totalAmount int32) uintptr) AudioStreamCallback {
-	return AudioStreamCallback(purego.NewCallback(fn))
+func NewTLSDestructorCallback(fn func(value uintptr)) TLSDestructorCallback {
+	return TLSDestructorCallback(purego.NewCallback(func(value uintptr) uintptr {
+		fn(value)
+		return 0
+	}))
 }
 
-func NewAudioPostmixCallback(fn func(userData uintptr, spec *AudioSpec, buffer []float32) uintptr) AudioPostmixCallback {
+func NewAudioStreamCallback(fn func(stream *AudioStream, additionalAmount, totalAmount int32)) AudioStreamCallback {
+	return AudioStreamCallback(purego.NewCallback(func(userData uintptr, stream *AudioStream, additionalAmount, totalAmount int32) uintptr {
+		fn(stream, additionalAmount, totalAmount)
+		return 0
+	}))
+}
+
+func NewAudioPostmixCallback(fn func(spec *AudioSpec, buffer []float32)) AudioPostmixCallback {
 	return AudioPostmixCallback(purego.NewCallback(func(userData uintptr, spec *AudioSpec, buffer *float32, bufLen int32) uintptr {
-		v := fn(userData, spec, unsafe.Slice(buffer, bufLen))
+		fn(spec, unsafe.Slice(buffer, bufLen/4))
 		runtime.KeepAlive(buffer)
-		return v
+		return 0
 	}))
 }
