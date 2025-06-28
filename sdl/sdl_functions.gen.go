@@ -3340,7 +3340,7 @@ var (
 	// SDL_GPUSupportsShaderFormats => Checks for GPU runtime support.
 	//
 	//puregogen:function symbol=SDL_GPUSupportsShaderFormats
-	iGPUSupportsShaderFormats func(format_flags GPUShaderFormat, name string) bool
+	iGPUSupportsShaderFormats func(format_flags GPUShaderFormat, name *byte) bool
 
 	// SDL_GPUSupportsProperties => Checks for GPU runtime support.
 	//
@@ -3350,7 +3350,7 @@ var (
 	// SDL_CreateGPUDevice => Creates a GPU context.
 	//
 	//puregogen:function symbol=SDL_CreateGPUDevice
-	iCreateGPUDevice func(format_flags GPUShaderFormat, debug_mode bool, name string) *GPUDevice
+	iCreateGPUDevice func(format_flags GPUShaderFormat, debug_mode bool, name *byte) *GPUDevice
 
 	// SDL_CreateGPUDeviceWithProperties => Creates a GPU context.
 	//

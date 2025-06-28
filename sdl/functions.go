@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
+	puregogen "github.com/Zyko0/purego-gen"
 )
 
 // Init
@@ -459,13 +460,21 @@ func ComposeCustomBlendMode(srcFactor, dstFactor BlendFactor, colorOp BlendOpera
 // SDL_GPUSupportsShaderFormats - Checks for GPU runtime support.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUSupportsShaderFormats)
 func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
-	return iGPUSupportsShaderFormats(formatFlags, name)
+	var namePtr *byte
+	if name != "" {
+		namePtr = puregogen.BytePtrFromString(name)
+	}
+	return iGPUSupportsShaderFormats(formatFlags, namePtr)
 }
 
 // SDL_CreateGPUDevice - Creates a GPU context.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUDevice)
 func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (*GPUDevice, error) {
-	device := iCreateGPUDevice(formatFlags, debugMode, name)
+	var namePtr *byte
+	if name != "" {
+		namePtr = puregogen.BytePtrFromString(name)
+	}
+	device := iCreateGPUDevice(formatFlags, debugMode, namePtr)
 	if device == nil {
 		return nil, internal.LastErr()
 	}
