@@ -5,7 +5,6 @@ import (
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
-	puregogen "github.com/Zyko0/purego-gen"
 )
 
 // Init
@@ -462,7 +461,7 @@ func ComposeCustomBlendMode(srcFactor, dstFactor BlendFactor, colorOp BlendOpera
 func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
 	var namePtr *byte
 	if name != "" {
-		namePtr = puregogen.BytePtrFromString(name)
+		namePtr = internal.StringToPtr(name)
 	}
 	return iGPUSupportsShaderFormats(formatFlags, namePtr)
 }
@@ -472,7 +471,7 @@ func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
 func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (*GPUDevice, error) {
 	var namePtr *byte
 	if name != "" {
-		namePtr = puregogen.BytePtrFromString(name)
+		namePtr = internal.StringToPtr(name)
 	}
 	device := iCreateGPUDevice(formatFlags, debugMode, namePtr)
 	if device == nil {
