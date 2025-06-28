@@ -26,17 +26,17 @@ func (context *Context) Init(windowFlags sdl.WindowFlags) error {
 		"",
 	)
 	if err != nil {
-		return errors.New("GPUCreateDevice failed: " + err.Error())
+		return errors.New("failed to create gpu device: " + err.Error())
 	}
 
 	context.Window, err = sdl.CreateWindow(context.ExampleName, 640, 480, windowFlags)
 	if err != nil {
-		return errors.New("CreateWindow failed: " + err.Error())
+		return errors.New("failed to create window: " + err.Error())
 	}
 
 	err = context.Device.ClaimWindow(context.Window)
 	if err != nil {
-		return errors.New("GPUClaimWindow failed: " + err.Error())
+		return errors.New("failed to claim window: " + err.Error())
 	}
 
 	return nil
@@ -46,12 +46,4 @@ func (context *Context) Quit() {
 	context.Device.ReleaseWindow(context.Window)
 	context.Window.Destroy()
 	context.Device.Destroy()
-}
-
-type Example struct {
-	Name   string
-	Init   func(context *Context) error
-	Update func(context *Context) error
-	Draw   func(context *Context) error
-	Quit   func(context *Context)
 }

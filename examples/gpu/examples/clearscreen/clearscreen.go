@@ -18,12 +18,12 @@ func update(context *common.Context) error {
 func draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
-		return errors.New("AcquireCommandBuffer failed: " + err.Error())
+		return errors.New("failed to acquire command buffer: " + err.Error())
 	}
 
 	swapchainTexture, err := cmdbuf.AcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
-		return errors.New("AcquireGPUSwapchainTexture failed: " + err.Error())
+		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
 	}
 
 	if swapchainTexture != nil {
@@ -37,6 +37,7 @@ func draw(context *common.Context) error {
 		renderPass := cmdbuf.BeginRenderPass(
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, nil,
 		)
+
 		renderPass.End()
 	}
 

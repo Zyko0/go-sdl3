@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basictriangle"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreenmultiwindow"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
@@ -15,6 +17,7 @@ import (
 var examples = []common.Example{
 	clearscreen.Example,
 	clearscreenmultiwindow.Example,
+	basictriangle.Example,
 }
 
 func main() {
@@ -26,10 +29,11 @@ func main() {
 
 	if len(os.Args) > 1 {
 		exampleName := os.Args[1]
+		exampleNameLower := strings.ToLower(os.Args[1])
 		foundExample := false
 
 		for i, example := range examples {
-			if example.Name == exampleName {
+			if strings.ToLower(example.Name) == exampleNameLower {
 				gotoExampleIndex = i
 				foundExample = true
 				break
