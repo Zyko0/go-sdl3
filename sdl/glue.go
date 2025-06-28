@@ -467,29 +467,98 @@ type ProcessData struct {
 
 // Callback types
 
-type (
-	CleanupPropertyCallback     func()
-	EnumeratePropertiesCallback func()
-	TLSDestructorCallback       func()
-	AudioStreamCallback         func()
-	AudioPostmixCallback        func()
-	ClipboardDataCallback       func()
-	ClipboardCleanupCallback    func()
-	FunctionPointer             func()
-	EGLAttribArrayCallback      func()
-	EGLIntArrayCallback         func()
-	DialogFileCallback          func()
-	EnumerateDirectoryCallback  func()
-	HintCallback                func()
-	MainThreadCallback          func()
-	LogOutputFunction           func()
-	X11EventHook                func()
-	TimerCallback               func()
-	NSTimerCallback             func()
-	main_func                   func()
-	AppInit_func                func()
-	AppIterate_func             func()
-	AppEvent_func               func()
-	AppQuit_func                func()
-	EventFilter                 func()
-)
+// SDL_CleanupPropertyCallback - A callback used to free resources when a property is deleted.
+// (https://wiki.libsdl.org/SDL3/SDL_CleanupPropertyCallback)
+type CleanupPropertyCallback uintptr
+
+// SDL_EnumeratePropertiesCallback - A callback used to enumerate all the properties in a group of properties.
+// (https://wiki.libsdl.org/SDL3/SDL_EnumeratePropertiesCallback)
+type EnumeratePropertiesCallback uintptr
+
+// SDL_TLSDestructorCallback - The callback used to cleanup data passed to [SDL_SetTLS](SDL_SetTLS).
+// (https://wiki.libsdl.org/SDL3/SDL_TLSDestructorCallback)
+type TLSDestructorCallback uintptr
+
+// SDL_AudioStreamCallback - A callback that fires when data passes through an [SDL_AudioStream](SDL_AudioStream).
+// (https://wiki.libsdl.org/SDL3/SDL_AudioStreamCallback)
+type AudioStreamCallback uintptr
+
+// SDL_AudioPostmixCallback - A callback that fires when data is about to be fed to an audio device.
+// (https://wiki.libsdl.org/SDL3/SDL_AudioPostmixCallback)
+type AudioPostmixCallback uintptr
+
+// SDL_ClipboardDataCallback - Callback function that will be called when data for the specified mime-type is requested by the OS.
+// (https://wiki.libsdl.org/SDL3/SDL_ClipboardDataCallback)
+type ClipboardDataCallback uintptr
+
+// SDL_ClipboardCleanupCallback - Callback function that will be called when the clipboard is cleared, or new data is set.
+// (https://wiki.libsdl.org/SDL3/SDL_ClipboardCleanupCallback)
+type ClipboardCleanupCallback uintptr
+
+// SDL_FunctionPointer - A generic function pointer.
+// (https://wiki.libsdl.org/SDL3/SDL_FunctionPointer)
+type FunctionPointer uintptr
+
+// SDL_EGLAttribArrayCallback - EGL platform attribute initialization callback.
+// (https://wiki.libsdl.org/SDL3/SDL_EGLAttribArrayCallback)
+type EGLAttribArrayCallback uintptr
+
+// SDL_EGLIntArrayCallback - EGL surface/context attribute initialization callback types.
+// (https://wiki.libsdl.org/SDL3/SDL_EGLIntArrayCallback)
+type EGLIntArrayCallback uintptr
+
+// SDL_DialogFileCallback - Callback used by file dialog functions.
+// (https://wiki.libsdl.org/SDL3/SDL_DialogFileCallback)
+type DialogFileCallback uintptr
+
+// SDL_EnumerateDirectoryCallback - Callback for directory enumeration.
+// (https://wiki.libsdl.org/SDL3/SDL_EnumerateDirectoryCallback)
+type EnumerateDirectoryCallback uintptr
+
+// SDL_HintCallback - A callback used to send notifications of hint value changes.
+// (https://wiki.libsdl.org/SDL3/SDL_HintCallback)
+type HintCallback uintptr
+
+// SDL_MainThreadCallback - Callback run on the main thread.
+// (https://wiki.libsdl.org/SDL3/SDL_MainThreadCallback)
+type MainThreadCallback uintptr
+
+// SDL_LogOutputFunction - The prototype for the log output callback function.
+// (https://wiki.libsdl.org/SDL3/SDL_LogOutputFunction)
+type LogOutputFunction uintptr
+
+// SDL_X11EventHook - A callback to be used with [SDL_SetX11EventHook](SDL_SetX11EventHook).
+// (https://wiki.libsdl.org/SDL3/SDL_X11EventHook)
+type X11EventHook uintptr
+
+// SDL_TimerCallback - Function prototype for the millisecond timer callback function.
+// (https://wiki.libsdl.org/SDL3/SDL_TimerCallback)
+type TimerCallback uintptr
+
+// SDL_NSTimerCallback - Function prototype for the nanosecond timer callback function.
+// (https://wiki.libsdl.org/SDL3/SDL_NSTimerCallback)
+type NSTimerCallback uintptr
+
+// SDL_main_func - The prototype for the application's main() function
+// (https://wiki.libsdl.org/SDL3/SDL_main_func)
+type main_func uintptr
+
+// SDL_AppInit_func - Function pointer typedef for [SDL_AppInit](SDL_AppInit).
+// (https://wiki.libsdl.org/SDL3/SDL_AppInit_func)
+type AppInit_func uintptr
+
+// SDL_AppIterate_func - Function pointer typedef for [SDL_AppIterate](SDL_AppIterate).
+// (https://wiki.libsdl.org/SDL3/SDL_AppIterate_func)
+type AppIterate_func uintptr
+
+// SDL_AppEvent_func - Function pointer typedef for [SDL_AppEvent](SDL_AppEvent).
+// (https://wiki.libsdl.org/SDL3/SDL_AppEvent_func)
+type AppEvent_func uintptr
+
+// SDL_AppQuit_func - Function pointer typedef for [SDL_AppQuit](SDL_AppQuit).
+// (https://wiki.libsdl.org/SDL3/SDL_AppQuit_func)
+type AppQuit_func uintptr
+
+// SDL_EventFilter - A function pointer used for callbacks that watch the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_EventFilter)
+type EventFilter uintptr

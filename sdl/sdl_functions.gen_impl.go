@@ -405,6 +405,8 @@ var (
 	_addr_SDL_EnableScreenSaver                     uintptr
 	_addr_SDL_DisableScreenSaver                    uintptr
 	_addr_SDL_GL_LoadLibrary                        uintptr
+	_addr_SDL_GL_GetProcAddress                     uintptr
+	_addr_SDL_EGL_GetProcAddress                    uintptr
 	_addr_SDL_GL_UnloadLibrary                      uintptr
 	_addr_SDL_GL_ExtensionSupported                 uintptr
 	_addr_SDL_GL_ResetAttributes                    uintptr
@@ -788,6 +790,7 @@ var (
 	_addr_SDL_SetAppMetadataProperty                uintptr
 	_addr_SDL_GetAppMetadataProperty                uintptr
 	_addr_SDL_LoadObject                            uintptr
+	_addr_SDL_LoadFunction                          uintptr
 	_addr_SDL_UnloadObject                          uintptr
 	_addr_SDL_GetPreferredLocales                   uintptr
 	_addr_SDL_SetLogPriorities                      uintptr
@@ -805,6 +808,7 @@ var (
 	_addr_SDL_LogCritical                           uintptr
 	_addr_SDL_LogMessage                            uintptr
 	_addr_SDL_LogMessageV                           uintptr
+	_addr_SDL_GetDefaultLogOutputFunction           uintptr
 	_addr_SDL_GetLogOutputFunction                  uintptr
 	_addr_SDL_SetLogOutputFunction                  uintptr
 	_addr_SDL_ShowSimpleMessageBox                  uintptr
@@ -2530,6 +2534,14 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GL_LoadLibrary")
 	}
+	_addr_SDL_GL_GetProcAddress, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GL_GetProcAddress")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GL_GetProcAddress")
+	}
+	_addr_SDL_EGL_GetProcAddress, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_EGL_GetProcAddress")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_EGL_GetProcAddress")
+	}
 	_addr_SDL_GL_UnloadLibrary, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GL_UnloadLibrary")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GL_UnloadLibrary")
@@ -4062,6 +4074,10 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_LoadObject")
 	}
+	_addr_SDL_LoadFunction, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_LoadFunction")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_LoadFunction")
+	}
 	_addr_SDL_UnloadObject, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_UnloadObject")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_UnloadObject")
@@ -4129,6 +4145,10 @@ func initialize() {
 	_addr_SDL_LogMessageV, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_LogMessageV")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_LogMessageV")
+	}
+	_addr_SDL_GetDefaultLogOutputFunction, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetDefaultLogOutputFunction")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_GetDefaultLogOutputFunction")
 	}
 	_addr_SDL_GetLogOutputFunction, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetLogOutputFunction")
 	if err != nil {
@@ -4985,7 +5005,7 @@ func initialize() {
 		purego.SyscallN(_addr_SDL_UnlockProperties, uintptr(props))
 	}
 	iSetPointerPropertyWithCleanup = func(props PropertiesID, name string, value uintptr, cleanup CleanupPropertyCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetPointerPropertyWithCleanup, uintptr(props), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), uintptr(value), purego.NewCallback(cleanup), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetPointerPropertyWithCleanup, uintptr(props), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), uintptr(value), uintptr(cleanup), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(name)
 		return __r0
@@ -5061,7 +5081,7 @@ func initialize() {
 		return __r0
 	}
 	iEnumerateProperties = func(props PropertiesID, callback EnumeratePropertiesCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateProperties, uintptr(props), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateProperties, uintptr(props), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -5112,7 +5132,7 @@ func initialize() {
 		return __r0
 	}
 	iSetTLS = func(id *TLSID, value uintptr, destructor TLSDestructorCallback) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetTLS, uintptr(unsafe.Pointer(id)), uintptr(value), purego.NewCallback(destructor))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetTLS, uintptr(unsafe.Pointer(id)), uintptr(value), uintptr(destructor))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(id)
 		return __r0
@@ -5795,13 +5815,13 @@ func initialize() {
 		return __r0
 	}
 	iSetAudioStreamGetCallback = func(stream *AudioStream, callback AudioStreamCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioStreamGetCallback, uintptr(unsafe.Pointer(stream)), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioStreamGetCallback, uintptr(unsafe.Pointer(stream)), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(stream)
 		return __r0
 	}
 	iSetAudioStreamPutCallback = func(stream *AudioStream, callback AudioStreamCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioStreamPutCallback, uintptr(unsafe.Pointer(stream)), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioStreamPutCallback, uintptr(unsafe.Pointer(stream)), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(stream)
 		return __r0
@@ -5811,13 +5831,13 @@ func initialize() {
 		runtime.KeepAlive(stream)
 	}
 	iOpenAudioDeviceStream = func(devid AudioDeviceID, spec *AudioSpec, callback AudioStreamCallback, userdata uintptr) *AudioStream {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_OpenAudioDeviceStream, uintptr(devid), uintptr(unsafe.Pointer(spec)), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_OpenAudioDeviceStream, uintptr(devid), uintptr(unsafe.Pointer(spec)), uintptr(callback), uintptr(userdata))
 		__r0 := (*AudioStream)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(spec)
 		return __r0
 	}
 	iSetAudioPostmixCallback = func(devid AudioDeviceID, callback AudioPostmixCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioPostmixCallback, uintptr(devid), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetAudioPostmixCallback, uintptr(devid), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -6495,7 +6515,7 @@ func initialize() {
 		return __r0
 	}
 	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types *string, num_mime_types uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, purego.NewCallback(callback), purego.NewCallback(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, uintptr(callback), uintptr(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(mime_types)
 		return __r0
@@ -7126,8 +7146,18 @@ func initialize() {
 		runtime.KeepAlive(path)
 		return __r0
 	}
-	purego.RegisterLibFunc(&iGL_GetProcAddress, _hnd_sdl, "SDL_GL_GetProcAddress")
-	purego.RegisterLibFunc(&iEGL_GetProcAddress, _hnd_sdl, "SDL_EGL_GetProcAddress")
+	iGL_GetProcAddress = func(proc string) FunctionPointer {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_GetProcAddress, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(proc))))
+		__r0 := FunctionPointer(_r0)
+		runtime.KeepAlive(proc)
+		return __r0
+	}
+	iEGL_GetProcAddress = func(proc string) FunctionPointer {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_EGL_GetProcAddress, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(proc))))
+		__r0 := FunctionPointer(_r0)
+		runtime.KeepAlive(proc)
+		return __r0
+	}
 	iGL_UnloadLibrary = func() {
 		purego.SyscallN(_addr_SDL_GL_UnloadLibrary)
 	}
@@ -7190,7 +7220,7 @@ func initialize() {
 		return __r0
 	}
 	iEGL_SetAttributeCallbacks = func(platformAttribCallback EGLAttribArrayCallback, surfaceAttribCallback EGLIntArrayCallback, contextAttribCallback EGLIntArrayCallback, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_EGL_SetAttributeCallbacks, purego.NewCallback(platformAttribCallback), purego.NewCallback(surfaceAttribCallback), purego.NewCallback(contextAttribCallback), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_EGL_SetAttributeCallbacks, uintptr(platformAttribCallback), uintptr(surfaceAttribCallback), uintptr(contextAttribCallback), uintptr(userdata))
 	}
 	iGL_SetSwapInterval = func(interval int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GL_SetSwapInterval, uintptr(interval))
@@ -7215,24 +7245,24 @@ func initialize() {
 		return __r0
 	}
 	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, purego.NewCallback(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
+		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
 	}
 	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
-		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, purego.NewCallback(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))))
+		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))))
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
 	}
 	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, purego.NewCallback(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
+		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(default_location)
 	}
 	iShowFileDialogWithProperties = func(typ FileDialogType, callback DialogFileCallback, userdata uintptr, props PropertiesID) {
-		purego.SyscallN(_addr_SDL_ShowFileDialogWithProperties, uintptr(typ), purego.NewCallback(callback), uintptr(userdata), uintptr(props))
+		purego.SyscallN(_addr_SDL_ShowFileDialogWithProperties, uintptr(typ), uintptr(callback), uintptr(userdata), uintptr(props))
 	}
 	iGUIDToString = func(guid GUID, pszGUID string, cbGUID int32) {
 		purego.SyscallN(_addr_SDL_GUIDToString, uintptr(unsafe.Pointer(guid)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(pszGUID))), uintptr(cbGUID))
@@ -8375,7 +8405,7 @@ func initialize() {
 		return __r0
 	}
 	iSetEventFilter = func(filter EventFilter, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_SetEventFilter, purego.NewCallback(filter), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_SetEventFilter, uintptr(filter), uintptr(userdata))
 	}
 	iGetEventFilter = func(filter *EventFilter, userdata *uintptr) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetEventFilter, uintptr(unsafe.Pointer(filter)), uintptr(unsafe.Pointer(userdata)))
@@ -8385,15 +8415,15 @@ func initialize() {
 		return __r0
 	}
 	iAddEventWatch = func(filter EventFilter, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AddEventWatch, purego.NewCallback(filter), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_AddEventWatch, uintptr(filter), uintptr(userdata))
 		__r0 := _r0 != 0
 		return __r0
 	}
 	iRemoveEventWatch = func(filter EventFilter, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_RemoveEventWatch, purego.NewCallback(filter), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_RemoveEventWatch, uintptr(filter), uintptr(userdata))
 	}
 	iFilterEvents = func(filter EventFilter, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_FilterEvents, purego.NewCallback(filter), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_FilterEvents, uintptr(filter), uintptr(userdata))
 	}
 	iSetEventEnabled = func(typ uint32, enabled bool) {
 		purego.SyscallN(_addr_SDL_SetEventEnabled, uintptr(typ), puregogen.BoolToUintptr(enabled))
@@ -8438,7 +8468,7 @@ func initialize() {
 		return __r0
 	}
 	iEnumerateDirectory = func(path string, callback EnumerateDirectoryCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateDirectory, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateDirectory, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(path)
 		return __r0
@@ -9192,13 +9222,13 @@ func initialize() {
 		return __r0
 	}
 	iAddHintCallback = func(name string, callback HintCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AddHintCallback, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_AddHintCallback, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(name)
 		return __r0
 	}
 	iRemoveHintCallback = func(name string, callback HintCallback, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_RemoveHintCallback, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), purego.NewCallback(callback), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_RemoveHintCallback, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))), uintptr(callback), uintptr(userdata))
 		runtime.KeepAlive(name)
 	}
 	iInit = func(flags InitFlags) bool {
@@ -9228,7 +9258,7 @@ func initialize() {
 		return __r0
 	}
 	iRunOnMainThread = func(callback MainThreadCallback, userdata uintptr, wait_complete bool) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_RunOnMainThread, purego.NewCallback(callback), uintptr(userdata), puregogen.BoolToUintptr(wait_complete))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_RunOnMainThread, uintptr(callback), uintptr(userdata), puregogen.BoolToUintptr(wait_complete))
 		__r0 := _r0 != 0
 		return __r0
 	}
@@ -9259,7 +9289,13 @@ func initialize() {
 		runtime.KeepAlive(sofile)
 		return __r0
 	}
-	purego.RegisterLibFunc(&iLoadFunction, _hnd_sdl, "SDL_LoadFunction")
+	iLoadFunction = func(handle *SharedObject, name string) FunctionPointer {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_LoadFunction, uintptr(unsafe.Pointer(handle)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))))
+		__r0 := FunctionPointer(_r0)
+		runtime.KeepAlive(handle)
+		runtime.KeepAlive(name)
+		return __r0
+	}
 	iUnloadObject = func(handle *SharedObject) {
 		purego.SyscallN(_addr_SDL_UnloadObject, uintptr(unsafe.Pointer(handle)))
 		runtime.KeepAlive(handle)
@@ -9330,14 +9366,18 @@ func initialize() {
 		purego.SyscallN(_addr_SDL_LogMessageV, uintptr(category), uintptr(priority), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(fmt))), uintptr(ap))
 		runtime.KeepAlive(fmt)
 	}
-	purego.RegisterLibFunc(&iGetDefaultLogOutputFunction, _hnd_sdl, "SDL_GetDefaultLogOutputFunction")
+	iGetDefaultLogOutputFunction = func() LogOutputFunction {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetDefaultLogOutputFunction)
+		__r0 := LogOutputFunction(_r0)
+		return __r0
+	}
 	iGetLogOutputFunction = func(callback *LogOutputFunction, userdata *uintptr) {
 		purego.SyscallN(_addr_SDL_GetLogOutputFunction, uintptr(unsafe.Pointer(callback)), uintptr(unsafe.Pointer(userdata)))
 		runtime.KeepAlive(callback)
 		runtime.KeepAlive(userdata)
 	}
 	iSetLogOutputFunction = func(callback LogOutputFunction, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_SetLogOutputFunction, purego.NewCallback(callback), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_SetLogOutputFunction, uintptr(callback), uintptr(userdata))
 	}
 	iShowSimpleMessageBox = func(flags MessageBoxFlags, title string, message string, window *Window) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowSimpleMessageBox, uintptr(flags), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(title))), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(message))), uintptr(unsafe.Pointer(window)))
@@ -10022,7 +10062,7 @@ func initialize() {
 		return __r0
 	}
 	iEnumerateStorageDirectory = func(storage *Storage, path string, callback EnumerateDirectoryCallback, userdata uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateStorageDirectory, uintptr(unsafe.Pointer(storage)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_EnumerateStorageDirectory, uintptr(unsafe.Pointer(storage)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))), uintptr(callback), uintptr(userdata))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(storage)
 		runtime.KeepAlive(path)
@@ -10075,7 +10115,7 @@ func initialize() {
 		return __r0
 	}
 	iSetX11EventHook = func(callback X11EventHook, userdata uintptr) {
-		purego.SyscallN(_addr_SDL_SetX11EventHook, purego.NewCallback(callback), uintptr(userdata))
+		purego.SyscallN(_addr_SDL_SetX11EventHook, uintptr(callback), uintptr(userdata))
 	}
 	iIsTablet = func() bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_IsTablet)
@@ -10191,12 +10231,12 @@ func initialize() {
 		purego.SyscallN(_addr_SDL_DelayPrecise, uintptr(ns))
 	}
 	iAddTimer = func(interval uint32, callback TimerCallback, userdata uintptr) TimerID {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AddTimer, uintptr(interval), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_AddTimer, uintptr(interval), uintptr(callback), uintptr(userdata))
 		__r0 := TimerID(_r0)
 		return __r0
 	}
 	iAddTimerNS = func(interval uint64, callback NSTimerCallback, userdata uintptr) TimerID {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AddTimerNS, uintptr(interval), purego.NewCallback(callback), uintptr(userdata))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_AddTimerNS, uintptr(interval), uintptr(callback), uintptr(userdata))
 		__r0 := TimerID(_r0)
 		return __r0
 	}
@@ -10328,13 +10368,13 @@ func initialize() {
 		purego.SyscallN(_addr_SDL_SetMainReady)
 	}
 	iRunApp = func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_RunApp, uintptr(argc), uintptr(unsafe.Pointer(argv)), purego.NewCallback(mainFunction), uintptr(reserved))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_RunApp, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(mainFunction), uintptr(reserved))
 		__r0 := int32(_r0)
 		runtime.KeepAlive(argv)
 		return __r0
 	}
 	iEnterAppMainCallbacks = func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnterAppMainCallbacks, uintptr(argc), uintptr(unsafe.Pointer(argv)), purego.NewCallback(appinit), purego.NewCallback(appiter), purego.NewCallback(appevent), purego.NewCallback(appquit))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_EnterAppMainCallbacks, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(appinit), uintptr(appiter), uintptr(appevent), uintptr(appquit))
 		__r0 := int32(_r0)
 		runtime.KeepAlive(argv)
 		return __r0
