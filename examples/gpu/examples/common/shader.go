@@ -32,16 +32,18 @@ func LoadShader(
 	format := sdl.GPU_SHADERFORMAT_INVALID
 	entrypoint := ""
 
+	// fmt.Printf("BACKEND FORMATS: %08b\n", backendFormats)
+
 	if backendFormats&sdl.GPU_SHADERFORMAT_SPIRV == sdl.GPU_SHADERFORMAT_SPIRV {
 		fullPath = fmt.Sprintf("content/shaders/compiled/spirv/%s.spv", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_SPIRV
 		entrypoint = "main"
 	} else if backendFormats&sdl.GPU_SHADERFORMAT_MSL == sdl.GPU_SHADERFORMAT_MSL {
-		fullPath = fmt.Sprintf("content/shaders/compiled/spirv/%s.msl", shaderFilename)
+		fullPath = fmt.Sprintf("content/shaders/compiled/msl/%s.msl", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_MSL
 		entrypoint = "main0"
 	} else if backendFormats&sdl.GPU_SHADERFORMAT_DXIL == sdl.GPU_SHADERFORMAT_DXIL {
-		fullPath = fmt.Sprintf("content/shaders/compiled/spirv/%s.dxil", shaderFilename)
+		fullPath = fmt.Sprintf("content/shaders/compiled/dxil/%s.dxil", shaderFilename)
 		format = sdl.GPU_SHADERFORMAT_DXIL
 		entrypoint = "main"
 	} else {

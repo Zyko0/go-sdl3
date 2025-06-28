@@ -41,7 +41,7 @@ func main() {
 		}
 
 		if !foundExample {
-			fmt.Printf("No example named '%s' exists.\n", exampleName)
+			fmt.Printf("no example named \"%s\" exists\n", exampleName)
 			os.Exit(1)
 		}
 	}
@@ -50,7 +50,7 @@ func main() {
 
 	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_GAMEPAD)
 	if err != nil {
-		panic("Failed to initialize SDL: " + err.Error())
+		panic("failed to initialize SDL: " + err.Error())
 	}
 
 	// InitializeAssetLoader()
@@ -86,7 +86,7 @@ func main() {
 					deviceEvent := event.GamepadDeviceEvent()
 					gamepad, err = deviceEvent.Which.OpenGamepad()
 					if err != nil {
-						panic("Failed to open gamepad: " + err.Error())
+						panic("failed to open gamepad: " + err.Error())
 					}
 				}
 			case sdl.EVENT_GAMEPAD_REMOVED:
@@ -94,7 +94,7 @@ func main() {
 					deviceEvent := event.GamepadDeviceEvent()
 					gamepadID, err := gamepad.ID()
 					if err != nil {
-						panic("Failed to get gamepad ID: " + err.Error())
+						panic("failed to get gamepad id: " + err.Error())
 					}
 					if deviceEvent.Which == gamepadID {
 						gamepad.Close()
@@ -146,7 +146,7 @@ func main() {
 			fmt.Println("STARTING EXAMPLE: " + context.ExampleName)
 			err = examples[exampleIndex].Init(&context)
 			if err != nil {
-				panic("Init failed! " + err.Error())
+				panic("failed to initialize: " + err.Error())
 			}
 
 			gotoExampleIndex = -1
@@ -160,13 +160,13 @@ func main() {
 
 		err = examples[exampleIndex].Update(&context)
 		if err != nil {
-			panic("Update failed! " + err.Error())
+			panic("failed to update: " + err.Error())
 		}
 
 		if canDraw {
 			err = examples[exampleIndex].Draw(&context)
 			if err != nil {
-				panic("Draw failed! " + err.Error())
+				panic("failed to draw: " + err.Error())
 			}
 		}
 	}

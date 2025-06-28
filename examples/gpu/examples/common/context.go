@@ -2,6 +2,7 @@ package common
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/Zyko0/go-sdl3/sdl"
 )
@@ -28,6 +29,8 @@ func (context *Context) Init(windowFlags sdl.WindowFlags) error {
 	if err != nil {
 		return errors.New("failed to create gpu device: " + err.Error())
 	}
+
+	fmt.Println("Driver: " + context.Device.Driver())
 
 	context.Window, err = sdl.CreateWindow(context.ExampleName, 640, 480, windowFlags)
 	if err != nil {
