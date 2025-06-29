@@ -7,27 +7,19 @@ import (
 	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basicstencil"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basictriangle"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basicvertexbuffer"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreenmultiwindow"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/cullmode"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/instancedindexed"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/texturedquad"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var examples = []common.Example{
-	clearscreen.Example,
-	clearscreenmultiwindow.Example,
-	basictriangle.Example,
-	basicvertexbuffer.Example,
-	cullmode.Example,
-	basicstencil.Example,
-	instancedindexed.Example,
-	texturedquad.Example,
+var examples = []common.ExampleInterface{
+	ClearScreenExample,
+	ClearScreenMultiWindowExample,
+	BasicTriangleExample,
+	BasicVertexBufferExample,
+	CullModeExample,
+	BasicStencilExample,
+	InstancedIndexedExample,
+	TexturedQuadExample,
 }
 
 func main() {
@@ -43,7 +35,7 @@ func main() {
 		foundExample := false
 
 		for i, example := range examples {
-			if strings.ToLower(example.Name) == exampleNameLower {
+			if strings.ToLower(example.String()) == exampleNameLower {
 				gotoExampleIndex = i
 				foundExample = true
 				break
@@ -152,7 +144,7 @@ func main() {
 			}
 
 			exampleIndex = gotoExampleIndex
-			context.ExampleName = examples[exampleIndex].Name
+			context.ExampleName = examples[exampleIndex].String()
 			fmt.Println("STARTING EXAMPLE: " + context.ExampleName)
 			err = examples[exampleIndex].Init(&context)
 			if err != nil {

@@ -1,4 +1,4 @@
-package basicstencil
+package main
 
 import (
 	"errors"
@@ -8,14 +8,20 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var (
+type BasicStencil struct {
 	maskerPipeline      *sdl.GPUGraphicsPipeline
 	maskeePipeline      *sdl.GPUGraphicsPipeline
 	vertexBuffer        *sdl.GPUBuffer
 	depthStencilTexture *sdl.GPUTexture
-)
+}
 
-func _init(context *common.Context) error {
+var BasicStencilExample = &BasicStencil{}
+
+func (e *BasicStencil) String() string {
+	return "BasicStencil"
+}
+
+func (e *BasicStencil) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -120,7 +126,7 @@ func _init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
-	maskerPipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.maskerPipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create masker pipeline: " + err.Error())
 	}
@@ -143,7 +149,7 @@ func _init(context *common.Context) error {
 		WriteMask:   0,
 	}
 
-	maskeePipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.maskeePipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create maskee pipeline: " + err.Error())
 	}
@@ -151,7 +157,7 @@ func _init(context *common.Context) error {
 	context.Device.ReleaseShader(vertexShader)
 	context.Device.ReleaseShader(fragmentShader)
 
-	vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
 		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
 	})
@@ -164,7 +170,7 @@ func _init(context *common.Context) error {
 		return errors.New("failed to get window size: " + err.Error())
 	}
 
-	depthStencilTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
+	e.depthStencilTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Width:             uint32(w),
 		Height:            uint32(h),
@@ -218,7 +224,7 @@ func _init(context *common.Context) error {
 			Offset:         0,
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: vertexBuffer,
+			Buffer: e.vertexBuffer,
 			Offset: 0,
 			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
 		},
@@ -232,11 +238,11 @@ func _init(context *common.Context) error {
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *BasicStencil) Update(context *common.Context) error {
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *BasicStencil) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -256,7 +262,7 @@ func draw(context *common.Context) error {
 		}
 
 		depthStencilTargetInfo := sdl.GPUDepthStencilTargetInfo{
-			Texture:        depthStencilTexture,
+			Texture:        e.depthStencilTexture,
 			Cycle:          true,
 			ClearDepth:     0,
 			ClearStencil:   0,
@@ -271,15 +277,15 @@ func draw(context *common.Context) error {
 		)
 
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: vertexBuffer, Offset: 0},
+			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
 		})
 
 		renderPass.SetStencilReference(1)
-		renderPass.BindGraphicsPipeline(maskerPipeline)
+		renderPass.BindGraphicsPipeline(e.maskerPipeline)
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 
 		renderPass.SetStencilReference(0)
-		renderPass.BindGraphicsPipeline(maskeePipeline)
+		renderPass.BindGraphicsPipeline(e.maskeePipeline)
 		renderPass.DrawPrimitives(3, 1, 3, 0)
 
 		renderPass.End()
@@ -290,20 +296,12 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	context.Device.ReleaseGraphicsPipeline(maskerPipeline)
-	context.Device.ReleaseGraphicsPipeline(maskeePipeline)
+func (e *BasicStencil) Quit(context *common.Context) {
+	context.Device.ReleaseGraphicsPipeline(e.maskerPipeline)
+	context.Device.ReleaseGraphicsPipeline(e.maskeePipeline)
 
-	context.Device.ReleaseTexture(depthStencilTexture)
-	context.Device.ReleaseBuffer(vertexBuffer)
+	context.Device.ReleaseTexture(e.depthStencilTexture)
+	context.Device.ReleaseBuffer(e.vertexBuffer)
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "BasicStencil",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }

@@ -1,4 +1,4 @@
-package texturedquad
+package main
 
 import (
 	"bytes"
@@ -13,15 +13,8 @@ import (
 	"golang.org/x/image/bmp"
 )
 
-var (
-	samplerNames = []string{
-		"PointClamp",
-		"PointWrap",
-		"LinearClamp",
-		"LinearWrap",
-		"AnisotropicClamp",
-		"AnisotropicWrap",
-	}
+type TexturedQuad struct {
+	samplerNames [6]string
 
 	pipeline     *sdl.GPUGraphicsPipeline
 	vertexBuffer *sdl.GPUBuffer
@@ -30,9 +23,24 @@ var (
 	samplers     [6]*sdl.GPUSampler
 
 	currentSamplerIndex int
-)
+}
 
-func _init(context *common.Context) error {
+var TexturedQuadExample = &TexturedQuad{
+	samplerNames: [6]string{
+		"PointClamp",
+		"PointWrap",
+		"LinearClamp",
+		"LinearWrap",
+		"AnisotropicClamp",
+		"AnisotropicWrap",
+	},
+}
+
+func (e *TexturedQuad) String() string {
+	return "TexturedQuad"
+}
+
+func (e *TexturedQuad) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -114,7 +122,7 @@ func _init(context *common.Context) error {
 	}
 
 	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
-	pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create pipeline: " + err.Error())
 	}
@@ -123,7 +131,7 @@ func _init(context *common.Context) error {
 	context.Device.ReleaseShader(fragmentShader)
 
 	// PointClamp
-	samplers[0] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[0] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
 		MagFilter:    sdl.GPU_FILTER_NEAREST,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_NEAREST,
@@ -132,7 +140,7 @@ func _init(context *common.Context) error {
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 	})
 	// PointWrap
-	samplers[1] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[1] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
 		MagFilter:    sdl.GPU_FILTER_NEAREST,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_NEAREST,
@@ -141,7 +149,7 @@ func _init(context *common.Context) error {
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 	})
 	// LinearClamp
-	samplers[2] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[2] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_LINEAR,
 		MagFilter:    sdl.GPU_FILTER_LINEAR,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -150,7 +158,7 @@ func _init(context *common.Context) error {
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 	})
 	// LinearWrap
-	samplers[3] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[3] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_LINEAR,
 		MagFilter:    sdl.GPU_FILTER_LINEAR,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -159,7 +167,7 @@ func _init(context *common.Context) error {
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 	})
 	// AnisotropicClamp
-	samplers[4] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[4] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:        sdl.GPU_FILTER_LINEAR,
 		MagFilter:        sdl.GPU_FILTER_LINEAR,
 		MipmapMode:       sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -170,7 +178,7 @@ func _init(context *common.Context) error {
 		MaxAnisotropy:    4,
 	})
 	// AnisotropicWrap
-	samplers[5] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[5] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:        sdl.GPU_FILTER_LINEAR,
 		MagFilter:        sdl.GPU_FILTER_LINEAR,
 		MipmapMode:       sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -183,16 +191,16 @@ func _init(context *common.Context) error {
 
 	// create gpu resources buffer
 
-	vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
 		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
 	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
-	context.Device.SetBufferName(vertexBuffer, "Ravioli Vertex Buffer 🥣")
+	context.Device.SetBufferName(e.vertexBuffer, "Ravioli Vertex Buffer 🥣")
 
-	indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
 		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
 	})
@@ -200,7 +208,7 @@ func _init(context *common.Context) error {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
-	texture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
+	e.texture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
 		Width:             uint32(imgRGBA.Rect.Size().X),
@@ -209,7 +217,7 @@ func _init(context *common.Context) error {
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
 	})
-	context.Device.SetTextureName(texture, "Ravioli Texture 🖼️")
+	context.Device.SetTextureName(e.texture, "Ravioli Texture 🖼️")
 
 	// setup buffer data
 
@@ -295,7 +303,7 @@ func _init(context *common.Context) error {
 			Offset:         0,
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: vertexBuffer,
+			Buffer: e.vertexBuffer,
 			Offset: 0,
 			Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
 		},
@@ -308,7 +316,7 @@ func _init(context *common.Context) error {
 			Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: indexBuffer,
+			Buffer: e.indexBuffer,
 			Offset: 0,
 			Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
 		},
@@ -321,7 +329,7 @@ func _init(context *common.Context) error {
 			Offset:         0,
 		},
 		&sdl.GPUTextureRegion{
-			Texture: texture,
+			Texture: e.texture,
 			W:       uint32(imgRGBA.Rect.Size().X),
 			H:       uint32(imgRGBA.Rect.Size().Y),
 			D:       1,
@@ -336,29 +344,29 @@ func _init(context *common.Context) error {
 
 	// finally, print instructions
 	fmt.Println("Press Left/Right to switch between sampler states")
-	fmt.Println("Setting sampler state to: " + samplerNames[currentSamplerIndex])
+	fmt.Println("Setting sampler state to: " + e.samplerNames[e.currentSamplerIndex])
 
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *TexturedQuad) Update(context *common.Context) error {
 	if context.LeftPressed {
-		currentSamplerIndex -= 1
-		if currentSamplerIndex < 0 {
-			currentSamplerIndex = len(samplers) - 1
+		e.currentSamplerIndex -= 1
+		if e.currentSamplerIndex < 0 {
+			e.currentSamplerIndex = len(e.samplers) - 1
 		}
-		fmt.Println("Setting sampler state to: " + samplerNames[currentSamplerIndex])
+		fmt.Println("Setting sampler state to: " + e.samplerNames[e.currentSamplerIndex])
 	}
 
 	if context.RightPressed {
-		currentSamplerIndex = (currentSamplerIndex + 1) % len(samplers)
-		fmt.Println("Setting sampler state to: " + samplerNames[currentSamplerIndex])
+		e.currentSamplerIndex = (e.currentSamplerIndex + 1) % len(e.samplers)
+		fmt.Println("Setting sampler state to: " + e.samplerNames[e.currentSamplerIndex])
 	}
 
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *TexturedQuad) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -381,16 +389,16 @@ func draw(context *common.Context) error {
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, nil,
 		)
 
-		renderPass.BindGraphicsPipeline(pipeline)
+		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: vertexBuffer, Offset: 0},
+			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
 		})
 		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
-			Buffer: indexBuffer, Offset: 0,
+			Buffer: e.indexBuffer, Offset: 0,
 		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{
-				Texture: texture, Sampler: samplers[currentSamplerIndex],
+				Texture: e.texture, Sampler: e.samplers[e.currentSamplerIndex],
 			},
 		})
 		renderPass.DrawIndexedPrimitives(
@@ -405,25 +413,17 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	context.Device.ReleaseGraphicsPipeline(pipeline)
-	context.Device.ReleaseBuffer(vertexBuffer)
-	context.Device.ReleaseBuffer(indexBuffer)
-	context.Device.ReleaseTexture(texture)
+func (e *TexturedQuad) Quit(context *common.Context) {
+	context.Device.ReleaseGraphicsPipeline(e.pipeline)
+	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.indexBuffer)
+	context.Device.ReleaseTexture(e.texture)
 
-	for _, sampler := range samplers {
+	for _, sampler := range e.samplers {
 		context.Device.ReleaseSampler(sampler)
 	}
 
-	currentSamplerIndex = 0
+	e.currentSamplerIndex = 0
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "TexturedQuad",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }

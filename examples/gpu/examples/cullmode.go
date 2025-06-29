@@ -1,4 +1,4 @@
-package cullmode
+package main
 
 import (
 	"errors"
@@ -9,24 +9,32 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var (
-	modeNames = []string{
-		"CW_CullNone",
-		"CW_CullFront",
-		"CW_CullBack",
-		"CCW_CullNone",
-		"CCW_CullFront",
-		"CCW_CullBack",
-	}
+type CullMode struct {
+	modeNames [6]string
 
 	pipelines   [6]*sdl.GPUGraphicsPipeline
 	currentMode int
 
 	vertexBufferCW  *sdl.GPUBuffer
 	vertexBufferCCW *sdl.GPUBuffer
-)
+}
 
-func _init(context *common.Context) error {
+var CullModeExample = &CullMode{
+	modeNames: [6]string{
+		"CW_CullNone",
+		"CW_CullFront",
+		"CW_CullBack",
+		"CCW_CullNone",
+		"CCW_CullFront",
+		"CCW_CullBack",
+	},
+}
+
+func (e *CullMode) String() string {
+	return "CullMode"
+}
+
+func (e *CullMode) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -96,7 +104,7 @@ func _init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
-	for i := range len(pipelines) {
+	for i := range len(e.pipelines) {
 		pipelineCreateInfo.RasterizerState.CullMode = sdl.GPUCullMode(i % 3)
 		if i > 2 {
 			pipelineCreateInfo.RasterizerState.FrontFace = sdl.GPU_FRONTFACE_CLOCKWISE
@@ -104,7 +112,7 @@ func _init(context *common.Context) error {
 			pipelineCreateInfo.RasterizerState.FrontFace = sdl.GPU_FRONTFACE_COUNTER_CLOCKWISE
 		}
 
-		pipelines[i], err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+		e.pipelines[i], err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 		if err != nil {
 			return errors.New("failed to create pipeline: " + err.Error())
 		}
@@ -117,7 +125,7 @@ func _init(context *common.Context) error {
 
 	// create vertex buffer. they're the same except for the vertex order
 
-	vertexBufferCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.vertexBufferCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
 		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
 	})
@@ -125,7 +133,7 @@ func _init(context *common.Context) error {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
-	vertexBufferCCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.vertexBufferCCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
 		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
 	})
@@ -177,7 +185,7 @@ func _init(context *common.Context) error {
 			Offset:         0,
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: vertexBufferCW,
+			Buffer: e.vertexBufferCW,
 			Offset: 0,
 			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
 		},
@@ -190,7 +198,7 @@ func _init(context *common.Context) error {
 			Offset:         uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: vertexBufferCCW,
+			Buffer: e.vertexBufferCCW,
 			Offset: 0,
 			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
 		},
@@ -204,29 +212,29 @@ func _init(context *common.Context) error {
 	// print instructions
 
 	fmt.Println("Press Left/Right to switch between modes")
-	fmt.Println("Current Mode: " + modeNames[currentMode])
+	fmt.Println("Current Mode: " + e.modeNames[e.currentMode])
 
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *CullMode) Update(context *common.Context) error {
 	if context.LeftPressed {
-		currentMode--
-		if currentMode < 0 {
-			currentMode = len(pipelines) - 1
+		e.currentMode--
+		if e.currentMode < 0 {
+			e.currentMode = len(e.pipelines) - 1
 		}
-		fmt.Println("Current Mode: " + modeNames[currentMode])
+		fmt.Println("Current Mode: " + e.modeNames[e.currentMode])
 	}
 
 	if context.RightPressed {
-		currentMode = (currentMode + 1) % len(pipelines)
-		fmt.Println("Current Mode: " + modeNames[currentMode])
+		e.currentMode = (e.currentMode + 1) % len(e.pipelines)
+		fmt.Println("Current Mode: " + e.modeNames[e.currentMode])
 	}
 
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *CullMode) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -248,15 +256,15 @@ func draw(context *common.Context) error {
 		renderPass := cmdbuf.BeginRenderPass(
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, nil,
 		)
-		renderPass.BindGraphicsPipeline(pipelines[currentMode])
+		renderPass.BindGraphicsPipeline(e.pipelines[e.currentMode])
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 0, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: vertexBufferCW, Offset: 0},
+			sdl.GPUBufferBinding{Buffer: e.vertexBufferCW, Offset: 0},
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 320, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: vertexBufferCCW, Offset: 0},
+			sdl.GPUBufferBinding{Buffer: e.vertexBufferCCW, Offset: 0},
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.End()
@@ -267,23 +275,15 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	for _, pipeline := range pipelines {
+func (e *CullMode) Quit(context *common.Context) {
+	for _, pipeline := range e.pipelines {
 		context.Device.ReleaseGraphicsPipeline(pipeline)
 	}
 
-	context.Device.ReleaseBuffer(vertexBufferCW)
-	context.Device.ReleaseBuffer(vertexBufferCCW)
+	context.Device.ReleaseBuffer(e.vertexBufferCW)
+	context.Device.ReleaseBuffer(e.vertexBufferCCW)
 
-	currentMode = 0
+	e.currentMode = 0
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "CullMode",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }
