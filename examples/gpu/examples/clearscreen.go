@@ -1,4 +1,4 @@
-package clearscreen
+package main
 
 import (
 	"errors"
@@ -7,15 +7,23 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-func _init(context *common.Context) error {
+type ClearScreen struct{}
+
+var ClearScreenExample = &ClearScreen{}
+
+func (e *ClearScreen) String() string {
+	return "ClearScreen"
+}
+
+func (e *ClearScreen) Init(context *common.Context) error {
 	return context.Init(sdl.WINDOW_RESIZABLE)
 }
 
-func update(context *common.Context) error {
+func (e *ClearScreen) Update(context *common.Context) error {
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *ClearScreen) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -46,14 +54,6 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
+func (e *ClearScreen) Quit(context *common.Context) {
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "ClearScreen",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }

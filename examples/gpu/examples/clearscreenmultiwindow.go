@@ -1,4 +1,4 @@
-package clearscreenmultiwindow
+package main
 
 import (
 	"errors"
@@ -7,22 +7,30 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var secondWindow *sdl.Window
+type ClearScreenMultiWindow struct {
+	secondWindow *sdl.Window
+}
 
-func _init(context *common.Context) error {
+var ClearScreenMultiWindowExample = &ClearScreenMultiWindow{}
+
+func (e *ClearScreenMultiWindow) String() string {
+	return "ClearScreenMultiWindow"
+}
+
+func (e *ClearScreenMultiWindow) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
 	}
 
-	secondWindow, err = sdl.CreateWindow(
+	e.secondWindow, err = sdl.CreateWindow(
 		"ClearScreenMultiWindow (2)", 640, 480, 0,
 	)
 	if err != nil {
 		return errors.New("failed to create window: " + err.Error())
 	}
 
-	err = context.Device.ClaimWindow(secondWindow)
+	err = context.Device.ClaimWindow(e.secondWindow)
 	if err != nil {
 		return errors.New("failed to claim window: " + err.Error())
 	}
@@ -30,11 +38,11 @@ func _init(context *common.Context) error {
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *ClearScreenMultiWindow) Update(context *common.Context) error {
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *ClearScreenMultiWindow) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -60,7 +68,7 @@ func draw(context *common.Context) error {
 		renderPass.End()
 	}
 
-	swapchainTexture, err = cmdbuf.WaitAndAcquireGPUSwapchainTexture(secondWindow)
+	swapchainTexture, err = cmdbuf.WaitAndAcquireGPUSwapchainTexture(e.secondWindow)
 	if err != nil {
 		return errors.New("failed to acquire swapchain texture: " + err.Error())
 	}
@@ -84,18 +92,10 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	context.Device.ReleaseWindow(secondWindow)
-	secondWindow.Destroy()
-	secondWindow = nil
+func (e *ClearScreenMultiWindow) Quit(context *common.Context) {
+	context.Device.ReleaseWindow(e.secondWindow)
+	e.secondWindow.Destroy()
+	e.secondWindow = nil
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "ClearScreenMultiWindow",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }

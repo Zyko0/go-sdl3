@@ -1,4 +1,4 @@
-package basictriangle
+package main
 
 import (
 	"errors"
@@ -8,20 +8,31 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var (
+type BasicTriangle struct {
 	fillPipeline  *sdl.GPUGraphicsPipeline
 	linePipeline  *sdl.GPUGraphicsPipeline
-	smallViewport = sdl.GPUViewport{
-		X: 160, Y: 120, W: 320, H: 240, MinDepth: 0.1, MaxDepth: 1.0,
-	}
-	scissorRect = sdl.Rect{X: 320, Y: 240, W: 320, H: 240}
+	smallViewport sdl.GPUViewport
+	scissorRect   sdl.Rect
 
 	useWireframeMode bool
 	useSmallViewport bool
 	useScissorRect   bool
-)
+}
 
-func _init(context *common.Context) error {
+var BasicTriangleExample = &BasicTriangle{
+	smallViewport: sdl.GPUViewport{
+		X: 160, Y: 120, W: 320, H: 240, MinDepth: 0.1, MaxDepth: 1.0,
+	},
+	scissorRect: sdl.Rect{
+		X: 320, Y: 240, W: 320, H: 240,
+	},
+}
+
+func (e *BasicTriangle) String() string {
+	return "BasicTriangle"
+}
+
+func (e *BasicTriangle) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -62,13 +73,13 @@ func _init(context *common.Context) error {
 	}
 
 	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
-	fillPipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.fillPipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create fill pipeline: " + err.Error())
 	}
 
 	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_LINE
-	linePipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.linePipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create line pipeline: " + err.Error())
 	}
@@ -87,20 +98,20 @@ func _init(context *common.Context) error {
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *BasicTriangle) Update(context *common.Context) error {
 	if context.LeftPressed {
-		useWireframeMode = !useWireframeMode
+		e.useWireframeMode = !e.useWireframeMode
 	}
 	if context.DownPressed {
-		useSmallViewport = !useSmallViewport
+		e.useSmallViewport = !e.useSmallViewport
 	}
 	if context.RightPressed {
-		useScissorRect = !useScissorRect
+		e.useScissorRect = !e.useScissorRect
 	}
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *BasicTriangle) Draw(context *common.Context) error {
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -123,18 +134,18 @@ func draw(context *common.Context) error {
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, nil,
 		)
 
-		if useWireframeMode {
-			renderPass.BindGraphicsPipeline(linePipeline)
+		if e.useWireframeMode {
+			renderPass.BindGraphicsPipeline(e.linePipeline)
 		} else {
-			renderPass.BindGraphicsPipeline(fillPipeline)
+			renderPass.BindGraphicsPipeline(e.fillPipeline)
 		}
 
-		if useSmallViewport {
-			renderPass.SetGPUViewport(&smallViewport)
+		if e.useSmallViewport {
+			renderPass.SetGPUViewport(&e.smallViewport)
 		}
 
-		if useScissorRect {
-			renderPass.SetScissor(&scissorRect)
+		if e.useScissorRect {
+			renderPass.SetScissor(&e.scissorRect)
 		}
 
 		renderPass.DrawPrimitives(3, 1, 0, 0)
@@ -147,21 +158,13 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	context.Device.ReleaseGraphicsPipeline(fillPipeline)
-	context.Device.ReleaseGraphicsPipeline(linePipeline)
+func (e *BasicTriangle) Quit(context *common.Context) {
+	context.Device.ReleaseGraphicsPipeline(e.fillPipeline)
+	context.Device.ReleaseGraphicsPipeline(e.linePipeline)
 
-	useWireframeMode = false
-	useSmallViewport = false
-	useScissorRect = false
+	e.useWireframeMode = false
+	e.useSmallViewport = false
+	e.useScissorRect = false
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "BasicTriangle",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }

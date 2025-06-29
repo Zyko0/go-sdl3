@@ -1,19 +1,35 @@
-package basicvertexbuffer
+package main
 
 import (
 	"errors"
+	"fmt"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var (
+type InstancedIndexed struct {
 	pipeline     *sdl.GPUGraphicsPipeline
 	vertexBuffer *sdl.GPUBuffer
-)
+	indexBuffer  *sdl.GPUBuffer
 
-func _init(context *common.Context) error {
+	useVertexOffset bool
+	useIndexOffset  bool
+	useIndexBuffer  bool
+}
+
+var InstancedIndexedExample = &InstancedIndexed{
+	useVertexOffset: false,
+	useIndexOffset:  false,
+	useIndexBuffer:  true,
+}
+
+func (e *InstancedIndexed) String() string {
+	return "InstancedIndexed"
+}
+
+func (e *InstancedIndexed) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -22,7 +38,7 @@ func _init(context *common.Context) error {
 	// create shaders
 
 	vertexShader, err := common.LoadShader(
-		context.Device, "PositionColor.vert", 0, 0, 0, 0,
+		context.Device, "PositionColorInstanced.vert", 0, 0, 0, 0,
 	)
 	if err != nil {
 		return errors.New("failed to create vertex shader: " + err.Error())
@@ -35,7 +51,7 @@ func _init(context *common.Context) error {
 		return errors.New("failed to create fragment shader: " + err.Error())
 	}
 
-	// create pipelines
+	// create the pipeline
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
 		sdl.GPUColorTargetDescription{
@@ -84,7 +100,7 @@ func _init(context *common.Context) error {
 	}
 
 	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
-	pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
+	e.pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create pipeline: " + err.Error())
 	}
@@ -94,9 +110,17 @@ func _init(context *common.Context) error {
 
 	// create vertex buffer
 
-	vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
+		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 9),
+	})
+	if err != nil {
+		return errors.New("failed to create buffer: " + err.Error())
+	}
+
+	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
+		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
 	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
@@ -106,7 +130,10 @@ func _init(context *common.Context) error {
 
 	transferBuffer, err := context.Device.CreateTransferBuffer(&sdl.GPUTransferBufferCreateInfo{
 		Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
+		Size: uint32(
+			unsafe.Sizeof(common.PositionColorVertex{})*9 +
+				unsafe.Sizeof(uint16(0))*6,
+		),
 	})
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
@@ -119,12 +146,31 @@ func _init(context *common.Context) error {
 
 	vertexData := unsafe.Slice(
 		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)),
-		unsafe.Sizeof(common.PositionColorVertex{})*3,
+		unsafe.Sizeof(common.PositionColorVertex{})*9,
 	)
 
 	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
 	vertexData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
 	vertexData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+
+	vertexData[3] = common.NewPosColorVert(-1, -1, 0, 255, 165, 0, 255)
+	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 128, 0, 255)
+	vertexData[5] = common.NewPosColorVert(0, 1, 0, 0, 255, 255, 255)
+
+	vertexData[6] = common.NewPosColorVert(-1, -1, 0, 255, 255, 255, 255)
+	vertexData[7] = common.NewPosColorVert(1, -1, 0, 255, 255, 255, 255)
+	vertexData[8] = common.NewPosColorVert(0, 1, 0, 255, 255, 255, 255)
+
+	indexData := unsafe.Slice(
+		(*uint16)(unsafe.Pointer(
+			transferDataPtr+unsafe.Sizeof(common.PositionColorVertex{})*9,
+		)),
+		unsafe.Sizeof(uint16(0))*6,
+	)
+
+	for i := range 6 {
+		indexData[i] = uint16(i)
+	}
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
@@ -143,9 +189,22 @@ func _init(context *common.Context) error {
 			Offset:         0,
 		},
 		&sdl.GPUBufferRegion{
-			Buffer: vertexBuffer,
+			Buffer: e.vertexBuffer,
 			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
+			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 9),
+		},
+		false,
+	)
+
+	copyPass.UploadToGPUBuffer(
+		&sdl.GPUTransferBufferLocation{
+			TransferBuffer: transferBuffer,
+			Offset:         uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 9),
+		},
+		&sdl.GPUBufferRegion{
+			Buffer: e.indexBuffer,
+			Offset: 0,
+			Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
 		},
 		false,
 	)
@@ -157,11 +216,36 @@ func _init(context *common.Context) error {
 	return nil
 }
 
-func update(context *common.Context) error {
+func (e *InstancedIndexed) Update(context *common.Context) error {
+	if context.LeftPressed {
+		e.useVertexOffset = !e.useVertexOffset
+		fmt.Printf("Using vertex offset: %v\n", e.useVertexOffset)
+	}
+
+	if context.RightPressed {
+		e.useIndexOffset = !e.useIndexOffset
+		fmt.Printf("Using index offset: %v\n", e.useIndexOffset)
+	}
+
+	if context.UpPressed {
+		e.useIndexBuffer = !e.useIndexBuffer
+		fmt.Printf("Using index buffer: %v\n", e.useIndexBuffer)
+	}
+
 	return nil
 }
 
-func draw(context *common.Context) error {
+func (e *InstancedIndexed) Draw(context *common.Context) error {
+	var vertexOffset uint32 = 0
+	if e.useVertexOffset {
+		vertexOffset = 3
+	}
+
+	var indexOffset uint32 = 0
+	if e.useIndexOffset {
+		indexOffset = 3
+	}
+
 	cmdbuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
@@ -184,11 +268,21 @@ func draw(context *common.Context) error {
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, nil,
 		)
 
-		renderPass.BindGraphicsPipeline(pipeline)
+		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: vertexBuffer, Offset: 0},
+			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
 		})
-		renderPass.DrawPrimitives(3, 1, 0, 0)
+
+		if e.useIndexBuffer {
+			renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
+				Buffer: e.indexBuffer, Offset: 0,
+			}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
+			renderPass.DrawIndexedPrimitives(
+				3, 16, indexOffset, int32(vertexOffset), 0,
+			)
+		} else {
+			renderPass.DrawPrimitives(3, 16, vertexOffset, 0)
+		}
 
 		renderPass.End()
 	}
@@ -198,17 +292,14 @@ func draw(context *common.Context) error {
 	return nil
 }
 
-func quit(context *common.Context) {
-	context.Device.ReleaseGraphicsPipeline(pipeline)
-	context.Device.ReleaseBuffer(vertexBuffer)
+func (e *InstancedIndexed) Quit(context *common.Context) {
+	context.Device.ReleaseGraphicsPipeline(e.pipeline)
+	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.indexBuffer)
+
+	e.useVertexOffset = false
+	e.useIndexOffset = false
+	e.useIndexBuffer = true
 
 	context.Quit()
-}
-
-var Example = common.Example{
-	Name:   "BasicVertexBuffer",
-	Init:   _init,
-	Update: update,
-	Draw:   draw,
-	Quit:   quit,
 }
