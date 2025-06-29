@@ -106,7 +106,7 @@ func draw(context *common.Context) error {
 		return errors.New("failed to acquire command buffer: " + err.Error())
 	}
 
-	swapchainTexture, err := cmdbuf.AcquireGPUSwapchainTexture(context.Window)
+	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
 		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
 	}

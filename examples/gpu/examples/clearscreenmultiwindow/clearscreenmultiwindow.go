@@ -40,7 +40,7 @@ func draw(context *common.Context) error {
 		return errors.New("failed to acquire command buffer: " + err.Error())
 	}
 
-	swapchainTexture, err := cmdbuf.AcquireGPUSwapchainTexture(context.Window)
+	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
 		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
 	}
@@ -60,7 +60,7 @@ func draw(context *common.Context) error {
 		renderPass.End()
 	}
 
-	swapchainTexture, err = cmdbuf.AcquireGPUSwapchainTexture(secondWindow)
+	swapchainTexture, err = cmdbuf.WaitAndAcquireGPUSwapchainTexture(secondWindow)
 	if err != nil {
 		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
 	}
@@ -68,7 +68,7 @@ func draw(context *common.Context) error {
 	if swapchainTexture != nil {
 		colorTargetInfo := sdl.GPUColorTargetInfo{
 			Texture:    swapchainTexture.Texture,
-			ClearColor: sdl.FColor{R: 0.3, G: 0.4, B: 0.5, A: 1.0},
+			ClearColor: sdl.FColor{R: 1, G: 0.5, B: 0.6, A: 1.0},
 			LoadOp:     sdl.GPU_LOADOP_CLEAR,
 			StoreOp:    sdl.GPU_STOREOP_STORE,
 		}
