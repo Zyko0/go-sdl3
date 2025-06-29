@@ -12,6 +12,7 @@ import (
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreenmultiwindow"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/cullmode"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
@@ -20,6 +21,7 @@ var examples = []common.Example{
 	clearscreenmultiwindow.Example,
 	basictriangle.Example,
 	basicvertexbuffer.Example,
+	cullmode.Example,
 }
 
 func main() {
