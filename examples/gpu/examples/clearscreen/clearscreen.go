@@ -23,7 +23,7 @@ func draw(context *common.Context) error {
 
 	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
-		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
+		return errors.New("failed to acquire swapchain texture: " + err.Error())
 	}
 
 	if swapchainTexture != nil {

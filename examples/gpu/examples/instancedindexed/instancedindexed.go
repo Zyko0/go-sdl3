@@ -134,24 +134,24 @@ func _init(context *common.Context) error {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
 
-	transferVerts := unsafe.Slice(
+	vertexData := unsafe.Slice(
 		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)),
 		unsafe.Sizeof(common.PositionColorVertex{})*9,
 	)
 
-	transferVerts[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
-	transferVerts[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
-	transferVerts[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
+	vertexData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	vertexData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
 
-	transferVerts[3] = common.NewPosColorVert(-1, -1, 0, 255, 165, 0, 255)
-	transferVerts[4] = common.NewPosColorVert(1, -1, 0, 0, 128, 0, 255)
-	transferVerts[5] = common.NewPosColorVert(0, 1, 0, 0, 255, 255, 255)
+	vertexData[3] = common.NewPosColorVert(-1, -1, 0, 255, 165, 0, 255)
+	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 128, 0, 255)
+	vertexData[5] = common.NewPosColorVert(0, 1, 0, 0, 255, 255, 255)
 
-	transferVerts[6] = common.NewPosColorVert(-1, -1, 0, 255, 255, 255, 255)
-	transferVerts[7] = common.NewPosColorVert(1, -1, 0, 255, 255, 255, 255)
-	transferVerts[8] = common.NewPosColorVert(0, 1, 0, 255, 255, 255, 255)
+	vertexData[6] = common.NewPosColorVert(-1, -1, 0, 255, 255, 255, 255)
+	vertexData[7] = common.NewPosColorVert(1, -1, 0, 255, 255, 255, 255)
+	vertexData[8] = common.NewPosColorVert(0, 1, 0, 255, 255, 255, 255)
 
-	transferIndices := unsafe.Slice(
+	indexData := unsafe.Slice(
 		(*uint16)(unsafe.Pointer(
 			transferDataPtr+unsafe.Sizeof(common.PositionColorVertex{})*9,
 		)),
@@ -159,7 +159,7 @@ func _init(context *common.Context) error {
 	)
 
 	for i := range 6 {
-		transferIndices[i] = uint16(i)
+		indexData[i] = uint16(i)
 	}
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
@@ -243,7 +243,7 @@ func draw(context *common.Context) error {
 
 	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
-		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
+		return errors.New("failed to acquire swapchain texture: " + err.Error())
 	}
 
 	if swapchainTexture != nil {

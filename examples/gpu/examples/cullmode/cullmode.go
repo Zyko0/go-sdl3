@@ -148,17 +148,17 @@ func _init(context *common.Context) error {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
 
-	transferData := unsafe.Slice(
+	vertexData := unsafe.Slice(
 		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)),
 		unsafe.Sizeof(common.PositionColorVertex{})*6,
 	)
 
-	transferData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
-	transferData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
-	transferData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
-	transferData[3] = common.NewPosColorVert(0, 1, 0, 255, 0, 0, 255)
-	transferData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
-	transferData[5] = common.NewPosColorVert(-1, -1, 0, 0, 0, 255, 255)
+	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
+	vertexData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	vertexData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+	vertexData[3] = common.NewPosColorVert(0, 1, 0, 255, 0, 0, 255)
+	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	vertexData[5] = common.NewPosColorVert(-1, -1, 0, 0, 0, 255, 255)
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
@@ -234,7 +234,7 @@ func draw(context *common.Context) error {
 
 	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
-		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
+		return errors.New("failed to acquire swapchain texture: " + err.Error())
 	}
 
 	if swapchainTexture != nil {
