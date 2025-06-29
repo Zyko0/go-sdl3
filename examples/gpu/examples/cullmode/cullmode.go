@@ -153,23 +153,23 @@ func _init(context *common.Context) error {
 		unsafe.Sizeof(common.PositionColorVertex{})*6,
 	)
 
-	transferData[0] = common.PositionColorVertex{X: -1, Y: -1, Z: 0, R: 255, G: 0, B: 0, A: 255}
-	transferData[1] = common.PositionColorVertex{X: 1, Y: -1, Z: 0, R: 0, G: 255, B: 0, A: 255}
-	transferData[2] = common.PositionColorVertex{X: 0, Y: 1, Z: 0, R: 0, G: 0, B: 255, A: 255}
-	transferData[3] = common.PositionColorVertex{X: 0, Y: 1, Z: 0, R: 255, G: 0, B: 0, A: 255}
-	transferData[4] = common.PositionColorVertex{X: 1, Y: -1, Z: 0, R: 0, G: 255, B: 0, A: 255}
-	transferData[5] = common.PositionColorVertex{X: -1, Y: -1, Z: 0, R: 0, G: 0, B: 255, A: 255}
+	transferData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
+	transferData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	transferData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+	transferData[3] = common.NewPosColorVert(0, 1, 0, 255, 0, 0, 255)
+	transferData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	transferData[5] = common.NewPosColorVert(-1, -1, 0, 0, 0, 255, 255)
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
 	// upload the transfer data to the vertex buffer
 
-	updateCmdBuf, err := context.Device.AcquireCommandBuffer()
+	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
 		return errors.New("failed to acquire command buffer: " + err.Error())
 	}
 
-	copyPass := updateCmdBuf.BeginCopyPass()
+	copyPass := uploadCmdBuf.BeginCopyPass()
 
 	copyPass.UploadToGPUBuffer(
 		&sdl.GPUTransferBufferLocation{
@@ -198,7 +198,7 @@ func _init(context *common.Context) error {
 	)
 
 	copyPass.End()
-	updateCmdBuf.Submit()
+	uploadCmdBuf.Submit()
 	context.Device.ReleaseTransferBuffer(transferBuffer)
 
 	// print instructions
@@ -232,7 +232,7 @@ func draw(context *common.Context) error {
 		return errors.New("failed to acquire command buffer: " + err.Error())
 	}
 
-	swapchainTexture, err := cmdbuf.AcquireGPUSwapchainTexture(context.Window)
+	swapchainTexture, err := cmdbuf.WaitAndAcquireGPUSwapchainTexture(context.Window)
 	if err != nil {
 		return errors.New("failed to acquire gpu swapchain texture: " + err.Error())
 	}
