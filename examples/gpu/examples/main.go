@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basicstencil"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basictriangle"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basicvertexbuffer"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
@@ -22,6 +23,7 @@ var examples = []common.Example{
 	basictriangle.Example,
 	basicvertexbuffer.Example,
 	cullmode.Example,
+	basicstencil.Example,
 }
 
 func main() {
