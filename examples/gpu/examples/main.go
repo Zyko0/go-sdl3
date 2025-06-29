@@ -8,6 +8,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basictriangle"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/basicvertexbuffer"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreen"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/clearscreenmultiwindow"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
@@ -18,6 +19,7 @@ var examples = []common.Example{
 	clearscreen.Example,
 	clearscreenmultiwindow.Example,
 	basictriangle.Example,
+	basicvertexbuffer.Example,
 }
 
 func main() {
