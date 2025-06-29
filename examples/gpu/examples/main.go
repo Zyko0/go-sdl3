@@ -15,6 +15,7 @@ import (
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/cullmode"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/instancedindexed"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples/texturedquad"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
@@ -26,6 +27,7 @@ var examples = []common.Example{
 	cullmode.Example,
 	basicstencil.Example,
 	instancedindexed.Example,
+	texturedquad.Example,
 }
 
 func main() {
