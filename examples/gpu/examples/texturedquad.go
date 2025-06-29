@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"image"
+	"reflect"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/content"
@@ -71,7 +72,10 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 
 	img, err := bmp.Decode(bytes.NewReader(imgBytes))
 
-	imgRGBA := img.(*image.NRGBA)
+	imgRGBA, ok := img.(*image.NRGBA)
+	if !ok {
+		return fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
+	}
 
 	// create the pipeline
 
