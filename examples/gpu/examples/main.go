@@ -45,17 +45,24 @@ func main() {
 		}
 
 		if !foundExample {
-			fmt.Printf("no example named \"%s\" exists\n", exampleName)
+			fmt.Printf("No example named \"%s\" exists\n", exampleName)
 			os.Exit(1)
 		}
 	}
 
-	defer binsdl.Load().Unload()
+	err := sdl.LoadLibrary(sdl.Path())
+	if err != nil {
+		fmt.Println("Failed to load " + sdl.Path())
+		fmt.Println("Will load embedded instead")
+		defer binsdl.Load().Unload()
+	}
 
-	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_GAMEPAD)
+	err = sdl.Init(sdl.INIT_VIDEO | sdl.INIT_GAMEPAD)
 	if err != nil {
 		panic("failed to initialize SDL: " + err.Error())
 	}
+
+	fmt.Println("SDL: " + sdl.GetVersion().String())
 
 	// InitializeAssetLoader()
 	// SDL_AddEventWatch(AppLifecycleWatcher, NULL);
