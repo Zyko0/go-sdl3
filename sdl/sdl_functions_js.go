@@ -11505,7 +11505,7 @@ func initialize() {
 		return GPUShaderFormat(ret.Int())
 	}
 
-	iCreateGPUComputePipeline = func(device *GPUDevice, createinfo *GPUComputePipelineCreateInfo) *GPUComputePipeline {
+	iCreateGPUComputePipeline = func(device *GPUDevice, createinfo *gpuComputePipelineCreateInfo) *GPUComputePipeline {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
