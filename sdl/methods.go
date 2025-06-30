@@ -358,16 +358,14 @@ func (devid AudioDeviceID) BindAudioStream(stream *AudioStream) error {
 
 // SDL_OpenAudioDeviceStream - Convenience function for straightforward audio init for the common case.
 // (https://wiki.libsdl.org/SDL3/SDL_OpenAudioDeviceStream)
-func (devid AudioDeviceID) OpenAudioDeviceStream(spec *AudioSpec, callback AudioStreamCallback, userdata *byte) *AudioStream {
-	panic("not implemented")
-	//return iOpenAudioDeviceStream(devid, spec, callback, userdata)
+func (devid AudioDeviceID) OpenAudioDeviceStream(spec *AudioSpec, callback AudioStreamCallback) *AudioStream {
+	return iOpenAudioDeviceStream(devid, spec, callback, 0)
 }
 
 // SDL_SetAudioPostmixCallback - Set a callback that fires when data is about to be fed to an audio device.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioPostmixCallback)
-func (devid AudioDeviceID) SetAudioPostmixCallback(callback AudioPostmixCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iSetAudioPostmixCallback(devid, callback, userdata)
+func (devid AudioDeviceID) SetAudioPostmixCallback(callback AudioPostmixCallback) bool {
+	return iSetAudioPostmixCallback(devid, callback, 0)
 }
 
 // Camera
@@ -2737,14 +2735,12 @@ func (modstate Keymod) SetModState() {
 // SDL_UploadToGPUTexture - Uploads data from a transfer buffer to a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_UploadToGPUTexture)
 func (copy_pass *GPUCopyPass) UploadToGPUTexture(source *GPUTextureTransferInfo, destination *GPUTextureRegion, cycle bool) {
-	panic("not implemented")
 	iUploadToGPUTexture(copy_pass, source, destination, cycle)
 }
 
 // SDL_UploadToGPUBuffer - Uploads data from a transfer buffer to a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_UploadToGPUBuffer)
 func (copy_pass *GPUCopyPass) UploadToGPUBuffer(source *GPUTransferBufferLocation, destination *GPUBufferRegion, cycle bool) {
-	panic("not implemented")
 	iUploadToGPUBuffer(copy_pass, source, destination, cycle)
 }
 
@@ -2779,7 +2775,6 @@ func (copy_pass *GPUCopyPass) DownloadFromGPUBuffer(source *GPUBufferRegion, des
 // SDL_EndGPUCopyPass - Ends the current copy pass.
 // (https://wiki.libsdl.org/SDL3/SDL_EndGPUCopyPass)
 func (copy_pass *GPUCopyPass) End() {
-	panic("not implemented")
 	iEndGPUCopyPass(copy_pass)
 }
 
@@ -3914,16 +3909,14 @@ func (stream *AudioStream) Unlock() error {
 
 // SDL_SetAudioStreamGetCallback - Set a callback that runs when data is requested from an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGetCallback)
-func (stream *AudioStream) SetGetCallback(callback AudioStreamCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iSetAudioStreamGetCallback(stream, callback, userdata)
+func (stream *AudioStream) SetGetCallback(callback AudioStreamCallback) bool {
+	return iSetAudioStreamGetCallback(stream, callback, 0)
 }
 
 // SDL_SetAudioStreamPutCallback - Set a callback that runs when data is added to an audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamPutCallback)
-func (stream *AudioStream) SetPutCallback(callback AudioStreamCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iSetAudioStreamPutCallback(stream, callback, userdata)
+func (stream *AudioStream) SetPutCallback(callback AudioStreamCallback) bool {
+	return iSetAudioStreamPutCallback(stream, callback, 0)
 }
 
 // SDL_DestroyAudioStream - Free an audio stream.
@@ -5784,8 +5777,8 @@ func (props PropertiesID) ClearProperty(name string) error {
 
 // SDL_EnumerateProperties - Enumerate the properties contained in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_EnumerateProperties)
-func (props PropertiesID) EnumerateProperties(callback EnumeratePropertiesCallback, userdata uintptr) bool {
-	return iEnumerateProperties(props, callback, userdata)
+func (props PropertiesID) EnumerateProperties(callback EnumeratePropertiesCallback) bool {
+	return iEnumerateProperties(props, callback, 0)
 }
 
 // SDL_DestroyProperties - Destroy a group of properties.

@@ -459,13 +459,21 @@ func ComposeCustomBlendMode(srcFactor, dstFactor BlendFactor, colorOp BlendOpera
 // SDL_GPUSupportsShaderFormats - Checks for GPU runtime support.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUSupportsShaderFormats)
 func GPUSupportShaderFormats(formatFlags GPUShaderFormat, name string) bool {
-	return iGPUSupportsShaderFormats(formatFlags, name)
+	var namePtr *byte
+	if name != "" {
+		namePtr = internal.StringToPtr(name)
+	}
+	return iGPUSupportsShaderFormats(formatFlags, namePtr)
 }
 
 // SDL_CreateGPUDevice - Creates a GPU context.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUDevice)
 func CreateGPUDevice(formatFlags GPUShaderFormat, debugMode bool, name string) (*GPUDevice, error) {
-	device := iCreateGPUDevice(formatFlags, debugMode, name)
+	var namePtr *byte
+	if name != "" {
+		namePtr = internal.StringToPtr(name)
+	}
+	device := iCreateGPUDevice(formatFlags, debugMode, namePtr)
 	if device == nil {
 		return nil, internal.LastErr()
 	}
@@ -830,14 +838,13 @@ func UnbindAudioStreams(streams []*AudioStream) {
 
 // SDL_CreateAudioStream - Create a new audio stream.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateAudioStream)
-func CreateAudioStream(srcSpec *AudioSpec) (*AudioStream, *AudioSpec, error) {
-	dstSpec := &AudioSpec{}
+func CreateAudioStream(srcSpec *AudioSpec, dstSpec *AudioSpec) (*AudioStream, error) {
 	stream := iCreateAudioStream(srcSpec, dstSpec)
 	if stream == nil {
-		return nil, nil, internal.LastErr()
+		return nil, internal.LastErr()
 	}
 
-	return stream, dstSpec, nil
+	return stream, nil
 }
 
 // SDL_LoadWAV_IO - Load the audio data of a WAVE file into memory.
@@ -881,20 +888,19 @@ func MixAudio(src []byte, format AudioFormat, volume float32) ([]byte, error) {
 
 // SDL_ConvertAudioSamples - Convert some audio data of one format to another format.
 // (https://wiki.libsdl.org/SDL3/SDL_ConvertAudioSamples)
-func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte) (*AudioSpec, []byte, error) {
+func ConvertAudioSamples(srcSpec *AudioSpec, srcData []byte, dstSpec *AudioSpec) ([]byte, error) {
 	var ptr *byte
 	var count int32
-	dstSpec := &AudioSpec{}
 
 	if !iConvertAudioSamples(
 		srcSpec, unsafe.SliceData(srcData), int32(len(srcData)),
 		dstSpec, &ptr, &count,
 	) {
-		return nil, nil, internal.LastErr()
+		return nil, internal.LastErr()
 	}
 	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return dstSpec, internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 // Time
@@ -1606,6 +1612,6 @@ func GetClipboardText() (string, error) {
 
 // SDL_GetVersion - Get the version of SDL that is linked against your program.
 // (https://wiki.libsdl.org/SDL3/SDL_GetVersion)
-func GetVersion() int32 {
-	return iGetVersion()
+func GetVersion() Version {
+	return Version(iGetVersion())
 }
