@@ -21,6 +21,7 @@ var examples = []common.ExampleInterface{
 	InstancedIndexedExample,
 	TexturedQuadExample,
 	TexturedAnimatedQuadExample,
+	Clear3DSliceExample,
 }
 
 func main() {
