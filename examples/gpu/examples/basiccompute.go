@@ -156,8 +156,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	}
 
 	vertexData := unsafe.Slice(
-		(*common.PositionTextureVertex)(unsafe.Pointer(transferDataPtr)),
-		unsafe.Sizeof(common.PositionTextureVertex{})*6,
+		(*common.PositionTextureVertex)(unsafe.Pointer(transferDataPtr)), 6,
 	)
 
 	vertexData[0] = common.NewPosTexVert(-1, -1, 0, 0, 0)
