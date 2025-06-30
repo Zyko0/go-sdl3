@@ -233,6 +233,7 @@ const (
 type ScaleMode uint32
 
 const (
+	SCALEMODE_INVALID ScaleMode = 4294967295
 	SCALEMODE_NEAREST ScaleMode = 0
 	SCALEMODE_LINEAR  ScaleMode = 1
 )

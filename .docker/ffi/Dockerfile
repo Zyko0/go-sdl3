@@ -26,7 +26,7 @@ RUN cd c2ffi && mkdir -p build && cd build && \
 
 # Clone SDL repository
 RUN git clone https://github.com/libsdl-org/SDL.git && \
-        cd SDL && git checkout tags/release-3.2.8 && \
+        cd SDL && git checkout tags/release-3.2.16 && \
         cp -r include/SDL3 /usr/include/SDL3
 
 # Generate SDL ffi

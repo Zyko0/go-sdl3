@@ -408,6 +408,8 @@ type MouseWheelEvent struct {
 	Direction MouseWheelDirection
 	MouseX    float32
 	MouseY    float32
+	IntegerX  int32
+	IntegerY  int32
 }
 
 // SDL_JoyAxisEvent - Joystick axis motion event structure (event.jaxis.*)
