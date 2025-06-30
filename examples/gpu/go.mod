@@ -4,6 +4,7 @@ go 1.24.4
 
 require (
 	github.com/Zyko0/go-sdl3 v0.0.0
+	github.com/go-gl/mathgl v1.2.0
 	golang.org/x/image v0.28.0
 )
 
