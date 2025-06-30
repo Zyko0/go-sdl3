@@ -23,6 +23,7 @@ var examples = []common.ExampleInterface{
 	TexturedAnimatedQuadExample,
 	Clear3DSliceExample,
 	BasicComputeExample,
+	ComputeUniformsExample,
 }
 
 func main() {
