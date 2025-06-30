@@ -157,8 +157,7 @@ func (e *CullMode) Init(context *common.Context) error {
 	}
 
 	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)),
-		unsafe.Sizeof(common.PositionColorVertex{})*6,
+		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 6,
 	)
 
 	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)

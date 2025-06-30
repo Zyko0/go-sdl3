@@ -196,8 +196,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	}
 
 	vertexData := unsafe.Slice(
-		(*common.PositionTextureVertex)(unsafe.Pointer(bufferTransferDataPtr)),
-		unsafe.Sizeof(common.PositionTextureVertex{})*4,
+		(*common.PositionTextureVertex)(unsafe.Pointer(bufferTransferDataPtr)), 4,
 	)
 
 	vertexData[0] = common.NewPosTexVert(-0.5, -0.5, 0, 0, 0)
@@ -208,8 +207,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	indexData := unsafe.Slice(
 		(*uint16)(unsafe.Pointer(
 			bufferTransferDataPtr+unsafe.Sizeof(common.PositionTextureVertex{})*4,
-		)),
-		unsafe.Sizeof(uint16(0))*6,
+		)), 6,
 	)
 
 	indexData[0] = 0

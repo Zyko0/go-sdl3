@@ -198,8 +198,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	}
 
 	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)),
-		unsafe.Sizeof(common.PositionColorVertex{})*6,
+		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 6,
 	)
 
 	vertexData[0] = common.NewPosColorVert(-0.5, -0.5, 0, 255, 255, 0, 255)
