@@ -20,6 +20,7 @@ var examples = []common.ExampleInterface{
 	BasicStencilExample,
 	InstancedIndexedExample,
 	TexturedQuadExample,
+	TexturedAnimatedQuadExample,
 }
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 	var exampleIndex int = -1
 	var gotoExampleIndex int
 	var quit bool
-	var lastTime time.Time
+	var lastTime time.Time = time.Now()
 
 	if len(os.Args) > 1 {
 		exampleName := os.Args[1]
@@ -69,7 +70,6 @@ func main() {
 	// sdl.RunLoop(func() error {
 
 	for !quit {
-
 		context.LeftPressed = false
 		context.RightPressed = false
 		context.DownPressed = false
@@ -156,8 +156,8 @@ func main() {
 
 		newTime := time.Now()
 		context.DeltaTime = float32(
-			newTime.Sub(lastTime).Microseconds(),
-		) * 0.001 * 0.001
+			newTime.Sub(lastTime).Seconds(),
+		)
 		lastTime = newTime
 
 		err = examples[exampleIndex].Update(&context)
