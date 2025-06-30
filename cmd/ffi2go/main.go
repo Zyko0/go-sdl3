@@ -400,8 +400,13 @@ func main() {
 				fn := jen.Id("i" + e.Name).Func()
 				fn.ParamsFunc(func(h *jen.Group) {
 					for _, ee := range e.Parameters {
+						typ := extractType(ee.Type)
+						if slices.Contains(cfg.NoAutoStringFunctions, cfg.Prefix+e.Name) &&
+							typ == "string" {
+							typ = "*byte"
+						}
 						h.Add(
-							jenType(jen.Id(sanitizeArgName(ee.Name)), extractType(ee.Type)),
+							jenType(jen.Id(sanitizeArgName(ee.Name)), typ),
 						)
 					}
 				})

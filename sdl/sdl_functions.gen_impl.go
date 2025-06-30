@@ -8513,8 +8513,8 @@ func initialize() {
 		__r0 := uintptr(_r0)
 		return __r0
 	}
-	iGPUSupportsShaderFormats = func(format_flags GPUShaderFormat, name string) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_GPUSupportsShaderFormats, uintptr(format_flags), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))))
+	iGPUSupportsShaderFormats = func(format_flags GPUShaderFormat, name *byte) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GPUSupportsShaderFormats, uintptr(format_flags), uintptr(unsafe.Pointer(name)))
 		__r0 := _r0 != 0
 		runtime.KeepAlive(name)
 		return __r0
@@ -8524,8 +8524,8 @@ func initialize() {
 		__r0 := _r0 != 0
 		return __r0
 	}
-	iCreateGPUDevice = func(format_flags GPUShaderFormat, debug_mode bool, name string) *GPUDevice {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUDevice, uintptr(format_flags), puregogen.BoolToUintptr(debug_mode), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(name))))
+	iCreateGPUDevice = func(format_flags GPUShaderFormat, debug_mode bool, name *byte) *GPUDevice {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUDevice, uintptr(format_flags), puregogen.BoolToUintptr(debug_mode), uintptr(unsafe.Pointer(name)))
 		__r0 := (*GPUDevice)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(name)
 		return __r0

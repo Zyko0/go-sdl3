@@ -82,5 +82,9 @@
 		"SDL_GetClipboardMimeTypes",
 		"SDL_GetSensors",
 		"SDL_GetPreferredLocales"
+    ],
+    "no_auto_string_functions": [
+        "SDL_GPUSupportsShaderFormats",
+        "SDL_CreateGPUDevice"
     ]
 }

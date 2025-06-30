@@ -14,6 +14,7 @@ type Config struct {
 	AllowlistedTypePrefixes []string `json:"allowlisted_type_prefixes"`
 	BaseTypes               []string `json:"base_types"`
 	SDLFreeFunctions        []string `json:"sdl_free_functions"`
+	NoAutoStringFunctions   []string `json:"no_auto_string_functions"`
 }
 
 type FFIEntry struct {
