@@ -2,6 +2,7 @@ package sdl
 
 import (
 	"errors"
+	"fmt"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -25,6 +26,25 @@ type Time int64
 
 // https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_guid.h#L61
 type GUID *[16]uint8
+
+// https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_version.h
+type Version int32
+
+func (v Version) Major() int {
+	return int(v) / 1000000
+}
+
+func (v Version) Minor() int {
+	return (int(v) / 1000) % 1000
+}
+
+func (v Version) Patch() int {
+	return int(v) % 1000
+}
+
+func (v Version) String() string {
+	return fmt.Sprintf("%d.%d.%d", v.Major(), v.Minor(), v.Patch())
+}
 
 // https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_gamepad.h#L262
 // TODO: Union type
