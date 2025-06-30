@@ -24,6 +24,7 @@ var examples = []common.ExampleInterface{
 	Clear3DSliceExample,
 	BasicComputeExample,
 	ComputeUniformsExample,
+	ToneMappingExample,
 }
 
 func main() {
