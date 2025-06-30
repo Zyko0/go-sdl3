@@ -3,6 +3,7 @@ package common
 import (
 	"errors"
 	"fmt"
+	"sync"
 
 	"github.com/Zyko0/go-sdl3/sdl"
 )
@@ -19,6 +20,8 @@ type Context struct {
 	DeltaTime    float32
 }
 
+var contextInitOnce sync.Once
+
 func (context *Context) Init(windowFlags sdl.WindowFlags) error {
 	var err error
 	context.Device, err = sdl.CreateGPUDevice(
@@ -30,7 +33,10 @@ func (context *Context) Init(windowFlags sdl.WindowFlags) error {
 		return errors.New("failed to create gpu device: " + err.Error())
 	}
 
-	fmt.Println("Driver: " + context.Device.Driver())
+	contextInitOnce.Do(func() {
+		fmt.Println("Driver: " + context.Device.Driver())
+		// TODO: more driver/device properties available in sdl 3.4
+	})
 
 	context.Window, err = sdl.CreateWindow(context.ExampleName, 640, 480, windowFlags)
 	if err != nil {

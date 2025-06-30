@@ -10,4 +10,4 @@ Run `CGO_ENABLED=0 go build -o gpu ./examples`
 
 Can cross compile with `GOOS=windows` and test in Wine
 
-<!-- SDL_HINT_GPU_DRIVER=d3d12 -->
+Force Direct3D 12 using `SDL_GPU_DRIVER=direct3d12`
