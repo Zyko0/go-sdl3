@@ -1272,6 +1272,17 @@ func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, er
 	return cursor, nil
 }
 
+// SDL_CreateSystemCursor - Create a system cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateSystemCursor)
+func CreateSystemCursor(id SystemCursor) (*Cursor, error) {
+	cursor := iCreateSystemCursor(id)
+	if cursor == nil {
+		return nil, internal.LastErr()
+	}
+
+	return cursor, nil
+}
+
 // SDL_SetCursor - Set the active cursor.
 // (https://wiki.libsdl.org/SDL3/SDL_SetCursor)
 func SetCursor(cursor *Cursor) error {
