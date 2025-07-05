@@ -89,7 +89,6 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
-	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
 	e.pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create pipeline: " + err.Error())

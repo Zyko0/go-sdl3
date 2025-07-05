@@ -129,7 +129,6 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
-	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
 	e.pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create pipeline: " + err.Error())
@@ -242,7 +241,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
-	// upload the transfer data to the vertex buffer
+	// upload the transfer data to the gpu resources
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
