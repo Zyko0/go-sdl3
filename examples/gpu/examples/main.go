@@ -27,6 +27,7 @@ var examples = []common.ExampleInterface{
 	ToneMappingExample,
 	CustomSamplingExample,
 	DrawIndirectExample,
+	ComputeSamplerExample,
 }
 
 func main() {
