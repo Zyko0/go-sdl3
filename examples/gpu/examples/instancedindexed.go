@@ -99,7 +99,6 @@ func (e *InstancedIndexed) Init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
-	pipelineCreateInfo.RasterizerState.FillMode = sdl.GPU_FILLMODE_FILL
 	e.pipeline, err = context.Device.CreateGraphicsPipeline(&pipelineCreateInfo)
 	if err != nil {
 		return errors.New("failed to create pipeline: " + err.Error())
@@ -172,7 +171,7 @@ func (e *InstancedIndexed) Init(context *common.Context) error {
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
-	// upload the transfer data to the vertex buffer
+	// upload the transfer data to the vertex buffer and index buffer
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
