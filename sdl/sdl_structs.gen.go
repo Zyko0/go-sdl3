@@ -851,6 +851,33 @@ type GPUBufferRegion struct {
 	Size   uint32
 }
 
+// SDL_GPUIndirectDrawCommand - A structure specifying the parameters of an indirect draw command.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand)
+type GPUIndirectDrawCommand struct {
+	NumVertices   uint32
+	NumInstances  uint32
+	FirstVertex   uint32
+	FirstInstance uint32
+}
+
+// SDL_GPUIndexedIndirectDrawCommand - A structure specifying the parameters of an indexed indirect draw command.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand)
+type GPUIndexedIndirectDrawCommand struct {
+	NumIndices    uint32
+	NumInstances  uint32
+	FirstIndex    uint32
+	VertexOffset  int32
+	FirstInstance uint32
+}
+
+// SDL_GPUIndirectDispatchCommand - A structure specifying the parameters of an indexed dispatch command.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand)
+type GPUIndirectDispatchCommand struct {
+	GroupcountX uint32
+	GroupcountY uint32
+	GroupcountZ uint32
+}
+
 // SDL_GPUSamplerCreateInfo - A structure specifying the parameters of a sampler.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo)
 type GPUSamplerCreateInfo struct {
