@@ -13,8 +13,8 @@ import (
 	"golang.org/x/image/bmp"
 )
 
-func LoadHDRImage(imageFilename string) ([]float32, int, int, error) {
-	data, err := content.ReadFile("images/" + imageFilename)
+func LoadHDR(filename string) ([]float32, int, int, error) {
+	data, err := content.ReadFile("images/" + filename)
 	if err != nil {
 		return nil, 0, 0, errors.New("failed to read data: " + err.Error())
 	}
