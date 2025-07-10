@@ -4,15 +4,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"image"
-	"reflect"
 	"slices"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/content"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
-	"golang.org/x/image/bmp"
 )
 
 type CopyAndReadback struct {
@@ -40,28 +36,21 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 
 	// load the image
 
-	imgBytes, err := content.ReadFile("images/ravioli.bmp")
+	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
-		return errors.New("failed to read file: " + err.Error())
+		return errors.New("failed to load image: " + err.Error())
 	}
 
-	img, err := bmp.Decode(bytes.NewReader(imgBytes))
-
-	imgRGBA, ok := img.(*image.NRGBA)
-	if !ok {
-		return fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
-	}
-
-	e.textureWidth = uint32(imgRGBA.Rect.Size().X)
-	e.textureHeight = uint32(imgRGBA.Rect.Size().Y)
+	e.textureWidth = uint32(imageWidth)
+	e.textureHeight = uint32(imageHeight)
 
 	// create texture resources
 
 	e.originalTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imgRGBA.Rect.Size().X),
-		Height:            uint32(imgRGBA.Rect.Size().Y),
+		Width:             uint32(imageWidth),
+		Height:            uint32(imageHeight),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -73,8 +62,8 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	e.textureCopy, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imgRGBA.Rect.Size().X),
-		Height:            uint32(imgRGBA.Rect.Size().Y),
+		Width:             uint32(imageWidth),
+		Height:            uint32(imageHeight),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -86,8 +75,8 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	e.textureSmall, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imgRGBA.Rect.Size().X / 2),
-		Height:            uint32(imgRGBA.Rect.Size().Y / 2),
+		Width:             uint32(imageWidth),
+		Height:            uint32(imageHeight),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER | sdl.GPU_TEXTUREUSAGE_COLOR_TARGET,
@@ -145,7 +134,7 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 		e.textureWidth*e.textureHeight*4,
 	)
 
-	copy(uploadTextureData, imgRGBA.Pix)
+	copy(uploadTextureData, imageData)
 
 	uploadBufferData := unsafe.Slice(
 		(*uint32)(unsafe.Pointer(uploadTransferPtr+uintptr(e.textureWidth*e.textureHeight*4))),
@@ -281,7 +270,7 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 		e.textureWidth*e.textureHeight*4,
 	)
 
-	if bytes.Equal(imgRGBA.Pix, downloadTextureData) {
+	if bytes.Equal(imageData, downloadTextureData) {
 		fmt.Println("SUCCESS! Original texture bytes and the downloaded bytes match!")
 	} else {
 		fmt.Println("FAILURE! Original texture bytes do not match downloaded bytes!")

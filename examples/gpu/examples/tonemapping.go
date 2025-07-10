@@ -113,7 +113,7 @@ func (e *ToneMapping) Init(context *common.Context) error {
 	}
 
 	var hdrRGBA []float32
-	hdrRGBA, e.w, e.h, err = common.LoadHDRImage("memorial.hdr")
+	hdrRGBA, e.w, e.h, err = common.LoadHDR("memorial.hdr")
 	if err != nil {
 		return errors.New("failed to load hdr image: " + err.Error())
 	}

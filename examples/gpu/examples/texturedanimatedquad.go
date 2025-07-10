@@ -1,19 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"errors"
-	"fmt"
-	"image"
 	"math"
-	"reflect"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/content"
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/go-gl/mathgl/mgl32"
-	"golang.org/x/image/bmp"
 )
 
 type TexturedAnimatedQuad struct {
@@ -60,16 +54,9 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 
 	// load the image
 
-	imgBytes, err := content.ReadFile("images/ravioli.bmp")
+	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
-		return errors.New("failed to read file: " + err.Error())
-	}
-
-	img, err := bmp.Decode(bytes.NewReader(imgBytes))
-
-	imgRGBA, ok := img.(*image.NRGBA)
-	if !ok {
-		return fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
+		return errors.New("failed to load image: " + err.Error())
 	}
 
 	// create the pipeline
@@ -158,8 +145,8 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	e.texture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imgRGBA.Rect.Size().X),
-		Height:            uint32(imgRGBA.Rect.Size().Y),
+		Width:             uint32(imageWidth),
+		Height:            uint32(imageHeight),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -223,7 +210,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size:  uint32(imgRGBA.Rect.Size().X * imgRGBA.Rect.Size().Y * 4),
+			Size:  uint32(imageWidth * imageHeight * 4),
 		},
 	)
 
@@ -234,10 +221,10 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 
 	textureData := unsafe.Slice(
 		(*uint8)(unsafe.Pointer(textureTransferDataPtr)),
-		imgRGBA.Rect.Size().X*imgRGBA.Rect.Size().Y*4,
+		imageWidth*imageHeight*4,
 	)
 
-	copy(textureData, imgRGBA.Pix)
+	copy(textureData, imageData)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
@@ -283,8 +270,8 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 		},
 		&sdl.GPUTextureRegion{
 			Texture: e.texture,
-			W:       uint32(imgRGBA.Rect.Size().X),
-			H:       uint32(imgRGBA.Rect.Size().Y),
+			W:       uint32(imageWidth),
+			H:       uint32(imageHeight),
 			D:       1,
 		},
 		false,
