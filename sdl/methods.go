@@ -2747,28 +2747,24 @@ func (copy_pass *GPUCopyPass) UploadToGPUBuffer(source *GPUTransferBufferLocatio
 // SDL_CopyGPUTextureToTexture - Performs a texture-to-texture copy.
 // (https://wiki.libsdl.org/SDL3/SDL_CopyGPUTextureToTexture)
 func (copy_pass *GPUCopyPass) CopyGPUTextureToTexture(source *GPUTextureLocation, destination *GPUTextureLocation, w uint32, h uint32, d uint32, cycle bool) {
-	panic("not implemented")
 	iCopyGPUTextureToTexture(copy_pass, source, destination, w, h, d, cycle)
 }
 
 // SDL_CopyGPUBufferToBuffer - Performs a buffer-to-buffer copy.
 // (https://wiki.libsdl.org/SDL3/SDL_CopyGPUBufferToBuffer)
 func (copy_pass *GPUCopyPass) CopyGPUBufferToBuffer(source *GPUBufferLocation, destination *GPUBufferLocation, size uint32, cycle bool) {
-	panic("not implemented")
 	iCopyGPUBufferToBuffer(copy_pass, source, destination, size, cycle)
 }
 
 // SDL_DownloadFromGPUTexture - Copies data from a texture to a transfer buffer on the GPU timeline.
 // (https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUTexture)
 func (copy_pass *GPUCopyPass) DownloadFromGPUTexture(source *GPUTextureRegion, destination *GPUTextureTransferInfo) {
-	panic("not implemented")
 	iDownloadFromGPUTexture(copy_pass, source, destination)
 }
 
 // SDL_DownloadFromGPUBuffer - Copies data from a buffer to a transfer buffer on the GPU timeline.
 // (https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUBuffer)
 func (copy_pass *GPUCopyPass) DownloadFromGPUBuffer(source *GPUBufferRegion, destination *GPUTransferBufferLocation) {
-	panic("not implemented")
 	iDownloadFromGPUBuffer(copy_pass, source, destination)
 }
 
