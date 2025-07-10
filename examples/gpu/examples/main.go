@@ -29,6 +29,7 @@ var examples = []common.ExampleInterface{
 	DrawIndirectExample,
 	ComputeSamplerExample,
 	CopyAndReadbackExample,
+	CopyConsistencyExample,
 }
 
 func main() {

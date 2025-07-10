@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"image"
 	"reflect"
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/content"
 	"github.com/mdouchement/hdr"
 	"github.com/mdouchement/hdr/codec/rgbe"
+	"golang.org/x/image/bmp"
 )
 
 func LoadHDRImage(imageFilename string) ([]float32, int, int, error) {
@@ -40,4 +42,23 @@ func LoadHDRImage(imageFilename string) ([]float32, int, int, error) {
 	}
 
 	return rgba, w, h, nil
+}
+
+func LoadBMP(filename string) ([]byte, int, int, error) {
+	imgBytes, err := content.ReadFile("images/" + filename)
+	if err != nil {
+		return nil, 0, 0, errors.New("failed to read file: " + err.Error())
+	}
+
+	img, err := bmp.Decode(bytes.NewReader(imgBytes))
+	if err != nil {
+		return nil, 0, 0, errors.New("failed to decode bmp: " + err.Error())
+	}
+
+	imgRGBA, ok := img.(*image.NRGBA)
+	if !ok {
+		return nil, 0, 0, fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
+	}
+
+	return imgRGBA.Pix, imgRGBA.Rect.Size().X, imgRGBA.Rect.Size().Y, nil
 }
