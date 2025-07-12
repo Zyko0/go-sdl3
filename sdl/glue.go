@@ -65,23 +65,43 @@ type Event struct {
 }
 
 func (e *Event) CommonEvent() *CommonEvent {
-	return (*CommonEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*CommonEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) DisplayEvent() *DisplayEvent {
-	return (*DisplayEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*DisplayEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) WindowEvent() *WindowEvent {
-	return (*WindowEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*WindowEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) KeyboardDeviceEvent() *KeyboardDeviceEvent {
-	return (*KeyboardDeviceEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*KeyboardDeviceEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) KeyboardEvent() *KeyboardEvent {
-	return (*KeyboardEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*KeyboardEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 // This is required because the original struct contains a string and since
@@ -183,95 +203,187 @@ func (e *Event) TextInputEvent() *TextInputEvent {
 }
 
 func (e *Event) MouseMotionEvent() *MouseMotionEvent {
-	return (*MouseMotionEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*MouseMotionEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) MouseButtonEvent() *MouseButtonEvent {
-	return (*MouseButtonEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*MouseButtonEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) MouseWheelEvent() *MouseWheelEvent {
-	return (*MouseWheelEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*MouseWheelEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyAxisEvent() *JoyAxisEvent {
-	return (*JoyAxisEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyAxisEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyBallEvent() *JoyBallEvent {
-	return (*JoyBallEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyBallEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyHatEvent() *JoyHatEvent {
-	return (*JoyHatEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyHatEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyButtonEvent() *JoyButtonEvent {
-	return (*JoyButtonEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyButtonEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyDeviceEvent() *JoyDeviceEvent {
-	return (*JoyDeviceEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyDeviceEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) JoyBatteryEvent() *JoyBatteryEvent {
-	return (*JoyBatteryEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*JoyBatteryEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) GamepadAxisEvent() *GamepadAxisEvent {
-	return (*GamepadAxisEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*GamepadAxisEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) GamepadButtonEvent() *GamepadButtonEvent {
-	return (*GamepadButtonEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*GamepadButtonEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) GamepadDeviceEvent() *GamepadDeviceEvent {
-	return (*GamepadDeviceEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*GamepadDeviceEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) GamepadTouchpadEvent() *GamepadTouchpadEvent {
-	return (*GamepadTouchpadEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*GamepadTouchpadEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) GamepadSensorEvent() *GamepadSensorEvent {
-	return (*GamepadSensorEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*GamepadSensorEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) AudioDeviceEvent() *AudioDeviceEvent {
-	return (*AudioDeviceEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*AudioDeviceEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) CameraDeviceEvent() *CameraDeviceEvent {
-	return (*CameraDeviceEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*CameraDeviceEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) RenderEvent() *RenderEvent {
-	return (*RenderEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*RenderEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) TouchFingerEvent() *TouchFingerEvent {
-	return (*TouchFingerEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*TouchFingerEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) PenProximityEvent() *PenProximityEvent {
-	return (*PenProximityEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*PenProximityEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) PenMotionEvent() *PenMotionEvent {
-	return (*PenMotionEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*PenMotionEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) PenTouchEvent() *PenTouchEvent {
-	return (*PenTouchEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*PenTouchEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) PenButtonEvent() *PenButtonEvent {
-	return (*PenButtonEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*PenButtonEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) PenAxisEvent() *PenAxisEvent {
-	return (*PenAxisEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*PenAxisEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 // This is required because the original struct contains a string and since
@@ -340,15 +452,27 @@ func (e *Event) ClipboardEvent() *ClipboardEvent {
 }
 
 func (e *Event) SensorEvent() *SensorEvent {
-	return (*SensorEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*SensorEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) QuitEvent() *QuitEvent {
-	return (*QuitEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*QuitEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 func (e *Event) UserEvent() *UserEvent {
-	return (*UserEvent)(unsafe.Pointer(e))
+	if e == nil {
+		return nil
+	}
+	evt := *(*UserEvent)(unsafe.Pointer(e))
+	return &evt
 }
 
 // TODO: union type
