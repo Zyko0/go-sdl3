@@ -1049,7 +1049,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_ShowFileDialogWithProperties](https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties) | [:x:](sdl/methods.go#L2408) | [:x:](sdl/sdl_functions_js.go#L7762) |
 </details>
 <details open>
-<summary><h3>GPU</h3></summary>
+<summary><h3>Tray</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1085,8 +1085,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_ShowMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox) | [:heavy_check_mark:](sdl/functions.go#L986) | [:x:](sdl/sdl_functions_js.go#L14325) |
 | [SDL_ShowSimpleMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox) | [:heavy_check_mark:](sdl/functions.go#L1019) | [:x:](sdl/sdl_functions_js.go#L14340) |
 </details>
-<details>
-<summary><h3>Vulkan</h3></summary>
+<details open>
+<summary><h3>GPU</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1187,7 +1187,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GDKResumeGPU](https://wiki.libsdl.org/SDL3/SDL_GDKResumeGPU) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>Metal</h3></summary>
+<summary><h3>Vulkan</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1199,8 +1199,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_Vulkan_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_Vulkan_DestroySurface) | [:question:]() | [:question:]() |
 | [SDL_Vulkan_GetPresentationSupport](https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetPresentationSupport) | [:question:]() | [:question:]() |
 </details>
-<details open>
-<summary><h3>Platform</h3></summary>
+<details>
+<summary><h3>Metal</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1305,14 +1305,14 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetSIMDAlignment](https://wiki.libsdl.org/SDL3/SDL_GetSIMDAlignment) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L5817) |
 </details>
 <details>
-<summary><h3>Intrinsics</h3></summary>
+<summary><h3>Locale</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GetPreferredLocales](https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales) | [:heavy_check_mark:](sdl/functions.go#L1100) | [:x:](sdl/sdl_functions_js.go#L14071) |
 </details>
 <details>
-<summary><h3>Locale</h3></summary>
+<summary><h3>System</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1351,22 +1351,22 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetGDKDefaultUser](https://wiki.libsdl.org/SDL3/SDL_GetGDKDefaultUser) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>System</h3></summary>
+<summary><h3>Misc</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_OpenURL](https://wiki.libsdl.org/SDL3/SDL_OpenURL) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14402) |
 </details>
 <details>
-<summary><h3>Misc</h3></summary>
+<summary><h3>GUID</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GUIDToString](https://wiki.libsdl.org/SDL3/SDL_GUIDToString) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7779) |
 | [SDL_StringToGUID](https://wiki.libsdl.org/SDL3/SDL_StringToGUID) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7794) |
 </details>
-<details>
-<summary><h3>GUID</h3></summary>
+<details open>
+<summary><h3>Main</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1383,7 +1383,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GDKSuspendComplete](https://wiki.libsdl.org/SDL3/SDL_GDKSuspendComplete) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17303) |
 </details>
 <details open>
-<summary><h3>Main</h3></summary>
+<summary><h3>Stdinc</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
