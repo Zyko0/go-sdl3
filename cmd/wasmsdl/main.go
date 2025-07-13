@@ -232,6 +232,10 @@ Commands:
 		if err != nil {
 			log.Fatalf("couldn't flush remaining data to archive: %v", err)
 		}
+		err = zipw.Close()
+		if err != nil {
+			log.Fatalf("couldn't close archive: %v", err)
+		}
 		fmt.Printf("Created archive '%s'\n", out)
 	case "serve":
 		err := cmdFlags.Parse(os.Args[2:])
