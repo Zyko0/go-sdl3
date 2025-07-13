@@ -91,4 +91,4 @@ tasks:
         desc: Format go code
         cmds:
             # go fmt code
-            - go fmt github.com/Zyko0/go-sdl3/...
+            - gofmt -s -w .
