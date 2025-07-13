@@ -21,6 +21,13 @@ func initialize() {
 		)
 	}
 
+	iGetVersion = func() int32 {
+		ret := js.Global().Get("Module").Call(
+			"_SDL_GetVersion",
+		)
+		return int32(ret.Int())
+	}
+
 	iAsyncIOFromFile = func(file string, mode string) *AsyncIO {
 		panic("not implemented on js")
 		internal.StackSave()
@@ -556,9 +563,6 @@ func initialize() {
 	}
 
 	iCreateProperties = func() PropertiesID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreateProperties",
 		)
@@ -644,7 +648,6 @@ func initialize() {
 	}
 
 	iSetStringProperty = func(props PropertiesID, name string, value string) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
@@ -661,7 +664,6 @@ func initialize() {
 	}
 
 	iSetNumberProperty = func(props PropertiesID, name string, value int64) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
@@ -841,13 +843,11 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	/*iEnumerateProperties = func(props PropertiesID, callback EnumeratePropertiesCallback, userdata uintptr) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
+	iEnumerateProperties = func(props PropertiesID, callback EnumeratePropertiesCallback, userdata uintptr) bool {
 		_props := int32(props)
 		_callback := int32(callback)
-		_userdata := internal.NewBigInt(userdata)
+		_userdata := int32(0) // Note: ignored
+
 		ret := js.Global().Get("Module").Call(
 			"_SDL_EnumerateProperties",
 			_props,
@@ -856,7 +856,7 @@ func initialize() {
 		)
 
 		return internal.GetBool(ret)
-	}*/
+	}
 
 	iDestroyProperties = func(props PropertiesID) {
 		panic("not implemented on js")
