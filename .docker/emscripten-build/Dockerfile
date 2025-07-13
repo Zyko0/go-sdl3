@@ -18,7 +18,7 @@ RUN git clone https://github.com/emscripten-core/emsdk.git --depth=1 && \
         ./emsdk install tot && \
         ./emsdk activate tot
 
-ENV SDL3_VERSION=3.2.8
+ENV SDL3_VERSION=3.2.16
 ENV TTF_VERSION=3.2.0
 ENV IMAGE_VERSION=3.2.4
 ENV MIXER_VERSION=main

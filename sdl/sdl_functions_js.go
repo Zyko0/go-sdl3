@@ -11371,9 +11371,9 @@ func initialize() {
 		return uintptr(internal.GetInt64(ret))
 	}
 
-	iGPUSupportsShaderFormats = func(format_flags GPUShaderFormat, name string) bool {
+	iGPUSupportsShaderFormats = func(format_flags GPUShaderFormat, name *byte) bool {
 		panic("not implemented on js")
-		internal.StackSave()
+		/*internal.StackSave()
 		defer internal.StackRestore()
 		_format_flags := int32(format_flags)
 		_name := internal.StringOnJSStack(name)
@@ -11383,7 +11383,7 @@ func initialize() {
 			_name,
 		)
 
-		return internal.GetBool(ret)
+		return internal.GetBool(ret)*/
 	}
 
 	iGPUSupportsProperties = func(props PropertiesID) bool {
@@ -11399,9 +11399,9 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iCreateGPUDevice = func(format_flags GPUShaderFormat, debug_mode bool, name string) *GPUDevice {
+	iCreateGPUDevice = func(format_flags GPUShaderFormat, debug_mode bool, name *byte) *GPUDevice {
 		panic("not implemented on js")
-		internal.StackSave()
+		/*internal.StackSave()
 		defer internal.StackRestore()
 		_format_flags := int32(format_flags)
 		_debug_mode := internal.NewBoolean(debug_mode)
@@ -11416,7 +11416,7 @@ func initialize() {
 		_obj := &GPUDevice{}
 		//internal.StoreJSPointer(_obj, ret)
 		_ = ret
-		return _obj
+		return _obj*/
 	}
 
 	iCreateGPUDeviceWithProperties = func(props PropertiesID) *GPUDevice {

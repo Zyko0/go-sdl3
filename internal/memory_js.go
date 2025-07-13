@@ -36,19 +36,22 @@ var (
 
 func init() {
 	// Wait for runtime initialization
-	// TODO: find a cleaner way than loop+sleep?
+	for js.Global().Get("runtimeInitialized").IsUndefined() {
+		time.Sleep(1 * time.Millisecond)
+	}
 	for !js.Global().Get("runtimeInitialized").Bool() {
 		time.Sleep(1 * time.Millisecond)
 	}
-	for js.Global().Get("Module").Get("HEAPU8").IsUndefined() {
+	// TODO: find a cleaner way than loop+sleep?
+	for js.Global().Get("HEAPU8").IsUndefined() {
 		time.Sleep(1 * time.Millisecond)
 	}
 
-	heapU8 = js.Global().Get("Module").Get("HEAPU8")
+	heapU8 = js.Global().Get("HEAPU8")
 
-	stackAlloc = js.Global().Get("Module").Get("stackAlloc")
-	stackString = js.Global().Get("Module").Get("stringToUTF8OnStack")
-	utf8String = js.Global().Get("Module").Get("UTF8ToString")
+	stackAlloc = js.Global().Get("stackAlloc")
+	stackString = js.Global().Get("stringToUTF8OnStack")
+	utf8String = js.Global().Get("UTF8ToString")
 	getValue = js.Global().Get("getValue")
 	setValue = js.Global().Get("setValue")
 	stackSave = js.Global().Get("stackSave")
