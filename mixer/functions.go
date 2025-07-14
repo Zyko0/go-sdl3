@@ -228,3 +228,9 @@ func ResumeMusic() {
 func HaltMusic() {
 	iHaltMusic()
 }
+
+// Mix_FadeOutMusic - Halt the music stream after fading it out for a specified time.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutMusic)
+func FadeOutMusic(ms int32) bool {
+	return iFadeOutMusic(ms)
+}
