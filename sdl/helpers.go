@@ -50,3 +50,15 @@ func NewProperties(properties map[string]any) (PropertiesID, error) {
 
 	return props, nil
 }
+
+// Creates a stream from a byte slice.
+func IOFromBytes(b []byte) (*IOStream, error) {
+	stream := IOFromDynamicMem()
+	if _, err := stream.Write(b); err != nil {
+		return nil, err
+	}
+	if _, err := stream.Seek(0, IO_SEEK_SET); err != nil {
+		return nil, err
+	}
+	return stream, nil
+}

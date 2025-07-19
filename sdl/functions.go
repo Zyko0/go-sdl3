@@ -300,6 +300,12 @@ func IOFromConstMem(mem []byte) (*IOStream, error) {
 	return stream, nil
 }
 
+// SDL_IOFromDynamicMem - Use this function to create an SDL_IOStream that is backed by dynamically allocated memory.
+// (https://wiki.libsdl.org/SDL3/SDL_IOFromDynamicMem)
+func IOFromDynamicMem() *IOStream {
+	return iIOFromDynamicMem()
+}
+
 // TODO:
 
 // AsyncIO
