@@ -10,10 +10,11 @@ func (chunk *Chunk) Free() {
 	iFreeChunk(chunk)
 }
 
-/*func (chunk *Chunk) Volume(volume int32) int32 { // TODO: same name
-	panic("not implemented")
+// Mix_VolumeChunk - Set the volume for a specific chunk.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeChunk)
+func (chunk *Chunk) SetVolume(volume int32) int32 {
 	return iVolumeChunk(chunk, volume)
-}*/
+}
 
 // Music
 

@@ -234,3 +234,149 @@ func HaltMusic() {
 func FadeOutMusic(ms int32) bool {
 	return iFadeOutMusic(ms)
 }
+
+// Mix_Volume - Set the volume for a specific channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Volume)
+func SetChannelVolume(channel, volume int32) int32 {
+	return iVolume(channel, volume)
+}
+
+// Mix_VolumeMusic - Set the volume for the music channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeMusic)
+func SetMusicVolume(volume int32) int32 {
+	return iVolumeMusic(volume)
+}
+
+// Mix_MasterVolume - Set the master volume for all channels.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_MasterVolume)
+func SetMasterVolume(volume int32) int32 {
+	return iMasterVolume(volume)
+}
+
+// Mix_HaltChannel - Halt playing of a particular channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_HaltChannel)
+func HaltChannel(channel int32) {
+	iHaltChannel(channel)
+}
+
+// Mix_HaltGroup - Halt playing of a group of channels by arbitrary tag.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_HaltGroup)
+func HaltGroup(tag int32) {
+	iHaltGroup(tag)
+}
+
+// Mix_ExpireChannel - Change the expiration delay for a particular channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_ExpireChannel)
+func ExpireChannel(channel, ticks int32) int32 {
+	return iExpireChannel(channel, ticks)
+}
+
+// Mix_FadeOutChannel - Halt a channel after fading it out for a specified time.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutChannel)
+func FadeOutChannel(channel, ms int32) int32 {
+	return iFadeOutChannel(channel, ms)
+}
+
+// Mix_FadeOutGroup - Halt a playing group of channels by arbitrary tag, after fading them out for a specified time.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutGroup)
+func FadeOutGroup(tag, ms int32) int32 {
+	return iFadeOutGroup(tag, ms)
+}
+
+// Mix_FadingMusic - Query the fading status of the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_FadingMusic)
+func FadingMusic() Fading {
+	return iFadingMusic()
+}
+
+// Mix_FadingChannel - Query the fading status of a channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_FadingChannel)
+func FadingChannel(channel int32) Fading {
+	return iFadingChannel(channel)
+}
+
+// Mix_Pause - Pause a particular channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Pause)
+func Pause(channel int32) {
+	iPause(channel)
+}
+
+// Mix_PauseGroup - Pause playing of a group of channels by arbitrary tag.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_PauseGroup)
+func PauseGroup(tag int32) {
+	iPauseGroup(tag)
+}
+
+// Mix_Resume - Resume a particular channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Resume)
+func Resume(channel int32) {
+	iResume(channel)
+}
+
+// Mix_ResumeGroup - Resume playing of a group of channels by arbitrary tag.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeGroup)
+func ResumeGroup(tag int32) {
+	iResumeGroup(tag)
+}
+
+// Mix_Paused - Query whether a particular channel is paused.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Paused)
+func Paused(channel int32) bool {
+	return iPaused(channel) == 1
+}
+
+// Mix_Paused - Query whether a particular channel is paused.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Paused)
+func NumChannelsPaused() int32 {
+	return iPaused(-1)
+}
+
+// Mix_RewindMusic - Rewind the music stream.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic)
+func RewindMusic() {
+	iRewindMusic()
+}
+
+// Mix_ModMusicJumpToOrder - Jump to a given order in mod music.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder)
+func ModMusicJumpToOrder(order int32) error {
+	if !iModMusicJumpToOrder(order) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// Mix_SetMusicPosition - Set the current position in the music stream, in seconds.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_SetMusicPosition)
+func SetMusicPosition(position float64) error {
+	if !iSetMusicPosition(position) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// Mix_Playing - Check the playing status of a specific channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Playing)
+func Playing(channel int32) bool {
+	return iPlaying(channel) != 0
+}
+
+// Mix_Playing - Check the playing status of a specific channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Playing)
+func NumChannelsPlaying() int32 {
+	return iPlaying(-1)
+}
+
+// Mix_GetChunk - Get the [Mix_Chunk](Mix_Chunk) currently associated with a mixer channel.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunk)
+func GetChunk(channel int32) *Chunk {
+	return iGetChunk(channel)
+}
+
+// Mix_CloseAudio - Close the mixer, halting all playing audio.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_CloseAudio)
+func CloseAudio() {
+	iCloseAudio()
+}
