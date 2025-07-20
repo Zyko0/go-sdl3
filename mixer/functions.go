@@ -325,12 +325,6 @@ func Paused(channel int32) bool {
 	return iPaused(channel) == 1
 }
 
-// Mix_Paused - Query whether a particular channel is paused.
-// (https://wiki.libsdl.org/SDL3_mixer/Mix_Paused)
-func NumChannelsPaused() int32 {
-	return iPaused(-1)
-}
-
 // Mix_RewindMusic - Rewind the music stream.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic)
 func RewindMusic() {
@@ -361,12 +355,6 @@ func SetMusicPosition(position float64) error {
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_Playing)
 func Playing(channel int32) bool {
 	return iPlaying(channel) != 0
-}
-
-// Mix_Playing - Check the playing status of a specific channel.
-// (https://wiki.libsdl.org/SDL3_mixer/Mix_Playing)
-func NumChannelsPlaying() int32 {
-	return iPlaying(-1)
 }
 
 // Mix_GetChunk - Get the [Mix_Chunk](Mix_Chunk) currently associated with a mixer channel.

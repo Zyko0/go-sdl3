@@ -1830,28 +1830,28 @@ The following emojis mean (they are clickable and should link to the code implem
 | [Mix_PauseGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseGroup) | [:heavy_check_mark:](mixer/functions.go#L305) | [:x:](mixer/mixer_functions_js.go#L1052) |
 | [Mix_Resume](https://wiki.libsdl.org/SDL3_mixer/Mix_Resume) | [:heavy_check_mark:](mixer/functions.go#L311) | [:x:](mixer/mixer_functions_js.go#L1063) |
 | [Mix_ResumeGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeGroup) | [:heavy_check_mark:](mixer/functions.go#L317) | [:x:](mixer/mixer_functions_js.go#L1074) |
-| [Mix_Paused](https://wiki.libsdl.org/SDL3_mixer/Mix_Paused) | [:heavy_check_mark:](mixer/functions.go#L329) | [:x:](mixer/mixer_functions_js.go#L1085) |
+| [Mix_Paused](https://wiki.libsdl.org/SDL3_mixer/Mix_Paused) | [:heavy_check_mark:](mixer/helpers.go#L3) | [:x:](mixer/mixer_functions_js.go#L1085) |
 | [Mix_PauseMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic) | [:heavy_check_mark:](mixer/functions.go#L215) | [:x:](mixer/mixer_functions_js.go#L1098) |
 | [Mix_ResumeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic) | [:heavy_check_mark:](mixer/functions.go#L221) | [:x:](mixer/mixer_functions_js.go#L1107) |
-| [Mix_RewindMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic) | [:heavy_check_mark:](mixer/functions.go#L335) | [:x:](mixer/mixer_functions_js.go#L1116) |
+| [Mix_RewindMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic) | [:heavy_check_mark:](mixer/functions.go#L329) | [:x:](mixer/mixer_functions_js.go#L1116) |
 | [Mix_PausedMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic) | [:heavy_check_mark:](mixer/functions.go#L209) | [:x:](mixer/mixer_functions_js.go#L1125) |
-| [Mix_ModMusicJumpToOrder](https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder) | [:heavy_check_mark:](mixer/functions.go#L341) | [:x:](mixer/mixer_functions_js.go#L1136) |
+| [Mix_ModMusicJumpToOrder](https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder) | [:heavy_check_mark:](mixer/functions.go#L335) | [:x:](mixer/mixer_functions_js.go#L1136) |
 | [Mix_StartTrack](https://wiki.libsdl.org/SDL3_mixer/Mix_StartTrack) | [:heavy_check_mark:](mixer/methods.go#L100) | [:x:](mixer/mixer_functions_js.go#L1149) |
 | [Mix_GetNumTracks](https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumTracks) | [:heavy_check_mark:](mixer/methods.go#L110) | [:x:](mixer/mixer_functions_js.go#L1167) |
-| [Mix_SetMusicPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_SetMusicPosition) | [:heavy_check_mark:](mixer/functions.go#L351) | [:x:](mixer/mixer_functions_js.go#L1183) |
+| [Mix_SetMusicPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_SetMusicPosition) | [:heavy_check_mark:](mixer/functions.go#L345) | [:x:](mixer/mixer_functions_js.go#L1183) |
 | [Mix_GetMusicPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicPosition) | [:heavy_check_mark:](mixer/methods.go#L116) | [:x:](mixer/mixer_functions_js.go#L1196) |
 | [Mix_MusicDuration](https://wiki.libsdl.org/SDL3_mixer/Mix_MusicDuration) | [:heavy_check_mark:](mixer/methods.go#L122) | [:x:](mixer/mixer_functions_js.go#L1212) |
 | [Mix_GetMusicLoopStartTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopStartTime) | [:heavy_check_mark:](mixer/methods.go#L128) | [:x:](mixer/mixer_functions_js.go#L1228) |
 | [Mix_GetMusicLoopEndTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopEndTime) | [:heavy_check_mark:](mixer/methods.go#L134) | [:x:](mixer/mixer_functions_js.go#L1244) |
 | [Mix_GetMusicLoopLengthTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopLengthTime) | [:heavy_check_mark:](mixer/methods.go#L140) | [:x:](mixer/mixer_functions_js.go#L1260) |
-| [Mix_Playing](https://wiki.libsdl.org/SDL3_mixer/Mix_Playing) | [:heavy_check_mark:](mixer/functions.go#L367) | [:x:](mixer/mixer_functions_js.go#L1276) |
+| [Mix_Playing](https://wiki.libsdl.org/SDL3_mixer/Mix_Playing) | [:heavy_check_mark:](mixer/helpers.go#L8) | [:x:](mixer/mixer_functions_js.go#L1276) |
 | [Mix_PlayingMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic) | [:heavy_check_mark:](mixer/functions.go#L203) | [:x:](mixer/mixer_functions_js.go#L1289) |
 | [Mix_SetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_SetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1300) |
 | [Mix_GetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_GetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1313) |
 | [Mix_EachSoundFont](https://wiki.libsdl.org/SDL3_mixer/Mix_EachSoundFont) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1324) |
 | [Mix_SetTimidityCfg](https://wiki.libsdl.org/SDL3_mixer/Mix_SetTimidityCfg) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1339) |
 | [Mix_GetTimidityCfg](https://wiki.libsdl.org/SDL3_mixer/Mix_GetTimidityCfg) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1352) |
-| [Mix_GetChunk](https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunk) | [:heavy_check_mark:](mixer/functions.go#L373) | [:x:](mixer/mixer_functions_js.go#L1363) |
-| [Mix_CloseAudio](https://wiki.libsdl.org/SDL3_mixer/Mix_CloseAudio) | [:heavy_check_mark:](mixer/functions.go#L379) | [:x:](mixer/mixer_functions_js.go#L1377) |
+| [Mix_GetChunk](https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunk) | [:heavy_check_mark:](mixer/functions.go#L361) | [:x:](mixer/mixer_functions_js.go#L1363) |
+| [Mix_CloseAudio](https://wiki.libsdl.org/SDL3_mixer/Mix_CloseAudio) | [:heavy_check_mark:](mixer/functions.go#L367) | [:x:](mixer/mixer_functions_js.go#L1377) |
 </details>
 </details>
