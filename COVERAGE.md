@@ -1382,7 +1382,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_UnregisterApp](https://wiki.libsdl.org/SDL3/SDL_UnregisterApp) | [:question:]() | [:question:]() |
 | [SDL_GDKSuspendComplete](https://wiki.libsdl.org/SDL3/SDL_GDKSuspendComplete) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17303) |
 </details>
-<details open>
+<details>
 <summary><h3>Stdinc</h3></summary>
 
 |Function|Desktop|WASM/js|

@@ -86,6 +86,7 @@ var (
 		"System":       {},
 		"Misc":         {},
 		"GUID":         {},
+		"Stdinc":       {},
 	}
 	uniqueAPIFunctions = map[string]*refFunc{}
 	functions          []*refFunc
