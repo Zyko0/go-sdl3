@@ -6,6 +6,7 @@ import (
 	"unsafe"
 )
 
+// NewProperties is a convenience function to create a new PropertiesID from the given map.
 func NewProperties(properties map[string]any) (PropertiesID, error) {
 	props, err := CreateProperties()
 	if err != nil {
@@ -17,6 +18,16 @@ func NewProperties(properties map[string]any) (PropertiesID, error) {
 		switch value := anyValue.(type) {
 		case uintptr:
 			ok := props.SetPointerProperty(name, (*byte)(unsafe.Pointer(value)))
+			if !ok {
+				err = errors.New("failed to set pointer property")
+			}
+		case unsafe.Pointer:
+			ok := props.SetPointerProperty(name, (*byte)(unsafe.Pointer(value)))
+			if !ok {
+				err = errors.New("failed to set pointer property")
+			}
+		case *byte:
+			ok := props.SetPointerProperty(name, value)
 			if !ok {
 				err = errors.New("failed to set pointer property")
 			}
@@ -51,7 +62,7 @@ func NewProperties(properties map[string]any) (PropertiesID, error) {
 	return props, nil
 }
 
-// Creates a stream from a byte slice.
+// IOFromBytes creates a stream from a byte slice.
 func IOFromBytes(b []byte) (*IOStream, error) {
 	stream := IOFromDynamicMem()
 	if _, err := stream.Write(b); err != nil {
