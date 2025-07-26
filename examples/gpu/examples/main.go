@@ -32,6 +32,7 @@ var examples = []common.ExampleInterface{
 	CopyConsistencyExample,
 	Texture2DArrayExample,
 	TriangleMSAAExample,
+	CubemapExample,
 }
 
 func main() {
