@@ -35,6 +35,7 @@ var examples = []common.ExampleInterface{
 	CubemapExample,
 	WindowResizeExample,
 	Blit2DArrayExample,
+	BlitCubeExample,
 }
 
 func main() {
