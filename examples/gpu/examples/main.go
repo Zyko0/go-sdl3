@@ -33,6 +33,7 @@ var examples = []common.ExampleInterface{
 	Texture2DArrayExample,
 	TriangleMSAAExample,
 	CubemapExample,
+	WindowResizeExample,
 }
 
 func main() {
