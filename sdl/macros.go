@@ -73,6 +73,46 @@ const (
 	WINDOW_NOT_FOCUSABLE       WindowFlags = 0x0000000080000000
 )
 
+// SDL_WINDOWPOS_UNDEFINED_MASK - A magic value used with SDL_WINDOWPOS_UNDEFINED.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_UNDEFINED_MASK)
+const WINDOWPOS_UNDEFINED_MASK uint32 = 0x1FFF0000
+
+// SDL_WINDOWPOS_UNDEFINED_DISPLAY - Used to indicate that you don't care what the window position is.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_UNDEFINED_DISPLAY)
+func WINDOWPOS_UNDEFINED_DISPLAY(X DisplayID) int32 {
+	return int32(WINDOWPOS_UNDEFINED_MASK | uint32(X))
+}
+
+// SDL_WINDOWPOS_UNDEFINED - Used to indicate that you don't care what the window position/display is.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_UNDEFINED)
+const WINDOWPOS_UNDEFINED = int32(WINDOWPOS_UNDEFINED_MASK)
+
+// SDL_WINDOWPOS_ISUNDEFINED - A macro to test if the window position is marked as "undefined."
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_ISUNDEFINED)
+func WINDOWPOS_ISUNDEFINED(X DisplayID) bool {
+	return (uint32(X) & 0xFFFF0000) == WINDOWPOS_UNDEFINED_MASK
+}
+
+// SDL_WINDOWPOS_CENTERED_MASK - A magic value used with SDL_WINDOWPOS_CENTERED.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_CENTERED_MASK)
+const WINDOWPOS_CENTERED_MASK uint32 = 0x2FFF0000
+
+// SDL_WINDOWPOS_CENTERED_DISPLAY - Used to indicate that the window position should be centered.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_CENTERED_DISPLAY)
+func WINDOWPOS_CENTERED_DISPLAY(X DisplayID) int32 {
+	return int32(WINDOWPOS_CENTERED_MASK | uint32(X))
+}
+
+// SDL_WINDOWPOS_CENTERED - Used to indicate that the window position should be centered.
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_CENTERED)
+const WINDOWPOS_CENTERED = int32(WINDOWPOS_CENTERED_MASK)
+
+// SDL_WINDOWPOS_ISCENTERED - A macro to test if the window position is marked as "centered."
+// (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_ISCENTERED)
+func WINDOWPOS_ISCENTERED(X DisplayID) bool {
+	return (uint32(X) & 0xFFFF0000) == WINDOWPOS_CENTERED_MASK
+}
+
 const (
 	HAT_CENTERED  uint8 = 0x00
 	HAT_UP        uint8 = 0x01
