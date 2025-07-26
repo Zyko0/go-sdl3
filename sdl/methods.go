@@ -1934,8 +1934,13 @@ func (device *GPUDevice) CreateGraphicsPipeline(createinfo *GPUGraphicsPipelineC
 
 // SDL_CreateGPUSampler - Creates a sampler object to be used when binding textures in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUSampler)
-func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) *GPUSampler {
-	return iCreateGPUSampler(device, createinfo)
+func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) (*GPUSampler, error) {
+	sampler := iCreateGPUSampler(device, createinfo)
+	if sampler == nil {
+		return nil, internal.LastErr()
+	}
+
+	return sampler, nil
 }
 
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
