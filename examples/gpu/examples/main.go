@@ -30,6 +30,7 @@ var examples = []common.ExampleInterface{
 	ComputeSamplerExample,
 	CopyAndReadbackExample,
 	CopyConsistencyExample,
+	Texture2DArrayExample,
 }
 
 func main() {
