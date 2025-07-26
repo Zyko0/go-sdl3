@@ -1,5 +1,15 @@
 package common
 
+type PositionVertex struct {
+	X, Y, Z float32
+}
+
+func NewPosVert(x, y, z float32) PositionVertex {
+	return PositionVertex{
+		X: x, Y: y, Z: z,
+	}
+}
+
 type PositionColorVertex struct {
 	X, Y, Z    float32
 	R, G, B, A uint8
