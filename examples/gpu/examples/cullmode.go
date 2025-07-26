@@ -21,12 +21,12 @@ type CullMode struct {
 
 var CullModeExample = &CullMode{
 	modeNames: [6]string{
-		"CW_CullNone",
-		"CW_CullFront",
-		"CW_CullBack",
 		"CCW_CullNone",
 		"CCW_CullFront",
 		"CCW_CullBack",
+		"CW_CullNone",
+		"CW_CullFront",
+		"CW_CullBack",
 	},
 }
 
