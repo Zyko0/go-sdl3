@@ -31,6 +31,7 @@ var examples = []common.ExampleInterface{
 	CopyAndReadbackExample,
 	CopyConsistencyExample,
 	Texture2DArrayExample,
+	TriangleMSAAExample,
 }
 
 func main() {
