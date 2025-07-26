@@ -201,12 +201,12 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 
 	// set up texture data
 
-	imageSizeInBytes := imageWidth * imageHeight * 4
+	imageSizeInBytes := uint32(imageWidth * imageHeight * 4)
 
 	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size:  uint32(imageSizeInBytes * 2),
+			Size:  imageSizeInBytes * 2,
 		},
 	)
 	if err != nil {
@@ -271,7 +271,7 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 
 	copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{
 		TransferBuffer: textureTransferBuffer,
-		Offset:         uint32(imageSizeInBytes),
+		Offset:         imageSizeInBytes,
 	}, &sdl.GPUTextureRegion{
 		Texture: e.texture,
 		Layer:   1,
