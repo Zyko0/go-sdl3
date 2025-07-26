@@ -12,11 +12,9 @@ type TriangleMSAA struct {
 	pipelines          [4]*sdl.GPUGraphicsPipeline
 	msaaRenderTextures [4]*sdl.GPUTexture
 	resolveTexture     *sdl.GPUTexture
-	sampleCounts       uint32
+	sampleCounts       int
 
-	rtFormat sdl.GPUTextureFormat
-
-	currentSampleCount sdl.GPUSampleCount
+	currentSampleCount int
 }
 
 var TriangleMSAAExample = &TriangleMSAA{}
@@ -66,6 +64,7 @@ func (e *TriangleMSAA) Init(context *common.Context) error {
 		FragmentShader: fragmentShader,
 	}
 
+	e.sampleCounts = 0
 	for i := range e.pipelines {
 		sampleCount := sdl.GPUSampleCount(i)
 		if !context.Device.TextureSupportsSampleCount(rtFormat, sampleCount) {
@@ -135,15 +134,13 @@ func (e *TriangleMSAA) Update(context *common.Context) error {
 	if context.LeftPressed {
 		e.currentSampleCount -= 1
 		if e.currentSampleCount < 0 {
-			e.currentSampleCount = sdl.GPUSampleCount(e.sampleCounts - 1)
+			e.currentSampleCount = e.sampleCounts - 1
 		}
 		changed = true
 	}
 
 	if context.RightPressed {
-		e.currentSampleCount = sdl.GPUSampleCount(
-			uint32(e.currentSampleCount+1) % e.sampleCounts,
-		)
+		e.currentSampleCount = (e.currentSampleCount + 1) % e.sampleCounts
 		changed = true
 	}
 
@@ -172,7 +169,7 @@ func (e *TriangleMSAA) Draw(context *common.Context) error {
 			LoadOp:     sdl.GPU_LOADOP_CLEAR,
 		}
 
-		if e.currentSampleCount == sdl.GPU_SAMPLECOUNT_1 {
+		if sdl.GPUSampleCount(e.currentSampleCount) == sdl.GPU_SAMPLECOUNT_1 {
 			colorTargetInfo.StoreOp = sdl.GPU_STOREOP_STORE
 		} else {
 			colorTargetInfo.StoreOp = sdl.GPU_STOREOP_RESOLVE
@@ -218,7 +215,6 @@ func (e *TriangleMSAA) Quit(context *common.Context) {
 	}
 	context.Device.ReleaseTexture(e.resolveTexture)
 
-	e.sampleCounts = 0
 	e.currentSampleCount = 0
 
 	context.Quit()

@@ -271,7 +271,7 @@ func (e *Cubemap) Init(context *common.Context) error {
 
 	cmdbuf.Submit()
 
-	// Print the instructions
+	// print the instructions
 	fmt.Println("Press Left/Right to view the opposite direction!")
 
 	return nil

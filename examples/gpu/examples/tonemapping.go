@@ -233,10 +233,16 @@ func (e *ToneMapping) Init(context *common.Context) error {
 	e.linearToSRGBPipeline, err = e.BuildPostProcessComputePipeline(
 		context.Device, "LinearToSRGB.comp",
 	)
+	if err != nil {
+		return errors.New("failed to build compute pipeline: " + err.Error())
+	}
 
 	e.linearToST2084Pipeline, err = e.BuildPostProcessComputePipeline(
 		context.Device, "LinearToST2084.comp",
 	)
+	if err != nil {
+		return errors.New("failed to build compute pipeline: " + err.Error())
+	}
 
 	fmt.Println("Press Left/Right to cycle swapchain composition")
 	fmt.Println("Press Up/Down to cycle tonemap operators")
