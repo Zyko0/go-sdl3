@@ -157,7 +157,7 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 
 	// create the sampler
 
-	e.sampler = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.sampler, err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
 		MagFilter:    sdl.GPU_FILTER_NEAREST,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_NEAREST,
@@ -165,6 +165,9 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 
 	// create the buffers
 

@@ -122,7 +122,7 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 	context.Device.ReleaseShader(fragmentShader)
 
 	// PointClamp
-	e.samplers[0] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[0], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
 		MagFilter:    sdl.GPU_FILTER_NEAREST,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_NEAREST,
@@ -130,8 +130,11 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 	// PointWrap
-	e.samplers[1] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[1], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
 		MagFilter:    sdl.GPU_FILTER_NEAREST,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_NEAREST,
@@ -139,8 +142,11 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 	// LinearClamp
-	e.samplers[2] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[2], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_LINEAR,
 		MagFilter:    sdl.GPU_FILTER_LINEAR,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -148,8 +154,11 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 	// LinearWrap
-	e.samplers[3] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[3], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_LINEAR,
 		MagFilter:    sdl.GPU_FILTER_LINEAR,
 		MipmapMode:   sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -157,8 +166,11 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 		AddressModeW: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 	// AnisotropicClamp
-	e.samplers[4] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[4], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:        sdl.GPU_FILTER_LINEAR,
 		MagFilter:        sdl.GPU_FILTER_LINEAR,
 		MipmapMode:       sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -168,8 +180,11 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		EnableAnisotropy: true,
 		MaxAnisotropy:    4,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 	// AnisotropicWrap
-	e.samplers[5] = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.samplers[5], err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:        sdl.GPU_FILTER_LINEAR,
 		MagFilter:        sdl.GPU_FILTER_LINEAR,
 		MipmapMode:       sdl.GPU_SAMPLERMIPMAPMODE_LINEAR,
@@ -179,6 +194,9 @@ func (e *TexturedQuad) Init(context *common.Context) error {
 		EnableAnisotropy: true,
 		MaxAnisotropy:    4,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 
 	// create gpu resources buffer
 

@@ -125,10 +125,13 @@ func (e *BasicCompute) Init(context *common.Context) error {
 		return errors.New("failed to create texture: " + err.Error())
 	}
 
-	e.sampler = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
+	e.sampler, err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		AddressModeU: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 		AddressModeV: sdl.GPU_SAMPLERADDRESSMODE_REPEAT,
 	})
+	if err != nil {
+		return errors.New("failed to create sampler: " + err.Error())
+	}
 
 	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
