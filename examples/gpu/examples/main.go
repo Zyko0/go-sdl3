@@ -36,6 +36,7 @@ var examples = []common.ExampleInterface{
 	WindowResizeExample,
 	Blit2DArrayExample,
 	BlitCubeExample,
+	BlitMirrorExample,
 }
 
 func main() {
