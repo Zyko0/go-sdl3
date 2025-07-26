@@ -37,6 +37,7 @@ var examples = []common.ExampleInterface{
 	Blit2DArrayExample,
 	BlitCubeExample,
 	BlitMirrorExample,
+	GenerateMipmapsExample,
 }
 
 func main() {
