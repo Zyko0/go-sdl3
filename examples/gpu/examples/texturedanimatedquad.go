@@ -151,6 +151,9 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
 	})
+	if err != nil {
+		return errors.New("failed to create texture: " + err.Error())
+	}
 
 	e.sampler, err = context.Device.CreateSampler(&sdl.GPUSamplerCreateInfo{
 		MinFilter:    sdl.GPU_FILTER_NEAREST,
@@ -216,6 +219,9 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 			Size:  uint32(imageWidth * imageHeight * 4),
 		},
 	)
+	if err != nil {
+		return errors.New("failed to create transfer buffer: " + err.Error())
+	}
 
 	textureTransferDataPtr, err := context.Device.MapTransferBuffer(textureTransferBuffer, false)
 	if err != nil {

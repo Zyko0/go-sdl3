@@ -136,6 +136,9 @@ func (e *CustomSampling) Init(context *common.Context) error {
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_GRAPHICS_STORAGE_READ,
 	})
+	if err != nil {
+		return errors.New("failed to create texture: " + err.Error())
+	}
 
 	// setup buffer data
 
@@ -189,6 +192,9 @@ func (e *CustomSampling) Init(context *common.Context) error {
 			Size:  uint32(imageWidth * imageHeight * 4),
 		},
 	)
+	if err != nil {
+		return errors.New("failed to create transfer buffer: " + err.Error())
+	}
 
 	textureTransferDataPtr, err := context.Device.MapTransferBuffer(textureTransferBuffer, false)
 	if err != nil {

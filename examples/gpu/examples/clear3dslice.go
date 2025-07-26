@@ -35,7 +35,7 @@ func (e *Clear3DSlice) Init(context *common.Context) error {
 		Usage:             sdl.GPU_TEXTUREUSAGE_COLOR_TARGET | sdl.GPU_TEXTUREUSAGE_SAMPLER,
 	})
 	if err != nil {
-		errors.New("failed to create texture: " + err.Error())
+		return errors.New("failed to create texture: " + err.Error())
 	}
 
 	return nil

@@ -57,6 +57,9 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
 	})
+	if err != nil {
+		return errors.New("failed to create texture: " + err.Error())
+	}
 	context.Device.SetTextureName(e.texture, "Ravioli Texture 🖼️")
 
 	e.writeTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
@@ -69,6 +72,9 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 		Usage: sdl.GPU_TEXTUREUSAGE_SAMPLER |
 			sdl.GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE,
 	})
+	if err != nil {
+		return errors.New("failed to create write texture: " + err.Error())
+	}
 
 	e.pipeline, err = common.CreateComputePipelineFromShader(
 		context.Device, "TexturedQuad.comp",
@@ -170,6 +176,9 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 			Size:  uint32(imageWidth * imageHeight * 4),
 		},
 	)
+	if err != nil {
+		return errors.New("failed to create transfer buffer: " + err.Error())
+	}
 
 	textureTransferDataPtr, err := context.Device.MapTransferBuffer(textureTransferBuffer, false)
 	if err != nil {
