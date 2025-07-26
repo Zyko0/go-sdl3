@@ -55,10 +55,15 @@ func LoadBMP(filename string) ([]byte, int, int, error) {
 		return nil, 0, 0, errors.New("failed to decode bmp: " + err.Error())
 	}
 
-	imgRGBA, ok := img.(*image.NRGBA)
-	if !ok {
-		return nil, 0, 0, fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
+	imgNRGBA, ok := img.(*image.NRGBA)
+	if ok {
+		return imgNRGBA.Pix, imgNRGBA.Rect.Size().X, imgNRGBA.Rect.Size().Y, nil
 	}
 
-	return imgRGBA.Pix, imgRGBA.Rect.Size().X, imgRGBA.Rect.Size().Y, nil
+	imgRGBA, ok := img.(*image.RGBA)
+	if ok {
+		return imgRGBA.Pix, imgRGBA.Rect.Size().X, imgRGBA.Rect.Size().Y, nil
+	}
+
+	return nil, 0, 0, fmt.Errorf("unknown type: %s", reflect.TypeOf(img))
 }

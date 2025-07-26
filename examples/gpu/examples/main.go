@@ -38,6 +38,7 @@ var examples = []common.ExampleInterface{
 	BlitCubeExample,
 	BlitMirrorExample,
 	GenerateMipmapsExample,
+	LatencyExample,
 }
 
 func main() {
