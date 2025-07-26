@@ -34,6 +34,7 @@ var examples = []common.ExampleInterface{
 	TriangleMSAAExample,
 	CubemapExample,
 	WindowResizeExample,
+	Blit2DArrayExample,
 }
 
 func main() {
