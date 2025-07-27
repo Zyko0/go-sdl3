@@ -367,109 +367,109 @@ func initialize() {
 	}
 	iisAVIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isAVIF, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisICO = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isICO, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisCUR = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isCUR, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisBMP = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isBMP, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisGIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isGIF, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisJPG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isJPG, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisJXL = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isJXL, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisLBM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isLBM, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPCX = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPCX, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPNG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNG, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisPNM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isPNM, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisSVG = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isSVG, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisQOI = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isQOI, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisTIF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isTIF, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXCF = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXCF, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXPM = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXPM, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisXV = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isXV, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
 	iisWEBP = func(src *sdl.IOStream) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_isWEBP, uintptr(unsafe.Pointer(src)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(src)
 		return __r0
 	}
@@ -607,42 +607,42 @@ func initialize() {
 	}
 	iSaveAVIF = func(surface *sdl.Surface, file string, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveAVIF, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))), uintptr(quality))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSaveAVIF_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveAVIF_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio), uintptr(quality))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(dst)
 		return __r0
 	}
 	iSavePNG = func(surface *sdl.Surface, file string) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SavePNG, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSavePNG_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SavePNG_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(dst)
 		return __r0
 	}
 	iSaveJPG = func(surface *sdl.Surface, file string, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveJPG, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(file))), uintptr(quality))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(file)
 		return __r0
 	}
 	iSaveJPG_IO = func(surface *sdl.Surface, dst *sdl.IOStream, closeio bool, quality int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_IMG_SaveJPG_IO, uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(dst)), puregogen.BoolToUintptr(closeio), uintptr(quality))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(surface)
 		runtime.KeepAlive(dst)
 		return __r0
