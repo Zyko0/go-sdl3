@@ -43,6 +43,7 @@ var examples = []common.ExampleInterface{
 	ComputeSpriteBatchExample,
 	PullSpriteBatchExample,
 	TextureTypeTestExample,
+	CompressedTexturesExample,
 }
 
 func main() {
