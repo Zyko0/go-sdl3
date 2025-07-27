@@ -1803,6 +1803,8 @@ SDL_HINT_CAMERA_DRIVER,"A variable that decides what camera backend to use.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_CAMERA_DRIVER
 SDL_HINT_CPU_FEATURE_MASK,"A variable that limits what CPU features are available.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_CPU_FEATURE_MASK
+SDL_HINT_DEBUG_LOGGING,"A variable controlling whether SDL logs some debug information.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_DEBUG_LOGGING
 SDL_HINT_DISPLAY_USABLE_BOUNDS,"Override for [SDL_GetDisplayUsableBounds](SDL_GetDisplayUsableBounds)().
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_DISPLAY_USABLE_BOUNDS
 SDL_HINT_EGL_LIBRARY,"Specify the EGL library to load.
@@ -1931,6 +1933,8 @@ SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED,"A variable controlling whether the play
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED
 SDL_HINT_JOYSTICK_HIDAPI_SHIELD,"A variable controlling whether the HIDAPI driver for NVIDIA SHIELD controllers should be used.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_SHIELD
+SDL_HINT_JOYSTICK_HIDAPI_SINPUT,"A variable controlling whether the HIDAPI driver for SInput controllers should be used.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_SINPUT
 SDL_HINT_JOYSTICK_HIDAPI_STADIA,"A variable controlling whether the HIDAPI driver for Google Stadia controllers should be used.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_STADIA
 SDL_HINT_JOYSTICK_HIDAPI_STEAM,"A variable controlling whether the HIDAPI driver for Bluetooth Steam Controllers should be used.
@@ -2005,6 +2009,8 @@ SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER,"A variable that controls whether SDL require
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER
 SDL_HINT_LOGGING,"A variable controlling the default SDL log levels.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_LOGGING
+SDL_HINT_LOG_BACKENDS,"A variable controlling whether SDL backend information is logged.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_LOG_BACKENDS
 SDL_HINT_MAC_BACKGROUND_APP,"A variable controlling whether to force the application to become the foreground process when launched on macOS.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_BACKGROUND_APP
 SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,"A variable that determines whether Ctrl+Click should generate a right-click event on macOS.
@@ -2419,6 +2425,8 @@ SDL_IsTV,"Query if the current device is a TV.
 ",https://wiki.libsdl.org/SDL3/SDL_IsTV
 SDL_IsTablet,"Query if the current device is a tablet.
 ",https://wiki.libsdl.org/SDL3/SDL_IsTablet
+SDL_IsTraySupported,"Check whether or not tray icons can be created.
+",https://wiki.libsdl.org/SDL3/SDL_IsTraySupported
 SDL_JOYSTICK_AXIS_MAX,"The largest value an [SDL_Joystick](SDL_Joystick)'s axis can report.
 ",https://wiki.libsdl.org/SDL3/SDL_JOYSTICK_AXIS_MAX
 SDL_JOYSTICK_AXIS_MIN,"The smallest value an [SDL_Joystick](SDL_Joystick)'s axis can report.
@@ -4409,210 +4417,6 @@ IMG_isXPM,"Detect XPM image data on a readable/seekable SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_isXPM
 IMG_isXV,"Detect XV image data on a readable/seekable SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_isXV
-Mix_AllocateChannels,"Dynamically change the number of channels managed by the mixer.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_AllocateChannels
-Mix_ChannelFinished,"Set a callback that runs when a channel has finished playing.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ChannelFinished
-Mix_Chunk,"The internal format for an audio chunk
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Chunk
-Mix_CloseAudio,"Close the mixer, halting all playing audio.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_CloseAudio
-Mix_EachSoundFont,"Iterate SoundFonts paths to use by supported MIDI backends.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_EachSoundFont
-Mix_EffectDone_t,"This is a callback that signifies that a channel has finished all its loops and has completed playback.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_EffectDone_t
-Mix_EffectFunc_t,"This is the format of a special effect callback:
-",https://wiki.libsdl.org/SDL3_mixer/Mix_EffectFunc_t
-Mix_ExpireChannel,"Change the expiration delay for a particular channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ExpireChannel
-Mix_FadeInChannel,"Play an audio chunk on a specific channel, fading in the audio.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInChannel
-Mix_FadeInChannelTimed,"Play an audio chunk on a specific channel, fading in the audio, for a maximum time.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInChannelTimed
-Mix_FadeInMusic,"Play a new music object, fading in the audio.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusic
-Mix_FadeInMusicPos,"Play a new music object, fading in the audio, from a starting position.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusicPos
-Mix_FadeOutChannel,"Halt a channel after fading it out for a specified time.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutChannel
-Mix_FadeOutGroup,"Halt a playing group of channels by arbitrary tag, after fading them out for a specified time.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutGroup
-Mix_FadeOutMusic,"Halt the music stream after fading it out for a specified time.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutMusic
-Mix_Fading,"The different fading types supported
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Fading
-Mix_FadingChannel,"Query the fading status of a channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadingChannel
-Mix_FadingMusic,"Query the fading status of the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FadingMusic
-Mix_FreeChunk,"Free an audio chunk.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FreeChunk
-Mix_FreeMusic,"Free a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_FreeMusic
-Mix_GetChunk,"Get the [Mix_Chunk](Mix_Chunk) currently associated with a mixer channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunk
-Mix_GetChunkDecoder,"Get a chunk decoder's name.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunkDecoder
-Mix_GetError,"Get last SDL_mixer error
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetError
-Mix_GetMusicAlbumTag,"Get the album name for a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicAlbumTag
-Mix_GetMusicArtistTag,"Get the artist name for a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicArtistTag
-Mix_GetMusicCopyrightTag,"Get the copyright text for a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicCopyrightTag
-Mix_GetMusicDecoder,"Get a music decoder's name.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicDecoder
-Mix_GetMusicHookData,"Get a pointer to the user data for the current music hook.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicHookData
-Mix_GetMusicLoopEndTime,"Get the loop end time position of music stream, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopEndTime
-Mix_GetMusicLoopLengthTime,"Get the loop time length of music stream, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopLengthTime
-Mix_GetMusicLoopStartTime,"Get the loop start time position of music stream, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopStartTime
-Mix_GetMusicPosition,"Get the time current position of music stream, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicPosition
-Mix_GetMusicTitle,"Get the title for a music object, or its filename.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicTitle
-Mix_GetMusicTitleTag,"Get the title for a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicTitleTag
-Mix_GetMusicType,"Find out the format of a mixer music.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicType
-Mix_GetMusicVolume,"Query the current volume value for a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicVolume
-Mix_GetNumChunkDecoders,"Get a list of chunk decoders that this build of SDL_mixer provides.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumChunkDecoders
-Mix_GetNumMusicDecoders,"Get a list of music decoders that this build of SDL_mixer provides.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumMusicDecoders
-Mix_GetNumTracks,"Get number of tracks in music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumTracks
-Mix_GetSoundFonts,"Get SoundFonts paths to use by supported MIDI backends.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetSoundFonts
-Mix_GetTimidityCfg,"Get full path of a previously-specified Timidity config file.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GetTimidityCfg
-Mix_GroupAvailable,"Finds the first available channel in a group of channels.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupAvailable
-Mix_GroupChannel,"Assign a tag to a channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupChannel
-Mix_GroupChannels,"Assign several consecutive channels to the same tag.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupChannels
-Mix_GroupCount,"Returns the number of channels in a group.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupCount
-Mix_GroupNewer,"Find the ""most recent"" sample playing in a group of channels.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupNewer
-Mix_GroupOldest,"Find the ""oldest"" sample playing in a group of channels.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_GroupOldest
-Mix_HaltChannel,"Halt playing of a particular channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HaltChannel
-Mix_HaltGroup,"Halt playing of a group of channels by arbitrary tag.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HaltGroup
-Mix_HaltMusic,"Halt playing of the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HaltMusic
-Mix_HasChunkDecoder,"Check if a chunk decoder is available by name.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HasChunkDecoder
-Mix_HasMusicDecoder,"Check if a music decoder is available by name.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HasMusicDecoder
-Mix_HookMusic,"Add your own music player or additional mixer function.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HookMusic
-Mix_HookMusicFinished,"Set a callback that runs when a music object has stopped playing.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_HookMusicFinished
-Mix_Init,"Initialize SDL_mixer.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Init
-Mix_LoadMUS,"Load a supported audio format into a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUS
-Mix_LoadMUSType_IO,"Load an audio format into a music object, assuming a specific format.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUSType_IO
-Mix_LoadMUS_IO,"Load a supported audio format into a music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUS_IO
-Mix_LoadWAV,"Load a supported audio format into a chunk.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_LoadWAV
-Mix_LoadWAV_IO,"Load a supported audio format into a chunk.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_LoadWAV_IO
-Mix_MasterVolume,"Set the master volume for all channels.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_MasterVolume
-Mix_ModMusicJumpToOrder,"Jump to a given order in mod music.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder
-Mix_Music,"The internal format for a music chunk interpreted via codecs
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Music
-Mix_MusicDuration,"Get a music object's duration, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_MusicDuration
-Mix_MusicType,"These are types of music files (not libraries used to load them)
-",https://wiki.libsdl.org/SDL3_mixer/Mix_MusicType
-Mix_OpenAudio,"Open an audio device for playback.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_OpenAudio
-Mix_Pause,"Pause a particular channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Pause
-Mix_PauseAudio,"Suspend or resume the whole audio output.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PauseAudio
-Mix_PauseGroup,"Pause playing of a group of channels by arbitrary tag.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PauseGroup
-Mix_PauseMusic,"Pause the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic
-Mix_Paused,"Query whether a particular channel is paused.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Paused
-Mix_PausedMusic,"Query whether the music stream is paused.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic
-Mix_PlayChannel,"Play an audio chunk on a specific channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannel
-Mix_PlayChannelTimed,"Play an audio chunk on a specific channel for a maximum time.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed
-Mix_PlayMusic,"Play a new music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PlayMusic
-Mix_Playing,"Check the playing status of a specific channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Playing
-Mix_PlayingMusic,"Check the playing status of the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic
-Mix_QuerySpec,"Find out what the actual audio device parameters are.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_QuerySpec
-Mix_QuickLoad_RAW,"Load a raw audio data from memory as quickly as possible.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_QuickLoad_RAW
-Mix_QuickLoad_WAV,"Load a WAV file from memory as quickly as possible.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_QuickLoad_WAV
-Mix_Quit,"Deinitialize SDL_mixer.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Quit
-Mix_RegisterEffect,"Register a special effect function.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_RegisterEffect
-Mix_ReserveChannels,"Reserve the first channels for the application.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ReserveChannels
-Mix_Resume,"Resume a particular channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Resume
-Mix_ResumeGroup,"Resume playing of a group of channels by arbitrary tag.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeGroup
-Mix_ResumeMusic,"Resume the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic
-Mix_RewindMusic,"Rewind the music stream.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic
-Mix_SetDistance,"Set the ""distance"" of a channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetDistance
-Mix_SetMusicPosition,"Set the current position in the music stream, in seconds.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetMusicPosition
-Mix_SetPanning,"Set the panning of a channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetPanning
-Mix_SetPosition,"Set the position of a channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetPosition
-Mix_SetPostMix,"Set a function that is called after all mixing is performed.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetPostMix
-Mix_SetReverseStereo,"Cause a channel to reverse its stereo.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetReverseStereo
-Mix_SetSoundFonts,"Set SoundFonts paths to use by supported MIDI backends.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetSoundFonts
-Mix_SetTimidityCfg,"Set full path of the Timidity config file.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_SetTimidityCfg
-Mix_StartTrack,"Start a track in music object.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_StartTrack
-Mix_UnregisterAllEffects,"Explicitly unregister all special effect functions.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_UnregisterAllEffects
-Mix_UnregisterEffect,"Explicitly unregister a special effect function.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_UnregisterEffect
-Mix_Version,"This function gets the version of the dynamically linked SDL_mixer library.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Version
-Mix_Volume,"Set the volume for a specific channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_Volume
-Mix_VolumeChunk,"Set the volume for a specific chunk.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeChunk
-Mix_VolumeMusic,"Set the volume for the music channel.
-",https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeMusic
 TTF_AddFallbackFont,"Add a fallback font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_AddFallbackFont
 TTF_AppendTextString,"Append UTF-8 text to a text object.
