@@ -41,6 +41,7 @@ var examples = []common.ExampleInterface{
 	LatencyExample,
 	DepthSamplerExample,
 	ComputeSpriteBatchExample,
+	PullSpriteBatchExample,
 }
 
 func main() {

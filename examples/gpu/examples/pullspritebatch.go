@@ -11,23 +11,17 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-// this example is slightly inferior in terms of performance compared to PullSpriteBatch
-// despite that, it is included as an example of a compute to graphics workflow.
-
-type ComputeSpriteBatch struct {
-	computePipeline             *sdl.GPUComputePipeline
-	renderPipeline              *sdl.GPUGraphicsPipeline
-	sampler                     *sdl.GPUSampler
-	texture                     *sdl.GPUTexture
-	spriteComputeTransferBuffer *sdl.GPUTransferBuffer
-	spriteComputeBuffer         *sdl.GPUBuffer
-	spriteVertexBuffer          *sdl.GPUBuffer
-	spriteIndexBuffer           *sdl.GPUBuffer
+type PullSpriteBatch struct {
+	renderPipeline           *sdl.GPUGraphicsPipeline
+	sampler                  *sdl.GPUSampler
+	texture                  *sdl.GPUTexture
+	spriteDataTransferBuffer *sdl.GPUTransferBuffer
+	spriteDataBuffer         *sdl.GPUBuffer
 
 	SPRITE_COUNT uint32
 }
 
-type ComputeSpriteInstance struct {
+type PullSpriteInstance struct {
 	X, Y, Z                float32
 	Rotation               float32
 	W, H, _, _             float32
@@ -35,15 +29,15 @@ type ComputeSpriteInstance struct {
 	R, G, B, A             float32
 }
 
-var ComputeSpriteBatchExample = &ComputeSpriteBatch{
+var PullSpriteBatchExample = &PullSpriteBatch{
 	SPRITE_COUNT: 8192,
 }
 
-func (e *ComputeSpriteBatch) String() string {
-	return "ComputeSpriteBatch"
+func (e *PullSpriteBatch) String() string {
+	return "PullSpriteBatch"
 }
 
-func (e *ComputeSpriteBatch) Init(context *common.Context) error {
+func (e *PullSpriteBatch) Init(context *common.Context) error {
 	err := context.Init(0)
 	if err != nil {
 		return err
@@ -67,7 +61,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	// create the shaders and pipelines
 
 	vertShader, err := common.LoadShader(
-		context.Device, "TexturedQuadColorWithMatrix.vert", 0, 1, 0, 0,
+		context.Device, "PullSpriteBatch.vert", 0, 1, 1, 0,
 	)
 	if err != nil {
 		return errors.New("failed to create scene vertex shader: " + err.Error())
@@ -97,46 +91,10 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		},
 	}
 
-	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
-			Slot:             0,
-			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
-			InstanceStepRate: 0,
-			Pitch:            uint32(unsafe.Sizeof(common.PositionTextureColorVertex{})),
-		},
-	}
-
-	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
-			BufferSlot: 0,
-			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT4,
-			Location:   0,
-			Offset:     0,
-		},
-		sdl.GPUVertexAttribute{
-			BufferSlot: 0,
-			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT2,
-			Location:   1,
-			Offset:     16,
-		},
-		sdl.GPUVertexAttribute{
-			BufferSlot: 0,
-			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT4,
-			Location:   2,
-			Offset:     32,
-		},
-	}
-
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
 			NumColorTargets:         uint32(len(colorTargetDescriptions)),
 			ColorTargetDescriptions: &colorTargetDescriptions[0],
-		},
-		VertexInputState: sdl.GPUVertexInputState{
-			NumVertexBuffers:         uint32(len(vertexBufferDescriptions)),
-			VertexBufferDescriptions: &vertexBufferDescriptions[0],
-			NumVertexAttributes:      uint32(len(vertexAttributes)),
-			VertexAttributes:         &vertexAttributes[0],
 		},
 		PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 		VertexShader:   vertShader,
@@ -151,21 +109,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	context.Device.ReleaseShader(vertShader)
 	context.Device.ReleaseShader(fragShader)
 
-	// create the sprite batch compute pipeline
-
-	e.computePipeline, err = common.CreateComputePipelineFromShader(
-		context.Device, "SpriteBatch.comp",
-		sdl.GPUComputePipelineCreateInfo{
-			NumReadonlyStorageBuffers:  1,
-			NumReadwriteStorageBuffers: 1,
-			ThreadcountX:               64,
-			ThreadcountY:               1,
-			ThreadcountZ:               1,
-		},
-	)
-	if err != nil {
-		return errors.New("failed to create compute pipeline: " + err.Error())
-	}
+	// load the image data
 
 	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli_atlas.bmp")
 	if err != nil {
@@ -225,7 +169,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		return errors.New("failed to create sampler: " + err.Error())
 	}
 
-	e.spriteComputeTransferBuffer, err = context.Device.CreateTransferBuffer(
+	e.spriteDataTransferBuffer, err = context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
 			Size:  e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
@@ -235,64 +179,15 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		return errors.New("failed to create sprite compute transfer buffer: " + err.Error())
 	}
 
-	e.spriteComputeBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ,
+	e.spriteDataBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ,
 		Size:  e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
 	})
 	if err != nil {
 		return errors.New("failed to create sprite compute buffer: " + err.Error())
 	}
 
-	e.spriteVertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE | sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  e.SPRITE_COUNT * 4 * uint32(unsafe.Sizeof(common.PositionTextureColorVertex{})),
-	})
-	if err != nil {
-		return errors.New("failed to create sprite vertex buffer: " + err.Error())
-	}
-
-	e.spriteIndexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
-		Size:  e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
-	})
-	if err != nil {
-		return errors.New("failed to create sprite vertex buffer: " + err.Error())
-	}
-
 	// transfer the up-front data
-
-	indexBufferTransferBuffer, err := context.Device.CreateTransferBuffer(
-		&sdl.GPUTransferBufferCreateInfo{
-			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size:  e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
-		},
-	)
-	if err != nil {
-		return errors.New("failed to create index buffer transfer buffer: " + err.Error())
-	}
-
-	indexTransferPtr, err := context.Device.MapTransferBuffer(
-		indexBufferTransferBuffer, false,
-	)
-	if err != nil {
-		return errors.New("failed to map index buffer transfer buffer: " + err.Error())
-	}
-
-	indexData := unsafe.Slice(
-		(*uint32)(unsafe.Pointer(indexTransferPtr)),
-		e.SPRITE_COUNT*6,
-	)
-
-	for i := range e.SPRITE_COUNT {
-		indexData[i*6] = i * 4
-		indexData[i*6+1] = i*4 + 1
-		indexData[i*6+2] = i*4 + 2
-		indexData[i*6+3] = i*4 + 3
-		indexData[i*6+4] = i*4 + 2
-		indexData[i*6+5] = i*4 + 1
-	}
-
-	context.Device.UnmapTransferBuffer(indexBufferTransferBuffer)
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
@@ -311,32 +206,19 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		D:       1,
 	}, false)
 
-	copyPass.UploadToGPUBuffer(
-		&sdl.GPUTransferBufferLocation{
-			TransferBuffer: indexBufferTransferBuffer,
-			Offset:         0,
-		},
-		&sdl.GPUBufferRegion{
-			Buffer: e.spriteIndexBuffer,
-			Offset: 0,
-			Size:   e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
-		},
-		false,
-	)
-
 	copyPass.End()
 	uploadCmdBuf.Submit()
+
 	context.Device.ReleaseTransferBuffer(textureTransferBuffer)
-	context.Device.ReleaseTransferBuffer(indexBufferTransferBuffer)
 
 	return nil
 }
 
-func (e *ComputeSpriteBatch) Update(context *common.Context) error {
+func (e *PullSpriteBatch) Update(context *common.Context) error {
 	return nil
 }
 
-func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
+func (e *PullSpriteBatch) Draw(context *common.Context) error {
 	cameraMatrix := mgl32.Ortho(0, 640, 480, 0, 0, -1)
 
 	cmdBuf, err := context.Device.AcquireCommandBuffer()
@@ -355,7 +237,7 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 	if swapchainTexture != nil {
 		// build sprite instance transfer
 		dataPtr, err := context.Device.MapTransferBuffer(
-			e.spriteComputeTransferBuffer, true,
+			e.spriteDataTransferBuffer, true,
 		)
 		if err != nil {
 			return errors.New("failed to map sprite compute transfer buffer: " + err.Error())
@@ -384,38 +266,19 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 			data[i].A = 1.0
 		}
 
-		context.Device.UnmapTransferBuffer(e.spriteComputeTransferBuffer)
+		context.Device.UnmapTransferBuffer(e.spriteDataTransferBuffer)
 
 		// upload instance data
 		copyPass := cmdBuf.BeginCopyPass()
 		copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
-			TransferBuffer: e.spriteComputeTransferBuffer,
+			TransferBuffer: e.spriteDataTransferBuffer,
 			Offset:         0,
 		}, &sdl.GPUBufferRegion{
-			Buffer: e.spriteComputeBuffer,
+			Buffer: e.spriteDataBuffer,
 			Offset: 0,
 			Size:   e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
 		}, true)
 		copyPass.End()
-
-		// set up compute pass to build vertex buffer
-		computePass := cmdBuf.BeginComputePass(
-			[]sdl.GPUStorageTextureReadWriteBinding{},
-			[]sdl.GPUStorageBufferReadWriteBinding{
-				sdl.GPUStorageBufferReadWriteBinding{
-					Buffer: e.spriteVertexBuffer,
-					Cycle:  true,
-				},
-			},
-		)
-
-		computePass.BindGPUComputePipeline(e.computePipeline)
-		computePass.BindStorageBuffers([]*sdl.GPUBuffer{
-			e.spriteComputeBuffer,
-		})
-		computePass.Dispatch(e.SPRITE_COUNT/64, 1, 1)
-
-		computePass.End()
 
 		// render sprites
 		renderPass := cmdBuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
@@ -429,20 +292,17 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 		}, nil)
 
 		renderPass.BindGraphicsPipeline(e.renderPipeline)
-		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.spriteVertexBuffer, Offset: 0},
+		renderPass.BindVertexStorageBuffers([]*sdl.GPUBuffer{
+			e.spriteDataBuffer,
 		})
-		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
-			Buffer: e.spriteIndexBuffer, Offset: 0,
-		}, sdl.GPU_INDEXELEMENTSIZE_32BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
 		})
 		cmdBuf.PushVertexUniformData(0, unsafe.Slice(
 			(*byte)(unsafe.Pointer(&cameraMatrix)), unsafe.Sizeof(cameraMatrix),
 		))
-		renderPass.DrawIndexedPrimitives(
-			e.SPRITE_COUNT*6, 1, 0, 0, 0,
+		renderPass.DrawPrimitives(
+			e.SPRITE_COUNT*6, 1, 0, 0,
 		)
 
 		renderPass.End()
@@ -453,15 +313,12 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 	return nil
 }
 
-func (e *ComputeSpriteBatch) Quit(context *common.Context) {
-	context.Device.ReleaseComputePipeline(e.computePipeline)
+func (e *PullSpriteBatch) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.renderPipeline)
 	context.Device.ReleaseSampler(e.sampler)
 	context.Device.ReleaseTexture(e.texture)
-	context.Device.ReleaseTransferBuffer(e.spriteComputeTransferBuffer)
-	context.Device.ReleaseBuffer(e.spriteComputeBuffer)
-	context.Device.ReleaseBuffer(e.spriteVertexBuffer)
-	context.Device.ReleaseBuffer(e.spriteIndexBuffer)
+	context.Device.ReleaseTransferBuffer(e.spriteDataTransferBuffer)
+	context.Device.ReleaseBuffer(e.spriteDataBuffer)
 
 	context.Quit()
 }
