@@ -102,15 +102,18 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 
 	// load the images
 
-	imageData1, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	image1, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	imageData2, _, _, err := common.LoadBMP("ravioli_inverted.bmp")
+	image2, err := common.LoadBMP("ravioli_inverted.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
+
+	imageWidth := image1.W
+	imageHeight := image1.H
 
 	// create the gpu resources
 
@@ -222,13 +225,13 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 		(*byte)(unsafe.Pointer(textureTransferPtr)),
 		imageSizeInBytes,
 	)
-	copy(textureData1, imageData1)
+	copy(textureData1, image1.Data)
 
 	textureData2 := unsafe.Slice(
 		(*byte)(unsafe.Pointer(textureTransferPtr+uintptr(imageSizeInBytes))),
 		imageSizeInBytes,
 	)
-	copy(textureData2, imageData2)
+	copy(textureData2, image2.Data)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 

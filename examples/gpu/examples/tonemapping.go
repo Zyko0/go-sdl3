@@ -112,11 +112,12 @@ func (e *ToneMapping) Init(context *common.Context) error {
 		return err
 	}
 
-	var hdrRGBA []float32
-	hdrRGBA, e.w, e.h, err = common.LoadHDR("memorial.hdr")
+	image, err := common.LoadHDR("memorial.hdr")
 	if err != nil {
 		return errors.New("failed to load hdr image: " + err.Error())
 	}
+	e.w = image.W
+	e.h = image.H
 
 	err = context.Window.SetSize(int32(e.w), int32(e.h))
 	if err != nil {
@@ -187,7 +188,7 @@ func (e *ToneMapping) Init(context *common.Context) error {
 		(*float32)(unsafe.Pointer(imageTransferPtr)), 4*e.w*e.h,
 	)
 
-	copy(imageTransfer, hdrRGBA)
+	copy(imageTransfer, image.Data)
 
 	context.Device.UnmapTransferBuffer(imageDataTransferBuffer)
 

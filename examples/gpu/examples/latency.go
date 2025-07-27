@@ -65,12 +65,12 @@ func (e *Latency) Init(context *common.Context) error {
 		byteCount,
 	)
 
-	imageData, _, _, err := common.LoadBMP("latency.bmp")
+	image, err := common.LoadBMP("latency.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	copy(textureData, imageData)
+	copy(textureData, image.Data)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 

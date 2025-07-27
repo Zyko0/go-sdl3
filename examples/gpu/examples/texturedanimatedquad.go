@@ -54,7 +54,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 
 	// load the image
 
-	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	image, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
@@ -145,8 +145,8 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	e.texture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imageWidth),
-		Height:            uint32(imageHeight),
+		Width:             uint32(image.W),
+		Height:            uint32(image.H),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -216,7 +216,7 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size:  uint32(imageWidth * imageHeight * 4),
+			Size:  uint32(image.W * image.H * 4),
 		},
 	)
 	if err != nil {
@@ -230,10 +230,10 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 
 	textureData := unsafe.Slice(
 		(*uint8)(unsafe.Pointer(textureTransferDataPtr)),
-		imageWidth*imageHeight*4,
+		image.W*image.H*4,
 	)
 
-	copy(textureData, imageData)
+	copy(textureData, image.Data)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
@@ -279,8 +279,8 @@ func (e *TexturedAnimatedQuad) Init(context *common.Context) error {
 		},
 		&sdl.GPUTextureRegion{
 			Texture: e.texture,
-			W:       uint32(imageWidth),
-			H:       uint32(imageHeight),
+			W:       uint32(image.W),
+			H:       uint32(image.H),
 			D:       1,
 		},
 		false,

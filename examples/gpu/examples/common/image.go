@@ -13,20 +13,26 @@ import (
 	"golang.org/x/image/bmp"
 )
 
-func LoadHDR(filename string) ([]float32, int, int, error) {
+type HDRImage struct {
+	Data []float32
+	W    int
+	H    int
+}
+
+func LoadHDR(filename string) (HDRImage, error) {
 	data, err := content.ReadFile("images/" + filename)
 	if err != nil {
-		return nil, 0, 0, errors.New("failed to read data: " + err.Error())
+		return HDRImage{}, errors.New("failed to read data: " + err.Error())
 	}
 
 	img, err := rgbe.Decode(bytes.NewReader(data))
 	if err != nil {
-		return nil, 0, 0, errors.New("failed to decode hdr image: " + err.Error())
+		return HDRImage{}, errors.New("failed to decode hdr image: " + err.Error())
 	}
 
 	hdrRGB, ok := img.(*hdr.RGB)
 	if !ok {
-		return nil, 0, 0, fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
+		return HDRImage{}, fmt.Errorf("failed to cast: %s", reflect.TypeOf(img))
 	}
 
 	w := hdrRGB.Rect.Size().X
@@ -41,29 +47,47 @@ func LoadHDR(filename string) ([]float32, int, int, error) {
 		rgba[i*4+3] = 1
 	}
 
-	return rgba, w, h, nil
+	return HDRImage{
+		Data: rgba,
+		W:    w,
+		H:    h,
+	}, nil
 }
 
-func LoadBMP(filename string) ([]byte, int, int, error) {
+type Image struct {
+	Data []byte
+	W    int
+	H    int
+}
+
+func LoadBMP(filename string) (Image, error) {
 	imgBytes, err := content.ReadFile("images/" + filename)
 	if err != nil {
-		return nil, 0, 0, errors.New("failed to read file: " + err.Error())
+		return Image{}, errors.New("failed to read file: " + err.Error())
 	}
 
 	img, err := bmp.Decode(bytes.NewReader(imgBytes))
 	if err != nil {
-		return nil, 0, 0, errors.New("failed to decode bmp: " + err.Error())
+		return Image{}, errors.New("failed to decode bmp: " + err.Error())
 	}
 
 	imgNRGBA, ok := img.(*image.NRGBA)
 	if ok {
-		return imgNRGBA.Pix, imgNRGBA.Rect.Size().X, imgNRGBA.Rect.Size().Y, nil
+		return Image{
+			Data: imgNRGBA.Pix,
+			W:    imgNRGBA.Rect.Size().X,
+			H:    imgNRGBA.Rect.Size().Y,
+		}, nil
 	}
 
 	imgRGBA, ok := img.(*image.RGBA)
 	if ok {
-		return imgRGBA.Pix, imgRGBA.Rect.Size().X, imgRGBA.Rect.Size().Y, nil
+		return Image{
+			Data: imgRGBA.Pix,
+			W:    imgRGBA.Rect.Size().X,
+			H:    imgRGBA.Rect.Size().Y,
+		}, nil
 	}
 
-	return nil, 0, 0, fmt.Errorf("unknown type: %s", reflect.TypeOf(img))
+	return Image{}, fmt.Errorf("unknown type: %s", reflect.TypeOf(img))
 }

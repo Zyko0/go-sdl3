@@ -28,13 +28,13 @@ func (e *BlitMirror) Init(context *common.Context) error {
 
 	// load the image
 
-	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	image, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	e.textureWidth = uint32(imageWidth)
-	e.textureHeight = uint32(imageHeight)
+	e.textureWidth = uint32(image.W)
+	e.textureHeight = uint32(image.H)
 
 	// create the texture resource
 
@@ -68,9 +68,9 @@ func (e *BlitMirror) Init(context *common.Context) error {
 
 	textureData := unsafe.Slice(
 		(*byte)(unsafe.Pointer(uploadTransferPtr)),
-		imageWidth*imageHeight*4,
+		image.W*image.H*4,
 	)
-	copy(textureData, imageData)
+	copy(textureData, image.Data)
 
 	context.Device.UnmapTransferBuffer(uploadTransferBuffer)
 

@@ -103,15 +103,18 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 
 	// load the images
 
-	imageData1, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	image1, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	imageData2, _, _, err := common.LoadBMP("ravioli_inverted.bmp")
+	image2, err := common.LoadBMP("ravioli_inverted.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
+
+	imageW := image1.W
+	imageH := image1.H
 
 	// create the gpu resources
 
@@ -134,8 +137,8 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	e.sourceTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
 		Type:              sdl.GPU_TEXTURETYPE_2D_ARRAY,
-		Width:             uint32(imageWidth),
-		Height:            uint32(imageHeight),
+		Width:             uint32(imageW),
+		Height:            uint32(imageH),
 		LayerCountOrDepth: 2,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -147,8 +150,8 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	e.destinationTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
 		Type:              sdl.GPU_TEXTURETYPE_2D_ARRAY,
-		Width:             uint32(imageWidth / 2),
-		Height:            uint32(imageHeight / 2),
+		Width:             uint32(imageW / 2),
+		Height:            uint32(imageH / 2),
 		LayerCountOrDepth: 2,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER | sdl.GPU_TEXTUREUSAGE_COLOR_TARGET,
@@ -219,7 +222,7 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 
 	// set up texture data
 
-	imageSizeInBytes := uint32(imageWidth * imageHeight * 4)
+	imageSizeInBytes := uint32(imageW * imageH * 4)
 
 	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
@@ -240,13 +243,13 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 		(*byte)(unsafe.Pointer(textureTransferPtr)),
 		imageSizeInBytes,
 	)
-	copy(textureData1, imageData1)
+	copy(textureData1, image1.Data)
 
 	textureData2 := unsafe.Slice(
 		(*byte)(unsafe.Pointer(textureTransferPtr+uintptr(imageSizeInBytes))),
 		imageSizeInBytes,
 	)
-	copy(textureData2, imageData2)
+	copy(textureData2, image2.Data)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
@@ -283,8 +286,8 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	}, &sdl.GPUTextureRegion{
 		Texture: e.sourceTexture,
 		Layer:   0,
-		W:       uint32(imageWidth),
-		H:       uint32(imageHeight),
+		W:       uint32(imageW),
+		H:       uint32(imageH),
 		D:       1,
 	}, false)
 
@@ -294,8 +297,8 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	}, &sdl.GPUTextureRegion{
 		Texture: e.sourceTexture,
 		Layer:   1,
-		W:       uint32(imageWidth),
-		H:       uint32(imageHeight),
+		W:       uint32(imageW),
+		H:       uint32(imageH),
 		D:       1,
 	}, false)
 
@@ -304,13 +307,13 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	uploadCmdBuf.BlitGPUTexture(&sdl.GPUBlitInfo{
 		Source: sdl.GPUBlitRegion{
 			Texture: e.sourceTexture,
-			W:       uint32(imageWidth),
-			H:       uint32(imageHeight),
+			W:       uint32(imageW),
+			H:       uint32(imageH),
 		},
 		Destination: sdl.GPUBlitRegion{
 			Texture: e.destinationTexture,
-			W:       uint32(imageWidth / 2),
-			H:       uint32(imageHeight / 2),
+			W:       uint32(imageW / 2),
+			H:       uint32(imageH / 2),
 		},
 		LoadOp: sdl.GPU_LOADOP_DONT_CARE,
 		Filter: sdl.GPU_FILTER_LINEAR,
@@ -320,14 +323,14 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 		Source: sdl.GPUBlitRegion{
 			Texture:           e.sourceTexture,
 			LayerOrDepthPlane: 1,
-			W:                 uint32(imageWidth),
-			H:                 uint32(imageHeight),
+			W:                 uint32(imageW),
+			H:                 uint32(imageH),
 		},
 		Destination: sdl.GPUBlitRegion{
 			Texture:           e.destinationTexture,
 			LayerOrDepthPlane: 1,
-			W:                 uint32(imageWidth / 2),
-			H:                 uint32(imageHeight / 2),
+			W:                 uint32(imageW / 2),
+			H:                 uint32(imageH / 2),
 		},
 		LoadOp: sdl.GPU_LOADOP_LOAD,
 		Filter: sdl.GPU_FILTER_LINEAR,

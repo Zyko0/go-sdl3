@@ -254,7 +254,7 @@ func (e *BlitCube) Init(context *common.Context) error {
 	}
 
 	for i := range imageNames {
-		imageData, _, _, err := common.LoadBMP(imageNames[i])
+		image, err := common.LoadBMP(imageNames[i])
 		if err != nil {
 			return errors.New("failed to load " + imageNames[i] + ": " + err.Error())
 		}
@@ -262,7 +262,7 @@ func (e *BlitCube) Init(context *common.Context) error {
 			(*byte)(unsafe.Pointer(textureTransferPtr+(uintptr(bytesPerImage*i)))),
 			bytesPerImage,
 		)
-		copy(textureData, imageData)
+		copy(textureData, image.Data)
 	}
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)

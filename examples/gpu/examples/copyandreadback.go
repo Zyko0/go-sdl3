@@ -36,21 +36,21 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 
 	// load the image
 
-	imageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	image, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	e.textureWidth = uint32(imageWidth)
-	e.textureHeight = uint32(imageHeight)
+	e.textureWidth = uint32(image.W)
+	e.textureHeight = uint32(image.H)
 
 	// create texture resources
 
 	e.originalTexture, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imageWidth),
-		Height:            uint32(imageHeight),
+		Width:             uint32(image.W),
+		Height:            uint32(image.H),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -62,8 +62,8 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	e.textureCopy, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imageWidth),
-		Height:            uint32(imageHeight),
+		Width:             uint32(image.W),
+		Height:            uint32(image.H),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
@@ -75,8 +75,8 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	e.textureSmall, err = context.Device.CreateTexture(&sdl.GPUTextureCreateInfo{
 		Type:              sdl.GPU_TEXTURETYPE_2D,
 		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		Width:             uint32(imageWidth),
-		Height:            uint32(imageHeight),
+		Width:             uint32(image.W),
+		Height:            uint32(image.H),
 		LayerCountOrDepth: 1,
 		NumLevels:         1,
 		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER | sdl.GPU_TEXTUREUSAGE_COLOR_TARGET,
@@ -134,7 +134,7 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 		e.textureWidth*e.textureHeight*4,
 	)
 
-	copy(uploadTextureData, imageData)
+	copy(uploadTextureData, image.Data)
 
 	uploadBufferData := unsafe.Slice(
 		(*uint32)(unsafe.Pointer(uploadTransferPtr+uintptr(e.textureWidth*e.textureHeight*4))),
@@ -270,7 +270,7 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 		e.textureWidth*e.textureHeight*4,
 	)
 
-	if bytes.Equal(imageData, downloadTextureData) {
+	if bytes.Equal(image.Data, downloadTextureData) {
 		fmt.Println("SUCCESS! Original texture bytes and the downloaded bytes match!")
 	} else {
 		fmt.Println("FAILURE! Original texture bytes do not match downloaded bytes!")

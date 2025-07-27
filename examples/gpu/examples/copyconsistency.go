@@ -145,15 +145,18 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 
 	// load the texture data
 
-	leftImageData, imageWidth, imageHeight, err := common.LoadBMP("ravioli.bmp")
+	leftImage, err := common.LoadBMP("ravioli.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	rightImageData, _, _, err := common.LoadBMP("ravioli_inverted.bmp")
+	rightImage, err := common.LoadBMP("ravioli_inverted.bmp")
 	if err != nil {
 		return errors.New("failed to load image: " + err.Error())
 	}
+
+	imageWidth := leftImage.W
+	imageHeight := leftImage.H
 
 	// create the sampler
 
@@ -273,13 +276,13 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 		(*byte)(unsafe.Pointer(textureTransferPtr)),
 		imageWidth*imageHeight*4,
 	)
-	copy(leftTextureData, leftImageData)
+	copy(leftTextureData, leftImage.Data)
 
 	rightTextureData := unsafe.Slice(
 		(*byte)(unsafe.Pointer(textureTransferPtr+uintptr(imageWidth*imageHeight*4))),
 		imageWidth*imageHeight*4,
 	)
-	copy(rightTextureData, rightImageData)
+	copy(rightTextureData, rightImage.Data)
 
 	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
