@@ -42,6 +42,7 @@ var examples = []common.ExampleInterface{
 	DepthSamplerExample,
 	ComputeSpriteBatchExample,
 	PullSpriteBatchExample,
+	TextureTypeTestExample,
 }
 
 func main() {
