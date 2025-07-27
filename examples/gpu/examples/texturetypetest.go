@@ -71,72 +71,32 @@ func (e *TextureTypeTest) Init(context *common.Context) error {
 	// create the textures
 
 	createInfo := sdl.GPUTextureCreateInfo{
-		Type:              sdl.GPU_TEXTURETYPE_2D,
-		Usage:             sdl.GPU_TEXTUREUSAGE_SAMPLER,
-		Width:             64,
-		Height:            64,
-		Format:            sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
-		NumLevels:         2,
-		LayerCountOrDepth: 1,
+		Usage:     sdl.GPU_TEXTUREUSAGE_SAMPLER,
+		Width:     64,
+		Height:    64,
+		Format:    sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
+		NumLevels: 2,
 	}
 
-	// 2D
-	e.srcTextures[0], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 2D texture: " + err.Error())
-	}
-	e.dstTextures[0], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 2D texture: " + err.Error())
-	}
-
-	// 2D array
-	createInfo.Type = sdl.GPU_TEXTURETYPE_2D_ARRAY
-	createInfo.LayerCountOrDepth = 2
-	e.srcTextures[1], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 2D array texture: " + err.Error())
-	}
-	e.dstTextures[1], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 2D array texture: " + err.Error())
+	createTexture := func(i uint32, texType sdl.GPUTextureType, layerCount uint32) error {
+		createInfo.Type = texType
+		createInfo.LayerCountOrDepth = layerCount
+		e.srcTextures[i], err = context.Device.CreateTexture(&createInfo)
+		if err != nil {
+			return errors.New("failed to create " + e.textureTypeNames[i] + " src texture: " + err.Error())
+		}
+		e.dstTextures[i], err = context.Device.CreateTexture(&createInfo)
+		if err != nil {
+			return errors.New("failed to create " + e.textureTypeNames[i] + " dst texture: " + err.Error())
+		}
+		return nil
 	}
 
-	// 3D
-	createInfo.Type = sdl.GPU_TEXTURETYPE_3D
-	createInfo.LayerCountOrDepth = 2
-	e.srcTextures[2], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 3D texture: " + err.Error())
-	}
-	e.dstTextures[2], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create 3D texture: " + err.Error())
-	}
-
-	// cubemap
-	createInfo.Type = sdl.GPU_TEXTURETYPE_CUBE
-	createInfo.LayerCountOrDepth = 6
-	e.srcTextures[3], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create cubemap texture: " + err.Error())
-	}
-	e.dstTextures[3], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create cubemap texture: " + err.Error())
-	}
-
-	// cubemap
-	createInfo.Type = sdl.GPU_TEXTURETYPE_CUBE_ARRAY
-	createInfo.LayerCountOrDepth = 12
-	e.srcTextures[4], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create cubemap array texture: " + err.Error())
-	}
-	e.dstTextures[4], err = context.Device.CreateTexture(&createInfo)
-	if err != nil {
-		return errors.New("failed to create cubemap array texture: " + err.Error())
-	}
+	createTexture(0, sdl.GPU_TEXTURETYPE_2D, 1)
+	createTexture(1, sdl.GPU_TEXTURETYPE_2D_ARRAY, 2)
+	createTexture(2, sdl.GPU_TEXTURETYPE_3D, 2)
+	createTexture(3, sdl.GPU_TEXTURETYPE_CUBE, 6)
+	createTexture(4, sdl.GPU_TEXTURETYPE_CUBE_ARRAY, 12)
 
 	// create and populate the upload transfer buffer
 
@@ -204,59 +164,30 @@ func (e *TextureTypeTest) Init(context *common.Context) error {
 		}
 
 		baseMipRegion := sdl.GPUTextureRegion{
-			MipLevel: 0,
-			X:        uint32(i%2) * 32,
-			Y:        uint32(i/2) * 32,
-			W:        32, H: 32, D: 1,
+			MipLevel: 0, X: uint32(i%2) * 32, Y: uint32(i/2) * 32,
+			W: 32, H: 32, D: 1,
 		}
 		secondMipRegion := sdl.GPUTextureRegion{
-			MipLevel: 1,
-			X:        uint32(i%2) * 16,
-			Y:        uint32(i/2) * 16,
-			W:        16, H: 16, D: 1,
+			MipLevel: 1, X: uint32(i%2) * 16, Y: uint32(i/2) * 16,
+			W: 16, H: 16, D: 1,
 		}
 
-		// 2D
-		baseMipRegion.Texture = e.srcTextures[0]
-		baseMipRegion.Layer = 0
-		copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
-		secondMipRegion.Texture = e.srcTextures[0]
-		secondMipRegion.Layer = 0
-		copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
+		upload := func(textureIndex, layer, baseZ uint32) {
+			baseMipRegion.Texture = e.srcTextures[textureIndex]
+			baseMipRegion.Layer = layer
+			baseMipRegion.Z = baseZ
+			copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
 
-		// 2D array
-		baseMipRegion.Texture = e.srcTextures[1]
-		baseMipRegion.Layer = 1
-		copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
-		secondMipRegion.Texture = e.srcTextures[1]
-		secondMipRegion.Layer = 1
-		copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
+			secondMipRegion.Texture = e.srcTextures[textureIndex]
+			secondMipRegion.Layer = layer
+			copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
+		}
 
-		// 3D
-		baseMipRegion.Texture = e.srcTextures[2]
-		baseMipRegion.Layer = 0
-		baseMipRegion.Z = 1
-		copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
-		secondMipRegion.Texture = e.srcTextures[2]
-		secondMipRegion.Layer = 0
-		copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
-
-		// cubemap
-		baseMipRegion.Texture = e.srcTextures[3]
-		baseMipRegion.Layer = 1
-		baseMipRegion.Z = 0
-		copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
-		secondMipRegion.Texture = e.srcTextures[3]
-		secondMipRegion.Layer = 1
-		copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
-
-		// cubemap array
-		baseMipRegion.Texture = e.srcTextures[4]
-		baseMipRegion.Layer = 7
-		copyPass.UploadToGPUTexture(&baseMipInfo, &baseMipRegion, false)
-		secondMipRegion.Texture = e.srcTextures[4]
-		secondMipRegion.Layer = 7
-		copyPass.UploadToGPUTexture(&secondMipInfo, &secondMipRegion, false)
+		upload(0, 0, 0) // 2D
+		upload(1, 1, 0) // 2D array
+		upload(2, 0, 1) // 3D
+		upload(3, 1, 0) // cubemap
+		upload(4, 7, 0) // cubemap array
 
 		// on the final section, we'll download to sanity-check that the
 		// values are what we'd expect
@@ -271,57 +202,24 @@ func (e *TextureTypeTest) Init(context *common.Context) error {
 				Offset:         baseMipDataSize,
 			}
 
-			// 2D
-			baseMipRegion.Texture = e.srcTextures[0]
-			baseMipRegion.Layer = 0
-			copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
-			secondMipRegion.Texture = e.srcTextures[0]
-			secondMipRegion.Layer = 0
-			copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
-			baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
-			secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
+			download := func(textureIndex, layer, baseZ uint32) {
+				baseMipRegion.Texture = e.srcTextures[textureIndex]
+				baseMipRegion.Layer = layer
+				baseMipRegion.Z = baseZ
+				copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
+				baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
 
-			// 2D array
-			baseMipRegion.Texture = e.srcTextures[1]
-			baseMipRegion.Layer = 1
-			copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
-			secondMipRegion.Texture = e.srcTextures[1]
-			secondMipRegion.Layer = 1
-			copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
-			baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
-			secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
+				secondMipRegion.Texture = e.srcTextures[textureIndex]
+				secondMipRegion.Layer = layer
+				copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
+				secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
+			}
 
-			// 3D
-			baseMipRegion.Texture = e.srcTextures[2]
-			baseMipRegion.Layer = 0
-			baseMipRegion.Z = 1
-			copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
-			secondMipRegion.Texture = e.srcTextures[2]
-			secondMipRegion.Layer = 0
-			copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
-			baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
-			secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
-
-			// cubemap
-			baseMipRegion.Texture = e.srcTextures[3]
-			baseMipRegion.Layer = 1
-			baseMipRegion.Z = 0
-			copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
-			secondMipRegion.Texture = e.srcTextures[3]
-			secondMipRegion.Layer = 1
-			copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
-			baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
-			secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
-
-			// cubemap array
-			baseMipRegion.Texture = e.srcTextures[4]
-			baseMipRegion.Layer = 7
-			copyPass.DownloadFromGPUTexture(&baseMipRegion, &baseMipInfo)
-			secondMipRegion.Texture = e.srcTextures[4]
-			secondMipRegion.Layer = 7
-			copyPass.DownloadFromGPUTexture(&secondMipRegion, &secondMipInfo)
-			baseMipInfo.Offset += baseMipDataSize + secondMipDataSize
-			secondMipInfo.Offset += baseMipDataSize + secondMipDataSize
+			download(0, 0, 0) // 2D
+			download(1, 1, 0) // 2D array
+			download(2, 0, 1) // 3D
+			download(3, 1, 0) // cubemap
+			download(4, 7, 0) // cubemap array
 		}
 	}
 
