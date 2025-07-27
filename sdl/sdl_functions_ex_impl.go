@@ -43,7 +43,7 @@ func initialize_ex() {
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ShowMessageBox, uintptr(unsafe.Pointer(data)), uintptr(unsafe.Pointer(buttonid)))
-		__r0 := _r0 != 0
+		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(data)
 		runtime.KeepAlive(buttonid)
 		return __r0
