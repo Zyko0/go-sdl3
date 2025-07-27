@@ -665,6 +665,27 @@ type GPUBufferRegion struct {
 	Size   uint32
 }
 
+type GPUIndirectDrawCommand struct {
+	NumVertices   uint32
+	NumInstances  uint32
+	FirstVertex   uint32
+	FirstInstance uint32
+}
+
+type GPUIndexedIndirectDrawCommand struct {
+	NumIndices    uint32
+	NumInstances  uint32
+	FirstIndex    uint32
+	VertexOffset  int32
+	FirstInstance uint32
+}
+
+type GPUIndirectDispatchCommand struct {
+	GroupcountX uint32
+	GroupcountY uint32
+	GroupcountZ uint32
+}
+
 type GPUSamplerCreateInfo struct {
 	MinFilter        GPUFilter
 	MagFilter        GPUFilter

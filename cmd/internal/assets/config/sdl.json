@@ -43,7 +43,10 @@
         "X"
     ],
     "base_types": [
-        "SDL_Event"
+        "SDL_Event",
+        "SDL_GPUIndirectDrawCommand",
+        "SDL_GPUIndexedIndirectDrawCommand",
+        "SDL_GPUIndirectDispatchCommand"
     ],
     "sdl_free_functions": [
         "SDL_GetDisplays",
