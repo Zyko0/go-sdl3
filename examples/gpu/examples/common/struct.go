@@ -27,9 +27,23 @@ type PositionTextureVertex struct {
 	U, V    float32
 }
 
-func NewPosTexVert(x, y, z float32, u, v float32) PositionTextureVertex {
+func NewPosTexVert(x, y, z, u, v float32) PositionTextureVertex {
 	return PositionTextureVertex{
 		X: x, Y: y, Z: z,
 		U: u, V: v,
 	}
 }
+
+type PositionTextureColorVertex struct {
+	X, Y, Z, W float32
+	U, V, _, _ float32
+	R, G, B, A float32
+}
+
+// func NewPosTexColorVert(x, y, z, u, v, r, g, b, a float32) PositionTextureColorVertex {
+// 	return PositionTextureColorVertex{
+// 		X: x, Y: y, Z: z,
+// 		U: u, V: v,
+// 		R: r, G: g, B: b, A: a,
+// 	}
+// }

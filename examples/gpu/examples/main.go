@@ -40,6 +40,7 @@ var examples = []common.ExampleInterface{
 	GenerateMipmapsExample,
 	LatencyExample,
 	DepthSamplerExample,
+	ComputeSpriteBatchExample,
 }
 
 func main() {
