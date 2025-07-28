@@ -39,11 +39,3 @@ type PositionTextureColorVertex struct {
 	U, V, _, _ float32
 	R, G, B, A float32
 }
-
-// func NewPosTexColorVert(x, y, z, u, v, r, g, b, a float32) PositionTextureColorVertex {
-// 	return PositionTextureColorVertex{
-// 		X: x, Y: y, Z: z,
-// 		U: u, V: v,
-// 		R: r, G: g, B: b, A: a,
-// 	}
-// }
