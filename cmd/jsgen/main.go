@@ -48,7 +48,7 @@ func main() {
 	case "ttf":
 		prefix = "_TTF_"
 	case "mixer":
-		prefix = "_Mix_"
+		prefix = "_MIX_"
 	case "img":
 		prefix = "_IMG_"
 	}
