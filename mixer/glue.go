@@ -22,14 +22,13 @@ type Chunk struct {
 	Volume    uint8
 }
 
-type (
-	MixCallback             func()
-	MusicFinishedCallback   func()
-	ChannelFinishedCallback func()
-	EffectFunc_t            func()
-	EffectDone_t            func()
-	EachSoundFontCallback   func()
-)
+type TrackStoppedCallback uintptr
+
+type TrackMixCallback uintptr
+
+type GroupMixCallback uintptr
+
+type PostMixCallback uintptr
 
 // Custom
 
