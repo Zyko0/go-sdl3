@@ -16,23 +16,21 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
-			"_Mix_Version",
+			"_MIX_Version",
 		)
 
 		return int32(ret.Int())
 	}
 
-	iInit = func(flags MIX_InitFlags) MIX_InitFlags {
+	iInit = func() bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_flags := int32(flags)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_Init",
-			_flags,
+			"_MIX_Init",
 		)
 
-		return MIX_InitFlags(ret.Int())
+		return internal.GetBool(ret)
 	}
 
 	iQuit = func() {
@@ -40,1348 +38,1489 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
-			"_Mix_Quit",
+			"_MIX_Quit",
 		)
 	}
 
-	/*iOpenAudio = func(devid *sdl.AudioDeviceID, spec *sdl.AudioSpec) bool {
+	iGetNumAudioDecoders = func() int32 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_devid, ok := internal.GetJSPointer(devid)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetNumAudioDecoders",
+		)
+
+		return int32(ret.Int())
+	}
+
+	iGetAudioDecoder = func(index int32) string {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_index := int32(index)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioDecoder",
+			_index,
+		)
+
+		return internal.UTF8JSToString(ret)
+	}
+
+	iCreateMixerDevice = func(devid sdl.AudioDeviceID, spec *sdl.AudioSpec) *Mixer {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_devid := int32(devid)
+		_spec, ok := internal.GetJSPointer(spec)
 		if !ok {
-			_devid = internal.StackAlloc(int(unsafe.Sizeof(*devid)))
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_CreateMixerDevice",
+			_devid,
+			_spec,
+		)
+
+		_obj := internal.NewObject[Mixer](ret)
+		return _obj
+	}
+
+	iCreateMixer = func(spec *sdl.AudioSpec) *Mixer {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_CreateMixer",
+			_spec,
+		)
+
+		_obj := internal.NewObject[Mixer](ret)
+		return _obj
+	}
+
+	iDestroyMixer = func(mixer *Mixer) {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		js.Global().Get("Module").Call(
+			"_MIX_DestroyMixer",
+			_mixer,
+		)
+	}
+
+	iGetMixerProperties = func(mixer *Mixer) sdl.PropertiesID {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetMixerProperties",
+			_mixer,
+		)
+
+		return sdl.PropertiesID(ret.Int())
+	}
+
+	iGetMixerFormat = func(mixer *Mixer, spec *sdl.AudioSpec) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
 		}
 		_spec, ok := internal.GetJSPointer(spec)
 		if !ok {
 			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_OpenAudio",
-			_devid,
+			"_MIX_GetMixerFormat",
+			_mixer,
 			_spec,
 		)
 
 		return internal.GetBool(ret)
-	}*/
-
-	iPauseAudio = func(pause_on int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_pause_on := int32(pause_on)
-		js.Global().Get("Module").Call(
-			"_Mix_PauseAudio",
-			_pause_on,
-		)
 	}
 
-	iQuerySpec = func(frequency *int32, format *sdl.AudioFormat, channels *int32) bool {
+	iLoadAudio_IO = func(mixer *Mixer, io *sdl.IOStream, predecode bool, closeio bool) *Audio {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_frequency, ok := internal.GetJSPointer(frequency)
+		_mixer, ok := internal.GetJSPointer(mixer)
 		if !ok {
-			_frequency = internal.StackAlloc(int(unsafe.Sizeof(*frequency)))
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
 		}
-		_format, ok := internal.GetJSPointer(format)
+		_io, ok := internal.GetJSPointer(io)
 		if !ok {
-			_format = internal.StackAlloc(int(unsafe.Sizeof(*format)))
+			_io = internal.StackAlloc(int(unsafe.Sizeof(*io)))
 		}
-		_channels, ok := internal.GetJSPointer(channels)
-		if !ok {
-			_channels = internal.StackAlloc(int(unsafe.Sizeof(*channels)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_QuerySpec",
-			_frequency,
-			_format,
-			_channels,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iAllocateChannels = func(numchans int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_numchans := int32(numchans)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_AllocateChannels",
-			_numchans,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iLoadWAV_IO = func(src *sdl.IOStream, closeio bool) *Chunk {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_src, ok := internal.GetJSPointer(src)
-		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
-		}
+		_predecode := internal.NewBoolean(predecode)
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_LoadWAV_IO",
-			_src,
+			"_MIX_LoadAudio_IO",
+			_mixer,
+			_io,
+			_predecode,
 			_closeio,
 		)
 
-		_obj := internal.NewObject[Chunk](ret)
+		_obj := internal.NewObject[Audio](ret)
 		return _obj
 	}
 
-	iLoadWAV = func(file string) *Chunk {
+	iLoadAudio = func(mixer *Mixer, path string, predecode bool) *Audio {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_file := internal.StringOnJSStack(file)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_LoadWAV",
-			_file,
-		)
-
-		_obj := internal.NewObject[Chunk](ret)
-		return _obj
-	}
-
-	iLoadMUS = func(file string) *Music {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_file := internal.StringOnJSStack(file)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_LoadMUS",
-			_file,
-		)
-
-		_obj := internal.NewObject[Music](ret)
-		return _obj
-	}
-
-	iLoadMUS_IO = func(src *sdl.IOStream, closeio bool) *Music {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_src, ok := internal.GetJSPointer(src)
+		_mixer, ok := internal.GetJSPointer(mixer)
 		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_path := internal.StringOnJSStack(path)
+		_predecode := internal.NewBoolean(predecode)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_LoadAudio",
+			_mixer,
+			_path,
+			_predecode,
+		)
+
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
+	}
+
+	iLoadAudioWithProperties = func(props sdl.PropertiesID) *Audio {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_props := uint32(props)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_LoadAudioWithProperties",
+			_props,
+		)
+
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
+	}
+
+	iLoadRawAudio_IO = func(mixer *Mixer, io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) *Audio {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_io, ok := internal.GetJSPointer(io)
+		if !ok {
+			_io = internal.StackAlloc(int(unsafe.Sizeof(*io)))
+		}
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_LoadMUS_IO",
-			_src,
+			"_MIX_LoadRawAudio_IO",
+			_mixer,
+			_io,
+			_spec,
 			_closeio,
 		)
 
-		_obj := internal.NewObject[Music](ret)
+		_obj := internal.NewObject[Audio](ret)
 		return _obj
 	}
 
-	iLoadMUSType_IO = func(src *sdl.IOStream, typ MusicType, closeio bool) *Music {
+	iLoadRawAudio = func(mixer *Mixer, data uintptr, datalen uintptr, spec *sdl.AudioSpec) *Audio {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_src, ok := internal.GetJSPointer(src)
+		_mixer, ok := internal.GetJSPointer(mixer)
 		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
 		}
-		_typ := int32(typ)
+		_data := internal.NewBigInt(data)
+		_datalen := internal.NewBigInt(datalen)
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_LoadRawAudio",
+			_mixer,
+			_data,
+			_datalen,
+			_spec,
+		)
+
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
+	}
+
+	iLoadRawAudioNoCopy = func(mixer *Mixer, data uintptr, datalen uintptr, spec *sdl.AudioSpec, free_when_done bool) *Audio {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_data := internal.NewBigInt(data)
+		_datalen := internal.NewBigInt(datalen)
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		_free_when_done := internal.NewBoolean(free_when_done)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_LoadRawAudioNoCopy",
+			_mixer,
+			_data,
+			_datalen,
+			_spec,
+			_free_when_done,
+		)
+
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
+	}
+
+	iCreateSineWaveAudio = func(mixer *Mixer, hz int32, amplitude float32) *Audio {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_hz := int32(hz)
+		_amplitude := int32(amplitude)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_CreateSineWaveAudio",
+			_mixer,
+			_hz,
+			_amplitude,
+		)
+
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
+	}
+
+	iGetAudioProperties = func(audio *Audio) sdl.PropertiesID {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioProperties",
+			_audio,
+		)
+
+		return sdl.PropertiesID(ret.Int())
+	}
+
+	iGetAudioDuration = func(audio *Audio) int64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioDuration",
+			_audio,
+		)
+
+		return int64(internal.GetInt64(ret))
+	}
+
+	iGetAudioFormat = func(audio *Audio, spec *sdl.AudioSpec) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioFormat",
+			_audio,
+			_spec,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iDestroyAudio = func(audio *Audio) {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		js.Global().Get("Module").Call(
+			"_MIX_DestroyAudio",
+			_audio,
+		)
+	}
+
+	iCreateTrack = func(mixer *Mixer) *Track {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_CreateTrack",
+			_mixer,
+		)
+
+		_obj := internal.NewObject[Track](ret)
+		return _obj
+	}
+
+	iDestroyTrack = func(track *Track) {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		js.Global().Get("Module").Call(
+			"_MIX_DestroyTrack",
+			_track,
+		)
+	}
+
+	iGetTrackProperties = func(track *Track) sdl.PropertiesID {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetTrackProperties",
+			_track,
+		)
+
+		return sdl.PropertiesID(ret.Int())
+	}
+
+	iGetTrackMixer = func(track *Track) *Mixer {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetTrackMixer",
+			_track,
+		)
+
+		_obj := internal.NewObject[Mixer](ret)
+		return _obj
+	}
+
+	iSetTrackAudio = func(track *Track, audio *Audio) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackAudio",
+			_track,
+			_audio,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackAudioStream = func(track *Track, stream *sdl.AudioStream) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_stream, ok := internal.GetJSPointer(stream)
+		if !ok {
+			_stream = internal.StackAlloc(int(unsafe.Sizeof(*stream)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackAudioStream",
+			_track,
+			_stream,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackIOStream = func(track *Track, io *sdl.IOStream, closeio bool) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_io, ok := internal.GetJSPointer(io)
+		if !ok {
+			_io = internal.StackAlloc(int(unsafe.Sizeof(*io)))
+		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_LoadMUSType_IO",
-			_src,
-			_typ,
+			"_MIX_SetTrackIOStream",
+			_track,
+			_io,
 			_closeio,
 		)
 
-		_obj := internal.NewObject[Music](ret)
-		return _obj
-	}
-
-	iQuickLoad_WAV = func(mem *uint8) *Chunk {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mem, ok := internal.GetJSPointer(mem)
-		if !ok {
-			_mem = internal.StackAlloc(int(unsafe.Sizeof(*mem)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_QuickLoad_WAV",
-			_mem,
-		)
-
-		_obj := internal.NewObject[Chunk](ret)
-		return _obj
-	}
-
-	iQuickLoad_RAW = func(mem *uint8, len uint32) *Chunk {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mem, ok := internal.GetJSPointer(mem)
-		if !ok {
-			_mem = internal.StackAlloc(int(unsafe.Sizeof(*mem)))
-		}
-		_len := int32(len)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_QuickLoad_RAW",
-			_mem,
-			_len,
-		)
-
-		_obj := internal.NewObject[Chunk](ret)
-		return _obj
-	}
-
-	iFreeChunk = func(chunk *Chunk) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_chunk, ok := internal.GetJSPointer(chunk)
-		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		js.Global().Get("Module").Call(
-			"_Mix_FreeChunk",
-			_chunk,
-		)
-	}
-
-	iFreeMusic = func(music *Music) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		js.Global().Get("Module").Call(
-			"_Mix_FreeMusic",
-			_music,
-		)
-	}
-
-	iGetNumChunkDecoders = func() int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetNumChunkDecoders",
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGetChunkDecoder = func(index int32) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_index := int32(index)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetChunkDecoder",
-			_index,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iHasChunkDecoder = func(name string) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_name := internal.StringOnJSStack(name)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_HasChunkDecoder",
-			_name,
-		)
-
 		return internal.GetBool(ret)
 	}
 
-	iGetNumMusicDecoders = func() int32 {
+	iTagTrack = func(track *Track, tag string) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetNumMusicDecoders",
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGetMusicDecoder = func(index int32) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_index := int32(index)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicDecoder",
-			_index,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iHasMusicDecoder = func(name string) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_name := internal.StringOnJSStack(name)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_HasMusicDecoder",
-			_name,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iGetMusicType = func(music *Music) MusicType {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
+		_track, ok := internal.GetJSPointer(track)
 		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
 		}
+		_tag := internal.StringOnJSStack(tag)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicType",
-			_music,
-		)
-
-		return MusicType(ret.Int())
-	}
-
-	iGetMusicTitle = func(music *Music) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicTitle",
-			_music,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iGetMusicTitleTag = func(music *Music) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicTitleTag",
-			_music,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iGetMusicArtistTag = func(music *Music) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicArtistTag",
-			_music,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iGetMusicAlbumTag = func(music *Music) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicAlbumTag",
-			_music,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	iGetMusicCopyrightTag = func(music *Music) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicCopyrightTag",
-			_music,
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	/*iSetPostMix = func(mix_func MixCallback, arg uintptr) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mix_func := int32(mix_func)
-		_arg := internal.NewBigInt(arg)
-		js.Global().Get("Module").Call(
-			"_Mix_SetPostMix",
-			_mix_func,
-			_arg,
-		)
-	}*/
-
-	/*iHookMusic = func(mix_func MixCallback, arg uintptr) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mix_func := int32(mix_func)
-		_arg := internal.NewBigInt(arg)
-		js.Global().Get("Module").Call(
-			"_Mix_HookMusic",
-			_mix_func,
-			_arg,
-		)
-	}*/
-
-	/*iHookMusicFinished = func(music_finished MusicFinishedCallback) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music_finished := int32(music_finished)
-		js.Global().Get("Module").Call(
-			"_Mix_HookMusicFinished",
-			_music_finished,
-		)
-	}*/
-
-	/*iGetMusicHookData = func() uintptr {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicHookData",
-		)
-
-		return uintptr(internal.GetInt64(ret))
-	}*/
-
-	/*iChannelFinished = func(channel_finished ChannelFinishedCallback) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel_finished := int32(channel_finished)
-		js.Global().Get("Module").Call(
-			"_Mix_ChannelFinished",
-			_channel_finished,
-		)
-	}*/
-
-	/*iRegisterEffect = func(chann int32, f EffectFunc_t, d EffectDone_t, arg uintptr) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_chann := int32(chann)
-		_f := int32(f)
-		_d := int32(d)
-		_arg := internal.NewBigInt(arg)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_RegisterEffect",
-			_chann,
-			_f,
-			_d,
-			_arg,
-		)
-
-		return internal.GetBool(ret)
-	}*/
-
-	/*iUnregisterEffect = func(channel int32, f EffectFunc_t) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_f := int32(f)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_UnregisterEffect",
-			_channel,
-			_f,
-		)
-
-		return internal.GetBool(ret)
-	}*/
-
-	iUnregisterAllEffects = func(channel int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_UnregisterAllEffects",
-			_channel,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iSetPanning = func(channel int32, left uint8, right uint8) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_left := int32(left)
-		_right := int32(right)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_SetPanning",
-			_channel,
-			_left,
-			_right,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iSetPosition = func(channel int32, angle int16, distance uint8) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_angle := int32(angle)
-		_distance := int32(distance)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_SetPosition",
-			_channel,
-			_angle,
-			_distance,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iSetDistance = func(channel int32, distance uint8) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_distance := int32(distance)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_SetDistance",
-			_channel,
-			_distance,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iSetReverseStereo = func(channel int32, flip int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_flip := int32(flip)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_SetReverseStereo",
-			_channel,
-			_flip,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iReserveChannels = func(num int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_num := int32(num)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_ReserveChannels",
-			_num,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGroupChannel = func(which int32, tag int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_which := int32(which)
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupChannel",
-			_which,
+			"_MIX_TagTrack",
+			_track,
 			_tag,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGroupChannels = func(from int32, to int32, tag int32) bool {
+	iUntagTrack = func(track *Track, tag string) {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_from := int32(from)
-		_to := int32(to)
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupChannels",
-			_from,
-			_to,
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		js.Global().Get("Module").Call(
+			"_MIX_UntagTrack",
+			_track,
 			_tag,
+		)
+	}
+
+	iSetTrackPlaybackPosition = func(track *Track, frames uint64) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_frames := internal.NewBigInt(frames)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackPlaybackPosition",
+			_track,
+			_frames,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGroupAvailable = func(tag int32) int32 {
+	iGetTrackPlaybackPosition = func(track *Track) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupAvailable",
-			_tag,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGroupCount = func(tag int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupCount",
-			_tag,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGroupOldest = func(tag int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupOldest",
-			_tag,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGroupNewer = func(tag int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GroupNewer",
-			_tag,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iPlayChannel = func(channel int32, chunk *Chunk, loops int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_chunk, ok := internal.GetJSPointer(chunk)
+		_track, ok := internal.GetJSPointer(track)
 		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		_loops := int32(loops)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_PlayChannel",
-			_channel,
-			_chunk,
-			_loops,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iPlayChannelTimed = func(channel int32, chunk *Chunk, loops int32, ticks int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_chunk, ok := internal.GetJSPointer(chunk)
-		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		_loops := int32(loops)
-		_ticks := int32(ticks)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_PlayChannelTimed",
-			_channel,
-			_chunk,
-			_loops,
-			_ticks,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iPlayMusic = func(music *Music, loops int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		_loops := int32(loops)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_PlayMusic",
-			_music,
-			_loops,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iFadeInMusic = func(music *Music, loops int32, ms int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		_loops := int32(loops)
-		_ms := int32(ms)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeInMusic",
-			_music,
-			_loops,
-			_ms,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iFadeInMusicPos = func(music *Music, loops int32, ms int32, position float64) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		_loops := int32(loops)
-		_ms := int32(ms)
-		_position := int32(position)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeInMusicPos",
-			_music,
-			_loops,
-			_ms,
-			_position,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iFadeInChannel = func(channel int32, chunk *Chunk, loops int32, ms int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_chunk, ok := internal.GetJSPointer(chunk)
-		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		_loops := int32(loops)
-		_ms := int32(ms)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeInChannel",
-			_channel,
-			_chunk,
-			_loops,
-			_ms,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iFadeInChannelTimed = func(channel int32, chunk *Chunk, loops int32, ms int32, ticks int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_chunk, ok := internal.GetJSPointer(chunk)
-		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		_loops := int32(loops)
-		_ms := int32(ms)
-		_ticks := int32(ticks)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeInChannelTimed",
-			_channel,
-			_chunk,
-			_loops,
-			_ms,
-			_ticks,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iVolume = func(channel int32, volume int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_volume := int32(volume)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_Volume",
-			_channel,
-			_volume,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iVolumeChunk = func(chunk *Chunk, volume int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_chunk, ok := internal.GetJSPointer(chunk)
-		if !ok {
-			_chunk = internal.StackAlloc(int(unsafe.Sizeof(*chunk)))
-		}
-		_volume := int32(volume)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_VolumeChunk",
-			_chunk,
-			_volume,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iVolumeMusic = func(volume int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_volume := int32(volume)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_VolumeMusic",
-			_volume,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iGetMusicVolume = func(music *Music) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicVolume",
-			_music,
+			"_MIX_GetTrackPlaybackPosition",
+			_track,
 		)
 
-		return int32(ret.Int())
+		return int64(internal.GetInt64(ret))
 	}
 
-	iMasterVolume = func(volume int32) int32 {
+	iTrackLooping = func(track *Track) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_volume := int32(volume)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_MasterVolume",
-			_volume,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iHaltChannel = func(channel int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		js.Global().Get("Module").Call(
-			"_Mix_HaltChannel",
-			_channel,
-		)
-	}
-
-	iHaltGroup = func(tag int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		js.Global().Get("Module").Call(
-			"_Mix_HaltGroup",
-			_tag,
-		)
-	}
-
-	iHaltMusic = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_Mix_HaltMusic",
-		)
-	}
-
-	iExpireChannel = func(channel int32, ticks int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		_ticks := int32(ticks)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_ExpireChannel",
-			_channel,
-			_ticks,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iFadeOutChannel = func(which int32, ms int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_which := int32(which)
-		_ms := int32(ms)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeOutChannel",
-			_which,
-			_ms,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iFadeOutGroup = func(tag int32, ms int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		_ms := int32(ms)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeOutGroup",
-			_tag,
-			_ms,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iFadeOutMusic = func(ms int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_ms := int32(ms)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadeOutMusic",
-			_ms,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iFadingMusic = func() Fading {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadingMusic",
-		)
-
-		return Fading(ret.Int())
-	}
-
-	iFadingChannel = func(which int32) Fading {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_which := int32(which)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_FadingChannel",
-			_which,
-		)
-
-		return Fading(ret.Int())
-	}
-
-	iPause = func(channel int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		js.Global().Get("Module").Call(
-			"_Mix_Pause",
-			_channel,
-		)
-	}
-
-	iPauseGroup = func(tag int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		js.Global().Get("Module").Call(
-			"_Mix_PauseGroup",
-			_tag,
-		)
-	}
-
-	iResume = func(channel int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		js.Global().Get("Module").Call(
-			"_Mix_Resume",
-			_channel,
-		)
-	}
-
-	iResumeGroup = func(tag int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tag := int32(tag)
-		js.Global().Get("Module").Call(
-			"_Mix_ResumeGroup",
-			_tag,
-		)
-	}
-
-	iPaused = func(channel int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_Paused",
-			_channel,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iPauseMusic = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_Mix_PauseMusic",
-		)
-	}
-
-	iResumeMusic = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_Mix_ResumeMusic",
-		)
-	}
-
-	iRewindMusic = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_Mix_RewindMusic",
-		)
-	}
-
-	iPausedMusic = func() bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_PausedMusic",
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iModMusicJumpToOrder = func(order int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_order := int32(order)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_ModMusicJumpToOrder",
-			_order,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iStartTrack = func(music *Music, track int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
+		_track, ok := internal.GetJSPointer(track)
 		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
 		}
-		_track := int32(track)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_StartTrack",
-			_music,
+			"_MIX_TrackLooping",
 			_track,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGetNumTracks = func(music *Music) int32 {
+	iGetTrackAudio = func(track *Track) *Audio {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
+		_track, ok := internal.GetJSPointer(track)
 		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetNumTracks",
-			_music,
+			"_MIX_GetTrackAudio",
+			_track,
 		)
 
-		return int32(ret.Int())
+		_obj := internal.NewObject[Audio](ret)
+		return _obj
 	}
 
-	iSetMusicPosition = func(position float64) bool {
+	iGetTrackAudioStream = func(track *Track) *sdl.AudioStream {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_position := int32(position)
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_SetMusicPosition",
+			"_MIX_GetTrackAudioStream",
+			_track,
+		)
+
+		_obj := internal.NewObject[sdl.AudioStream](ret)
+		return _obj
+	}
+
+	iGetTrackRemaining = func(track *Track) int64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetTrackRemaining",
+			_track,
+		)
+
+		return int64(internal.GetInt64(ret))
+	}
+
+	iTrackMSToFrames = func(track *Track, ms uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_ms := internal.NewBigInt(ms)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_TrackMSToFrames",
+			_track,
+			_ms,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iTrackFramesToMS = func(track *Track, frames uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_frames := internal.NewBigInt(frames)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_TrackFramesToMS",
+			_track,
+			_frames,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iAudioMSToFrames = func(audio *Audio, ms uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		_ms := internal.NewBigInt(ms)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_AudioMSToFrames",
+			_audio,
+			_ms,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iAudioFramesToMS = func(audio *Audio, frames uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		_frames := internal.NewBigInt(frames)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_AudioFramesToMS",
+			_audio,
+			_frames,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iMSToFrames = func(sample_rate int32, ms uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_sample_rate := int32(sample_rate)
+		_ms := internal.NewBigInt(ms)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_MSToFrames",
+			_sample_rate,
+			_ms,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iFramesToMS = func(sample_rate int32, frames uint64) uint64 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_sample_rate := int32(sample_rate)
+		_frames := internal.NewBigInt(frames)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_FramesToMS",
+			_sample_rate,
+			_frames,
+		)
+
+		return uint64(internal.GetInt64(ret))
+	}
+
+	iPlayTrack = func(track *Track, options sdl.PropertiesID) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_options := uint32(options)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PlayTrack",
+			_track,
+			_options,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iPlayTag = func(mixer *Mixer, tag string, options sdl.PropertiesID) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		_options := uint32(options)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PlayTag",
+			_mixer,
+			_tag,
+			_options,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iPlayAudio = func(mixer *Mixer, audio *Audio) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_audio, ok := internal.GetJSPointer(audio)
+		if !ok {
+			_audio = internal.StackAlloc(int(unsafe.Sizeof(*audio)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PlayAudio",
+			_mixer,
+			_audio,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iStopTrack = func(track *Track, fade_out_frames int64) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_fade_out_frames := internal.NewBigInt(fade_out_frames)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_StopTrack",
+			_track,
+			_fade_out_frames,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iStopAllTracks = func(mixer *Mixer, fade_out_ms int64) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_fade_out_ms := internal.NewBigInt(fade_out_ms)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_StopAllTracks",
+			_mixer,
+			_fade_out_ms,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iStopTag = func(mixer *Mixer, tag string, fade_out_ms int64) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		_fade_out_ms := internal.NewBigInt(fade_out_ms)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_StopTag",
+			_mixer,
+			_tag,
+			_fade_out_ms,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iPauseTrack = func(track *Track) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PauseTrack",
+			_track,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iPauseAllTracks = func(mixer *Mixer) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PauseAllTracks",
+			_mixer,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iPauseTag = func(mixer *Mixer, tag string) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_PauseTag",
+			_mixer,
+			_tag,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iResumeTrack = func(track *Track) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_ResumeTrack",
+			_track,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iResumeAllTracks = func(mixer *Mixer) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_ResumeAllTracks",
+			_mixer,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iResumeTag = func(mixer *Mixer, tag string) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_ResumeTag",
+			_mixer,
+			_tag,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iTrackPlaying = func(track *Track) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_TrackPlaying",
+			_track,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iTrackPaused = func(track *Track) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_TrackPaused",
+			_track,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetMasterGain = func(mixer *Mixer, gain float32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_gain := int32(gain)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetMasterGain",
+			_mixer,
+			_gain,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iGetMasterGain = func(mixer *Mixer) float32 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetMasterGain",
+			_mixer,
+		)
+
+		return float32(ret.Int())
+	}
+
+	iSetTrackGain = func(track *Track, gain float32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_gain := int32(gain)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackGain",
+			_track,
+			_gain,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iGetTrackGain = func(track *Track) float32 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetTrackGain",
+			_track,
+		)
+
+		return float32(ret.Int())
+	}
+
+	iSetTagGain = func(mixer *Mixer, tag string, gain float32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_tag := internal.StringOnJSStack(tag)
+		_gain := int32(gain)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTagGain",
+			_mixer,
+			_tag,
+			_gain,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackFrequencyRatio = func(track *Track, ratio float32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_ratio := int32(ratio)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackFrequencyRatio",
+			_track,
+			_ratio,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iGetTrackFrequencyRatio = func(track *Track) float32 {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetTrackFrequencyRatio",
+			_track,
+		)
+
+		return float32(ret.Int())
+	}
+
+	iSetTrackOutputChannelMap = func(track *Track, chmap *int32, count int32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_chmap, ok := internal.GetJSPointer(chmap)
+		if !ok {
+			_chmap = internal.StackAlloc(int(unsafe.Sizeof(*chmap)))
+		}
+		_count := int32(count)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackOutputChannelMap",
+			_track,
+			_chmap,
+			_count,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackStereo = func(track *Track, gains *StereoGains) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_gains, ok := internal.GetJSPointer(gains)
+		if !ok {
+			_gains = internal.StackAlloc(int(unsafe.Sizeof(*gains)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackStereo",
+			_track,
+			_gains,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrack3DPosition = func(track *Track, position *Point3D) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_position, ok := internal.GetJSPointer(position)
+		if !ok {
+			_position = internal.StackAlloc(int(unsafe.Sizeof(*position)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrack3DPosition",
+			_track,
 			_position,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGetMusicPosition = func(music *Music) float64 {
+	iGetTrack3DPosition = func(track *Track, position *Point3D) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
+		_track, ok := internal.GetJSPointer(track)
 		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_position, ok := internal.GetJSPointer(position)
+		if !ok {
+			_position = internal.StackAlloc(int(unsafe.Sizeof(*position)))
 		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicPosition",
-			_music,
-		)
-
-		return float64(ret.Int())
-	}
-
-	iMusicDuration = func(music *Music) float64 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_MusicDuration",
-			_music,
-		)
-
-		return float64(ret.Int())
-	}
-
-	iGetMusicLoopStartTime = func(music *Music) float64 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicLoopStartTime",
-			_music,
-		)
-
-		return float64(ret.Int())
-	}
-
-	iGetMusicLoopEndTime = func(music *Music) float64 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicLoopEndTime",
-			_music,
-		)
-
-		return float64(ret.Int())
-	}
-
-	iGetMusicLoopLengthTime = func(music *Music) float64 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_music, ok := internal.GetJSPointer(music)
-		if !ok {
-			_music = internal.StackAlloc(int(unsafe.Sizeof(*music)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetMusicLoopLengthTime",
-			_music,
-		)
-
-		return float64(ret.Int())
-	}
-
-	iPlaying = func(channel int32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_Playing",
-			_channel,
-		)
-
-		return int32(ret.Int())
-	}
-
-	iPlayingMusic = func() bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		ret := js.Global().Get("Module").Call(
-			"_Mix_PlayingMusic",
+			"_MIX_GetTrack3DPosition",
+			_track,
+			_position,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iSetSoundFonts = func(paths string) bool {
+	iCreateGroup = func(mixer *Mixer) *Group {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_paths := internal.StringOnJSStack(paths)
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_SetSoundFonts",
-			_paths,
+			"_MIX_CreateGroup",
+			_mixer,
+		)
+
+		_obj := internal.NewObject[Group](ret)
+		return _obj
+	}
+
+	iDestroyGroup = func(group *Group) {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_group, ok := internal.GetJSPointer(group)
+		if !ok {
+			_group = internal.StackAlloc(int(unsafe.Sizeof(*group)))
+		}
+		js.Global().Get("Module").Call(
+			"_MIX_DestroyGroup",
+			_group,
+		)
+	}
+
+	iGetGroupProperties = func(group *Group) sdl.PropertiesID {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_group, ok := internal.GetJSPointer(group)
+		if !ok {
+			_group = internal.StackAlloc(int(unsafe.Sizeof(*group)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetGroupProperties",
+			_group,
+		)
+
+		return sdl.PropertiesID(ret.Int())
+	}
+
+	iGetGroupMixer = func(group *Group) *Mixer {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_group, ok := internal.GetJSPointer(group)
+		if !ok {
+			_group = internal.StackAlloc(int(unsafe.Sizeof(*group)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetGroupMixer",
+			_group,
+		)
+
+		_obj := internal.NewObject[Mixer](ret)
+		return _obj
+	}
+
+	iSetTrackGroup = func(track *Track, group *Group) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_group, ok := internal.GetJSPointer(group)
+		if !ok {
+			_group = internal.StackAlloc(int(unsafe.Sizeof(*group)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackGroup",
+			_track,
+			_group,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGetSoundFonts = func() string {
+	iSetTrackStoppedCallback = func(track *Track, cb TrackStoppedCallback, userdata uintptr) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_cb := int32(cb)
+		_userdata := internal.NewBigInt(userdata)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetSoundFonts",
-		)
-
-		return internal.UTF8JSToString(ret)
-	}
-
-	/*iEachSoundFont = func(function EachSoundFontCallback, data uintptr) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_function := int32(function)
-		_data := internal.NewBigInt(data)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_EachSoundFont",
-			_function,
-			_data,
+			"_MIX_SetTrackStoppedCallback",
+			_track,
+			_cb,
+			_userdata,
 		)
 
 		return internal.GetBool(ret)
-	}*/
+	}
 
-	iSetTimidityCfg = func(path string) bool {
+	iSetTrackRawCallback = func(track *Track, cb TrackMixCallback, userdata uintptr) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_cb := int32(cb)
+		_userdata := internal.NewBigInt(userdata)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackRawCallback",
+			_track,
+			_cb,
+			_userdata,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackCookedCallback = func(track *Track, cb TrackMixCallback, userdata uintptr) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		_cb := int32(cb)
+		_userdata := internal.NewBigInt(userdata)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackCookedCallback",
+			_track,
+			_cb,
+			_userdata,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetGroupPostMixCallback = func(group *Group, cb GroupMixCallback, userdata uintptr) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_group, ok := internal.GetJSPointer(group)
+		if !ok {
+			_group = internal.StackAlloc(int(unsafe.Sizeof(*group)))
+		}
+		_cb := int32(cb)
+		_userdata := internal.NewBigInt(userdata)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetGroupPostMixCallback",
+			_group,
+			_cb,
+			_userdata,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetPostMixCallback = func(mixer *Mixer, cb PostMixCallback, userdata uintptr) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_cb := int32(cb)
+		_userdata := internal.NewBigInt(userdata)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetPostMixCallback",
+			_mixer,
+			_cb,
+			_userdata,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iGenerate = func(mixer *Mixer, buffer uintptr, buflen int32) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_mixer, ok := internal.GetJSPointer(mixer)
+		if !ok {
+			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
+		}
+		_buffer := internal.NewBigInt(buffer)
+		_buflen := int32(buflen)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_Generate",
+			_mixer,
+			_buffer,
+			_buflen,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iCreateAudioDecoder = func(path string, props sdl.PropertiesID) *AudioDecoder {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_path := internal.StringOnJSStack(path)
+		_props := uint32(props)
 		ret := js.Global().Get("Module").Call(
-			"_Mix_SetTimidityCfg",
+			"_MIX_CreateAudioDecoder",
 			_path,
+			_props,
+		)
+
+		_obj := internal.NewObject[AudioDecoder](ret)
+		return _obj
+	}
+
+	iCreateAudioDecoder_IO = func(io *sdl.IOStream, closeio bool, props sdl.PropertiesID) *AudioDecoder {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_io, ok := internal.GetJSPointer(io)
+		if !ok {
+			_io = internal.StackAlloc(int(unsafe.Sizeof(*io)))
+		}
+		_closeio := internal.NewBoolean(closeio)
+		_props := uint32(props)
+		ret := js.Global().Get("Module").Call(
+			"_MIX_CreateAudioDecoder_IO",
+			_io,
+			_closeio,
+			_props,
+		)
+
+		_obj := internal.NewObject[AudioDecoder](ret)
+		return _obj
+	}
+
+	iDestroyAudioDecoder = func(audiodecoder *AudioDecoder) {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audiodecoder, ok := internal.GetJSPointer(audiodecoder)
+		if !ok {
+			_audiodecoder = internal.StackAlloc(int(unsafe.Sizeof(*audiodecoder)))
+		}
+		js.Global().Get("Module").Call(
+			"_MIX_DestroyAudioDecoder",
+			_audiodecoder,
+		)
+	}
+
+	iGetAudioDecoderProperties = func(audiodecoder *AudioDecoder) sdl.PropertiesID {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audiodecoder, ok := internal.GetJSPointer(audiodecoder)
+		if !ok {
+			_audiodecoder = internal.StackAlloc(int(unsafe.Sizeof(*audiodecoder)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioDecoderProperties",
+			_audiodecoder,
+		)
+
+		return sdl.PropertiesID(ret.Int())
+	}
+
+	iGetAudioDecoderFormat = func(audiodecoder *AudioDecoder, spec *sdl.AudioSpec) bool {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_audiodecoder, ok := internal.GetJSPointer(audiodecoder)
+		if !ok {
+			_audiodecoder = internal.StackAlloc(int(unsafe.Sizeof(*audiodecoder)))
+		}
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_GetAudioDecoderFormat",
+			_audiodecoder,
+			_spec,
 		)
 
 		return internal.GetBool(ret)
 	}
 
-	iGetTimidityCfg = func() string {
+	iDecodeAudio = func(audiodecoder *AudioDecoder, buffer uintptr, buflen int32, spec *sdl.AudioSpec) int32 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
+		_audiodecoder, ok := internal.GetJSPointer(audiodecoder)
+		if !ok {
+			_audiodecoder = internal.StackAlloc(int(unsafe.Sizeof(*audiodecoder)))
+		}
+		_buffer := internal.NewBigInt(buffer)
+		_buflen := int32(buflen)
+		_spec, ok := internal.GetJSPointer(spec)
+		if !ok {
+			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
+		}
 		ret := js.Global().Get("Module").Call(
-			"_Mix_GetTimidityCfg",
+			"_MIX_DecodeAudio",
+			_audiodecoder,
+			_buffer,
+			_buflen,
+			_spec,
 		)
 
-		return internal.UTF8JSToString(ret)
-	}
-
-	iGetChunk = func(channel int32) *Chunk {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_channel := int32(channel)
-		ret := js.Global().Get("Module").Call(
-			"_Mix_GetChunk",
-			_channel,
-		)
-
-		_obj := internal.NewObject[Chunk](ret)
-		return _obj
-	}
-
-	iCloseAudio = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_Mix_CloseAudio",
-		)
+		return int32(ret.Int())
 	}
 
 }
