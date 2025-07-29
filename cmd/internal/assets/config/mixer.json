@@ -8,14 +8,13 @@
     "ignored_headers": [
     ],
     "ignored_types": [
-        "Chunk"
     ],
     "ignored_functions": [
     ],
     "allowlisted_functions": [
     ],
     "allowlisted_type_prefixes": [
-        "MIX_", "Mix_"
+        "MIX_"
     ],
     "base_types": [        
     ],
