@@ -35,9 +35,9 @@ func (group *Group) Mixer() *Mixer {
 
 // MIX_SetGroupPostMixCallback - Set a callback that fires when a mixer group has completed mixing.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback)
-func (group *Group) SetPostMixCallback(cb GroupMixCallback, userdata uintptr) bool {
+func (group *Group) SetPostMixCallback(cb GroupMixCallback) bool {
 	panic("not implemented")
-	return iSetGroupPostMixCallback(group, cb, userdata)
+	return iSetGroupPostMixCallback(group, cb, 0)
 }
 
 // AudioDecoder
@@ -71,11 +71,12 @@ func (audiodecoder *AudioDecoder) Format(spec *sdl.AudioSpec) error {
 
 // MIX_DecodeAudio - Decode more audio from a [MIX_AudioDecoder](MIX_AudioDecoder).
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_DecodeAudio)
-func (audiodecoder *AudioDecoder) DecodeAudio(buffer uintptr, buflen int32, spec *sdl.AudioSpec) (int32, error) {
-	count := iDecodeAudio(audiodecoder, buffer, buflen, spec)
+func (audiodecoder *AudioDecoder) DecodeAudio(buffer []byte, spec *sdl.AudioSpec) (int32, error) {
+	count := iDecodeAudio(audiodecoder, uintptr(unsafe.Pointer(unsafe.SliceData(buffer))), int32(len(buffer)), spec)
 	if count == -1 {
 		return -1, internal.LastErr()
 	}
+	runtime.KeepAlive(buffer)
 
 	return count, nil
 }
@@ -106,8 +107,8 @@ func (mixer *Mixer) Format(spec *sdl.AudioSpec) error {
 
 // MIX_LoadAudio_IO - Load audio for playback from an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio_IO)
-func (mixer *Mixer) LoadAudio_IO(io *sdl.IOStream, predecode bool, closeio bool) (*Audio, error) {
-	audio := iLoadAudio_IO(mixer, io, predecode, closeio)
+func (mixer *Mixer) LoadAudio_IO(stream *sdl.IOStream, predecode, closeio bool) (*Audio, error) {
+	audio := iLoadAudio_IO(mixer, stream, predecode, closeio)
 	if audio == nil {
 		return nil, internal.LastErr()
 	}
@@ -128,8 +129,8 @@ func (mixer *Mixer) LoadAudio(path string, predecode bool) (*Audio, error) {
 
 // MIX_LoadRawAudio_IO - Load raw PCM data from an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio_IO)
-func (mixer *Mixer) LoadRawAudio_IO(io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) (*Audio, error) {
-	audio := iLoadRawAudio_IO(mixer, io, spec, closeio)
+func (mixer *Mixer) LoadRawAudio_IO(stream *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) (*Audio, error) {
+	audio := iLoadRawAudio_IO(mixer, stream, spec, closeio)
 	if audio == nil {
 		return nil, internal.LastErr()
 	}
@@ -139,22 +140,24 @@ func (mixer *Mixer) LoadRawAudio_IO(io *sdl.IOStream, spec *sdl.AudioSpec, close
 
 // MIX_LoadRawAudio - Load raw PCM data from a memory buffer.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio)
-func (mixer *Mixer) LoadRawAudio(data uintptr, datalen uintptr, spec *sdl.AudioSpec) (*Audio, error) {
-	audio := iLoadRawAudio(mixer, data, datalen, spec)
+func (mixer *Mixer) LoadRawAudio(data []byte, spec *sdl.AudioSpec) (*Audio, error) {
+	audio := iLoadRawAudio(mixer, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uintptr(len(data)), spec)
 	if audio == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(data)
 
 	return audio, nil
 }
 
 // MIX_LoadRawAudioNoCopy - Load raw PCM data from a memory buffer without making a copy.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudioNoCopy)
-func (mixer *Mixer) LoadRawAudioNoCopy(data uintptr, datalen uintptr, spec *sdl.AudioSpec, free_when_done bool) (*Audio, error) {
-	audio := iLoadRawAudioNoCopy(mixer, data, datalen, spec, free_when_done)
+func (mixer *Mixer) LoadRawAudioNoCopy(data []byte, spec *sdl.AudioSpec) (*Audio, error) {
+	audio := iLoadRawAudioNoCopy(mixer, uintptr(unsafe.Pointer(unsafe.SliceData(data))), uintptr(len(data)), spec, false)
 	if audio == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(data)
 
 	return audio, nil
 }
@@ -203,8 +206,8 @@ func (mixer *Mixer) PlayAudio(audio *Audio) error {
 
 // MIX_StopAllTracks - Halt all currently-playing tracks, possibly fading out over time.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_StopAllTracks)
-func (mixer *Mixer) StopAllTracks(fade_out_ms int64) error {
-	if !iStopAllTracks(mixer, fade_out_ms) {
+func (mixer *Mixer) StopAllTracks(fadeOutMS int64) error {
+	if !iStopAllTracks(mixer, fadeOutMS) {
 		return internal.LastErr()
 	}
 
@@ -213,8 +216,8 @@ func (mixer *Mixer) StopAllTracks(fade_out_ms int64) error {
 
 // MIX_StopTag - Halt all tracks with a specific tag, possibly fading out over time.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_StopTag)
-func (mixer *Mixer) StopTag(tag string, fade_out_ms int64) error {
-	if !iStopTag(mixer, tag, fade_out_ms) {
+func (mixer *Mixer) StopTag(tag string, fadeOutMS int64) error {
+	if !iStopTag(mixer, tag, fadeOutMS) {
 		return internal.LastErr()
 	}
 
@@ -300,18 +303,18 @@ func (mixer *Mixer) CreateGroup() (*Group, error) {
 
 // MIX_SetPostMixCallback - Set a callback that fires when all mixing has completed.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback)
-func (mixer *Mixer) SetPostMixCallback(cb PostMixCallback, userdata uintptr) bool {
+func (mixer *Mixer) SetPostMixCallback(cb PostMixCallback) bool {
 	panic("not implemented")
-	return iSetPostMixCallback(mixer, cb, userdata)
+	return iSetPostMixCallback(mixer, cb, 0)
 }
 
 // MIX_Generate - Generate mixer output when not driving an audio device.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_Generate)
 func (mixer *Mixer) Generate(buffer []byte) error {
-	if !iGenerate(mixer, uintptr(unsafe.Pointer(&buffer[0])), int32(len(buffer))) {
-		runtime.KeepAlive(buffer)
+	if !iGenerate(mixer, uintptr(unsafe.Pointer(unsafe.SliceData(buffer))), int32(len(buffer))) {
 		return internal.LastErr()
 	}
+	runtime.KeepAlive(buffer)
 
 	return nil
 }
@@ -508,8 +511,8 @@ func (track *Track) Play(options sdl.PropertiesID) error {
 
 // MIX_StopTrack - Halt a currently-playing track, possibly fading out over time.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_StopTrack)
-func (track *Track) Stop(fade_out_frames int64) error {
-	if !iStopTrack(track, fade_out_frames) {
+func (track *Track) Stop(fadeOutFrames int64) error {
+	if !iStopTrack(track, fadeOutFrames) {
 		return internal.LastErr()
 	}
 
@@ -583,7 +586,7 @@ func (track *Track) FrequencyRatio() float32 {
 // MIX_SetTrackOutputChannelMap - Set the current output channel map of a track.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackOutputChannelMap)
 func (track *Track) SetOutputChannelMap(channelMap []int32) error {
-	if !iSetTrackOutputChannelMap(track, &channelMap[0], int32(len(channelMap))) {
+	if !iSetTrackOutputChannelMap(track, unsafe.SliceData(channelMap), int32(len(channelMap))) {
 		return internal.LastErr()
 	}
 	runtime.KeepAlive(channelMap)
@@ -594,7 +597,7 @@ func (track *Track) SetOutputChannelMap(channelMap []int32) error {
 // MIX_SetTrackStereo - Force a track to stereo output, with optionally left/right panning.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStereo)
 func (track *Track) SetStereo(gains []StereoGains) error {
-	if !iSetTrackStereo(track, &gains[0]) {
+	if !iSetTrackStereo(track, unsafe.SliceData(gains)) {
 		return internal.LastErr()
 	}
 	runtime.KeepAlive(gains)
@@ -636,21 +639,21 @@ func (track *Track) SetGroup(group *Group) error {
 
 // MIX_SetTrackStoppedCallback - Set a callback that fires when a [MIX_Track](MIX_Track) is stopped.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStoppedCallback)
-func (track *Track) SetStoppedCallback(cb TrackStoppedCallback, userdata uintptr) bool {
+func (track *Track) SetStoppedCallback(cb TrackStoppedCallback) bool {
 	panic("not implemented")
-	return iSetTrackStoppedCallback(track, cb, userdata)
+	return iSetTrackStoppedCallback(track, cb, 0)
 }
 
 // MIX_SetTrackRawCallback - Set a callback that fires when a [MIX_Track](MIX_Track) has initial decoded audio.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawCallback)
-func (track *Track) SetRawCallback(cb TrackMixCallback, userdata uintptr) bool {
+func (track *Track) SetRawCallback(cb TrackMixCallback) bool {
 	panic("not implemented")
-	return iSetTrackRawCallback(track, cb, userdata)
+	return iSetTrackRawCallback(track, cb, 0)
 }
 
 // MIX_SetTrackCookedCallback - Set a callback that fires when the mixer has transformed a track's audio.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackCookedCallback)
-func (track *Track) SetCookedCallback(cb TrackMixCallback, userdata uintptr) bool {
+func (track *Track) SetCookedCallback(cb TrackMixCallback) bool {
 	panic("not implemented")
-	return iSetTrackCookedCallback(track, cb, userdata)
+	return iSetTrackCookedCallback(track, cb, 0)
 }
