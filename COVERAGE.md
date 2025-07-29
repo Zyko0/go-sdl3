@@ -1758,19 +1758,19 @@ The following emojis mean (they are clickable and should link to the code implem
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [MIX_Version](https://wiki.libsdl.org/SDL3_mixer/MIX_Version) | [:heavy_check_mark:](mixer/functions.go#L6) | [:x:](mixer/mixer_functions_js.go#L13) |
-| [MIX_Init](https://wiki.libsdl.org/SDL3_mixer/MIX_Init) | [:heavy_check_mark:](mixer/functions.go#L12) | [:x:](mixer/mixer_functions_js.go#L24) |
-| [MIX_Quit](https://wiki.libsdl.org/SDL3_mixer/MIX_Quit) | [:heavy_check_mark:](mixer/functions.go#L22) | [:x:](mixer/mixer_functions_js.go#L35) |
-| [MIX_GetNumAudioDecoders](https://wiki.libsdl.org/SDL3_mixer/MIX_GetNumAudioDecoders) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L44) |
-| [MIX_GetAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoder) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L55) |
-| [MIX_CreateMixerDevice](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixerDevice) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L68) |
-| [MIX_CreateMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixer) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L87) |
+| [MIX_Version](https://wiki.libsdl.org/SDL3_mixer/MIX_Version) | [:heavy_check_mark:](mixer/functions.go#L9) | [:x:](mixer/mixer_functions_js.go#L13) |
+| [MIX_Init](https://wiki.libsdl.org/SDL3_mixer/MIX_Init) | [:heavy_check_mark:](mixer/functions.go#L15) | [:x:](mixer/mixer_functions_js.go#L24) |
+| [MIX_Quit](https://wiki.libsdl.org/SDL3_mixer/MIX_Quit) | [:heavy_check_mark:](mixer/functions.go#L25) | [:x:](mixer/mixer_functions_js.go#L35) |
+| [MIX_GetNumAudioDecoders](https://wiki.libsdl.org/SDL3_mixer/MIX_GetNumAudioDecoders) | [:heavy_check_mark:](mixer/functions.go#L31) | [:x:](mixer/mixer_functions_js.go#L44) |
+| [MIX_GetAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoder) | [:heavy_check_mark:](mixer/functions.go#L37) | [:x:](mixer/mixer_functions_js.go#L55) |
+| [MIX_CreateMixerDevice](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixerDevice) | [:heavy_check_mark:](mixer/functions.go#L43) | [:x:](mixer/mixer_functions_js.go#L68) |
+| [MIX_CreateMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixer) | [:heavy_check_mark:](mixer/functions.go#L54) | [:x:](mixer/mixer_functions_js.go#L87) |
 | [MIX_DestroyMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyMixer) | [:heavy_check_mark:](mixer/methods.go#L86) | [:x:](mixer/mixer_functions_js.go#L104) |
 | [MIX_GetMixerProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerProperties) | [:heavy_check_mark:](mixer/methods.go#L92) | [:x:](mixer/mixer_functions_js.go#L118) |
 | [MIX_GetMixerFormat](https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerFormat) | [:heavy_check_mark:](mixer/methods.go#L98) | [:x:](mixer/mixer_functions_js.go#L134) |
 | [MIX_LoadAudio_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio_IO) | [:heavy_check_mark:](mixer/methods.go#L108) | [:x:](mixer/mixer_functions_js.go#L155) |
 | [MIX_LoadAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio) | [:heavy_check_mark:](mixer/methods.go#L119) | [:x:](mixer/mixer_functions_js.go#L181) |
-| [MIX_LoadAudioWithProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioWithProperties) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L202) |
+| [MIX_LoadAudioWithProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioWithProperties) | [:heavy_check_mark:](mixer/functions.go#L65) | [:x:](mixer/mixer_functions_js.go#L202) |
 | [MIX_LoadRawAudio_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio_IO) | [:heavy_check_mark:](mixer/methods.go#L130) | [:x:](mixer/mixer_functions_js.go#L216) |
 | [MIX_LoadRawAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio) | [:heavy_check_mark:](mixer/methods.go#L141) | [:x:](mixer/mixer_functions_js.go#L245) |
 | [MIX_LoadRawAudioNoCopy](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudioNoCopy) | [:heavy_check_mark:](mixer/methods.go#L152) | [:x:](mixer/mixer_functions_js.go#L271) |
@@ -1798,8 +1798,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [MIX_TrackFramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackFramesToMS) | [:heavy_check_mark:](mixer/methods.go#L494) | [:x:](mixer/mixer_functions_js.go#L668) |
 | [MIX_AudioMSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_AudioMSToFrames) | [:heavy_check_mark:](mixer/methods.go#L355) | [:x:](mixer/mixer_functions_js.go#L686) |
 | [MIX_AudioFramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_AudioFramesToMS) | [:heavy_check_mark:](mixer/methods.go#L361) | [:x:](mixer/mixer_functions_js.go#L704) |
-| [MIX_MSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L722) |
-| [MIX_FramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_FramesToMS) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L737) |
+| [MIX_MSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames) | [:heavy_check_mark:](mixer/functions.go#L76) | [:x:](mixer/mixer_functions_js.go#L722) |
+| [MIX_FramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_FramesToMS) | [:heavy_check_mark:](mixer/functions.go#L82) | [:x:](mixer/mixer_functions_js.go#L737) |
 | [MIX_PlayTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTrack) | [:heavy_check_mark:](mixer/methods.go#L500) | [:x:](mixer/mixer_functions_js.go#L752) |
 | [MIX_PlayTag](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTag) | [:heavy_check_mark:](mixer/methods.go#L185) | [:x:](mixer/mixer_functions_js.go#L770) |
 | [MIX_PlayAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayAudio) | [:heavy_check_mark:](mixer/methods.go#L195) | [:x:](mixer/mixer_functions_js.go#L790) |
@@ -1836,8 +1836,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [MIX_SetGroupPostMixCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback) | [:x:](mixer/methods.go#L37) | [:x:](mixer/mixer_functions_js.go#L1352) |
 | [MIX_SetPostMixCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback) | [:x:](mixer/methods.go#L302) | [:x:](mixer/mixer_functions_js.go#L1372) |
 | [MIX_Generate](https://wiki.libsdl.org/SDL3_mixer/MIX_Generate) | [:heavy_check_mark:](mixer/methods.go#L309) | [:x:](mixer/mixer_functions_js.go#L1392) |
-| [MIX_CreateAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1412) |
-| [MIX_CreateAudioDecoder_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder_IO) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1428) |
+| [MIX_CreateAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder) | [:heavy_check_mark:](mixer/functions.go#L88) | [:x:](mixer/mixer_functions_js.go#L1412) |
+| [MIX_CreateAudioDecoder_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder_IO) | [:heavy_check_mark:](mixer/functions.go#L99) | [:x:](mixer/mixer_functions_js.go#L1428) |
 | [MIX_DestroyAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyAudioDecoder) | [:heavy_check_mark:](mixer/methods.go#L46) | [:x:](mixer/mixer_functions_js.go#L1449) |
 | [MIX_GetAudioDecoderProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderProperties) | [:heavy_check_mark:](mixer/methods.go#L52) | [:x:](mixer/mixer_functions_js.go#L1463) |
 | [MIX_GetAudioDecoderFormat](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderFormat) | [:heavy_check_mark:](mixer/methods.go#L63) | [:x:](mixer/mixer_functions_js.go#L1479) |
