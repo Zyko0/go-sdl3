@@ -62,7 +62,7 @@ tasks:
         requires:
           vars: [LIBRARY]
         vars:
-            DIR: '{{.LIBRARY"}}'
+            DIR: '{{.LIBRARY}}'
         cmds:
             # Generate SDL3 methods heuristically as a starting point
             - go run ./cmd/methodgen --dir {{ .DIR }} --library {{ .LIBRARY }}
