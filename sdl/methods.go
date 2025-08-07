@@ -1106,16 +1106,29 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int32) error {
 
 // SDL_UpdateYUVTexture - Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateYUVTexture)
-func (texture *Texture) UpdateYUV(rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
-	panic("not implemented")
-	return iUpdateYUVTexture(texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch)
+func (texture *Texture) UpdateYUV(rect *Rect, Yplane []byte, Ypitch int32, Uplane []byte, Upitch int32, Vplane []byte, Vpitch int32) error {
+	if !iUpdateYUVTexture(texture, rect, unsafe.SliceData(Yplane), Ypitch, unsafe.SliceData(Uplane), Upitch, unsafe.SliceData(Vplane), Vpitch) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(Yplane)
+	runtime.KeepAlive(Uplane)
+	runtime.KeepAlive(Vplane)
+
+	return nil
 }
 
 // SDL_UpdateNVTexture - Update a rectangle within a planar NV12 or NV21 texture with new pixels.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateNVTexture)
-func (texture *Texture) UpdateNV(rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool {
-	panic("not implemented")
-	return iUpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch)
+func (texture *Texture) UpdateNV(rect *Rect, Yplane []byte, Ypitch int32, UVplane []byte, UVpitch int32) error {
+	if !iUpdateNVTexture(texture, rect, unsafe.SliceData(Yplane), Ypitch, unsafe.SliceData(UVplane), UVpitch) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(Yplane)
+	runtime.KeepAlive(UVplane)
+
+	return nil
 }
 
 // SDL_LockTexture - Lock a portion of the texture for **write-only** pixel access.
