@@ -93,6 +93,7 @@ tasks:
                 var: DIRS
               cmd:
                 gzip -f $(echo ./bin/{{.ITEM}}/assets/*)
+
     coverage:
         desc: Update the COVERAGE.md file with functions covered by the bindings for SDL3 libraries
         vars:
