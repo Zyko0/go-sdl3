@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/ttf.so
+	//go:embed assets/ttf.so.gz
 	ttfBlob    []byte
 	ttfLibName = "libSDL3_ttf.so.0"
 )

@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/mix_amd64.dylib
+	//go:embed assets/mix_amd64.dylib.gz
 	mixBlob    []byte
 	mixLibName = "libSDL3_mixer.dylib"
 )

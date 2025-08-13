@@ -3,6 +3,9 @@
 package binimg
 
 import (
+	"bytes"
+	"compress/gzip"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +23,25 @@ func Load() library {
 	if err != nil {
 		log.Fatal("binimg: couldn't create a temporary directory: " + err.Error())
 	}
-
 	imgPath := filepath.Join(tmp, imgLibName)
-	err = os.WriteFile(imgPath, imgBlob, 0666)
+
+	r, err := gzip.NewReader(bytes.NewReader(imgBlob))
 	if err != nil {
-		log.Fatal("binimg: couldn't write img library to disk: " + err.Error())
+		log.Fatal("binimg: couldn't read compressed img binary: " + err.Error())
 	}
+	defer r.Close()
+
+	f, err := os.Create(imgPath)
+	if err != nil {
+		log.Fatal("binimg: couldn't create img library file to disk: " + err.Error())
+	}
+
+	_, err = io.Copy(f, r)
+	if err != nil {
+		f.Close()
+		log.Fatal("binimg: couldn't decompress img library file: " + err.Error())
+	}
+	f.Close()
 
 	err = img.LoadLibrary(imgPath)
 	if err != nil {
