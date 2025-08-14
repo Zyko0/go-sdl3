@@ -153,7 +153,7 @@ type Rect struct {
 	H int32
 }
 
-// SDL_FRect - A rectangle, with the origin at the upper left (using floating point values).
+// SDL_FRect - A rectangle stored using floating point values.
 // (https://wiki.libsdl.org/SDL3/SDL_FRect)
 type FRect struct {
 	X float32

@@ -35,15 +35,6 @@ func (iface *IOStreamInterface) OpenIO(userdata *byte) *IOStream {
 	//return iOpenIO(iface, userdata)
 }
 
-// ClipboardDataCallback
-
-// SDL_SetClipboardData - Offer clipboard data to the OS.
-// (https://wiki.libsdl.org/SDL3/SDL_SetClipboardData)
-func (callback ClipboardDataCallback) SetClipboardData(cleanup ClipboardCleanupCallback, userdata *byte, mime_types *string, num_mime_types uintptr) bool {
-	panic("not implemented")
-	//return iSetClipboardData(callback, cleanup, userdata, mime_types, num_mime_types)
-}
-
 // WindowID
 
 // SDL_GetWindowFromID - Get a window from a stored ID.

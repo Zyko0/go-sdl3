@@ -299,7 +299,6 @@ var (
 	_addr_SDL_SetPrimarySelectionText               uintptr
 	_addr_SDL_GetPrimarySelectionText               uintptr
 	_addr_SDL_HasPrimarySelectionText               uintptr
-	_addr_SDL_SetClipboardData                      uintptr
 	_addr_SDL_ClearClipboardData                    uintptr
 	_addr_SDL_GetClipboardData                      uintptr
 	_addr_SDL_HasClipboardData                      uintptr
@@ -968,10 +967,8 @@ var (
 	_addr_SDL_GetTrayMenuParentEntry                uintptr
 	_addr_SDL_GetTrayMenuParentTray                 uintptr
 	_addr_SDL_UpdateTrays                           uintptr
-	_addr_SDL_SetMainReady                          uintptr
-	_addr_SDL_RunApp                                uintptr
-	_addr_SDL_EnterAppMainCallbacks                 uintptr
-	_addr_SDL_GDKSuspendComplete                    uintptr
+	_addr_SDL_GetVersion                            uintptr
+	_addr_SDL_GetRevision                           uintptr
 )
 
 func initialize() {
@@ -2109,10 +2106,6 @@ func initialize() {
 	_addr_SDL_HasPrimarySelectionText, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_HasPrimarySelectionText")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_HasPrimarySelectionText")
-	}
-	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_SetClipboardData")
 	}
 	_addr_SDL_ClearClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ClearClipboardData")
 	if err != nil {
@@ -4786,21 +4779,13 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_UpdateTrays")
 	}
-	_addr_SDL_SetMainReady, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetMainReady")
+	_addr_SDL_GetVersion, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetVersion")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_SetMainReady")
+		panic("cannot puregogen.OpenSymbol: SDL_GetVersion")
 	}
-	_addr_SDL_RunApp, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_RunApp")
+	_addr_SDL_GetRevision, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetRevision")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_RunApp")
-	}
-	_addr_SDL_EnterAppMainCallbacks, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_EnterAppMainCallbacks")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_EnterAppMainCallbacks")
-	}
-	_addr_SDL_GDKSuspendComplete, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GDKSuspendComplete")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_GDKSuspendComplete")
+		panic("cannot puregogen.OpenSymbol: SDL_GetRevision")
 	}
 
 	ifree = func(mem uintptr) {
@@ -6512,12 +6497,6 @@ func initialize() {
 	iHasPrimarySelectionText = func() bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_HasPrimarySelectionText)
 		__r0 := uint8(_r0) != 0
-		return __r0
-	}
-	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types *string, num_mime_types uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, uintptr(callback), uintptr(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
-		__r0 := uint8(_r0) != 0
-		runtime.KeepAlive(mime_types)
 		return __r0
 	}
 	iClearClipboardData = func() bool {
@@ -10364,22 +10343,14 @@ func initialize() {
 	iUpdateTrays = func() {
 		purego.SyscallN(_addr_SDL_UpdateTrays)
 	}
-	iSetMainReady = func() {
-		purego.SyscallN(_addr_SDL_SetMainReady)
-	}
-	iRunApp = func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_RunApp, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(mainFunction), uintptr(reserved))
+	iGetVersion = func() int32 {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVersion)
 		__r0 := int32(_r0)
-		runtime.KeepAlive(argv)
 		return __r0
 	}
-	iEnterAppMainCallbacks = func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnterAppMainCallbacks, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(appinit), uintptr(appiter), uintptr(appevent), uintptr(appquit))
-		__r0 := int32(_r0)
-		runtime.KeepAlive(argv)
+	iGetRevision = func() string {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetRevision)
+		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
-	}
-	iGDKSuspendComplete = func() {
-		purego.SyscallN(_addr_SDL_GDKSuspendComplete)
 	}
 }

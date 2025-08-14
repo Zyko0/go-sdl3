@@ -297,7 +297,7 @@ SDL_ClearSurface,"Clear a surface with a specific color, with floating point pre
 ",https://wiki.libsdl.org/SDL3/SDL_ClearSurface
 SDL_ClickTrayEntry,"Simulate a click on a tray entry.
 ",https://wiki.libsdl.org/SDL3/SDL_ClickTrayEntry
-SDL_ClipboardCleanupCallback,"Callback function that will be called when the clipboard is cleared, or new data is set.
+SDL_ClipboardCleanupCallback,"Callback function that will be called when the clipboard is cleared, or when new data is set.
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardCleanupCallback
 SDL_ClipboardDataCallback,"Callback function that will be called when data for the specified mime-type is requested by the OS.
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardDataCallback
@@ -649,7 +649,7 @@ SDL_FOURCC,"Define a four character code as a [Uint32](Uint32).
 ",https://wiki.libsdl.org/SDL3/SDL_FOURCC
 SDL_FPoint,"The structure that defines a point (using floating point values).
 ",https://wiki.libsdl.org/SDL3/SDL_FPoint
-SDL_FRect,"A rectangle, with the origin at the upper left (using floating point values).
+SDL_FRect,"A rectangle stored using floating point values.
 ",https://wiki.libsdl.org/SDL3/SDL_FRect
 SDL_FUNCTION,"A macro that reports the current function being compiled.
 ",https://wiki.libsdl.org/SDL3/SDL_FUNCTION
@@ -1035,7 +1035,7 @@ SDL_GetCameraSupportedFormats,"Get the list of native formats/sizes a camera sup
 ",https://wiki.libsdl.org/SDL3/SDL_GetCameraSupportedFormats
 SDL_GetCameras,"Get a list of currently connected camera devices.
 ",https://wiki.libsdl.org/SDL3/SDL_GetCameras
-SDL_GetClipboardData,"Get the data from clipboard for a given mime type.
+SDL_GetClipboardData,"Get the data from the clipboard for a given mime type.
 ",https://wiki.libsdl.org/SDL3/SDL_GetClipboardData
 SDL_GetClipboardMimeTypes,"Retrieve the list of mime types available in the clipboard.
 ",https://wiki.libsdl.org/SDL3/SDL_GetClipboardMimeTypes
@@ -2751,6 +2751,8 @@ SDL_PLATFORM_HAIKU,"A preprocessor macro that is only defined if compiling for H
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HAIKU
 SDL_PLATFORM_HPUX,"A preprocessor macro that is only defined if compiling for HP-UX.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HPUX
+SDL_PLATFORM_HURD,"A preprocessor macro that is only defined if compiling for GNU/Hurd.
+",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HURD
 SDL_PLATFORM_IOS,"A preprocessor macro that is only defined if compiling for iOS.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_IOS
 SDL_PLATFORM_IRIX,"A preprocessor macro that is only defined if compiling for IRIX.
@@ -2907,7 +2909,7 @@ SDL_PushEvent,"Add an event to the event queue.
 ",https://wiki.libsdl.org/SDL3/SDL_PushEvent
 SDL_PushGPUComputeUniformData,"Pushes data to a uniform slot on the command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUComputeUniformData
-SDL_PushGPUDebugGroup,"Begins a debug group with an arbitary name.
+SDL_PushGPUDebugGroup,"Begins a debug group with an arbitrary name.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUDebugGroup
 SDL_PushGPUFragmentUniformData,"Pushes data to a fragment uniform slot on the command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUFragmentUniformData
@@ -4209,7 +4211,7 @@ SDL_strnlen,"This works exactly like strnlen() but doesn't require access to a C
 ",https://wiki.libsdl.org/SDL3/SDL_strnlen
 SDL_strnstr,"Search a string, up to n bytes, for the first instance of a specific substring.
 ",https://wiki.libsdl.org/SDL3/SDL_strnstr
-SDL_strpbrk,"Searches a string for the first occurence of any character contained in a breakset, and returns a pointer from the string to that character.
+SDL_strpbrk,"Searches a string for the first occurrence of any character contained in a breakset, and returns a pointer from the string to that character.
 ",https://wiki.libsdl.org/SDL3/SDL_strpbrk
 SDL_strrchr,"Search a string for the last instance of a specific byte.
 ",https://wiki.libsdl.org/SDL3/SDL_strrchr
@@ -4297,12 +4299,60 @@ SDL_zeroa,"Clear an array's memory to zero.
 ",https://wiki.libsdl.org/SDL3/SDL_zeroa
 SDL_zerop,"Clear an object's memory to zero, using a pointer.
 ",https://wiki.libsdl.org/SDL3/SDL_zerop
+IMG_AddAnimationEncoderFrame,"Add a frame to an animation encoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationEncoderFrame
+IMG_AddAnimationFrame,"Add a frame to a stream of images being saved.
+",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationFrame
 IMG_Animation,"Animated image support
 ",https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_AnimationDecoder,"An object representing animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationDecoder
+IMG_AnimationEncoder,"An object representing the encoder context.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationEncoder
+IMG_AnimationStream,"An object representing a stream of images being saved.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationStream
+IMG_CloseAnimationDecoder,"Close an animation decoder, finishing any decoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationDecoder
+IMG_CloseAnimationEncoder,"Close an animation encoder, finishing any encoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationEncoder
+IMG_CloseAnimationStream,"Close an animation stream, finishing any encoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationStream
+IMG_CreateAnimationDecoder,"Create a decoder to read a series of images from a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder
+IMG_CreateAnimationDecoderWithProperties,"Create an animation decoder with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoderWithProperties
+IMG_CreateAnimationDecoder_IO,"Create a decoder to read a series of images from an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder_IO
+IMG_CreateAnimationEncoder,"Create an encoder to save a series of images to a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder
+IMG_CreateAnimationEncoderWithProperties,"Create an animation encoder with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoderWithProperties
+IMG_CreateAnimationEncoder_IO,"Create an encoder to save a series of images to an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder_IO
+IMG_CreateAnimationStream,"Create an animation stream and save it to a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStream
+IMG_CreateAnimationStreamWithProperties,"Create an animation stream with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStreamWithProperties
+IMG_CreateAnimationStream_IO,"Create an animation stream and save it to an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStream_IO
 IMG_FreeAnimation,"Dispose of an [IMG_Animation](IMG_Animation) and free its resources.
 ",https://wiki.libsdl.org/SDL3_image/IMG_FreeAnimation
+IMG_GetAnimationDecoderFrame,"Get the next frame in an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderFrame
+IMG_GetAnimationDecoderMetadata,"Get the metadata of an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderMetadata
+IMG_GetAnimationDecoderPresentationTimestampMS,"Get the presentation timestamp of a frame in milliseconds.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderPresentationTimestampMS
+IMG_GetAnimationDecoderProperties,"Get the properties of an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderProperties
+IMG_GetNextAnimationDecoderFrame,"Get the next frame in an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetNextAnimationDecoderFrame
 IMG_Load,"Load an image from a filesystem path into a software surface.
 ",https://wiki.libsdl.org/SDL3_image/IMG_Load
+IMG_LoadAPNGAnimation_IO,"Load an APNG animation directly from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadAPNGAnimation_IO
+IMG_LoadAVIFAnimation_IO,"Load an AVIF animation directly from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadAVIFAnimation_IO
 IMG_LoadAVIF_IO,"Load a AVIF image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadAVIF_IO
 IMG_LoadAnimation,"Load an animation from a file.
@@ -4367,10 +4417,22 @@ IMG_ReadXPMFromArray,"Load an XPM image from a memory array.
 ",https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArray
 IMG_ReadXPMFromArrayToRGB888,"Load an XPM image from a memory array.
 ",https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArrayToRGB888
+IMG_ResetAnimationDecoder,"Reset an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_ResetAnimationDecoder
+IMG_Save,"Save an SDL_Surface into an image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_Save
 IMG_SaveAVIF,"Save an SDL_Surface into a AVIF image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF
 IMG_SaveAVIF_IO,"Save an SDL_Surface into AVIF image data, via an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF_IO
+IMG_SaveBMP,"Save an SDL_Surface into a BMP image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP
+IMG_SaveBMP_IO,"Save an SDL_Surface into BMP image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP_IO
+IMG_SaveGIF,"Save an SDL_Surface into a GIF image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF
+IMG_SaveGIF_IO,"Save an SDL_Surface into GIF image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF_IO
 IMG_SaveJPG,"Save an SDL_Surface into a JPEG image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveJPG
 IMG_SaveJPG_IO,"Save an SDL_Surface into JPEG image data, via an SDL_IOStream.
@@ -4379,6 +4441,16 @@ IMG_SavePNG,"Save an SDL_Surface into a PNG image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SavePNG
 IMG_SavePNG_IO,"Save an SDL_Surface into PNG image data, via an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SavePNG_IO
+IMG_SaveTGA,"Save an SDL_Surface into a TGA image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA
+IMG_SaveTGA_IO,"Save an SDL_Surface into TGA image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA_IO
+IMG_SaveTyped_IO,"Save an SDL_Surface into formatted image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTyped_IO
+IMG_SaveWEBP,"Save an SDL_Surface into a WEBP image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP
+IMG_SaveWEBP_IO,"Save an SDL_Surface into WEBP image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP_IO
 IMG_Version,"This function gets the version of the dynamically linked SDL_image library.
 ",https://wiki.libsdl.org/SDL3_image/IMG_Version
 IMG_isAVIF,"Detect AVIF image data on a readable/seekable SDL_IOStream.
@@ -4473,6 +4545,8 @@ TTF_GPUTextEngineWinding,"The winding order of the vertices returned by [TTF_Get
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GPUTextEngineWinding
 TTF_GetFontAscent,"Query the offset from the baseline to the top of a font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontAscent
+TTF_GetFontCharSpacing,"Get the additional character spacing in pixels to be applied between any two rendered characters.
+",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontCharSpacing
 TTF_GetFontDPI,"Get font target resolutions, in dots per inch.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontDPI
 TTF_GetFontDescent,"Query the offset from the baseline to the bottom of a font.
@@ -4617,6 +4691,8 @@ TTF_RenderText_Solid_Wrapped,"Render word-wrapped UTF-8 text at fast quality to 
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Solid_Wrapped
 TTF_STYLE_NORMAL,"Font style flags
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_STYLE_NORMAL
+TTF_SetFontCharSpacing,"Set additional space in pixels to be applied between any two rendered characters.
+",https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontCharSpacing
 TTF_SetFontDirection,"Set the direction to be used for text shaping by a font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontDirection
 TTF_SetFontHinting,"Set a font's current hinter setting.

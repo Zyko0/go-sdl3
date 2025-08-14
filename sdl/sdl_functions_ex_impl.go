@@ -17,7 +17,7 @@ var (
 	_addr_SDL_ShowMessageBox           uintptr
 	_addr_SDL_CreateGPUShader          uintptr
 	_addr_SDL_CreateGPUComputePipeline uintptr
-	_addr_SDL_GetVersion               uintptr
+	_addr_SDL_SetClipboardData         uintptr
 )
 
 func initialize_ex() {
@@ -36,9 +36,9 @@ func initialize_ex() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUComputePipeline")
 	}
-	_addr_SDL_GetVersion, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetVersion")
+	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_GetVersion")
+		panic("cannot puregogen.OpenSymbol: SDL_SetClipboardData")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -62,9 +62,10 @@ func initialize_ex() {
 		runtime.KeepAlive(createinfo)
 		return __r0
 	}
-	iGetVersion = func() int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVersion)
-		__r0 := int32(_r0)
+	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types **byte, num_mime_types uintptr) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, uintptr(callback), uintptr(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
+		__r0 := uint8(_r0) != 0
+		runtime.KeepAlive(mime_types)
 		return __r0
 	}
 }

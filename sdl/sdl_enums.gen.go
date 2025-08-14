@@ -1367,16 +1367,6 @@ const (
 	HINT_OVERRIDE HintPriority = 2
 )
 
-// SDL_AppResult - Return values for optional main callbacks.
-// (https://wiki.libsdl.org/SDL3/SDL_AppResult)
-type AppResult uint32
-
-const (
-	APP_CONTINUE AppResult = 0
-	APP_SUCCESS  AppResult = 1
-	APP_FAILURE  AppResult = 2
-)
-
 // SDL_LogPriority - The predefined log priorities
 // (https://wiki.libsdl.org/SDL3/SDL_LogPriority)
 type LogPriority uint32

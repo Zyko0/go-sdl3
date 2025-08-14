@@ -32,7 +32,8 @@
         "SDL_ShowMessageBox",
         "SDL_CreateGPUShader",
         "SDL_CreateGPUComputePipeline",
-        "SDL_SetTrayEntryCallback"
+        "SDL_SetTrayEntryCallback",
+        "SDL_SetClipboardData"
     ],
     "allowlisted_functions": [
         "SDL_free"

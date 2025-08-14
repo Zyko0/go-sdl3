@@ -1629,6 +1629,20 @@ func GetClipboardText() (string, error) {
 	return internal.ClonePtrString(ptr), nil
 }
 
+// SDL_SetClipboardData - Offer clipboard data to the OS.
+// (https://wiki.libsdl.org/SDL3/SDL_SetClipboardData)
+func SetClipboardData(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, mime_types []string) error {
+	mimeTypes := make([]*byte, len(mime_types))
+	for i, mime := range mime_types {
+		mimeTypes[i] = internal.StringToNullablePtr(mime)
+	}
+	if !iSetClipboardData(callback, cleanup, 0, unsafe.SliceData(mimeTypes), uintptr(len(mimeTypes))) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
 // SDL_GetVersion - Get the version of SDL that is linked against your program.
 // (https://wiki.libsdl.org/SDL3/SDL_GetVersion)
 func GetVersion() Version {

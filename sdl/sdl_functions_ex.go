@@ -11,6 +11,6 @@ var (
 	//puregogen:function symbol=SDL_CreateGPUComputePipeline
 	iCreateGPUComputePipeline func(device *GPUDevice, createinfo *gpuComputePipelineCreateInfo) *GPUComputePipeline
 
-	//puregogen:function symbol=SDL_GetVersion
-	iGetVersion func() int32
+	//puregogen:function symbol=SDL_SetClipboardData
+	iSetClipboardData func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types **byte, num_mime_types uintptr) bool
 )
