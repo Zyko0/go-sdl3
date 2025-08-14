@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/sdl_arm64.dll
+	//go:embed assets/sdl_arm64.dll.gz
 	sdlBlob    []byte
 	sdlLibName = "SDL3.dll"
 )

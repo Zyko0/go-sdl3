@@ -3,6 +3,9 @@
 package binttf
 
 import (
+	"bytes"
+	"compress/gzip"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +23,25 @@ func Load() library {
 	if err != nil {
 		log.Fatal("binttf: couldn't create a temporary directory: " + err.Error())
 	}
-
 	ttfPath := filepath.Join(tmp, ttfLibName)
-	err = os.WriteFile(ttfPath, ttfBlob, 0666)
+
+	r, err := gzip.NewReader(bytes.NewReader(ttfBlob))
 	if err != nil {
-		log.Fatal("binttf: couldn't write ttf library to disk: " + err.Error())
+		log.Fatal("binttf: couldn't read compressed ttf binary: " + err.Error())
 	}
+	defer r.Close()
+
+	f, err := os.Create(ttfPath)
+	if err != nil {
+		log.Fatal("binttf: couldn't create ttf library file to disk: " + err.Error())
+	}
+
+	_, err = io.Copy(f, r)
+	if err != nil {
+		f.Close()
+		log.Fatal("binttf: couldn't decompress ttf library file: " + err.Error())
+	}
+	f.Close()
 
 	err = ttf.LoadLibrary(ttfPath)
 	if err != nil {

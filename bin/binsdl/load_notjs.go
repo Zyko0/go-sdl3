@@ -3,6 +3,9 @@
 package binsdl
 
 import (
+	"bytes"
+	"compress/gzip"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +23,25 @@ func Load() library {
 	if err != nil {
 		log.Fatal("binsdl: couldn't create a temporary directory: " + err.Error())
 	}
-
 	sdlPath := filepath.Join(tmp, sdlLibName)
-	err = os.WriteFile(sdlPath, sdlBlob, 0666)
+
+	r, err := gzip.NewReader(bytes.NewReader(sdlBlob))
 	if err != nil {
-		log.Fatal("binsdl: couldn't write sdl library to disk: " + err.Error())
+		log.Fatal("binsdl: couldn't read compressed sdl binary: " + err.Error())
 	}
+	defer r.Close()
+
+	f, err := os.Create(sdlPath)
+	if err != nil {
+		log.Fatal("binsdl: couldn't create sdl library file to disk: " + err.Error())
+	}
+
+	_, err = io.Copy(f, r)
+	if err != nil {
+		f.Close()
+		log.Fatal("binsdl: couldn't decompress sdl library file: " + err.Error())
+	}
+	f.Close()
 
 	err = sdl.LoadLibrary(sdlPath)
 	if err != nil {

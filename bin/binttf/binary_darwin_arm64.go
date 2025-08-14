@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/ttf_arm64.dylib
+	//go:embed assets/ttf_arm64.dylib.gz
 	ttfBlob    []byte
 	ttfLibName = "libSDL3_ttf.dylib"
 )

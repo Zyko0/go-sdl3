@@ -3,6 +3,9 @@
 package binmix
 
 import (
+	"bytes"
+	"compress/gzip"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -20,12 +23,25 @@ func Load() library {
 	if err != nil {
 		log.Fatal("binmix: couldn't create a temporary directory: " + err.Error())
 	}
-
 	mixPath := filepath.Join(tmp, mixLibName)
-	err = os.WriteFile(mixPath, mixBlob, 0666)
+
+	r, err := gzip.NewReader(bytes.NewReader(mixBlob))
 	if err != nil {
-		log.Fatal("binmix: couldn't write mixer library to disk: " + err.Error())
+		log.Fatal("binmix: couldn't read compressed mixer binary: " + err.Error())
 	}
+	defer r.Close()
+
+	f, err := os.Create(mixPath)
+	if err != nil {
+		log.Fatal("binmix: couldn't create mixer library file to disk: " + err.Error())
+	}
+
+	_, err = io.Copy(f, r)
+	if err != nil {
+		f.Close()
+		log.Fatal("binmix: couldn't decompress mixer library file: " + err.Error())
+	}
+	f.Close()
 
 	err = mixer.LoadLibrary(mixPath)
 	if err != nil {

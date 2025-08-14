@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/img_amd64.dylib
+	//go:embed assets/img_amd64.dylib.gz
 	imgBlob    []byte
 	imgLibName = "libSDL3_image.dylib"
 )
