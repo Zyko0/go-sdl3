@@ -54,30 +54,38 @@ The following emojis mean (they are clickable and should link to the code implem
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_GetGlobalProperties](https://wiki.libsdl.org/SDL3/SDL_GetGlobalProperties) | [:heavy_check_mark:](sdl/functions.go#L146) | [:x:](sdl/sdl_functions_js.go#L553) |
-| [SDL_CreateProperties](https://wiki.libsdl.org/SDL3/SDL_CreateProperties) | [:heavy_check_mark:](sdl/functions.go#L157) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L564) |
-| [SDL_CopyProperties](https://wiki.libsdl.org/SDL3/SDL_CopyProperties) | [:heavy_check_mark:](sdl/functions.go#L168) | [:x:](sdl/sdl_functions_js.go#L572) |
-| [SDL_LockProperties](https://wiki.libsdl.org/SDL3/SDL_LockProperties) | [:heavy_check_mark:](sdl/methods.go#L5656) | [:x:](sdl/sdl_functions_js.go#L587) |
-| [SDL_UnlockProperties](https://wiki.libsdl.org/SDL3/SDL_UnlockProperties) | [:heavy_check_mark:](sdl/methods.go#L5666) | [:x:](sdl/sdl_functions_js.go#L600) |
-| [SDL_SetPointerPropertyWithCleanup](https://wiki.libsdl.org/SDL3/SDL_SetPointerPropertyWithCleanup) | [:x:](sdl/methods.go#L5672) | [:x:](sdl/sdl_functions_js.go#L611) |
-| [SDL_SetPointerProperty](https://wiki.libsdl.org/SDL3/SDL_SetPointerProperty) | [:x:](sdl/methods.go#L5679) | [:x:](sdl/sdl_functions_js.go#L632) |
-| [SDL_SetStringProperty](https://wiki.libsdl.org/SDL3/SDL_SetStringProperty) | [:heavy_check_mark:](sdl/methods.go#L5686) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L649) |
-| [SDL_SetNumberProperty](https://wiki.libsdl.org/SDL3/SDL_SetNumberProperty) | [:heavy_check_mark:](sdl/methods.go#L5696) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L665) |
-| [SDL_SetFloatProperty](https://wiki.libsdl.org/SDL3/SDL_SetFloatProperty) | [:heavy_check_mark:](sdl/methods.go#L5706) | [:x:](sdl/sdl_functions_js.go#L681) |
-| [SDL_SetBooleanProperty](https://wiki.libsdl.org/SDL3/SDL_SetBooleanProperty) | [:heavy_check_mark:](sdl/methods.go#L5716) | [:x:](sdl/sdl_functions_js.go#L698) |
-| [SDL_HasProperty](https://wiki.libsdl.org/SDL3/SDL_HasProperty) | [:heavy_check_mark:](sdl/methods.go#L5726) | [:x:](sdl/sdl_functions_js.go#L715) |
-| [SDL_GetPropertyType](https://wiki.libsdl.org/SDL3/SDL_GetPropertyType) | [:heavy_check_mark:](sdl/methods.go#L5732) | [:x:](sdl/sdl_functions_js.go#L730) |
-| [SDL_GetPointerProperty](https://wiki.libsdl.org/SDL3/SDL_GetPointerProperty) | [:x:](sdl/methods.go#L5738) | [:x:](sdl/sdl_functions_js.go#L745) |
-| [SDL_GetStringProperty](https://wiki.libsdl.org/SDL3/SDL_GetStringProperty) | [:heavy_check_mark:](sdl/methods.go#L5745) | [:x:](sdl/sdl_functions_js.go#L762) |
-| [SDL_GetNumberProperty](https://wiki.libsdl.org/SDL3/SDL_GetNumberProperty) | [:heavy_check_mark:](sdl/methods.go#L5751) | [:x:](sdl/sdl_functions_js.go#L779) |
-| [SDL_GetFloatProperty](https://wiki.libsdl.org/SDL3/SDL_GetFloatProperty) | [:heavy_check_mark:](sdl/methods.go#L5757) | [:x:](sdl/sdl_functions_js.go#L796) |
-| [SDL_GetBooleanProperty](https://wiki.libsdl.org/SDL3/SDL_GetBooleanProperty) | [:heavy_check_mark:](sdl/methods.go#L5763) | [:x:](sdl/sdl_functions_js.go#L813) |
-| [SDL_ClearProperty](https://wiki.libsdl.org/SDL3/SDL_ClearProperty) | [:heavy_check_mark:](sdl/methods.go#L5769) | [:x:](sdl/sdl_functions_js.go#L830) |
-| [SDL_EnumerateProperties](https://wiki.libsdl.org/SDL3/SDL_EnumerateProperties) | [:heavy_check_mark:](sdl/methods.go#L5779) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L845) |
-| [SDL_DestroyProperties](https://wiki.libsdl.org/SDL3/SDL_DestroyProperties) | [:heavy_check_mark:](sdl/methods.go#L5785) | [:x:](sdl/sdl_functions_js.go#L860) |
+| [SDL_GetVersion](https://wiki.libsdl.org/SDL3/SDL_GetVersion) | [:heavy_check_mark:](sdl/functions.go#L1633) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L23) |
+| [SDL_GetRevision](https://wiki.libsdl.org/SDL3/SDL_GetRevision) | [:question:]() | [:question:]() |
 </details>
 <details>
 <summary><h3>Log</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
+| [SDL_GetGlobalProperties](https://wiki.libsdl.org/SDL3/SDL_GetGlobalProperties) | [:heavy_check_mark:](sdl/functions.go#L146) | [:x:](sdl/sdl_functions_js.go#L553) |
+| [SDL_CreateProperties](https://wiki.libsdl.org/SDL3/SDL_CreateProperties) | [:heavy_check_mark:](sdl/functions.go#L157) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L564) |
+| [SDL_CopyProperties](https://wiki.libsdl.org/SDL3/SDL_CopyProperties) | [:heavy_check_mark:](sdl/functions.go#L168) | [:x:](sdl/sdl_functions_js.go#L572) |
+| [SDL_LockProperties](https://wiki.libsdl.org/SDL3/SDL_LockProperties) | [:heavy_check_mark:](sdl/methods.go#L5670) | [:x:](sdl/sdl_functions_js.go#L587) |
+| [SDL_UnlockProperties](https://wiki.libsdl.org/SDL3/SDL_UnlockProperties) | [:heavy_check_mark:](sdl/methods.go#L5680) | [:x:](sdl/sdl_functions_js.go#L600) |
+| [SDL_SetPointerPropertyWithCleanup](https://wiki.libsdl.org/SDL3/SDL_SetPointerPropertyWithCleanup) | [:x:](sdl/methods.go#L5686) | [:x:](sdl/sdl_functions_js.go#L611) |
+| [SDL_SetPointerProperty](https://wiki.libsdl.org/SDL3/SDL_SetPointerProperty) | [:x:](sdl/methods.go#L5693) | [:x:](sdl/sdl_functions_js.go#L632) |
+| [SDL_SetStringProperty](https://wiki.libsdl.org/SDL3/SDL_SetStringProperty) | [:heavy_check_mark:](sdl/methods.go#L5700) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L649) |
+| [SDL_SetNumberProperty](https://wiki.libsdl.org/SDL3/SDL_SetNumberProperty) | [:heavy_check_mark:](sdl/methods.go#L5710) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L665) |
+| [SDL_SetFloatProperty](https://wiki.libsdl.org/SDL3/SDL_SetFloatProperty) | [:heavy_check_mark:](sdl/methods.go#L5720) | [:x:](sdl/sdl_functions_js.go#L681) |
+| [SDL_SetBooleanProperty](https://wiki.libsdl.org/SDL3/SDL_SetBooleanProperty) | [:heavy_check_mark:](sdl/methods.go#L5730) | [:x:](sdl/sdl_functions_js.go#L698) |
+| [SDL_HasProperty](https://wiki.libsdl.org/SDL3/SDL_HasProperty) | [:heavy_check_mark:](sdl/methods.go#L5740) | [:x:](sdl/sdl_functions_js.go#L715) |
+| [SDL_GetPropertyType](https://wiki.libsdl.org/SDL3/SDL_GetPropertyType) | [:heavy_check_mark:](sdl/methods.go#L5746) | [:x:](sdl/sdl_functions_js.go#L730) |
+| [SDL_GetPointerProperty](https://wiki.libsdl.org/SDL3/SDL_GetPointerProperty) | [:x:](sdl/methods.go#L5752) | [:x:](sdl/sdl_functions_js.go#L745) |
+| [SDL_GetStringProperty](https://wiki.libsdl.org/SDL3/SDL_GetStringProperty) | [:heavy_check_mark:](sdl/methods.go#L5759) | [:x:](sdl/sdl_functions_js.go#L762) |
+| [SDL_GetNumberProperty](https://wiki.libsdl.org/SDL3/SDL_GetNumberProperty) | [:heavy_check_mark:](sdl/methods.go#L5765) | [:x:](sdl/sdl_functions_js.go#L779) |
+| [SDL_GetFloatProperty](https://wiki.libsdl.org/SDL3/SDL_GetFloatProperty) | [:heavy_check_mark:](sdl/methods.go#L5771) | [:x:](sdl/sdl_functions_js.go#L796) |
+| [SDL_GetBooleanProperty](https://wiki.libsdl.org/SDL3/SDL_GetBooleanProperty) | [:heavy_check_mark:](sdl/methods.go#L5777) | [:x:](sdl/sdl_functions_js.go#L813) |
+| [SDL_ClearProperty](https://wiki.libsdl.org/SDL3/SDL_ClearProperty) | [:heavy_check_mark:](sdl/methods.go#L5783) | [:x:](sdl/sdl_functions_js.go#L830) |
+| [SDL_EnumerateProperties](https://wiki.libsdl.org/SDL3/SDL_EnumerateProperties) | [:heavy_check_mark:](sdl/methods.go#L5793) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L845) |
+| [SDL_DestroyProperties](https://wiki.libsdl.org/SDL3/SDL_DestroyProperties) | [:heavy_check_mark:](sdl/methods.go#L5799) | [:x:](sdl/sdl_functions_js.go#L860) |
+</details>
+<details open>
+<summary><h3>Video</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -98,10 +106,10 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_LogMessageV](https://wiki.libsdl.org/SDL3/SDL_LogMessageV) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14265) |
 | [SDL_GetDefaultLogOutputFunction](https://wiki.libsdl.org/SDL3/SDL_GetDefaultLogOutputFunction) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14282) |
 | [SDL_GetLogOutputFunction](https://wiki.libsdl.org/SDL3/SDL_GetLogOutputFunction) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14293) |
-| [SDL_SetLogOutputFunction](https://wiki.libsdl.org/SDL3/SDL_SetLogOutputFunction) | [:x:](sdl/methods.go#L3961) | [:x:](sdl/sdl_functions_js.go#L14312) |
+| [SDL_SetLogOutputFunction](https://wiki.libsdl.org/SDL3/SDL_SetLogOutputFunction) | [:x:](sdl/methods.go#L3975) | [:x:](sdl/sdl_functions_js.go#L14312) |
 </details>
 <details open>
-<summary><h3>Video</h3></summary>
+<summary><h3>Events</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -111,90 +119,90 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetSystemTheme](https://wiki.libsdl.org/SDL3/SDL_GetSystemTheme) | [:heavy_check_mark:](sdl/functions.go#L524) | [:x:](sdl/sdl_functions_js.go#L5863) |
 | [SDL_GetDisplays](https://wiki.libsdl.org/SDL3/SDL_GetDisplays) | [:heavy_check_mark:](sdl/functions.go#L530) | [:x:](sdl/sdl_functions_js.go#L5874) |
 | [SDL_GetPrimaryDisplay](https://wiki.libsdl.org/SDL3/SDL_GetPrimaryDisplay) | [:heavy_check_mark:](sdl/functions.go#L544) | [:x:](sdl/sdl_functions_js.go#L5890) |
-| [SDL_GetDisplayProperties](https://wiki.libsdl.org/SDL3/SDL_GetDisplayProperties) | [:heavy_check_mark:](sdl/methods.go#L3515) | [:x:](sdl/sdl_functions_js.go#L5901) |
-| [SDL_GetDisplayName](https://wiki.libsdl.org/SDL3/SDL_GetDisplayName) | [:heavy_check_mark:](sdl/methods.go#L3526) | [:x:](sdl/sdl_functions_js.go#L5914) |
-| [SDL_GetDisplayBounds](https://wiki.libsdl.org/SDL3/SDL_GetDisplayBounds) | [:heavy_check_mark:](sdl/methods.go#L3537) | [:x:](sdl/sdl_functions_js.go#L5927) |
-| [SDL_GetDisplayUsableBounds](https://wiki.libsdl.org/SDL3/SDL_GetDisplayUsableBounds) | [:heavy_check_mark:](sdl/methods.go#L3549) | [:x:](sdl/sdl_functions_js.go#L5945) |
-| [SDL_GetNaturalDisplayOrientation](https://wiki.libsdl.org/SDL3/SDL_GetNaturalDisplayOrientation) | [:heavy_check_mark:](sdl/methods.go#L3561) | [:x:](sdl/sdl_functions_js.go#L5963) |
-| [SDL_GetCurrentDisplayOrientation](https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayOrientation) | [:heavy_check_mark:](sdl/methods.go#L3567) | [:x:](sdl/sdl_functions_js.go#L5976) |
-| [SDL_GetDisplayContentScale](https://wiki.libsdl.org/SDL3/SDL_GetDisplayContentScale) | [:heavy_check_mark:](sdl/methods.go#L3573) | [:x:](sdl/sdl_functions_js.go#L5989) |
-| [SDL_GetFullscreenDisplayModes](https://wiki.libsdl.org/SDL3/SDL_GetFullscreenDisplayModes) | [:heavy_check_mark:](sdl/methods.go#L3584) | [:x:](sdl/sdl_functions_js.go#L6002) |
-| [SDL_GetClosestFullscreenDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetClosestFullscreenDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3598) | [:x:](sdl/sdl_functions_js.go#L6020) |
-| [SDL_GetDesktopDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetDesktopDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3610) | [:x:](sdl/sdl_functions_js.go#L6046) |
-| [SDL_GetCurrentDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3621) | [:x:](sdl/sdl_functions_js.go#L6062) |
+| [SDL_GetDisplayProperties](https://wiki.libsdl.org/SDL3/SDL_GetDisplayProperties) | [:heavy_check_mark:](sdl/methods.go#L3529) | [:x:](sdl/sdl_functions_js.go#L5901) |
+| [SDL_GetDisplayName](https://wiki.libsdl.org/SDL3/SDL_GetDisplayName) | [:heavy_check_mark:](sdl/methods.go#L3540) | [:x:](sdl/sdl_functions_js.go#L5914) |
+| [SDL_GetDisplayBounds](https://wiki.libsdl.org/SDL3/SDL_GetDisplayBounds) | [:heavy_check_mark:](sdl/methods.go#L3551) | [:x:](sdl/sdl_functions_js.go#L5927) |
+| [SDL_GetDisplayUsableBounds](https://wiki.libsdl.org/SDL3/SDL_GetDisplayUsableBounds) | [:heavy_check_mark:](sdl/methods.go#L3563) | [:x:](sdl/sdl_functions_js.go#L5945) |
+| [SDL_GetNaturalDisplayOrientation](https://wiki.libsdl.org/SDL3/SDL_GetNaturalDisplayOrientation) | [:heavy_check_mark:](sdl/methods.go#L3575) | [:x:](sdl/sdl_functions_js.go#L5963) |
+| [SDL_GetCurrentDisplayOrientation](https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayOrientation) | [:heavy_check_mark:](sdl/methods.go#L3581) | [:x:](sdl/sdl_functions_js.go#L5976) |
+| [SDL_GetDisplayContentScale](https://wiki.libsdl.org/SDL3/SDL_GetDisplayContentScale) | [:heavy_check_mark:](sdl/methods.go#L3587) | [:x:](sdl/sdl_functions_js.go#L5989) |
+| [SDL_GetFullscreenDisplayModes](https://wiki.libsdl.org/SDL3/SDL_GetFullscreenDisplayModes) | [:heavy_check_mark:](sdl/methods.go#L3598) | [:x:](sdl/sdl_functions_js.go#L6002) |
+| [SDL_GetClosestFullscreenDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetClosestFullscreenDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3612) | [:x:](sdl/sdl_functions_js.go#L6020) |
+| [SDL_GetDesktopDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetDesktopDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3624) | [:x:](sdl/sdl_functions_js.go#L6046) |
+| [SDL_GetCurrentDisplayMode](https://wiki.libsdl.org/SDL3/SDL_GetCurrentDisplayMode) | [:heavy_check_mark:](sdl/methods.go#L3635) | [:x:](sdl/sdl_functions_js.go#L6062) |
 | [SDL_GetDisplayForPoint](https://wiki.libsdl.org/SDL3/SDL_GetDisplayForPoint) | [:heavy_check_mark:](sdl/functions.go#L550) | [:x:](sdl/sdl_functions_js.go#L6078) |
 | [SDL_GetDisplayForRect](https://wiki.libsdl.org/SDL3/SDL_GetDisplayForRect) | [:heavy_check_mark:](sdl/functions.go#L556) | [:x:](sdl/sdl_functions_js.go#L6094) |
 | [SDL_GetDisplayForWindow](https://wiki.libsdl.org/SDL3/SDL_GetDisplayForWindow) | [:heavy_check_mark:](sdl/functions.go#L562) | [:x:](sdl/sdl_functions_js.go#L6110) |
-| [SDL_GetWindowPixelDensity](https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelDensity) | [:heavy_check_mark:](sdl/methods.go#L4007) | [:x:](sdl/sdl_functions_js.go#L6126) |
-| [SDL_GetWindowDisplayScale](https://wiki.libsdl.org/SDL3/SDL_GetWindowDisplayScale) | [:heavy_check_mark:](sdl/methods.go#L4018) | [:x:](sdl/sdl_functions_js.go#L6142) |
-| [SDL_SetWindowFullscreenMode](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreenMode) | [:heavy_check_mark:](sdl/methods.go#L4029) | [:x:](sdl/sdl_functions_js.go#L6158) |
-| [SDL_GetWindowFullscreenMode](https://wiki.libsdl.org/SDL3/SDL_GetWindowFullscreenMode) | [:heavy_check_mark:](sdl/methods.go#L4039) | [:x:](sdl/sdl_functions_js.go#L6179) |
-| [SDL_GetWindowICCProfile](https://wiki.libsdl.org/SDL3/SDL_GetWindowICCProfile) | [:heavy_check_mark:](sdl/methods.go#L4045) | [:x:](sdl/sdl_functions_js.go#L6198) |
-| [SDL_GetWindowPixelFormat](https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelFormat) | [:heavy_check_mark:](sdl/methods.go#L4059) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6219) |
+| [SDL_GetWindowPixelDensity](https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelDensity) | [:heavy_check_mark:](sdl/methods.go#L4021) | [:x:](sdl/sdl_functions_js.go#L6126) |
+| [SDL_GetWindowDisplayScale](https://wiki.libsdl.org/SDL3/SDL_GetWindowDisplayScale) | [:heavy_check_mark:](sdl/methods.go#L4032) | [:x:](sdl/sdl_functions_js.go#L6142) |
+| [SDL_SetWindowFullscreenMode](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreenMode) | [:heavy_check_mark:](sdl/methods.go#L4043) | [:x:](sdl/sdl_functions_js.go#L6158) |
+| [SDL_GetWindowFullscreenMode](https://wiki.libsdl.org/SDL3/SDL_GetWindowFullscreenMode) | [:heavy_check_mark:](sdl/methods.go#L4053) | [:x:](sdl/sdl_functions_js.go#L6179) |
+| [SDL_GetWindowICCProfile](https://wiki.libsdl.org/SDL3/SDL_GetWindowICCProfile) | [:heavy_check_mark:](sdl/methods.go#L4059) | [:x:](sdl/sdl_functions_js.go#L6198) |
+| [SDL_GetWindowPixelFormat](https://wiki.libsdl.org/SDL3/SDL_GetWindowPixelFormat) | [:heavy_check_mark:](sdl/methods.go#L4073) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6219) |
 | [SDL_GetWindows](https://wiki.libsdl.org/SDL3/SDL_GetWindows) | [:heavy_check_mark:](sdl/functions.go#L568) | [:x:](sdl/sdl_functions_js.go#L6232) |
 | [SDL_CreateWindow](https://wiki.libsdl.org/SDL3/SDL_CreateWindow) | [:heavy_check_mark:](sdl/functions.go#L582) | [:x:](sdl/sdl_functions_js.go#L6248) |
-| [SDL_CreatePopupWindow](https://wiki.libsdl.org/SDL3/SDL_CreatePopupWindow) | [:heavy_check_mark:](sdl/methods.go#L4070) | [:x:](sdl/sdl_functions_js.go#L6270) |
+| [SDL_CreatePopupWindow](https://wiki.libsdl.org/SDL3/SDL_CreatePopupWindow) | [:heavy_check_mark:](sdl/methods.go#L4084) | [:x:](sdl/sdl_functions_js.go#L6270) |
 | [SDL_CreateWindowWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateWindowWithProperties) | [:heavy_check_mark:](sdl/functions.go#L593) | [:x:](sdl/sdl_functions_js.go#L6299) |
-| [SDL_GetWindowID](https://wiki.libsdl.org/SDL3/SDL_GetWindowID) | [:heavy_check_mark:](sdl/methods.go#L4081) | [:x:](sdl/sdl_functions_js.go#L6315) |
+| [SDL_GetWindowID](https://wiki.libsdl.org/SDL3/SDL_GetWindowID) | [:heavy_check_mark:](sdl/methods.go#L4095) | [:x:](sdl/sdl_functions_js.go#L6315) |
 | [SDL_GetWindowFromID](https://wiki.libsdl.org/SDL3/SDL_GetWindowFromID) | [:heavy_check_mark:](sdl/methods.go#L50) | [:x:](sdl/sdl_functions_js.go#L6331) |
-| [SDL_GetWindowParent](https://wiki.libsdl.org/SDL3/SDL_GetWindowParent) | [:heavy_check_mark:](sdl/methods.go#L4092) | [:x:](sdl/sdl_functions_js.go#L6347) |
-| [SDL_GetWindowProperties](https://wiki.libsdl.org/SDL3/SDL_GetWindowProperties) | [:heavy_check_mark:](sdl/methods.go#L4098) | [:x:](sdl/sdl_functions_js.go#L6366) |
-| [SDL_GetWindowFlags](https://wiki.libsdl.org/SDL3/SDL_GetWindowFlags) | [:heavy_check_mark:](sdl/methods.go#L4109) | [:x:](sdl/sdl_functions_js.go#L6382) |
-| [SDL_SetWindowTitle](https://wiki.libsdl.org/SDL3/SDL_SetWindowTitle) | [:heavy_check_mark:](sdl/methods.go#L4115) | [:x:](sdl/sdl_functions_js.go#L6398) |
-| [SDL_GetWindowTitle](https://wiki.libsdl.org/SDL3/SDL_GetWindowTitle) | [:heavy_check_mark:](sdl/methods.go#L4125) | [:x:](sdl/sdl_functions_js.go#L6416) |
-| [SDL_SetWindowIcon](https://wiki.libsdl.org/SDL3/SDL_SetWindowIcon) | [:heavy_check_mark:](sdl/methods.go#L4131) | [:x:](sdl/sdl_functions_js.go#L6432) |
-| [SDL_SetWindowPosition](https://wiki.libsdl.org/SDL3/SDL_SetWindowPosition) | [:heavy_check_mark:](sdl/methods.go#L4141) | [:x:](sdl/sdl_functions_js.go#L6453) |
-| [SDL_GetWindowPosition](https://wiki.libsdl.org/SDL3/SDL_GetWindowPosition) | [:heavy_check_mark:](sdl/methods.go#L4151) | [:x:](sdl/sdl_functions_js.go#L6473) |
-| [SDL_SetWindowSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowSize) | [:heavy_check_mark:](sdl/methods.go#L4163) | [:x:](sdl/sdl_functions_js.go#L6499) |
-| [SDL_GetWindowSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowSize) | [:heavy_check_mark:](sdl/methods.go#L4173) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6519) |
-| [SDL_GetWindowSafeArea](https://wiki.libsdl.org/SDL3/SDL_GetWindowSafeArea) | [:heavy_check_mark:](sdl/methods.go#L4185) | [:x:](sdl/sdl_functions_js.go#L6541) |
-| [SDL_SetWindowAspectRatio](https://wiki.libsdl.org/SDL3/SDL_SetWindowAspectRatio) | [:heavy_check_mark:](sdl/methods.go#L4197) | [:x:](sdl/sdl_functions_js.go#L6562) |
-| [SDL_GetWindowAspectRatio](https://wiki.libsdl.org/SDL3/SDL_GetWindowAspectRatio) | [:heavy_check_mark:](sdl/methods.go#L4207) | [:x:](sdl/sdl_functions_js.go#L6582) |
-| [SDL_GetWindowBordersSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowBordersSize) | [:heavy_check_mark:](sdl/methods.go#L4219) | [:x:](sdl/sdl_functions_js.go#L6608) |
-| [SDL_GetWindowSizeInPixels](https://wiki.libsdl.org/SDL3/SDL_GetWindowSizeInPixels) | [:heavy_check_mark:](sdl/methods.go#L4231) | [:x:](sdl/sdl_functions_js.go#L6644) |
-| [SDL_SetWindowMinimumSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowMinimumSize) | [:heavy_check_mark:](sdl/methods.go#L4243) | [:x:](sdl/sdl_functions_js.go#L6670) |
-| [SDL_GetWindowMinimumSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowMinimumSize) | [:heavy_check_mark:](sdl/methods.go#L4253) | [:x:](sdl/sdl_functions_js.go#L6690) |
-| [SDL_SetWindowMaximumSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowMaximumSize) | [:heavy_check_mark:](sdl/methods.go#L4265) | [:x:](sdl/sdl_functions_js.go#L6716) |
-| [SDL_GetWindowMaximumSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowMaximumSize) | [:heavy_check_mark:](sdl/methods.go#L4275) | [:x:](sdl/sdl_functions_js.go#L6736) |
-| [SDL_SetWindowBordered](https://wiki.libsdl.org/SDL3/SDL_SetWindowBordered) | [:heavy_check_mark:](sdl/methods.go#L4287) | [:x:](sdl/sdl_functions_js.go#L6762) |
-| [SDL_SetWindowResizable](https://wiki.libsdl.org/SDL3/SDL_SetWindowResizable) | [:heavy_check_mark:](sdl/methods.go#L4297) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6780) |
-| [SDL_SetWindowAlwaysOnTop](https://wiki.libsdl.org/SDL3/SDL_SetWindowAlwaysOnTop) | [:heavy_check_mark:](sdl/methods.go#L4307) | [:x:](sdl/sdl_functions_js.go#L6795) |
-| [SDL_ShowWindow](https://wiki.libsdl.org/SDL3/SDL_ShowWindow) | [:heavy_check_mark:](sdl/methods.go#L4317) | [:x:](sdl/sdl_functions_js.go#L6813) |
-| [SDL_HideWindow](https://wiki.libsdl.org/SDL3/SDL_HideWindow) | [:heavy_check_mark:](sdl/methods.go#L4327) | [:x:](sdl/sdl_functions_js.go#L6829) |
-| [SDL_RaiseWindow](https://wiki.libsdl.org/SDL3/SDL_RaiseWindow) | [:heavy_check_mark:](sdl/methods.go#L4337) | [:x:](sdl/sdl_functions_js.go#L6845) |
-| [SDL_MaximizeWindow](https://wiki.libsdl.org/SDL3/SDL_MaximizeWindow) | [:heavy_check_mark:](sdl/methods.go#L4347) | [:x:](sdl/sdl_functions_js.go#L6861) |
-| [SDL_MinimizeWindow](https://wiki.libsdl.org/SDL3/SDL_MinimizeWindow) | [:heavy_check_mark:](sdl/methods.go#L4357) | [:x:](sdl/sdl_functions_js.go#L6877) |
-| [SDL_RestoreWindow](https://wiki.libsdl.org/SDL3/SDL_RestoreWindow) | [:heavy_check_mark:](sdl/methods.go#L4367) | [:x:](sdl/sdl_functions_js.go#L6893) |
-| [SDL_SetWindowFullscreen](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen) | [:heavy_check_mark:](sdl/methods.go#L4377) | [:x:](sdl/sdl_functions_js.go#L6909) |
-| [SDL_SyncWindow](https://wiki.libsdl.org/SDL3/SDL_SyncWindow) | [:heavy_check_mark:](sdl/methods.go#L4387) | [:x:](sdl/sdl_functions_js.go#L6927) |
-| [SDL_WindowHasSurface](https://wiki.libsdl.org/SDL3/SDL_WindowHasSurface) | [:heavy_check_mark:](sdl/methods.go#L4397) | [:x:](sdl/sdl_functions_js.go#L6943) |
-| [SDL_GetWindowSurface](https://wiki.libsdl.org/SDL3/SDL_GetWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4403) | [:x:](sdl/sdl_functions_js.go#L6959) |
-| [SDL_SetWindowSurfaceVSync](https://wiki.libsdl.org/SDL3/SDL_SetWindowSurfaceVSync) | [:heavy_check_mark:](sdl/methods.go#L4414) | [:x:](sdl/sdl_functions_js.go#L6978) |
-| [SDL_GetWindowSurfaceVSync](https://wiki.libsdl.org/SDL3/SDL_GetWindowSurfaceVSync) | [:heavy_check_mark:](sdl/methods.go#L4424) | [:x:](sdl/sdl_functions_js.go#L6996) |
-| [SDL_UpdateWindowSurface](https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4436) | [:x:](sdl/sdl_functions_js.go#L7017) |
-| [SDL_UpdateWindowSurfaceRects](https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurfaceRects) | [:heavy_check_mark:](sdl/methods.go#L4446) | [:x:](sdl/sdl_functions_js.go#L7033) |
-| [SDL_DestroyWindowSurface](https://wiki.libsdl.org/SDL3/SDL_DestroyWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4456) | [:x:](sdl/sdl_functions_js.go#L7056) |
-| [SDL_SetWindowKeyboardGrab](https://wiki.libsdl.org/SDL3/SDL_SetWindowKeyboardGrab) | [:heavy_check_mark:](sdl/methods.go#L4466) | [:x:](sdl/sdl_functions_js.go#L7072) |
-| [SDL_SetWindowMouseGrab](https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseGrab) | [:heavy_check_mark:](sdl/methods.go#L4476) | [:x:](sdl/sdl_functions_js.go#L7090) |
-| [SDL_GetWindowKeyboardGrab](https://wiki.libsdl.org/SDL3/SDL_GetWindowKeyboardGrab) | [:heavy_check_mark:](sdl/methods.go#L4486) | [:x:](sdl/sdl_functions_js.go#L7108) |
-| [SDL_GetWindowMouseGrab](https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseGrab) | [:heavy_check_mark:](sdl/methods.go#L4492) | [:x:](sdl/sdl_functions_js.go#L7124) |
+| [SDL_GetWindowParent](https://wiki.libsdl.org/SDL3/SDL_GetWindowParent) | [:heavy_check_mark:](sdl/methods.go#L4106) | [:x:](sdl/sdl_functions_js.go#L6347) |
+| [SDL_GetWindowProperties](https://wiki.libsdl.org/SDL3/SDL_GetWindowProperties) | [:heavy_check_mark:](sdl/methods.go#L4112) | [:x:](sdl/sdl_functions_js.go#L6366) |
+| [SDL_GetWindowFlags](https://wiki.libsdl.org/SDL3/SDL_GetWindowFlags) | [:heavy_check_mark:](sdl/methods.go#L4123) | [:x:](sdl/sdl_functions_js.go#L6382) |
+| [SDL_SetWindowTitle](https://wiki.libsdl.org/SDL3/SDL_SetWindowTitle) | [:heavy_check_mark:](sdl/methods.go#L4129) | [:x:](sdl/sdl_functions_js.go#L6398) |
+| [SDL_GetWindowTitle](https://wiki.libsdl.org/SDL3/SDL_GetWindowTitle) | [:heavy_check_mark:](sdl/methods.go#L4139) | [:x:](sdl/sdl_functions_js.go#L6416) |
+| [SDL_SetWindowIcon](https://wiki.libsdl.org/SDL3/SDL_SetWindowIcon) | [:heavy_check_mark:](sdl/methods.go#L4145) | [:x:](sdl/sdl_functions_js.go#L6432) |
+| [SDL_SetWindowPosition](https://wiki.libsdl.org/SDL3/SDL_SetWindowPosition) | [:heavy_check_mark:](sdl/methods.go#L4155) | [:x:](sdl/sdl_functions_js.go#L6453) |
+| [SDL_GetWindowPosition](https://wiki.libsdl.org/SDL3/SDL_GetWindowPosition) | [:heavy_check_mark:](sdl/methods.go#L4165) | [:x:](sdl/sdl_functions_js.go#L6473) |
+| [SDL_SetWindowSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowSize) | [:heavy_check_mark:](sdl/methods.go#L4177) | [:x:](sdl/sdl_functions_js.go#L6499) |
+| [SDL_GetWindowSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowSize) | [:heavy_check_mark:](sdl/methods.go#L4187) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6519) |
+| [SDL_GetWindowSafeArea](https://wiki.libsdl.org/SDL3/SDL_GetWindowSafeArea) | [:heavy_check_mark:](sdl/methods.go#L4199) | [:x:](sdl/sdl_functions_js.go#L6541) |
+| [SDL_SetWindowAspectRatio](https://wiki.libsdl.org/SDL3/SDL_SetWindowAspectRatio) | [:heavy_check_mark:](sdl/methods.go#L4211) | [:x:](sdl/sdl_functions_js.go#L6562) |
+| [SDL_GetWindowAspectRatio](https://wiki.libsdl.org/SDL3/SDL_GetWindowAspectRatio) | [:heavy_check_mark:](sdl/methods.go#L4221) | [:x:](sdl/sdl_functions_js.go#L6582) |
+| [SDL_GetWindowBordersSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowBordersSize) | [:heavy_check_mark:](sdl/methods.go#L4233) | [:x:](sdl/sdl_functions_js.go#L6608) |
+| [SDL_GetWindowSizeInPixels](https://wiki.libsdl.org/SDL3/SDL_GetWindowSizeInPixels) | [:heavy_check_mark:](sdl/methods.go#L4245) | [:x:](sdl/sdl_functions_js.go#L6644) |
+| [SDL_SetWindowMinimumSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowMinimumSize) | [:heavy_check_mark:](sdl/methods.go#L4257) | [:x:](sdl/sdl_functions_js.go#L6670) |
+| [SDL_GetWindowMinimumSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowMinimumSize) | [:heavy_check_mark:](sdl/methods.go#L4267) | [:x:](sdl/sdl_functions_js.go#L6690) |
+| [SDL_SetWindowMaximumSize](https://wiki.libsdl.org/SDL3/SDL_SetWindowMaximumSize) | [:heavy_check_mark:](sdl/methods.go#L4279) | [:x:](sdl/sdl_functions_js.go#L6716) |
+| [SDL_GetWindowMaximumSize](https://wiki.libsdl.org/SDL3/SDL_GetWindowMaximumSize) | [:heavy_check_mark:](sdl/methods.go#L4289) | [:x:](sdl/sdl_functions_js.go#L6736) |
+| [SDL_SetWindowBordered](https://wiki.libsdl.org/SDL3/SDL_SetWindowBordered) | [:heavy_check_mark:](sdl/methods.go#L4301) | [:x:](sdl/sdl_functions_js.go#L6762) |
+| [SDL_SetWindowResizable](https://wiki.libsdl.org/SDL3/SDL_SetWindowResizable) | [:heavy_check_mark:](sdl/methods.go#L4311) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L6780) |
+| [SDL_SetWindowAlwaysOnTop](https://wiki.libsdl.org/SDL3/SDL_SetWindowAlwaysOnTop) | [:heavy_check_mark:](sdl/methods.go#L4321) | [:x:](sdl/sdl_functions_js.go#L6795) |
+| [SDL_ShowWindow](https://wiki.libsdl.org/SDL3/SDL_ShowWindow) | [:heavy_check_mark:](sdl/methods.go#L4331) | [:x:](sdl/sdl_functions_js.go#L6813) |
+| [SDL_HideWindow](https://wiki.libsdl.org/SDL3/SDL_HideWindow) | [:heavy_check_mark:](sdl/methods.go#L4341) | [:x:](sdl/sdl_functions_js.go#L6829) |
+| [SDL_RaiseWindow](https://wiki.libsdl.org/SDL3/SDL_RaiseWindow) | [:heavy_check_mark:](sdl/methods.go#L4351) | [:x:](sdl/sdl_functions_js.go#L6845) |
+| [SDL_MaximizeWindow](https://wiki.libsdl.org/SDL3/SDL_MaximizeWindow) | [:heavy_check_mark:](sdl/methods.go#L4361) | [:x:](sdl/sdl_functions_js.go#L6861) |
+| [SDL_MinimizeWindow](https://wiki.libsdl.org/SDL3/SDL_MinimizeWindow) | [:heavy_check_mark:](sdl/methods.go#L4371) | [:x:](sdl/sdl_functions_js.go#L6877) |
+| [SDL_RestoreWindow](https://wiki.libsdl.org/SDL3/SDL_RestoreWindow) | [:heavy_check_mark:](sdl/methods.go#L4381) | [:x:](sdl/sdl_functions_js.go#L6893) |
+| [SDL_SetWindowFullscreen](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen) | [:heavy_check_mark:](sdl/methods.go#L4391) | [:x:](sdl/sdl_functions_js.go#L6909) |
+| [SDL_SyncWindow](https://wiki.libsdl.org/SDL3/SDL_SyncWindow) | [:heavy_check_mark:](sdl/methods.go#L4401) | [:x:](sdl/sdl_functions_js.go#L6927) |
+| [SDL_WindowHasSurface](https://wiki.libsdl.org/SDL3/SDL_WindowHasSurface) | [:heavy_check_mark:](sdl/methods.go#L4411) | [:x:](sdl/sdl_functions_js.go#L6943) |
+| [SDL_GetWindowSurface](https://wiki.libsdl.org/SDL3/SDL_GetWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4417) | [:x:](sdl/sdl_functions_js.go#L6959) |
+| [SDL_SetWindowSurfaceVSync](https://wiki.libsdl.org/SDL3/SDL_SetWindowSurfaceVSync) | [:heavy_check_mark:](sdl/methods.go#L4428) | [:x:](sdl/sdl_functions_js.go#L6978) |
+| [SDL_GetWindowSurfaceVSync](https://wiki.libsdl.org/SDL3/SDL_GetWindowSurfaceVSync) | [:heavy_check_mark:](sdl/methods.go#L4438) | [:x:](sdl/sdl_functions_js.go#L6996) |
+| [SDL_UpdateWindowSurface](https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4450) | [:x:](sdl/sdl_functions_js.go#L7017) |
+| [SDL_UpdateWindowSurfaceRects](https://wiki.libsdl.org/SDL3/SDL_UpdateWindowSurfaceRects) | [:heavy_check_mark:](sdl/methods.go#L4460) | [:x:](sdl/sdl_functions_js.go#L7033) |
+| [SDL_DestroyWindowSurface](https://wiki.libsdl.org/SDL3/SDL_DestroyWindowSurface) | [:heavy_check_mark:](sdl/methods.go#L4470) | [:x:](sdl/sdl_functions_js.go#L7056) |
+| [SDL_SetWindowKeyboardGrab](https://wiki.libsdl.org/SDL3/SDL_SetWindowKeyboardGrab) | [:heavy_check_mark:](sdl/methods.go#L4480) | [:x:](sdl/sdl_functions_js.go#L7072) |
+| [SDL_SetWindowMouseGrab](https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseGrab) | [:heavy_check_mark:](sdl/methods.go#L4490) | [:x:](sdl/sdl_functions_js.go#L7090) |
+| [SDL_GetWindowKeyboardGrab](https://wiki.libsdl.org/SDL3/SDL_GetWindowKeyboardGrab) | [:heavy_check_mark:](sdl/methods.go#L4500) | [:x:](sdl/sdl_functions_js.go#L7108) |
+| [SDL_GetWindowMouseGrab](https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseGrab) | [:heavy_check_mark:](sdl/methods.go#L4506) | [:x:](sdl/sdl_functions_js.go#L7124) |
 | [SDL_GetGrabbedWindow](https://wiki.libsdl.org/SDL3/SDL_GetGrabbedWindow) | [:heavy_check_mark:](sdl/functions.go#L604) | [:x:](sdl/sdl_functions_js.go#L7140) |
-| [SDL_SetWindowMouseRect](https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseRect) | [:heavy_check_mark:](sdl/methods.go#L4498) | [:x:](sdl/sdl_functions_js.go#L7154) |
-| [SDL_GetWindowMouseRect](https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseRect) | [:heavy_check_mark:](sdl/methods.go#L4508) | [:x:](sdl/sdl_functions_js.go#L7175) |
-| [SDL_SetWindowOpacity](https://wiki.libsdl.org/SDL3/SDL_SetWindowOpacity) | [:heavy_check_mark:](sdl/methods.go#L4514) | [:x:](sdl/sdl_functions_js.go#L7194) |
-| [SDL_GetWindowOpacity](https://wiki.libsdl.org/SDL3/SDL_GetWindowOpacity) | [:heavy_check_mark:](sdl/methods.go#L4524) | [:x:](sdl/sdl_functions_js.go#L7212) |
-| [SDL_SetWindowParent](https://wiki.libsdl.org/SDL3/SDL_SetWindowParent) | [:heavy_check_mark:](sdl/methods.go#L4530) | [:x:](sdl/sdl_functions_js.go#L7228) |
-| [SDL_SetWindowModal](https://wiki.libsdl.org/SDL3/SDL_SetWindowModal) | [:heavy_check_mark:](sdl/methods.go#L4540) | [:x:](sdl/sdl_functions_js.go#L7249) |
-| [SDL_SetWindowFocusable](https://wiki.libsdl.org/SDL3/SDL_SetWindowFocusable) | [:heavy_check_mark:](sdl/methods.go#L4550) | [:x:](sdl/sdl_functions_js.go#L7267) |
-| [SDL_ShowWindowSystemMenu](https://wiki.libsdl.org/SDL3/SDL_ShowWindowSystemMenu) | [:heavy_check_mark:](sdl/methods.go#L4560) | [:x:](sdl/sdl_functions_js.go#L7285) |
-| [SDL_SetWindowHitTest](https://wiki.libsdl.org/SDL3/SDL_SetWindowHitTest) | [:x:](sdl/methods.go#L4570) | [:x:](sdl/sdl_functions_js.go#L7305) |
-| [SDL_SetWindowShape](https://wiki.libsdl.org/SDL3/SDL_SetWindowShape) | [:heavy_check_mark:](sdl/methods.go#L4577) | [:x:](sdl/sdl_functions_js.go#L7325) |
-| [SDL_FlashWindow](https://wiki.libsdl.org/SDL3/SDL_FlashWindow) | [:heavy_check_mark:](sdl/methods.go#L4587) | [:x:](sdl/sdl_functions_js.go#L7346) |
+| [SDL_SetWindowMouseRect](https://wiki.libsdl.org/SDL3/SDL_SetWindowMouseRect) | [:heavy_check_mark:](sdl/methods.go#L4512) | [:x:](sdl/sdl_functions_js.go#L7154) |
+| [SDL_GetWindowMouseRect](https://wiki.libsdl.org/SDL3/SDL_GetWindowMouseRect) | [:heavy_check_mark:](sdl/methods.go#L4522) | [:x:](sdl/sdl_functions_js.go#L7175) |
+| [SDL_SetWindowOpacity](https://wiki.libsdl.org/SDL3/SDL_SetWindowOpacity) | [:heavy_check_mark:](sdl/methods.go#L4528) | [:x:](sdl/sdl_functions_js.go#L7194) |
+| [SDL_GetWindowOpacity](https://wiki.libsdl.org/SDL3/SDL_GetWindowOpacity) | [:heavy_check_mark:](sdl/methods.go#L4538) | [:x:](sdl/sdl_functions_js.go#L7212) |
+| [SDL_SetWindowParent](https://wiki.libsdl.org/SDL3/SDL_SetWindowParent) | [:heavy_check_mark:](sdl/methods.go#L4544) | [:x:](sdl/sdl_functions_js.go#L7228) |
+| [SDL_SetWindowModal](https://wiki.libsdl.org/SDL3/SDL_SetWindowModal) | [:heavy_check_mark:](sdl/methods.go#L4554) | [:x:](sdl/sdl_functions_js.go#L7249) |
+| [SDL_SetWindowFocusable](https://wiki.libsdl.org/SDL3/SDL_SetWindowFocusable) | [:heavy_check_mark:](sdl/methods.go#L4564) | [:x:](sdl/sdl_functions_js.go#L7267) |
+| [SDL_ShowWindowSystemMenu](https://wiki.libsdl.org/SDL3/SDL_ShowWindowSystemMenu) | [:heavy_check_mark:](sdl/methods.go#L4574) | [:x:](sdl/sdl_functions_js.go#L7285) |
+| [SDL_SetWindowHitTest](https://wiki.libsdl.org/SDL3/SDL_SetWindowHitTest) | [:x:](sdl/methods.go#L4584) | [:x:](sdl/sdl_functions_js.go#L7305) |
+| [SDL_SetWindowShape](https://wiki.libsdl.org/SDL3/SDL_SetWindowShape) | [:heavy_check_mark:](sdl/methods.go#L4591) | [:x:](sdl/sdl_functions_js.go#L7325) |
+| [SDL_FlashWindow](https://wiki.libsdl.org/SDL3/SDL_FlashWindow) | [:heavy_check_mark:](sdl/methods.go#L4601) | [:x:](sdl/sdl_functions_js.go#L7346) |
 | [SDL_SetWindowProgressState](https://wiki.libsdl.org/SDL3/SDL_SetWindowProgressState) | [:question:]() | [:question:]() |
 | [SDL_GetWindowProgressState](https://wiki.libsdl.org/SDL3/SDL_GetWindowProgressState) | [:question:]() | [:question:]() |
 | [SDL_SetWindowProgressValue](https://wiki.libsdl.org/SDL3/SDL_SetWindowProgressValue) | [:question:]() | [:question:]() |
 | [SDL_GetWindowProgressValue](https://wiki.libsdl.org/SDL3/SDL_GetWindowProgressValue) | [:question:]() | [:question:]() |
-| [SDL_DestroyWindow](https://wiki.libsdl.org/SDL3/SDL_DestroyWindow) | [:heavy_check_mark:](sdl/methods.go#L4597) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L7364) |
+| [SDL_DestroyWindow](https://wiki.libsdl.org/SDL3/SDL_DestroyWindow) | [:heavy_check_mark:](sdl/methods.go#L4611) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L7364) |
 | [SDL_ScreenSaverEnabled](https://wiki.libsdl.org/SDL3/SDL_ScreenSaverEnabled) | [:heavy_check_mark:](sdl/functions.go#L610) | [:x:](sdl/sdl_functions_js.go#L7376) |
 | [SDL_EnableScreenSaver](https://wiki.libsdl.org/SDL3/SDL_EnableScreenSaver) | [:heavy_check_mark:](sdl/functions.go#L616) | [:x:](sdl/sdl_functions_js.go#L7387) |
 | [SDL_DisableScreenSaver](https://wiki.libsdl.org/SDL3/SDL_DisableScreenSaver) | [:heavy_check_mark:](sdl/functions.go#L626) | [:x:](sdl/sdl_functions_js.go#L7398) |
@@ -220,7 +228,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GL_DestroyContext](https://wiki.libsdl.org/SDL3/SDL_GL_DestroyContext) | [:heavy_check_mark:](sdl/functions.go#L695) | [:x:](sdl/sdl_functions_js.go#L7671) |
 </details>
 <details open>
-<summary><h3>Events</h3></summary>
+<summary><h3>Keyboard</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -235,66 +243,66 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_WaitEventTimeout](https://wiki.libsdl.org/SDL3/SDL_WaitEventTimeout) | [:heavy_check_mark:](sdl/functions.go#L232) | [:x:](sdl/sdl_functions_js.go#L11043) |
 | [SDL_PushEvent](https://wiki.libsdl.org/SDL3/SDL_PushEvent) | [:heavy_check_mark:](sdl/functions.go#L238) | [:x:](sdl/sdl_functions_js.go#L11061) |
 | [SDL_SetEventFilter](https://wiki.libsdl.org/SDL3/SDL_SetEventFilter) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11077) |
-| [SDL_GetEventFilter](https://wiki.libsdl.org/SDL3/SDL_GetEventFilter) | [:x:](sdl/methods.go#L3660) | [:x:](sdl/sdl_functions_js.go#L11090) |
+| [SDL_GetEventFilter](https://wiki.libsdl.org/SDL3/SDL_GetEventFilter) | [:x:](sdl/methods.go#L3674) | [:x:](sdl/sdl_functions_js.go#L11090) |
 | [SDL_AddEventWatch](https://wiki.libsdl.org/SDL3/SDL_AddEventWatch) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11111) |
 | [SDL_RemoveEventWatch](https://wiki.libsdl.org/SDL3/SDL_RemoveEventWatch) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11126) |
 | [SDL_FilterEvents](https://wiki.libsdl.org/SDL3/SDL_FilterEvents) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11139) |
 | [SDL_SetEventEnabled](https://wiki.libsdl.org/SDL3/SDL_SetEventEnabled) | [:heavy_check_mark:](sdl/functions.go#L254) | [:x:](sdl/sdl_functions_js.go#L11152) |
 | [SDL_EventEnabled](https://wiki.libsdl.org/SDL3/SDL_EventEnabled) | [:heavy_check_mark:](sdl/functions.go#L260) | [:x:](sdl/sdl_functions_js.go#L11165) |
 | [SDL_RegisterEvents](https://wiki.libsdl.org/SDL3/SDL_RegisterEvents) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11178) |
-| [SDL_GetWindowFromEvent](https://wiki.libsdl.org/SDL3/SDL_GetWindowFromEvent) | [:heavy_check_mark:](sdl/methods.go#L1873) | [:x:](sdl/sdl_functions_js.go#L11191) |
+| [SDL_GetWindowFromEvent](https://wiki.libsdl.org/SDL3/SDL_GetWindowFromEvent) | [:heavy_check_mark:](sdl/methods.go#L1886) | [:x:](sdl/sdl_functions_js.go#L11191) |
 | [SDL_GetEventDescription](https://wiki.libsdl.org/SDL3/SDL_GetEventDescription) | [:question:]() | [:question:]() |
-</details>
-<details open>
-<summary><h3>Keyboard</h3></summary>
-
-|Function|Desktop|WASM/js|
-|:--|:--:|:--:|
-| [SDL_HasKeyboard](https://wiki.libsdl.org/SDL3/SDL_HasKeyboard) | [:heavy_check_mark:](sdl/functions.go#L1137) | [:x:](sdl/sdl_functions_js.go#L10155) |
-| [SDL_GetKeyboards](https://wiki.libsdl.org/SDL3/SDL_GetKeyboards) | [:heavy_check_mark:](sdl/functions.go#L1143) | [:x:](sdl/sdl_functions_js.go#L10166) |
-| [SDL_GetKeyboardNameForID](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardNameForID) | [:heavy_check_mark:](sdl/methods.go#L3634) | [:x:](sdl/sdl_functions_js.go#L10182) |
-| [SDL_GetKeyboardFocus](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardFocus) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L10195) |
-| [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardState) | [:heavy_check_mark:](sdl/functions.go#L1157) | [:x:](sdl/sdl_functions_js.go#L10209) |
-| [SDL_ResetKeyboard](https://wiki.libsdl.org/SDL3/SDL_ResetKeyboard) | [:heavy_check_mark:](sdl/functions.go#L1167) | [:x:](sdl/sdl_functions_js.go#L10227) |
-| [SDL_GetModState](https://wiki.libsdl.org/SDL3/SDL_GetModState) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L10236) |
-| [SDL_SetModState](https://wiki.libsdl.org/SDL3/SDL_SetModState) | [:x:](sdl/methods.go#L2727) | [:x:](sdl/sdl_functions_js.go#L10247) |
-| [SDL_GetKeyFromScancode](https://wiki.libsdl.org/SDL3/SDL_GetKeyFromScancode) | [:heavy_check_mark:](sdl/methods.go#L4723) | [:x:](sdl/sdl_functions_js.go#L10258) |
-| [SDL_GetScancodeFromKey](https://wiki.libsdl.org/SDL3/SDL_GetScancodeFromKey) | [:heavy_check_mark:](sdl/methods.go#L5878) | [:x:](sdl/sdl_functions_js.go#L10275) |
-| [SDL_SetScancodeName](https://wiki.libsdl.org/SDL3/SDL_SetScancodeName) | [:heavy_check_mark:](sdl/methods.go#L4729) | [:x:](sdl/sdl_functions_js.go#L10293) |
-| [SDL_GetScancodeName](https://wiki.libsdl.org/SDL3/SDL_GetScancodeName) | [:heavy_check_mark:](sdl/methods.go#L4739) | [:x:](sdl/sdl_functions_js.go#L10308) |
-| [SDL_GetScancodeFromName](https://wiki.libsdl.org/SDL3/SDL_GetScancodeFromName) | [:heavy_check_mark:](sdl/functions.go#L1173) | [:x:](sdl/sdl_functions_js.go#L10321) |
-| [SDL_GetKeyName](https://wiki.libsdl.org/SDL3/SDL_GetKeyName) | [:heavy_check_mark:](sdl/methods.go#L5884) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L10334) |
-| [SDL_GetKeyFromName](https://wiki.libsdl.org/SDL3/SDL_GetKeyFromName) | [:heavy_check_mark:](sdl/functions.go#L1179) | [:x:](sdl/sdl_functions_js.go#L10344) |
-| [SDL_StartTextInput](https://wiki.libsdl.org/SDL3/SDL_StartTextInput) | [:heavy_check_mark:](sdl/methods.go#L4603) | [:x:](sdl/sdl_functions_js.go#L10357) |
-| [SDL_StartTextInputWithProperties](https://wiki.libsdl.org/SDL3/SDL_StartTextInputWithProperties) | [:heavy_check_mark:](sdl/methods.go#L4613) | [:x:](sdl/sdl_functions_js.go#L10373) |
-| [SDL_TextInputActive](https://wiki.libsdl.org/SDL3/SDL_TextInputActive) | [:heavy_check_mark:](sdl/methods.go#L4623) | [:x:](sdl/sdl_functions_js.go#L10391) |
-| [SDL_StopTextInput](https://wiki.libsdl.org/SDL3/SDL_StopTextInput) | [:heavy_check_mark:](sdl/methods.go#L4629) | [:x:](sdl/sdl_functions_js.go#L10407) |
-| [SDL_ClearComposition](https://wiki.libsdl.org/SDL3/SDL_ClearComposition) | [:x:](sdl/methods.go#L4639) | [:x:](sdl/sdl_functions_js.go#L10423) |
-| [SDL_SetTextInputArea](https://wiki.libsdl.org/SDL3/SDL_SetTextInputArea) | [:heavy_check_mark:](sdl/methods.go#L4646) | [:x:](sdl/sdl_functions_js.go#L10439) |
-| [SDL_GetTextInputArea](https://wiki.libsdl.org/SDL3/SDL_GetTextInputArea) | [:heavy_check_mark:](sdl/methods.go#L4656) | [:x:](sdl/sdl_functions_js.go#L10462) |
-| [SDL_HasScreenKeyboardSupport](https://wiki.libsdl.org/SDL3/SDL_HasScreenKeyboardSupport) | [:heavy_check_mark:](sdl/functions.go#L1185) | [:x:](sdl/sdl_functions_js.go#L10488) |
-| [SDL_ScreenKeyboardShown](https://wiki.libsdl.org/SDL3/SDL_ScreenKeyboardShown) | [:heavy_check_mark:](sdl/methods.go#L4669) | [:x:](sdl/sdl_functions_js.go#L10499) |
 </details>
 <details open>
 <summary><h3>Mouse</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
+| [SDL_HasKeyboard](https://wiki.libsdl.org/SDL3/SDL_HasKeyboard) | [:heavy_check_mark:](sdl/functions.go#L1137) | [:x:](sdl/sdl_functions_js.go#L10155) |
+| [SDL_GetKeyboards](https://wiki.libsdl.org/SDL3/SDL_GetKeyboards) | [:heavy_check_mark:](sdl/functions.go#L1143) | [:x:](sdl/sdl_functions_js.go#L10166) |
+| [SDL_GetKeyboardNameForID](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardNameForID) | [:heavy_check_mark:](sdl/methods.go#L3648) | [:x:](sdl/sdl_functions_js.go#L10182) |
+| [SDL_GetKeyboardFocus](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardFocus) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L10195) |
+| [SDL_GetKeyboardState](https://wiki.libsdl.org/SDL3/SDL_GetKeyboardState) | [:heavy_check_mark:](sdl/functions.go#L1157) | [:x:](sdl/sdl_functions_js.go#L10209) |
+| [SDL_ResetKeyboard](https://wiki.libsdl.org/SDL3/SDL_ResetKeyboard) | [:heavy_check_mark:](sdl/functions.go#L1167) | [:x:](sdl/sdl_functions_js.go#L10227) |
+| [SDL_GetModState](https://wiki.libsdl.org/SDL3/SDL_GetModState) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L10236) |
+| [SDL_SetModState](https://wiki.libsdl.org/SDL3/SDL_SetModState) | [:x:](sdl/methods.go#L2745) | [:x:](sdl/sdl_functions_js.go#L10247) |
+| [SDL_GetKeyFromScancode](https://wiki.libsdl.org/SDL3/SDL_GetKeyFromScancode) | [:heavy_check_mark:](sdl/methods.go#L4737) | [:x:](sdl/sdl_functions_js.go#L10258) |
+| [SDL_GetScancodeFromKey](https://wiki.libsdl.org/SDL3/SDL_GetScancodeFromKey) | [:heavy_check_mark:](sdl/methods.go#L5892) | [:x:](sdl/sdl_functions_js.go#L10275) |
+| [SDL_SetScancodeName](https://wiki.libsdl.org/SDL3/SDL_SetScancodeName) | [:heavy_check_mark:](sdl/methods.go#L4743) | [:x:](sdl/sdl_functions_js.go#L10293) |
+| [SDL_GetScancodeName](https://wiki.libsdl.org/SDL3/SDL_GetScancodeName) | [:heavy_check_mark:](sdl/methods.go#L4753) | [:x:](sdl/sdl_functions_js.go#L10308) |
+| [SDL_GetScancodeFromName](https://wiki.libsdl.org/SDL3/SDL_GetScancodeFromName) | [:heavy_check_mark:](sdl/functions.go#L1173) | [:x:](sdl/sdl_functions_js.go#L10321) |
+| [SDL_GetKeyName](https://wiki.libsdl.org/SDL3/SDL_GetKeyName) | [:heavy_check_mark:](sdl/methods.go#L5898) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L10334) |
+| [SDL_GetKeyFromName](https://wiki.libsdl.org/SDL3/SDL_GetKeyFromName) | [:heavy_check_mark:](sdl/functions.go#L1179) | [:x:](sdl/sdl_functions_js.go#L10344) |
+| [SDL_StartTextInput](https://wiki.libsdl.org/SDL3/SDL_StartTextInput) | [:heavy_check_mark:](sdl/methods.go#L4617) | [:x:](sdl/sdl_functions_js.go#L10357) |
+| [SDL_StartTextInputWithProperties](https://wiki.libsdl.org/SDL3/SDL_StartTextInputWithProperties) | [:heavy_check_mark:](sdl/methods.go#L4627) | [:x:](sdl/sdl_functions_js.go#L10373) |
+| [SDL_TextInputActive](https://wiki.libsdl.org/SDL3/SDL_TextInputActive) | [:heavy_check_mark:](sdl/methods.go#L4637) | [:x:](sdl/sdl_functions_js.go#L10391) |
+| [SDL_StopTextInput](https://wiki.libsdl.org/SDL3/SDL_StopTextInput) | [:heavy_check_mark:](sdl/methods.go#L4643) | [:x:](sdl/sdl_functions_js.go#L10407) |
+| [SDL_ClearComposition](https://wiki.libsdl.org/SDL3/SDL_ClearComposition) | [:x:](sdl/methods.go#L4653) | [:x:](sdl/sdl_functions_js.go#L10423) |
+| [SDL_SetTextInputArea](https://wiki.libsdl.org/SDL3/SDL_SetTextInputArea) | [:heavy_check_mark:](sdl/methods.go#L4660) | [:x:](sdl/sdl_functions_js.go#L10439) |
+| [SDL_GetTextInputArea](https://wiki.libsdl.org/SDL3/SDL_GetTextInputArea) | [:heavy_check_mark:](sdl/methods.go#L4670) | [:x:](sdl/sdl_functions_js.go#L10462) |
+| [SDL_HasScreenKeyboardSupport](https://wiki.libsdl.org/SDL3/SDL_HasScreenKeyboardSupport) | [:heavy_check_mark:](sdl/functions.go#L1185) | [:x:](sdl/sdl_functions_js.go#L10488) |
+| [SDL_ScreenKeyboardShown](https://wiki.libsdl.org/SDL3/SDL_ScreenKeyboardShown) | [:heavy_check_mark:](sdl/methods.go#L4683) | [:x:](sdl/sdl_functions_js.go#L10499) |
+</details>
+<details open>
+<summary><h3>Touch</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
 | [SDL_HasMouse](https://wiki.libsdl.org/SDL3/SDL_HasMouse) | [:heavy_check_mark:](sdl/functions.go#L1193) | [:x:](sdl/sdl_functions_js.go#L10515) |
 | [SDL_GetMice](https://wiki.libsdl.org/SDL3/SDL_GetMice) | [:heavy_check_mark:](sdl/functions.go#L1199) | [:x:](sdl/sdl_functions_js.go#L10526) |
-| [SDL_GetMouseNameForID](https://wiki.libsdl.org/SDL3/SDL_GetMouseNameForID) | [:heavy_check_mark:](sdl/methods.go#L3647) | [:x:](sdl/sdl_functions_js.go#L10542) |
+| [SDL_GetMouseNameForID](https://wiki.libsdl.org/SDL3/SDL_GetMouseNameForID) | [:heavy_check_mark:](sdl/methods.go#L3661) | [:x:](sdl/sdl_functions_js.go#L10542) |
 | [SDL_GetMouseFocus](https://wiki.libsdl.org/SDL3/SDL_GetMouseFocus) | [:heavy_check_mark:](sdl/functions.go#L1213) | [:x:](sdl/sdl_functions_js.go#L10555) |
 | [SDL_GetMouseState](https://wiki.libsdl.org/SDL3/SDL_GetMouseState) | [:heavy_check_mark:](sdl/functions.go#L1219) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L10569) |
 | [SDL_GetGlobalMouseState](https://wiki.libsdl.org/SDL3/SDL_GetGlobalMouseState) | [:heavy_check_mark:](sdl/functions.go#L1229) | [:x:](sdl/sdl_functions_js.go#L10585) |
 | [SDL_GetRelativeMouseState](https://wiki.libsdl.org/SDL3/SDL_GetRelativeMouseState) | [:heavy_check_mark:](sdl/functions.go#L1239) | [:x:](sdl/sdl_functions_js.go#L10606) |
-| [SDL_WarpMouseInWindow](https://wiki.libsdl.org/SDL3/SDL_WarpMouseInWindow) | [:heavy_check_mark:](sdl/methods.go#L4675) | [:x:](sdl/sdl_functions_js.go#L10627) |
+| [SDL_WarpMouseInWindow](https://wiki.libsdl.org/SDL3/SDL_WarpMouseInWindow) | [:heavy_check_mark:](sdl/methods.go#L4689) | [:x:](sdl/sdl_functions_js.go#L10627) |
 | [SDL_WarpMouseGlobal](https://wiki.libsdl.org/SDL3/SDL_WarpMouseGlobal) | [:heavy_check_mark:](sdl/functions.go#L1249) | [:x:](sdl/sdl_functions_js.go#L10645) |
 | [SDL_SetRelativeMouseTransform](https://wiki.libsdl.org/SDL3/SDL_SetRelativeMouseTransform) | [:question:]() | [:question:]() |
-| [SDL_SetWindowRelativeMouseMode](https://wiki.libsdl.org/SDL3/SDL_SetWindowRelativeMouseMode) | [:heavy_check_mark:](sdl/methods.go#L4681) | [:x:](sdl/sdl_functions_js.go#L10660) |
-| [SDL_GetWindowRelativeMouseMode](https://wiki.libsdl.org/SDL3/SDL_GetWindowRelativeMouseMode) | [:heavy_check_mark:](sdl/methods.go#L4691) | [:x:](sdl/sdl_functions_js.go#L10678) |
+| [SDL_SetWindowRelativeMouseMode](https://wiki.libsdl.org/SDL3/SDL_SetWindowRelativeMouseMode) | [:heavy_check_mark:](sdl/methods.go#L4695) | [:x:](sdl/sdl_functions_js.go#L10660) |
+| [SDL_GetWindowRelativeMouseMode](https://wiki.libsdl.org/SDL3/SDL_GetWindowRelativeMouseMode) | [:heavy_check_mark:](sdl/methods.go#L4705) | [:x:](sdl/sdl_functions_js.go#L10678) |
 | [SDL_CaptureMouse](https://wiki.libsdl.org/SDL3/SDL_CaptureMouse) | [:heavy_check_mark:](sdl/functions.go#L1259) | [:x:](sdl/sdl_functions_js.go#L10694) |
 | [SDL_CreateCursor](https://wiki.libsdl.org/SDL3/SDL_CreateCursor) | [:heavy_check_mark:](sdl/functions.go#L1269) | [:x:](sdl/sdl_functions_js.go#L10707) |
-| [SDL_CreateColorCursor](https://wiki.libsdl.org/SDL3/SDL_CreateColorCursor) | [:heavy_check_mark:](sdl/methods.go#L1849) | [:x:](sdl/sdl_functions_js.go#L10739) |
+| [SDL_CreateColorCursor](https://wiki.libsdl.org/SDL3/SDL_CreateColorCursor) | [:heavy_check_mark:](sdl/methods.go#L1862) | [:x:](sdl/sdl_functions_js.go#L10739) |
 | [SDL_CreateSystemCursor](https://wiki.libsdl.org/SDL3/SDL_CreateSystemCursor) | [:heavy_check_mark:](sdl/functions.go#L1284) | [:x:](sdl/sdl_functions_js.go#L10762) |
 | [SDL_SetCursor](https://wiki.libsdl.org/SDL3/SDL_SetCursor) | [:heavy_check_mark:](sdl/functions.go#L1295) | [:x:](sdl/sdl_functions_js.go#L10778) |
 | [SDL_GetCursor](https://wiki.libsdl.org/SDL3/SDL_GetCursor) | [:heavy_check_mark:](sdl/functions.go#L1305) | [:x:](sdl/sdl_functions_js.go#L10794) |
@@ -305,7 +313,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_CursorVisible](https://wiki.libsdl.org/SDL3/SDL_CursorVisible) | [:heavy_check_mark:](sdl/functions.go#L1342) | [:x:](sdl/sdl_functions_js.go#L10858) |
 </details>
 <details open>
-<summary><h3>Touch</h3></summary>
+<summary><h3>Gamepad</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -315,7 +323,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetTouchFingers](https://wiki.libsdl.org/SDL3/SDL_GetTouchFingers) | [:heavy_check_mark:](sdl/methods.go#L80) | [:x:](sdl/sdl_functions_js.go#L10911) |
 </details>
 <details open>
-<summary><h3>Gamepad</h3></summary>
+<summary><h3>Joystick</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -325,7 +333,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_ReloadGamepadMappings](https://wiki.libsdl.org/SDL3/SDL_ReloadGamepadMappings) | [:heavy_check_mark:](sdl/functions.go#L1386) | [:x:](sdl/sdl_functions_js.go#L9024) |
 | [SDL_GetGamepadMappings](https://wiki.libsdl.org/SDL3/SDL_GetGamepadMappings) | [:heavy_check_mark:](sdl/functions.go#L1396) | [:x:](sdl/sdl_functions_js.go#L9035) |
 | [SDL_GetGamepadMappingForGUID](https://wiki.libsdl.org/SDL3/SDL_GetGamepadMappingForGUID) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L9051) |
-| [SDL_GetGamepadMapping](https://wiki.libsdl.org/SDL3/SDL_GetGamepadMapping) | [:heavy_check_mark:](sdl/methods.go#L2417) | [:x:](sdl/sdl_functions_js.go#L9064) |
+| [SDL_GetGamepadMapping](https://wiki.libsdl.org/SDL3/SDL_GetGamepadMapping) | [:heavy_check_mark:](sdl/methods.go#L2435) | [:x:](sdl/sdl_functions_js.go#L9064) |
 | [SDL_SetGamepadMapping](https://wiki.libsdl.org/SDL3/SDL_SetGamepadMapping) | [:x:](sdl/methods.go#L753) | [:x:](sdl/sdl_functions_js.go#L9080) |
 | [SDL_HasGamepad](https://wiki.libsdl.org/SDL3/SDL_HasGamepad) | [:heavy_check_mark:](sdl/functions.go#L1410) | [:x:](sdl/sdl_functions_js.go#L9095) |
 | [SDL_GetGamepads](https://wiki.libsdl.org/SDL3/SDL_GetGamepads) | [:heavy_check_mark:](sdl/functions.go#L1416) | [:x:](sdl/sdl_functions_js.go#L9106) |
@@ -343,58 +351,58 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_OpenGamepad](https://wiki.libsdl.org/SDL3/SDL_OpenGamepad) | [:heavy_check_mark:](sdl/methods.go#L843) | [:x:](sdl/sdl_functions_js.go#L9265) |
 | [SDL_GetGamepadFromID](https://wiki.libsdl.org/SDL3/SDL_GetGamepadFromID) | [:heavy_check_mark:](sdl/methods.go#L854) | [:x:](sdl/sdl_functions_js.go#L9281) |
 | [SDL_GetGamepadFromPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_GetGamepadFromPlayerIndex) | [:heavy_check_mark:](sdl/functions.go#L1430) | [:x:](sdl/sdl_functions_js.go#L9297) |
-| [SDL_GetGamepadProperties](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProperties) | [:heavy_check_mark:](sdl/methods.go#L2429) | [:x:](sdl/sdl_functions_js.go#L9313) |
-| [SDL_GetGamepadID](https://wiki.libsdl.org/SDL3/SDL_GetGamepadID) | [:heavy_check_mark:](sdl/methods.go#L2440) | [:x:](sdl/sdl_functions_js.go#L9329) |
-| [SDL_GetGamepadName](https://wiki.libsdl.org/SDL3/SDL_GetGamepadName) | [:heavy_check_mark:](sdl/methods.go#L2451) | [:x:](sdl/sdl_functions_js.go#L9345) |
-| [SDL_GetGamepadPath](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPath) | [:heavy_check_mark:](sdl/methods.go#L2457) | [:x:](sdl/sdl_functions_js.go#L9361) |
-| [SDL_GetGamepadType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadType) | [:heavy_check_mark:](sdl/methods.go#L2463) | [:x:](sdl/sdl_functions_js.go#L9377) |
-| [SDL_GetRealGamepadType](https://wiki.libsdl.org/SDL3/SDL_GetRealGamepadType) | [:heavy_check_mark:](sdl/methods.go#L2469) | [:x:](sdl/sdl_functions_js.go#L9393) |
-| [SDL_GetGamepadPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L2475) | [:x:](sdl/sdl_functions_js.go#L9409) |
-| [SDL_SetGamepadPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_SetGamepadPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L2481) | [:x:](sdl/sdl_functions_js.go#L9425) |
-| [SDL_GetGamepadVendor](https://wiki.libsdl.org/SDL3/SDL_GetGamepadVendor) | [:heavy_check_mark:](sdl/methods.go#L2491) | [:x:](sdl/sdl_functions_js.go#L9443) |
-| [SDL_GetGamepadProduct](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProduct) | [:heavy_check_mark:](sdl/methods.go#L2497) | [:x:](sdl/sdl_functions_js.go#L9459) |
-| [SDL_GetGamepadProductVersion](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProductVersion) | [:heavy_check_mark:](sdl/methods.go#L2503) | [:x:](sdl/sdl_functions_js.go#L9475) |
-| [SDL_GetGamepadFirmwareVersion](https://wiki.libsdl.org/SDL3/SDL_GetGamepadFirmwareVersion) | [:heavy_check_mark:](sdl/methods.go#L2509) | [:x:](sdl/sdl_functions_js.go#L9491) |
-| [SDL_GetGamepadSerial](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSerial) | [:heavy_check_mark:](sdl/methods.go#L2515) | [:x:](sdl/sdl_functions_js.go#L9507) |
-| [SDL_GetGamepadSteamHandle](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSteamHandle) | [:heavy_check_mark:](sdl/methods.go#L2521) | [:x:](sdl/sdl_functions_js.go#L9523) |
-| [SDL_GetGamepadConnectionState](https://wiki.libsdl.org/SDL3/SDL_GetGamepadConnectionState) | [:heavy_check_mark:](sdl/methods.go#L2527) | [:x:](sdl/sdl_functions_js.go#L9539) |
-| [SDL_GetGamepadPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPowerInfo) | [:heavy_check_mark:](sdl/methods.go#L2539) | [:x:](sdl/sdl_functions_js.go#L9555) |
-| [SDL_GamepadConnected](https://wiki.libsdl.org/SDL3/SDL_GamepadConnected) | [:heavy_check_mark:](sdl/methods.go#L2549) | [:x:](sdl/sdl_functions_js.go#L9576) |
-| [SDL_GetGamepadJoystick](https://wiki.libsdl.org/SDL3/SDL_GetGamepadJoystick) | [:heavy_check_mark:](sdl/methods.go#L2555) | [:x:](sdl/sdl_functions_js.go#L9592) |
+| [SDL_GetGamepadProperties](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProperties) | [:heavy_check_mark:](sdl/methods.go#L2447) | [:x:](sdl/sdl_functions_js.go#L9313) |
+| [SDL_GetGamepadID](https://wiki.libsdl.org/SDL3/SDL_GetGamepadID) | [:heavy_check_mark:](sdl/methods.go#L2458) | [:x:](sdl/sdl_functions_js.go#L9329) |
+| [SDL_GetGamepadName](https://wiki.libsdl.org/SDL3/SDL_GetGamepadName) | [:heavy_check_mark:](sdl/methods.go#L2469) | [:x:](sdl/sdl_functions_js.go#L9345) |
+| [SDL_GetGamepadPath](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPath) | [:heavy_check_mark:](sdl/methods.go#L2475) | [:x:](sdl/sdl_functions_js.go#L9361) |
+| [SDL_GetGamepadType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadType) | [:heavy_check_mark:](sdl/methods.go#L2481) | [:x:](sdl/sdl_functions_js.go#L9377) |
+| [SDL_GetRealGamepadType](https://wiki.libsdl.org/SDL3/SDL_GetRealGamepadType) | [:heavy_check_mark:](sdl/methods.go#L2487) | [:x:](sdl/sdl_functions_js.go#L9393) |
+| [SDL_GetGamepadPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L2493) | [:x:](sdl/sdl_functions_js.go#L9409) |
+| [SDL_SetGamepadPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_SetGamepadPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L2499) | [:x:](sdl/sdl_functions_js.go#L9425) |
+| [SDL_GetGamepadVendor](https://wiki.libsdl.org/SDL3/SDL_GetGamepadVendor) | [:heavy_check_mark:](sdl/methods.go#L2509) | [:x:](sdl/sdl_functions_js.go#L9443) |
+| [SDL_GetGamepadProduct](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProduct) | [:heavy_check_mark:](sdl/methods.go#L2515) | [:x:](sdl/sdl_functions_js.go#L9459) |
+| [SDL_GetGamepadProductVersion](https://wiki.libsdl.org/SDL3/SDL_GetGamepadProductVersion) | [:heavy_check_mark:](sdl/methods.go#L2521) | [:x:](sdl/sdl_functions_js.go#L9475) |
+| [SDL_GetGamepadFirmwareVersion](https://wiki.libsdl.org/SDL3/SDL_GetGamepadFirmwareVersion) | [:heavy_check_mark:](sdl/methods.go#L2527) | [:x:](sdl/sdl_functions_js.go#L9491) |
+| [SDL_GetGamepadSerial](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSerial) | [:heavy_check_mark:](sdl/methods.go#L2533) | [:x:](sdl/sdl_functions_js.go#L9507) |
+| [SDL_GetGamepadSteamHandle](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSteamHandle) | [:heavy_check_mark:](sdl/methods.go#L2539) | [:x:](sdl/sdl_functions_js.go#L9523) |
+| [SDL_GetGamepadConnectionState](https://wiki.libsdl.org/SDL3/SDL_GetGamepadConnectionState) | [:heavy_check_mark:](sdl/methods.go#L2545) | [:x:](sdl/sdl_functions_js.go#L9539) |
+| [SDL_GetGamepadPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetGamepadPowerInfo) | [:heavy_check_mark:](sdl/methods.go#L2557) | [:x:](sdl/sdl_functions_js.go#L9555) |
+| [SDL_GamepadConnected](https://wiki.libsdl.org/SDL3/SDL_GamepadConnected) | [:heavy_check_mark:](sdl/methods.go#L2567) | [:x:](sdl/sdl_functions_js.go#L9576) |
+| [SDL_GetGamepadJoystick](https://wiki.libsdl.org/SDL3/SDL_GetGamepadJoystick) | [:heavy_check_mark:](sdl/methods.go#L2573) | [:x:](sdl/sdl_functions_js.go#L9592) |
 | [SDL_SetGamepadEventsEnabled](https://wiki.libsdl.org/SDL3/SDL_SetGamepadEventsEnabled) | [:heavy_check_mark:](sdl/functions.go#L1436) | [:x:](sdl/sdl_functions_js.go#L9611) |
 | [SDL_GamepadEventsEnabled](https://wiki.libsdl.org/SDL3/SDL_GamepadEventsEnabled) | [:heavy_check_mark:](sdl/functions.go#L1442) | [:x:](sdl/sdl_functions_js.go#L9622) |
-| [SDL_GetGamepadBindings](https://wiki.libsdl.org/SDL3/SDL_GetGamepadBindings) | [:heavy_check_mark:](sdl/methods.go#L2566) | [:x:](sdl/sdl_functions_js.go#L9633) |
+| [SDL_GetGamepadBindings](https://wiki.libsdl.org/SDL3/SDL_GetGamepadBindings) | [:heavy_check_mark:](sdl/methods.go#L2584) | [:x:](sdl/sdl_functions_js.go#L9633) |
 | [SDL_UpdateGamepads](https://wiki.libsdl.org/SDL3/SDL_UpdateGamepads) | [:heavy_check_mark:](sdl/functions.go#L1448) | [:x:](sdl/sdl_functions_js.go#L9654) |
 | [SDL_GetGamepadTypeFromString](https://wiki.libsdl.org/SDL3/SDL_GetGamepadTypeFromString) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L9663) |
-| [SDL_GetGamepadStringForType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForType) | [:heavy_check_mark:](sdl/methods.go#L5568) | [:x:](sdl/sdl_functions_js.go#L9676) |
+| [SDL_GetGamepadStringForType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForType) | [:heavy_check_mark:](sdl/methods.go#L5582) | [:x:](sdl/sdl_functions_js.go#L9676) |
 | [SDL_GetGamepadAxisFromString](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAxisFromString) | [:heavy_check_mark:](sdl/functions.go#L1454) | [:x:](sdl/sdl_functions_js.go#L9689) |
 | [SDL_GetGamepadStringForAxis](https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForAxis) | [:heavy_check_mark:](sdl/methods.go#L583) | [:x:](sdl/sdl_functions_js.go#L9702) |
-| [SDL_GamepadHasAxis](https://wiki.libsdl.org/SDL3/SDL_GamepadHasAxis) | [:heavy_check_mark:](sdl/methods.go#L2580) | [:x:](sdl/sdl_functions_js.go#L9715) |
-| [SDL_GetGamepadAxis](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAxis) | [:heavy_check_mark:](sdl/methods.go#L2586) | [:x:](sdl/sdl_functions_js.go#L9733) |
+| [SDL_GamepadHasAxis](https://wiki.libsdl.org/SDL3/SDL_GamepadHasAxis) | [:heavy_check_mark:](sdl/methods.go#L2598) | [:x:](sdl/sdl_functions_js.go#L9715) |
+| [SDL_GetGamepadAxis](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAxis) | [:heavy_check_mark:](sdl/methods.go#L2604) | [:x:](sdl/sdl_functions_js.go#L9733) |
 | [SDL_GetGamepadButtonFromString](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonFromString) | [:heavy_check_mark:](sdl/functions.go#L1460) | [:x:](sdl/sdl_functions_js.go#L9751) |
 | [SDL_GetGamepadStringForButton](https://wiki.libsdl.org/SDL3/SDL_GetGamepadStringForButton) | [:heavy_check_mark:](sdl/methods.go#L441) | [:x:](sdl/sdl_functions_js.go#L9764) |
-| [SDL_GamepadHasButton](https://wiki.libsdl.org/SDL3/SDL_GamepadHasButton) | [:heavy_check_mark:](sdl/methods.go#L2592) | [:x:](sdl/sdl_functions_js.go#L9777) |
-| [SDL_GetGamepadButton](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButton) | [:heavy_check_mark:](sdl/methods.go#L2598) | [:x:](sdl/sdl_functions_js.go#L9795) |
-| [SDL_GetGamepadButtonLabelForType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabelForType) | [:heavy_check_mark:](sdl/methods.go#L5574) | [:x:](sdl/sdl_functions_js.go#L9813) |
-| [SDL_GetGamepadButtonLabel](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabel) | [:heavy_check_mark:](sdl/methods.go#L2604) | [:x:](sdl/sdl_functions_js.go#L9828) |
-| [SDL_GetNumGamepadTouchpads](https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpads) | [:heavy_check_mark:](sdl/methods.go#L2610) | [:x:](sdl/sdl_functions_js.go#L9846) |
-| [SDL_GetNumGamepadTouchpadFingers](https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpadFingers) | [:heavy_check_mark:](sdl/methods.go#L2616) | [:x:](sdl/sdl_functions_js.go#L9862) |
-| [SDL_GetGamepadTouchpadFinger](https://wiki.libsdl.org/SDL3/SDL_GetGamepadTouchpadFinger) | [:x:](sdl/methods.go#L2622) | [:x:](sdl/sdl_functions_js.go#L9880) |
-| [SDL_GamepadHasSensor](https://wiki.libsdl.org/SDL3/SDL_GamepadHasSensor) | [:heavy_check_mark:](sdl/methods.go#L2629) | [:x:](sdl/sdl_functions_js.go#L9920) |
-| [SDL_SetGamepadSensorEnabled](https://wiki.libsdl.org/SDL3/SDL_SetGamepadSensorEnabled) | [:heavy_check_mark:](sdl/methods.go#L2635) | [:x:](sdl/sdl_functions_js.go#L9938) |
-| [SDL_GamepadSensorEnabled](https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEnabled) | [:heavy_check_mark:](sdl/methods.go#L2645) | [:x:](sdl/sdl_functions_js.go#L9958) |
-| [SDL_GetGamepadSensorDataRate](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSensorDataRate) | [:heavy_check_mark:](sdl/methods.go#L2651) | [:x:](sdl/sdl_functions_js.go#L9976) |
-| [SDL_GetGamepadSensorData](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSensorData) | [:x:](sdl/methods.go#L2657) | [:x:](sdl/sdl_functions_js.go#L9994) |
-| [SDL_RumbleGamepad](https://wiki.libsdl.org/SDL3/SDL_RumbleGamepad) | [:heavy_check_mark:](sdl/methods.go#L2664) | [:x:](sdl/sdl_functions_js.go#L10019) |
-| [SDL_RumbleGamepadTriggers](https://wiki.libsdl.org/SDL3/SDL_RumbleGamepadTriggers) | [:heavy_check_mark:](sdl/methods.go#L2674) | [:x:](sdl/sdl_functions_js.go#L10041) |
-| [SDL_SetGamepadLED](https://wiki.libsdl.org/SDL3/SDL_SetGamepadLED) | [:heavy_check_mark:](sdl/methods.go#L2684) | [:x:](sdl/sdl_functions_js.go#L10063) |
-| [SDL_SendGamepadEffect](https://wiki.libsdl.org/SDL3/SDL_SendGamepadEffect) | [:heavy_check_mark:](sdl/methods.go#L2694) | [:x:](sdl/sdl_functions_js.go#L10085) |
-| [SDL_CloseGamepad](https://wiki.libsdl.org/SDL3/SDL_CloseGamepad) | [:heavy_check_mark:](sdl/methods.go#L2705) | [:x:](sdl/sdl_functions_js.go#L10105) |
-| [SDL_GetGamepadAppleSFSymbolsNameForButton](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForButton) | [:x:](sdl/methods.go#L2711) | [:x:](sdl/sdl_functions_js.go#L10119) |
-| [SDL_GetGamepadAppleSFSymbolsNameForAxis](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForAxis) | [:x:](sdl/methods.go#L2718) | [:x:](sdl/sdl_functions_js.go#L10137) |
+| [SDL_GamepadHasButton](https://wiki.libsdl.org/SDL3/SDL_GamepadHasButton) | [:heavy_check_mark:](sdl/methods.go#L2610) | [:x:](sdl/sdl_functions_js.go#L9777) |
+| [SDL_GetGamepadButton](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButton) | [:heavy_check_mark:](sdl/methods.go#L2616) | [:x:](sdl/sdl_functions_js.go#L9795) |
+| [SDL_GetGamepadButtonLabelForType](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabelForType) | [:heavy_check_mark:](sdl/methods.go#L5588) | [:x:](sdl/sdl_functions_js.go#L9813) |
+| [SDL_GetGamepadButtonLabel](https://wiki.libsdl.org/SDL3/SDL_GetGamepadButtonLabel) | [:heavy_check_mark:](sdl/methods.go#L2622) | [:x:](sdl/sdl_functions_js.go#L9828) |
+| [SDL_GetNumGamepadTouchpads](https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpads) | [:heavy_check_mark:](sdl/methods.go#L2628) | [:x:](sdl/sdl_functions_js.go#L9846) |
+| [SDL_GetNumGamepadTouchpadFingers](https://wiki.libsdl.org/SDL3/SDL_GetNumGamepadTouchpadFingers) | [:heavy_check_mark:](sdl/methods.go#L2634) | [:x:](sdl/sdl_functions_js.go#L9862) |
+| [SDL_GetGamepadTouchpadFinger](https://wiki.libsdl.org/SDL3/SDL_GetGamepadTouchpadFinger) | [:x:](sdl/methods.go#L2640) | [:x:](sdl/sdl_functions_js.go#L9880) |
+| [SDL_GamepadHasSensor](https://wiki.libsdl.org/SDL3/SDL_GamepadHasSensor) | [:heavy_check_mark:](sdl/methods.go#L2647) | [:x:](sdl/sdl_functions_js.go#L9920) |
+| [SDL_SetGamepadSensorEnabled](https://wiki.libsdl.org/SDL3/SDL_SetGamepadSensorEnabled) | [:heavy_check_mark:](sdl/methods.go#L2653) | [:x:](sdl/sdl_functions_js.go#L9938) |
+| [SDL_GamepadSensorEnabled](https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEnabled) | [:heavy_check_mark:](sdl/methods.go#L2663) | [:x:](sdl/sdl_functions_js.go#L9958) |
+| [SDL_GetGamepadSensorDataRate](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSensorDataRate) | [:heavy_check_mark:](sdl/methods.go#L2669) | [:x:](sdl/sdl_functions_js.go#L9976) |
+| [SDL_GetGamepadSensorData](https://wiki.libsdl.org/SDL3/SDL_GetGamepadSensorData) | [:x:](sdl/methods.go#L2675) | [:x:](sdl/sdl_functions_js.go#L9994) |
+| [SDL_RumbleGamepad](https://wiki.libsdl.org/SDL3/SDL_RumbleGamepad) | [:heavy_check_mark:](sdl/methods.go#L2682) | [:x:](sdl/sdl_functions_js.go#L10019) |
+| [SDL_RumbleGamepadTriggers](https://wiki.libsdl.org/SDL3/SDL_RumbleGamepadTriggers) | [:heavy_check_mark:](sdl/methods.go#L2692) | [:x:](sdl/sdl_functions_js.go#L10041) |
+| [SDL_SetGamepadLED](https://wiki.libsdl.org/SDL3/SDL_SetGamepadLED) | [:heavy_check_mark:](sdl/methods.go#L2702) | [:x:](sdl/sdl_functions_js.go#L10063) |
+| [SDL_SendGamepadEffect](https://wiki.libsdl.org/SDL3/SDL_SendGamepadEffect) | [:heavy_check_mark:](sdl/methods.go#L2712) | [:x:](sdl/sdl_functions_js.go#L10085) |
+| [SDL_CloseGamepad](https://wiki.libsdl.org/SDL3/SDL_CloseGamepad) | [:heavy_check_mark:](sdl/methods.go#L2723) | [:x:](sdl/sdl_functions_js.go#L10105) |
+| [SDL_GetGamepadAppleSFSymbolsNameForButton](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForButton) | [:x:](sdl/methods.go#L2729) | [:x:](sdl/sdl_functions_js.go#L10119) |
+| [SDL_GetGamepadAppleSFSymbolsNameForAxis](https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForAxis) | [:x:](sdl/methods.go#L2736) | [:x:](sdl/sdl_functions_js.go#L10137) |
 </details>
 <details open>
-<summary><h3>Joystick</h3></summary>
+<summary><h3>Haptic</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -416,86 +424,86 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_AttachVirtualJoystick](https://wiki.libsdl.org/SDL3/SDL_AttachVirtualJoystick) | [:heavy_check_mark:](sdl/functions.go#L1506) | [:x:](sdl/sdl_functions_js.go#L8232) |
 | [SDL_DetachVirtualJoystick](https://wiki.libsdl.org/SDL3/SDL_DetachVirtualJoystick) | [:heavy_check_mark:](sdl/methods.go#L737) | [:x:](sdl/sdl_functions_js.go#L8248) |
 | [SDL_IsJoystickVirtual](https://wiki.libsdl.org/SDL3/SDL_IsJoystickVirtual) | [:heavy_check_mark:](sdl/methods.go#L747) | [:x:](sdl/sdl_functions_js.go#L8261) |
-| [SDL_SetJoystickVirtualAxis](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualAxis) | [:heavy_check_mark:](sdl/methods.go#L5226) | [:x:](sdl/sdl_functions_js.go#L8274) |
-| [SDL_SetJoystickVirtualBall](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualBall) | [:heavy_check_mark:](sdl/methods.go#L5236) | [:x:](sdl/sdl_functions_js.go#L8294) |
-| [SDL_SetJoystickVirtualButton](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualButton) | [:heavy_check_mark:](sdl/methods.go#L5246) | [:x:](sdl/sdl_functions_js.go#L8316) |
-| [SDL_SetJoystickVirtualHat](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualHat) | [:heavy_check_mark:](sdl/methods.go#L5256) | [:x:](sdl/sdl_functions_js.go#L8336) |
-| [SDL_SetJoystickVirtualTouchpad](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualTouchpad) | [:heavy_check_mark:](sdl/methods.go#L5266) | [:x:](sdl/sdl_functions_js.go#L8356) |
-| [SDL_SendJoystickVirtualSensorData](https://wiki.libsdl.org/SDL3/SDL_SendJoystickVirtualSensorData) | [:heavy_check_mark:](sdl/methods.go#L5276) | [:x:](sdl/sdl_functions_js.go#L8384) |
-| [SDL_GetJoystickProperties](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProperties) | [:heavy_check_mark:](sdl/methods.go#L5286) | [:x:](sdl/sdl_functions_js.go#L8411) |
-| [SDL_GetJoystickName](https://wiki.libsdl.org/SDL3/SDL_GetJoystickName) | [:heavy_check_mark:](sdl/methods.go#L5297) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8427) |
-| [SDL_GetJoystickPath](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPath) | [:heavy_check_mark:](sdl/methods.go#L5308) | [:x:](sdl/sdl_functions_js.go#L8440) |
-| [SDL_GetJoystickPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L5319) | [:x:](sdl/sdl_functions_js.go#L8456) |
-| [SDL_SetJoystickPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_SetJoystickPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L5325) | [:x:](sdl/sdl_functions_js.go#L8472) |
-| [SDL_GetJoystickGUID](https://wiki.libsdl.org/SDL3/SDL_GetJoystickGUID) | [:x:](sdl/methods.go#L5335) | [:x:](sdl/sdl_functions_js.go#L8490) |
-| [SDL_GetJoystickVendor](https://wiki.libsdl.org/SDL3/SDL_GetJoystickVendor) | [:heavy_check_mark:](sdl/methods.go#L5342) | [:x:](sdl/sdl_functions_js.go#L8506) |
-| [SDL_GetJoystickProduct](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProduct) | [:heavy_check_mark:](sdl/methods.go#L5348) | [:x:](sdl/sdl_functions_js.go#L8522) |
-| [SDL_GetJoystickProductVersion](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProductVersion) | [:heavy_check_mark:](sdl/methods.go#L5354) | [:x:](sdl/sdl_functions_js.go#L8538) |
-| [SDL_GetJoystickFirmwareVersion](https://wiki.libsdl.org/SDL3/SDL_GetJoystickFirmwareVersion) | [:heavy_check_mark:](sdl/methods.go#L5360) | [:x:](sdl/sdl_functions_js.go#L8554) |
-| [SDL_GetJoystickSerial](https://wiki.libsdl.org/SDL3/SDL_GetJoystickSerial) | [:heavy_check_mark:](sdl/methods.go#L5366) | [:x:](sdl/sdl_functions_js.go#L8570) |
-| [SDL_GetJoystickType](https://wiki.libsdl.org/SDL3/SDL_GetJoystickType) | [:heavy_check_mark:](sdl/methods.go#L5372) | [:x:](sdl/sdl_functions_js.go#L8586) |
+| [SDL_SetJoystickVirtualAxis](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualAxis) | [:heavy_check_mark:](sdl/methods.go#L5240) | [:x:](sdl/sdl_functions_js.go#L8274) |
+| [SDL_SetJoystickVirtualBall](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualBall) | [:heavy_check_mark:](sdl/methods.go#L5250) | [:x:](sdl/sdl_functions_js.go#L8294) |
+| [SDL_SetJoystickVirtualButton](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualButton) | [:heavy_check_mark:](sdl/methods.go#L5260) | [:x:](sdl/sdl_functions_js.go#L8316) |
+| [SDL_SetJoystickVirtualHat](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualHat) | [:heavy_check_mark:](sdl/methods.go#L5270) | [:x:](sdl/sdl_functions_js.go#L8336) |
+| [SDL_SetJoystickVirtualTouchpad](https://wiki.libsdl.org/SDL3/SDL_SetJoystickVirtualTouchpad) | [:heavy_check_mark:](sdl/methods.go#L5280) | [:x:](sdl/sdl_functions_js.go#L8356) |
+| [SDL_SendJoystickVirtualSensorData](https://wiki.libsdl.org/SDL3/SDL_SendJoystickVirtualSensorData) | [:heavy_check_mark:](sdl/methods.go#L5290) | [:x:](sdl/sdl_functions_js.go#L8384) |
+| [SDL_GetJoystickProperties](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProperties) | [:heavy_check_mark:](sdl/methods.go#L5300) | [:x:](sdl/sdl_functions_js.go#L8411) |
+| [SDL_GetJoystickName](https://wiki.libsdl.org/SDL3/SDL_GetJoystickName) | [:heavy_check_mark:](sdl/methods.go#L5311) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8427) |
+| [SDL_GetJoystickPath](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPath) | [:heavy_check_mark:](sdl/methods.go#L5322) | [:x:](sdl/sdl_functions_js.go#L8440) |
+| [SDL_GetJoystickPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L5333) | [:x:](sdl/sdl_functions_js.go#L8456) |
+| [SDL_SetJoystickPlayerIndex](https://wiki.libsdl.org/SDL3/SDL_SetJoystickPlayerIndex) | [:heavy_check_mark:](sdl/methods.go#L5339) | [:x:](sdl/sdl_functions_js.go#L8472) |
+| [SDL_GetJoystickGUID](https://wiki.libsdl.org/SDL3/SDL_GetJoystickGUID) | [:x:](sdl/methods.go#L5349) | [:x:](sdl/sdl_functions_js.go#L8490) |
+| [SDL_GetJoystickVendor](https://wiki.libsdl.org/SDL3/SDL_GetJoystickVendor) | [:heavy_check_mark:](sdl/methods.go#L5356) | [:x:](sdl/sdl_functions_js.go#L8506) |
+| [SDL_GetJoystickProduct](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProduct) | [:heavy_check_mark:](sdl/methods.go#L5362) | [:x:](sdl/sdl_functions_js.go#L8522) |
+| [SDL_GetJoystickProductVersion](https://wiki.libsdl.org/SDL3/SDL_GetJoystickProductVersion) | [:heavy_check_mark:](sdl/methods.go#L5368) | [:x:](sdl/sdl_functions_js.go#L8538) |
+| [SDL_GetJoystickFirmwareVersion](https://wiki.libsdl.org/SDL3/SDL_GetJoystickFirmwareVersion) | [:heavy_check_mark:](sdl/methods.go#L5374) | [:x:](sdl/sdl_functions_js.go#L8554) |
+| [SDL_GetJoystickSerial](https://wiki.libsdl.org/SDL3/SDL_GetJoystickSerial) | [:heavy_check_mark:](sdl/methods.go#L5380) | [:x:](sdl/sdl_functions_js.go#L8570) |
+| [SDL_GetJoystickType](https://wiki.libsdl.org/SDL3/SDL_GetJoystickType) | [:heavy_check_mark:](sdl/methods.go#L5386) | [:x:](sdl/sdl_functions_js.go#L8586) |
 | [SDL_GetJoystickGUIDInfo](https://wiki.libsdl.org/SDL3/SDL_GetJoystickGUIDInfo) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L8602) |
-| [SDL_JoystickConnected](https://wiki.libsdl.org/SDL3/SDL_JoystickConnected) | [:heavy_check_mark:](sdl/methods.go#L5378) | [:x:](sdl/sdl_functions_js.go#L8633) |
-| [SDL_GetJoystickID](https://wiki.libsdl.org/SDL3/SDL_GetJoystickID) | [:heavy_check_mark:](sdl/methods.go#L5384) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8649) |
-| [SDL_GetNumJoystickAxes](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickAxes) | [:heavy_check_mark:](sdl/methods.go#L5395) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8662) |
-| [SDL_GetNumJoystickBalls](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickBalls) | [:heavy_check_mark:](sdl/methods.go#L5406) | [:x:](sdl/sdl_functions_js.go#L8675) |
-| [SDL_GetNumJoystickHats](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickHats) | [:heavy_check_mark:](sdl/methods.go#L5417) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8691) |
-| [SDL_GetNumJoystickButtons](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickButtons) | [:heavy_check_mark:](sdl/methods.go#L5428) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8704) |
+| [SDL_JoystickConnected](https://wiki.libsdl.org/SDL3/SDL_JoystickConnected) | [:heavy_check_mark:](sdl/methods.go#L5392) | [:x:](sdl/sdl_functions_js.go#L8633) |
+| [SDL_GetJoystickID](https://wiki.libsdl.org/SDL3/SDL_GetJoystickID) | [:heavy_check_mark:](sdl/methods.go#L5398) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8649) |
+| [SDL_GetNumJoystickAxes](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickAxes) | [:heavy_check_mark:](sdl/methods.go#L5409) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8662) |
+| [SDL_GetNumJoystickBalls](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickBalls) | [:heavy_check_mark:](sdl/methods.go#L5420) | [:x:](sdl/sdl_functions_js.go#L8675) |
+| [SDL_GetNumJoystickHats](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickHats) | [:heavy_check_mark:](sdl/methods.go#L5431) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8691) |
+| [SDL_GetNumJoystickButtons](https://wiki.libsdl.org/SDL3/SDL_GetNumJoystickButtons) | [:heavy_check_mark:](sdl/methods.go#L5442) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8704) |
 | [SDL_SetJoystickEventsEnabled](https://wiki.libsdl.org/SDL3/SDL_SetJoystickEventsEnabled) | [:heavy_check_mark:](sdl/functions.go#L1512) | [:x:](sdl/sdl_functions_js.go#L8717) |
 | [SDL_JoystickEventsEnabled](https://wiki.libsdl.org/SDL3/SDL_JoystickEventsEnabled) | [:heavy_check_mark:](sdl/functions.go#L1518) | [:x:](sdl/sdl_functions_js.go#L8728) |
 | [SDL_UpdateJoysticks](https://wiki.libsdl.org/SDL3/SDL_UpdateJoysticks) | [:heavy_check_mark:](sdl/functions.go#L1524) | [:x:](sdl/sdl_functions_js.go#L8739) |
-| [SDL_GetJoystickAxis](https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxis) | [:heavy_check_mark:](sdl/methods.go#L5439) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8748) |
-| [SDL_GetJoystickAxisInitialState](https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxisInitialState) | [:heavy_check_mark:](sdl/methods.go#L5450) | [:x:](sdl/sdl_functions_js.go#L8763) |
-| [SDL_GetJoystickBall](https://wiki.libsdl.org/SDL3/SDL_GetJoystickBall) | [:heavy_check_mark:](sdl/methods.go#L5459) | [:x:](sdl/sdl_functions_js.go#L8786) |
-| [SDL_GetJoystickHat](https://wiki.libsdl.org/SDL3/SDL_GetJoystickHat) | [:heavy_check_mark:](sdl/methods.go#L5471) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8814) |
-| [SDL_GetJoystickButton](https://wiki.libsdl.org/SDL3/SDL_GetJoystickButton) | [:heavy_check_mark:](sdl/methods.go#L5477) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8829) |
-| [SDL_RumbleJoystick](https://wiki.libsdl.org/SDL3/SDL_RumbleJoystick) | [:heavy_check_mark:](sdl/methods.go#L5483) | [:x:](sdl/sdl_functions_js.go#L8844) |
-| [SDL_RumbleJoystickTriggers](https://wiki.libsdl.org/SDL3/SDL_RumbleJoystickTriggers) | [:heavy_check_mark:](sdl/methods.go#L5489) | [:x:](sdl/sdl_functions_js.go#L8866) |
-| [SDL_SetJoystickLED](https://wiki.libsdl.org/SDL3/SDL_SetJoystickLED) | [:heavy_check_mark:](sdl/methods.go#L5499) | [:x:](sdl/sdl_functions_js.go#L8888) |
-| [SDL_SendJoystickEffect](https://wiki.libsdl.org/SDL3/SDL_SendJoystickEffect) | [:heavy_check_mark:](sdl/methods.go#L5509) | [:x:](sdl/sdl_functions_js.go#L8910) |
-| [SDL_CloseJoystick](https://wiki.libsdl.org/SDL3/SDL_CloseJoystick) | [:heavy_check_mark:](sdl/methods.go#L5519) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8930) |
-| [SDL_GetJoystickConnectionState](https://wiki.libsdl.org/SDL3/SDL_GetJoystickConnectionState) | [:heavy_check_mark:](sdl/methods.go#L5525) | [:x:](sdl/sdl_functions_js.go#L8943) |
-| [SDL_GetJoystickPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPowerInfo) | [:heavy_check_mark:](sdl/methods.go#L5536) | [:x:](sdl/sdl_functions_js.go#L8959) |
+| [SDL_GetJoystickAxis](https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxis) | [:heavy_check_mark:](sdl/methods.go#L5453) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8748) |
+| [SDL_GetJoystickAxisInitialState](https://wiki.libsdl.org/SDL3/SDL_GetJoystickAxisInitialState) | [:heavy_check_mark:](sdl/methods.go#L5464) | [:x:](sdl/sdl_functions_js.go#L8763) |
+| [SDL_GetJoystickBall](https://wiki.libsdl.org/SDL3/SDL_GetJoystickBall) | [:heavy_check_mark:](sdl/methods.go#L5473) | [:x:](sdl/sdl_functions_js.go#L8786) |
+| [SDL_GetJoystickHat](https://wiki.libsdl.org/SDL3/SDL_GetJoystickHat) | [:heavy_check_mark:](sdl/methods.go#L5485) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8814) |
+| [SDL_GetJoystickButton](https://wiki.libsdl.org/SDL3/SDL_GetJoystickButton) | [:heavy_check_mark:](sdl/methods.go#L5491) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8829) |
+| [SDL_RumbleJoystick](https://wiki.libsdl.org/SDL3/SDL_RumbleJoystick) | [:heavy_check_mark:](sdl/methods.go#L5497) | [:x:](sdl/sdl_functions_js.go#L8844) |
+| [SDL_RumbleJoystickTriggers](https://wiki.libsdl.org/SDL3/SDL_RumbleJoystickTriggers) | [:heavy_check_mark:](sdl/methods.go#L5503) | [:x:](sdl/sdl_functions_js.go#L8866) |
+| [SDL_SetJoystickLED](https://wiki.libsdl.org/SDL3/SDL_SetJoystickLED) | [:heavy_check_mark:](sdl/methods.go#L5513) | [:x:](sdl/sdl_functions_js.go#L8888) |
+| [SDL_SendJoystickEffect](https://wiki.libsdl.org/SDL3/SDL_SendJoystickEffect) | [:heavy_check_mark:](sdl/methods.go#L5523) | [:x:](sdl/sdl_functions_js.go#L8910) |
+| [SDL_CloseJoystick](https://wiki.libsdl.org/SDL3/SDL_CloseJoystick) | [:heavy_check_mark:](sdl/methods.go#L5533) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L8930) |
+| [SDL_GetJoystickConnectionState](https://wiki.libsdl.org/SDL3/SDL_GetJoystickConnectionState) | [:heavy_check_mark:](sdl/methods.go#L5539) | [:x:](sdl/sdl_functions_js.go#L8943) |
+| [SDL_GetJoystickPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetJoystickPowerInfo) | [:heavy_check_mark:](sdl/methods.go#L5550) | [:x:](sdl/sdl_functions_js.go#L8959) |
 </details>
 <details open>
-<summary><h3>Haptic</h3></summary>
+<summary><h3>Audio</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GetHaptics](https://wiki.libsdl.org/SDL3/SDL_GetHaptics) | [:heavy_check_mark:](sdl/functions.go#L1532) | [:x:](sdl/sdl_functions_js.go#L13265) |
-| [SDL_GetHapticNameForID](https://wiki.libsdl.org/SDL3/SDL_GetHapticNameForID) | [:heavy_check_mark:](sdl/methods.go#L2784) | [:x:](sdl/sdl_functions_js.go#L13281) |
-| [SDL_OpenHaptic](https://wiki.libsdl.org/SDL3/SDL_OpenHaptic) | [:heavy_check_mark:](sdl/methods.go#L2795) | [:x:](sdl/sdl_functions_js.go#L13294) |
-| [SDL_GetHapticFromID](https://wiki.libsdl.org/SDL3/SDL_GetHapticFromID) | [:heavy_check_mark:](sdl/methods.go#L2806) | [:x:](sdl/sdl_functions_js.go#L13310) |
-| [SDL_GetHapticID](https://wiki.libsdl.org/SDL3/SDL_GetHapticID) | [:heavy_check_mark:](sdl/methods.go#L2189) | [:x:](sdl/sdl_functions_js.go#L13326) |
-| [SDL_GetHapticName](https://wiki.libsdl.org/SDL3/SDL_GetHapticName) | [:heavy_check_mark:](sdl/methods.go#L2200) | [:x:](sdl/sdl_functions_js.go#L13342) |
+| [SDL_GetHapticNameForID](https://wiki.libsdl.org/SDL3/SDL_GetHapticNameForID) | [:heavy_check_mark:](sdl/methods.go#L2798) | [:x:](sdl/sdl_functions_js.go#L13281) |
+| [SDL_OpenHaptic](https://wiki.libsdl.org/SDL3/SDL_OpenHaptic) | [:heavy_check_mark:](sdl/methods.go#L2809) | [:x:](sdl/sdl_functions_js.go#L13294) |
+| [SDL_GetHapticFromID](https://wiki.libsdl.org/SDL3/SDL_GetHapticFromID) | [:heavy_check_mark:](sdl/methods.go#L2820) | [:x:](sdl/sdl_functions_js.go#L13310) |
+| [SDL_GetHapticID](https://wiki.libsdl.org/SDL3/SDL_GetHapticID) | [:heavy_check_mark:](sdl/methods.go#L2207) | [:x:](sdl/sdl_functions_js.go#L13326) |
+| [SDL_GetHapticName](https://wiki.libsdl.org/SDL3/SDL_GetHapticName) | [:heavy_check_mark:](sdl/methods.go#L2218) | [:x:](sdl/sdl_functions_js.go#L13342) |
 | [SDL_IsMouseHaptic](https://wiki.libsdl.org/SDL3/SDL_IsMouseHaptic) | [:heavy_check_mark:](sdl/functions.go#L1546) | [:x:](sdl/sdl_functions_js.go#L13358) |
 | [SDL_OpenHapticFromMouse](https://wiki.libsdl.org/SDL3/SDL_OpenHapticFromMouse) | [:heavy_check_mark:](sdl/functions.go#L1552) | [:x:](sdl/sdl_functions_js.go#L13369) |
-| [SDL_IsJoystickHaptic](https://wiki.libsdl.org/SDL3/SDL_IsJoystickHaptic) | [:heavy_check_mark:](sdl/methods.go#L5549) | [:x:](sdl/sdl_functions_js.go#L13383) |
-| [SDL_OpenHapticFromJoystick](https://wiki.libsdl.org/SDL3/SDL_OpenHapticFromJoystick) | [:heavy_check_mark:](sdl/methods.go#L5555) | [:x:](sdl/sdl_functions_js.go#L13399) |
-| [SDL_CloseHaptic](https://wiki.libsdl.org/SDL3/SDL_CloseHaptic) | [:heavy_check_mark:](sdl/methods.go#L2211) | [:x:](sdl/sdl_functions_js.go#L13418) |
-| [SDL_GetMaxHapticEffects](https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffects) | [:heavy_check_mark:](sdl/methods.go#L2217) | [:x:](sdl/sdl_functions_js.go#L13432) |
-| [SDL_GetMaxHapticEffectsPlaying](https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffectsPlaying) | [:heavy_check_mark:](sdl/methods.go#L2228) | [:x:](sdl/sdl_functions_js.go#L13448) |
-| [SDL_GetHapticFeatures](https://wiki.libsdl.org/SDL3/SDL_GetHapticFeatures) | [:heavy_check_mark:](sdl/methods.go#L2239) | [:x:](sdl/sdl_functions_js.go#L13464) |
-| [SDL_GetNumHapticAxes](https://wiki.libsdl.org/SDL3/SDL_GetNumHapticAxes) | [:heavy_check_mark:](sdl/methods.go#L2250) | [:x:](sdl/sdl_functions_js.go#L13480) |
-| [SDL_HapticEffectSupported](https://wiki.libsdl.org/SDL3/SDL_HapticEffectSupported) | [:heavy_check_mark:](sdl/methods.go#L2261) | [:x:](sdl/sdl_functions_js.go#L13496) |
-| [SDL_CreateHapticEffect](https://wiki.libsdl.org/SDL3/SDL_CreateHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2267) | [:x:](sdl/sdl_functions_js.go#L13517) |
-| [SDL_UpdateHapticEffect](https://wiki.libsdl.org/SDL3/SDL_UpdateHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2278) | [:x:](sdl/sdl_functions_js.go#L13538) |
-| [SDL_RunHapticEffect](https://wiki.libsdl.org/SDL3/SDL_RunHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2288) | [:x:](sdl/sdl_functions_js.go#L13561) |
-| [SDL_StopHapticEffect](https://wiki.libsdl.org/SDL3/SDL_StopHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2298) | [:x:](sdl/sdl_functions_js.go#L13581) |
-| [SDL_DestroyHapticEffect](https://wiki.libsdl.org/SDL3/SDL_DestroyHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2308) | [:x:](sdl/sdl_functions_js.go#L13599) |
-| [SDL_GetHapticEffectStatus](https://wiki.libsdl.org/SDL3/SDL_GetHapticEffectStatus) | [:heavy_check_mark:](sdl/methods.go#L2314) | [:x:](sdl/sdl_functions_js.go#L13615) |
-| [SDL_SetHapticGain](https://wiki.libsdl.org/SDL3/SDL_SetHapticGain) | [:heavy_check_mark:](sdl/methods.go#L2320) | [:x:](sdl/sdl_functions_js.go#L13633) |
-| [SDL_SetHapticAutocenter](https://wiki.libsdl.org/SDL3/SDL_SetHapticAutocenter) | [:heavy_check_mark:](sdl/methods.go#L2330) | [:x:](sdl/sdl_functions_js.go#L13651) |
-| [SDL_PauseHaptic](https://wiki.libsdl.org/SDL3/SDL_PauseHaptic) | [:heavy_check_mark:](sdl/methods.go#L2340) | [:x:](sdl/sdl_functions_js.go#L13669) |
-| [SDL_ResumeHaptic](https://wiki.libsdl.org/SDL3/SDL_ResumeHaptic) | [:heavy_check_mark:](sdl/methods.go#L2350) | [:x:](sdl/sdl_functions_js.go#L13685) |
-| [SDL_StopHapticEffects](https://wiki.libsdl.org/SDL3/SDL_StopHapticEffects) | [:heavy_check_mark:](sdl/methods.go#L2360) | [:x:](sdl/sdl_functions_js.go#L13701) |
-| [SDL_HapticRumbleSupported](https://wiki.libsdl.org/SDL3/SDL_HapticRumbleSupported) | [:heavy_check_mark:](sdl/methods.go#L2370) | [:x:](sdl/sdl_functions_js.go#L13717) |
-| [SDL_InitHapticRumble](https://wiki.libsdl.org/SDL3/SDL_InitHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2376) | [:x:](sdl/sdl_functions_js.go#L13733) |
-| [SDL_PlayHapticRumble](https://wiki.libsdl.org/SDL3/SDL_PlayHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2386) | [:x:](sdl/sdl_functions_js.go#L13749) |
-| [SDL_StopHapticRumble](https://wiki.libsdl.org/SDL3/SDL_StopHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2396) | [:x:](sdl/sdl_functions_js.go#L13769) |
+| [SDL_IsJoystickHaptic](https://wiki.libsdl.org/SDL3/SDL_IsJoystickHaptic) | [:heavy_check_mark:](sdl/methods.go#L5563) | [:x:](sdl/sdl_functions_js.go#L13383) |
+| [SDL_OpenHapticFromJoystick](https://wiki.libsdl.org/SDL3/SDL_OpenHapticFromJoystick) | [:heavy_check_mark:](sdl/methods.go#L5569) | [:x:](sdl/sdl_functions_js.go#L13399) |
+| [SDL_CloseHaptic](https://wiki.libsdl.org/SDL3/SDL_CloseHaptic) | [:heavy_check_mark:](sdl/methods.go#L2229) | [:x:](sdl/sdl_functions_js.go#L13418) |
+| [SDL_GetMaxHapticEffects](https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffects) | [:heavy_check_mark:](sdl/methods.go#L2235) | [:x:](sdl/sdl_functions_js.go#L13432) |
+| [SDL_GetMaxHapticEffectsPlaying](https://wiki.libsdl.org/SDL3/SDL_GetMaxHapticEffectsPlaying) | [:heavy_check_mark:](sdl/methods.go#L2246) | [:x:](sdl/sdl_functions_js.go#L13448) |
+| [SDL_GetHapticFeatures](https://wiki.libsdl.org/SDL3/SDL_GetHapticFeatures) | [:heavy_check_mark:](sdl/methods.go#L2257) | [:x:](sdl/sdl_functions_js.go#L13464) |
+| [SDL_GetNumHapticAxes](https://wiki.libsdl.org/SDL3/SDL_GetNumHapticAxes) | [:heavy_check_mark:](sdl/methods.go#L2268) | [:x:](sdl/sdl_functions_js.go#L13480) |
+| [SDL_HapticEffectSupported](https://wiki.libsdl.org/SDL3/SDL_HapticEffectSupported) | [:heavy_check_mark:](sdl/methods.go#L2279) | [:x:](sdl/sdl_functions_js.go#L13496) |
+| [SDL_CreateHapticEffect](https://wiki.libsdl.org/SDL3/SDL_CreateHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2285) | [:x:](sdl/sdl_functions_js.go#L13517) |
+| [SDL_UpdateHapticEffect](https://wiki.libsdl.org/SDL3/SDL_UpdateHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2296) | [:x:](sdl/sdl_functions_js.go#L13538) |
+| [SDL_RunHapticEffect](https://wiki.libsdl.org/SDL3/SDL_RunHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2306) | [:x:](sdl/sdl_functions_js.go#L13561) |
+| [SDL_StopHapticEffect](https://wiki.libsdl.org/SDL3/SDL_StopHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2316) | [:x:](sdl/sdl_functions_js.go#L13581) |
+| [SDL_DestroyHapticEffect](https://wiki.libsdl.org/SDL3/SDL_DestroyHapticEffect) | [:heavy_check_mark:](sdl/methods.go#L2326) | [:x:](sdl/sdl_functions_js.go#L13599) |
+| [SDL_GetHapticEffectStatus](https://wiki.libsdl.org/SDL3/SDL_GetHapticEffectStatus) | [:heavy_check_mark:](sdl/methods.go#L2332) | [:x:](sdl/sdl_functions_js.go#L13615) |
+| [SDL_SetHapticGain](https://wiki.libsdl.org/SDL3/SDL_SetHapticGain) | [:heavy_check_mark:](sdl/methods.go#L2338) | [:x:](sdl/sdl_functions_js.go#L13633) |
+| [SDL_SetHapticAutocenter](https://wiki.libsdl.org/SDL3/SDL_SetHapticAutocenter) | [:heavy_check_mark:](sdl/methods.go#L2348) | [:x:](sdl/sdl_functions_js.go#L13651) |
+| [SDL_PauseHaptic](https://wiki.libsdl.org/SDL3/SDL_PauseHaptic) | [:heavy_check_mark:](sdl/methods.go#L2358) | [:x:](sdl/sdl_functions_js.go#L13669) |
+| [SDL_ResumeHaptic](https://wiki.libsdl.org/SDL3/SDL_ResumeHaptic) | [:heavy_check_mark:](sdl/methods.go#L2368) | [:x:](sdl/sdl_functions_js.go#L13685) |
+| [SDL_StopHapticEffects](https://wiki.libsdl.org/SDL3/SDL_StopHapticEffects) | [:heavy_check_mark:](sdl/methods.go#L2378) | [:x:](sdl/sdl_functions_js.go#L13701) |
+| [SDL_HapticRumbleSupported](https://wiki.libsdl.org/SDL3/SDL_HapticRumbleSupported) | [:heavy_check_mark:](sdl/methods.go#L2388) | [:x:](sdl/sdl_functions_js.go#L13717) |
+| [SDL_InitHapticRumble](https://wiki.libsdl.org/SDL3/SDL_InitHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2394) | [:x:](sdl/sdl_functions_js.go#L13733) |
+| [SDL_PlayHapticRumble](https://wiki.libsdl.org/SDL3/SDL_PlayHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2404) | [:x:](sdl/sdl_functions_js.go#L13749) |
+| [SDL_StopHapticRumble](https://wiki.libsdl.org/SDL3/SDL_StopHapticRumble) | [:heavy_check_mark:](sdl/methods.go#L2414) | [:x:](sdl/sdl_functions_js.go#L13769) |
 </details>
-<details open>
-<summary><h3>Audio</h3></summary>
+<details>
+<summary><h3>Time</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -519,63 +527,62 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_BindAudioStreams](https://wiki.libsdl.org/SDL3/SDL_BindAudioStreams) | [:heavy_check_mark:](sdl/methods.go#L340) | [:x:](sdl/sdl_functions_js.go#L2600) |
 | [SDL_BindAudioStream](https://wiki.libsdl.org/SDL3/SDL_BindAudioStream) | [:heavy_check_mark:](sdl/methods.go#L350) | [:x:](sdl/sdl_functions_js.go#L2620) |
 | [SDL_UnbindAudioStreams](https://wiki.libsdl.org/SDL3/SDL_UnbindAudioStreams) | [:heavy_check_mark:](sdl/functions.go#L842) | [:x:](sdl/sdl_functions_js.go#L2638) |
-| [SDL_UnbindAudioStream](https://wiki.libsdl.org/SDL3/SDL_UnbindAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3669) | [:x:](sdl/sdl_functions_js.go#L2654) |
-| [SDL_GetAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3675) | [:x:](sdl/sdl_functions_js.go#L2668) |
+| [SDL_UnbindAudioStream](https://wiki.libsdl.org/SDL3/SDL_UnbindAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3683) | [:x:](sdl/sdl_functions_js.go#L2654) |
+| [SDL_GetAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3689) | [:x:](sdl/sdl_functions_js.go#L2668) |
 | [SDL_CreateAudioStream](https://wiki.libsdl.org/SDL3/SDL_CreateAudioStream) | [:heavy_check_mark:](sdl/functions.go#L848) | [:x:](sdl/sdl_functions_js.go#L2684) |
-| [SDL_GetAudioStreamProperties](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamProperties) | [:heavy_check_mark:](sdl/methods.go#L3681) | [:x:](sdl/sdl_functions_js.go#L2708) |
-| [SDL_GetAudioStreamFormat](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFormat) | [:heavy_check_mark:](sdl/methods.go#L3692) | [:x:](sdl/sdl_functions_js.go#L2724) |
-| [SDL_SetAudioStreamFormat](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFormat) | [:heavy_check_mark:](sdl/methods.go#L3702) | [:x:](sdl/sdl_functions_js.go#L2750) |
-| [SDL_GetAudioStreamFrequencyRatio](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFrequencyRatio) | [:heavy_check_mark:](sdl/methods.go#L3712) | [:x:](sdl/sdl_functions_js.go#L2776) |
-| [SDL_SetAudioStreamFrequencyRatio](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFrequencyRatio) | [:heavy_check_mark:](sdl/methods.go#L3723) | [:x:](sdl/sdl_functions_js.go#L2792) |
-| [SDL_GetAudioStreamGain](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamGain) | [:heavy_check_mark:](sdl/methods.go#L3733) | [:x:](sdl/sdl_functions_js.go#L2810) |
-| [SDL_SetAudioStreamGain](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGain) | [:heavy_check_mark:](sdl/methods.go#L3744) | [:x:](sdl/sdl_functions_js.go#L2826) |
-| [SDL_GetAudioStreamInputChannelMap](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamInputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3754) | [:x:](sdl/sdl_functions_js.go#L2844) |
-| [SDL_GetAudioStreamOutputChannelMap](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamOutputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3768) | [:x:](sdl/sdl_functions_js.go#L2865) |
-| [SDL_SetAudioStreamInputChannelMap](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamInputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3782) | [:x:](sdl/sdl_functions_js.go#L2886) |
-| [SDL_SetAudioStreamOutputChannelMap](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamOutputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3792) | [:x:](sdl/sdl_functions_js.go#L2909) |
-| [SDL_PutAudioStreamData](https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamData) | [:heavy_check_mark:](sdl/methods.go#L3802) | [:x:](sdl/sdl_functions_js.go#L2932) |
+| [SDL_GetAudioStreamProperties](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamProperties) | [:heavy_check_mark:](sdl/methods.go#L3695) | [:x:](sdl/sdl_functions_js.go#L2708) |
+| [SDL_GetAudioStreamFormat](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFormat) | [:heavy_check_mark:](sdl/methods.go#L3706) | [:x:](sdl/sdl_functions_js.go#L2724) |
+| [SDL_SetAudioStreamFormat](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFormat) | [:heavy_check_mark:](sdl/methods.go#L3716) | [:x:](sdl/sdl_functions_js.go#L2750) |
+| [SDL_GetAudioStreamFrequencyRatio](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamFrequencyRatio) | [:heavy_check_mark:](sdl/methods.go#L3726) | [:x:](sdl/sdl_functions_js.go#L2776) |
+| [SDL_SetAudioStreamFrequencyRatio](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamFrequencyRatio) | [:heavy_check_mark:](sdl/methods.go#L3737) | [:x:](sdl/sdl_functions_js.go#L2792) |
+| [SDL_GetAudioStreamGain](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamGain) | [:heavy_check_mark:](sdl/methods.go#L3747) | [:x:](sdl/sdl_functions_js.go#L2810) |
+| [SDL_SetAudioStreamGain](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGain) | [:heavy_check_mark:](sdl/methods.go#L3758) | [:x:](sdl/sdl_functions_js.go#L2826) |
+| [SDL_GetAudioStreamInputChannelMap](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamInputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3768) | [:x:](sdl/sdl_functions_js.go#L2844) |
+| [SDL_GetAudioStreamOutputChannelMap](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamOutputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3782) | [:x:](sdl/sdl_functions_js.go#L2865) |
+| [SDL_SetAudioStreamInputChannelMap](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamInputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3796) | [:x:](sdl/sdl_functions_js.go#L2886) |
+| [SDL_SetAudioStreamOutputChannelMap](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamOutputChannelMap) | [:heavy_check_mark:](sdl/methods.go#L3806) | [:x:](sdl/sdl_functions_js.go#L2909) |
+| [SDL_PutAudioStreamData](https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamData) | [:heavy_check_mark:](sdl/methods.go#L3816) | [:x:](sdl/sdl_functions_js.go#L2932) |
 | [SDL_PutAudioStreamDataNoCopy](https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamDataNoCopy) | [:question:]() | [:question:]() |
 | [SDL_PutAudioStreamPlanarData](https://wiki.libsdl.org/SDL3/SDL_PutAudioStreamPlanarData) | [:question:]() | [:question:]() |
-| [SDL_GetAudioStreamData](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamData) | [:heavy_check_mark:](sdl/methods.go#L3812) | [:x:](sdl/sdl_functions_js.go#L2952) |
-| [SDL_GetAudioStreamAvailable](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamAvailable) | [:heavy_check_mark:](sdl/methods.go#L3823) | [:x:](sdl/sdl_functions_js.go#L2972) |
-| [SDL_GetAudioStreamQueued](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamQueued) | [:heavy_check_mark:](sdl/methods.go#L3834) | [:x:](sdl/sdl_functions_js.go#L2988) |
-| [SDL_FlushAudioStream](https://wiki.libsdl.org/SDL3/SDL_FlushAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3845) | [:x:](sdl/sdl_functions_js.go#L3004) |
-| [SDL_ClearAudioStream](https://wiki.libsdl.org/SDL3/SDL_ClearAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3855) | [:x:](sdl/sdl_functions_js.go#L3020) |
-| [SDL_PauseAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_PauseAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3865) | [:x:](sdl/sdl_functions_js.go#L3036) |
-| [SDL_ResumeAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_ResumeAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3875) | [:x:](sdl/sdl_functions_js.go#L3052) |
-| [SDL_AudioStreamDevicePaused](https://wiki.libsdl.org/SDL3/SDL_AudioStreamDevicePaused) | [:heavy_check_mark:](sdl/methods.go#L3885) | [:x:](sdl/sdl_functions_js.go#L3068) |
-| [SDL_LockAudioStream](https://wiki.libsdl.org/SDL3/SDL_LockAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3891) | [:x:](sdl/sdl_functions_js.go#L3084) |
-| [SDL_UnlockAudioStream](https://wiki.libsdl.org/SDL3/SDL_UnlockAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3901) | [:x:](sdl/sdl_functions_js.go#L3100) |
-| [SDL_SetAudioStreamGetCallback](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGetCallback) | [:heavy_check_mark:](sdl/methods.go#L3911) | [:x:](sdl/sdl_functions_js.go#L3116) |
-| [SDL_SetAudioStreamPutCallback](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamPutCallback) | [:heavy_check_mark:](sdl/methods.go#L3917) | [:x:](sdl/sdl_functions_js.go#L3136) |
-| [SDL_DestroyAudioStream](https://wiki.libsdl.org/SDL3/SDL_DestroyAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3923) | [:x:](sdl/sdl_functions_js.go#L3156) |
+| [SDL_GetAudioStreamData](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamData) | [:heavy_check_mark:](sdl/methods.go#L3826) | [:x:](sdl/sdl_functions_js.go#L2952) |
+| [SDL_GetAudioStreamAvailable](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamAvailable) | [:heavy_check_mark:](sdl/methods.go#L3837) | [:x:](sdl/sdl_functions_js.go#L2972) |
+| [SDL_GetAudioStreamQueued](https://wiki.libsdl.org/SDL3/SDL_GetAudioStreamQueued) | [:heavy_check_mark:](sdl/methods.go#L3848) | [:x:](sdl/sdl_functions_js.go#L2988) |
+| [SDL_FlushAudioStream](https://wiki.libsdl.org/SDL3/SDL_FlushAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3859) | [:x:](sdl/sdl_functions_js.go#L3004) |
+| [SDL_ClearAudioStream](https://wiki.libsdl.org/SDL3/SDL_ClearAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3869) | [:x:](sdl/sdl_functions_js.go#L3020) |
+| [SDL_PauseAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_PauseAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3879) | [:x:](sdl/sdl_functions_js.go#L3036) |
+| [SDL_ResumeAudioStreamDevice](https://wiki.libsdl.org/SDL3/SDL_ResumeAudioStreamDevice) | [:heavy_check_mark:](sdl/methods.go#L3889) | [:x:](sdl/sdl_functions_js.go#L3052) |
+| [SDL_AudioStreamDevicePaused](https://wiki.libsdl.org/SDL3/SDL_AudioStreamDevicePaused) | [:heavy_check_mark:](sdl/methods.go#L3899) | [:x:](sdl/sdl_functions_js.go#L3068) |
+| [SDL_LockAudioStream](https://wiki.libsdl.org/SDL3/SDL_LockAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3905) | [:x:](sdl/sdl_functions_js.go#L3084) |
+| [SDL_UnlockAudioStream](https://wiki.libsdl.org/SDL3/SDL_UnlockAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3915) | [:x:](sdl/sdl_functions_js.go#L3100) |
+| [SDL_SetAudioStreamGetCallback](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamGetCallback) | [:heavy_check_mark:](sdl/methods.go#L3925) | [:x:](sdl/sdl_functions_js.go#L3116) |
+| [SDL_SetAudioStreamPutCallback](https://wiki.libsdl.org/SDL3/SDL_SetAudioStreamPutCallback) | [:heavy_check_mark:](sdl/methods.go#L3931) | [:x:](sdl/sdl_functions_js.go#L3136) |
+| [SDL_DestroyAudioStream](https://wiki.libsdl.org/SDL3/SDL_DestroyAudioStream) | [:heavy_check_mark:](sdl/methods.go#L3937) | [:x:](sdl/sdl_functions_js.go#L3156) |
 | [SDL_OpenAudioDeviceStream](https://wiki.libsdl.org/SDL3/SDL_OpenAudioDeviceStream) | [:heavy_check_mark:](sdl/methods.go#L360) | [:x:](sdl/sdl_functions_js.go#L3170) |
-| [SDL_SetAudioIterationCallbacks](https://wiki.libsdl.org/SDL3/SDL_SetAudioIterationCallbacks) | [:question:]() | [:question:]() |
 | [SDL_SetAudioPostmixCallback](https://wiki.libsdl.org/SDL3/SDL_SetAudioPostmixCallback) | [:heavy_check_mark:](sdl/methods.go#L366) | [:x:](sdl/sdl_functions_js.go#L3194) |
 | [SDL_LoadWAV_IO](https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO) | [:heavy_check_mark:](sdl/functions.go#L859) | [:x:](sdl/sdl_functions_js.go#L3211) |
 | [SDL_LoadWAV](https://wiki.libsdl.org/SDL3/SDL_LoadWAV) | [:heavy_check_mark:](sdl/functions.go#L873) | [:x:](sdl/sdl_functions_js.go#L3244) |
 | [SDL_MixAudio](https://wiki.libsdl.org/SDL3/SDL_MixAudio) | [:heavy_check_mark:](sdl/functions.go#L887) | [:x:](sdl/sdl_functions_js.go#L3272) |
 | [SDL_ConvertAudioSamples](https://wiki.libsdl.org/SDL3/SDL_ConvertAudioSamples) | [:heavy_check_mark:](sdl/functions.go#L898) | [:x:](sdl/sdl_functions_js.go#L3299) |
-| [SDL_GetAudioFormatName](https://wiki.libsdl.org/SDL3/SDL_GetAudioFormatName) | [:heavy_check_mark:](sdl/methods.go#L1201) | [:x:](sdl/sdl_functions_js.go#L3337) |
-| [SDL_GetSilenceValueForFormat](https://wiki.libsdl.org/SDL3/SDL_GetSilenceValueForFormat) | [:heavy_check_mark:](sdl/methods.go#L1207) | [:x:](sdl/sdl_functions_js.go#L3350) |
+| [SDL_GetAudioFormatName](https://wiki.libsdl.org/SDL3/SDL_GetAudioFormatName) | [:heavy_check_mark:](sdl/methods.go#L1214) | [:x:](sdl/sdl_functions_js.go#L3337) |
+| [SDL_GetSilenceValueForFormat](https://wiki.libsdl.org/SDL3/SDL_GetSilenceValueForFormat) | [:heavy_check_mark:](sdl/methods.go#L1220) | [:x:](sdl/sdl_functions_js.go#L3350) |
 </details>
-<details>
-<summary><h3>Time</h3></summary>
+<details open>
+<summary><h3>Timer</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_GetDateTimeLocalePreferences](https://wiki.libsdl.org/SDL3/SDL_GetDateTimeLocalePreferences) | [:x:](sdl/methods.go#L3423) | [:x:](sdl/sdl_functions_js.go#L16962) |
+| [SDL_GetDateTimeLocalePreferences](https://wiki.libsdl.org/SDL3/SDL_GetDateTimeLocalePreferences) | [:x:](sdl/methods.go#L3437) | [:x:](sdl/sdl_functions_js.go#L16962) |
 | [SDL_GetCurrentTime](https://wiki.libsdl.org/SDL3/SDL_GetCurrentTime) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L16983) |
-| [SDL_TimeToDateTime](https://wiki.libsdl.org/SDL3/SDL_TimeToDateTime) | [:x:](sdl/methods.go#L5617) | [:x:](sdl/sdl_functions_js.go#L16999) |
-| [SDL_DateTimeToTime](https://wiki.libsdl.org/SDL3/SDL_DateTimeToTime) | [:heavy_check_mark:](sdl/methods.go#L5864) | [:x:](sdl/sdl_functions_js.go#L17019) |
-| [SDL_TimeToWindows](https://wiki.libsdl.org/SDL3/SDL_TimeToWindows) | [:x:](sdl/methods.go#L5624) | [:x:](sdl/sdl_functions_js.go#L17040) |
+| [SDL_TimeToDateTime](https://wiki.libsdl.org/SDL3/SDL_TimeToDateTime) | [:x:](sdl/methods.go#L5631) | [:x:](sdl/sdl_functions_js.go#L16999) |
+| [SDL_DateTimeToTime](https://wiki.libsdl.org/SDL3/SDL_DateTimeToTime) | [:heavy_check_mark:](sdl/methods.go#L5878) | [:x:](sdl/sdl_functions_js.go#L17019) |
+| [SDL_TimeToWindows](https://wiki.libsdl.org/SDL3/SDL_TimeToWindows) | [:x:](sdl/methods.go#L5638) | [:x:](sdl/sdl_functions_js.go#L17040) |
 | [SDL_TimeFromWindows](https://wiki.libsdl.org/SDL3/SDL_TimeFromWindows) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17061) |
 | [SDL_GetDaysInMonth](https://wiki.libsdl.org/SDL3/SDL_GetDaysInMonth) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17076) |
 | [SDL_GetDayOfYear](https://wiki.libsdl.org/SDL3/SDL_GetDayOfYear) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17091) |
 | [SDL_GetDayOfWeek](https://wiki.libsdl.org/SDL3/SDL_GetDayOfWeek) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17108) |
 </details>
 <details open>
-<summary><h3>Timer</h3></summary>
+<summary><h3>Render</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -588,29 +595,29 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_DelayPrecise](https://wiki.libsdl.org/SDL3/SDL_DelayPrecise) | [:heavy_check_mark:](sdl/functions.go#L955) | [:x:](sdl/sdl_functions_js.go#L17188) |
 | [SDL_AddTimer](https://wiki.libsdl.org/SDL3/SDL_AddTimer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17199) |
 | [SDL_AddTimerNS](https://wiki.libsdl.org/SDL3/SDL_AddTimerNS) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17216) |
-| [SDL_RemoveTimer](https://wiki.libsdl.org/SDL3/SDL_RemoveTimer) | [:x:](sdl/methods.go#L4767) | [:x:](sdl/sdl_functions_js.go#L17233) |
+| [SDL_RemoveTimer](https://wiki.libsdl.org/SDL3/SDL_RemoveTimer) | [:x:](sdl/methods.go#L4781) | [:x:](sdl/sdl_functions_js.go#L17233) |
 </details>
-<details open>
-<summary><h3>Render</h3></summary>
+<details>
+<summary><h3>SharedObject</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GetNumRenderDrivers](https://wiki.libsdl.org/SDL3/SDL_GetNumRenderDrivers) | [:heavy_check_mark:](sdl/functions.go#L324) | [:x:](sdl/sdl_functions_js.go#L14586) |
 | [SDL_GetRenderDriver](https://wiki.libsdl.org/SDL3/SDL_GetRenderDriver) | [:heavy_check_mark:](sdl/functions.go#L330) | [:x:](sdl/sdl_functions_js.go#L14597) |
 | [SDL_CreateWindowAndRenderer](https://wiki.libsdl.org/SDL3/SDL_CreateWindowAndRenderer) | [:heavy_check_mark:](sdl/functions.go#L336) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L14610) |
-| [SDL_CreateRenderer](https://wiki.libsdl.org/SDL3/SDL_CreateRenderer) | [:heavy_check_mark:](sdl/methods.go#L4704) | [:x:](sdl/sdl_functions_js.go#L14638) |
+| [SDL_CreateRenderer](https://wiki.libsdl.org/SDL3/SDL_CreateRenderer) | [:heavy_check_mark:](sdl/methods.go#L4718) | [:x:](sdl/sdl_functions_js.go#L14638) |
 | [SDL_CreateRendererWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateRendererWithProperties) | [:heavy_check_mark:](sdl/functions.go#L349) | [:x:](sdl/sdl_functions_js.go#L14659) |
 | [SDL_CreateGPURenderer](https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderer) | [:question:]() | [:question:]() |
-| [SDL_CreateSoftwareRenderer](https://wiki.libsdl.org/SDL3/SDL_CreateSoftwareRenderer) | [:heavy_check_mark:](sdl/methods.go#L1860) | [:x:](sdl/sdl_functions_js.go#L14675) |
-| [SDL_GetRenderer](https://wiki.libsdl.org/SDL3/SDL_GetRenderer) | [:heavy_check_mark:](sdl/methods.go#L4715) | [:x:](sdl/sdl_functions_js.go#L14694) |
-| [SDL_GetRenderWindow](https://wiki.libsdl.org/SDL3/SDL_GetRenderWindow) | [:heavy_check_mark:](sdl/methods.go#L2819) | [:x:](sdl/sdl_functions_js.go#L14713) |
-| [SDL_GetRendererName](https://wiki.libsdl.org/SDL3/SDL_GetRendererName) | [:heavy_check_mark:](sdl/methods.go#L2830) | [:x:](sdl/sdl_functions_js.go#L14732) |
-| [SDL_GetRendererProperties](https://wiki.libsdl.org/SDL3/SDL_GetRendererProperties) | [:heavy_check_mark:](sdl/methods.go#L2841) | [:x:](sdl/sdl_functions_js.go#L14748) |
-| [SDL_GetRenderOutputSize](https://wiki.libsdl.org/SDL3/SDL_GetRenderOutputSize) | [:heavy_check_mark:](sdl/methods.go#L2847) | [:x:](sdl/sdl_functions_js.go#L14764) |
-| [SDL_GetCurrentRenderOutputSize](https://wiki.libsdl.org/SDL3/SDL_GetCurrentRenderOutputSize) | [:heavy_check_mark:](sdl/methods.go#L2858) | [:x:](sdl/sdl_functions_js.go#L14790) |
-| [SDL_CreateTexture](https://wiki.libsdl.org/SDL3/SDL_CreateTexture) | [:heavy_check_mark:](sdl/methods.go#L2869) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L14816) |
-| [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL3/SDL_CreateTextureFromSurface) | [:heavy_check_mark:](sdl/methods.go#L2880) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L14839) |
-| [SDL_CreateTextureWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateTextureWithProperties) | [:heavy_check_mark:](sdl/methods.go#L2891) | [:x:](sdl/sdl_functions_js.go#L14859) |
+| [SDL_CreateSoftwareRenderer](https://wiki.libsdl.org/SDL3/SDL_CreateSoftwareRenderer) | [:heavy_check_mark:](sdl/methods.go#L1873) | [:x:](sdl/sdl_functions_js.go#L14675) |
+| [SDL_GetRenderer](https://wiki.libsdl.org/SDL3/SDL_GetRenderer) | [:heavy_check_mark:](sdl/methods.go#L4729) | [:x:](sdl/sdl_functions_js.go#L14694) |
+| [SDL_GetRenderWindow](https://wiki.libsdl.org/SDL3/SDL_GetRenderWindow) | [:heavy_check_mark:](sdl/methods.go#L2833) | [:x:](sdl/sdl_functions_js.go#L14713) |
+| [SDL_GetRendererName](https://wiki.libsdl.org/SDL3/SDL_GetRendererName) | [:heavy_check_mark:](sdl/methods.go#L2844) | [:x:](sdl/sdl_functions_js.go#L14732) |
+| [SDL_GetRendererProperties](https://wiki.libsdl.org/SDL3/SDL_GetRendererProperties) | [:heavy_check_mark:](sdl/methods.go#L2855) | [:x:](sdl/sdl_functions_js.go#L14748) |
+| [SDL_GetRenderOutputSize](https://wiki.libsdl.org/SDL3/SDL_GetRenderOutputSize) | [:heavy_check_mark:](sdl/methods.go#L2861) | [:x:](sdl/sdl_functions_js.go#L14764) |
+| [SDL_GetCurrentRenderOutputSize](https://wiki.libsdl.org/SDL3/SDL_GetCurrentRenderOutputSize) | [:heavy_check_mark:](sdl/methods.go#L2872) | [:x:](sdl/sdl_functions_js.go#L14790) |
+| [SDL_CreateTexture](https://wiki.libsdl.org/SDL3/SDL_CreateTexture) | [:heavy_check_mark:](sdl/methods.go#L2883) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L14816) |
+| [SDL_CreateTextureFromSurface](https://wiki.libsdl.org/SDL3/SDL_CreateTextureFromSurface) | [:heavy_check_mark:](sdl/methods.go#L2894) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L14839) |
+| [SDL_CreateTextureWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateTextureWithProperties) | [:heavy_check_mark:](sdl/methods.go#L2905) | [:x:](sdl/sdl_functions_js.go#L14859) |
 | [SDL_GetTextureProperties](https://wiki.libsdl.org/SDL3/SDL_GetTextureProperties) | [:heavy_check_mark:](sdl/methods.go#L937) | [:x:](sdl/sdl_functions_js.go#L14880) |
 | [SDL_GetRendererFromTexture](https://wiki.libsdl.org/SDL3/SDL_GetRendererFromTexture) | [:heavy_check_mark:](sdl/methods.go#L948) | [:x:](sdl/sdl_functions_js.go#L14896) |
 | [SDL_GetTextureSize](https://wiki.libsdl.org/SDL3/SDL_GetTextureSize) | [:heavy_check_mark:](sdl/methods.go#L959) | [:x:](sdl/sdl_functions_js.go#L14915) |
@@ -627,66 +634,66 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_SetTextureScaleMode](https://wiki.libsdl.org/SDL3/SDL_SetTextureScaleMode) | [:heavy_check_mark:](sdl/methods.go#L1075) | [:x:](sdl/sdl_functions_js.go#L15158) |
 | [SDL_GetTextureScaleMode](https://wiki.libsdl.org/SDL3/SDL_GetTextureScaleMode) | [:heavy_check_mark:](sdl/methods.go#L1085) | [:x:](sdl/sdl_functions_js.go#L15176) |
 | [SDL_UpdateTexture](https://wiki.libsdl.org/SDL3/SDL_UpdateTexture) | [:heavy_check_mark:](sdl/methods.go#L1096) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15197) |
-| [SDL_UpdateYUVTexture](https://wiki.libsdl.org/SDL3/SDL_UpdateYUVTexture) | [:x:](sdl/methods.go#L1108) | [:x:](sdl/sdl_functions_js.go#L15221) |
-| [SDL_UpdateNVTexture](https://wiki.libsdl.org/SDL3/SDL_UpdateNVTexture) | [:x:](sdl/methods.go#L1115) | [:x:](sdl/sdl_functions_js.go#L15263) |
-| [SDL_LockTexture](https://wiki.libsdl.org/SDL3/SDL_LockTexture) | [:heavy_check_mark:](sdl/methods.go#L1123) | [:x:](sdl/sdl_functions_js.go#L15298) |
-| [SDL_LockTextureToSurface](https://wiki.libsdl.org/SDL3/SDL_LockTextureToSurface) | [:heavy_check_mark:](sdl/methods.go#L1136) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15329) |
-| [SDL_UnlockTexture](https://wiki.libsdl.org/SDL3/SDL_UnlockTexture) | [:heavy_check_mark:](sdl/methods.go#L1146) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15351) |
-| [SDL_SetRenderTarget](https://wiki.libsdl.org/SDL3/SDL_SetRenderTarget) | [:heavy_check_mark:](sdl/methods.go#L2902) | [:x:](sdl/sdl_functions_js.go#L15362) |
-| [SDL_GetRenderTarget](https://wiki.libsdl.org/SDL3/SDL_GetRenderTarget) | [:heavy_check_mark:](sdl/methods.go#L2912) | [:x:](sdl/sdl_functions_js.go#L15383) |
-| [SDL_SetRenderLogicalPresentation](https://wiki.libsdl.org/SDL3/SDL_SetRenderLogicalPresentation) | [:heavy_check_mark:](sdl/methods.go#L2918) | [:x:](sdl/sdl_functions_js.go#L15402) |
-| [SDL_GetRenderLogicalPresentation](https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentation) | [:heavy_check_mark:](sdl/methods.go#L2928) | [:x:](sdl/sdl_functions_js.go#L15424) |
-| [SDL_GetRenderLogicalPresentationRect](https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentationRect) | [:heavy_check_mark:](sdl/methods.go#L2940) | [:x:](sdl/sdl_functions_js.go#L15455) |
-| [SDL_RenderCoordinatesFromWindow](https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesFromWindow) | [:x:](sdl/methods.go#L2952) | [:x:](sdl/sdl_functions_js.go#L15476) |
-| [SDL_RenderCoordinatesToWindow](https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesToWindow) | [:x:](sdl/methods.go#L2959) | [:x:](sdl/sdl_functions_js.go#L15506) |
-| [SDL_ConvertEventToRenderCoordinates](https://wiki.libsdl.org/SDL3/SDL_ConvertEventToRenderCoordinates) | [:x:](sdl/methods.go#L2966) | [:x:](sdl/sdl_functions_js.go#L15536) |
-| [SDL_SetRenderViewport](https://wiki.libsdl.org/SDL3/SDL_SetRenderViewport) | [:heavy_check_mark:](sdl/methods.go#L2973) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15557) |
-| [SDL_GetRenderViewport](https://wiki.libsdl.org/SDL3/SDL_GetRenderViewport) | [:heavy_check_mark:](sdl/methods.go#L2983) | [:x:](sdl/sdl_functions_js.go#L15574) |
-| [SDL_RenderViewportSet](https://wiki.libsdl.org/SDL3/SDL_RenderViewportSet) | [:heavy_check_mark:](sdl/methods.go#L2995) | [:x:](sdl/sdl_functions_js.go#L15595) |
-| [SDL_GetRenderSafeArea](https://wiki.libsdl.org/SDL3/SDL_GetRenderSafeArea) | [:heavy_check_mark:](sdl/methods.go#L3001) | [:x:](sdl/sdl_functions_js.go#L15611) |
-| [SDL_SetRenderClipRect](https://wiki.libsdl.org/SDL3/SDL_SetRenderClipRect) | [:heavy_check_mark:](sdl/methods.go#L3013) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15632) |
-| [SDL_GetRenderClipRect](https://wiki.libsdl.org/SDL3/SDL_GetRenderClipRect) | [:heavy_check_mark:](sdl/methods.go#L3023) | [:x:](sdl/sdl_functions_js.go#L15649) |
-| [SDL_RenderClipEnabled](https://wiki.libsdl.org/SDL3/SDL_RenderClipEnabled) | [:heavy_check_mark:](sdl/methods.go#L3035) | [:x:](sdl/sdl_functions_js.go#L15670) |
-| [SDL_SetRenderScale](https://wiki.libsdl.org/SDL3/SDL_SetRenderScale) | [:heavy_check_mark:](sdl/methods.go#L3045) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15686) |
-| [SDL_GetRenderScale](https://wiki.libsdl.org/SDL3/SDL_GetRenderScale) | [:heavy_check_mark:](sdl/methods.go#L3055) | [:x:](sdl/sdl_functions_js.go#L15703) |
-| [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColor) | [:heavy_check_mark:](sdl/methods.go#L3067) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15729) |
-| [SDL_SetRenderDrawColorFloat](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColorFloat) | [:heavy_check_mark:](sdl/methods.go#L3077) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15751) |
-| [SDL_GetRenderDrawColor](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawColor) | [:heavy_check_mark:](sdl/methods.go#L3087) | [:x:](sdl/sdl_functions_js.go#L15768) |
-| [SDL_GetRenderDrawColorFloat](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawColorFloat) | [:heavy_check_mark:](sdl/methods.go#L3099) | [:x:](sdl/sdl_functions_js.go#L15804) |
-| [SDL_SetRenderColorScale](https://wiki.libsdl.org/SDL3/SDL_SetRenderColorScale) | [:heavy_check_mark:](sdl/methods.go#L3111) | [:x:](sdl/sdl_functions_js.go#L15840) |
-| [SDL_GetRenderColorScale](https://wiki.libsdl.org/SDL3/SDL_GetRenderColorScale) | [:heavy_check_mark:](sdl/methods.go#L3121) | [:x:](sdl/sdl_functions_js.go#L15858) |
-| [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawBlendMode) | [:heavy_check_mark:](sdl/methods.go#L3133) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15879) |
-| [SDL_GetRenderDrawBlendMode](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawBlendMode) | [:heavy_check_mark:](sdl/methods.go#L3143) | [:x:](sdl/sdl_functions_js.go#L15894) |
-| [SDL_RenderClear](https://wiki.libsdl.org/SDL3/SDL_RenderClear) | [:heavy_check_mark:](sdl/methods.go#L3155) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15915) |
-| [SDL_RenderPoint](https://wiki.libsdl.org/SDL3/SDL_RenderPoint) | [:heavy_check_mark:](sdl/methods.go#L3164) | [:x:](sdl/sdl_functions_js.go#L15928) |
-| [SDL_RenderPoints](https://wiki.libsdl.org/SDL3/SDL_RenderPoints) | [:heavy_check_mark:](sdl/methods.go#L3174) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15948) |
-| [SDL_RenderLine](https://wiki.libsdl.org/SDL3/SDL_RenderLine) | [:heavy_check_mark:](sdl/methods.go#L3184) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15966) |
-| [SDL_RenderLines](https://wiki.libsdl.org/SDL3/SDL_RenderLines) | [:heavy_check_mark:](sdl/methods.go#L3194) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15983) |
-| [SDL_RenderRect](https://wiki.libsdl.org/SDL3/SDL_RenderRect) | [:heavy_check_mark:](sdl/methods.go#L3204) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16001) |
-| [SDL_RenderRects](https://wiki.libsdl.org/SDL3/SDL_RenderRects) | [:heavy_check_mark:](sdl/methods.go#L3214) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16018) |
-| [SDL_RenderFillRect](https://wiki.libsdl.org/SDL3/SDL_RenderFillRect) | [:heavy_check_mark:](sdl/methods.go#L3224) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16036) |
-| [SDL_RenderFillRects](https://wiki.libsdl.org/SDL3/SDL_RenderFillRects) | [:heavy_check_mark:](sdl/methods.go#L3234) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16053) |
-| [SDL_RenderTexture](https://wiki.libsdl.org/SDL3/SDL_RenderTexture) | [:heavy_check_mark:](sdl/methods.go#L3244) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16071) |
-| [SDL_RenderTextureRotated](https://wiki.libsdl.org/SDL3/SDL_RenderTextureRotated) | [:heavy_check_mark:](sdl/methods.go#L3254) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16095) |
-| [SDL_RenderTextureAffine](https://wiki.libsdl.org/SDL3/SDL_RenderTextureAffine) | [:heavy_check_mark:](sdl/methods.go#L3264) | [:x:](sdl/sdl_functions_js.go#L16125) |
-| [SDL_RenderTextureTiled](https://wiki.libsdl.org/SDL3/SDL_RenderTextureTiled) | [:heavy_check_mark:](sdl/methods.go#L3274) | [:x:](sdl/sdl_functions_js.go#L16166) |
-| [SDL_RenderTexture9Grid](https://wiki.libsdl.org/SDL3/SDL_RenderTexture9Grid) | [:heavy_check_mark:](sdl/methods.go#L3284) | [:x:](sdl/sdl_functions_js.go#L16199) |
+| [SDL_UpdateYUVTexture](https://wiki.libsdl.org/SDL3/SDL_UpdateYUVTexture) | [:heavy_check_mark:](sdl/methods.go#L1108) | [:x:](sdl/sdl_functions_js.go#L15221) |
+| [SDL_UpdateNVTexture](https://wiki.libsdl.org/SDL3/SDL_UpdateNVTexture) | [:heavy_check_mark:](sdl/methods.go#L1122) | [:x:](sdl/sdl_functions_js.go#L15263) |
+| [SDL_LockTexture](https://wiki.libsdl.org/SDL3/SDL_LockTexture) | [:heavy_check_mark:](sdl/methods.go#L1136) | [:x:](sdl/sdl_functions_js.go#L15298) |
+| [SDL_LockTextureToSurface](https://wiki.libsdl.org/SDL3/SDL_LockTextureToSurface) | [:heavy_check_mark:](sdl/methods.go#L1149) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15329) |
+| [SDL_UnlockTexture](https://wiki.libsdl.org/SDL3/SDL_UnlockTexture) | [:heavy_check_mark:](sdl/methods.go#L1159) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15351) |
+| [SDL_SetRenderTarget](https://wiki.libsdl.org/SDL3/SDL_SetRenderTarget) | [:heavy_check_mark:](sdl/methods.go#L2916) | [:x:](sdl/sdl_functions_js.go#L15362) |
+| [SDL_GetRenderTarget](https://wiki.libsdl.org/SDL3/SDL_GetRenderTarget) | [:heavy_check_mark:](sdl/methods.go#L2926) | [:x:](sdl/sdl_functions_js.go#L15383) |
+| [SDL_SetRenderLogicalPresentation](https://wiki.libsdl.org/SDL3/SDL_SetRenderLogicalPresentation) | [:heavy_check_mark:](sdl/methods.go#L2932) | [:x:](sdl/sdl_functions_js.go#L15402) |
+| [SDL_GetRenderLogicalPresentation](https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentation) | [:heavy_check_mark:](sdl/methods.go#L2942) | [:x:](sdl/sdl_functions_js.go#L15424) |
+| [SDL_GetRenderLogicalPresentationRect](https://wiki.libsdl.org/SDL3/SDL_GetRenderLogicalPresentationRect) | [:heavy_check_mark:](sdl/methods.go#L2954) | [:x:](sdl/sdl_functions_js.go#L15455) |
+| [SDL_RenderCoordinatesFromWindow](https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesFromWindow) | [:x:](sdl/methods.go#L2966) | [:x:](sdl/sdl_functions_js.go#L15476) |
+| [SDL_RenderCoordinatesToWindow](https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesToWindow) | [:x:](sdl/methods.go#L2973) | [:x:](sdl/sdl_functions_js.go#L15506) |
+| [SDL_ConvertEventToRenderCoordinates](https://wiki.libsdl.org/SDL3/SDL_ConvertEventToRenderCoordinates) | [:x:](sdl/methods.go#L2980) | [:x:](sdl/sdl_functions_js.go#L15536) |
+| [SDL_SetRenderViewport](https://wiki.libsdl.org/SDL3/SDL_SetRenderViewport) | [:heavy_check_mark:](sdl/methods.go#L2987) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15557) |
+| [SDL_GetRenderViewport](https://wiki.libsdl.org/SDL3/SDL_GetRenderViewport) | [:heavy_check_mark:](sdl/methods.go#L2997) | [:x:](sdl/sdl_functions_js.go#L15574) |
+| [SDL_RenderViewportSet](https://wiki.libsdl.org/SDL3/SDL_RenderViewportSet) | [:heavy_check_mark:](sdl/methods.go#L3009) | [:x:](sdl/sdl_functions_js.go#L15595) |
+| [SDL_GetRenderSafeArea](https://wiki.libsdl.org/SDL3/SDL_GetRenderSafeArea) | [:heavy_check_mark:](sdl/methods.go#L3015) | [:x:](sdl/sdl_functions_js.go#L15611) |
+| [SDL_SetRenderClipRect](https://wiki.libsdl.org/SDL3/SDL_SetRenderClipRect) | [:heavy_check_mark:](sdl/methods.go#L3027) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15632) |
+| [SDL_GetRenderClipRect](https://wiki.libsdl.org/SDL3/SDL_GetRenderClipRect) | [:heavy_check_mark:](sdl/methods.go#L3037) | [:x:](sdl/sdl_functions_js.go#L15649) |
+| [SDL_RenderClipEnabled](https://wiki.libsdl.org/SDL3/SDL_RenderClipEnabled) | [:heavy_check_mark:](sdl/methods.go#L3049) | [:x:](sdl/sdl_functions_js.go#L15670) |
+| [SDL_SetRenderScale](https://wiki.libsdl.org/SDL3/SDL_SetRenderScale) | [:heavy_check_mark:](sdl/methods.go#L3059) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15686) |
+| [SDL_GetRenderScale](https://wiki.libsdl.org/SDL3/SDL_GetRenderScale) | [:heavy_check_mark:](sdl/methods.go#L3069) | [:x:](sdl/sdl_functions_js.go#L15703) |
+| [SDL_SetRenderDrawColor](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColor) | [:heavy_check_mark:](sdl/methods.go#L3081) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15729) |
+| [SDL_SetRenderDrawColorFloat](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColorFloat) | [:heavy_check_mark:](sdl/methods.go#L3091) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15751) |
+| [SDL_GetRenderDrawColor](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawColor) | [:heavy_check_mark:](sdl/methods.go#L3101) | [:x:](sdl/sdl_functions_js.go#L15768) |
+| [SDL_GetRenderDrawColorFloat](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawColorFloat) | [:heavy_check_mark:](sdl/methods.go#L3113) | [:x:](sdl/sdl_functions_js.go#L15804) |
+| [SDL_SetRenderColorScale](https://wiki.libsdl.org/SDL3/SDL_SetRenderColorScale) | [:heavy_check_mark:](sdl/methods.go#L3125) | [:x:](sdl/sdl_functions_js.go#L15840) |
+| [SDL_GetRenderColorScale](https://wiki.libsdl.org/SDL3/SDL_GetRenderColorScale) | [:heavy_check_mark:](sdl/methods.go#L3135) | [:x:](sdl/sdl_functions_js.go#L15858) |
+| [SDL_SetRenderDrawBlendMode](https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawBlendMode) | [:heavy_check_mark:](sdl/methods.go#L3147) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15879) |
+| [SDL_GetRenderDrawBlendMode](https://wiki.libsdl.org/SDL3/SDL_GetRenderDrawBlendMode) | [:heavy_check_mark:](sdl/methods.go#L3157) | [:x:](sdl/sdl_functions_js.go#L15894) |
+| [SDL_RenderClear](https://wiki.libsdl.org/SDL3/SDL_RenderClear) | [:heavy_check_mark:](sdl/methods.go#L3169) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15915) |
+| [SDL_RenderPoint](https://wiki.libsdl.org/SDL3/SDL_RenderPoint) | [:heavy_check_mark:](sdl/methods.go#L3178) | [:x:](sdl/sdl_functions_js.go#L15928) |
+| [SDL_RenderPoints](https://wiki.libsdl.org/SDL3/SDL_RenderPoints) | [:heavy_check_mark:](sdl/methods.go#L3188) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15948) |
+| [SDL_RenderLine](https://wiki.libsdl.org/SDL3/SDL_RenderLine) | [:heavy_check_mark:](sdl/methods.go#L3198) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15966) |
+| [SDL_RenderLines](https://wiki.libsdl.org/SDL3/SDL_RenderLines) | [:heavy_check_mark:](sdl/methods.go#L3208) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L15983) |
+| [SDL_RenderRect](https://wiki.libsdl.org/SDL3/SDL_RenderRect) | [:heavy_check_mark:](sdl/methods.go#L3218) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16001) |
+| [SDL_RenderRects](https://wiki.libsdl.org/SDL3/SDL_RenderRects) | [:heavy_check_mark:](sdl/methods.go#L3228) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16018) |
+| [SDL_RenderFillRect](https://wiki.libsdl.org/SDL3/SDL_RenderFillRect) | [:heavy_check_mark:](sdl/methods.go#L3238) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16036) |
+| [SDL_RenderFillRects](https://wiki.libsdl.org/SDL3/SDL_RenderFillRects) | [:heavy_check_mark:](sdl/methods.go#L3248) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16053) |
+| [SDL_RenderTexture](https://wiki.libsdl.org/SDL3/SDL_RenderTexture) | [:heavy_check_mark:](sdl/methods.go#L3258) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16071) |
+| [SDL_RenderTextureRotated](https://wiki.libsdl.org/SDL3/SDL_RenderTextureRotated) | [:heavy_check_mark:](sdl/methods.go#L3268) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16095) |
+| [SDL_RenderTextureAffine](https://wiki.libsdl.org/SDL3/SDL_RenderTextureAffine) | [:heavy_check_mark:](sdl/methods.go#L3278) | [:x:](sdl/sdl_functions_js.go#L16125) |
+| [SDL_RenderTextureTiled](https://wiki.libsdl.org/SDL3/SDL_RenderTextureTiled) | [:heavy_check_mark:](sdl/methods.go#L3288) | [:x:](sdl/sdl_functions_js.go#L16166) |
+| [SDL_RenderTexture9Grid](https://wiki.libsdl.org/SDL3/SDL_RenderTexture9Grid) | [:heavy_check_mark:](sdl/methods.go#L3298) | [:x:](sdl/sdl_functions_js.go#L16199) |
 | [SDL_RenderTexture9GridTiled](https://wiki.libsdl.org/SDL3/SDL_RenderTexture9GridTiled) | [:question:]() | [:question:]() |
-| [SDL_RenderGeometry](https://wiki.libsdl.org/SDL3/SDL_RenderGeometry) | [:heavy_check_mark:](sdl/methods.go#L3294) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16240) |
-| [SDL_RenderGeometryRaw](https://wiki.libsdl.org/SDL3/SDL_RenderGeometryRaw) | [:heavy_check_mark:](sdl/methods.go#L3304) | [:x:](sdl/sdl_functions_js.go#L16267) |
+| [SDL_RenderGeometry](https://wiki.libsdl.org/SDL3/SDL_RenderGeometry) | [:heavy_check_mark:](sdl/methods.go#L3308) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16240) |
+| [SDL_RenderGeometryRaw](https://wiki.libsdl.org/SDL3/SDL_RenderGeometryRaw) | [:heavy_check_mark:](sdl/methods.go#L3318) | [:x:](sdl/sdl_functions_js.go#L16267) |
 | [SDL_SetRenderTextureAddressMode](https://wiki.libsdl.org/SDL3/SDL_SetRenderTextureAddressMode) | [:question:]() | [:question:]() |
 | [SDL_GetRenderTextureAddressMode](https://wiki.libsdl.org/SDL3/SDL_GetRenderTextureAddressMode) | [:question:]() | [:question:]() |
-| [SDL_RenderReadPixels](https://wiki.libsdl.org/SDL3/SDL_RenderReadPixels) | [:heavy_check_mark:](sdl/methods.go#L3325) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16317) |
-| [SDL_RenderPresent](https://wiki.libsdl.org/SDL3/SDL_RenderPresent) | [:heavy_check_mark:](sdl/methods.go#L3336) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16336) |
-| [SDL_DestroyTexture](https://wiki.libsdl.org/SDL3/SDL_DestroyTexture) | [:heavy_check_mark:](sdl/methods.go#L1152) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16349) |
-| [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL3/SDL_DestroyRenderer) | [:heavy_check_mark:](sdl/methods.go#L3346) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16361) |
-| [SDL_FlushRenderer](https://wiki.libsdl.org/SDL3/SDL_FlushRenderer) | [:heavy_check_mark:](sdl/methods.go#L3352) | [:x:](sdl/sdl_functions_js.go#L16373) |
-| [SDL_GetRenderMetalLayer](https://wiki.libsdl.org/SDL3/SDL_GetRenderMetalLayer) | [:x:](sdl/methods.go#L3362) | [:x:](sdl/sdl_functions_js.go#L16389) |
-| [SDL_GetRenderMetalCommandEncoder](https://wiki.libsdl.org/SDL3/SDL_GetRenderMetalCommandEncoder) | [:x:](sdl/methods.go#L3369) | [:x:](sdl/sdl_functions_js.go#L16405) |
-| [SDL_AddVulkanRenderSemaphores](https://wiki.libsdl.org/SDL3/SDL_AddVulkanRenderSemaphores) | [:x:](sdl/methods.go#L3376) | [:x:](sdl/sdl_functions_js.go#L16421) |
-| [SDL_SetRenderVSync](https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync) | [:heavy_check_mark:](sdl/methods.go#L3383) | [:x:](sdl/sdl_functions_js.go#L16443) |
-| [SDL_GetRenderVSync](https://wiki.libsdl.org/SDL3/SDL_GetRenderVSync) | [:heavy_check_mark:](sdl/methods.go#L3393) | [:x:](sdl/sdl_functions_js.go#L16461) |
-| [SDL_RenderDebugText](https://wiki.libsdl.org/SDL3/SDL_RenderDebugText) | [:heavy_check_mark:](sdl/methods.go#L3415) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16482) |
+| [SDL_RenderReadPixels](https://wiki.libsdl.org/SDL3/SDL_RenderReadPixels) | [:heavy_check_mark:](sdl/methods.go#L3339) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16317) |
+| [SDL_RenderPresent](https://wiki.libsdl.org/SDL3/SDL_RenderPresent) | [:heavy_check_mark:](sdl/methods.go#L3350) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16336) |
+| [SDL_DestroyTexture](https://wiki.libsdl.org/SDL3/SDL_DestroyTexture) | [:heavy_check_mark:](sdl/methods.go#L1165) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16349) |
+| [SDL_DestroyRenderer](https://wiki.libsdl.org/SDL3/SDL_DestroyRenderer) | [:heavy_check_mark:](sdl/methods.go#L3360) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16361) |
+| [SDL_FlushRenderer](https://wiki.libsdl.org/SDL3/SDL_FlushRenderer) | [:heavy_check_mark:](sdl/methods.go#L3366) | [:x:](sdl/sdl_functions_js.go#L16373) |
+| [SDL_GetRenderMetalLayer](https://wiki.libsdl.org/SDL3/SDL_GetRenderMetalLayer) | [:x:](sdl/methods.go#L3376) | [:x:](sdl/sdl_functions_js.go#L16389) |
+| [SDL_GetRenderMetalCommandEncoder](https://wiki.libsdl.org/SDL3/SDL_GetRenderMetalCommandEncoder) | [:x:](sdl/methods.go#L3383) | [:x:](sdl/sdl_functions_js.go#L16405) |
+| [SDL_AddVulkanRenderSemaphores](https://wiki.libsdl.org/SDL3/SDL_AddVulkanRenderSemaphores) | [:x:](sdl/methods.go#L3390) | [:x:](sdl/sdl_functions_js.go#L16421) |
+| [SDL_SetRenderVSync](https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync) | [:heavy_check_mark:](sdl/methods.go#L3397) | [:x:](sdl/sdl_functions_js.go#L16443) |
+| [SDL_GetRenderVSync](https://wiki.libsdl.org/SDL3/SDL_GetRenderVSync) | [:heavy_check_mark:](sdl/methods.go#L3407) | [:x:](sdl/sdl_functions_js.go#L16461) |
+| [SDL_RenderDebugText](https://wiki.libsdl.org/SDL3/SDL_RenderDebugText) | [:heavy_check_mark:](sdl/methods.go#L3429) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L16482) |
 | [SDL_RenderDebugTextFormat](https://wiki.libsdl.org/SDL3/SDL_RenderDebugTextFormat) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L16502) |
 | [SDL_SetDefaultTextureScaleMode](https://wiki.libsdl.org/SDL3/SDL_SetDefaultTextureScaleMode) | [:question:]() | [:question:]() |
 | [SDL_GetDefaultTextureScaleMode](https://wiki.libsdl.org/SDL3/SDL_GetDefaultTextureScaleMode) | [:question:]() | [:question:]() |
@@ -696,16 +703,16 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_DestroyGPURenderState](https://wiki.libsdl.org/SDL3/SDL_DestroyGPURenderState) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>SharedObject</h3></summary>
+<summary><h3>Thread</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_LoadObject](https://wiki.libsdl.org/SDL3/SDL_LoadObject) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14023) |
-| [SDL_LoadFunction](https://wiki.libsdl.org/SDL3/SDL_LoadFunction) | [:x:](sdl/methods.go#L4751) | [:x:](sdl/sdl_functions_js.go#L14039) |
-| [SDL_UnloadObject](https://wiki.libsdl.org/SDL3/SDL_UnloadObject) | [:x:](sdl/methods.go#L4758) | [:x:](sdl/sdl_functions_js.go#L14057) |
+| [SDL_LoadFunction](https://wiki.libsdl.org/SDL3/SDL_LoadFunction) | [:x:](sdl/methods.go#L4765) | [:x:](sdl/sdl_functions_js.go#L14039) |
+| [SDL_UnloadObject](https://wiki.libsdl.org/SDL3/SDL_UnloadObject) | [:x:](sdl/methods.go#L4772) | [:x:](sdl/sdl_functions_js.go#L14057) |
 </details>
 <details>
-<summary><h3>Thread</h3></summary>
+<summary><h3>Mutex</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -723,41 +730,41 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_CleanupTLS](https://wiki.libsdl.org/SDL3/SDL_CleanupTLS) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1012) |
 </details>
 <details>
-<summary><h3>Mutex</h3></summary>
+<summary><h3>Atomic</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_CreateMutex](https://wiki.libsdl.org/SDL3/SDL_CreateMutex) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1021) |
-| [SDL_LockMutex](https://wiki.libsdl.org/SDL3/SDL_LockMutex) | [:heavy_check_mark:](sdl/methods.go#L5591) | [:x:](sdl/sdl_functions_js.go#L1035) |
-| [SDL_TryLockMutex](https://wiki.libsdl.org/SDL3/SDL_TryLockMutex) | [:heavy_check_mark:](sdl/methods.go#L5597) | [:x:](sdl/sdl_functions_js.go#L1049) |
-| [SDL_UnlockMutex](https://wiki.libsdl.org/SDL3/SDL_UnlockMutex) | [:heavy_check_mark:](sdl/methods.go#L5603) | [:x:](sdl/sdl_functions_js.go#L1065) |
-| [SDL_DestroyMutex](https://wiki.libsdl.org/SDL3/SDL_DestroyMutex) | [:heavy_check_mark:](sdl/methods.go#L5609) | [:x:](sdl/sdl_functions_js.go#L1079) |
+| [SDL_LockMutex](https://wiki.libsdl.org/SDL3/SDL_LockMutex) | [:heavy_check_mark:](sdl/methods.go#L5605) | [:x:](sdl/sdl_functions_js.go#L1035) |
+| [SDL_TryLockMutex](https://wiki.libsdl.org/SDL3/SDL_TryLockMutex) | [:heavy_check_mark:](sdl/methods.go#L5611) | [:x:](sdl/sdl_functions_js.go#L1049) |
+| [SDL_UnlockMutex](https://wiki.libsdl.org/SDL3/SDL_UnlockMutex) | [:heavy_check_mark:](sdl/methods.go#L5617) | [:x:](sdl/sdl_functions_js.go#L1065) |
+| [SDL_DestroyMutex](https://wiki.libsdl.org/SDL3/SDL_DestroyMutex) | [:heavy_check_mark:](sdl/methods.go#L5623) | [:x:](sdl/sdl_functions_js.go#L1079) |
 | [SDL_CreateRWLock](https://wiki.libsdl.org/SDL3/SDL_CreateRWLock) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1093) |
-| [SDL_LockRWLockForReading](https://wiki.libsdl.org/SDL3/SDL_LockRWLockForReading) | [:heavy_check_mark:](sdl/methods.go#L1163) | [:x:](sdl/sdl_functions_js.go#L1107) |
-| [SDL_LockRWLockForWriting](https://wiki.libsdl.org/SDL3/SDL_LockRWLockForWriting) | [:heavy_check_mark:](sdl/methods.go#L1169) | [:x:](sdl/sdl_functions_js.go#L1121) |
-| [SDL_TryLockRWLockForReading](https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForReading) | [:heavy_check_mark:](sdl/methods.go#L1175) | [:x:](sdl/sdl_functions_js.go#L1135) |
-| [SDL_TryLockRWLockForWriting](https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForWriting) | [:heavy_check_mark:](sdl/methods.go#L1181) | [:x:](sdl/sdl_functions_js.go#L1151) |
-| [SDL_UnlockRWLock](https://wiki.libsdl.org/SDL3/SDL_UnlockRWLock) | [:heavy_check_mark:](sdl/methods.go#L1187) | [:x:](sdl/sdl_functions_js.go#L1167) |
-| [SDL_DestroyRWLock](https://wiki.libsdl.org/SDL3/SDL_DestroyRWLock) | [:heavy_check_mark:](sdl/methods.go#L1193) | [:x:](sdl/sdl_functions_js.go#L1181) |
+| [SDL_LockRWLockForReading](https://wiki.libsdl.org/SDL3/SDL_LockRWLockForReading) | [:heavy_check_mark:](sdl/methods.go#L1176) | [:x:](sdl/sdl_functions_js.go#L1107) |
+| [SDL_LockRWLockForWriting](https://wiki.libsdl.org/SDL3/SDL_LockRWLockForWriting) | [:heavy_check_mark:](sdl/methods.go#L1182) | [:x:](sdl/sdl_functions_js.go#L1121) |
+| [SDL_TryLockRWLockForReading](https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForReading) | [:heavy_check_mark:](sdl/methods.go#L1188) | [:x:](sdl/sdl_functions_js.go#L1135) |
+| [SDL_TryLockRWLockForWriting](https://wiki.libsdl.org/SDL3/SDL_TryLockRWLockForWriting) | [:heavy_check_mark:](sdl/methods.go#L1194) | [:x:](sdl/sdl_functions_js.go#L1151) |
+| [SDL_UnlockRWLock](https://wiki.libsdl.org/SDL3/SDL_UnlockRWLock) | [:heavy_check_mark:](sdl/methods.go#L1200) | [:x:](sdl/sdl_functions_js.go#L1167) |
+| [SDL_DestroyRWLock](https://wiki.libsdl.org/SDL3/SDL_DestroyRWLock) | [:heavy_check_mark:](sdl/methods.go#L1206) | [:x:](sdl/sdl_functions_js.go#L1181) |
 | [SDL_CreateSemaphore](https://wiki.libsdl.org/SDL3/SDL_CreateSemaphore) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1195) |
-| [SDL_DestroySemaphore](https://wiki.libsdl.org/SDL3/SDL_DestroySemaphore) | [:heavy_check_mark:](sdl/methods.go#L5799) | [:x:](sdl/sdl_functions_js.go#L1211) |
-| [SDL_WaitSemaphore](https://wiki.libsdl.org/SDL3/SDL_WaitSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5805) | [:x:](sdl/sdl_functions_js.go#L1225) |
-| [SDL_TryWaitSemaphore](https://wiki.libsdl.org/SDL3/SDL_TryWaitSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5811) | [:x:](sdl/sdl_functions_js.go#L1239) |
-| [SDL_WaitSemaphoreTimeout](https://wiki.libsdl.org/SDL3/SDL_WaitSemaphoreTimeout) | [:heavy_check_mark:](sdl/methods.go#L5817) | [:x:](sdl/sdl_functions_js.go#L1255) |
-| [SDL_SignalSemaphore](https://wiki.libsdl.org/SDL3/SDL_SignalSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5823) | [:x:](sdl/sdl_functions_js.go#L1273) |
-| [SDL_GetSemaphoreValue](https://wiki.libsdl.org/SDL3/SDL_GetSemaphoreValue) | [:heavy_check_mark:](sdl/methods.go#L5829) | [:x:](sdl/sdl_functions_js.go#L1287) |
+| [SDL_DestroySemaphore](https://wiki.libsdl.org/SDL3/SDL_DestroySemaphore) | [:heavy_check_mark:](sdl/methods.go#L5813) | [:x:](sdl/sdl_functions_js.go#L1211) |
+| [SDL_WaitSemaphore](https://wiki.libsdl.org/SDL3/SDL_WaitSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5819) | [:x:](sdl/sdl_functions_js.go#L1225) |
+| [SDL_TryWaitSemaphore](https://wiki.libsdl.org/SDL3/SDL_TryWaitSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5825) | [:x:](sdl/sdl_functions_js.go#L1239) |
+| [SDL_WaitSemaphoreTimeout](https://wiki.libsdl.org/SDL3/SDL_WaitSemaphoreTimeout) | [:heavy_check_mark:](sdl/methods.go#L5831) | [:x:](sdl/sdl_functions_js.go#L1255) |
+| [SDL_SignalSemaphore](https://wiki.libsdl.org/SDL3/SDL_SignalSemaphore) | [:heavy_check_mark:](sdl/methods.go#L5837) | [:x:](sdl/sdl_functions_js.go#L1273) |
+| [SDL_GetSemaphoreValue](https://wiki.libsdl.org/SDL3/SDL_GetSemaphoreValue) | [:heavy_check_mark:](sdl/methods.go#L5843) | [:x:](sdl/sdl_functions_js.go#L1287) |
 | [SDL_CreateCondition](https://wiki.libsdl.org/SDL3/SDL_CreateCondition) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1303) |
-| [SDL_DestroyCondition](https://wiki.libsdl.org/SDL3/SDL_DestroyCondition) | [:x:](sdl/methods.go#L3970) | [:x:](sdl/sdl_functions_js.go#L1317) |
-| [SDL_SignalCondition](https://wiki.libsdl.org/SDL3/SDL_SignalCondition) | [:x:](sdl/methods.go#L3977) | [:x:](sdl/sdl_functions_js.go#L1331) |
-| [SDL_BroadcastCondition](https://wiki.libsdl.org/SDL3/SDL_BroadcastCondition) | [:x:](sdl/methods.go#L3984) | [:x:](sdl/sdl_functions_js.go#L1345) |
-| [SDL_WaitCondition](https://wiki.libsdl.org/SDL3/SDL_WaitCondition) | [:x:](sdl/methods.go#L3991) | [:x:](sdl/sdl_functions_js.go#L1359) |
-| [SDL_WaitConditionTimeout](https://wiki.libsdl.org/SDL3/SDL_WaitConditionTimeout) | [:x:](sdl/methods.go#L3998) | [:x:](sdl/sdl_functions_js.go#L1378) |
-| [SDL_ShouldInit](https://wiki.libsdl.org/SDL3/SDL_ShouldInit) | [:x:](sdl/methods.go#L3462) | [:x:](sdl/sdl_functions_js.go#L1401) |
-| [SDL_ShouldQuit](https://wiki.libsdl.org/SDL3/SDL_ShouldQuit) | [:x:](sdl/methods.go#L3469) | [:x:](sdl/sdl_functions_js.go#L1417) |
-| [SDL_SetInitialized](https://wiki.libsdl.org/SDL3/SDL_SetInitialized) | [:x:](sdl/methods.go#L3476) | [:x:](sdl/sdl_functions_js.go#L1433) |
+| [SDL_DestroyCondition](https://wiki.libsdl.org/SDL3/SDL_DestroyCondition) | [:x:](sdl/methods.go#L3984) | [:x:](sdl/sdl_functions_js.go#L1317) |
+| [SDL_SignalCondition](https://wiki.libsdl.org/SDL3/SDL_SignalCondition) | [:x:](sdl/methods.go#L3991) | [:x:](sdl/sdl_functions_js.go#L1331) |
+| [SDL_BroadcastCondition](https://wiki.libsdl.org/SDL3/SDL_BroadcastCondition) | [:x:](sdl/methods.go#L3998) | [:x:](sdl/sdl_functions_js.go#L1345) |
+| [SDL_WaitCondition](https://wiki.libsdl.org/SDL3/SDL_WaitCondition) | [:x:](sdl/methods.go#L4005) | [:x:](sdl/sdl_functions_js.go#L1359) |
+| [SDL_WaitConditionTimeout](https://wiki.libsdl.org/SDL3/SDL_WaitConditionTimeout) | [:x:](sdl/methods.go#L4012) | [:x:](sdl/sdl_functions_js.go#L1378) |
+| [SDL_ShouldInit](https://wiki.libsdl.org/SDL3/SDL_ShouldInit) | [:x:](sdl/methods.go#L3476) | [:x:](sdl/sdl_functions_js.go#L1401) |
+| [SDL_ShouldQuit](https://wiki.libsdl.org/SDL3/SDL_ShouldQuit) | [:x:](sdl/methods.go#L3483) | [:x:](sdl/sdl_functions_js.go#L1417) |
+| [SDL_SetInitialized](https://wiki.libsdl.org/SDL3/SDL_SetInitialized) | [:x:](sdl/methods.go#L3490) | [:x:](sdl/sdl_functions_js.go#L1433) |
 </details>
 <details>
-<summary><h3>Atomic</h3></summary>
+<summary><h3>Filesystem</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -770,15 +777,15 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_SetAtomicInt](https://wiki.libsdl.org/SDL3/SDL_SetAtomicInt) | [:heavy_check_mark:](sdl/methods.go#L873) | [:x:](sdl/sdl_functions_js.go#L335) |
 | [SDL_GetAtomicInt](https://wiki.libsdl.org/SDL3/SDL_GetAtomicInt) | [:heavy_check_mark:](sdl/methods.go#L879) | [:x:](sdl/sdl_functions_js.go#L353) |
 | [SDL_AddAtomicInt](https://wiki.libsdl.org/SDL3/SDL_AddAtomicInt) | [:heavy_check_mark:](sdl/methods.go#L885) | [:x:](sdl/sdl_functions_js.go#L369) |
-| [SDL_CompareAndSwapAtomicU32](https://wiki.libsdl.org/SDL3/SDL_CompareAndSwapAtomicU32) | [:x:](sdl/methods.go#L5633) | [:x:](sdl/sdl_functions_js.go#L387) |
-| [SDL_SetAtomicU32](https://wiki.libsdl.org/SDL3/SDL_SetAtomicU32) | [:x:](sdl/methods.go#L5640) | [:x:](sdl/sdl_functions_js.go#L407) |
-| [SDL_GetAtomicU32](https://wiki.libsdl.org/SDL3/SDL_GetAtomicU32) | [:x:](sdl/methods.go#L5647) | [:x:](sdl/sdl_functions_js.go#L425) |
+| [SDL_CompareAndSwapAtomicU32](https://wiki.libsdl.org/SDL3/SDL_CompareAndSwapAtomicU32) | [:x:](sdl/methods.go#L5647) | [:x:](sdl/sdl_functions_js.go#L387) |
+| [SDL_SetAtomicU32](https://wiki.libsdl.org/SDL3/SDL_SetAtomicU32) | [:x:](sdl/methods.go#L5654) | [:x:](sdl/sdl_functions_js.go#L407) |
+| [SDL_GetAtomicU32](https://wiki.libsdl.org/SDL3/SDL_GetAtomicU32) | [:x:](sdl/methods.go#L5661) | [:x:](sdl/sdl_functions_js.go#L425) |
 | [SDL_CompareAndSwapAtomicPointer](https://wiki.libsdl.org/SDL3/SDL_CompareAndSwapAtomicPointer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L441) |
 | [SDL_SetAtomicPointer](https://wiki.libsdl.org/SDL3/SDL_SetAtomicPointer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L461) |
 | [SDL_GetAtomicPointer](https://wiki.libsdl.org/SDL3/SDL_GetAtomicPointer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L479) |
 </details>
-<details>
-<summary><h3>Filesystem</h3></summary>
+<details open>
+<summary><h3>IOStream</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -795,7 +802,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetCurrentDirectory](https://wiki.libsdl.org/SDL3/SDL_GetCurrentDirectory) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11362) |
 </details>
 <details open>
-<summary><h3>IOStream</h3></summary>
+<summary><h3>AsyncIO</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -804,76 +811,76 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_IOFromConstMem](https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem) | [:heavy_check_mark:](sdl/functions.go#L290) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L1485) |
 | [SDL_IOFromDynamicMem](https://wiki.libsdl.org/SDL3/SDL_IOFromDynamicMem) | [:heavy_check_mark:](sdl/functions.go#L306) | [:x:](sdl/sdl_functions_js.go#L1505) |
 | [SDL_OpenIO](https://wiki.libsdl.org/SDL3/SDL_OpenIO) | [:x:](sdl/methods.go#L32) | [:x:](sdl/sdl_functions_js.go#L1519) |
-| [SDL_CloseIO](https://wiki.libsdl.org/SDL3/SDL_CloseIO) | [:heavy_check_mark:](sdl/methods.go#L4776) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L1540) |
-| [SDL_GetIOProperties](https://wiki.libsdl.org/SDL3/SDL_GetIOProperties) | [:heavy_check_mark:](sdl/methods.go#L4786) | [:x:](sdl/sdl_functions_js.go#L1553) |
-| [SDL_GetIOStatus](https://wiki.libsdl.org/SDL3/SDL_GetIOStatus) | [:heavy_check_mark:](sdl/methods.go#L4797) | [:x:](sdl/sdl_functions_js.go#L1569) |
-| [SDL_GetIOSize](https://wiki.libsdl.org/SDL3/SDL_GetIOSize) | [:heavy_check_mark:](sdl/methods.go#L4803) | [:x:](sdl/sdl_functions_js.go#L1585) |
-| [SDL_SeekIO](https://wiki.libsdl.org/SDL3/SDL_SeekIO) | [:heavy_check_mark:](sdl/methods.go#L4814) | [:x:](sdl/sdl_functions_js.go#L1601) |
-| [SDL_TellIO](https://wiki.libsdl.org/SDL3/SDL_TellIO) | [:heavy_check_mark:](sdl/methods.go#L4825) | [:x:](sdl/sdl_functions_js.go#L1621) |
-| [SDL_ReadIO](https://wiki.libsdl.org/SDL3/SDL_ReadIO) | [:heavy_check_mark:](sdl/methods.go#L4831) | [:x:](sdl/sdl_functions_js.go#L1637) |
-| [SDL_WriteIO](https://wiki.libsdl.org/SDL3/SDL_WriteIO) | [:heavy_check_mark:](sdl/methods.go#L4842) | [:x:](sdl/sdl_functions_js.go#L1657) |
-| [SDL_IOprintf](https://wiki.libsdl.org/SDL3/SDL_IOprintf) | [:heavy_check_mark:](sdl/methods.go#L4853) | [:x:](sdl/sdl_functions_js.go#L1677) |
+| [SDL_CloseIO](https://wiki.libsdl.org/SDL3/SDL_CloseIO) | [:heavy_check_mark:](sdl/methods.go#L4790) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L1540) |
+| [SDL_GetIOProperties](https://wiki.libsdl.org/SDL3/SDL_GetIOProperties) | [:heavy_check_mark:](sdl/methods.go#L4800) | [:x:](sdl/sdl_functions_js.go#L1553) |
+| [SDL_GetIOStatus](https://wiki.libsdl.org/SDL3/SDL_GetIOStatus) | [:heavy_check_mark:](sdl/methods.go#L4811) | [:x:](sdl/sdl_functions_js.go#L1569) |
+| [SDL_GetIOSize](https://wiki.libsdl.org/SDL3/SDL_GetIOSize) | [:heavy_check_mark:](sdl/methods.go#L4817) | [:x:](sdl/sdl_functions_js.go#L1585) |
+| [SDL_SeekIO](https://wiki.libsdl.org/SDL3/SDL_SeekIO) | [:heavy_check_mark:](sdl/methods.go#L4828) | [:x:](sdl/sdl_functions_js.go#L1601) |
+| [SDL_TellIO](https://wiki.libsdl.org/SDL3/SDL_TellIO) | [:heavy_check_mark:](sdl/methods.go#L4839) | [:x:](sdl/sdl_functions_js.go#L1621) |
+| [SDL_ReadIO](https://wiki.libsdl.org/SDL3/SDL_ReadIO) | [:heavy_check_mark:](sdl/methods.go#L4845) | [:x:](sdl/sdl_functions_js.go#L1637) |
+| [SDL_WriteIO](https://wiki.libsdl.org/SDL3/SDL_WriteIO) | [:heavy_check_mark:](sdl/methods.go#L4856) | [:x:](sdl/sdl_functions_js.go#L1657) |
+| [SDL_IOprintf](https://wiki.libsdl.org/SDL3/SDL_IOprintf) | [:heavy_check_mark:](sdl/methods.go#L4867) | [:x:](sdl/sdl_functions_js.go#L1677) |
 | [SDL_IOvprintf](https://wiki.libsdl.org/SDL3/SDL_IOvprintf) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1695) |
-| [SDL_FlushIO](https://wiki.libsdl.org/SDL3/SDL_FlushIO) | [:heavy_check_mark:](sdl/methods.go#L4864) | [:x:](sdl/sdl_functions_js.go#L1715) |
-| [SDL_LoadFile_IO](https://wiki.libsdl.org/SDL3/SDL_LoadFile_IO) | [:heavy_check_mark:](sdl/methods.go#L4874) | [:x:](sdl/sdl_functions_js.go#L1731) |
+| [SDL_FlushIO](https://wiki.libsdl.org/SDL3/SDL_FlushIO) | [:heavy_check_mark:](sdl/methods.go#L4878) | [:x:](sdl/sdl_functions_js.go#L1715) |
+| [SDL_LoadFile_IO](https://wiki.libsdl.org/SDL3/SDL_LoadFile_IO) | [:heavy_check_mark:](sdl/methods.go#L4888) | [:x:](sdl/sdl_functions_js.go#L1731) |
 | [SDL_LoadFile](https://wiki.libsdl.org/SDL3/SDL_LoadFile) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1754) |
-| [SDL_SaveFile_IO](https://wiki.libsdl.org/SDL3/SDL_SaveFile_IO) | [:heavy_check_mark:](sdl/methods.go#L4887) | [:x:](sdl/sdl_functions_js.go#L1772) |
+| [SDL_SaveFile_IO](https://wiki.libsdl.org/SDL3/SDL_SaveFile_IO) | [:heavy_check_mark:](sdl/methods.go#L4901) | [:x:](sdl/sdl_functions_js.go#L1772) |
 | [SDL_SaveFile](https://wiki.libsdl.org/SDL3/SDL_SaveFile) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L1794) |
-| [SDL_ReadU8](https://wiki.libsdl.org/SDL3/SDL_ReadU8) | [:heavy_check_mark:](sdl/methods.go#L4898) | [:x:](sdl/sdl_functions_js.go#L1811) |
-| [SDL_ReadS8](https://wiki.libsdl.org/SDL3/SDL_ReadS8) | [:heavy_check_mark:](sdl/methods.go#L4910) | [:x:](sdl/sdl_functions_js.go#L1832) |
-| [SDL_ReadU16LE](https://wiki.libsdl.org/SDL3/SDL_ReadU16LE) | [:heavy_check_mark:](sdl/methods.go#L4922) | [:x:](sdl/sdl_functions_js.go#L1853) |
-| [SDL_ReadS16LE](https://wiki.libsdl.org/SDL3/SDL_ReadS16LE) | [:heavy_check_mark:](sdl/methods.go#L4934) | [:x:](sdl/sdl_functions_js.go#L1874) |
-| [SDL_ReadU16BE](https://wiki.libsdl.org/SDL3/SDL_ReadU16BE) | [:heavy_check_mark:](sdl/methods.go#L4946) | [:x:](sdl/sdl_functions_js.go#L1895) |
-| [SDL_ReadS16BE](https://wiki.libsdl.org/SDL3/SDL_ReadS16BE) | [:heavy_check_mark:](sdl/methods.go#L4958) | [:x:](sdl/sdl_functions_js.go#L1916) |
-| [SDL_ReadU32LE](https://wiki.libsdl.org/SDL3/SDL_ReadU32LE) | [:heavy_check_mark:](sdl/methods.go#L4970) | [:x:](sdl/sdl_functions_js.go#L1937) |
-| [SDL_ReadS32LE](https://wiki.libsdl.org/SDL3/SDL_ReadS32LE) | [:heavy_check_mark:](sdl/methods.go#L4982) | [:x:](sdl/sdl_functions_js.go#L1958) |
-| [SDL_ReadU32BE](https://wiki.libsdl.org/SDL3/SDL_ReadU32BE) | [:heavy_check_mark:](sdl/methods.go#L4994) | [:x:](sdl/sdl_functions_js.go#L1979) |
-| [SDL_ReadS32BE](https://wiki.libsdl.org/SDL3/SDL_ReadS32BE) | [:heavy_check_mark:](sdl/methods.go#L5006) | [:x:](sdl/sdl_functions_js.go#L2000) |
-| [SDL_ReadU64LE](https://wiki.libsdl.org/SDL3/SDL_ReadU64LE) | [:heavy_check_mark:](sdl/methods.go#L5018) | [:x:](sdl/sdl_functions_js.go#L2021) |
-| [SDL_ReadS64LE](https://wiki.libsdl.org/SDL3/SDL_ReadS64LE) | [:heavy_check_mark:](sdl/methods.go#L5030) | [:x:](sdl/sdl_functions_js.go#L2042) |
-| [SDL_ReadU64BE](https://wiki.libsdl.org/SDL3/SDL_ReadU64BE) | [:heavy_check_mark:](sdl/methods.go#L5042) | [:x:](sdl/sdl_functions_js.go#L2063) |
-| [SDL_ReadS64BE](https://wiki.libsdl.org/SDL3/SDL_ReadS64BE) | [:heavy_check_mark:](sdl/methods.go#L5054) | [:x:](sdl/sdl_functions_js.go#L2084) |
-| [SDL_WriteU8](https://wiki.libsdl.org/SDL3/SDL_WriteU8) | [:heavy_check_mark:](sdl/methods.go#L5066) | [:x:](sdl/sdl_functions_js.go#L2105) |
-| [SDL_WriteS8](https://wiki.libsdl.org/SDL3/SDL_WriteS8) | [:heavy_check_mark:](sdl/methods.go#L5076) | [:x:](sdl/sdl_functions_js.go#L2123) |
-| [SDL_WriteU16LE](https://wiki.libsdl.org/SDL3/SDL_WriteU16LE) | [:heavy_check_mark:](sdl/methods.go#L5086) | [:x:](sdl/sdl_functions_js.go#L2141) |
-| [SDL_WriteS16LE](https://wiki.libsdl.org/SDL3/SDL_WriteS16LE) | [:heavy_check_mark:](sdl/methods.go#L5096) | [:x:](sdl/sdl_functions_js.go#L2159) |
-| [SDL_WriteU16BE](https://wiki.libsdl.org/SDL3/SDL_WriteU16BE) | [:heavy_check_mark:](sdl/methods.go#L5106) | [:x:](sdl/sdl_functions_js.go#L2177) |
-| [SDL_WriteS16BE](https://wiki.libsdl.org/SDL3/SDL_WriteS16BE) | [:heavy_check_mark:](sdl/methods.go#L5116) | [:x:](sdl/sdl_functions_js.go#L2195) |
-| [SDL_WriteU32LE](https://wiki.libsdl.org/SDL3/SDL_WriteU32LE) | [:heavy_check_mark:](sdl/methods.go#L5126) | [:x:](sdl/sdl_functions_js.go#L2213) |
-| [SDL_WriteS32LE](https://wiki.libsdl.org/SDL3/SDL_WriteS32LE) | [:heavy_check_mark:](sdl/methods.go#L5136) | [:x:](sdl/sdl_functions_js.go#L2231) |
-| [SDL_WriteU32BE](https://wiki.libsdl.org/SDL3/SDL_WriteU32BE) | [:heavy_check_mark:](sdl/methods.go#L5146) | [:x:](sdl/sdl_functions_js.go#L2249) |
-| [SDL_WriteS32BE](https://wiki.libsdl.org/SDL3/SDL_WriteS32BE) | [:heavy_check_mark:](sdl/methods.go#L5156) | [:x:](sdl/sdl_functions_js.go#L2267) |
-| [SDL_WriteU64LE](https://wiki.libsdl.org/SDL3/SDL_WriteU64LE) | [:heavy_check_mark:](sdl/methods.go#L5166) | [:x:](sdl/sdl_functions_js.go#L2285) |
-| [SDL_WriteS64LE](https://wiki.libsdl.org/SDL3/SDL_WriteS64LE) | [:heavy_check_mark:](sdl/methods.go#L5176) | [:x:](sdl/sdl_functions_js.go#L2303) |
-| [SDL_WriteU64BE](https://wiki.libsdl.org/SDL3/SDL_WriteU64BE) | [:heavy_check_mark:](sdl/methods.go#L5186) | [:x:](sdl/sdl_functions_js.go#L2321) |
-| [SDL_WriteS64BE](https://wiki.libsdl.org/SDL3/SDL_WriteS64BE) | [:heavy_check_mark:](sdl/methods.go#L5196) | [:x:](sdl/sdl_functions_js.go#L2339) |
-</details>
-<details open>
-<summary><h3>AsyncIO</h3></summary>
-
-|Function|Desktop|WASM/js|
-|:--|:--:|:--:|
-| [SDL_AsyncIOFromFile](https://wiki.libsdl.org/SDL3/SDL_AsyncIOFromFile) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L30) |
-| [SDL_GetAsyncIOSize](https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOSize) | [:x:](sdl/methods.go#L3432) | [:x:](sdl/sdl_functions_js.go#L48) |
-| [SDL_ReadAsyncIO](https://wiki.libsdl.org/SDL3/SDL_ReadAsyncIO) | [:x:](sdl/methods.go#L3439) | [:x:](sdl/sdl_functions_js.go#L64) |
-| [SDL_WriteAsyncIO](https://wiki.libsdl.org/SDL3/SDL_WriteAsyncIO) | [:x:](sdl/methods.go#L3446) | [:x:](sdl/sdl_functions_js.go#L93) |
-| [SDL_CloseAsyncIO](https://wiki.libsdl.org/SDL3/SDL_CloseAsyncIO) | [:x:](sdl/methods.go#L3453) | [:x:](sdl/sdl_functions_js.go#L122) |
-| [SDL_CreateAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_CreateAsyncIOQueue) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L147) |
-| [SDL_DestroyAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_DestroyAsyncIOQueue) | [:heavy_check_mark:](sdl/methods.go#L1319) | [:x:](sdl/sdl_functions_js.go#L161) |
-| [SDL_GetAsyncIOResult](https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOResult) | [:heavy_check_mark:](sdl/methods.go#L1325) | [:x:](sdl/sdl_functions_js.go#L175) |
-| [SDL_WaitAsyncIOResult](https://wiki.libsdl.org/SDL3/SDL_WaitAsyncIOResult) | [:heavy_check_mark:](sdl/methods.go#L1335) | [:x:](sdl/sdl_functions_js.go#L196) |
-| [SDL_SignalAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_SignalAsyncIOQueue) | [:heavy_check_mark:](sdl/methods.go#L1345) | [:x:](sdl/sdl_functions_js.go#L219) |
-| [SDL_LoadFileAsync](https://wiki.libsdl.org/SDL3/SDL_LoadFileAsync) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L233) |
+| [SDL_ReadU8](https://wiki.libsdl.org/SDL3/SDL_ReadU8) | [:heavy_check_mark:](sdl/methods.go#L4912) | [:x:](sdl/sdl_functions_js.go#L1811) |
+| [SDL_ReadS8](https://wiki.libsdl.org/SDL3/SDL_ReadS8) | [:heavy_check_mark:](sdl/methods.go#L4924) | [:x:](sdl/sdl_functions_js.go#L1832) |
+| [SDL_ReadU16LE](https://wiki.libsdl.org/SDL3/SDL_ReadU16LE) | [:heavy_check_mark:](sdl/methods.go#L4936) | [:x:](sdl/sdl_functions_js.go#L1853) |
+| [SDL_ReadS16LE](https://wiki.libsdl.org/SDL3/SDL_ReadS16LE) | [:heavy_check_mark:](sdl/methods.go#L4948) | [:x:](sdl/sdl_functions_js.go#L1874) |
+| [SDL_ReadU16BE](https://wiki.libsdl.org/SDL3/SDL_ReadU16BE) | [:heavy_check_mark:](sdl/methods.go#L4960) | [:x:](sdl/sdl_functions_js.go#L1895) |
+| [SDL_ReadS16BE](https://wiki.libsdl.org/SDL3/SDL_ReadS16BE) | [:heavy_check_mark:](sdl/methods.go#L4972) | [:x:](sdl/sdl_functions_js.go#L1916) |
+| [SDL_ReadU32LE](https://wiki.libsdl.org/SDL3/SDL_ReadU32LE) | [:heavy_check_mark:](sdl/methods.go#L4984) | [:x:](sdl/sdl_functions_js.go#L1937) |
+| [SDL_ReadS32LE](https://wiki.libsdl.org/SDL3/SDL_ReadS32LE) | [:heavy_check_mark:](sdl/methods.go#L4996) | [:x:](sdl/sdl_functions_js.go#L1958) |
+| [SDL_ReadU32BE](https://wiki.libsdl.org/SDL3/SDL_ReadU32BE) | [:heavy_check_mark:](sdl/methods.go#L5008) | [:x:](sdl/sdl_functions_js.go#L1979) |
+| [SDL_ReadS32BE](https://wiki.libsdl.org/SDL3/SDL_ReadS32BE) | [:heavy_check_mark:](sdl/methods.go#L5020) | [:x:](sdl/sdl_functions_js.go#L2000) |
+| [SDL_ReadU64LE](https://wiki.libsdl.org/SDL3/SDL_ReadU64LE) | [:heavy_check_mark:](sdl/methods.go#L5032) | [:x:](sdl/sdl_functions_js.go#L2021) |
+| [SDL_ReadS64LE](https://wiki.libsdl.org/SDL3/SDL_ReadS64LE) | [:heavy_check_mark:](sdl/methods.go#L5044) | [:x:](sdl/sdl_functions_js.go#L2042) |
+| [SDL_ReadU64BE](https://wiki.libsdl.org/SDL3/SDL_ReadU64BE) | [:heavy_check_mark:](sdl/methods.go#L5056) | [:x:](sdl/sdl_functions_js.go#L2063) |
+| [SDL_ReadS64BE](https://wiki.libsdl.org/SDL3/SDL_ReadS64BE) | [:heavy_check_mark:](sdl/methods.go#L5068) | [:x:](sdl/sdl_functions_js.go#L2084) |
+| [SDL_WriteU8](https://wiki.libsdl.org/SDL3/SDL_WriteU8) | [:heavy_check_mark:](sdl/methods.go#L5080) | [:x:](sdl/sdl_functions_js.go#L2105) |
+| [SDL_WriteS8](https://wiki.libsdl.org/SDL3/SDL_WriteS8) | [:heavy_check_mark:](sdl/methods.go#L5090) | [:x:](sdl/sdl_functions_js.go#L2123) |
+| [SDL_WriteU16LE](https://wiki.libsdl.org/SDL3/SDL_WriteU16LE) | [:heavy_check_mark:](sdl/methods.go#L5100) | [:x:](sdl/sdl_functions_js.go#L2141) |
+| [SDL_WriteS16LE](https://wiki.libsdl.org/SDL3/SDL_WriteS16LE) | [:heavy_check_mark:](sdl/methods.go#L5110) | [:x:](sdl/sdl_functions_js.go#L2159) |
+| [SDL_WriteU16BE](https://wiki.libsdl.org/SDL3/SDL_WriteU16BE) | [:heavy_check_mark:](sdl/methods.go#L5120) | [:x:](sdl/sdl_functions_js.go#L2177) |
+| [SDL_WriteS16BE](https://wiki.libsdl.org/SDL3/SDL_WriteS16BE) | [:heavy_check_mark:](sdl/methods.go#L5130) | [:x:](sdl/sdl_functions_js.go#L2195) |
+| [SDL_WriteU32LE](https://wiki.libsdl.org/SDL3/SDL_WriteU32LE) | [:heavy_check_mark:](sdl/methods.go#L5140) | [:x:](sdl/sdl_functions_js.go#L2213) |
+| [SDL_WriteS32LE](https://wiki.libsdl.org/SDL3/SDL_WriteS32LE) | [:heavy_check_mark:](sdl/methods.go#L5150) | [:x:](sdl/sdl_functions_js.go#L2231) |
+| [SDL_WriteU32BE](https://wiki.libsdl.org/SDL3/SDL_WriteU32BE) | [:heavy_check_mark:](sdl/methods.go#L5160) | [:x:](sdl/sdl_functions_js.go#L2249) |
+| [SDL_WriteS32BE](https://wiki.libsdl.org/SDL3/SDL_WriteS32BE) | [:heavy_check_mark:](sdl/methods.go#L5170) | [:x:](sdl/sdl_functions_js.go#L2267) |
+| [SDL_WriteU64LE](https://wiki.libsdl.org/SDL3/SDL_WriteU64LE) | [:heavy_check_mark:](sdl/methods.go#L5180) | [:x:](sdl/sdl_functions_js.go#L2285) |
+| [SDL_WriteS64LE](https://wiki.libsdl.org/SDL3/SDL_WriteS64LE) | [:heavy_check_mark:](sdl/methods.go#L5190) | [:x:](sdl/sdl_functions_js.go#L2303) |
+| [SDL_WriteU64BE](https://wiki.libsdl.org/SDL3/SDL_WriteU64BE) | [:heavy_check_mark:](sdl/methods.go#L5200) | [:x:](sdl/sdl_functions_js.go#L2321) |
+| [SDL_WriteS64BE](https://wiki.libsdl.org/SDL3/SDL_WriteS64BE) | [:heavy_check_mark:](sdl/methods.go#L5210) | [:x:](sdl/sdl_functions_js.go#L2339) |
 </details>
 <details open>
 <summary><h3>Storage</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
+| [SDL_AsyncIOFromFile](https://wiki.libsdl.org/SDL3/SDL_AsyncIOFromFile) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L30) |
+| [SDL_GetAsyncIOSize](https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOSize) | [:x:](sdl/methods.go#L3446) | [:x:](sdl/sdl_functions_js.go#L48) |
+| [SDL_ReadAsyncIO](https://wiki.libsdl.org/SDL3/SDL_ReadAsyncIO) | [:x:](sdl/methods.go#L3453) | [:x:](sdl/sdl_functions_js.go#L64) |
+| [SDL_WriteAsyncIO](https://wiki.libsdl.org/SDL3/SDL_WriteAsyncIO) | [:x:](sdl/methods.go#L3460) | [:x:](sdl/sdl_functions_js.go#L93) |
+| [SDL_CloseAsyncIO](https://wiki.libsdl.org/SDL3/SDL_CloseAsyncIO) | [:x:](sdl/methods.go#L3467) | [:x:](sdl/sdl_functions_js.go#L122) |
+| [SDL_CreateAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_CreateAsyncIOQueue) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L147) |
+| [SDL_DestroyAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_DestroyAsyncIOQueue) | [:heavy_check_mark:](sdl/methods.go#L1332) | [:x:](sdl/sdl_functions_js.go#L161) |
+| [SDL_GetAsyncIOResult](https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOResult) | [:heavy_check_mark:](sdl/methods.go#L1338) | [:x:](sdl/sdl_functions_js.go#L175) |
+| [SDL_WaitAsyncIOResult](https://wiki.libsdl.org/SDL3/SDL_WaitAsyncIOResult) | [:heavy_check_mark:](sdl/methods.go#L1348) | [:x:](sdl/sdl_functions_js.go#L196) |
+| [SDL_SignalAsyncIOQueue](https://wiki.libsdl.org/SDL3/SDL_SignalAsyncIOQueue) | [:heavy_check_mark:](sdl/methods.go#L1358) | [:x:](sdl/sdl_functions_js.go#L219) |
+| [SDL_LoadFileAsync](https://wiki.libsdl.org/SDL3/SDL_LoadFileAsync) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L233) |
+</details>
+<details open>
+<summary><h3>Pixels</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
 | [SDL_OpenTitleStorage](https://wiki.libsdl.org/SDL3/SDL_OpenTitleStorage) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L16524) |
 | [SDL_OpenUserStorage](https://wiki.libsdl.org/SDL3/SDL_OpenUserStorage) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L16542) |
 | [SDL_OpenFileStorage](https://wiki.libsdl.org/SDL3/SDL_OpenFileStorage) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L16562) |
-| [SDL_OpenStorage](https://wiki.libsdl.org/SDL3/SDL_OpenStorage) | [:x:](sdl/methods.go#L5582) | [:x:](sdl/sdl_functions_js.go#L16578) |
+| [SDL_OpenStorage](https://wiki.libsdl.org/SDL3/SDL_OpenStorage) | [:x:](sdl/methods.go#L5596) | [:x:](sdl/sdl_functions_js.go#L16578) |
 | [SDL_CloseStorage](https://wiki.libsdl.org/SDL3/SDL_CloseStorage) | [:heavy_check_mark:](sdl/methods.go#L96) | [:x:](sdl/sdl_functions_js.go#L16599) |
 | [SDL_StorageReady](https://wiki.libsdl.org/SDL3/SDL_StorageReady) | [:heavy_check_mark:](sdl/methods.go#L106) | [:x:](sdl/sdl_functions_js.go#L16615) |
 | [SDL_GetStorageFileSize](https://wiki.libsdl.org/SDL3/SDL_GetStorageFileSize) | [:heavy_check_mark:](sdl/methods.go#L112) | [:x:](sdl/sdl_functions_js.go#L16631) |
@@ -889,95 +896,95 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GlobStorageDirectory](https://wiki.libsdl.org/SDL3/SDL_GlobStorageDirectory) | [:heavy_check_mark:](sdl/methods.go#L211) | [:x:](sdl/sdl_functions_js.go#L16835) |
 </details>
 <details open>
-<summary><h3>Pixels</h3></summary>
-
-|Function|Desktop|WASM/js|
-|:--|:--:|:--:|
-| [SDL_GetPixelFormatName](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatName) | [:heavy_check_mark:](sdl/methods.go#L5837) | [:x:](sdl/sdl_functions_js.go#L3386) |
-| [SDL_GetMasksForPixelFormat](https://wiki.libsdl.org/SDL3/SDL_GetMasksForPixelFormat) | [:x:](sdl/methods.go#L5843) | [:x:](sdl/sdl_functions_js.go#L3399) |
-| [SDL_GetPixelFormatForMasks](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatForMasks) | [:heavy_check_mark:](sdl/functions.go#L362) | [:x:](sdl/sdl_functions_js.go#L3437) |
-| [SDL_GetPixelFormatDetails](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatDetails) | [:heavy_check_mark:](sdl/methods.go#L5851) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3458) |
-| [SDL_CreatePalette](https://wiki.libsdl.org/SDL3/SDL_CreatePalette) | [:heavy_check_mark:](sdl/functions.go#L368) | [:x:](sdl/sdl_functions_js.go#L3470) |
-| [SDL_SetPaletteColors](https://wiki.libsdl.org/SDL3/SDL_SetPaletteColors) | [:heavy_check_mark:](sdl/methods.go#L5208) | [:x:](sdl/sdl_functions_js.go#L3486) |
-| [SDL_DestroyPalette](https://wiki.libsdl.org/SDL3/SDL_DestroyPalette) | [:heavy_check_mark:](sdl/methods.go#L5218) | [:x:](sdl/sdl_functions_js.go#L3511) |
-| [SDL_MapRGB](https://wiki.libsdl.org/SDL3/SDL_MapRGB) | [:heavy_check_mark:](sdl/methods.go#L1353) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3525) |
-| [SDL_MapRGBA](https://wiki.libsdl.org/SDL3/SDL_MapRGBA) | [:heavy_check_mark:](sdl/methods.go#L1359) | [:x:](sdl/sdl_functions_js.go#L3552) |
-| [SDL_GetRGB](https://wiki.libsdl.org/SDL3/SDL_GetRGB) | [:heavy_check_mark:](sdl/functions.go#L391) | [:x:](sdl/sdl_functions_js.go#L3581) |
-| [SDL_GetRGBA](https://wiki.libsdl.org/SDL3/SDL_GetRGBA) | [:heavy_check_mark:](sdl/functions.go#L399) | [:x:](sdl/sdl_functions_js.go#L3617) |
-</details>
-<details open>
 <summary><h3>Surface</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_CreateSurface](https://wiki.libsdl.org/SDL3/SDL_CreateSurface) | [:heavy_check_mark:](sdl/functions.go#L409) | [:x:](sdl/sdl_functions_js.go#L3932) |
-| [SDL_CreateSurfaceFrom](https://wiki.libsdl.org/SDL3/SDL_CreateSurfaceFrom) | [:heavy_check_mark:](sdl/functions.go#L420) | [:x:](sdl/sdl_functions_js.go#L3952) |
-| [SDL_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_DestroySurface) | [:heavy_check_mark:](sdl/methods.go#L1367) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3976) |
-| [SDL_GetSurfaceProperties](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceProperties) | [:heavy_check_mark:](sdl/methods.go#L1376) | [:x:](sdl/sdl_functions_js.go#L3988) |
-| [SDL_SetSurfaceColorspace](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorspace) | [:heavy_check_mark:](sdl/methods.go#L1387) | [:x:](sdl/sdl_functions_js.go#L4004) |
-| [SDL_GetSurfaceColorspace](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorspace) | [:heavy_check_mark:](sdl/methods.go#L1397) | [:x:](sdl/sdl_functions_js.go#L4022) |
-| [SDL_CreateSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_CreateSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1403) | [:x:](sdl/sdl_functions_js.go#L4038) |
-| [SDL_SetSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_SetSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1414) | [:x:](sdl/sdl_functions_js.go#L4057) |
-| [SDL_GetSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_GetSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1424) | [:x:](sdl/sdl_functions_js.go#L4078) |
-| [SDL_AddSurfaceAlternateImage](https://wiki.libsdl.org/SDL3/SDL_AddSurfaceAlternateImage) | [:heavy_check_mark:](sdl/methods.go#L1430) | [:x:](sdl/sdl_functions_js.go#L4097) |
-| [SDL_SurfaceHasAlternateImages](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasAlternateImages) | [:heavy_check_mark:](sdl/methods.go#L1440) | [:x:](sdl/sdl_functions_js.go#L4118) |
-| [SDL_GetSurfaceImages](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceImages) | [:heavy_check_mark:](sdl/methods.go#L1446) | [:x:](sdl/sdl_functions_js.go#L4134) |
-| [SDL_RemoveSurfaceAlternateImages](https://wiki.libsdl.org/SDL3/SDL_RemoveSurfaceAlternateImages) | [:heavy_check_mark:](sdl/methods.go#L1460) | [:x:](sdl/sdl_functions_js.go#L4155) |
-| [SDL_LockSurface](https://wiki.libsdl.org/SDL3/SDL_LockSurface) | [:heavy_check_mark:](sdl/methods.go#L1466) | [:x:](sdl/sdl_functions_js.go#L4169) |
-| [SDL_UnlockSurface](https://wiki.libsdl.org/SDL3/SDL_UnlockSurface) | [:heavy_check_mark:](sdl/methods.go#L1476) | [:x:](sdl/sdl_functions_js.go#L4185) |
-| [SDL_LoadBMP_IO](https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO) | [:heavy_check_mark:](sdl/functions.go#L432) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4199) |
-| [SDL_LoadBMP](https://wiki.libsdl.org/SDL3/SDL_LoadBMP) | [:heavy_check_mark:](sdl/functions.go#L443) | [:x:](sdl/sdl_functions_js.go#L4219) |
-| [SDL_SaveBMP_IO](https://wiki.libsdl.org/SDL3/SDL_SaveBMP_IO) | [:heavy_check_mark:](sdl/methods.go#L1482) | [:x:](sdl/sdl_functions_js.go#L4235) |
-| [SDL_SaveBMP](https://wiki.libsdl.org/SDL3/SDL_SaveBMP) | [:heavy_check_mark:](sdl/methods.go#L1492) | [:x:](sdl/sdl_functions_js.go#L4258) |
-| [SDL_SetSurfaceRLE](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceRLE) | [:heavy_check_mark:](sdl/methods.go#L1502) | [:x:](sdl/sdl_functions_js.go#L4276) |
-| [SDL_SurfaceHasRLE](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasRLE) | [:heavy_check_mark:](sdl/methods.go#L1512) | [:x:](sdl/sdl_functions_js.go#L4294) |
-| [SDL_SetSurfaceColorKey](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorKey) | [:heavy_check_mark:](sdl/methods.go#L1518) | [:x:](sdl/sdl_functions_js.go#L4310) |
-| [SDL_SurfaceHasColorKey](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasColorKey) | [:heavy_check_mark:](sdl/methods.go#L1528) | [:x:](sdl/sdl_functions_js.go#L4330) |
-| [SDL_GetSurfaceColorKey](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorKey) | [:heavy_check_mark:](sdl/methods.go#L1534) | [:x:](sdl/sdl_functions_js.go#L4346) |
-| [SDL_SetSurfaceColorMod](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorMod) | [:heavy_check_mark:](sdl/methods.go#L1545) | [:x:](sdl/sdl_functions_js.go#L4367) |
-| [SDL_GetSurfaceColorMod](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorMod) | [:heavy_check_mark:](sdl/methods.go#L1555) | [:x:](sdl/sdl_functions_js.go#L4389) |
-| [SDL_SetSurfaceAlphaMod](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceAlphaMod) | [:heavy_check_mark:](sdl/methods.go#L1567) | [:x:](sdl/sdl_functions_js.go#L4420) |
-| [SDL_GetSurfaceAlphaMod](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceAlphaMod) | [:heavy_check_mark:](sdl/methods.go#L1577) | [:x:](sdl/sdl_functions_js.go#L4438) |
-| [SDL_SetSurfaceBlendMode](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceBlendMode) | [:heavy_check_mark:](sdl/methods.go#L1589) | [:x:](sdl/sdl_functions_js.go#L4459) |
-| [SDL_GetSurfaceBlendMode](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceBlendMode) | [:heavy_check_mark:](sdl/methods.go#L1599) | [:x:](sdl/sdl_functions_js.go#L4477) |
-| [SDL_SetSurfaceClipRect](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceClipRect) | [:heavy_check_mark:](sdl/methods.go#L1611) | [:x:](sdl/sdl_functions_js.go#L4498) |
-| [SDL_GetSurfaceClipRect](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceClipRect) | [:heavy_check_mark:](sdl/methods.go#L1617) | [:x:](sdl/sdl_functions_js.go#L4519) |
-| [SDL_FlipSurface](https://wiki.libsdl.org/SDL3/SDL_FlipSurface) | [:heavy_check_mark:](sdl/methods.go#L1629) | [:x:](sdl/sdl_functions_js.go#L4540) |
-| [SDL_DuplicateSurface](https://wiki.libsdl.org/SDL3/SDL_DuplicateSurface) | [:heavy_check_mark:](sdl/methods.go#L1639) | [:x:](sdl/sdl_functions_js.go#L4558) |
-| [SDL_ScaleSurface](https://wiki.libsdl.org/SDL3/SDL_ScaleSurface) | [:heavy_check_mark:](sdl/methods.go#L1650) | [:x:](sdl/sdl_functions_js.go#L4577) |
-| [SDL_ConvertSurface](https://wiki.libsdl.org/SDL3/SDL_ConvertSurface) | [:heavy_check_mark:](sdl/methods.go#L1661) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4602) |
-| [SDL_ConvertSurfaceAndColorspace](https://wiki.libsdl.org/SDL3/SDL_ConvertSurfaceAndColorspace) | [:heavy_check_mark:](sdl/methods.go#L1672) | [:x:](sdl/sdl_functions_js.go#L4619) |
-| [SDL_ConvertPixels](https://wiki.libsdl.org/SDL3/SDL_ConvertPixels) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4649) |
-| [SDL_ConvertPixelsAndColorspace](https://wiki.libsdl.org/SDL3/SDL_ConvertPixelsAndColorspace) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4676) |
-| [SDL_PremultiplyAlpha](https://wiki.libsdl.org/SDL3/SDL_PremultiplyAlpha) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4711) |
-| [SDL_PremultiplySurfaceAlpha](https://wiki.libsdl.org/SDL3/SDL_PremultiplySurfaceAlpha) | [:heavy_check_mark:](sdl/methods.go#L1683) | [:x:](sdl/sdl_functions_js.go#L4740) |
-| [SDL_ClearSurface](https://wiki.libsdl.org/SDL3/SDL_ClearSurface) | [:heavy_check_mark:](sdl/methods.go#L1693) | [:x:](sdl/sdl_functions_js.go#L4758) |
-| [SDL_FillSurfaceRect](https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRect) | [:heavy_check_mark:](sdl/methods.go#L1703) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4782) |
-| [SDL_FillSurfaceRects](https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRects) | [:heavy_check_mark:](sdl/methods.go#L1713) | [:x:](sdl/sdl_functions_js.go#L4801) |
-| [SDL_BlitSurface](https://wiki.libsdl.org/SDL3/SDL_BlitSurface) | [:heavy_check_mark:](sdl/methods.go#L1723) | [:x:](sdl/sdl_functions_js.go#L4826) |
-| [SDL_BlitSurfaceUnchecked](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUnchecked) | [:heavy_check_mark:](sdl/methods.go#L1733) | [:x:](sdl/sdl_functions_js.go#L4857) |
-| [SDL_BlitSurfaceScaled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceScaled) | [:heavy_check_mark:](sdl/methods.go#L1743) | [:x:](sdl/sdl_functions_js.go#L4888) |
-| [SDL_BlitSurfaceUncheckedScaled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUncheckedScaled) | [:heavy_check_mark:](sdl/methods.go#L1753) | [:x:](sdl/sdl_functions_js.go#L4921) |
-| [SDL_StretchSurface](https://wiki.libsdl.org/SDL3/SDL_StretchSurface) | [:question:]() | [:question:]() |
-| [SDL_BlitSurfaceTiled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiled) | [:heavy_check_mark:](sdl/methods.go#L1763) | [:x:](sdl/sdl_functions_js.go#L4954) |
-| [SDL_BlitSurfaceTiledWithScale](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiledWithScale) | [:heavy_check_mark:](sdl/methods.go#L1773) | [:x:](sdl/sdl_functions_js.go#L4985) |
-| [SDL_BlitSurface9Grid](https://wiki.libsdl.org/SDL3/SDL_BlitSurface9Grid) | [:heavy_check_mark:](sdl/methods.go#L1783) | [:x:](sdl/sdl_functions_js.go#L5020) |
-| [SDL_MapSurfaceRGB](https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGB) | [:heavy_check_mark:](sdl/methods.go#L1793) | [:x:](sdl/sdl_functions_js.go#L5063) |
-| [SDL_MapSurfaceRGBA](https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGBA) | [:heavy_check_mark:](sdl/methods.go#L1799) | [:x:](sdl/sdl_functions_js.go#L5085) |
-| [SDL_ReadSurfacePixel](https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixel) | [:heavy_check_mark:](sdl/methods.go#L1805) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L5109) |
-| [SDL_ReadSurfacePixelFloat](https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixelFloat) | [:heavy_check_mark:](sdl/methods.go#L1817) | [:x:](sdl/sdl_functions_js.go#L5140) |
-| [SDL_WriteSurfacePixel](https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixel) | [:heavy_check_mark:](sdl/methods.go#L1829) | [:x:](sdl/sdl_functions_js.go#L5180) |
-| [SDL_WriteSurfacePixelFloat](https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixelFloat) | [:heavy_check_mark:](sdl/methods.go#L1839) | [:x:](sdl/sdl_functions_js.go#L5208) |
+| [SDL_GetPixelFormatName](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatName) | [:heavy_check_mark:](sdl/methods.go#L5851) | [:x:](sdl/sdl_functions_js.go#L3386) |
+| [SDL_GetMasksForPixelFormat](https://wiki.libsdl.org/SDL3/SDL_GetMasksForPixelFormat) | [:x:](sdl/methods.go#L5857) | [:x:](sdl/sdl_functions_js.go#L3399) |
+| [SDL_GetPixelFormatForMasks](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatForMasks) | [:heavy_check_mark:](sdl/functions.go#L362) | [:x:](sdl/sdl_functions_js.go#L3437) |
+| [SDL_GetPixelFormatDetails](https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatDetails) | [:heavy_check_mark:](sdl/methods.go#L5865) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3458) |
+| [SDL_CreatePalette](https://wiki.libsdl.org/SDL3/SDL_CreatePalette) | [:heavy_check_mark:](sdl/functions.go#L368) | [:x:](sdl/sdl_functions_js.go#L3470) |
+| [SDL_SetPaletteColors](https://wiki.libsdl.org/SDL3/SDL_SetPaletteColors) | [:heavy_check_mark:](sdl/methods.go#L5222) | [:x:](sdl/sdl_functions_js.go#L3486) |
+| [SDL_DestroyPalette](https://wiki.libsdl.org/SDL3/SDL_DestroyPalette) | [:heavy_check_mark:](sdl/methods.go#L5232) | [:x:](sdl/sdl_functions_js.go#L3511) |
+| [SDL_MapRGB](https://wiki.libsdl.org/SDL3/SDL_MapRGB) | [:heavy_check_mark:](sdl/methods.go#L1366) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3525) |
+| [SDL_MapRGBA](https://wiki.libsdl.org/SDL3/SDL_MapRGBA) | [:heavy_check_mark:](sdl/methods.go#L1372) | [:x:](sdl/sdl_functions_js.go#L3552) |
+| [SDL_GetRGB](https://wiki.libsdl.org/SDL3/SDL_GetRGB) | [:heavy_check_mark:](sdl/functions.go#L391) | [:x:](sdl/sdl_functions_js.go#L3581) |
+| [SDL_GetRGBA](https://wiki.libsdl.org/SDL3/SDL_GetRGBA) | [:heavy_check_mark:](sdl/functions.go#L399) | [:x:](sdl/sdl_functions_js.go#L3617) |
 </details>
 <details open>
 <summary><h3>BlendMode</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_ComposeCustomBlendMode](https://wiki.libsdl.org/SDL3/SDL_ComposeCustomBlendMode) | [:heavy_check_mark:](sdl/functions.go#L460) | [:x:](sdl/sdl_functions_js.go#L3363) |
+| [SDL_CreateSurface](https://wiki.libsdl.org/SDL3/SDL_CreateSurface) | [:heavy_check_mark:](sdl/functions.go#L409) | [:x:](sdl/sdl_functions_js.go#L3932) |
+| [SDL_CreateSurfaceFrom](https://wiki.libsdl.org/SDL3/SDL_CreateSurfaceFrom) | [:heavy_check_mark:](sdl/functions.go#L420) | [:x:](sdl/sdl_functions_js.go#L3952) |
+| [SDL_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_DestroySurface) | [:heavy_check_mark:](sdl/methods.go#L1380) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L3976) |
+| [SDL_GetSurfaceProperties](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceProperties) | [:heavy_check_mark:](sdl/methods.go#L1389) | [:x:](sdl/sdl_functions_js.go#L3988) |
+| [SDL_SetSurfaceColorspace](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorspace) | [:heavy_check_mark:](sdl/methods.go#L1400) | [:x:](sdl/sdl_functions_js.go#L4004) |
+| [SDL_GetSurfaceColorspace](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorspace) | [:heavy_check_mark:](sdl/methods.go#L1410) | [:x:](sdl/sdl_functions_js.go#L4022) |
+| [SDL_CreateSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_CreateSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1416) | [:x:](sdl/sdl_functions_js.go#L4038) |
+| [SDL_SetSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_SetSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1427) | [:x:](sdl/sdl_functions_js.go#L4057) |
+| [SDL_GetSurfacePalette](https://wiki.libsdl.org/SDL3/SDL_GetSurfacePalette) | [:heavy_check_mark:](sdl/methods.go#L1437) | [:x:](sdl/sdl_functions_js.go#L4078) |
+| [SDL_AddSurfaceAlternateImage](https://wiki.libsdl.org/SDL3/SDL_AddSurfaceAlternateImage) | [:heavy_check_mark:](sdl/methods.go#L1443) | [:x:](sdl/sdl_functions_js.go#L4097) |
+| [SDL_SurfaceHasAlternateImages](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasAlternateImages) | [:heavy_check_mark:](sdl/methods.go#L1453) | [:x:](sdl/sdl_functions_js.go#L4118) |
+| [SDL_GetSurfaceImages](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceImages) | [:heavy_check_mark:](sdl/methods.go#L1459) | [:x:](sdl/sdl_functions_js.go#L4134) |
+| [SDL_RemoveSurfaceAlternateImages](https://wiki.libsdl.org/SDL3/SDL_RemoveSurfaceAlternateImages) | [:heavy_check_mark:](sdl/methods.go#L1473) | [:x:](sdl/sdl_functions_js.go#L4155) |
+| [SDL_LockSurface](https://wiki.libsdl.org/SDL3/SDL_LockSurface) | [:heavy_check_mark:](sdl/methods.go#L1479) | [:x:](sdl/sdl_functions_js.go#L4169) |
+| [SDL_UnlockSurface](https://wiki.libsdl.org/SDL3/SDL_UnlockSurface) | [:heavy_check_mark:](sdl/methods.go#L1489) | [:x:](sdl/sdl_functions_js.go#L4185) |
+| [SDL_LoadBMP_IO](https://wiki.libsdl.org/SDL3/SDL_LoadBMP_IO) | [:heavy_check_mark:](sdl/functions.go#L432) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4199) |
+| [SDL_LoadBMP](https://wiki.libsdl.org/SDL3/SDL_LoadBMP) | [:heavy_check_mark:](sdl/functions.go#L443) | [:x:](sdl/sdl_functions_js.go#L4219) |
+| [SDL_SaveBMP_IO](https://wiki.libsdl.org/SDL3/SDL_SaveBMP_IO) | [:heavy_check_mark:](sdl/methods.go#L1495) | [:x:](sdl/sdl_functions_js.go#L4235) |
+| [SDL_SaveBMP](https://wiki.libsdl.org/SDL3/SDL_SaveBMP) | [:heavy_check_mark:](sdl/methods.go#L1505) | [:x:](sdl/sdl_functions_js.go#L4258) |
+| [SDL_SetSurfaceRLE](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceRLE) | [:heavy_check_mark:](sdl/methods.go#L1515) | [:x:](sdl/sdl_functions_js.go#L4276) |
+| [SDL_SurfaceHasRLE](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasRLE) | [:heavy_check_mark:](sdl/methods.go#L1525) | [:x:](sdl/sdl_functions_js.go#L4294) |
+| [SDL_SetSurfaceColorKey](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorKey) | [:heavy_check_mark:](sdl/methods.go#L1531) | [:x:](sdl/sdl_functions_js.go#L4310) |
+| [SDL_SurfaceHasColorKey](https://wiki.libsdl.org/SDL3/SDL_SurfaceHasColorKey) | [:heavy_check_mark:](sdl/methods.go#L1541) | [:x:](sdl/sdl_functions_js.go#L4330) |
+| [SDL_GetSurfaceColorKey](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorKey) | [:heavy_check_mark:](sdl/methods.go#L1547) | [:x:](sdl/sdl_functions_js.go#L4346) |
+| [SDL_SetSurfaceColorMod](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceColorMod) | [:heavy_check_mark:](sdl/methods.go#L1558) | [:x:](sdl/sdl_functions_js.go#L4367) |
+| [SDL_GetSurfaceColorMod](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceColorMod) | [:heavy_check_mark:](sdl/methods.go#L1568) | [:x:](sdl/sdl_functions_js.go#L4389) |
+| [SDL_SetSurfaceAlphaMod](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceAlphaMod) | [:heavy_check_mark:](sdl/methods.go#L1580) | [:x:](sdl/sdl_functions_js.go#L4420) |
+| [SDL_GetSurfaceAlphaMod](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceAlphaMod) | [:heavy_check_mark:](sdl/methods.go#L1590) | [:x:](sdl/sdl_functions_js.go#L4438) |
+| [SDL_SetSurfaceBlendMode](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceBlendMode) | [:heavy_check_mark:](sdl/methods.go#L1602) | [:x:](sdl/sdl_functions_js.go#L4459) |
+| [SDL_GetSurfaceBlendMode](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceBlendMode) | [:heavy_check_mark:](sdl/methods.go#L1612) | [:x:](sdl/sdl_functions_js.go#L4477) |
+| [SDL_SetSurfaceClipRect](https://wiki.libsdl.org/SDL3/SDL_SetSurfaceClipRect) | [:heavy_check_mark:](sdl/methods.go#L1624) | [:x:](sdl/sdl_functions_js.go#L4498) |
+| [SDL_GetSurfaceClipRect](https://wiki.libsdl.org/SDL3/SDL_GetSurfaceClipRect) | [:heavy_check_mark:](sdl/methods.go#L1630) | [:x:](sdl/sdl_functions_js.go#L4519) |
+| [SDL_FlipSurface](https://wiki.libsdl.org/SDL3/SDL_FlipSurface) | [:heavy_check_mark:](sdl/methods.go#L1642) | [:x:](sdl/sdl_functions_js.go#L4540) |
+| [SDL_DuplicateSurface](https://wiki.libsdl.org/SDL3/SDL_DuplicateSurface) | [:heavy_check_mark:](sdl/methods.go#L1652) | [:x:](sdl/sdl_functions_js.go#L4558) |
+| [SDL_ScaleSurface](https://wiki.libsdl.org/SDL3/SDL_ScaleSurface) | [:heavy_check_mark:](sdl/methods.go#L1663) | [:x:](sdl/sdl_functions_js.go#L4577) |
+| [SDL_ConvertSurface](https://wiki.libsdl.org/SDL3/SDL_ConvertSurface) | [:heavy_check_mark:](sdl/methods.go#L1674) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4602) |
+| [SDL_ConvertSurfaceAndColorspace](https://wiki.libsdl.org/SDL3/SDL_ConvertSurfaceAndColorspace) | [:heavy_check_mark:](sdl/methods.go#L1685) | [:x:](sdl/sdl_functions_js.go#L4619) |
+| [SDL_ConvertPixels](https://wiki.libsdl.org/SDL3/SDL_ConvertPixels) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4649) |
+| [SDL_ConvertPixelsAndColorspace](https://wiki.libsdl.org/SDL3/SDL_ConvertPixelsAndColorspace) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4676) |
+| [SDL_PremultiplyAlpha](https://wiki.libsdl.org/SDL3/SDL_PremultiplyAlpha) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L4711) |
+| [SDL_PremultiplySurfaceAlpha](https://wiki.libsdl.org/SDL3/SDL_PremultiplySurfaceAlpha) | [:heavy_check_mark:](sdl/methods.go#L1696) | [:x:](sdl/sdl_functions_js.go#L4740) |
+| [SDL_ClearSurface](https://wiki.libsdl.org/SDL3/SDL_ClearSurface) | [:heavy_check_mark:](sdl/methods.go#L1706) | [:x:](sdl/sdl_functions_js.go#L4758) |
+| [SDL_FillSurfaceRect](https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRect) | [:heavy_check_mark:](sdl/methods.go#L1716) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L4782) |
+| [SDL_FillSurfaceRects](https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRects) | [:heavy_check_mark:](sdl/methods.go#L1726) | [:x:](sdl/sdl_functions_js.go#L4801) |
+| [SDL_BlitSurface](https://wiki.libsdl.org/SDL3/SDL_BlitSurface) | [:heavy_check_mark:](sdl/methods.go#L1736) | [:x:](sdl/sdl_functions_js.go#L4826) |
+| [SDL_BlitSurfaceUnchecked](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUnchecked) | [:heavy_check_mark:](sdl/methods.go#L1746) | [:x:](sdl/sdl_functions_js.go#L4857) |
+| [SDL_BlitSurfaceScaled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceScaled) | [:heavy_check_mark:](sdl/methods.go#L1756) | [:x:](sdl/sdl_functions_js.go#L4888) |
+| [SDL_BlitSurfaceUncheckedScaled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceUncheckedScaled) | [:heavy_check_mark:](sdl/methods.go#L1766) | [:x:](sdl/sdl_functions_js.go#L4921) |
+| [SDL_StretchSurface](https://wiki.libsdl.org/SDL3/SDL_StretchSurface) | [:question:]() | [:question:]() |
+| [SDL_BlitSurfaceTiled](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiled) | [:heavy_check_mark:](sdl/methods.go#L1776) | [:x:](sdl/sdl_functions_js.go#L4954) |
+| [SDL_BlitSurfaceTiledWithScale](https://wiki.libsdl.org/SDL3/SDL_BlitSurfaceTiledWithScale) | [:heavy_check_mark:](sdl/methods.go#L1786) | [:x:](sdl/sdl_functions_js.go#L4985) |
+| [SDL_BlitSurface9Grid](https://wiki.libsdl.org/SDL3/SDL_BlitSurface9Grid) | [:heavy_check_mark:](sdl/methods.go#L1796) | [:x:](sdl/sdl_functions_js.go#L5020) |
+| [SDL_MapSurfaceRGB](https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGB) | [:heavy_check_mark:](sdl/methods.go#L1806) | [:x:](sdl/sdl_functions_js.go#L5063) |
+| [SDL_MapSurfaceRGBA](https://wiki.libsdl.org/SDL3/SDL_MapSurfaceRGBA) | [:heavy_check_mark:](sdl/methods.go#L1812) | [:x:](sdl/sdl_functions_js.go#L5085) |
+| [SDL_ReadSurfacePixel](https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixel) | [:heavy_check_mark:](sdl/methods.go#L1818) | [:heavy_check_mark:](sdl/sdl_functions_js.go#L5109) |
+| [SDL_ReadSurfacePixelFloat](https://wiki.libsdl.org/SDL3/SDL_ReadSurfacePixelFloat) | [:heavy_check_mark:](sdl/methods.go#L1830) | [:x:](sdl/sdl_functions_js.go#L5140) |
+| [SDL_WriteSurfacePixel](https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixel) | [:heavy_check_mark:](sdl/methods.go#L1842) | [:x:](sdl/sdl_functions_js.go#L5180) |
+| [SDL_WriteSurfacePixelFloat](https://wiki.libsdl.org/SDL3/SDL_WriteSurfacePixelFloat) | [:heavy_check_mark:](sdl/methods.go#L1852) | [:x:](sdl/sdl_functions_js.go#L5208) |
 </details>
 <details open>
 <summary><h3>Rect</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
+| [SDL_ComposeCustomBlendMode](https://wiki.libsdl.org/SDL3/SDL_ComposeCustomBlendMode) | [:heavy_check_mark:](sdl/functions.go#L460) | [:x:](sdl/sdl_functions_js.go#L3363) |
+</details>
+<details open>
+<summary><h3>Camera</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -994,14 +1001,14 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_RectEmptyFloat](https://wiki.libsdl.org/SDL3/SDL_RectEmptyFloat) | [:question:]() | [:question:]() |
 | [SDL_RectsEqualEpsilon](https://wiki.libsdl.org/SDL3/SDL_RectsEqualEpsilon) | [:question:]() | [:question:]() |
 | [SDL_RectsEqualFloat](https://wiki.libsdl.org/SDL3/SDL_RectsEqualFloat) | [:question:]() | [:question:]() |
-| [SDL_HasRectIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_HasRectIntersectionFloat) | [:x:](sdl/methods.go#L3931) | [:x:](sdl/sdl_functions_js.go#L3795) |
-| [SDL_GetRectIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectIntersectionFloat) | [:x:](sdl/methods.go#L3938) | [:x:](sdl/sdl_functions_js.go#L3816) |
-| [SDL_GetRectUnionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectUnionFloat) | [:x:](sdl/methods.go#L3945) | [:x:](sdl/sdl_functions_js.go#L3842) |
+| [SDL_HasRectIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_HasRectIntersectionFloat) | [:x:](sdl/methods.go#L3945) | [:x:](sdl/sdl_functions_js.go#L3795) |
+| [SDL_GetRectIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectIntersectionFloat) | [:x:](sdl/methods.go#L3952) | [:x:](sdl/sdl_functions_js.go#L3816) |
+| [SDL_GetRectUnionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectUnionFloat) | [:x:](sdl/methods.go#L3959) | [:x:](sdl/sdl_functions_js.go#L3842) |
 | [SDL_GetRectEnclosingPointsFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectEnclosingPointsFloat) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L3868) |
-| [SDL_GetRectAndLineIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectAndLineIntersectionFloat) | [:x:](sdl/methods.go#L3952) | [:x:](sdl/sdl_functions_js.go#L3896) |
+| [SDL_GetRectAndLineIntersectionFloat](https://wiki.libsdl.org/SDL3/SDL_GetRectAndLineIntersectionFloat) | [:x:](sdl/methods.go#L3966) | [:x:](sdl/sdl_functions_js.go#L3896) |
 </details>
 <details open>
-<summary><h3>Camera</h3></summary>
+<summary><h3>Clipboard</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1009,10 +1016,10 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetCameraDriver](https://wiki.libsdl.org/SDL3/SDL_GetCameraDriver) | [:heavy_check_mark:](sdl/functions.go#L1583) | [:x:](sdl/sdl_functions_js.go#L5247) |
 | [SDL_GetCurrentCameraDriver](https://wiki.libsdl.org/SDL3/SDL_GetCurrentCameraDriver) | [:heavy_check_mark:](sdl/functions.go#L1589) | [:x:](sdl/sdl_functions_js.go#L5260) |
 | [SDL_GetCameras](https://wiki.libsdl.org/SDL3/SDL_GetCameras) | [:heavy_check_mark:](sdl/functions.go#L1595) | [:x:](sdl/sdl_functions_js.go#L5271) |
-| [SDL_GetCameraSupportedFormats](https://wiki.libsdl.org/SDL3/SDL_GetCameraSupportedFormats) | [:x:](sdl/methods.go#L3485) | [:x:](sdl/sdl_functions_js.go#L5287) |
-| [SDL_GetCameraName](https://wiki.libsdl.org/SDL3/SDL_GetCameraName) | [:x:](sdl/methods.go#L3492) | [:x:](sdl/sdl_functions_js.go#L5305) |
-| [SDL_GetCameraPosition](https://wiki.libsdl.org/SDL3/SDL_GetCameraPosition) | [:x:](sdl/methods.go#L3499) | [:x:](sdl/sdl_functions_js.go#L5318) |
-| [SDL_OpenCamera](https://wiki.libsdl.org/SDL3/SDL_OpenCamera) | [:x:](sdl/methods.go#L3506) | [:x:](sdl/sdl_functions_js.go#L5331) |
+| [SDL_GetCameraSupportedFormats](https://wiki.libsdl.org/SDL3/SDL_GetCameraSupportedFormats) | [:x:](sdl/methods.go#L3499) | [:x:](sdl/sdl_functions_js.go#L5287) |
+| [SDL_GetCameraName](https://wiki.libsdl.org/SDL3/SDL_GetCameraName) | [:x:](sdl/methods.go#L3506) | [:x:](sdl/sdl_functions_js.go#L5305) |
+| [SDL_GetCameraPosition](https://wiki.libsdl.org/SDL3/SDL_GetCameraPosition) | [:x:](sdl/methods.go#L3513) | [:x:](sdl/sdl_functions_js.go#L5318) |
+| [SDL_OpenCamera](https://wiki.libsdl.org/SDL3/SDL_OpenCamera) | [:x:](sdl/methods.go#L3520) | [:x:](sdl/sdl_functions_js.go#L5331) |
 | [SDL_GetCameraPermissionState](https://wiki.libsdl.org/SDL3/SDL_GetCameraPermissionState) | [:heavy_check_mark:](sdl/methods.go#L374) | [:x:](sdl/sdl_functions_js.go#L5352) |
 | [SDL_GetCameraID](https://wiki.libsdl.org/SDL3/SDL_GetCameraID) | [:heavy_check_mark:](sdl/methods.go#L380) | [:x:](sdl/sdl_functions_js.go#L5368) |
 | [SDL_GetCameraProperties](https://wiki.libsdl.org/SDL3/SDL_GetCameraProperties) | [:heavy_check_mark:](sdl/methods.go#L391) | [:x:](sdl/sdl_functions_js.go#L5384) |
@@ -1022,7 +1029,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_CloseCamera](https://wiki.libsdl.org/SDL3/SDL_CloseCamera) | [:heavy_check_mark:](sdl/methods.go#L433) | [:x:](sdl/sdl_functions_js.go#L5464) |
 </details>
 <details open>
-<summary><h3>Clipboard</h3></summary>
+<summary><h3>Dialog</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1039,17 +1046,17 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetClipboardMimeTypes](https://wiki.libsdl.org/SDL3/SDL_GetClipboardMimeTypes) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L5614) |
 </details>
 <details open>
-<summary><h3>Dialog</h3></summary>
+<summary><h3>Tray</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_ShowOpenFileDialog](https://wiki.libsdl.org/SDL3/SDL_ShowOpenFileDialog) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7684) |
 | [SDL_ShowSaveFileDialog](https://wiki.libsdl.org/SDL3/SDL_ShowSaveFileDialog) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7713) |
 | [SDL_ShowOpenFolderDialog](https://wiki.libsdl.org/SDL3/SDL_ShowOpenFolderDialog) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7740) |
-| [SDL_ShowFileDialogWithProperties](https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties) | [:x:](sdl/methods.go#L2408) | [:x:](sdl/sdl_functions_js.go#L7762) |
+| [SDL_ShowFileDialogWithProperties](https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties) | [:x:](sdl/methods.go#L2426) | [:x:](sdl/sdl_functions_js.go#L7762) |
 </details>
 <details open>
-<summary><h3>Tray</h3></summary>
+<summary><h3>MessageBox</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1078,71 +1085,71 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_UpdateTrays](https://wiki.libsdl.org/SDL3/SDL_UpdateTrays) | [:question:]() | [:question:]() |
 </details>
 <details open>
-<summary><h3>MessageBox</h3></summary>
+<summary><h3>GPU</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_ShowMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox) | [:heavy_check_mark:](sdl/functions.go#L994) | [:x:](sdl/sdl_functions_js.go#L14325) |
 | [SDL_ShowSimpleMessageBox](https://wiki.libsdl.org/SDL3/SDL_ShowSimpleMessageBox) | [:heavy_check_mark:](sdl/functions.go#L1027) | [:x:](sdl/sdl_functions_js.go#L14340) |
 </details>
-<details open>
-<summary><h3>GPU</h3></summary>
+<details>
+<summary><h3>Vulkan</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GPUSupportsShaderFormats](https://wiki.libsdl.org/SDL3/SDL_GPUSupportsShaderFormats) | [:heavy_check_mark:](sdl/functions.go#L468) | [:x:](sdl/sdl_functions_js.go#L11373) |
-| [SDL_GPUSupportsProperties](https://wiki.libsdl.org/SDL3/SDL_GPUSupportsProperties) | [:heavy_check_mark:](sdl/methods.go#L5791) | [:x:](sdl/sdl_functions_js.go#L11388) |
+| [SDL_GPUSupportsProperties](https://wiki.libsdl.org/SDL3/SDL_GPUSupportsProperties) | [:heavy_check_mark:](sdl/methods.go#L5805) | [:x:](sdl/sdl_functions_js.go#L11388) |
 | [SDL_CreateGPUDevice](https://wiki.libsdl.org/SDL3/SDL_CreateGPUDevice) | [:heavy_check_mark:](sdl/functions.go#L478) | [:x:](sdl/sdl_functions_js.go#L11401) |
 | [SDL_CreateGPUDeviceWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateGPUDeviceWithProperties) | [:heavy_check_mark:](sdl/functions.go#L493) | [:x:](sdl/sdl_functions_js.go#L11421) |
-| [SDL_DestroyGPUDevice](https://wiki.libsdl.org/SDL3/SDL_DestroyGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L1881) | [:x:](sdl/sdl_functions_js.go#L11437) |
+| [SDL_DestroyGPUDevice](https://wiki.libsdl.org/SDL3/SDL_DestroyGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L1894) | [:x:](sdl/sdl_functions_js.go#L11437) |
 | [SDL_GetNumGPUDrivers](https://wiki.libsdl.org/SDL3/SDL_GetNumGPUDrivers) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11451) |
 | [SDL_GetGPUDriver](https://wiki.libsdl.org/SDL3/SDL_GetGPUDriver) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L11462) |
-| [SDL_GetGPUDeviceDriver](https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceDriver) | [:heavy_check_mark:](sdl/methods.go#L1887) | [:x:](sdl/sdl_functions_js.go#L11475) |
-| [SDL_GetGPUShaderFormats](https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats) | [:heavy_check_mark:](sdl/methods.go#L1893) | [:x:](sdl/sdl_functions_js.go#L11491) |
+| [SDL_GetGPUDeviceDriver](https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceDriver) | [:heavy_check_mark:](sdl/methods.go#L1900) | [:x:](sdl/sdl_functions_js.go#L11475) |
+| [SDL_GetGPUShaderFormats](https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats) | [:heavy_check_mark:](sdl/methods.go#L1906) | [:x:](sdl/sdl_functions_js.go#L11491) |
 | [SDL_GetGPUDeviceProperties](https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceProperties) | [:question:]() | [:question:]() |
-| [SDL_CreateGPUComputePipeline](https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline) | [:heavy_check_mark:](sdl/methods.go#L1899) | [:x:](sdl/sdl_functions_js.go#L11507) |
-| [SDL_CreateGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L1925) | [:x:](sdl/sdl_functions_js.go#L11531) |
-| [SDL_CreateGPUSampler](https://wiki.libsdl.org/SDL3/SDL_CreateGPUSampler) | [:heavy_check_mark:](sdl/methods.go#L1936) | [:x:](sdl/sdl_functions_js.go#L11555) |
-| [SDL_CreateGPUShader](https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader) | [:heavy_check_mark:](sdl/methods.go#L1942) | [:x:](sdl/sdl_functions_js.go#L11579) |
-| [SDL_CreateGPUTexture](https://wiki.libsdl.org/SDL3/SDL_CreateGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L1964) | [:x:](sdl/sdl_functions_js.go#L11603) |
-| [SDL_CreateGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_CreateGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L1975) | [:x:](sdl/sdl_functions_js.go#L11627) |
-| [SDL_CreateGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_CreateGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L1986) | [:x:](sdl/sdl_functions_js.go#L11651) |
-| [SDL_SetGPUBufferName](https://wiki.libsdl.org/SDL3/SDL_SetGPUBufferName) | [:heavy_check_mark:](sdl/methods.go#L1997) | [:x:](sdl/sdl_functions_js.go#L11675) |
-| [SDL_SetGPUTextureName](https://wiki.libsdl.org/SDL3/SDL_SetGPUTextureName) | [:heavy_check_mark:](sdl/methods.go#L2003) | [:x:](sdl/sdl_functions_js.go#L11696) |
-| [SDL_InsertGPUDebugLabel](https://wiki.libsdl.org/SDL3/SDL_InsertGPUDebugLabel) | [:heavy_check_mark:](sdl/methods.go#L5892) | [:x:](sdl/sdl_functions_js.go#L11717) |
-| [SDL_PushGPUDebugGroup](https://wiki.libsdl.org/SDL3/SDL_PushGPUDebugGroup) | [:heavy_check_mark:](sdl/methods.go#L5898) | [:x:](sdl/sdl_functions_js.go#L11733) |
-| [SDL_PopGPUDebugGroup](https://wiki.libsdl.org/SDL3/SDL_PopGPUDebugGroup) | [:heavy_check_mark:](sdl/methods.go#L5904) | [:x:](sdl/sdl_functions_js.go#L11749) |
-| [SDL_ReleaseGPUTexture](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L2009) | [:x:](sdl/sdl_functions_js.go#L11763) |
-| [SDL_ReleaseGPUSampler](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUSampler) | [:heavy_check_mark:](sdl/methods.go#L2015) | [:x:](sdl/sdl_functions_js.go#L11782) |
-| [SDL_ReleaseGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L2021) | [:x:](sdl/sdl_functions_js.go#L11801) |
-| [SDL_ReleaseGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2027) | [:x:](sdl/sdl_functions_js.go#L11820) |
-| [SDL_ReleaseGPUComputePipeline](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUComputePipeline) | [:heavy_check_mark:](sdl/methods.go#L2033) | [:x:](sdl/sdl_functions_js.go#L11839) |
-| [SDL_ReleaseGPUShader](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUShader) | [:heavy_check_mark:](sdl/methods.go#L2039) | [:x:](sdl/sdl_functions_js.go#L11858) |
-| [SDL_ReleaseGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L2045) | [:x:](sdl/sdl_functions_js.go#L11877) |
-| [SDL_AcquireGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_AcquireGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L2051) | [:x:](sdl/sdl_functions_js.go#L11896) |
-| [SDL_PushGPUVertexUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUVertexUniformData) | [:heavy_check_mark:](sdl/methods.go#L5910) | [:x:](sdl/sdl_functions_js.go#L11915) |
-| [SDL_PushGPUFragmentUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUFragmentUniformData) | [:heavy_check_mark:](sdl/methods.go#L5916) | [:x:](sdl/sdl_functions_js.go#L11935) |
-| [SDL_PushGPUComputeUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUComputeUniformData) | [:heavy_check_mark:](sdl/methods.go#L5922) | [:x:](sdl/sdl_functions_js.go#L11955) |
-| [SDL_BeginGPURenderPass](https://wiki.libsdl.org/SDL3/SDL_BeginGPURenderPass) | [:heavy_check_mark:](sdl/methods.go#L5928) | [:x:](sdl/sdl_functions_js.go#L11975) |
-| [SDL_BindGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_BindGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L1215) | [:x:](sdl/sdl_functions_js.go#L12006) |
-| [SDL_SetGPUViewport](https://wiki.libsdl.org/SDL3/SDL_SetGPUViewport) | [:heavy_check_mark:](sdl/methods.go#L1221) | [:x:](sdl/sdl_functions_js.go#L12025) |
-| [SDL_SetGPUScissor](https://wiki.libsdl.org/SDL3/SDL_SetGPUScissor) | [:heavy_check_mark:](sdl/methods.go#L1227) | [:x:](sdl/sdl_functions_js.go#L12044) |
+| [SDL_CreateGPUComputePipeline](https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline) | [:heavy_check_mark:](sdl/methods.go#L1912) | [:x:](sdl/sdl_functions_js.go#L11507) |
+| [SDL_CreateGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L1938) | [:x:](sdl/sdl_functions_js.go#L11531) |
+| [SDL_CreateGPUSampler](https://wiki.libsdl.org/SDL3/SDL_CreateGPUSampler) | [:heavy_check_mark:](sdl/methods.go#L1949) | [:x:](sdl/sdl_functions_js.go#L11555) |
+| [SDL_CreateGPUShader](https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader) | [:heavy_check_mark:](sdl/methods.go#L1960) | [:x:](sdl/sdl_functions_js.go#L11579) |
+| [SDL_CreateGPUTexture](https://wiki.libsdl.org/SDL3/SDL_CreateGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L1982) | [:x:](sdl/sdl_functions_js.go#L11603) |
+| [SDL_CreateGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_CreateGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L1993) | [:x:](sdl/sdl_functions_js.go#L11627) |
+| [SDL_CreateGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_CreateGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2004) | [:x:](sdl/sdl_functions_js.go#L11651) |
+| [SDL_SetGPUBufferName](https://wiki.libsdl.org/SDL3/SDL_SetGPUBufferName) | [:heavy_check_mark:](sdl/methods.go#L2015) | [:x:](sdl/sdl_functions_js.go#L11675) |
+| [SDL_SetGPUTextureName](https://wiki.libsdl.org/SDL3/SDL_SetGPUTextureName) | [:heavy_check_mark:](sdl/methods.go#L2021) | [:x:](sdl/sdl_functions_js.go#L11696) |
+| [SDL_InsertGPUDebugLabel](https://wiki.libsdl.org/SDL3/SDL_InsertGPUDebugLabel) | [:heavy_check_mark:](sdl/methods.go#L5906) | [:x:](sdl/sdl_functions_js.go#L11717) |
+| [SDL_PushGPUDebugGroup](https://wiki.libsdl.org/SDL3/SDL_PushGPUDebugGroup) | [:heavy_check_mark:](sdl/methods.go#L5912) | [:x:](sdl/sdl_functions_js.go#L11733) |
+| [SDL_PopGPUDebugGroup](https://wiki.libsdl.org/SDL3/SDL_PopGPUDebugGroup) | [:heavy_check_mark:](sdl/methods.go#L5918) | [:x:](sdl/sdl_functions_js.go#L11749) |
+| [SDL_ReleaseGPUTexture](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L2027) | [:x:](sdl/sdl_functions_js.go#L11763) |
+| [SDL_ReleaseGPUSampler](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUSampler) | [:heavy_check_mark:](sdl/methods.go#L2033) | [:x:](sdl/sdl_functions_js.go#L11782) |
+| [SDL_ReleaseGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L2039) | [:x:](sdl/sdl_functions_js.go#L11801) |
+| [SDL_ReleaseGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2045) | [:x:](sdl/sdl_functions_js.go#L11820) |
+| [SDL_ReleaseGPUComputePipeline](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUComputePipeline) | [:heavy_check_mark:](sdl/methods.go#L2051) | [:x:](sdl/sdl_functions_js.go#L11839) |
+| [SDL_ReleaseGPUShader](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUShader) | [:heavy_check_mark:](sdl/methods.go#L2057) | [:x:](sdl/sdl_functions_js.go#L11858) |
+| [SDL_ReleaseGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L2063) | [:x:](sdl/sdl_functions_js.go#L11877) |
+| [SDL_AcquireGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_AcquireGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L2069) | [:x:](sdl/sdl_functions_js.go#L11896) |
+| [SDL_PushGPUVertexUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUVertexUniformData) | [:heavy_check_mark:](sdl/methods.go#L5924) | [:x:](sdl/sdl_functions_js.go#L11915) |
+| [SDL_PushGPUFragmentUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUFragmentUniformData) | [:heavy_check_mark:](sdl/methods.go#L5930) | [:x:](sdl/sdl_functions_js.go#L11935) |
+| [SDL_PushGPUComputeUniformData](https://wiki.libsdl.org/SDL3/SDL_PushGPUComputeUniformData) | [:heavy_check_mark:](sdl/methods.go#L5936) | [:x:](sdl/sdl_functions_js.go#L11955) |
+| [SDL_BeginGPURenderPass](https://wiki.libsdl.org/SDL3/SDL_BeginGPURenderPass) | [:heavy_check_mark:](sdl/methods.go#L5942) | [:x:](sdl/sdl_functions_js.go#L11975) |
+| [SDL_BindGPUGraphicsPipeline](https://wiki.libsdl.org/SDL3/SDL_BindGPUGraphicsPipeline) | [:heavy_check_mark:](sdl/methods.go#L1228) | [:x:](sdl/sdl_functions_js.go#L12006) |
+| [SDL_SetGPUViewport](https://wiki.libsdl.org/SDL3/SDL_SetGPUViewport) | [:heavy_check_mark:](sdl/methods.go#L1234) | [:x:](sdl/sdl_functions_js.go#L12025) |
+| [SDL_SetGPUScissor](https://wiki.libsdl.org/SDL3/SDL_SetGPUScissor) | [:heavy_check_mark:](sdl/methods.go#L1240) | [:x:](sdl/sdl_functions_js.go#L12044) |
 | [SDL_SetGPUBlendConstants](https://wiki.libsdl.org/SDL3/SDL_SetGPUBlendConstants) | [:question:]() | [:question:]() |
-| [SDL_SetGPUStencilReference](https://wiki.libsdl.org/SDL3/SDL_SetGPUStencilReference) | [:heavy_check_mark:](sdl/methods.go#L1233) | [:x:](sdl/sdl_functions_js.go#L12063) |
-| [SDL_BindGPUVertexBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexBuffers) | [:heavy_check_mark:](sdl/methods.go#L1239) | [:x:](sdl/sdl_functions_js.go#L12079) |
-| [SDL_BindGPUIndexBuffer](https://wiki.libsdl.org/SDL3/SDL_BindGPUIndexBuffer) | [:heavy_check_mark:](sdl/methods.go#L1245) | [:x:](sdl/sdl_functions_js.go#L12102) |
-| [SDL_BindGPUVertexSamplers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexSamplers) | [:heavy_check_mark:](sdl/methods.go#L1251) | [:x:](sdl/sdl_functions_js.go#L12123) |
-| [SDL_BindGPUVertexStorageTextures](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageTextures) | [:heavy_check_mark:](sdl/methods.go#L1257) | [:x:](sdl/sdl_functions_js.go#L12146) |
-| [SDL_BindGPUVertexStorageBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers) | [:heavy_check_mark:](sdl/methods.go#L1263) | [:x:](sdl/sdl_functions_js.go#L12169) |
-| [SDL_BindGPUFragmentSamplers](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentSamplers) | [:heavy_check_mark:](sdl/methods.go#L1269) | [:x:](sdl/sdl_functions_js.go#L12192) |
-| [SDL_BindGPUFragmentStorageTextures](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageTextures) | [:heavy_check_mark:](sdl/methods.go#L1275) | [:x:](sdl/sdl_functions_js.go#L12215) |
-| [SDL_BindGPUFragmentStorageBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers) | [:heavy_check_mark:](sdl/methods.go#L1281) | [:x:](sdl/sdl_functions_js.go#L12238) |
-| [SDL_DrawGPUIndexedPrimitives](https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitives) | [:heavy_check_mark:](sdl/methods.go#L1287) | [:x:](sdl/sdl_functions_js.go#L12261) |
-| [SDL_DrawGPUPrimitives](https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitives) | [:heavy_check_mark:](sdl/methods.go#L1293) | [:x:](sdl/sdl_functions_js.go#L12285) |
-| [SDL_DrawGPUPrimitivesIndirect](https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitivesIndirect) | [:heavy_check_mark:](sdl/methods.go#L1299) | [:x:](sdl/sdl_functions_js.go#L12307) |
-| [SDL_DrawGPUIndexedPrimitivesIndirect](https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitivesIndirect) | [:heavy_check_mark:](sdl/methods.go#L1305) | [:x:](sdl/sdl_functions_js.go#L12330) |
-| [SDL_EndGPURenderPass](https://wiki.libsdl.org/SDL3/SDL_EndGPURenderPass) | [:heavy_check_mark:](sdl/methods.go#L1311) | [:x:](sdl/sdl_functions_js.go#L12353) |
-| [SDL_BeginGPUComputePass](https://wiki.libsdl.org/SDL3/SDL_BeginGPUComputePass) | [:heavy_check_mark:](sdl/methods.go#L5934) | [:x:](sdl/sdl_functions_js.go#L12367) |
+| [SDL_SetGPUStencilReference](https://wiki.libsdl.org/SDL3/SDL_SetGPUStencilReference) | [:heavy_check_mark:](sdl/methods.go#L1246) | [:x:](sdl/sdl_functions_js.go#L12063) |
+| [SDL_BindGPUVertexBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexBuffers) | [:heavy_check_mark:](sdl/methods.go#L1252) | [:x:](sdl/sdl_functions_js.go#L12079) |
+| [SDL_BindGPUIndexBuffer](https://wiki.libsdl.org/SDL3/SDL_BindGPUIndexBuffer) | [:heavy_check_mark:](sdl/methods.go#L1258) | [:x:](sdl/sdl_functions_js.go#L12102) |
+| [SDL_BindGPUVertexSamplers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexSamplers) | [:heavy_check_mark:](sdl/methods.go#L1264) | [:x:](sdl/sdl_functions_js.go#L12123) |
+| [SDL_BindGPUVertexStorageTextures](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageTextures) | [:heavy_check_mark:](sdl/methods.go#L1270) | [:x:](sdl/sdl_functions_js.go#L12146) |
+| [SDL_BindGPUVertexStorageBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers) | [:heavy_check_mark:](sdl/methods.go#L1276) | [:x:](sdl/sdl_functions_js.go#L12169) |
+| [SDL_BindGPUFragmentSamplers](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentSamplers) | [:heavy_check_mark:](sdl/methods.go#L1282) | [:x:](sdl/sdl_functions_js.go#L12192) |
+| [SDL_BindGPUFragmentStorageTextures](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageTextures) | [:heavy_check_mark:](sdl/methods.go#L1288) | [:x:](sdl/sdl_functions_js.go#L12215) |
+| [SDL_BindGPUFragmentStorageBuffers](https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers) | [:heavy_check_mark:](sdl/methods.go#L1294) | [:x:](sdl/sdl_functions_js.go#L12238) |
+| [SDL_DrawGPUIndexedPrimitives](https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitives) | [:heavy_check_mark:](sdl/methods.go#L1300) | [:x:](sdl/sdl_functions_js.go#L12261) |
+| [SDL_DrawGPUPrimitives](https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitives) | [:heavy_check_mark:](sdl/methods.go#L1306) | [:x:](sdl/sdl_functions_js.go#L12285) |
+| [SDL_DrawGPUPrimitivesIndirect](https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitivesIndirect) | [:heavy_check_mark:](sdl/methods.go#L1312) | [:x:](sdl/sdl_functions_js.go#L12307) |
+| [SDL_DrawGPUIndexedPrimitivesIndirect](https://wiki.libsdl.org/SDL3/SDL_DrawGPUIndexedPrimitivesIndirect) | [:heavy_check_mark:](sdl/methods.go#L1318) | [:x:](sdl/sdl_functions_js.go#L12330) |
+| [SDL_EndGPURenderPass](https://wiki.libsdl.org/SDL3/SDL_EndGPURenderPass) | [:heavy_check_mark:](sdl/methods.go#L1324) | [:x:](sdl/sdl_functions_js.go#L12353) |
+| [SDL_BeginGPUComputePass](https://wiki.libsdl.org/SDL3/SDL_BeginGPUComputePass) | [:heavy_check_mark:](sdl/methods.go#L5948) | [:x:](sdl/sdl_functions_js.go#L12367) |
 | [SDL_BindGPUComputePipeline](https://wiki.libsdl.org/SDL3/SDL_BindGPUComputePipeline) | [:heavy_check_mark:](sdl/methods.go#L893) | [:x:](sdl/sdl_functions_js.go#L12400) |
 | [SDL_BindGPUComputeSamplers](https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeSamplers) | [:heavy_check_mark:](sdl/methods.go#L899) | [:x:](sdl/sdl_functions_js.go#L12419) |
 | [SDL_BindGPUComputeStorageTextures](https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageTextures) | [:heavy_check_mark:](sdl/methods.go#L905) | [:x:](sdl/sdl_functions_js.go#L12442) |
@@ -1150,44 +1157,44 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_DispatchGPUCompute](https://wiki.libsdl.org/SDL3/SDL_DispatchGPUCompute) | [:heavy_check_mark:](sdl/methods.go#L917) | [:x:](sdl/sdl_functions_js.go#L12488) |
 | [SDL_DispatchGPUComputeIndirect](https://wiki.libsdl.org/SDL3/SDL_DispatchGPUComputeIndirect) | [:heavy_check_mark:](sdl/methods.go#L923) | [:x:](sdl/sdl_functions_js.go#L12508) |
 | [SDL_EndGPUComputePass](https://wiki.libsdl.org/SDL3/SDL_EndGPUComputePass) | [:heavy_check_mark:](sdl/methods.go#L929) | [:x:](sdl/sdl_functions_js.go#L12529) |
-| [SDL_MapGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_MapGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2062) | [:x:](sdl/sdl_functions_js.go#L12543) |
-| [SDL_UnmapGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_UnmapGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2073) | [:x:](sdl/sdl_functions_js.go#L12566) |
-| [SDL_BeginGPUCopyPass](https://wiki.libsdl.org/SDL3/SDL_BeginGPUCopyPass) | [:heavy_check_mark:](sdl/methods.go#L5940) | [:x:](sdl/sdl_functions_js.go#L12585) |
-| [SDL_UploadToGPUTexture](https://wiki.libsdl.org/SDL3/SDL_UploadToGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L2736) | [:x:](sdl/sdl_functions_js.go#L12604) |
-| [SDL_UploadToGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_UploadToGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L2742) | [:x:](sdl/sdl_functions_js.go#L12630) |
-| [SDL_CopyGPUTextureToTexture](https://wiki.libsdl.org/SDL3/SDL_CopyGPUTextureToTexture) | [:x:](sdl/methods.go#L2748) | [:x:](sdl/sdl_functions_js.go#L12656) |
-| [SDL_CopyGPUBufferToBuffer](https://wiki.libsdl.org/SDL3/SDL_CopyGPUBufferToBuffer) | [:x:](sdl/methods.go#L2755) | [:x:](sdl/sdl_functions_js.go#L12688) |
-| [SDL_DownloadFromGPUTexture](https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUTexture) | [:x:](sdl/methods.go#L2762) | [:x:](sdl/sdl_functions_js.go#L12716) |
-| [SDL_DownloadFromGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUBuffer) | [:x:](sdl/methods.go#L2769) | [:x:](sdl/sdl_functions_js.go#L12740) |
-| [SDL_EndGPUCopyPass](https://wiki.libsdl.org/SDL3/SDL_EndGPUCopyPass) | [:heavy_check_mark:](sdl/methods.go#L2776) | [:x:](sdl/sdl_functions_js.go#L12764) |
-| [SDL_GenerateMipmapsForGPUTexture](https://wiki.libsdl.org/SDL3/SDL_GenerateMipmapsForGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L5946) | [:x:](sdl/sdl_functions_js.go#L12778) |
-| [SDL_BlitGPUTexture](https://wiki.libsdl.org/SDL3/SDL_BlitGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L5952) | [:x:](sdl/sdl_functions_js.go#L12797) |
-| [SDL_WindowSupportsGPUSwapchainComposition](https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUSwapchainComposition) | [:heavy_check_mark:](sdl/methods.go#L2079) | [:x:](sdl/sdl_functions_js.go#L12816) |
-| [SDL_WindowSupportsGPUPresentMode](https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUPresentMode) | [:heavy_check_mark:](sdl/methods.go#L2085) | [:x:](sdl/sdl_functions_js.go#L12839) |
-| [SDL_ClaimWindowForGPUDevice](https://wiki.libsdl.org/SDL3/SDL_ClaimWindowForGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L2091) | [:x:](sdl/sdl_functions_js.go#L12862) |
-| [SDL_ReleaseWindowFromGPUDevice](https://wiki.libsdl.org/SDL3/SDL_ReleaseWindowFromGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L2101) | [:x:](sdl/sdl_functions_js.go#L12883) |
-| [SDL_SetGPUSwapchainParameters](https://wiki.libsdl.org/SDL3/SDL_SetGPUSwapchainParameters) | [:heavy_check_mark:](sdl/methods.go#L2107) | [:x:](sdl/sdl_functions_js.go#L12902) |
-| [SDL_SetGPUAllowedFramesInFlight](https://wiki.libsdl.org/SDL3/SDL_SetGPUAllowedFramesInFlight) | [:heavy_check_mark:](sdl/methods.go#L2117) | [:x:](sdl/sdl_functions_js.go#L12927) |
-| [SDL_GetGPUSwapchainTextureFormat](https://wiki.libsdl.org/SDL3/SDL_GetGPUSwapchainTextureFormat) | [:heavy_check_mark:](sdl/methods.go#L2127) | [:x:](sdl/sdl_functions_js.go#L12945) |
-| [SDL_AcquireGPUSwapchainTexture](https://wiki.libsdl.org/SDL3/SDL_AcquireGPUSwapchainTexture) | [:heavy_check_mark:](sdl/methods.go#L5958) | [:x:](sdl/sdl_functions_js.go#L12966) |
-| [SDL_WaitForGPUSwapchain](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUSwapchain) | [:heavy_check_mark:](sdl/methods.go#L2133) | [:x:](sdl/sdl_functions_js.go#L13002) |
-| [SDL_WaitAndAcquireGPUSwapchainTexture](https://wiki.libsdl.org/SDL3/SDL_WaitAndAcquireGPUSwapchainTexture) | [:heavy_check_mark:](sdl/methods.go#L5970) | [:x:](sdl/sdl_functions_js.go#L13023) |
-| [SDL_SubmitGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_SubmitGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L5982) | [:x:](sdl/sdl_functions_js.go#L13059) |
-| [SDL_SubmitGPUCommandBufferAndAcquireFence](https://wiki.libsdl.org/SDL3/SDL_SubmitGPUCommandBufferAndAcquireFence) | [:heavy_check_mark:](sdl/methods.go#L5992) | [:x:](sdl/sdl_functions_js.go#L13075) |
-| [SDL_CancelGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_CancelGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L6003) | [:x:](sdl/sdl_functions_js.go#L13094) |
-| [SDL_WaitForGPUIdle](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUIdle) | [:heavy_check_mark:](sdl/methods.go#L2143) | [:x:](sdl/sdl_functions_js.go#L13110) |
-| [SDL_WaitForGPUFences](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUFences) | [:heavy_check_mark:](sdl/methods.go#L2153) | [:x:](sdl/sdl_functions_js.go#L13126) |
-| [SDL_QueryGPUFence](https://wiki.libsdl.org/SDL3/SDL_QueryGPUFence) | [:heavy_check_mark:](sdl/methods.go#L2163) | [:x:](sdl/sdl_functions_js.go#L13151) |
-| [SDL_ReleaseGPUFence](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUFence) | [:heavy_check_mark:](sdl/methods.go#L2169) | [:x:](sdl/sdl_functions_js.go#L13172) |
+| [SDL_MapGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_MapGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2080) | [:x:](sdl/sdl_functions_js.go#L12543) |
+| [SDL_UnmapGPUTransferBuffer](https://wiki.libsdl.org/SDL3/SDL_UnmapGPUTransferBuffer) | [:heavy_check_mark:](sdl/methods.go#L2091) | [:x:](sdl/sdl_functions_js.go#L12566) |
+| [SDL_BeginGPUCopyPass](https://wiki.libsdl.org/SDL3/SDL_BeginGPUCopyPass) | [:heavy_check_mark:](sdl/methods.go#L5954) | [:x:](sdl/sdl_functions_js.go#L12585) |
+| [SDL_UploadToGPUTexture](https://wiki.libsdl.org/SDL3/SDL_UploadToGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L2754) | [:x:](sdl/sdl_functions_js.go#L12604) |
+| [SDL_UploadToGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_UploadToGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L2760) | [:x:](sdl/sdl_functions_js.go#L12630) |
+| [SDL_CopyGPUTextureToTexture](https://wiki.libsdl.org/SDL3/SDL_CopyGPUTextureToTexture) | [:heavy_check_mark:](sdl/methods.go#L2766) | [:x:](sdl/sdl_functions_js.go#L12656) |
+| [SDL_CopyGPUBufferToBuffer](https://wiki.libsdl.org/SDL3/SDL_CopyGPUBufferToBuffer) | [:heavy_check_mark:](sdl/methods.go#L2772) | [:x:](sdl/sdl_functions_js.go#L12688) |
+| [SDL_DownloadFromGPUTexture](https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L2778) | [:x:](sdl/sdl_functions_js.go#L12716) |
+| [SDL_DownloadFromGPUBuffer](https://wiki.libsdl.org/SDL3/SDL_DownloadFromGPUBuffer) | [:heavy_check_mark:](sdl/methods.go#L2784) | [:x:](sdl/sdl_functions_js.go#L12740) |
+| [SDL_EndGPUCopyPass](https://wiki.libsdl.org/SDL3/SDL_EndGPUCopyPass) | [:heavy_check_mark:](sdl/methods.go#L2790) | [:x:](sdl/sdl_functions_js.go#L12764) |
+| [SDL_GenerateMipmapsForGPUTexture](https://wiki.libsdl.org/SDL3/SDL_GenerateMipmapsForGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L5960) | [:x:](sdl/sdl_functions_js.go#L12778) |
+| [SDL_BlitGPUTexture](https://wiki.libsdl.org/SDL3/SDL_BlitGPUTexture) | [:heavy_check_mark:](sdl/methods.go#L5966) | [:x:](sdl/sdl_functions_js.go#L12797) |
+| [SDL_WindowSupportsGPUSwapchainComposition](https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUSwapchainComposition) | [:heavy_check_mark:](sdl/methods.go#L2097) | [:x:](sdl/sdl_functions_js.go#L12816) |
+| [SDL_WindowSupportsGPUPresentMode](https://wiki.libsdl.org/SDL3/SDL_WindowSupportsGPUPresentMode) | [:heavy_check_mark:](sdl/methods.go#L2103) | [:x:](sdl/sdl_functions_js.go#L12839) |
+| [SDL_ClaimWindowForGPUDevice](https://wiki.libsdl.org/SDL3/SDL_ClaimWindowForGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L2109) | [:x:](sdl/sdl_functions_js.go#L12862) |
+| [SDL_ReleaseWindowFromGPUDevice](https://wiki.libsdl.org/SDL3/SDL_ReleaseWindowFromGPUDevice) | [:heavy_check_mark:](sdl/methods.go#L2119) | [:x:](sdl/sdl_functions_js.go#L12883) |
+| [SDL_SetGPUSwapchainParameters](https://wiki.libsdl.org/SDL3/SDL_SetGPUSwapchainParameters) | [:heavy_check_mark:](sdl/methods.go#L2125) | [:x:](sdl/sdl_functions_js.go#L12902) |
+| [SDL_SetGPUAllowedFramesInFlight](https://wiki.libsdl.org/SDL3/SDL_SetGPUAllowedFramesInFlight) | [:heavy_check_mark:](sdl/methods.go#L2135) | [:x:](sdl/sdl_functions_js.go#L12927) |
+| [SDL_GetGPUSwapchainTextureFormat](https://wiki.libsdl.org/SDL3/SDL_GetGPUSwapchainTextureFormat) | [:heavy_check_mark:](sdl/methods.go#L2145) | [:x:](sdl/sdl_functions_js.go#L12945) |
+| [SDL_AcquireGPUSwapchainTexture](https://wiki.libsdl.org/SDL3/SDL_AcquireGPUSwapchainTexture) | [:heavy_check_mark:](sdl/methods.go#L5972) | [:x:](sdl/sdl_functions_js.go#L12966) |
+| [SDL_WaitForGPUSwapchain](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUSwapchain) | [:heavy_check_mark:](sdl/methods.go#L2151) | [:x:](sdl/sdl_functions_js.go#L13002) |
+| [SDL_WaitAndAcquireGPUSwapchainTexture](https://wiki.libsdl.org/SDL3/SDL_WaitAndAcquireGPUSwapchainTexture) | [:heavy_check_mark:](sdl/methods.go#L5984) | [:x:](sdl/sdl_functions_js.go#L13023) |
+| [SDL_SubmitGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_SubmitGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L5996) | [:x:](sdl/sdl_functions_js.go#L13059) |
+| [SDL_SubmitGPUCommandBufferAndAcquireFence](https://wiki.libsdl.org/SDL3/SDL_SubmitGPUCommandBufferAndAcquireFence) | [:heavy_check_mark:](sdl/methods.go#L6006) | [:x:](sdl/sdl_functions_js.go#L13075) |
+| [SDL_CancelGPUCommandBuffer](https://wiki.libsdl.org/SDL3/SDL_CancelGPUCommandBuffer) | [:heavy_check_mark:](sdl/methods.go#L6017) | [:x:](sdl/sdl_functions_js.go#L13094) |
+| [SDL_WaitForGPUIdle](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUIdle) | [:heavy_check_mark:](sdl/methods.go#L2161) | [:x:](sdl/sdl_functions_js.go#L13110) |
+| [SDL_WaitForGPUFences](https://wiki.libsdl.org/SDL3/SDL_WaitForGPUFences) | [:heavy_check_mark:](sdl/methods.go#L2171) | [:x:](sdl/sdl_functions_js.go#L13126) |
+| [SDL_QueryGPUFence](https://wiki.libsdl.org/SDL3/SDL_QueryGPUFence) | [:heavy_check_mark:](sdl/methods.go#L2181) | [:x:](sdl/sdl_functions_js.go#L13151) |
+| [SDL_ReleaseGPUFence](https://wiki.libsdl.org/SDL3/SDL_ReleaseGPUFence) | [:heavy_check_mark:](sdl/methods.go#L2187) | [:x:](sdl/sdl_functions_js.go#L13172) |
 | [SDL_GPUTextureFormatTexelBlockSize](https://wiki.libsdl.org/SDL3/SDL_GPUTextureFormatTexelBlockSize) | [:heavy_check_mark:](sdl/methods.go#L449) | [:x:](sdl/sdl_functions_js.go#L13191) |
-| [SDL_GPUTextureSupportsFormat](https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsFormat) | [:heavy_check_mark:](sdl/methods.go#L2175) | [:x:](sdl/sdl_functions_js.go#L13204) |
-| [SDL_GPUTextureSupportsSampleCount](https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsSampleCount) | [:heavy_check_mark:](sdl/methods.go#L2181) | [:x:](sdl/sdl_functions_js.go#L13226) |
+| [SDL_GPUTextureSupportsFormat](https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsFormat) | [:heavy_check_mark:](sdl/methods.go#L2193) | [:x:](sdl/sdl_functions_js.go#L13204) |
+| [SDL_GPUTextureSupportsSampleCount](https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsSampleCount) | [:heavy_check_mark:](sdl/methods.go#L2199) | [:x:](sdl/sdl_functions_js.go#L13226) |
 | [SDL_CalculateGPUTextureFormatSize](https://wiki.libsdl.org/SDL3/SDL_CalculateGPUTextureFormatSize) | [:heavy_check_mark:](sdl/methods.go#L455) | [:x:](sdl/sdl_functions_js.go#L13246) |
 | [SDL_GDKSuspendGPU](https://wiki.libsdl.org/SDL3/SDL_GDKSuspendGPU) | [:question:]() | [:question:]() |
 | [SDL_GDKResumeGPU](https://wiki.libsdl.org/SDL3/SDL_GDKResumeGPU) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>Vulkan</h3></summary>
+<summary><h3>Metal</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1199,33 +1206,33 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_Vulkan_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_Vulkan_DestroySurface) | [:question:]() | [:question:]() |
 | [SDL_Vulkan_GetPresentationSupport](https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetPresentationSupport) | [:question:]() | [:question:]() |
 </details>
-<details>
-<summary><h3>Metal</h3></summary>
-
-|Function|Desktop|WASM/js|
-|:--|:--:|:--:|
-| [SDL_Metal_CreateView](https://wiki.libsdl.org/SDL3/SDL_Metal_CreateView) | [:x:](sdl/methods.go#L4697) | [:x:](sdl/sdl_functions_js.go#L14362) |
-| [SDL_Metal_DestroyView](https://wiki.libsdl.org/SDL3/SDL_Metal_DestroyView) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14378) |
-| [SDL_Metal_GetLayer](https://wiki.libsdl.org/SDL3/SDL_Metal_GetLayer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14389) |
-</details>
 <details open>
 <summary><h3>Power</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_GetPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetPowerInfo) | [:heavy_check_mark:](sdl/functions.go#L1045) | [:x:](sdl/sdl_functions_js.go#L7807) |
+| [SDL_Metal_CreateView](https://wiki.libsdl.org/SDL3/SDL_Metal_CreateView) | [:x:](sdl/methods.go#L4711) | [:x:](sdl/sdl_functions_js.go#L14362) |
+| [SDL_Metal_DestroyView](https://wiki.libsdl.org/SDL3/SDL_Metal_DestroyView) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14378) |
+| [SDL_Metal_GetLayer](https://wiki.libsdl.org/SDL3/SDL_Metal_GetLayer) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14389) |
 </details>
 <details open>
 <summary><h3>Sensor</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
+| [SDL_GetPowerInfo](https://wiki.libsdl.org/SDL3/SDL_GetPowerInfo) | [:heavy_check_mark:](sdl/functions.go#L1045) | [:x:](sdl/sdl_functions_js.go#L7807) |
+</details>
+<details>
+<summary><h3>Process</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
 | [SDL_GetSensors](https://wiki.libsdl.org/SDL3/SDL_GetSensors) | [:heavy_check_mark:](sdl/functions.go#L1060) | [:x:](sdl/sdl_functions_js.go#L7828) |
-| [SDL_GetSensorNameForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorNameForID) | [:heavy_check_mark:](sdl/methods.go#L6094) | [:x:](sdl/sdl_functions_js.go#L7844) |
-| [SDL_GetSensorTypeForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorTypeForID) | [:heavy_check_mark:](sdl/methods.go#L6100) | [:x:](sdl/sdl_functions_js.go#L7857) |
-| [SDL_GetSensorNonPortableTypeForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorNonPortableTypeForID) | [:heavy_check_mark:](sdl/methods.go#L6106) | [:x:](sdl/sdl_functions_js.go#L7870) |
-| [SDL_OpenSensor](https://wiki.libsdl.org/SDL3/SDL_OpenSensor) | [:heavy_check_mark:](sdl/methods.go#L6112) | [:x:](sdl/sdl_functions_js.go#L7883) |
-| [SDL_GetSensorFromID](https://wiki.libsdl.org/SDL3/SDL_GetSensorFromID) | [:heavy_check_mark:](sdl/methods.go#L6123) | [:x:](sdl/sdl_functions_js.go#L7899) |
+| [SDL_GetSensorNameForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorNameForID) | [:heavy_check_mark:](sdl/methods.go#L6108) | [:x:](sdl/sdl_functions_js.go#L7844) |
+| [SDL_GetSensorTypeForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorTypeForID) | [:heavy_check_mark:](sdl/methods.go#L6114) | [:x:](sdl/sdl_functions_js.go#L7857) |
+| [SDL_GetSensorNonPortableTypeForID](https://wiki.libsdl.org/SDL3/SDL_GetSensorNonPortableTypeForID) | [:heavy_check_mark:](sdl/methods.go#L6120) | [:x:](sdl/sdl_functions_js.go#L7870) |
+| [SDL_OpenSensor](https://wiki.libsdl.org/SDL3/SDL_OpenSensor) | [:heavy_check_mark:](sdl/methods.go#L6126) | [:x:](sdl/sdl_functions_js.go#L7883) |
+| [SDL_GetSensorFromID](https://wiki.libsdl.org/SDL3/SDL_GetSensorFromID) | [:heavy_check_mark:](sdl/methods.go#L6137) | [:x:](sdl/sdl_functions_js.go#L7899) |
 | [SDL_GetSensorProperties](https://wiki.libsdl.org/SDL3/SDL_GetSensorProperties) | [:heavy_check_mark:](sdl/methods.go#L520) | [:x:](sdl/sdl_functions_js.go#L7915) |
 | [SDL_GetSensorName](https://wiki.libsdl.org/SDL3/SDL_GetSensorName) | [:heavy_check_mark:](sdl/methods.go#L531) | [:x:](sdl/sdl_functions_js.go#L7931) |
 | [SDL_GetSensorType](https://wiki.libsdl.org/SDL3/SDL_GetSensorType) | [:heavy_check_mark:](sdl/methods.go#L542) | [:x:](sdl/sdl_functions_js.go#L7947) |
@@ -1236,22 +1243,22 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_UpdateSensors](https://wiki.libsdl.org/SDL3/SDL_UpdateSensors) | [:heavy_check_mark:](sdl/functions.go#L1074) | [:x:](sdl/sdl_functions_js.go#L8032) |
 </details>
 <details>
-<summary><h3>Process</h3></summary>
+<summary><h3>Bits</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_CreateProcess](https://wiki.libsdl.org/SDL3/SDL_CreateProcess) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14415) |
 | [SDL_CreateProcessWithProperties](https://wiki.libsdl.org/SDL3/SDL_CreateProcessWithProperties) | [:heavy_check_mark:](sdl/functions.go#L1082) | [:x:](sdl/sdl_functions_js.go#L14435) |
-| [SDL_GetProcessProperties](https://wiki.libsdl.org/SDL3/SDL_GetProcessProperties) | [:heavy_check_mark:](sdl/methods.go#L6015) | [:x:](sdl/sdl_functions_js.go#L14451) |
-| [SDL_ReadProcess](https://wiki.libsdl.org/SDL3/SDL_ReadProcess) | [:heavy_check_mark:](sdl/methods.go#L6026) | [:x:](sdl/sdl_functions_js.go#L14467) |
-| [SDL_GetProcessInput](https://wiki.libsdl.org/SDL3/SDL_GetProcessInput) | [:heavy_check_mark:](sdl/methods.go#L6044) | [:x:](sdl/sdl_functions_js.go#L14493) |
-| [SDL_GetProcessOutput](https://wiki.libsdl.org/SDL3/SDL_GetProcessOutput) | [:heavy_check_mark:](sdl/methods.go#L6055) | [:x:](sdl/sdl_functions_js.go#L14512) |
-| [SDL_KillProcess](https://wiki.libsdl.org/SDL3/SDL_KillProcess) | [:heavy_check_mark:](sdl/methods.go#L6066) | [:x:](sdl/sdl_functions_js.go#L14531) |
-| [SDL_WaitProcess](https://wiki.libsdl.org/SDL3/SDL_WaitProcess) | [:heavy_check_mark:](sdl/methods.go#L6076) | [:x:](sdl/sdl_functions_js.go#L14549) |
-| [SDL_DestroyProcess](https://wiki.libsdl.org/SDL3/SDL_DestroyProcess) | [:heavy_check_mark:](sdl/methods.go#L6086) | [:x:](sdl/sdl_functions_js.go#L14572) |
+| [SDL_GetProcessProperties](https://wiki.libsdl.org/SDL3/SDL_GetProcessProperties) | [:heavy_check_mark:](sdl/methods.go#L6029) | [:x:](sdl/sdl_functions_js.go#L14451) |
+| [SDL_ReadProcess](https://wiki.libsdl.org/SDL3/SDL_ReadProcess) | [:heavy_check_mark:](sdl/methods.go#L6040) | [:x:](sdl/sdl_functions_js.go#L14467) |
+| [SDL_GetProcessInput](https://wiki.libsdl.org/SDL3/SDL_GetProcessInput) | [:heavy_check_mark:](sdl/methods.go#L6058) | [:x:](sdl/sdl_functions_js.go#L14493) |
+| [SDL_GetProcessOutput](https://wiki.libsdl.org/SDL3/SDL_GetProcessOutput) | [:heavy_check_mark:](sdl/methods.go#L6069) | [:x:](sdl/sdl_functions_js.go#L14512) |
+| [SDL_KillProcess](https://wiki.libsdl.org/SDL3/SDL_KillProcess) | [:heavy_check_mark:](sdl/methods.go#L6080) | [:x:](sdl/sdl_functions_js.go#L14531) |
+| [SDL_WaitProcess](https://wiki.libsdl.org/SDL3/SDL_WaitProcess) | [:heavy_check_mark:](sdl/methods.go#L6090) | [:x:](sdl/sdl_functions_js.go#L14549) |
+| [SDL_DestroyProcess](https://wiki.libsdl.org/SDL3/SDL_DestroyProcess) | [:heavy_check_mark:](sdl/methods.go#L6100) | [:x:](sdl/sdl_functions_js.go#L14572) |
 </details>
 <details>
-<summary><h3>Bits</h3></summary>
+<summary><h3>Endian</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1259,7 +1266,7 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_HasExactlyOneBitSet32](https://wiki.libsdl.org/SDL3/SDL_HasExactlyOneBitSet32) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>Endian</h3></summary>
+<summary><h3>Assert</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1268,8 +1275,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_Swap32](https://wiki.libsdl.org/SDL3/SDL_Swap32) | [:question:]() | [:question:]() |
 | [SDL_Swap64](https://wiki.libsdl.org/SDL3/SDL_Swap64) | [:question:]() | [:question:]() |
 </details>
-<details>
-<summary><h3>Assert</h3></summary>
+<details open>
+<summary><h3>CPUInfo</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1280,8 +1287,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetAssertionReport](https://wiki.libsdl.org/SDL3/SDL_GetAssertionReport) | [:question:]() | [:question:]() |
 | [SDL_ResetAssertionReport](https://wiki.libsdl.org/SDL3/SDL_ResetAssertionReport) | [:question:]() | [:question:]() |
 </details>
-<details open>
-<summary><h3>CPUInfo</h3></summary>
+<details>
+<summary><h3>Locale</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1305,14 +1312,14 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetSIMDAlignment](https://wiki.libsdl.org/SDL3/SDL_GetSIMDAlignment) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L5817) |
 </details>
 <details>
-<summary><h3>Locale</h3></summary>
+<summary><h3>System</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
 | [SDL_GetPreferredLocales](https://wiki.libsdl.org/SDL3/SDL_GetPreferredLocales) | [:heavy_check_mark:](sdl/functions.go#L1108) | [:x:](sdl/sdl_functions_js.go#L14071) |
 </details>
 <details>
-<summary><h3>System</h3></summary>
+<summary><h3>Misc</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
@@ -1351,36 +1358,19 @@ The following emojis mean (they are clickable and should link to the code implem
 | [SDL_GetGDKDefaultUser](https://wiki.libsdl.org/SDL3/SDL_GetGDKDefaultUser) | [:question:]() | [:question:]() |
 </details>
 <details>
-<summary><h3>Misc</h3></summary>
-
-|Function|Desktop|WASM/js|
-|:--|:--:|:--:|
-| [SDL_OpenURL](https://wiki.libsdl.org/SDL3/SDL_OpenURL) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14402) |
-</details>
-<details>
 <summary><h3>GUID</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_GUIDToString](https://wiki.libsdl.org/SDL3/SDL_GUIDToString) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7779) |
-| [SDL_StringToGUID](https://wiki.libsdl.org/SDL3/SDL_StringToGUID) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7794) |
+| [SDL_OpenURL](https://wiki.libsdl.org/SDL3/SDL_OpenURL) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L14402) |
 </details>
 <details open>
 <summary><h3>Main</h3></summary>
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [SDL_AppInit](https://wiki.libsdl.org/SDL3/SDL_AppInit) | [:question:]() | [:question:]() |
-| [SDL_AppIterate](https://wiki.libsdl.org/SDL3/SDL_AppIterate) | [:question:]() | [:question:]() |
-| [SDL_AppEvent](https://wiki.libsdl.org/SDL3/SDL_AppEvent) | [:question:]() | [:question:]() |
-| [SDL_AppQuit](https://wiki.libsdl.org/SDL3/SDL_AppQuit) | [:question:]() | [:question:]() |
-| [SDL_main](https://wiki.libsdl.org/SDL3/SDL_main) | [:question:]() | [:question:]() |
-| [SDL_SetMainReady](https://wiki.libsdl.org/SDL3/SDL_SetMainReady) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17246) |
-| [SDL_RunApp](https://wiki.libsdl.org/SDL3/SDL_RunApp) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17255) |
-| [SDL_EnterAppMainCallbacks](https://wiki.libsdl.org/SDL3/SDL_EnterAppMainCallbacks) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17277) |
-| [SDL_RegisterApp](https://wiki.libsdl.org/SDL3/SDL_RegisterApp) | [:question:]() | [:question:]() |
-| [SDL_UnregisterApp](https://wiki.libsdl.org/SDL3/SDL_UnregisterApp) | [:question:]() | [:question:]() |
-| [SDL_GDKSuspendComplete](https://wiki.libsdl.org/SDL3/SDL_GDKSuspendComplete) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L17303) |
+| [SDL_GUIDToString](https://wiki.libsdl.org/SDL3/SDL_GUIDToString) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7779) |
+| [SDL_StringToGUID](https://wiki.libsdl.org/SDL3/SDL_StringToGUID) | [:question:]() | [:question:](sdl/sdl_functions_js.go#L7794) |
 </details>
 <details>
 <summary><h3>Stdinc</h3></summary>
@@ -1606,6 +1596,8 @@ The following emojis mean (they are clickable and should link to the code implem
 | [TTF_GetFontStyleName](https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontStyleName) | [:heavy_check_mark:](ttf/methods.go#L631) | [:x:](ttf/ttf_functions_js.go#L656) |
 | [TTF_SetFontDirection](https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontDirection) | [:heavy_check_mark:](ttf/methods.go#L637) | [:x:](ttf/ttf_functions_js.go#L672) |
 | [TTF_GetFontDirection](https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontDirection) | [:heavy_check_mark:](ttf/methods.go#L647) | [:x:](ttf/ttf_functions_js.go#L690) |
+| [TTF_SetFontCharSpacing](https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontCharSpacing) | [:question:]() | [:question:]() |
+| [TTF_GetFontCharSpacing](https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontCharSpacing) | [:question:]() | [:question:]() |
 | [TTF_StringToTag](https://wiki.libsdl.org/SDL3_ttf/TTF_StringToTag) | [:heavy_check_mark:](ttf/functions.go#L80) | [:x:](ttf/ttf_functions_js.go#L706) |
 | [TTF_TagToString](https://wiki.libsdl.org/SDL3_ttf/TTF_TagToString) | [:heavy_check_mark:](ttf/functions.go#L86) | [:x:](ttf/ttf_functions_js.go#L1958) |
 | [TTF_SetFontScript](https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontScript) | [:heavy_check_mark:](ttf/methods.go#L653) | [:x:](ttf/ttf_functions_js.go#L719) |
@@ -1737,18 +1729,42 @@ The following emojis mean (they are clickable and should link to the code implem
 | [IMG_LoadSizedSVG_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadSizedSVG_IO) | [:heavy_check_mark:](img/functions.go#L400) | [:x:](img/img_functions_js.go#L470) |
 | [IMG_ReadXPMFromArray](https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArray) | [:heavy_check_mark:](img/functions.go#L411) | [:x:](img/img_functions_js.go#L491) |
 | [IMG_ReadXPMFromArrayToRGB888](https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArrayToRGB888) | [:heavy_check_mark:](img/functions.go#L423) | [:x:](img/img_functions_js.go#L508) |
+| [IMG_Save](https://wiki.libsdl.org/SDL3_image/IMG_Save) | [:question:]() | [:question:]() |
+| [IMG_SaveTyped_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveTyped_IO) | [:question:]() | [:question:]() |
 | [IMG_SaveAVIF](https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF) | [:heavy_check_mark:](img/functions.go#L435) | [:x:](img/img_functions_js.go#L525) |
 | [IMG_SaveAVIF_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF_IO) | [:heavy_check_mark:](img/functions.go#L445) | [:x:](img/img_functions_js.go#L545) |
-| [IMG_SavePNG](https://wiki.libsdl.org/SDL3_image/IMG_SavePNG) | [:heavy_check_mark:](img/functions.go#L455) | [:x:](img/img_functions_js.go#L570) |
-| [IMG_SavePNG_IO](https://wiki.libsdl.org/SDL3_image/IMG_SavePNG_IO) | [:heavy_check_mark:](img/functions.go#L465) | [:x:](img/img_functions_js.go#L588) |
+| [IMG_SaveBMP](https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP) | [:question:]() | [:question:]() |
+| [IMG_SaveBMP_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP_IO) | [:question:]() | [:question:]() |
+| [IMG_SaveGIF](https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF) | [:question:]() | [:question:]() |
+| [IMG_SaveGIF_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF_IO) | [:question:]() | [:question:]() |
 | [IMG_SaveJPG](https://wiki.libsdl.org/SDL3_image/IMG_SaveJPG) | [:heavy_check_mark:](img/functions.go#L475) | [:x:](img/img_functions_js.go#L611) |
 | [IMG_SaveJPG_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveJPG_IO) | [:heavy_check_mark:](img/functions.go#L485) | [:x:](img/img_functions_js.go#L631) |
+| [IMG_SavePNG](https://wiki.libsdl.org/SDL3_image/IMG_SavePNG) | [:heavy_check_mark:](img/functions.go#L455) | [:x:](img/img_functions_js.go#L570) |
+| [IMG_SavePNG_IO](https://wiki.libsdl.org/SDL3_image/IMG_SavePNG_IO) | [:heavy_check_mark:](img/functions.go#L465) | [:x:](img/img_functions_js.go#L588) |
+| [IMG_SaveTGA](https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA) | [:question:]() | [:question:]() |
+| [IMG_SaveTGA_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA_IO) | [:question:]() | [:question:]() |
+| [IMG_SaveWEBP](https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP) | [:question:]() | [:question:]() |
+| [IMG_SaveWEBP_IO](https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP_IO) | [:question:]() | [:question:]() |
 | [IMG_LoadAnimation](https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimation) | [:heavy_check_mark:](img/functions.go#L495) | [:x:](img/img_functions_js.go#L656) |
 | [IMG_LoadAnimation_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimation_IO) | [:heavy_check_mark:](img/functions.go#L506) | [:x:](img/img_functions_js.go#L670) |
 | [IMG_LoadAnimationTyped_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimationTyped_IO) | [:heavy_check_mark:](img/functions.go#L517) | [:x:](img/img_functions_js.go#L689) |
 | [IMG_FreeAnimation](https://wiki.libsdl.org/SDL3_image/IMG_FreeAnimation) | [:heavy_check_mark:](img/methods.go#L6) | [:x:](img/img_functions_js.go#L710) |
+| [IMG_LoadAPNGAnimation_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadAPNGAnimation_IO) | [:question:]() | [:question:]() |
+| [IMG_LoadAVIFAnimation_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadAVIFAnimation_IO) | [:question:]() | [:question:]() |
 | [IMG_LoadGIFAnimation_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadGIFAnimation_IO) | [:heavy_check_mark:](img/functions.go#L528) | [:x:](img/img_functions_js.go#L724) |
 | [IMG_LoadWEBPAnimation_IO](https://wiki.libsdl.org/SDL3_image/IMG_LoadWEBPAnimation_IO) | [:heavy_check_mark:](img/functions.go#L539) | [:x:](img/img_functions_js.go#L741) |
+| [IMG_CreateAnimationEncoder](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder) | [:question:]() | [:question:]() |
+| [IMG_CreateAnimationEncoder_IO](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder_IO) | [:question:]() | [:question:]() |
+| [IMG_CreateAnimationEncoderWithProperties](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoderWithProperties) | [:question:]() | [:question:]() |
+| [IMG_AddAnimationEncoderFrame](https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationEncoderFrame) | [:question:]() | [:question:]() |
+| [IMG_CloseAnimationEncoder](https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationEncoder) | [:question:]() | [:question:]() |
+| [IMG_CreateAnimationDecoder](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder) | [:question:]() | [:question:]() |
+| [IMG_CreateAnimationDecoder_IO](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder_IO) | [:question:]() | [:question:]() |
+| [IMG_CreateAnimationDecoderWithProperties](https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoderWithProperties) | [:question:]() | [:question:]() |
+| [IMG_GetAnimationDecoderProperties](https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderProperties) | [:question:]() | [:question:]() |
+| [IMG_GetAnimationDecoderFrame](https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderFrame) | [:question:]() | [:question:]() |
+| [IMG_ResetAnimationDecoder](https://wiki.libsdl.org/SDL3_image/IMG_ResetAnimationDecoder) | [:question:]() | [:question:]() |
+| [IMG_CloseAnimationDecoder](https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationDecoder) | [:question:]() | [:question:]() |
 </details>
 </details>
 <details open>
@@ -1758,100 +1774,89 @@ The following emojis mean (they are clickable and should link to the code implem
 
 |Function|Desktop|WASM/js|
 |:--|:--:|:--:|
-| [Mix_Version](https://wiki.libsdl.org/SDL3_mixer/Mix_Version) | [:heavy_check_mark:](mixer/functions.go#L11) | [:x:](mixer/mixer_functions_js.go#L13) |
-| [Mix_Init](https://wiki.libsdl.org/SDL3_mixer/Mix_Init) | [:heavy_check_mark:](mixer/functions.go#L17) | [:x:](mixer/mixer_functions_js.go#L24) |
-| [Mix_Quit](https://wiki.libsdl.org/SDL3_mixer/Mix_Quit) | [:heavy_check_mark:](mixer/functions.go#L23) | [:x:](mixer/mixer_functions_js.go#L37) |
-| [Mix_OpenAudio](https://wiki.libsdl.org/SDL3_mixer/Mix_OpenAudio) | [:heavy_check_mark:](mixer/functions.go#L29) | [:x:](mixer/mixer_functions_js.go#L46) |
-| [Mix_PauseAudio](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseAudio) | [:heavy_check_mark:](mixer/functions.go#L44) | [:x:](mixer/mixer_functions_js.go#L67) |
-| [Mix_QuerySpec](https://wiki.libsdl.org/SDL3_mixer/Mix_QuerySpec) | [:heavy_check_mark:](mixer/functions.go#L50) | [:x:](mixer/mixer_functions_js.go#L78) |
-| [Mix_AllocateChannels](https://wiki.libsdl.org/SDL3_mixer/Mix_AllocateChannels) | [:heavy_check_mark:](mixer/functions.go#L62) | [:x:](mixer/mixer_functions_js.go#L104) |
-| [Mix_LoadWAV_IO](https://wiki.libsdl.org/SDL3_mixer/Mix_LoadWAV_IO) | [:heavy_check_mark:](mixer/functions.go#L68) | [:x:](mixer/mixer_functions_js.go#L117) |
-| [Mix_LoadWAV](https://wiki.libsdl.org/SDL3_mixer/Mix_LoadWAV) | [:heavy_check_mark:](mixer/functions.go#L79) | [:x:](mixer/mixer_functions_js.go#L136) |
-| [Mix_LoadMUS](https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUS) | [:heavy_check_mark:](mixer/functions.go#L101) | [:x:](mixer/mixer_functions_js.go#L150) |
-| [Mix_LoadMUS_IO](https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUS_IO) | [:heavy_check_mark:](mixer/functions.go#L90) | [:x:](mixer/mixer_functions_js.go#L164) |
-| [Mix_LoadMUSType_IO](https://wiki.libsdl.org/SDL3_mixer/Mix_LoadMUSType_IO) | [:heavy_check_mark:](mixer/functions.go#L112) | [:x:](mixer/mixer_functions_js.go#L183) |
-| [Mix_QuickLoad_WAV](https://wiki.libsdl.org/SDL3_mixer/Mix_QuickLoad_WAV) | [:heavy_check_mark:](mixer/functions.go#L123) | [:x:](mixer/mixer_functions_js.go#L204) |
-| [Mix_QuickLoad_RAW](https://wiki.libsdl.org/SDL3_mixer/Mix_QuickLoad_RAW) | [:heavy_check_mark:](mixer/functions.go#L134) | [:x:](mixer/mixer_functions_js.go#L221) |
-| [Mix_FreeChunk](https://wiki.libsdl.org/SDL3_mixer/Mix_FreeChunk) | [:heavy_check_mark:](mixer/methods.go#L8) | [:x:](mixer/mixer_functions_js.go#L240) |
-| [Mix_FreeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_FreeMusic) | [:heavy_check_mark:](mixer/methods.go#L22) | [:x:](mixer/mixer_functions_js.go#L254) |
-| [Mix_GetNumChunkDecoders](https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumChunkDecoders) | [:heavy_check_mark:](mixer/functions.go#L145) | [:x:](mixer/mixer_functions_js.go#L268) |
-| [Mix_GetChunkDecoder](https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunkDecoder) | [:heavy_check_mark:](mixer/functions.go#L151) | [:x:](mixer/mixer_functions_js.go#L279) |
-| [Mix_HasChunkDecoder](https://wiki.libsdl.org/SDL3_mixer/Mix_HasChunkDecoder) | [:heavy_check_mark:](mixer/functions.go#L157) | [:x:](mixer/mixer_functions_js.go#L292) |
-| [Mix_GetNumMusicDecoders](https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumMusicDecoders) | [:heavy_check_mark:](mixer/functions.go#L163) | [:x:](mixer/mixer_functions_js.go#L305) |
-| [Mix_GetMusicDecoder](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicDecoder) | [:heavy_check_mark:](mixer/functions.go#L169) | [:x:](mixer/mixer_functions_js.go#L316) |
-| [Mix_HasMusicDecoder](https://wiki.libsdl.org/SDL3_mixer/Mix_HasMusicDecoder) | [:heavy_check_mark:](mixer/functions.go#L175) | [:x:](mixer/mixer_functions_js.go#L329) |
-| [Mix_GetMusicType](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicType) | [:heavy_check_mark:](mixer/methods.go#L28) | [:x:](mixer/mixer_functions_js.go#L342) |
-| [Mix_GetMusicTitle](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicTitle) | [:heavy_check_mark:](mixer/methods.go#L34) | [:x:](mixer/mixer_functions_js.go#L358) |
-| [Mix_GetMusicTitleTag](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicTitleTag) | [:heavy_check_mark:](mixer/methods.go#L40) | [:x:](mixer/mixer_functions_js.go#L374) |
-| [Mix_GetMusicArtistTag](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicArtistTag) | [:heavy_check_mark:](mixer/methods.go#L46) | [:x:](mixer/mixer_functions_js.go#L390) |
-| [Mix_GetMusicAlbumTag](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicAlbumTag) | [:heavy_check_mark:](mixer/methods.go#L52) | [:x:](mixer/mixer_functions_js.go#L406) |
-| [Mix_GetMusicCopyrightTag](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicCopyrightTag) | [:heavy_check_mark:](mixer/methods.go#L58) | [:x:](mixer/mixer_functions_js.go#L422) |
-| [Mix_SetPostMix](https://wiki.libsdl.org/SDL3_mixer/Mix_SetPostMix) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L438) |
-| [Mix_HookMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_HookMusic) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L451) |
-| [Mix_HookMusicFinished](https://wiki.libsdl.org/SDL3_mixer/Mix_HookMusicFinished) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L464) |
-| [Mix_GetMusicHookData](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicHookData) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L475) |
-| [Mix_ChannelFinished](https://wiki.libsdl.org/SDL3_mixer/Mix_ChannelFinished) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L486) |
-| [Mix_RegisterEffect](https://wiki.libsdl.org/SDL3_mixer/Mix_RegisterEffect) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L497) |
-| [Mix_UnregisterEffect](https://wiki.libsdl.org/SDL3_mixer/Mix_UnregisterEffect) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L516) |
-| [Mix_UnregisterAllEffects](https://wiki.libsdl.org/SDL3_mixer/Mix_UnregisterAllEffects) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L531) |
-| [Mix_SetPanning](https://wiki.libsdl.org/SDL3_mixer/Mix_SetPanning) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L544) |
-| [Mix_SetPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_SetPosition) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L561) |
-| [Mix_SetDistance](https://wiki.libsdl.org/SDL3_mixer/Mix_SetDistance) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L578) |
-| [Mix_SetReverseStereo](https://wiki.libsdl.org/SDL3_mixer/Mix_SetReverseStereo) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L593) |
-| [Mix_ReserveChannels](https://wiki.libsdl.org/SDL3_mixer/Mix_ReserveChannels) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L608) |
-| [Mix_GroupChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupChannel) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L621) |
-| [Mix_GroupChannels](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupChannels) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L636) |
-| [Mix_GroupAvailable](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupAvailable) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L653) |
-| [Mix_GroupCount](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupCount) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L666) |
-| [Mix_GroupOldest](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupOldest) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L679) |
-| [Mix_GroupNewer](https://wiki.libsdl.org/SDL3_mixer/Mix_GroupNewer) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L692) |
-| [Mix_PlayChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannel) | [:heavy_check_mark:](mixer/functions.go#L181) | [:x:](mixer/mixer_functions_js.go#L705) |
-| [Mix_PlayChannelTimed](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayChannelTimed) | [:heavy_check_mark:](mixer/functions.go#L192) | [:x:](mixer/mixer_functions_js.go#L725) |
-| [Mix_PlayMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayMusic) | [:heavy_check_mark:](mixer/methods.go#L64) | [:x:](mixer/mixer_functions_js.go#L747) |
-| [Mix_FadeInMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusic) | [:heavy_check_mark:](mixer/methods.go#L74) | [:x:](mixer/mixer_functions_js.go#L765) |
-| [Mix_FadeInMusicPos](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInMusicPos) | [:heavy_check_mark:](mixer/methods.go#L84) | [:x:](mixer/mixer_functions_js.go#L785) |
-| [Mix_FadeInChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInChannel) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L807) |
-| [Mix_FadeInChannelTimed](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeInChannelTimed) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L829) |
-| [Mix_Volume](https://wiki.libsdl.org/SDL3_mixer/Mix_Volume) | [:heavy_check_mark:](mixer/functions.go#L239) | [:x:](mixer/mixer_functions_js.go#L853) |
-| [Mix_VolumeChunk](https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeChunk) | [:heavy_check_mark:](mixer/methods.go#L14) | [:x:](mixer/mixer_functions_js.go#L868) |
-| [Mix_VolumeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_VolumeMusic) | [:heavy_check_mark:](mixer/functions.go#L245) | [:x:](mixer/mixer_functions_js.go#L886) |
-| [Mix_GetMusicVolume](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicVolume) | [:heavy_check_mark:](mixer/methods.go#L94) | [:x:](mixer/mixer_functions_js.go#L899) |
-| [Mix_MasterVolume](https://wiki.libsdl.org/SDL3_mixer/Mix_MasterVolume) | [:heavy_check_mark:](mixer/functions.go#L251) | [:x:](mixer/mixer_functions_js.go#L915) |
-| [Mix_HaltChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltChannel) | [:heavy_check_mark:](mixer/functions.go#L257) | [:x:](mixer/mixer_functions_js.go#L928) |
-| [Mix_HaltGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltGroup) | [:heavy_check_mark:](mixer/functions.go#L263) | [:x:](mixer/mixer_functions_js.go#L939) |
-| [Mix_HaltMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_HaltMusic) | [:heavy_check_mark:](mixer/functions.go#L227) | [:x:](mixer/mixer_functions_js.go#L950) |
-| [Mix_ExpireChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_ExpireChannel) | [:heavy_check_mark:](mixer/functions.go#L269) | [:x:](mixer/mixer_functions_js.go#L959) |
-| [Mix_FadeOutChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutChannel) | [:heavy_check_mark:](mixer/functions.go#L275) | [:x:](mixer/mixer_functions_js.go#L974) |
-| [Mix_FadeOutGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutGroup) | [:heavy_check_mark:](mixer/functions.go#L281) | [:x:](mixer/mixer_functions_js.go#L989) |
-| [Mix_FadeOutMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_FadeOutMusic) | [:heavy_check_mark:](mixer/functions.go#L233) | [:x:](mixer/mixer_functions_js.go#L1004) |
-| [Mix_FadingMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_FadingMusic) | [:heavy_check_mark:](mixer/functions.go#L287) | [:x:](mixer/mixer_functions_js.go#L1017) |
-| [Mix_FadingChannel](https://wiki.libsdl.org/SDL3_mixer/Mix_FadingChannel) | [:heavy_check_mark:](mixer/functions.go#L293) | [:x:](mixer/mixer_functions_js.go#L1028) |
-| [Mix_Pause](https://wiki.libsdl.org/SDL3_mixer/Mix_Pause) | [:heavy_check_mark:](mixer/functions.go#L299) | [:x:](mixer/mixer_functions_js.go#L1041) |
-| [Mix_PauseGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseGroup) | [:heavy_check_mark:](mixer/functions.go#L305) | [:x:](mixer/mixer_functions_js.go#L1052) |
-| [Mix_Resume](https://wiki.libsdl.org/SDL3_mixer/Mix_Resume) | [:heavy_check_mark:](mixer/functions.go#L311) | [:x:](mixer/mixer_functions_js.go#L1063) |
-| [Mix_ResumeGroup](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeGroup) | [:heavy_check_mark:](mixer/functions.go#L317) | [:x:](mixer/mixer_functions_js.go#L1074) |
-| [Mix_Paused](https://wiki.libsdl.org/SDL3_mixer/Mix_Paused) | [:heavy_check_mark:](mixer/helpers.go#L3) | [:x:](mixer/mixer_functions_js.go#L1085) |
-| [Mix_PauseMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PauseMusic) | [:heavy_check_mark:](mixer/functions.go#L215) | [:x:](mixer/mixer_functions_js.go#L1098) |
-| [Mix_ResumeMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_ResumeMusic) | [:heavy_check_mark:](mixer/functions.go#L221) | [:x:](mixer/mixer_functions_js.go#L1107) |
-| [Mix_RewindMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_RewindMusic) | [:heavy_check_mark:](mixer/functions.go#L329) | [:x:](mixer/mixer_functions_js.go#L1116) |
-| [Mix_PausedMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PausedMusic) | [:heavy_check_mark:](mixer/functions.go#L209) | [:x:](mixer/mixer_functions_js.go#L1125) |
-| [Mix_ModMusicJumpToOrder](https://wiki.libsdl.org/SDL3_mixer/Mix_ModMusicJumpToOrder) | [:heavy_check_mark:](mixer/functions.go#L335) | [:x:](mixer/mixer_functions_js.go#L1136) |
-| [Mix_StartTrack](https://wiki.libsdl.org/SDL3_mixer/Mix_StartTrack) | [:heavy_check_mark:](mixer/methods.go#L100) | [:x:](mixer/mixer_functions_js.go#L1149) |
-| [Mix_GetNumTracks](https://wiki.libsdl.org/SDL3_mixer/Mix_GetNumTracks) | [:heavy_check_mark:](mixer/methods.go#L110) | [:x:](mixer/mixer_functions_js.go#L1167) |
-| [Mix_SetMusicPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_SetMusicPosition) | [:heavy_check_mark:](mixer/functions.go#L345) | [:x:](mixer/mixer_functions_js.go#L1183) |
-| [Mix_GetMusicPosition](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicPosition) | [:heavy_check_mark:](mixer/methods.go#L116) | [:x:](mixer/mixer_functions_js.go#L1196) |
-| [Mix_MusicDuration](https://wiki.libsdl.org/SDL3_mixer/Mix_MusicDuration) | [:heavy_check_mark:](mixer/methods.go#L122) | [:x:](mixer/mixer_functions_js.go#L1212) |
-| [Mix_GetMusicLoopStartTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopStartTime) | [:heavy_check_mark:](mixer/methods.go#L128) | [:x:](mixer/mixer_functions_js.go#L1228) |
-| [Mix_GetMusicLoopEndTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopEndTime) | [:heavy_check_mark:](mixer/methods.go#L134) | [:x:](mixer/mixer_functions_js.go#L1244) |
-| [Mix_GetMusicLoopLengthTime](https://wiki.libsdl.org/SDL3_mixer/Mix_GetMusicLoopLengthTime) | [:heavy_check_mark:](mixer/methods.go#L140) | [:x:](mixer/mixer_functions_js.go#L1260) |
-| [Mix_Playing](https://wiki.libsdl.org/SDL3_mixer/Mix_Playing) | [:heavy_check_mark:](mixer/helpers.go#L8) | [:x:](mixer/mixer_functions_js.go#L1276) |
-| [Mix_PlayingMusic](https://wiki.libsdl.org/SDL3_mixer/Mix_PlayingMusic) | [:heavy_check_mark:](mixer/functions.go#L203) | [:x:](mixer/mixer_functions_js.go#L1289) |
-| [Mix_SetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_SetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1300) |
-| [Mix_GetSoundFonts](https://wiki.libsdl.org/SDL3_mixer/Mix_GetSoundFonts) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1313) |
-| [Mix_EachSoundFont](https://wiki.libsdl.org/SDL3_mixer/Mix_EachSoundFont) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1324) |
-| [Mix_SetTimidityCfg](https://wiki.libsdl.org/SDL3_mixer/Mix_SetTimidityCfg) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1339) |
-| [Mix_GetTimidityCfg](https://wiki.libsdl.org/SDL3_mixer/Mix_GetTimidityCfg) | [:question:]() | [:question:](mixer/mixer_functions_js.go#L1352) |
-| [Mix_GetChunk](https://wiki.libsdl.org/SDL3_mixer/Mix_GetChunk) | [:heavy_check_mark:](mixer/functions.go#L361) | [:x:](mixer/mixer_functions_js.go#L1363) |
-| [Mix_CloseAudio](https://wiki.libsdl.org/SDL3_mixer/Mix_CloseAudio) | [:heavy_check_mark:](mixer/functions.go#L367) | [:x:](mixer/mixer_functions_js.go#L1377) |
+| [MIX_Version](https://wiki.libsdl.org/SDL3_mixer/MIX_Version) | [:heavy_check_mark:](mixer/functions.go#L11) | [:heavy_check_mark:]() |
+| [MIX_Init](https://wiki.libsdl.org/SDL3_mixer/MIX_Init) | [:heavy_check_mark:](mixer/functions.go#L17) | [:heavy_check_mark:]() |
+| [MIX_Quit](https://wiki.libsdl.org/SDL3_mixer/MIX_Quit) | [:heavy_check_mark:](mixer/functions.go#L23) | [:heavy_check_mark:]() |
+| [MIX_GetNumAudioDecoders](https://wiki.libsdl.org/SDL3_mixer/MIX_GetNumAudioDecoders) | [:question:]() | [:question:]() |
+| [MIX_GetAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoder) | [:question:]() | [:question:]() |
+| [MIX_CreateMixerDevice](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixerDevice) | [:question:]() | [:question:]() |
+| [MIX_CreateMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixer) | [:question:]() | [:question:]() |
+| [MIX_DestroyMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyMixer) | [:question:]() | [:question:]() |
+| [MIX_GetMixerProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerProperties) | [:question:]() | [:question:]() |
+| [MIX_GetMixerFormat](https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerFormat) | [:question:]() | [:question:]() |
+| [MIX_LoadAudio_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio_IO) | [:question:]() | [:question:]() |
+| [MIX_LoadAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio) | [:question:]() | [:question:]() |
+| [MIX_LoadAudioWithProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioWithProperties) | [:question:]() | [:question:]() |
+| [MIX_LoadRawAudio_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio_IO) | [:question:]() | [:question:]() |
+| [MIX_LoadRawAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio) | [:question:]() | [:question:]() |
+| [MIX_LoadRawAudioNoCopy](https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudioNoCopy) | [:question:]() | [:question:]() |
+| [MIX_CreateSineWaveAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateSineWaveAudio) | [:question:]() | [:question:]() |
+| [MIX_GetAudioProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioProperties) | [:question:]() | [:question:]() |
+| [MIX_GetAudioDuration](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDuration) | [:question:]() | [:question:]() |
+| [MIX_GetAudioFormat](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioFormat) | [:question:]() | [:question:]() |
+| [MIX_DestroyAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyAudio) | [:question:]() | [:question:]() |
+| [MIX_CreateTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateTrack) | [:question:]() | [:question:]() |
+| [MIX_DestroyTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyTrack) | [:question:]() | [:question:]() |
+| [MIX_GetTrackProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackProperties) | [:question:]() | [:question:]() |
+| [MIX_GetTrackMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackMixer) | [:question:]() | [:question:]() |
+| [MIX_SetTrackAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackAudio) | [:question:]() | [:question:]() |
+| [MIX_SetTrackAudioStream](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackAudioStream) | [:question:]() | [:question:]() |
+| [MIX_SetTrackIOStream](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackIOStream) | [:question:]() | [:question:]() |
+| [MIX_TagTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_TagTrack) | [:question:]() | [:question:]() |
+| [MIX_UntagTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_UntagTrack) | [:question:]() | [:question:]() |
+| [MIX_SetTrackPlaybackPosition](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackPlaybackPosition) | [:question:]() | [:question:]() |
+| [MIX_GetTrackPlaybackPosition](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackPlaybackPosition) | [:question:]() | [:question:]() |
+| [MIX_TrackLooping](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackLooping) | [:question:]() | [:question:]() |
+| [MIX_GetTrackAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackAudio) | [:question:]() | [:question:]() |
+| [MIX_GetTrackAudioStream](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackAudioStream) | [:question:]() | [:question:]() |
+| [MIX_GetTrackRemaining](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackRemaining) | [:question:]() | [:question:]() |
+| [MIX_TrackMSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMSToFrames) | [:question:]() | [:question:]() |
+| [MIX_TrackFramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackFramesToMS) | [:question:]() | [:question:]() |
+| [MIX_AudioMSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_AudioMSToFrames) | [:question:]() | [:question:]() |
+| [MIX_AudioFramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_AudioFramesToMS) | [:question:]() | [:question:]() |
+| [MIX_MSToFrames](https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames) | [:question:]() | [:question:]() |
+| [MIX_FramesToMS](https://wiki.libsdl.org/SDL3_mixer/MIX_FramesToMS) | [:question:]() | [:question:]() |
+| [MIX_PlayTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTrack) | [:question:]() | [:question:]() |
+| [MIX_PlayTag](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTag) | [:question:]() | [:question:]() |
+| [MIX_PlayAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_PlayAudio) | [:question:]() | [:question:]() |
+| [MIX_StopTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_StopTrack) | [:question:]() | [:question:]() |
+| [MIX_StopAllTracks](https://wiki.libsdl.org/SDL3_mixer/MIX_StopAllTracks) | [:question:]() | [:question:]() |
+| [MIX_StopTag](https://wiki.libsdl.org/SDL3_mixer/MIX_StopTag) | [:question:]() | [:question:]() |
+| [MIX_PauseTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_PauseTrack) | [:question:]() | [:question:]() |
+| [MIX_PauseAllTracks](https://wiki.libsdl.org/SDL3_mixer/MIX_PauseAllTracks) | [:question:]() | [:question:]() |
+| [MIX_PauseTag](https://wiki.libsdl.org/SDL3_mixer/MIX_PauseTag) | [:question:]() | [:question:]() |
+| [MIX_ResumeTrack](https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeTrack) | [:question:]() | [:question:]() |
+| [MIX_ResumeAllTracks](https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeAllTracks) | [:question:]() | [:question:]() |
+| [MIX_ResumeTag](https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeTag) | [:question:]() | [:question:]() |
+| [MIX_TrackPlaying](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackPlaying) | [:question:]() | [:question:]() |
+| [MIX_TrackPaused](https://wiki.libsdl.org/SDL3_mixer/MIX_TrackPaused) | [:question:]() | [:question:]() |
+| [MIX_SetMasterGain](https://wiki.libsdl.org/SDL3_mixer/MIX_SetMasterGain) | [:question:]() | [:question:]() |
+| [MIX_GetMasterGain](https://wiki.libsdl.org/SDL3_mixer/MIX_GetMasterGain) | [:question:]() | [:question:]() |
+| [MIX_SetTrackGain](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackGain) | [:question:]() | [:question:]() |
+| [MIX_GetTrackGain](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackGain) | [:question:]() | [:question:]() |
+| [MIX_SetTagGain](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTagGain) | [:question:]() | [:question:]() |
+| [MIX_SetTrackFrequencyRatio](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackFrequencyRatio) | [:question:]() | [:question:]() |
+| [MIX_GetTrackFrequencyRatio](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFrequencyRatio) | [:question:]() | [:question:]() |
+| [MIX_SetTrackOutputChannelMap](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackOutputChannelMap) | [:question:]() | [:question:]() |
+| [MIX_SetTrackStereo](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStereo) | [:question:]() | [:question:]() |
+| [MIX_SetTrack3DPosition](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrack3DPosition) | [:question:]() | [:question:]() |
+| [MIX_GetTrack3DPosition](https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrack3DPosition) | [:question:]() | [:question:]() |
+| [MIX_CreateGroup](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateGroup) | [:question:]() | [:question:]() |
+| [MIX_DestroyGroup](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyGroup) | [:question:]() | [:question:]() |
+| [MIX_GetGroupProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupProperties) | [:question:]() | [:question:]() |
+| [MIX_GetGroupMixer](https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupMixer) | [:question:]() | [:question:]() |
+| [MIX_SetTrackGroup](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackGroup) | [:question:]() | [:question:]() |
+| [MIX_SetTrackStoppedCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStoppedCallback) | [:question:]() | [:question:]() |
+| [MIX_SetTrackRawCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawCallback) | [:question:]() | [:question:]() |
+| [MIX_SetTrackCookedCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackCookedCallback) | [:question:]() | [:question:]() |
+| [MIX_SetGroupPostMixCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback) | [:question:]() | [:question:]() |
+| [MIX_SetPostMixCallback](https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback) | [:question:]() | [:question:]() |
+| [MIX_Generate](https://wiki.libsdl.org/SDL3_mixer/MIX_Generate) | [:question:]() | [:question:]() |
+| [MIX_CreateAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder) | [:question:]() | [:question:]() |
+| [MIX_CreateAudioDecoder_IO](https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder_IO) | [:question:]() | [:question:]() |
+| [MIX_DestroyAudioDecoder](https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyAudioDecoder) | [:question:]() | [:question:]() |
+| [MIX_GetAudioDecoderProperties](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderProperties) | [:question:]() | [:question:]() |
+| [MIX_GetAudioDecoderFormat](https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderFormat) | [:question:]() | [:question:]() |
+| [MIX_DecodeAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_DecodeAudio) | [:question:]() | [:question:]() |
 </details>
 </details>

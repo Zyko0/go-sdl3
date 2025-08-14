@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/sdl_amd64.dylib
+	//go:embed assets/sdl_amd64.dylib.gz
 	sdlBlob    []byte
 	sdlLibName = "libSDL3.dylib"
 )
