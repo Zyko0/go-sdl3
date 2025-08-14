@@ -584,15 +584,6 @@ func (cursor *Cursor) Destroy() {
 	iDestroyCursor(cursor)
 }
 
-// X11EventHook
-
-// SDL_SetX11EventHook - Set a callback for every X11 event.
-// (https://wiki.libsdl.org/SDL3/SDL_SetX11EventHook)
-func (callback X11EventHook) Set(userdata *byte) {
-	panic("not implemented")
-	//iSetX11EventHook(callback, userdata)
-}
-
 // TLSID
 
 // SDL_GetTLS - Get the current thread's value associated with a thread local storage ID.
@@ -2411,15 +2402,6 @@ func (haptic *Haptic) StopRumble() error {
 	return nil
 }
 
-// FileDialogType
-
-// SDL_ShowFileDialogWithProperties - Create and launch a file dialog with the specified properties.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties)
-func (typ FileDialogType) ShowFileDialogWithProperties(callback DialogFileCallback, userdata *byte, props PropertiesID) {
-	panic("not implemented")
-	//iShowFileDialogWithProperties(typ, callback, userdata, props)
-}
-
 // Gamepad
 
 // SDL_GetGamepadMapping - Get the current mapping of a gamepad.
@@ -3958,15 +3940,6 @@ func (A *FRect) RectUnionFloat(B *FRect, result *FRect) bool {
 func (rect *FRect) RectAndLineIntersectionFloat(X1 *float32, Y1 *float32, X2 *float32, Y2 *float32) bool {
 	panic("not implemented")
 	return iGetRectAndLineIntersectionFloat(rect, X1, Y1, X2, Y2)
-}
-
-// LogOutputFunction
-
-// SDL_SetLogOutputFunction - Replace the default log output function with one of your own.
-// (https://wiki.libsdl.org/SDL3/SDL_SetLogOutputFunction)
-func (callback LogOutputFunction) Set(userdata *byte) {
-	panic("not implemented")
-	//iSetLogOutputFunction(callback, userdata)
 }
 
 // Condition

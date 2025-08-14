@@ -68,3 +68,19 @@ func NewClipboardCleanupCallback(fn func()) ClipboardCleanupCallback {
 		return 0
 	}))
 }
+
+func NewDialogFileCallback(fn func(fileList []string, filter int32)) DialogFileCallback {
+	return DialogFileCallback(purego.NewCallback(func(_ uintptr, fileList uintptr, filter int32) uintptr {
+		files := make([]string, 0)
+		for ptr := fileList; ptr != 0; ptr += unsafe.Sizeof(uintptr(0)) {
+			strPtr := *(*uintptr)(unsafe.Pointer(ptr))
+			if strPtr == 0 {
+				break
+			}
+			str := internal.PtrToString(strPtr)
+			files = append(files, str)
+		}
+		fn(files, filter)
+		return 0
+	}))
+}

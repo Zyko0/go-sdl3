@@ -2157,20 +2157,10 @@ var (
 	//puregogen:function symbol=SDL_GL_DestroyContext
 	iGL_DestroyContext func(context GLContext) bool
 
-	// SDL_ShowOpenFileDialog => Displays a dialog that lets the user select a file on their filesystem.
-	//
-	//puregogen:function symbol=SDL_ShowOpenFileDialog
-	iShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool)
-
-	// SDL_ShowSaveFileDialog => Displays a dialog that lets the user choose a new or existing file on their filesystem.
-	//
-	//puregogen:function symbol=SDL_ShowSaveFileDialog
-	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string)
-
 	// SDL_ShowOpenFolderDialog => Displays a dialog that lets the user select a folder on their filesystem.
 	//
 	//puregogen:function symbol=SDL_ShowOpenFolderDialog
-	iShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool)
+	iShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window *Window, default_location *byte, allow_many bool)
 
 	// SDL_ShowFileDialogWithProperties => Create and launch a file dialog with the specified properties.
 	//

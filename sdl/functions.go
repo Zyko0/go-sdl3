@@ -967,10 +967,53 @@ func DelayPrecise(ns uint64) {
 
 // Dialog
 
-// TODO: ShowOpenFileDialog
-// TODO: ShowSaveFileDialog
-// TODO: ShowOpenFolderDialog
-// TODO: ShowFileDialogWithProperties
+type dialogFileFilter struct {
+	Name    *byte
+	Pattern *byte
+}
+
+// SDL_ShowOpenFileDialog - Displays a dialog that lets the user select a file on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFileDialog)
+func ShowOpenFileDialog(callback DialogFileCallback, window *Window, filters []DialogFileFilter, defaultLocation string, allowMany bool) {
+	nullableFilters := make([]dialogFileFilter, len(filters))
+	for i, filter := range filters {
+		nullableFilters[i] = dialogFileFilter{
+			Name:    internal.StringToNullablePtr(filter.Name),
+			Pattern: internal.StringToNullablePtr(filter.Pattern),
+		}
+	}
+	iShowOpenFileDialog(callback, 0, window, unsafe.SliceData(nullableFilters), int32(len(nullableFilters)), internal.StringToNullablePtr(defaultLocation), allowMany)
+	runtime.KeepAlive(nullableFilters)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowSaveFileDialog - Displays a dialog that lets the user choose a new or existing file on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowSaveFileDialog)
+func ShowSaveFileDialog(callback DialogFileCallback, window *Window, filters []DialogFileFilter, defaultLocation string) {
+	nullableFilters := make([]dialogFileFilter, len(filters))
+	for i, filter := range filters {
+		nullableFilters[i] = dialogFileFilter{
+			Name:    internal.StringToNullablePtr(filter.Name),
+			Pattern: internal.StringToNullablePtr(filter.Pattern),
+		}
+	}
+	iShowSaveFileDialog(callback, 0, window, unsafe.SliceData(nullableFilters), int32(len(nullableFilters)), internal.StringToNullablePtr(defaultLocation))
+	runtime.KeepAlive(nullableFilters)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowOpenFolderDialog - Displays a dialog that lets the user select a folder on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFolderDialog)
+func ShowOpenFolderDialog(callback DialogFileCallback, window *Window, defaultLocation string, allowMany bool) {
+	iShowOpenFolderDialog(callback, 0, window, internal.StringToNullablePtr(defaultLocation), allowMany)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowFileDialogWithProperties - Create and launch a file dialog with the specified properties.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties)
+func ShowFileDialogWithProperties(callback DialogFileCallback, typ FileDialogType, props PropertiesID) {
+	iShowFileDialogWithProperties(typ, callback, 0, props)
+}
 
 // Message
 

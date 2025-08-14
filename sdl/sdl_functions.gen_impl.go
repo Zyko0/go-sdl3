@@ -423,8 +423,6 @@ var (
 	_addr_SDL_GL_GetSwapInterval                    uintptr
 	_addr_SDL_GL_SwapWindow                         uintptr
 	_addr_SDL_GL_DestroyContext                     uintptr
-	_addr_SDL_ShowOpenFileDialog                    uintptr
-	_addr_SDL_ShowSaveFileDialog                    uintptr
 	_addr_SDL_ShowOpenFolderDialog                  uintptr
 	_addr_SDL_ShowFileDialogWithProperties          uintptr
 	_addr_SDL_GUIDToString                          uintptr
@@ -2602,14 +2600,6 @@ func initialize() {
 	_addr_SDL_GL_DestroyContext, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GL_DestroyContext")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GL_DestroyContext")
-	}
-	_addr_SDL_ShowOpenFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFileDialog")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_ShowOpenFileDialog")
-	}
-	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
 	}
 	_addr_SDL_ShowOpenFolderDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFolderDialog")
 	if err != nil {
@@ -7223,20 +7213,8 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		return __r0
 	}
-	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
-		runtime.KeepAlive(window)
-		runtime.KeepAlive(filters)
-		runtime.KeepAlive(default_location)
-	}
-	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
-		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))))
-		runtime.KeepAlive(window)
-		runtime.KeepAlive(filters)
-		runtime.KeepAlive(default_location)
-	}
-	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
+	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location *byte, allow_many bool) {
+		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(default_location)), puregogen.BoolToUintptr(allow_many))
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(default_location)
 	}

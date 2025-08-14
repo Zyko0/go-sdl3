@@ -18,6 +18,8 @@ var (
 	_addr_SDL_CreateGPUShader          uintptr
 	_addr_SDL_CreateGPUComputePipeline uintptr
 	_addr_SDL_SetClipboardData         uintptr
+	_addr_SDL_ShowOpenFileDialog       uintptr
+	_addr_SDL_ShowSaveFileDialog       uintptr
 )
 
 func initialize_ex() {
@@ -39,6 +41,14 @@ func initialize_ex() {
 	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_SetClipboardData")
+	}
+	_addr_SDL_ShowOpenFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFileDialog")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_ShowOpenFileDialog")
+	}
+	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -67,5 +77,17 @@ func initialize_ex() {
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(mime_types)
 		return __r0
+	}
+	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte, allow_many bool) {
+		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(num_filters), uintptr(unsafe.Pointer(default_location)), puregogen.BoolToUintptr(allow_many))
+		runtime.KeepAlive(window)
+		runtime.KeepAlive(filters)
+		runtime.KeepAlive(default_location)
+	}
+	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte) {
+		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(num_filters), uintptr(unsafe.Pointer(default_location)))
+		runtime.KeepAlive(window)
+		runtime.KeepAlive(filters)
+		runtime.KeepAlive(default_location)
 	}
 }

@@ -13,4 +13,10 @@ var (
 
 	//puregogen:function symbol=SDL_SetClipboardData
 	iSetClipboardData func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types **byte, num_mime_types uintptr) bool
+
+	//puregogen:function symbol=SDL_ShowOpenFileDialog
+	iShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte, allow_many bool)
+
+	//puregogen:function symbol=SDL_ShowSaveFileDialog
+	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte)
 )
