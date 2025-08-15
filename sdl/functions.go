@@ -322,7 +322,7 @@ func EventEnabled(typ EventType) bool {
 // SDL_IOFromConstMem - Use this function to prepare a read-only memory buffer for use with SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem)
 // Note: This function is unsafe as it is required for `mem` not to be garbage collected while the IOStream is in use.
-// Please use IOFromBytes or IOFromDynamicMem instead.
+// Please use IOFromBytes or IOFromDynamicMem, unless you can guarantee that `mem` will be kept alive.
 func IOFromConstMem(mem []byte) (*IOStream, error) {
 	stream := iIOFromConstMem(
 		uintptr(unsafe.Pointer(unsafe.SliceData(mem))),
