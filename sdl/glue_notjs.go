@@ -3,6 +3,7 @@
 package sdl
 
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -81,6 +82,23 @@ func NewDialogFileCallback(fn func(fileList []string, filter int32)) DialogFileC
 			files = append(files, str)
 		}
 		fn(files, filter)
+		return 0
+	}))
+}
+
+func NewEnumerateDirectoryCallback(fn func(dirname, fname string)) EnumerateDirectoryCallback {
+	return EnumerateDirectoryCallback(purego.NewCallback(func(_, dirname, fname uintptr) uintptr {
+		fn(internal.PtrToString(dirname), internal.PtrToString(fname))
+		return 0
+	}))
+}
+
+func NewEventFilter(fn func(event *Event) bool) EventFilter {
+	return EventFilter(purego.NewCallback(func(_ uintptr, event *Event) uintptr {
+		fmt.Println("event type:", event.Type)
+		if fn(event) {
+			return 1
+		}
 		return 0
 	}))
 }

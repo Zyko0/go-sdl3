@@ -244,11 +244,46 @@ func PushEvent(event *Event) error {
 	return nil
 }
 
-// TODO: SetEventFilter
-// TODO: GetEventFilter
-// TODO: AddEventWatch
-// TODO: RemoveEventWatch
-// TODO: FilterEvents
+// SDL_SetEventFilter - Set up a filter to process all events before they are added to the internal event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_SetEventFilter)
+func SetEventFilter(filter EventFilter) {
+	iSetEventFilter(filter, 0)
+}
+
+// SDL_GetEventFilter - Query the current event filter.
+// (https://wiki.libsdl.org/SDL3/SDL_GetEventFilter)
+func GetEventFilter() EventFilter {
+	var filter EventFilter
+	var userData uintptr
+
+	if !iGetEventFilter(&filter, &userData) {
+		return 0
+	}
+
+	return filter
+}
+
+// SDL_AddEventWatch - Add a callback to be triggered when an event is added to the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_AddEventWatch)
+func AddEventWatch(filter EventFilter) error {
+	if !iAddEventWatch(filter, 0) {
+		internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_RemoveEventWatch - Remove an event watch callback added with [SDL_AddEventWatch](SDL_AddEventWatch)().
+// (https://wiki.libsdl.org/SDL3/SDL_RemoveEventWatch)
+func RemoveEventWatch(filter EventFilter) {
+	iRemoveEventWatch(filter, 0)
+}
+
+// SDL_FilterEvents - Run a specific filter function on the current event queue, removing any events for which the filter returns false.
+// (https://wiki.libsdl.org/SDL3/SDL_FilterEvents)
+func FilterEvents(filter EventFilter) {
+	iFilterEvents(filter, 0)
+}
 
 // SDL_SetEventEnabled - Set the state of processing events by type.
 // (https://wiki.libsdl.org/SDL3/SDL_SetEventEnabled)
@@ -1013,6 +1048,16 @@ func ShowOpenFolderDialog(callback DialogFileCallback, window *Window, defaultLo
 // (https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties)
 func ShowFileDialogWithProperties(callback DialogFileCallback, typ FileDialogType, props PropertiesID) {
 	iShowFileDialogWithProperties(typ, callback, 0, props)
+}
+
+// SDL_EnumerateDirectory - Enumerate a directory through a callback function.
+// (https://wiki.libsdl.org/SDL3/SDL_EnumerateDirectory)
+func EnumerateDirectory(path string, callback EnumerateDirectoryCallback) error {
+	if !iEnumerateDirectory(path, callback, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // Message
