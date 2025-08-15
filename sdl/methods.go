@@ -1892,26 +1892,12 @@ func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline)
-func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
-	pipeline := iCreateGPUComputePipeline(device, &gpuComputePipelineCreateInfo{
-		CodeSize:                    uintptr(createinfo.CodeSize),
-		Code:                        unsafe.SliceData(createinfo.Code),
-		Entrypoint:                  internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:                      createinfo.Format,
-		NumSamplers:                 createinfo.NumSamplers,
-		NumReadonlyStorageTextures:  createinfo.NumReadonlyStorageTextures,
-		NumReadonlyStorageBuffers:   createinfo.NumReadonlyStorageBuffers,
-		NumReadwriteStorageTextures: createinfo.NumReadwriteStorageTextures,
-		NumReadwriteStorageBuffers:  createinfo.NumReadwriteStorageBuffers,
-		NumUniformBuffers:           createinfo.NumUniformBuffers,
-		ThreadcountX:                createinfo.ThreadcountX,
-		ThreadcountY:                createinfo.ThreadcountY,
-		ThreadcountZ:                createinfo.ThreadcountZ,
-		Props:                       createinfo.Props,
-	})
+func (device *GPUDevice) CreateComputePipeline(info *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
+	pipeline := iCreateGPUComputePipeline(device, info.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return pipeline, nil
 }
@@ -1940,22 +1926,12 @@ func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) (*GPUSa
 
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader)
-func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) (*GPUShader, error) {
-	shader := iCreateGPUShader(device, &gpuShaderCreateInfo{
-		CodeSize:           uintptr(createinfo.CodeSize),
-		Code:               unsafe.SliceData(createinfo.Code),
-		Entrypoint:         internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:             createinfo.Format,
-		Stage:              createinfo.Stage,
-		NumSamplers:        createinfo.NumSamplers,
-		NumStorageTextures: createinfo.NumStorageTextures,
-		NumStorageBuffers:  createinfo.NumStorageBuffers,
-		NumUniformBuffers:  createinfo.NumUniformBuffers,
-		Props:              createinfo.Props,
-	})
+func (device *GPUDevice) CreateGPUShader(info *GPUShaderCreateInfo) (*GPUShader, error) {
+	shader := iCreateGPUShader(device, info.as())
 	if shader == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return shader, nil
 }

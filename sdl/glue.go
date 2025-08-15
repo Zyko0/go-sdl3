@@ -500,6 +500,49 @@ type Surface struct {
 	Reserved Pointer
 }
 
+type messageBoxButtonData struct {
+	Flags    MessageBoxButtonFlags
+	ButtonID int32
+	Text     *byte
+}
+
+func (mbd *MessageBoxButtonData) as() messageBoxButtonData {
+	return messageBoxButtonData{
+		Flags:    mbd.Flags,
+		ButtonID: mbd.ButtonID,
+		Text:     internal.StringToNullablePtr(mbd.Text),
+	}
+}
+
+type messageBoxData struct {
+	Flags       MessageBoxFlags
+	Window      *Window
+	Title       *byte
+	Message     *byte
+	Numbuttons  int32
+	Buttons     *messageBoxButtonData
+	ColorScheme *MessageBoxColorScheme
+}
+
+func (md *MessageBoxData) as() *messageBoxData {
+	if md == nil {
+		return nil
+	}
+	buttons := make([]messageBoxButtonData, len(md.Buttons))
+	for i, button := range md.Buttons {
+		buttons[i] = button.as()
+	}
+	return &messageBoxData{
+		Flags:       md.Flags,
+		Window:      md.Window,
+		Title:       internal.StringToNullablePtr(md.Title),
+		Message:     internal.StringToNullablePtr(md.Message),
+		Numbuttons:  int32(len(buttons)),
+		Buttons:     unsafe.SliceData(buttons),
+		ColorScheme: md.ColorScheme,
+	}
+}
+
 // SDL_MessageBoxData - MessageBox structure containing title, text, window, etc.
 // (https://wiki.libsdl.org/SDL3/SDL_MessageBoxData)
 type MessageBoxData struct {
@@ -524,10 +567,27 @@ type gpuShaderCreateInfo struct {
 	Props              PropertiesID
 }
 
+func (info *GPUShaderCreateInfo) as() *gpuShaderCreateInfo {
+	if info == nil {
+		return nil
+	}
+	return &gpuShaderCreateInfo{
+		CodeSize:           uintptr(len(info.Code)),
+		Code:               unsafe.SliceData(info.Code),
+		Entrypoint:         internal.StringToNullablePtr(info.Entrypoint),
+		Format:             info.Format,
+		Stage:              info.Stage,
+		NumSamplers:        info.NumSamplers,
+		NumStorageTextures: info.NumStorageTextures,
+		NumStorageBuffers:  info.NumStorageBuffers,
+		NumUniformBuffers:  info.NumUniformBuffers,
+		Props:              info.Props,
+	}
+}
+
 // SDL_GPUShaderCreateInfo - A structure specifying code and metadata for creating a shader object.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo)
 type GPUShaderCreateInfo struct {
-	CodeSize           uint64
 	Code               []byte
 	Entrypoint         string
 	Format             GPUShaderFormat
@@ -556,10 +616,31 @@ type gpuComputePipelineCreateInfo struct {
 	Props                       PropertiesID
 }
 
+func (info *GPUComputePipelineCreateInfo) as() *gpuComputePipelineCreateInfo {
+	if info == nil {
+		return nil
+	}
+	return &gpuComputePipelineCreateInfo{
+		CodeSize:                    uintptr(len(info.Code)),
+		Code:                        unsafe.SliceData(info.Code),
+		Entrypoint:                  internal.StringToNullablePtr(info.Entrypoint),
+		Format:                      info.Format,
+		NumSamplers:                 info.NumSamplers,
+		NumReadonlyStorageTextures:  info.NumReadonlyStorageTextures,
+		NumReadonlyStorageBuffers:   info.NumReadonlyStorageBuffers,
+		NumReadwriteStorageTextures: info.NumReadwriteStorageTextures,
+		NumReadwriteStorageBuffers:  info.NumReadwriteStorageBuffers,
+		NumUniformBuffers:           info.NumUniformBuffers,
+		ThreadcountX:                info.ThreadcountX,
+		ThreadcountY:                info.ThreadcountY,
+		ThreadcountZ:                info.ThreadcountZ,
+		Props:                       info.Props,
+	}
+}
+
 // SDL_GPUComputePipelineCreateInfo - A structure specifying the parameters of a compute pipeline state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo)
 type GPUComputePipelineCreateInfo struct {
-	CodeSize                    uint64
 	Code                        []byte
 	Entrypoint                  string
 	Format                      GPUShaderFormat
