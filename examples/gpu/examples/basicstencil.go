@@ -89,8 +89,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-			NumColorTargets:         uint32(len(colorTargetDescriptions)),
-			ColorTargetDescriptions: &colorTargetDescriptions[0],
+			ColorTargetDescriptions: colorTargetDescriptions,
 			HasDepthStencilTarget:   true,
 			DepthStencilFormat:      depthStencilFormat,
 		},
@@ -116,10 +115,8 @@ func (e *BasicStencil) Init(context *common.Context) error {
 			FrontFace: sdl.GPU_FRONTFACE_COUNTER_CLOCKWISE,
 		},
 		VertexInputState: sdl.GPUVertexInputState{
-			NumVertexBuffers:         uint32(len(vertexBufferDescriptions)),
-			VertexBufferDescriptions: &vertexBufferDescriptions[0],
-			NumVertexAttributes:      uint32(len(vertexAttributes)),
-			VertexAttributes:         &vertexAttributes[0],
+			VertexBufferDescriptions: vertexBufferDescriptions,
+			VertexAttributes:         vertexAttributes,
 		},
 		PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 		VertexShader:   vertexShader,

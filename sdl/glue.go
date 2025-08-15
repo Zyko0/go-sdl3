@@ -656,6 +656,96 @@ type GPUComputePipelineCreateInfo struct {
 	Props                       PropertiesID
 }
 
+type gpuGraphicsPipelineTargetInfo struct {
+	ColorTargetDescriptions *GPUColorTargetDescription
+	NumColorTargets         uint32
+	DepthStencilFormat      GPUTextureFormat
+	HasDepthStencilTarget   bool
+	Padding1                uint8
+	Padding2                uint8
+	Padding3                uint8
+}
+
+func (info *GPUGraphicsPipelineTargetInfo) as() gpuGraphicsPipelineTargetInfo {
+	return gpuGraphicsPipelineTargetInfo{
+		ColorTargetDescriptions: unsafe.SliceData(info.ColorTargetDescriptions),
+		NumColorTargets:         uint32(len(info.ColorTargetDescriptions)),
+		DepthStencilFormat:      info.DepthStencilFormat,
+		HasDepthStencilTarget:   info.HasDepthStencilTarget,
+		Padding1:                0,
+		Padding2:                0,
+		Padding3:                0,
+	}
+}
+
+type GPUGraphicsPipelineTargetInfo struct {
+	ColorTargetDescriptions []GPUColorTargetDescription
+	DepthStencilFormat      GPUTextureFormat
+	HasDepthStencilTarget   bool
+}
+
+type gpuVertexInputState struct {
+	VertexBufferDescriptions *GPUVertexBufferDescription
+	NumVertexBuffers         uint32
+	VertexAttributes         *GPUVertexAttribute
+	NumVertexAttributes      uint32
+}
+
+func (state *GPUVertexInputState) as() gpuVertexInputState {
+	return gpuVertexInputState{
+		VertexBufferDescriptions: unsafe.SliceData(state.VertexBufferDescriptions),
+		NumVertexBuffers:         uint32(len(state.VertexBufferDescriptions)),
+		VertexAttributes:         unsafe.SliceData(state.VertexAttributes),
+		NumVertexAttributes:      uint32(len(state.VertexAttributes)),
+	}
+}
+
+type GPUVertexInputState struct {
+	VertexBufferDescriptions []GPUVertexBufferDescription
+	VertexAttributes         []GPUVertexAttribute
+}
+
+type gpuGraphicsPipelineCreateInfo struct {
+	VertexShader      *GPUShader
+	FragmentShader    *GPUShader
+	VertexInputState  gpuVertexInputState
+	PrimitiveType     GPUPrimitiveType
+	RasterizerState   GPURasterizerState
+	MultisampleState  GPUMultisampleState
+	DepthStencilState GPUDepthStencilState
+	TargetInfo        gpuGraphicsPipelineTargetInfo
+	Props             PropertiesID
+}
+
+func (info *GPUGraphicsPipelineCreateInfo) as() *gpuGraphicsPipelineCreateInfo {
+	if info == nil {
+		return nil
+	}
+	return &gpuGraphicsPipelineCreateInfo{
+		VertexShader:      info.VertexShader,
+		FragmentShader:    info.FragmentShader,
+		VertexInputState:  info.VertexInputState.as(),
+		PrimitiveType:     info.PrimitiveType,
+		RasterizerState:   info.RasterizerState,
+		MultisampleState:  info.MultisampleState,
+		DepthStencilState: info.DepthStencilState,
+		TargetInfo:        info.TargetInfo.as(),
+		Props:             info.Props,
+	}
+}
+
+type GPUGraphicsPipelineCreateInfo struct {
+	VertexShader      *GPUShader
+	FragmentShader    *GPUShader
+	VertexInputState  GPUVertexInputState
+	PrimitiveType     GPUPrimitiveType
+	RasterizerState   GPURasterizerState
+	MultisampleState  GPUMultisampleState
+	DepthStencilState GPUDepthStencilState
+	TargetInfo        GPUGraphicsPipelineTargetInfo
+	Props             PropertiesID
+}
+
 // SDL_Palette - A set of indexed colors representing a palette.
 // (https://wiki.libsdl.org/SDL3/SDL_Palette)
 type Palette struct {

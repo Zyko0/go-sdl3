@@ -3367,11 +3367,6 @@ var (
 	//puregogen:function symbol=SDL_GetGPUShaderFormats
 	iGetGPUShaderFormats func(device *GPUDevice) GPUShaderFormat
 
-	// SDL_CreateGPUGraphicsPipeline => Creates a pipeline object to be used in a graphics workflow.
-	//
-	//puregogen:function symbol=SDL_CreateGPUGraphicsPipeline
-	iCreateGPUGraphicsPipeline func(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline
-
 	// SDL_CreateGPUSampler => Creates a sampler object to be used when binding textures in a graphics workflow.
 	//
 	//puregogen:function symbol=SDL_CreateGPUSampler
