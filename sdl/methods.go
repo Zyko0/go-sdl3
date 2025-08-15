@@ -1905,7 +1905,7 @@ func (device *GPUDevice) CreateComputePipeline(info *GPUComputePipelineCreateInf
 // SDL_CreateGPUGraphicsPipeline - Creates a pipeline object to be used in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline)
 func (device *GPUDevice) CreateGraphicsPipeline(createinfo *GPUGraphicsPipelineCreateInfo) (*GPUGraphicsPipeline, error) {
-	pipeline := iCreateGPUGraphicsPipeline(device, createinfo)
+	pipeline := iCreateGPUGraphicsPipeline(device, createinfo.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}

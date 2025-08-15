@@ -100,8 +100,7 @@ func (e *DepthSampler) Init(context *common.Context) error {
 
 		scenePipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 			TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-				NumColorTargets:         uint32(len(sceneColorTargetDescriptions)),
-				ColorTargetDescriptions: &sceneColorTargetDescriptions[0],
+				ColorTargetDescriptions: sceneColorTargetDescriptions,
 				HasDepthStencilTarget:   true,
 				DepthStencilFormat:      sdl.GPU_TEXTUREFORMAT_D16_UNORM,
 			},
@@ -118,10 +117,8 @@ func (e *DepthSampler) Init(context *common.Context) error {
 				FrontFace: sdl.GPU_FRONTFACE_COUNTER_CLOCKWISE,
 			},
 			VertexInputState: sdl.GPUVertexInputState{
-				NumVertexBuffers:         uint32(len(sceneVertexBufferDescriptions)),
-				VertexBufferDescriptions: &sceneVertexBufferDescriptions[0],
-				NumVertexAttributes:      uint32(len(sceneVertexAttributes)),
-				VertexAttributes:         &sceneVertexAttributes[0],
+				VertexBufferDescriptions: sceneVertexBufferDescriptions,
+				VertexAttributes:         sceneVertexAttributes,
 			},
 			PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 			VertexShader:   sceneVertexShader,
@@ -174,14 +171,11 @@ func (e *DepthSampler) Init(context *common.Context) error {
 
 		effectPipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 			TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-				NumColorTargets:         uint32(len(effectColorTargetDescriptions)),
-				ColorTargetDescriptions: &effectColorTargetDescriptions[0],
+				ColorTargetDescriptions: effectColorTargetDescriptions,
 			},
 			VertexInputState: sdl.GPUVertexInputState{
-				NumVertexBuffers:         uint32(len(effectVertexBufferDescriptions)),
-				VertexBufferDescriptions: &effectVertexBufferDescriptions[0],
-				NumVertexAttributes:      uint32(len(effectVertexAttributes)),
-				VertexAttributes:         &effectVertexAttributes[0],
+				VertexBufferDescriptions: effectVertexBufferDescriptions,
+				VertexAttributes:         effectVertexAttributes,
 			},
 			PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 			VertexShader:   effectVertexShader,
