@@ -881,18 +881,21 @@ func (cp *GPUComputePass) BindGPUComputePipeline(pipeline *GPUComputePipeline) {
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeSamplers)
 func (cp *GPUComputePass) BindSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUComputeSamplers(cp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUComputeStorageTextures - Binds storage textures as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageTextures)
 func (cp *GPUComputePass) BindStorageTextures(textures []*GPUTexture) {
 	iBindGPUComputeStorageTextures(cp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUComputeStorageBuffers - Binds storage buffers as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageBuffers)
 func (cp *GPUComputePass) BindStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUComputeStorageBuffers(cp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_DispatchGPUCompute - Dispatches compute work.
@@ -1234,6 +1237,7 @@ func (rp *GPURenderPass) SetStencilReference(reference uint8) {
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexBuffers)
 func (rp *GPURenderPass) BindVertexBuffers(bindings []GPUBufferBinding) {
 	iBindGPUVertexBuffers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUIndexBuffer - Binds an index buffer on a command buffer for use with subsequent draw calls.
@@ -1246,36 +1250,42 @@ func (rp *GPURenderPass) BindIndexBuffer(binding *GPUBufferBinding, indexElement
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexSamplers)
 func (rp *GPURenderPass) BindVertexSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUVertexSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUVertexStorageTextures - Binds storage textures for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageTextures)
 func (rp *GPURenderPass) BindVertexStorageTextures(textures []*GPUTexture) {
 	iBindGPUVertexStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUVertexStorageBuffers - Binds storage buffers for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers)
 func (rp *GPURenderPass) BindVertexStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUVertexStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_BindGPUFragmentSamplers - Binds texture-sampler pairs for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentSamplers)
 func (rp *GPURenderPass) BindFragmentSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUFragmentSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUFragmentStorageTextures - Binds storage textures for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageTextures)
 func (rp *GPURenderPass) BindFragmentStorageTextures(textures []*GPUTexture) {
 	iBindGPUFragmentStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUFragmentStorageBuffers - Binds storage buffers for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers)
 func (rp *GPURenderPass) BindFragmentStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUFragmentStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_DrawGPUIndexedPrimitives - Draws data using bound graphics state with an index buffer and instancing enabled.
@@ -1892,26 +1902,12 @@ func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline)
-func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
-	pipeline := iCreateGPUComputePipeline(device, &gpuComputePipelineCreateInfo{
-		CodeSize:                    uintptr(createinfo.CodeSize),
-		Code:                        unsafe.SliceData(createinfo.Code),
-		Entrypoint:                  internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:                      createinfo.Format,
-		NumSamplers:                 createinfo.NumSamplers,
-		NumReadonlyStorageTextures:  createinfo.NumReadonlyStorageTextures,
-		NumReadonlyStorageBuffers:   createinfo.NumReadonlyStorageBuffers,
-		NumReadwriteStorageTextures: createinfo.NumReadwriteStorageTextures,
-		NumReadwriteStorageBuffers:  createinfo.NumReadwriteStorageBuffers,
-		NumUniformBuffers:           createinfo.NumUniformBuffers,
-		ThreadcountX:                createinfo.ThreadcountX,
-		ThreadcountY:                createinfo.ThreadcountY,
-		ThreadcountZ:                createinfo.ThreadcountZ,
-		Props:                       createinfo.Props,
-	})
+func (device *GPUDevice) CreateComputePipeline(info *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
+	pipeline := iCreateGPUComputePipeline(device, info.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return pipeline, nil
 }
@@ -1919,7 +1915,7 @@ func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCre
 // SDL_CreateGPUGraphicsPipeline - Creates a pipeline object to be used in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline)
 func (device *GPUDevice) CreateGraphicsPipeline(createinfo *GPUGraphicsPipelineCreateInfo) (*GPUGraphicsPipeline, error) {
-	pipeline := iCreateGPUGraphicsPipeline(device, createinfo)
+	pipeline := iCreateGPUGraphicsPipeline(device, createinfo.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
@@ -1940,22 +1936,12 @@ func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) (*GPUSa
 
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader)
-func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) (*GPUShader, error) {
-	shader := iCreateGPUShader(device, &gpuShaderCreateInfo{
-		CodeSize:           uintptr(createinfo.CodeSize),
-		Code:               unsafe.SliceData(createinfo.Code),
-		Entrypoint:         internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:             createinfo.Format,
-		Stage:              createinfo.Stage,
-		NumSamplers:        createinfo.NumSamplers,
-		NumStorageTextures: createinfo.NumStorageTextures,
-		NumStorageBuffers:  createinfo.NumStorageBuffers,
-		NumUniformBuffers:  createinfo.NumUniformBuffers,
-		Props:              createinfo.Props,
-	})
+func (device *GPUDevice) CreateGPUShader(info *GPUShaderCreateInfo) (*GPUShader, error) {
+	shader := iCreateGPUShader(device, info.as())
 	if shader == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return shader, nil
 }

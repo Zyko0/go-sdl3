@@ -658,7 +658,6 @@ var (
 	_addr_SDL_GetGPUDriver                          uintptr
 	_addr_SDL_GetGPUDeviceDriver                    uintptr
 	_addr_SDL_GetGPUShaderFormats                   uintptr
-	_addr_SDL_CreateGPUGraphicsPipeline             uintptr
 	_addr_SDL_CreateGPUSampler                      uintptr
 	_addr_SDL_CreateGPUTexture                      uintptr
 	_addr_SDL_CreateGPUBuffer                       uintptr
@@ -3540,10 +3539,6 @@ func initialize() {
 	_addr_SDL_GetGPUShaderFormats, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetGPUShaderFormats")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetGPUShaderFormats")
-	}
-	_addr_SDL_CreateGPUGraphicsPipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUGraphicsPipeline")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUGraphicsPipeline")
 	}
 	_addr_SDL_CreateGPUSampler, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUSampler")
 	if err != nil {
@@ -8516,13 +8511,6 @@ func initialize() {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGPUShaderFormats, uintptr(unsafe.Pointer(device)))
 		__r0 := GPUShaderFormat(_r0)
 		runtime.KeepAlive(device)
-		return __r0
-	}
-	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUGraphicsPipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
-		__r0 := (*GPUGraphicsPipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		runtime.KeepAlive(device)
-		runtime.KeepAlive(createinfo)
 		return __r0
 	}
 	iCreateGPUSampler = func(device *GPUDevice, createinfo *GPUSamplerCreateInfo) *GPUSampler {

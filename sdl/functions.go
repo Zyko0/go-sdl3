@@ -1062,51 +1062,15 @@ func EnumerateDirectory(path string, callback EnumerateDirectoryCallback) error 
 
 // Message
 
-type messageBoxButtonData struct {
-	Flags    MessageBoxButtonFlags
-	ButtonID int32
-	Text     *byte
-}
-
-type messageBoxData struct {
-	Flags       MessageBoxFlags
-	Window      *Window
-	Title       *byte
-	Message     *byte
-	Numbuttons  int32
-	Buttons     *messageBoxButtonData
-	ColorScheme *MessageBoxColorScheme
-}
-
 // SDL_ShowMessageBox - Create a modal message box.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox)
 func ShowMessageBox(data *MessageBoxData) (int32, error) {
 	var buttonID int32
 
-	var iData *messageBoxData
-	if data != nil {
-		buttons := make([]messageBoxButtonData, len(data.Buttons))
-		for i, button := range data.Buttons {
-			buttons[i] = messageBoxButtonData{
-				Flags:    button.Flags,
-				ButtonID: button.ButtonID,
-				Text:     internal.StringToNullablePtr(button.Text),
-			}
-		}
-		defer runtime.KeepAlive(buttons)
-		iData = &messageBoxData{
-			Flags:       data.Flags,
-			Window:      data.Window,
-			Title:       internal.StringToNullablePtr(data.Title),
-			Message:     internal.StringToNullablePtr(data.Message),
-			Numbuttons:  int32(len(buttons)),
-			Buttons:     unsafe.SliceData(buttons),
-			ColorScheme: data.ColorScheme,
-		}
-	}
-	if !iShowMessageBox(iData, &buttonID) {
+	if !iShowMessageBox(data.as(), &buttonID) {
 		return 0, internal.LastErr()
 	}
+	runtime.KeepAlive(data)
 
 	return buttonID, nil
 }

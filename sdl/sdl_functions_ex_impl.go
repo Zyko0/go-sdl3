@@ -14,12 +14,13 @@ import (
 var (
 	// Symbols
 	// sdl
-	_addr_SDL_ShowMessageBox           uintptr
-	_addr_SDL_CreateGPUShader          uintptr
-	_addr_SDL_CreateGPUComputePipeline uintptr
-	_addr_SDL_SetClipboardData         uintptr
-	_addr_SDL_ShowOpenFileDialog       uintptr
-	_addr_SDL_ShowSaveFileDialog       uintptr
+	_addr_SDL_ShowMessageBox            uintptr
+	_addr_SDL_CreateGPUShader           uintptr
+	_addr_SDL_CreateGPUComputePipeline  uintptr
+	_addr_SDL_CreateGPUGraphicsPipeline uintptr
+	_addr_SDL_SetClipboardData          uintptr
+	_addr_SDL_ShowOpenFileDialog        uintptr
+	_addr_SDL_ShowSaveFileDialog        uintptr
 )
 
 func initialize_ex() {
@@ -37,6 +38,10 @@ func initialize_ex() {
 	_addr_SDL_CreateGPUComputePipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUComputePipeline")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUComputePipeline")
+	}
+	_addr_SDL_CreateGPUGraphicsPipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUGraphicsPipeline")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUGraphicsPipeline")
 	}
 	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
 	if err != nil {
@@ -68,6 +73,13 @@ func initialize_ex() {
 	iCreateGPUComputePipeline = func(device *GPUDevice, createinfo *gpuComputePipelineCreateInfo) *GPUComputePipeline {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUComputePipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
 		__r0 := (*GPUComputePipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(device)
+		runtime.KeepAlive(createinfo)
+		return __r0
+	}
+	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *gpuGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUGraphicsPipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
+		__r0 := (*GPUGraphicsPipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(device)
 		runtime.KeepAlive(createinfo)
 		return __r0
