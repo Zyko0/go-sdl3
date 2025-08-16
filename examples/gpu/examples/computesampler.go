@@ -7,6 +7,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type ComputeSampler struct {
@@ -168,31 +169,22 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 		return errors.New("failed to create sampler: " + err.Error())
 	}
 
-	// set up texture data
-
-	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
-		&sdl.GPUTransferBufferCreateInfo{
-			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size:  uint32(image.W * image.H * 4),
-		},
+	// set up texture transfer data
+	textureTransferBuffer, err := sdlgpu.CreateTypedTransferBuffer[byte](
+		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, uint32(len(image.Data)), 0,
 	)
 	if err != nil {
-		return errors.New("failed to create transfer buffer: " + err.Error())
+		return errors.New("failed to create texture transfer buffer: " + err.Error())
 	}
 
-	textureTransferDataPtr, err := context.Device.MapTransferBuffer(textureTransferBuffer, false)
+	textureData, err := textureTransferBuffer.Map(context.Device, false)
 	if err != nil {
 		return errors.New("failed to map texture transfer buffer: " + err.Error())
 	}
-
-	textureData := unsafe.Slice(
-		(*uint8)(unsafe.Pointer(textureTransferDataPtr)),
-		image.W*image.H*4,
-	)
-
+	
 	copy(textureData, image.Data)
-
-	context.Device.UnmapTransferBuffer(textureTransferBuffer)
+	
+	context.Device.UnmapTransferBuffer(textureTransferBuffer.Raw())
 
 	// upload the transfer data to the gpu resources
 
@@ -205,7 +197,7 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 
 	copyPass.UploadToGPUTexture(
 		&sdl.GPUTextureTransferInfo{
-			TransferBuffer: textureTransferBuffer,
+			TransferBuffer: textureTransferBuffer.Raw(),
 			Offset:         0,
 		},
 		&sdl.GPUTextureRegion{
@@ -220,7 +212,7 @@ func (e *ComputeSampler) Init(context *common.Context) error {
 	copyPass.End()
 	uploadCmdBuf.Submit()
 
-	context.Device.ReleaseTransferBuffer(textureTransferBuffer)
+	context.Device.ReleaseTransferBuffer(textureTransferBuffer.Raw())
 
 	// finally, print instructions
 	fmt.Println("Press Left/Right to switch between sampler states")

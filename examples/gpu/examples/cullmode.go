@@ -7,6 +7,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type CullMode struct {
@@ -15,8 +16,8 @@ type CullMode struct {
 	pipelines   [6]*sdl.GPUGraphicsPipeline
 	currentMode int
 
-	vertexBufferCW  *sdl.GPUBuffer
-	vertexBufferCCW *sdl.GPUBuffer
+	vertexBufferCW  *sdlgpu.TypedBuffer[common.PositionColorVertex]
+	vertexBufferCCW *sdlgpu.TypedBuffer[common.PositionColorVertex]
 }
 
 var CullModeExample = &CullMode{
@@ -122,40 +123,35 @@ func (e *CullMode) Init(context *common.Context) error {
 
 	// create vertex buffer. they're the same except for the vertex order
 
-	e.vertexBufferCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
-	})
+	e.vertexBufferCW, err = sdlgpu.CreateTypedBuffer[common.PositionColorVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 3, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
-	e.vertexBufferCCW, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
-	})
+	e.vertexBufferCCW, err = sdlgpu.CreateTypedBuffer[common.PositionColorVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 3, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
 	// setup the transfer buffer
 
-	transferBuffer, err := context.Device.CreateTransferBuffer(&sdl.GPUTransferBufferCreateInfo{
-		Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
-	})
+	transferBuffer, err := sdlgpu.CreateTypedTransferBuffer[common.PositionColorVertex](
+		context.Device,
+		sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+		e.vertexBufferCW.Length()+e.vertexBufferCCW.Length(), 0,
+	)
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
 	}
 
-	transferDataPtr, err := context.Device.MapTransferBuffer(transferBuffer, false)
+	vertexData, err := transferBuffer.Map(context.Device, false)
 	if err != nil {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
-
-	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 6,
-	)
 
 	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
 	vertexData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
@@ -164,7 +160,7 @@ func (e *CullMode) Init(context *common.Context) error {
 	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
 	vertexData[5] = common.NewPosColorVert(-1, -1, 0, 0, 0, 255, 255)
 
-	context.Device.UnmapTransferBuffer(transferBuffer)
+	context.Device.UnmapTransferBuffer(transferBuffer.Raw())
 
 	// upload the transfer data to the vertex buffer
 
@@ -176,34 +172,15 @@ func (e *CullMode) Init(context *common.Context) error {
 	copyPass := uploadCmdBuf.BeginCopyPass()
 
 	copyPass.UploadToGPUBuffer(
-		&sdl.GPUTransferBufferLocation{
-			TransferBuffer: transferBuffer,
-			Offset:         0,
-		},
-		&sdl.GPUBufferRegion{
-			Buffer: e.vertexBufferCW,
-			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
-		},
-		false,
+		transferBuffer.Location(0), e.vertexBufferCW.Region(0, e.vertexBufferCW.Length()), false,
 	)
-
 	copyPass.UploadToGPUBuffer(
-		&sdl.GPUTransferBufferLocation{
-			TransferBuffer: transferBuffer,
-			Offset:         uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
-		},
-		&sdl.GPUBufferRegion{
-			Buffer: e.vertexBufferCCW,
-			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
-		},
-		false,
+		transferBuffer.Location(3), e.vertexBufferCCW.Region(0, e.vertexBufferCCW.Length()), false,
 	)
 
 	copyPass.End()
 	uploadCmdBuf.Submit()
-	context.Device.ReleaseTransferBuffer(transferBuffer)
+	context.Device.ReleaseTransferBuffer(transferBuffer.Raw())
 
 	// print instructions
 
@@ -255,12 +232,12 @@ func (e *CullMode) Draw(context *common.Context) error {
 		renderPass.BindGraphicsPipeline(e.pipelines[e.currentMode])
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 0, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBufferCW, Offset: 0},
+			*e.vertexBufferCW.Binding(0),
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 320, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBufferCCW, Offset: 0},
+			*e.vertexBufferCCW.Binding(0),
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.End()
@@ -276,8 +253,8 @@ func (e *CullMode) Quit(context *common.Context) {
 		context.Device.ReleaseGraphicsPipeline(pipeline)
 	}
 
-	context.Device.ReleaseBuffer(e.vertexBufferCW)
-	context.Device.ReleaseBuffer(e.vertexBufferCCW)
+	context.Device.ReleaseBuffer(e.vertexBufferCW.Raw())
+	context.Device.ReleaseBuffer(e.vertexBufferCCW.Raw())
 
 	e.currentMode = 0
 

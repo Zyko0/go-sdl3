@@ -6,13 +6,14 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type BasicCompute struct {
 	drawPipeline *sdl.GPUGraphicsPipeline
 	texture      *sdl.GPUTexture
 	sampler      *sdl.GPUSampler
-	vertexBuffer *sdl.GPUBuffer
+	vertexBuffer *sdlgpu.TypedBuffer[common.PositionTextureVertex]
 }
 
 var BasicComputeExample = &BasicCompute{}
@@ -130,34 +131,24 @@ func (e *BasicCompute) Init(context *common.Context) error {
 		return errors.New("failed to create sampler: " + err.Error())
 	}
 
-	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 6),
-	})
+	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 6, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
-	transferBuffer, err := context.Device.CreateTransferBuffer(
-		&sdl.GPUTransferBufferCreateInfo{
-			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size: uint32(
-				unsafe.Sizeof(common.PositionTextureVertex{}) * 6,
-			),
-		},
+	transferBuffer, err := sdlgpu.CreateTypedTransferBuffer[common.PositionTextureVertex](
+		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, 6, 0,
 	)
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
 	}
 
-	transferDataPtr, err := context.Device.MapTransferBuffer(transferBuffer, false)
+	vertexData, err := transferBuffer.Map(context.Device, false)
 	if err != nil {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
-
-	vertexData := unsafe.Slice(
-		(*common.PositionTextureVertex)(unsafe.Pointer(transferDataPtr)), 6,
-	)
 
 	vertexData[0] = common.NewPosTexVert(-1, -1, 0, 0, 0)
 	vertexData[1] = common.NewPosTexVert(1, -1, 0, 1, 0)
@@ -166,7 +157,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	vertexData[4] = common.NewPosTexVert(1, 1, 0, 1, 1)
 	vertexData[5] = common.NewPosTexVert(-1, 1, 0, 0, 1)
 
-	context.Device.UnmapTransferBuffer(transferBuffer)
+	context.Device.UnmapTransferBuffer(transferBuffer.Raw())
 
 	cmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
@@ -176,16 +167,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	copyPass := cmdBuf.BeginCopyPass()
 
 	copyPass.UploadToGPUBuffer(
-		&sdl.GPUTransferBufferLocation{
-			TransferBuffer: transferBuffer,
-			Offset:         0,
-		},
-		&sdl.GPUBufferRegion{
-			Buffer: e.vertexBuffer,
-			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 6),
-		},
-		false,
+		transferBuffer.Location(0), e.vertexBuffer.Region(0, 6), false,
 	)
 
 	copyPass.End()
@@ -206,7 +188,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	cmdBuf.Submit()
 
 	context.Device.ReleaseComputePipeline(fillTexturePipeline)
-	context.Device.ReleaseTransferBuffer(transferBuffer)
+	context.Device.ReleaseTransferBuffer(transferBuffer.Raw())
 
 	return nil
 }
@@ -239,7 +221,7 @@ func (e *BasicCompute) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.drawPipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			*e.vertexBuffer.Binding(0),
 		})
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
@@ -258,6 +240,6 @@ func (e *BasicCompute) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.drawPipeline)
 	context.Device.ReleaseTexture(e.texture)
 	context.Device.ReleaseSampler(e.sampler)
-	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
 	context.Quit()
 }
