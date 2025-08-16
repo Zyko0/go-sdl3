@@ -9,6 +9,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type CopyAndReadback struct {
@@ -16,8 +17,8 @@ type CopyAndReadback struct {
 	textureCopy     *sdl.GPUTexture
 	textureSmall    *sdl.GPUTexture
 
-	originalBuffer *sdl.GPUBuffer
-	bufferCopy     *sdl.GPUBuffer
+	originalBuffer *sdlgpu.TypedBuffer[uint32]
+	bufferCopy     *sdlgpu.TypedBuffer[uint32]
 
 	textureWidth, textureHeight uint32
 }
@@ -88,18 +89,20 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	bufferData := [8]uint32{2, 4, 8, 16, 32, 64, 128}
 	bufferDataSize := uint32(unsafe.Sizeof(uint32(0)) * uintptr(len(bufferData)))
 
-	e.originalBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, // arbitrary
-		Size:  bufferDataSize,
-	})
+	e.originalBuffer, err = sdlgpu.CreateTypedBuffer[uint32](
+		context.Device,
+		sdl.GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, // arbitrary
+		uint32(len(bufferData)), 0,
+	)
 	if err != nil {
 		return errors.New("failed to create original buffer: " + err.Error())
 	}
 
-	e.bufferCopy, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, // arbitrary
-		Size:  bufferDataSize,
-	})
+	e.bufferCopy, err = sdlgpu.CreateTypedBuffer[uint32](
+		context.Device,
+		sdl.GPU_BUFFERUSAGE_GRAPHICS_STORAGE_READ, // arbitrary
+		uint32(len(bufferData)), 0,
+	)
 	if err != nil {
 		return errors.New("failed to create buffer copy: " + err.Error())
 	}
@@ -184,21 +187,13 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: uploadTransferBuffer,
 		Offset:         e.textureWidth * e.textureHeight * 4,
-	}, &sdl.GPUBufferRegion{
-		Buffer: e.originalBuffer,
-		Offset: 0,
-		Size:   bufferDataSize,
-	}, false)
+	}, e.originalBuffer.Region(0, e.originalBuffer.Length()), false)
 
 	// copy original to copy
 
-	copyPass.CopyGPUBufferToBuffer(&sdl.GPUBufferLocation{
-		Buffer: e.originalBuffer,
-		Offset: 0,
-	}, &sdl.GPUBufferLocation{
-		Buffer: e.bufferCopy,
-		Offset: 0,
-	}, bufferDataSize, false)
+	copyPass.CopyGPUBufferToBuffer(
+		e.originalBuffer.Location(0), e.bufferCopy.Location(0), bufferDataSize, false,
+	)
 
 	copyPass.End()
 
@@ -233,14 +228,12 @@ func (e *CopyAndReadback) Init(context *common.Context) error {
 		Offset:         0,
 	})
 
-	copyPass.DownloadFromGPUBuffer(&sdl.GPUBufferRegion{
-		Buffer: e.bufferCopy,
-		Offset: 0,
-		Size:   bufferDataSize,
-	}, &sdl.GPUTransferBufferLocation{
-		TransferBuffer: downloadTransferBuffer,
-		Offset:         e.textureWidth * e.textureHeight * 4,
-	})
+	copyPass.DownloadFromGPUBuffer(
+		e.bufferCopy.Region(0, e.bufferCopy.Length()),
+		&sdl.GPUTransferBufferLocation{
+			TransferBuffer: downloadTransferBuffer,
+			Offset:         e.textureWidth * e.textureHeight * 4,
+		})
 
 	copyPass.End()
 
@@ -382,8 +375,8 @@ func (e *CopyAndReadback) Quit(context *common.Context) {
 	context.Device.ReleaseTexture(e.textureCopy)
 	context.Device.ReleaseTexture(e.textureSmall)
 
-	context.Device.ReleaseBuffer(e.originalBuffer)
-	context.Device.ReleaseBuffer(e.bufferCopy)
+	context.Device.ReleaseBuffer(e.originalBuffer.Raw())
+	context.Device.ReleaseBuffer(e.bufferCopy.Raw())
 
 	context.Quit()
 }

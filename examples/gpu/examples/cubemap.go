@@ -8,13 +8,14 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 	"github.com/go-gl/mathgl/mgl32"
 )
 
 type Cubemap struct {
 	pipeline     *sdl.GPUGraphicsPipeline
-	vertexBuffer *sdl.GPUBuffer
-	indexBuffer  *sdl.GPUBuffer
+	vertexBuffer *sdlgpu.TypedBuffer[common.PositionVertex]
+	indexBuffer  *sdlgpu.TypedBuffer[uint16]
 	texture      *sdl.GPUTexture
 	sampler      *sdl.GPUSampler
 
@@ -110,18 +111,16 @@ func (e *Cubemap) Init(context *common.Context) error {
 
 	// create the gpu resources
 
-	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionVertex{}) * 24),
-	})
+	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 24, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create vertex buffer: " + err.Error())
 	}
 
-	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
-		Size:  uint32(unsafe.Sizeof(uint16(0)) * 36),
-	})
+	e.indexBuffer, err = sdlgpu.CreateTypedBuffer[uint16](
+		context.Device, sdl.GPU_BUFFERUSAGE_INDEX, 36, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create index buffer: " + err.Error())
 	}
@@ -234,20 +233,12 @@ func (e *Cubemap) Init(context *common.Context) error {
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         0,
-	}, &sdl.GPUBufferRegion{
-		Buffer: e.vertexBuffer,
-		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(common.PositionVertex{}) * 24),
-	}, false)
+	}, e.vertexBuffer.Region(0, e.vertexBuffer.Length()), false)
 
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         uint32(unsafe.Sizeof(common.PositionVertex{}) * 24),
-	}, &sdl.GPUBufferRegion{
-		Buffer: e.indexBuffer,
-		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(uint16(0)) * 36),
-	}, false)
+	}, e.indexBuffer.Region(0, e.indexBuffer.Length()), false)
 
 	copyPass.End()
 	context.Device.ReleaseTransferBuffer(bufferTransferBuffer)
@@ -316,11 +307,9 @@ func (e *Cubemap) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			*e.vertexBuffer.Binding(0),
 		})
-		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
-			Buffer: e.indexBuffer, Offset: 0,
-		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
+		renderPass.BindIndexBuffer(e.indexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{
 				Texture: e.texture, Sampler: e.sampler,
@@ -342,8 +331,8 @@ func (e *Cubemap) Draw(context *common.Context) error {
 
 func (e *Cubemap) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.pipeline)
-	context.Device.ReleaseBuffer(e.vertexBuffer)
-	context.Device.ReleaseBuffer(e.indexBuffer)
+	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
+	context.Device.ReleaseBuffer(e.indexBuffer.Raw())
 	context.Device.ReleaseTexture(e.texture)
 	context.Device.ReleaseSampler(e.sampler)
 

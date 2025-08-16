@@ -6,12 +6,13 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type Blit2DArray struct {
 	pipeline           *sdl.GPUGraphicsPipeline
-	vertexBuffer       *sdl.GPUBuffer
-	indexBuffer        *sdl.GPUBuffer
+	vertexBuffer       *sdlgpu.TypedBuffer[common.PositionTextureVertex]
+	indexBuffer        *sdlgpu.TypedBuffer[uint16]
 	sourceTexture      *sdl.GPUTexture
 	destinationTexture *sdl.GPUTexture
 	sampler            *sdl.GPUSampler
@@ -115,18 +116,16 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 
 	// create the gpu resources
 
-	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
-	})
+	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 8, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create vertex buffer: " + err.Error())
 	}
 
-	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
-		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
-	})
+	e.indexBuffer, err = sdlgpu.CreateTypedBuffer[uint16](
+		context.Device, sdl.GPU_BUFFERUSAGE_INDEX, 6, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create index buffer: " + err.Error())
 	}
@@ -262,20 +261,12 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         0,
-	}, &sdl.GPUBufferRegion{
-		Buffer: e.vertexBuffer,
-		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
-	}, false)
+	}, e.vertexBuffer.Region(0, 8), false)
 
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
-	}, &sdl.GPUBufferRegion{
-		Buffer: e.indexBuffer,
-		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
-	}, false)
+	}, e.indexBuffer.Region(0, 6), false)
 
 	copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{
 		TransferBuffer: textureTransferBuffer,
@@ -367,11 +358,9 @@ func (e *Blit2DArray) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			*e.vertexBuffer.Binding(0),
 		})
-		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
-			Buffer: e.indexBuffer, Offset: 0,
-		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
+		renderPass.BindIndexBuffer(e.indexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{
 				Texture: e.sourceTexture, Sampler: e.sampler,
@@ -395,8 +384,8 @@ func (e *Blit2DArray) Draw(context *common.Context) error {
 
 func (e *Blit2DArray) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.pipeline)
-	context.Device.ReleaseBuffer(e.vertexBuffer)
-	context.Device.ReleaseBuffer(e.indexBuffer)
+	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
+	context.Device.ReleaseBuffer(e.indexBuffer.Raw())
 	context.Device.ReleaseTexture(e.sourceTexture)
 	context.Device.ReleaseTexture(e.destinationTexture)
 	context.Device.ReleaseSampler(e.sampler)
