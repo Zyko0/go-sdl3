@@ -6,12 +6,13 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type BasicStencil struct {
 	maskerPipeline      *sdl.GPUGraphicsPipeline
 	maskeePipeline      *sdl.GPUGraphicsPipeline
-	vertexBuffer        *sdl.GPUBuffer
+	vertexBuffer        *sdlgpu.TypedBuffer[common.PositionColorVertex]
 	depthStencilTexture *sdl.GPUTexture
 }
 
@@ -154,10 +155,9 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	context.Device.ReleaseShader(vertexShader)
 	context.Device.ReleaseShader(fragmentShader)
 
-	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
-		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
-	})
+	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionColorVertex](
+		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 6, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
@@ -181,22 +181,17 @@ func (e *BasicStencil) Init(context *common.Context) error {
 		return errors.New("failed to create depth stencil texture: " + err.Error())
 	}
 
-	transferBuffer, err := context.Device.CreateTransferBuffer(&sdl.GPUTransferBufferCreateInfo{
-		Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
-	})
+	transferBuffer, err := sdlgpu.CreateTypedTransferBuffer[common.PositionColorVertex](
+		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, 6, 0,
+	)
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
 	}
 
-	transferDataPtr, err := context.Device.MapTransferBuffer(transferBuffer, false)
+	vertexData, err := transferBuffer.Map(context.Device, false)
 	if err != nil {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
-
-	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 6,
-	)
 
 	vertexData[0] = common.NewPosColorVert(-0.5, -0.5, 0, 255, 255, 0, 255)
 	vertexData[1] = common.NewPosColorVert(0.5, -0.5, 0, 255, 255, 0, 255)
@@ -205,7 +200,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
 	vertexData[5] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
 
-	context.Device.UnmapTransferBuffer(transferBuffer)
+	context.Device.UnmapTransferBuffer(transferBuffer.Raw())
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
@@ -215,21 +210,12 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	copyPass := uploadCmdBuf.BeginCopyPass()
 
 	copyPass.UploadToGPUBuffer(
-		&sdl.GPUTransferBufferLocation{
-			TransferBuffer: transferBuffer,
-			Offset:         0,
-		},
-		&sdl.GPUBufferRegion{
-			Buffer: e.vertexBuffer,
-			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
-		},
-		false,
+		transferBuffer.Location(0), e.vertexBuffer.Region(0, 6), false,
 	)
 
 	copyPass.End()
 	uploadCmdBuf.Submit()
-	context.Device.ReleaseTransferBuffer(transferBuffer)
+	context.Device.ReleaseTransferBuffer(transferBuffer.Raw())
 
 	return nil
 }
@@ -273,7 +259,7 @@ func (e *BasicStencil) Draw(context *common.Context) error {
 		)
 
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			*e.vertexBuffer.Binding(0),
 		})
 
 		renderPass.SetStencilReference(1)
@@ -297,7 +283,7 @@ func (e *BasicStencil) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.maskeePipeline)
 
 	context.Device.ReleaseTexture(e.depthStencilTexture)
-	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
 
 	context.Quit()
 }
