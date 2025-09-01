@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
-	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 const (
@@ -98,7 +98,7 @@ func (e *CompressedTextures) Init(context *common.Context) error {
 		return err
 	}
 
-	var downloadTransferBuffer *sdlgpu.TypedTransferBuffer[byte]
+	var downloadTransferBuffer *sdl.GPUTransferBuffer
 	var firstTextureData []byte
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
@@ -150,25 +150,30 @@ func (e *CompressedTextures) Init(context *common.Context) error {
 		}
 
 		// set up texture transfer data
-		textureTransferBuffer, err := sdlgpu.CreateTypedTransferBuffer[byte](
-			context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, uint32(len(image.Data)), 0,
+		textureTransferBuffer, err := context.Device.CreateTransferBuffer(
+			&sdl.GPUTransferBufferCreateInfo{
+				Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+				Size:  uint32(len(image.Data)),
+			},
 		)
 		if err != nil {
 			return errors.New("failed to create texture transfer buffer: " + err.Error())
 		}
 
-		textureData, err := textureTransferBuffer.Map(context.Device, false)
+		textureTransferPtr, err := context.Device.MapTransferBuffer(
+			textureTransferBuffer, false,
+		)
 		if err != nil {
 			return errors.New("failed to map texture transfer buffer: " + err.Error())
 		}
-
-		copy(textureData, image.Data)
-
-		context.Device.UnmapTransferBuffer(textureTransferBuffer.Raw())
+		copy(unsafe.Slice(
+			(*byte)(unsafe.Pointer(textureTransferPtr)), len(image.Data),
+		), image.Data)
+		context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
 		// upload the texture data
 		copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{
-			TransferBuffer: textureTransferBuffer.Raw(),
+			TransferBuffer: textureTransferBuffer,
 			Offset:         0, // zeros out the rest
 		}, &sdl.GPUTextureRegion{
 			Texture: e.srcTextures[i],
@@ -183,12 +188,15 @@ func (e *CompressedTextures) Init(context *common.Context) error {
 			Texture: e.dstTextures[i],
 		}, 256, 256, 1, false)
 
-		context.Device.ReleaseTransferBuffer(textureTransferBuffer.Raw())
+		context.Device.ReleaseTransferBuffer(textureTransferBuffer)
 
 		// testing if downloads work...
 		if i == 0 {
-			downloadTransferBuffer, err = sdlgpu.CreateTypedTransferBuffer[byte](
-				context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_DOWNLOAD, uint32(len(image.Data)), 0,
+			downloadTransferBuffer, err = context.Device.CreateTransferBuffer(
+				&sdl.GPUTransferBufferCreateInfo{
+					Usage: sdl.GPU_TRANSFERBUFFERUSAGE_DOWNLOAD,
+					Size:  uint32(len(image.Data)),
+				},
 			)
 			if err != nil {
 				return errors.New("failed to create download transfer buffer: " + err.Error())
@@ -200,7 +208,7 @@ func (e *CompressedTextures) Init(context *common.Context) error {
 				H:       256,
 				D:       1,
 			}, &sdl.GPUTextureTransferInfo{
-				TransferBuffer: downloadTransferBuffer.Raw(),
+				TransferBuffer: downloadTransferBuffer,
 			})
 
 			firstTextureData = image.Data
@@ -220,18 +228,19 @@ func (e *CompressedTextures) Init(context *common.Context) error {
 		return errors.New("failed to wait for fence: " + err.Error())
 	}
 	context.Device.ReleaseFence(fence)
-
-	downloadedData, err := downloadTransferBuffer.Map(context.Device, false)
+	downloadPtr, err := context.Device.MapTransferBuffer(downloadTransferBuffer, false)
 	if err != nil {
 		return errors.New("failed to map download transfer buffer: " + err.Error())
 	}
-	if bytes.Equal(downloadedData, firstTextureData) {
+	if bytes.Equal(unsafe.Slice(
+		(*byte)(unsafe.Pointer(downloadPtr)), len(firstTextureData),
+	), firstTextureData) {
 		fmt.Println("Success: Downloaded bytes match original texture bytes!")
 	} else {
 		fmt.Println("Failure: Downloaded bytes match original texture bytes!")
 	}
-	context.Device.UnmapTransferBuffer(downloadTransferBuffer.Raw())
-	context.Device.ReleaseTransferBuffer(downloadTransferBuffer.Raw())
+	context.Device.UnmapTransferBuffer(downloadTransferBuffer)
+	context.Device.ReleaseTransferBuffer(downloadTransferBuffer)
 
 	// finally, print instructions
 	fmt.Println("Press Left/Right to switch between textures")

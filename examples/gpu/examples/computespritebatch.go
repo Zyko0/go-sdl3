@@ -8,7 +8,6 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
-	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 	"github.com/go-gl/mathgl/mgl32"
 )
 
@@ -20,10 +19,10 @@ type ComputeSpriteBatch struct {
 	renderPipeline              *sdl.GPUGraphicsPipeline
 	sampler                     *sdl.GPUSampler
 	texture                     *sdl.GPUTexture
-	spriteComputeTransferBuffer *sdlgpu.TypedTransferBuffer[ComputeSpriteInstance]
-	spriteComputeBuffer         *sdlgpu.TypedBuffer[ComputeSpriteInstance]
-	spriteVertexBuffer          *sdlgpu.TypedBuffer[common.PositionTextureColorVertex]
-	spriteIndexBuffer           *sdlgpu.TypedBuffer[uint32]
+	spriteComputeTransferBuffer *sdl.GPUTransferBuffer
+	spriteComputeBuffer         *sdl.GPUBuffer
+	spriteVertexBuffer          *sdl.GPUBuffer
+	spriteIndexBuffer           *sdl.GPUBuffer
 
 	SPRITE_COUNT uint32
 }
@@ -170,21 +169,31 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		return errors.New("failed to load image: " + err.Error())
 	}
 
-	textureTransferBuffer, err := sdlgpu.CreateTypedTransferBuffer[byte](
-		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, uint32(len(image.Data)), 0,
+	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
+		&sdl.GPUTransferBufferCreateInfo{
+			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+			Size:  uint32(image.W * image.H * 4),
+		},
 	)
 	if err != nil {
 		return errors.New("failed to create texture transfer buffer: " + err.Error())
 	}
 
-	textureData, err := textureTransferBuffer.Map(context.Device, false)
+	textureTransferPtr, err := context.Device.MapTransferBuffer(
+		textureTransferBuffer, false,
+	)
 	if err != nil {
 		return errors.New("failed to map texture transfer buffer: " + err.Error())
 	}
 
+	textureData := unsafe.Slice(
+		(*byte)(unsafe.Pointer(textureTransferPtr)),
+		image.W*image.H*4,
+	)
+
 	copy(textureData, image.Data)
 
-	context.Device.UnmapTransferBuffer(textureTransferBuffer.Raw())
+	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
 	// create the gpu resources
 
@@ -213,50 +222,63 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		return errors.New("failed to create sampler: " + err.Error())
 	}
 
-	e.spriteComputeTransferBuffer, err = sdlgpu.CreateTypedTransferBuffer[ComputeSpriteInstance](
-		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, e.SPRITE_COUNT, 0,
+	e.spriteComputeTransferBuffer, err = context.Device.CreateTransferBuffer(
+		&sdl.GPUTransferBufferCreateInfo{
+			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+			Size:  e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
+		},
 	)
 	if err != nil {
 		return errors.New("failed to create sprite compute transfer buffer: " + err.Error())
 	}
 
-	e.spriteComputeBuffer, err = sdlgpu.CreateTypedBuffer[ComputeSpriteInstance](
-		context.Device, sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ, e.SPRITE_COUNT, 0,
-	)
+	e.spriteComputeBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ,
+		Size:  e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
+	})
 	if err != nil {
 		return errors.New("failed to create sprite compute buffer: " + err.Error())
 	}
 
-	e.spriteVertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureColorVertex](
-		context.Device,
-		sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE|sdl.GPU_BUFFERUSAGE_VERTEX,
-		e.SPRITE_COUNT*4, 0,
-	)
+	e.spriteVertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE | sdl.GPU_BUFFERUSAGE_VERTEX,
+		Size:  e.SPRITE_COUNT * 4 * uint32(unsafe.Sizeof(common.PositionTextureColorVertex{})),
+	})
 	if err != nil {
 		return errors.New("failed to create sprite vertex buffer: " + err.Error())
 	}
 
-	e.spriteIndexBuffer, err = sdlgpu.CreateTypedBuffer[uint32](
-		context.Device, sdl.GPU_BUFFERUSAGE_INDEX,
-		e.SPRITE_COUNT*6, 0,
-	)
+	e.spriteIndexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
+		Size:  e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
+	})
 	if err != nil {
 		return errors.New("failed to create sprite vertex buffer: " + err.Error())
 	}
 
 	// transfer the up-front data
 
-	indexBufferTransferBuffer, err := sdlgpu.CreateTypedTransferBuffer[uint32](
-		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, e.SPRITE_COUNT*6, 0,
+	indexBufferTransferBuffer, err := context.Device.CreateTransferBuffer(
+		&sdl.GPUTransferBufferCreateInfo{
+			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+			Size:  e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
+		},
 	)
 	if err != nil {
 		return errors.New("failed to create index buffer transfer buffer: " + err.Error())
 	}
 
-	indexData, err := indexBufferTransferBuffer.Map(context.Device, false)
+	indexTransferPtr, err := context.Device.MapTransferBuffer(
+		indexBufferTransferBuffer, false,
+	)
 	if err != nil {
 		return errors.New("failed to map index buffer transfer buffer: " + err.Error())
 	}
+
+	indexData := unsafe.Slice(
+		(*uint32)(unsafe.Pointer(indexTransferPtr)),
+		e.SPRITE_COUNT*6,
+	)
 
 	for i := range e.SPRITE_COUNT {
 		indexData[i*6] = i * 4
@@ -267,7 +289,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 		indexData[i*6+5] = i*4 + 1
 	}
 
-	context.Device.UnmapTransferBuffer(indexBufferTransferBuffer.Raw())
+	context.Device.UnmapTransferBuffer(indexBufferTransferBuffer)
 
 	uploadCmdBuf, err := context.Device.AcquireCommandBuffer()
 	if err != nil {
@@ -277,7 +299,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	copyPass := uploadCmdBuf.BeginCopyPass()
 
 	copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{
-		TransferBuffer: textureTransferBuffer.Raw(),
+		TransferBuffer: textureTransferBuffer,
 		Offset:         0, // zeroes out the rest
 	}, &sdl.GPUTextureRegion{
 		Texture: e.texture,
@@ -287,13 +309,22 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	}, false)
 
 	copyPass.UploadToGPUBuffer(
-		indexBufferTransferBuffer.Location(0), e.spriteIndexBuffer.Region(0, e.SPRITE_COUNT*6), false,
+		&sdl.GPUTransferBufferLocation{
+			TransferBuffer: indexBufferTransferBuffer,
+			Offset:         0,
+		},
+		&sdl.GPUBufferRegion{
+			Buffer: e.spriteIndexBuffer,
+			Offset: 0,
+			Size:   e.SPRITE_COUNT * 6 * uint32(unsafe.Sizeof(uint32(0))),
+		},
+		false,
 	)
 
 	copyPass.End()
 	uploadCmdBuf.Submit()
-	context.Device.ReleaseTransferBuffer(textureTransferBuffer.Raw())
-	context.Device.ReleaseTransferBuffer(indexBufferTransferBuffer.Raw())
+	context.Device.ReleaseTransferBuffer(textureTransferBuffer)
+	context.Device.ReleaseTransferBuffer(indexBufferTransferBuffer)
 
 	return nil
 }
@@ -320,10 +351,17 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 
 	if swapchainTexture != nil {
 		// build sprite instance transfer
-		data, err := e.spriteComputeTransferBuffer.Map(context.Device, true)
+		dataPtr, err := context.Device.MapTransferBuffer(
+			e.spriteComputeTransferBuffer, true,
+		)
 		if err != nil {
 			return errors.New("failed to map sprite compute transfer buffer: " + err.Error())
 		}
+
+		data := unsafe.Slice(
+			(*ComputeSpriteInstance)(unsafe.Pointer(dataPtr)),
+			e.SPRITE_COUNT*uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
+		)
 
 		for i := range e.SPRITE_COUNT {
 			ravioli := rand.Intn(4)
@@ -343,15 +381,18 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 			data[i].A = 1.0
 		}
 
-		context.Device.UnmapTransferBuffer(e.spriteComputeTransferBuffer.Raw())
+		context.Device.UnmapTransferBuffer(e.spriteComputeTransferBuffer)
 
 		// upload instance data
 		copyPass := cmdBuf.BeginCopyPass()
-		copyPass.UploadToGPUBuffer(
-			e.spriteComputeTransferBuffer.Location(0),
-			e.spriteComputeBuffer.Region(0, e.SPRITE_COUNT),
-			true,
-		)
+		copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
+			TransferBuffer: e.spriteComputeTransferBuffer,
+			Offset:         0,
+		}, &sdl.GPUBufferRegion{
+			Buffer: e.spriteComputeBuffer,
+			Offset: 0,
+			Size:   e.SPRITE_COUNT * uint32(unsafe.Sizeof(ComputeSpriteInstance{})),
+		}, true)
 		copyPass.End()
 
 		// set up compute pass to build vertex buffer
@@ -359,7 +400,7 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 			[]sdl.GPUStorageTextureReadWriteBinding{},
 			[]sdl.GPUStorageBufferReadWriteBinding{
 				sdl.GPUStorageBufferReadWriteBinding{
-					Buffer: e.spriteVertexBuffer.Raw(),
+					Buffer: e.spriteVertexBuffer,
 					Cycle:  true,
 				},
 			},
@@ -367,7 +408,7 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 
 		computePass.BindGPUComputePipeline(e.computePipeline)
 		computePass.BindStorageBuffers([]*sdl.GPUBuffer{
-			e.spriteComputeBuffer.Raw(),
+			e.spriteComputeBuffer,
 		})
 		computePass.Dispatch(e.SPRITE_COUNT/64, 1, 1)
 
@@ -386,9 +427,11 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.renderPipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			*e.spriteVertexBuffer.Binding(0),
+			sdl.GPUBufferBinding{Buffer: e.spriteVertexBuffer, Offset: 0},
 		})
-		renderPass.BindIndexBuffer(e.spriteIndexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_32BIT)
+		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
+			Buffer: e.spriteIndexBuffer, Offset: 0,
+		}, sdl.GPU_INDEXELEMENTSIZE_32BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
 		})
@@ -412,10 +455,10 @@ func (e *ComputeSpriteBatch) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.renderPipeline)
 	context.Device.ReleaseSampler(e.sampler)
 	context.Device.ReleaseTexture(e.texture)
-	context.Device.ReleaseTransferBuffer(e.spriteComputeTransferBuffer.Raw())
-	context.Device.ReleaseBuffer(e.spriteComputeBuffer.Raw())
-	context.Device.ReleaseBuffer(e.spriteVertexBuffer.Raw())
-	context.Device.ReleaseBuffer(e.spriteIndexBuffer.Raw())
+	context.Device.ReleaseTransferBuffer(e.spriteComputeTransferBuffer)
+	context.Device.ReleaseBuffer(e.spriteComputeBuffer)
+	context.Device.ReleaseBuffer(e.spriteVertexBuffer)
+	context.Device.ReleaseBuffer(e.spriteIndexBuffer)
 
 	context.Quit()
 }

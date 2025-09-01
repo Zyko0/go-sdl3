@@ -6,16 +6,15 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
-	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type CopyConsistency struct {
 	pipeline *sdl.GPUGraphicsPipeline
 
-	vertexBuffer      *sdlgpu.TypedBuffer[common.PositionTextureVertex]
-	leftVertexBuffer  *sdlgpu.TypedBuffer[common.PositionTextureVertex]
-	rightVertexBuffer *sdlgpu.TypedBuffer[common.PositionTextureVertex]
-	indexBuffer       *sdlgpu.TypedBuffer[uint16]
+	vertexBuffer      *sdl.GPUBuffer
+	leftVertexBuffer  *sdl.GPUBuffer
+	rightVertexBuffer *sdl.GPUBuffer
+	indexBuffer       *sdl.GPUBuffer
 
 	texture      *sdl.GPUTexture
 	leftTexture  *sdl.GPUTexture
@@ -172,30 +171,34 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 
 	// create the buffers
 
-	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
-		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 4, 0,
-	)
+	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
+		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	})
 	if err != nil {
 		return errors.New("failed to create vertex buffer: " + err.Error())
 	}
 
-	e.leftVertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
-		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 4, 0,
-	)
+	e.leftVertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
+		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	})
 	if err != nil {
 		return errors.New("failed to create left vertex buffer: " + err.Error())
 	}
 
-	e.rightVertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
-		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 4, 0,
-	)
+	e.rightVertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
+		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	})
 	if err != nil {
 		return errors.New("failed to create right vertex buffer: " + err.Error())
 	}
 
-	e.indexBuffer, err = sdlgpu.CreateTypedBuffer[uint16](
-		context.Device, sdl.GPU_BUFFERUSAGE_INDEX, 6, 0,
-	)
+	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
+		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
+	})
 	if err != nil {
 		return errors.New("failed to create index buffer: " + err.Error())
 	}
@@ -292,17 +295,29 @@ func (e *CopyConsistency) Init(context *common.Context) error {
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         0,
-	}, e.leftVertexBuffer.Region(0, e.leftVertexBuffer.Length()), false)
+	}, &sdl.GPUBufferRegion{
+		Buffer: e.leftVertexBuffer,
+		Offset: 0,
+		Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	}, false)
 
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
-	}, e.rightVertexBuffer.Region(0, e.leftVertexBuffer.Length()), false)
+	}, &sdl.GPUBufferRegion{
+		Buffer: e.rightVertexBuffer,
+		Offset: 0,
+		Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	}, false)
 
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
 		Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
-	}, e.indexBuffer.Region(0, e.indexBuffer.Length()), false)
+	}, &sdl.GPUBufferRegion{
+		Buffer: e.indexBuffer,
+		Offset: 0,
+		Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
+	}, false)
 
 	copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{
 		TransferBuffer: textureTransferBuffer,
@@ -358,8 +373,11 @@ func (e *CopyConsistency) Draw(context *common.Context) error {
 		// copy left-side resources
 		copyPass := cmdbuf.BeginCopyPass()
 		copyPass.CopyGPUBufferToBuffer(
-			e.leftVertexBuffer.Location(0),
-			e.vertexBuffer.Location(0),
+			&sdl.GPUBufferLocation{
+				Buffer: e.leftVertexBuffer,
+			}, &sdl.GPUBufferLocation{
+				Buffer: e.vertexBuffer,
+			},
 			uint32(unsafe.Sizeof(common.PositionTextureVertex{})*4),
 			false,
 		)
@@ -374,9 +392,11 @@ func (e *CopyConsistency) Draw(context *common.Context) error {
 		renderPass := cmdbuf.BeginRenderPass(colorTargetInfos, nil)
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			*e.vertexBuffer.Binding(0),
+			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
 		})
-		renderPass.BindIndexBuffer(e.indexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_16BIT)
+		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
+			Buffer: e.indexBuffer, Offset: 0,
+		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{
 				Texture: e.texture, Sampler: e.sampler,
@@ -388,9 +408,12 @@ func (e *CopyConsistency) Draw(context *common.Context) error {
 		// copy right-side resources
 		copyPass = cmdbuf.BeginCopyPass()
 		copyPass.CopyGPUBufferToBuffer(
-			e.rightVertexBuffer.Location(0),
-			e.vertexBuffer.Location(0),
-			e.rightVertexBuffer.Size(),
+			&sdl.GPUBufferLocation{
+				Buffer: e.rightVertexBuffer,
+			}, &sdl.GPUBufferLocation{
+				Buffer: e.vertexBuffer,
+			},
+			uint32(unsafe.Sizeof(common.PositionTextureVertex{})*4),
 			false,
 		)
 		copyPass.CopyGPUTextureToTexture(
@@ -405,9 +428,11 @@ func (e *CopyConsistency) Draw(context *common.Context) error {
 		renderPass = cmdbuf.BeginRenderPass(colorTargetInfos, nil)
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			*e.vertexBuffer.Binding(0),
+			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
 		})
-		renderPass.BindIndexBuffer(e.indexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_16BIT)
+		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
+			Buffer: e.indexBuffer, Offset: 0,
+		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
 			sdl.GPUTextureSamplerBinding{
 				Texture: e.texture, Sampler: e.sampler,
@@ -425,10 +450,10 @@ func (e *CopyConsistency) Draw(context *common.Context) error {
 func (e *CopyConsistency) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.pipeline)
 
-	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
-	context.Device.ReleaseBuffer(e.leftVertexBuffer.Raw())
-	context.Device.ReleaseBuffer(e.rightVertexBuffer.Raw())
-	context.Device.ReleaseBuffer(e.indexBuffer.Raw())
+	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.leftVertexBuffer)
+	context.Device.ReleaseBuffer(e.rightVertexBuffer)
+	context.Device.ReleaseBuffer(e.indexBuffer)
 
 	context.Device.ReleaseTexture(e.texture)
 	context.Device.ReleaseTexture(e.leftTexture)

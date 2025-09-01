@@ -7,13 +7,12 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
-	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type CustomSampling struct {
 	pipeline     *sdl.GPUGraphicsPipeline
-	vertexBuffer *sdlgpu.TypedBuffer[common.PositionTextureVertex]
-	indexBuffer  *sdlgpu.TypedBuffer[uint16]
+	vertexBuffer *sdl.GPUBuffer
+	indexBuffer  *sdl.GPUBuffer
 	texture      *sdl.GPUTexture
 
 	samplerMode int
@@ -109,16 +108,18 @@ func (e *CustomSampling) Init(context *common.Context) error {
 
 	// create the gpu resources
 
-	e.vertexBuffer, err = sdlgpu.CreateTypedBuffer[common.PositionTextureVertex](
-		context.Device, sdl.GPU_BUFFERUSAGE_VERTEX, 4, 0,
-	)
+	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
+		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
 
-	e.indexBuffer, err = sdlgpu.CreateTypedBuffer[uint16](
-		context.Device, sdl.GPU_BUFFERUSAGE_INDEX, 6, 0,
-	)
+	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
+		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
+		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
+	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
 	}
@@ -182,21 +183,29 @@ func (e *CustomSampling) Init(context *common.Context) error {
 
 	// set up texture data
 
-	textureTransferBuffer, err := sdlgpu.CreateTypedTransferBuffer[uint8](
-		context.Device, sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD, uint32(len(image.Data)), 0,
+	textureTransferBuffer, err := context.Device.CreateTransferBuffer(
+		&sdl.GPUTransferBufferCreateInfo{
+			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
+			Size:  uint32(image.W * image.H * 4),
+		},
 	)
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
 	}
 
-	textureData, err := textureTransferBuffer.Map(context.Device, false)
+	textureTransferDataPtr, err := context.Device.MapTransferBuffer(textureTransferBuffer, false)
 	if err != nil {
 		return errors.New("failed to map texture transfer buffer: " + err.Error())
 	}
 
+	textureData := unsafe.Slice(
+		(*uint8)(unsafe.Pointer(textureTransferDataPtr)),
+		image.W*image.H*4,
+	)
+
 	copy(textureData, image.Data)
 
-	context.Device.UnmapTransferBuffer(textureTransferBuffer.Raw())
+	context.Device.UnmapTransferBuffer(textureTransferBuffer)
 
 	// upload the transfer data to the gpu resources
 
@@ -212,7 +221,12 @@ func (e *CustomSampling) Init(context *common.Context) error {
 			TransferBuffer: bufferTransferBuffer,
 			Offset:         0,
 		},
-		e.vertexBuffer.Region(0, e.vertexBuffer.Length()), false,
+		&sdl.GPUBufferRegion{
+			Buffer: e.vertexBuffer,
+			Offset: 0,
+			Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
+		},
+		false,
 	)
 
 	copyPass.UploadToGPUBuffer(
@@ -220,12 +234,17 @@ func (e *CustomSampling) Init(context *common.Context) error {
 			TransferBuffer: bufferTransferBuffer,
 			Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 4),
 		},
-		e.indexBuffer.Region(0, e.indexBuffer.Length()), false,
+		&sdl.GPUBufferRegion{
+			Buffer: e.indexBuffer,
+			Offset: 0,
+			Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
+		},
+		false,
 	)
 
 	copyPass.UploadToGPUTexture(
 		&sdl.GPUTextureTransferInfo{
-			TransferBuffer: textureTransferBuffer.Raw(),
+			TransferBuffer: textureTransferBuffer,
 			Offset:         0,
 		},
 		&sdl.GPUTextureRegion{
@@ -240,7 +259,7 @@ func (e *CustomSampling) Init(context *common.Context) error {
 	copyPass.End()
 	uploadCmdBuf.Submit()
 	context.Device.ReleaseTransferBuffer(bufferTransferBuffer)
-	context.Device.ReleaseTransferBuffer(textureTransferBuffer.Raw())
+	context.Device.ReleaseTransferBuffer(textureTransferBuffer)
 
 	fmt.Println("Press Left/Right to switch sampler modes")
 	fmt.Printf("Setting sampler mode to: %d\n", e.samplerMode)
@@ -285,9 +304,15 @@ func (e *CustomSampling) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			*e.vertexBuffer.Binding(0),
+			sdl.GPUBufferBinding{
+				Buffer: e.vertexBuffer,
+				Offset: 0,
+			},
 		})
-		renderPass.BindIndexBuffer(e.indexBuffer.Binding(0), sdl.GPU_INDEXELEMENTSIZE_16BIT)
+		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
+			Buffer: e.indexBuffer,
+			Offset: 0,
+		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentStorageTextures([]*sdl.GPUTexture{
 			e.texture,
 		})
@@ -307,8 +332,8 @@ func (e *CustomSampling) Draw(context *common.Context) error {
 
 func (e *CustomSampling) Quit(context *common.Context) {
 	context.Device.ReleaseGraphicsPipeline(e.pipeline)
-	context.Device.ReleaseBuffer(e.vertexBuffer.Raw())
-	context.Device.ReleaseBuffer(e.indexBuffer.Raw())
+	context.Device.ReleaseBuffer(e.vertexBuffer)
+	context.Device.ReleaseBuffer(e.indexBuffer)
 	context.Device.ReleaseTexture(e.texture)
 
 	e.samplerMode = 0
