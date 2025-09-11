@@ -140,6 +140,26 @@ func CreateRendererTextEngineWithProperties(props sdl.PropertiesID) (*TextEngine
 	return engine, nil
 }
 
+// TTF_CreateGPUTextEngine - Create a text engine for drawing text with the SDL GPU API.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_CreateGPUTextEngine)
+func CreateGPUTextEngine(device *sdl.GPUDevice) (*TextEngine, error) {
+	engine := iCreateGPUTextEngine(device)
+	if engine == nil {
+		return nil, internal.LastErr()
+	}
+	return engine, nil
+}
+
+// TTF_CreateGPUTextEngineWithProperties - Create a text engine for drawing text with the SDL GPU API, with the specified properties.
+// (https://wiki.libsdl.org/SDL3_ttf/TTF_CreateGPUTextEngineWithProperties)
+func CreateGPUTextEngineWithProperties(props sdl.PropertiesID) (*TextEngine, error) {
+	engine := iCreateGPUTextEngineWithProperties(props)
+	if engine == nil {
+		return nil, internal.LastErr()
+	}
+	return engine, nil
+}
+
 // TTF_Quit - Deinitialize SDL_ttf.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_Quit)
 func Quit() {
