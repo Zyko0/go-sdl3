@@ -6,6 +6,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type Blit2DArray struct {
@@ -28,6 +29,14 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	if err != nil {
 		return err
 	}
+
+	type Layout struct {
+		sdlgpu.BaseLayout
+		Vertices []common.PositionTextureVertex `gpu:"len:8"`
+		Indices  []uint16                       `gpu:"len:6"`
+	}
+	layout := &Layout{}
+	sdlgpu.RegisterLayout(layout)
 
 	// create the shaders
 
@@ -117,7 +126,7 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 
 	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create vertex buffer: " + err.Error())
@@ -125,7 +134,7 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 
 	e.indexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_INDEX,
-		Size:  uint32(unsafe.Sizeof(uint16(0)) * 6),
+		Size:  layout.Size(1),
 	})
 	if err != nil {
 		return errors.New("failed to create index buffer: " + err.Error())
@@ -174,10 +183,7 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	bufferTransferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size: uint32(
-				unsafe.Sizeof(common.PositionTextureVertex{})*8 +
-					unsafe.Sizeof(uint16(0))*6,
-			),
+			Size:  layout.TotalSize(),
 		},
 	)
 	if err != nil {
@@ -189,31 +195,23 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 		return errors.New("failed to create map buffer transfer buffer: " + err.Error())
 	}
 
-	vertexData := unsafe.Slice(
-		(*common.PositionTextureVertex)(unsafe.Pointer(bufferTransferPtr)), 8,
-	)
+	layout.Map(bufferTransferPtr)
 
-	vertexData[0] = common.NewPosTexVert(-1, 1, 0, 0, 0)
-	vertexData[1] = common.NewPosTexVert(0, 1, 0, 1, 0)
-	vertexData[2] = common.NewPosTexVert(0, -1, 0, 1, 1)
-	vertexData[3] = common.NewPosTexVert(-1, -1, 0, 0, 1)
-	vertexData[4] = common.NewPosTexVert(0, 1, 0, 0, 0)
-	vertexData[5] = common.NewPosTexVert(1, 1, 0, 1, 0)
-	vertexData[6] = common.NewPosTexVert(1, -1, 0, 1, 1)
-	vertexData[7] = common.NewPosTexVert(0, -1, 0, 0, 1)
+	layout.Vertices[0] = common.NewPosTexVert(-1, 1, 0, 0, 0)
+	layout.Vertices[1] = common.NewPosTexVert(0, 1, 0, 1, 0)
+	layout.Vertices[2] = common.NewPosTexVert(0, -1, 0, 1, 1)
+	layout.Vertices[3] = common.NewPosTexVert(-1, -1, 0, 0, 1)
+	layout.Vertices[4] = common.NewPosTexVert(0, 1, 0, 0, 0)
+	layout.Vertices[5] = common.NewPosTexVert(1, 1, 0, 1, 0)
+	layout.Vertices[6] = common.NewPosTexVert(1, -1, 0, 1, 1)
+	layout.Vertices[7] = common.NewPosTexVert(0, -1, 0, 0, 1)
 
-	indexData := unsafe.Slice(
-		(*uint16)(unsafe.Pointer(
-			bufferTransferPtr+unsafe.Sizeof(common.PositionTextureVertex{})*8,
-		)), 6,
-	)
-
-	indexData[0] = 0
-	indexData[1] = 1
-	indexData[2] = 2
-	indexData[3] = 0
-	indexData[4] = 2
-	indexData[5] = 3
+	layout.Indices[0] = 0
+	layout.Indices[1] = 1
+	layout.Indices[2] = 2
+	layout.Indices[3] = 0
+	layout.Indices[4] = 2
+	layout.Indices[5] = 3
 
 	context.Device.UnmapTransferBuffer(bufferTransferBuffer)
 
@@ -265,16 +263,16 @@ func (e *Blit2DArray) Init(context *common.Context) error {
 	}, &sdl.GPUBufferRegion{
 		Buffer: e.vertexBuffer,
 		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
+		Size:   layout.Size(0),
 	}, false)
 
 	copyPass.UploadToGPUBuffer(&sdl.GPUTransferBufferLocation{
 		TransferBuffer: bufferTransferBuffer,
-		Offset:         uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 8),
+		Offset:         layout.Offset(1, 0),
 	}, &sdl.GPUBufferRegion{
 		Buffer: e.indexBuffer,
 		Offset: 0,
-		Size:   uint32(unsafe.Sizeof(uint16(0)) * 6),
+		Size:   layout.Size(1),
 	}, false)
 
 	copyPass.UploadToGPUTexture(&sdl.GPUTextureTransferInfo{

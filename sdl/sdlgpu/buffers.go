@@ -3,12 +3,15 @@ package sdlgpu
 import (
 	"fmt"
 	"reflect"
+	"runtime"
 	"strconv"
 	"strings"
 	"unsafe"
+
+	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-// Test
+// Buffer
 
 type bufferItem struct {
 	ptr    reflect.Value
@@ -36,6 +39,10 @@ func (l *BaseLayout) Size(slot uint32) uint32 {
 	return max(l.items[slot].length, 1) * uint32(l.items[slot].typ.Size())
 }
 
+func (l *BaseLayout) Pitch(slot uint32) uint32 {
+	return uint32(l.items[0].typ.Size())
+}
+
 func (l *BaseLayout) Map(ptr uintptr) {
 	for _, item := range l.items {
 		addr := unsafe.Pointer(ptr + uintptr(item.offset))
@@ -51,7 +58,7 @@ func (l *BaseLayout) Map(ptr uintptr) {
 	}
 }
 
-func Register(layout any) {
+func RegisterLayout(layout any) {
 	t := reflect.TypeOf(layout)
 	if t.Kind() != reflect.Pointer {
 		panic("layout must be a pointer to a struct")
@@ -158,4 +165,30 @@ func Register(layout any) {
 		info.size += size
 		offset += size
 	}
+}
+
+// Uniforms
+
+func PushVertexUniforms[T any](cmdbuf *sdl.GPUCommandBuffer, slotIndex uint32, uniforms ...T) {
+	cmdbuf.PushVertexUniformData(slotIndex, unsafe.Slice(
+		(*byte)(unsafe.Pointer(&uniforms[0])),
+		unsafe.Sizeof(uniforms[0])*uintptr(len(uniforms)),
+	))
+	runtime.KeepAlive(uniforms)
+}
+
+func PushFragmentUniforms[T any](cmdbuf *sdl.GPUCommandBuffer, slotIndex uint32, uniforms ...T) {
+	cmdbuf.PushFragmentUniformData(slotIndex, unsafe.Slice(
+		(*byte)(unsafe.Pointer(&uniforms[0])),
+		unsafe.Sizeof(uniforms[0])*uintptr(len(uniforms)),
+	))
+	runtime.KeepAlive(uniforms)
+}
+
+func PushComputeUniforms[T any](cmdbuf *sdl.GPUCommandBuffer, slotIndex uint32, uniforms ...T) {
+	cmdbuf.PushComputeUniformData(slotIndex, unsafe.Slice(
+		(*byte)(unsafe.Pointer(&uniforms[0])),
+		unsafe.Sizeof(uniforms[0])*uintptr(len(uniforms)),
+	))
+	runtime.KeepAlive(uniforms)
 }
