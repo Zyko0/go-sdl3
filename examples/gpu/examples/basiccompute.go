@@ -6,6 +6,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type BasicCompute struct {
@@ -26,6 +27,13 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	if err != nil {
 		return err
 	}
+
+	type Layout struct {
+		sdlgpu.BaseLayout
+		Vertices []common.PositionTextureVertex `gpu:"len:6"`
+	}
+	layout := &Layout{}
+	sdlgpu.RegisterLayout(layout)
 
 	vertexShader, err := common.LoadShader(
 		context.Device, "TexturedQuad.vert", 0, 0, 0, 0,
@@ -64,7 +72,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
-			Pitch:            uint32(unsafe.Sizeof(common.PositionTextureVertex{})),
+			Pitch:            layout.Pitch(0),
 		},
 	}
 
@@ -132,7 +140,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 
 	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 6),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
@@ -141,9 +149,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	transferBuffer, err := context.Device.CreateTransferBuffer(
 		&sdl.GPUTransferBufferCreateInfo{
 			Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-			Size: uint32(
-				unsafe.Sizeof(common.PositionTextureVertex{}) * 6,
-			),
+			Size:  layout.Size(0),
 		},
 	)
 	if err != nil {
@@ -155,16 +161,14 @@ func (e *BasicCompute) Init(context *common.Context) error {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
 
-	vertexData := unsafe.Slice(
-		(*common.PositionTextureVertex)(unsafe.Pointer(transferDataPtr)), 6,
-	)
+	layout.Map(transferDataPtr)
 
-	vertexData[0] = common.NewPosTexVert(-1, -1, 0, 0, 0)
-	vertexData[1] = common.NewPosTexVert(1, -1, 0, 1, 0)
-	vertexData[2] = common.NewPosTexVert(1, 1, 0, 1, 1)
-	vertexData[3] = common.NewPosTexVert(-1, -1, 0, 0, 0)
-	vertexData[4] = common.NewPosTexVert(1, 1, 0, 1, 1)
-	vertexData[5] = common.NewPosTexVert(-1, 1, 0, 0, 1)
+	layout.Vertices[0] = common.NewPosTexVert(-1, -1, 0, 0, 0)
+	layout.Vertices[1] = common.NewPosTexVert(1, -1, 0, 1, 0)
+	layout.Vertices[2] = common.NewPosTexVert(1, 1, 0, 1, 1)
+	layout.Vertices[3] = common.NewPosTexVert(-1, -1, 0, 0, 0)
+	layout.Vertices[4] = common.NewPosTexVert(1, 1, 0, 1, 1)
+	layout.Vertices[5] = common.NewPosTexVert(-1, 1, 0, 0, 1)
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
@@ -183,7 +187,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 		&sdl.GPUBufferRegion{
 			Buffer: e.vertexBuffer,
 			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionTextureVertex{}) * 6),
+			Size:   layout.Size(0),
 		},
 		false,
 	)

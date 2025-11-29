@@ -6,6 +6,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type BasicStencil struct {
@@ -26,6 +27,13 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	if err != nil {
 		return err
 	}
+
+	type Layout struct {
+		sdlgpu.BaseLayout
+		Vertices []common.PositionColorVertex `gpu:"len:6"`
+	}
+	layout := &Layout{}
+	sdlgpu.RegisterLayout(layout)
 
 	vertexShader, err := common.LoadShader(
 		context.Device, "PositionColor.vert", 0, 0, 0, 0,
@@ -156,7 +164,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 
 	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
@@ -183,7 +191,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 
 	transferBuffer, err := context.Device.CreateTransferBuffer(&sdl.GPUTransferBufferCreateInfo{
 		Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
@@ -194,16 +202,14 @@ func (e *BasicStencil) Init(context *common.Context) error {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
 
-	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 6,
-	)
+	layout.Map(transferDataPtr)
 
-	vertexData[0] = common.NewPosColorVert(-0.5, -0.5, 0, 255, 255, 0, 255)
-	vertexData[1] = common.NewPosColorVert(0.5, -0.5, 0, 255, 255, 0, 255)
-	vertexData[2] = common.NewPosColorVert(0, 0.5, 0, 255, 255, 0, 255)
-	vertexData[3] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
-	vertexData[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
-	vertexData[5] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+	layout.Vertices[0] = common.NewPosColorVert(-0.5, -0.5, 0, 255, 255, 0, 255)
+	layout.Vertices[1] = common.NewPosColorVert(0.5, -0.5, 0, 255, 255, 0, 255)
+	layout.Vertices[2] = common.NewPosColorVert(0, 0.5, 0, 255, 255, 0, 255)
+	layout.Vertices[3] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
+	layout.Vertices[4] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	layout.Vertices[5] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
@@ -222,7 +228,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 		&sdl.GPUBufferRegion{
 			Buffer: e.vertexBuffer,
 			Offset: 0,
-			Size:   uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 6),
+			Size:   layout.Size(0),
 		},
 		false,
 	)
