@@ -2,10 +2,10 @@ package main
 
 import (
 	"errors"
-	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type GradientUniforms struct {
@@ -92,10 +92,7 @@ func (e *ComputeUniforms) Draw(context *common.Context) error {
 		)
 
 		computePass.BindGPUComputePipeline(e.gradientPipeline)
-		cmdbuf.PushComputeUniformData(0, unsafe.Slice(
-			(*byte)(unsafe.Pointer(&e.gradientUniformValues)),
-			unsafe.Sizeof(e.gradientUniformValues),
-		))
+		sdlgpu.PushComputeUniforms(cmdbuf, 0, e.gradientUniformValues)
 		computePass.Dispatch(
 			swapchainTexture.Width/8, swapchainTexture.Height/8, 1,
 		)

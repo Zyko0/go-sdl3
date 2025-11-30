@@ -6,6 +6,7 @@ import (
 
 	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
 	"github.com/Zyko0/go-sdl3/sdl"
+	"github.com/Zyko0/go-sdl3/sdl/sdlgpu"
 )
 
 type BasicVertexBuffer struct {
@@ -24,6 +25,13 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 	if err != nil {
 		return err
 	}
+
+	type Layout struct {
+		sdlgpu.BaseLayout
+		Vertices []common.PositionColorVertex `gpu:"len:3"`
+	}
+	layout := &Layout{}
+	sdlgpu.RegisterLayout(layout)
 
 	// create shaders
 
@@ -54,7 +62,7 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
-			Pitch:            uint32(unsafe.Sizeof(common.PositionColorVertex{})),
+			Pitch:            layout.Pitch(0),
 		},
 	}
 
@@ -98,7 +106,7 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 
 	e.vertexBuffer, err = context.Device.CreateBuffer(&sdl.GPUBufferCreateInfo{
 		Usage: sdl.GPU_BUFFERUSAGE_VERTEX,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create buffer: " + err.Error())
@@ -108,7 +116,7 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 
 	transferBuffer, err := context.Device.CreateTransferBuffer(&sdl.GPUTransferBufferCreateInfo{
 		Usage: sdl.GPU_TRANSFERBUFFERUSAGE_UPLOAD,
-		Size:  uint32(unsafe.Sizeof(common.PositionColorVertex{}) * 3),
+		Size:  layout.Size(0),
 	})
 	if err != nil {
 		return errors.New("failed to create transfer buffer: " + err.Error())
@@ -119,13 +127,11 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 		return errors.New("failed to map transfer buffer: " + err.Error())
 	}
 
-	vertexData := unsafe.Slice(
-		(*common.PositionColorVertex)(unsafe.Pointer(transferDataPtr)), 3,
-	)
+	layout.Map(transferDataPtr)
 
-	vertexData[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
-	vertexData[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
-	vertexData[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
+	layout.Vertices[0] = common.NewPosColorVert(-1, -1, 0, 255, 0, 0, 255)
+	layout.Vertices[1] = common.NewPosColorVert(1, -1, 0, 0, 255, 0, 255)
+	layout.Vertices[2] = common.NewPosColorVert(0, 1, 0, 0, 0, 255, 255)
 
 	context.Device.UnmapTransferBuffer(transferBuffer)
 
