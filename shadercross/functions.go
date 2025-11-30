@@ -210,8 +210,13 @@ func ReflectGraphicsSPIRV(bytecode []byte, props sdl.PropertiesID) (*GraphicsSha
 	}
 
 	ret := (*graphicsShaderMetadata)(unsafe.Pointer(r0))
+	var info *GraphicsShaderResourceInfo
+	if ret.ResourceInfo != nil {
+		info = &GraphicsShaderResourceInfo{}
+		*info = *ret.ResourceInfo
+	}
 	md := &GraphicsShaderMetadata{
-		ResourceInfo: ret.ResourceInfo,
+		ResourceInfo: info,
 		Inputs:       internal.ClonePtrSlice[IOVarMetadata](uintptr(unsafe.Pointer(ret.Inputs)), int(ret.NumInputs)),
 		Outputs:      internal.ClonePtrSlice[IOVarMetadata](uintptr(unsafe.Pointer(ret.Outputs)), int(ret.NumOutputs)),
 	}
