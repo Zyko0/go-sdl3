@@ -3,7 +3,6 @@
 package sdl
 
 import (
-	"fmt"
 	"runtime"
 	"unsafe"
 
@@ -95,7 +94,6 @@ func NewEnumerateDirectoryCallback(fn func(dirname, fname string)) EnumerateDire
 
 func NewEventFilter(fn func(event *Event) bool) EventFilter {
 	return EventFilter(purego.NewCallback(func(_ uintptr, event *Event) uintptr {
-		fmt.Println("event type:", event.Type)
 		if fn(event) {
 			return 1
 		}
