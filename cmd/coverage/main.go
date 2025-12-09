@@ -52,7 +52,7 @@ type refFunc struct {
 var (
 	categories = map[string][]string{
 		"sdl": {
-			"Init", "Hints", "Error", "Properties", "Log", "Video",
+			"Init", "Hints", "Error", "Version", "Properties", "Log", "Video",
 			"Events", "Keyboard", "Mouse", "Touch", "Gamepad", "Joystick",
 			"Haptic", "Audio", "Time", "Timer", "Render", "SharedObject",
 			"Thread", "Mutex", "Atomic", "Filesystem", "IOStream", "AsyncIO",
@@ -60,7 +60,7 @@ var (
 			"Clipboard", "Dialog", "Tray", "MessageBox", "GPU", "Vulkan", "Metal",
 			/*"Platform",*/ "Power", "Sensor", "Process", "Bits", "Endian",
 			"Assert", "CPUInfo" /*"Intrinsics",*/, "Locale", "System", "Misc",
-			"GUID", "Main", "Stdinc",
+			"GUID", "Stdinc",
 		},
 		"img":   {"Image"},
 		"ttf":   {"TTF"},
@@ -68,6 +68,7 @@ var (
 	}
 	collapsedCategories = map[string]struct{}{
 		"Error":        {},
+		"Version":      {},
 		"Log":          {},
 		"Time":         {},
 		"SharedObject": {},
