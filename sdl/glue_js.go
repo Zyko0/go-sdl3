@@ -8,7 +8,7 @@ import (
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
-func (s *Surface) Pixels() []byte {
+func (s *Surface) Pixels() int {
 	return internal.GetByteSliceFromJSPtr(js.ValueOf(s.pixels), int(s.H*s.Pitch))
 }
 
