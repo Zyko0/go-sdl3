@@ -234,7 +234,7 @@ func (e *BasicStencil) Init(context *common.Context) error {
 	return nil
 }
 
-func (e *BasicStencil) Update(context common.Context) error {
+func (e *BasicStencil) Update(context *common.Context) error {
 	return nil
 }
 
