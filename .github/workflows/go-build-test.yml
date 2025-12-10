@@ -1,0 +1,41 @@
+name: Build / Test
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened, ready_for_review]
+    push:
+        branches:
+            - main
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        go: ['1.24.x', '1.25.x']
+    
+    name: Test with Go ${{ matrix.go }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v5
+        - name: Setup Go
+          uses: actions/setup-go@v6
+          with:
+            go-version: ${{ matrix.go }}
+        
+        - name: go build
+          run: |
+            go build -v ./...
+            env GOOS=js GOARCH=wasm go build -v ./...
+            # Examples
+            go build -o gpu ./examples/gpu/examples
+            go build ./examples/helloworld
+            go build ./examples/renderer/09-scaling-textures
+            
+            env GOOS=js GOARCH=wasm go build ./examples/helloworld
+        
+        - name: go test
+          run : |
+            go test -v ./...
