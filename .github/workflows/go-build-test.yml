@@ -28,10 +28,12 @@ jobs:
         - name: go build
           run: |
             go build -v ./...
-            go build ./examples/gpu/examples
+            env GOOS=js GOARCH=wasm go build -v ./...
+            # Examples
+            go build -o gpu ./examples/gpu/examples
             go build ./examples/helloworld
             go build ./examples/renderer/09-scaling-textures
-            env GOOS=js GOARCH=wasm go build -v ./...
+            
             env GOOS=js GOARCH=wasm go build ./examples/helloworld
         
         - name: go test
