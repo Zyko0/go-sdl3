@@ -4,6 +4,8 @@ on:
     pull_request:
         types: [ready_for_review]
     push:
+        branches:
+            - main
 
 jobs:
   test:
