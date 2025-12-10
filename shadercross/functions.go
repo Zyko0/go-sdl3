@@ -1,3 +1,5 @@
+//go:build windows || unix
+
 package shadercross
 
 import (
