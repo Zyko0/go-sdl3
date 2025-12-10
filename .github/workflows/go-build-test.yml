@@ -1,6 +1,9 @@
 name: Build / Test
 
-on: [push, pull_request]
+on:
+    pull_request:
+        types: [ready_for_review]
+    push:
 
 jobs:
   test:
