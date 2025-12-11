@@ -1,4 +1,4 @@
-name: Build / Test
+name: Check diff
 
 on:
     pull_request:
@@ -11,7 +11,7 @@ jobs:
   test:
     if: github.event.pull_request.draft == false
     
-    name: Check diff
+    name: Run tasks
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
