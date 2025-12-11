@@ -1,4 +1,4 @@
-//id,description,url
+id,description,url
 SDL_ACQUIRE,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_ACQUIRE
 SDL_ACQUIRED_AFTER,"Wrapper around Clang thread safety analysis annotations.
