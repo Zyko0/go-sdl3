@@ -678,6 +678,8 @@ func (info *GPUGraphicsPipelineTargetInfo) as() gpuGraphicsPipelineTargetInfo {
 	}
 }
 
+// SDL_GPUGraphicsPipelineTargetInfo - A structure specifying the descriptions of render targets used in a graphics pipeline.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo)
 type GPUGraphicsPipelineTargetInfo struct {
 	ColorTargetDescriptions []GPUColorTargetDescription
 	DepthStencilFormat      GPUTextureFormat
@@ -700,6 +702,8 @@ func (state *GPUVertexInputState) as() gpuVertexInputState {
 	}
 }
 
+// SDL_GPUVertexInputState - A structure specifying the parameters of a graphics pipeline vertex input state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState)
 type GPUVertexInputState struct {
 	VertexBufferDescriptions []GPUVertexBufferDescription
 	VertexAttributes         []GPUVertexAttribute
@@ -734,6 +738,8 @@ func (info *GPUGraphicsPipelineCreateInfo) as() *gpuGraphicsPipelineCreateInfo {
 	}
 }
 
+// SDL_GPUGraphicsPipelineCreateInfo - A structure specifying the parameters of a graphics pipeline state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo)
 type GPUGraphicsPipelineCreateInfo struct {
 	VertexShader      *GPUShader
 	FragmentShader    *GPUShader
