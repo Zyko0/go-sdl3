@@ -23,6 +23,10 @@ jobs:
         - name: Set up Docker
           uses: docker/setup-docker-action@v4
         
+        - name: go fmt
+          run: |
+            task fmt
+
         - name: Coverage
           run: |
             task coverage

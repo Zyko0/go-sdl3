@@ -59,7 +59,7 @@ func (e *WindowResize) Init(context *common.Context) error {
 	}
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}

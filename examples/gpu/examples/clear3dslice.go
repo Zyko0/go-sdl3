@@ -58,7 +58,7 @@ func (e *Clear3DSlice) Draw(context *common.Context) error {
 
 	if swapchainTexture != nil {
 		cmdbuf.BeginRenderPass(
-			[]sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+			[]sdl.GPUColorTargetInfo{{
 				Texture:           e.texture3D,
 				Cycle:             true,
 				LoadOp:            sdl.GPU_LOADOP_CLEAR,
@@ -69,7 +69,7 @@ func (e *Clear3DSlice) Draw(context *common.Context) error {
 		).End()
 
 		cmdbuf.BeginRenderPass(
-			[]sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+			[]sdl.GPUColorTargetInfo{{
 				Texture:           e.texture3D,
 				Cycle:             false,
 				LoadOp:            sdl.GPU_LOADOP_CLEAR,
@@ -80,7 +80,7 @@ func (e *Clear3DSlice) Draw(context *common.Context) error {
 		).End()
 
 		cmdbuf.BeginRenderPass(
-			[]sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+			[]sdl.GPUColorTargetInfo{{
 				Texture:           e.texture3D,
 				Cycle:             false,
 				LoadOp:            sdl.GPU_LOADOP_CLEAR,
@@ -91,7 +91,7 @@ func (e *Clear3DSlice) Draw(context *common.Context) error {
 		).End()
 
 		cmdbuf.BeginRenderPass(
-			[]sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+			[]sdl.GPUColorTargetInfo{{
 				Texture:           e.texture3D,
 				Cycle:             false,
 				LoadOp:            sdl.GPU_LOADOP_CLEAR,

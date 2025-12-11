@@ -259,7 +259,7 @@ func (e *ComputeSampler) Draw(context *common.Context) error {
 
 	if swapchainTexture != nil {
 		computePass := cmdbuf.BeginComputePass([]sdl.GPUStorageTextureReadWriteBinding{
-			sdl.GPUStorageTextureReadWriteBinding{
+			{
 				Texture:  e.writeTexture,
 				Layer:    0,
 				MipLevel: 0,
@@ -269,7 +269,7 @@ func (e *ComputeSampler) Draw(context *common.Context) error {
 
 		computePass.BindGPUComputePipeline(e.pipeline)
 		computePass.BindSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{
+			{
 				Texture: e.texture,
 				Sampler: e.samplers[e.currentSamplerIndex],
 			},

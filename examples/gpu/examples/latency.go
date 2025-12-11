@@ -193,7 +193,7 @@ func (e *Latency) Draw(context *common.Context) error {
 			})
 		} else {
 			renderPass := cmdbuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-				sdl.GPUColorTargetInfo{
+				{
 					Texture:    swapchainTexture.Texture,
 					ClearColor: sdl.FColor{R: 0, G: 0, B: 0, A: 1},
 					LoadOp:     sdl.GPU_LOADOP_CLEAR,

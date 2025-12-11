@@ -296,7 +296,7 @@ func (e *ToneMapping) Draw(context *common.Context) error {
 
 		computePass := cmdbuf.BeginComputePass(
 			[]sdl.GPUStorageTextureReadWriteBinding{
-				sdl.GPUStorageTextureReadWriteBinding{
+				{
 					Texture: e.toneMapTexture,
 					Cycle:   true,
 				},
@@ -320,7 +320,7 @@ func (e *ToneMapping) Draw(context *common.Context) error {
 
 			computePass = cmdbuf.BeginComputePass(
 				[]sdl.GPUStorageTextureReadWriteBinding{
-					sdl.GPUStorageTextureReadWriteBinding{
+					{
 						Texture: e.transferTexture,
 						Cycle:   true,
 					},

@@ -54,13 +54,13 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	}
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -69,13 +69,13 @@ func (e *BasicCompute) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT2,
 			Location:   1,
@@ -192,7 +192,7 @@ func (e *BasicCompute) Init(context *common.Context) error {
 
 	computePass := cmdBuf.BeginComputePass(
 		[]sdl.GPUStorageTextureReadWriteBinding{
-			sdl.GPUStorageTextureReadWriteBinding{
+			{
 				Texture: e.texture,
 			},
 		},
@@ -228,7 +228,7 @@ func (e *BasicCompute) Draw(context *common.Context) error {
 
 	if swapchainTexture != nil {
 		renderPass := cmdbuf.BeginRenderPass(
-			[]sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+			[]sdl.GPUColorTargetInfo{{
 				Texture:    swapchainTexture.Texture,
 				LoadOp:     sdl.GPU_LOADOP_CLEAR,
 				StoreOp:    sdl.GPU_STOREOP_STORE,
@@ -239,10 +239,10 @@ func (e *BasicCompute) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.drawPipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			{Buffer: e.vertexBuffer, Offset: 0},
 		})
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
+			{Texture: e.texture, Sampler: e.sampler},
 		})
 		renderPass.DrawPrimitives(6, 1, 0, 0)
 
