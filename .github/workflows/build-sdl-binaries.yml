@@ -37,19 +37,19 @@ jobs:
 
         # Build all binaries
         - name: SDL
-          uses: ./sdl-build/sdl.yml
+          uses: ./.github/workflows/sdl-build/sdl.yml
           with:
             version: ${{ env.sdl-version }}
         - name: SDL_ttf
-          uses: ./sdl-build/sdl-ttf.yml
+          uses: ./.github/workflows/sdl-build/sdl-ttf.yml
           with:
             version: ${{ env.ttf-version }}
         - name: SDL_mixer
-          uses: ./sdl-build/sdl-mixer.yml
+          uses: ./.github/workflows/sdl-build/sdl-mixer.yml
           with:
             version: ${{ env.mixer-version }}
         - name: SDL_image
-          uses: ./sdl-build/sdl-image.yml
+          uses: ./.github/workflows/sdl-build/sdl-image.yml
           with:
             version: ${{ env.image-version }}
         # Download all artifacts
