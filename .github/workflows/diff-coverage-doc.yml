@@ -28,7 +28,19 @@ jobs:
             task coverage
             git diff --exit-code
         
-        - name: Documentation
+        - name: Documentation (SDL)
           run : |
-            task gen-doc
+            task LIBRARY=sdl gen-doc
+            git diff --exit-code
+        - name: Documentation (TTF)
+          run : |
+            task LIBRARY=ttf gen-doc
+            git diff --exit-code
+        - name: Documentation (MIXER)
+          run : |
+            task LIBRARY=mixer gen-doc
+            git diff --exit-code
+        - name: Documentation (IMG)
+          run : |
+            task LIBRARY=img gen-doc
             git diff --exit-code
