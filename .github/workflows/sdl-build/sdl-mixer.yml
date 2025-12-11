@@ -2,6 +2,12 @@ name: Build SDL_mixer
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        # TODO: ignored atm
+        description: "SDL_mixer version"
+        required: true
+        type: string
 
 env:
   MIXER_BRANCH: main

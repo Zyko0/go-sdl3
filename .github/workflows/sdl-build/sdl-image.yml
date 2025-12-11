@@ -2,9 +2,11 @@ name: Build SDL_image
 
 on:
   workflow_dispatch:
-
-env:
-  IMAGE_VERSION: 3.2.0
+    inputs:
+      version:
+        description: "SDL_image version"
+        required: true
+        type: string
 
 jobs:
   build-windows:
@@ -16,12 +18,12 @@ jobs:
           arch: [x64, x86, arm64]
     steps:
       - name: Download release build
-        run: wget https://github.com/libsdl-org/SDL_image/releases/download/release-${{ env.IMAGE_VERSION }}/SDL3_image-${{ env.IMAGE_VERSION }}-win32-${{ matrix.arch }}.zip
+        run: wget https://github.com/libsdl-org/SDL_image/releases/download/release-${{ inputs.version }}/SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-image-windows-${{ matrix.arch }}
-            path: SDL3_image-${{ env.IMAGE_VERSION }}-win32-${{ matrix.arch }}.zip
+            path: SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
 
   build-linux:
     name: Build Linux
@@ -56,7 +58,7 @@ jobs:
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ env.IMAGE_VERSION }} https://github.com/libsdl-org/SDL_image.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -122,7 +124,7 @@ jobs:
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ env.IMAGE_VERSION }} https://github.com/libsdl-org/SDL_image.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Configure
         run: >
           cmake -G Ninja

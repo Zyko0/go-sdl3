@@ -1,0 +1,53 @@
+name: Build SDL Binaries
+
+on:
+    workflow_dispatch:
+      inputs:
+        sdl-version:
+          description: "SDL version"
+          required: true
+          type: string
+        ttf-version:
+          description: "SDL_ttf version"
+          required: true
+          type: string
+        mixer-version:
+          description: "SDL_mixer version"
+          required: true
+          type: string
+        image-version:
+          description: "SDL_image version"
+          required: true
+          type: string
+
+jobs:
+  build:
+    name: Call workflows
+    runs-on: ubuntu-latest
+    steps:
+        # Build all binaries
+        - name: SDL
+          uses: ./sdl-build/sdl.yml
+          with:
+            version: ${{ inputs.sdl-version }}
+        - name: SDL_ttf
+          uses: ./sdl-build/sdl-ttf.yml
+          with:
+            version: ${{ inputs.ttf-version }}
+        - name: SDL_mixer
+          uses: ./sdl-build/sdl-mixer.yml
+          with:
+            version: ${{ inputs.mixer-version }}
+        - name: SDL_image
+          uses: ./sdl-build/sdl-image.yml
+          with:
+            version: ${{ inputs.image-version }}
+        # Download all artifacts
+        - name: Download artifacts
+          uses: actions/download-artifact@v5
+          with:
+            path: artifacts
+            pattern: sdl-*
+            merge-multiple: true
+        - name: List artifacts
+          run: ls -lR ./artifacts
