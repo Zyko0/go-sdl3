@@ -29,7 +29,7 @@ on:
 
 jobs:
   build-sdl:
-    name: Build SDL
+    name: SDL
     uses: ./.github/workflows/build-sdl.yml
     with:
       version: 3.2.16
