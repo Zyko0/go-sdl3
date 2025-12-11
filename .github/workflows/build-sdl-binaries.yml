@@ -21,43 +21,46 @@ on:
     #      required: true
     #      type: string
 
-env:
-  sdl-version: 3.2.16
-  ttf-version: 3.2.0
-  mixer-version: main
-  image-version: 3.2.0
+# env:
+#   sdl-version: 3.2.16
+#   ttf-version: 3.2.0
+#   mixer-version: main
+#   image-version: 3.2.0
 
 jobs:
-  build:
-    name: Call workflows
+  build-sdl:
+    name: Build SDL
+    uses: ./.github/workflows/build-sdl.yml
+    with:
+      version: 3.2.16
+    
+  build-ttf:
+    name: SDL_ttf
+    uses: ./.github/workflows/build-sdl-ttf.yml
+    with:
+      version: 3.2.0
+  
+  build-mixer:
+    name: SDL_mixer
+    uses: ./.github/workflows/build-sdl-mixer.yml
+    with:
+      version: main
+  
+  build-image:
+    name: SDL_image
+    uses: ./.github/workflows/build-sdl-image.yml
+    with:
+      version: 3.2.0
+  
+  download-artifacts:
+    needs: [build-sdl, build-ttf, build-mixer, build-image]
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
-          uses: actions/checkout@v5
-
-        # Build all binaries
-        - name: SDL
-          uses: ./.github/workflows/sdl-build/sdl.yml
-          with:
-            version: ${{ env.sdl-version }}
-        - name: SDL_ttf
-          uses: ./.github/workflows/sdl-build/sdl-ttf.yml
-          with:
-            version: ${{ env.ttf-version }}
-        - name: SDL_mixer
-          uses: ./.github/workflows/sdl-build/sdl-mixer.yml
-          with:
-            version: ${{ env.mixer-version }}
-        - name: SDL_image
-          uses: ./.github/workflows/sdl-build/sdl-image.yml
-          with:
-            version: ${{ env.image-version }}
-        # Download all artifacts
-        - name: Download artifacts
-          uses: actions/download-artifact@v5
-          with:
-            path: artifacts
-            pattern: sdl-*
-            merge-multiple: true
-        - name: List artifacts
-          run: ls -lR ./artifacts
+    - name: Download artifacts
+      uses: actions/download-artifact@v5
+      with:
+        path: artifacts
+        pattern: sdl-*
+        merge-multiple: true
+    - name: List artifacts
+      run: ls -lR ./artifacts

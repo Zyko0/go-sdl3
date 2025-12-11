@@ -1,10 +1,10 @@
-name: Build SDL_ttf
+name: Build SDL_image
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       version:
-        description: "SDL_ttf version"
+        description: "SDL_image version"
         required: true
         type: string
 
@@ -18,12 +18,12 @@ jobs:
           arch: [x64, x86, arm64]
     steps:
       - name: Download release build
-        run: wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-${{ inputs.version }}/SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+        run: wget https://github.com/libsdl-org/SDL_image/releases/download/release-${{ inputs.version }}/SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-windows-${{ matrix.arch }}
-            path: SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+            name: sdl-image-windows-${{ matrix.arch }}
+            path: SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
 
   build-linux:
     name: Build Linux
@@ -31,7 +31,7 @@ jobs:
     container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
     defaults:
       run:
-        working-directory: SDL_ttf
+        working-directory: SDL_image
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
@@ -47,16 +47,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install \
-            cmake \
-            file \
-            fonts-dejavu-core \
-            libfreetype-dev \
-            libharfbuzz-dev \
-            pkg-config \
-            ${NULL+}
-      - name: Clone SDL_ttf
+          libavif-dev \
+          libjpeg-dev \
+          libpng-dev \
+          libtiff-dev \
+          libwebp-dev \
+          zlib1g-dev \
+          ${NULL+}
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1
+      - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -64,35 +66,37 @@ jobs:
         run: >
           cmake -G Ninja
           -DBUILD_SHARED_LIBS=ON
-          -DSDLTTF_HARFBUZZ=ON
-          -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
           -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
-          -DSDLTTF_INSTALL_MAN=OFF
-          -DSDLTTF_VENDORED=ON
+          -DSDLIMAGE_TESTS=OFF
+          -DSDLIMAGE_TESTS_INSTALL=OFF
+          -DSDLIMAGE_SAMPLES=OFF
+          -DSDLIMAGE_INSTALL_MAN=OFF
+          -DSDLIMAGE_VENDORED=ON
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-linux
-            path: SDL_ttf/build/*.so.0
+            name: sdl-image-linux
+            path: SDL_image/build/*.so.0
 
   build-macos:
-    name: Build for Apple
+    name: Build for Apple (${{ matrix.platform.arch }})
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-          arch: [arm64, x86_64]
+          platform:
+          - {arch: 'arm64', flags: '-DSDL_CPU_ARM64=ON'}
+          - {arch: 'x86_64', flags: '-DSDL_CPU_X64=ON'}
     defaults:
       run:
-        working-directory: SDL_ttf
+        working-directory: SDL_image
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
@@ -102,42 +106,44 @@ jobs:
         with:
           cmake-generator: Ninja
           cmake-arguments: |
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
+            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}" \
             -DSDL_DISABLE_INSTALL_DOCS=ON \
-            -DSDL_INSTALL_TESTS=OFF
+            -DSDL_INSTALL_TESTS=OFF \
+            ${{ matrix.platform.flags }}
           version: 3-head
           shell: sh
       - name: Setup MacOS dependencies
         working-directory: .
         run: |
-            brew install \
-              freetype \
-              harfbuzz \
-              ${NULL+}
-      - name: Clone SDL_ttf
+          brew install \
+          jpeg-xl \
+          libavif \
+          webp \
+          ${NULL+}
+      - name: Set up NASM
+        uses: ilammy/setup-nasm@v1
+      - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Configure
         run: >
           cmake -G Ninja
           -DBUILD_SHARED_LIBS=ON
-          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
-          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-          -DSDLTTF_HARFBUZZ=ON
-          -DSDLTTF_WERROR=ON
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}"
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
-          -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
-          -DSDLTTF_INSTALL_MAN=OFF
-          -DSDLTTF_VENDORED=ON
+          -DSDLIMAGE_TESTS=OFF
+          -DSDLIMAGE_TESTS_INSTALL=OFF
+          -DSDLIMAGE_SAMPLES=OFF
+          -DSDLIMAGE_INSTALL_MAN=OFF
+          -DSDLIMAGE_VENDORED=ON
+          ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-apple-macOS-${{ matrix.arch }}
-            path: SDL_ttf/build/*
+            name: sdl-image-apple-macOS-${{ matrix.platform.arch }}
+            path: SDL_image/build/*
