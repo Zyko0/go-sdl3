@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        go: ['latest']
+        go: ['1.25.x']
     
     name: Go ${{ matrix.go }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
