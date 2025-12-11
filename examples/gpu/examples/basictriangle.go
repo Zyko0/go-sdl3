@@ -57,7 +57,7 @@ func (e *BasicTriangle) Init(context *common.Context) error {
 	// create pipelines
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}

@@ -46,13 +46,13 @@ func (e *DrawIndirect) Init(context *common.Context) error {
 	// create the pipeline
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -61,13 +61,13 @@ func (e *DrawIndirect) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM,
 			Location:   1,
@@ -283,7 +283,7 @@ func (e *DrawIndirect) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{
+			{
 				Buffer: e.vertexBuffer,
 				Offset: 0,
 			},

@@ -83,7 +83,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	// create the sprite render pipeline
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 			BlendState: sdl.GPUColorTargetBlendState{
 				EnableBlend:         true,
@@ -98,7 +98,7 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -107,19 +107,19 @@ func (e *ComputeSpriteBatch) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT4,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT2,
 			Location:   1,
 			Offset:     16,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT4,
 			Location:   2,
@@ -399,7 +399,7 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 		computePass := cmdBuf.BeginComputePass(
 			[]sdl.GPUStorageTextureReadWriteBinding{},
 			[]sdl.GPUStorageBufferReadWriteBinding{
-				sdl.GPUStorageBufferReadWriteBinding{
+				{
 					Buffer: e.spriteVertexBuffer,
 					Cycle:  true,
 				},
@@ -416,7 +416,7 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 
 		// render sprites
 		renderPass := cmdBuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-			sdl.GPUColorTargetInfo{
+			{
 				Texture:    swapchainTexture.Texture,
 				Cycle:      false,
 				LoadOp:     sdl.GPU_LOADOP_CLEAR,
@@ -427,13 +427,13 @@ func (e *ComputeSpriteBatch) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.renderPipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.spriteVertexBuffer, Offset: 0},
+			{Buffer: e.spriteVertexBuffer, Offset: 0},
 		})
 		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
 			Buffer: e.spriteIndexBuffer, Offset: 0,
 		}, sdl.GPU_INDEXELEMENTSIZE_32BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
+			{Texture: e.texture, Sampler: e.sampler},
 		})
 		cmdBuf.PushVertexUniformData(0, unsafe.Slice(
 			(*byte)(unsafe.Pointer(&cameraMatrix)), unsafe.Sizeof(cameraMatrix),

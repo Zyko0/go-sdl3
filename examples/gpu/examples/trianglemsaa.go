@@ -49,7 +49,7 @@ func (e *TriangleMSAA) Init(context *common.Context) error {
 
 	rtFormat := context.Device.SwapchainTextureFormat(context.Window)
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: rtFormat,
 		},
 	}

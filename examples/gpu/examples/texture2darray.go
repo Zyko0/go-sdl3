@@ -47,13 +47,13 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 	// create the pipeline
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -62,13 +62,13 @@ func (e *Texture2DArray) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT2,
 			Location:   1,
@@ -304,7 +304,7 @@ func (e *Texture2DArray) Draw(context *common.Context) error {
 	}
 
 	if swapchainTexture != nil {
-		colorTargetInfos := []sdl.GPUColorTargetInfo{sdl.GPUColorTargetInfo{
+		colorTargetInfos := []sdl.GPUColorTargetInfo{{
 			Texture:    swapchainTexture.Texture,
 			ClearColor: sdl.FColor{R: 0, G: 0, B: 0, A: 1},
 			LoadOp:     sdl.GPU_LOADOP_CLEAR,
@@ -315,13 +315,13 @@ func (e *Texture2DArray) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			{Buffer: e.vertexBuffer, Offset: 0},
 		})
 		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
 			Buffer: e.indexBuffer, Offset: 0,
 		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{
+			{
 				Texture: e.texture, Sampler: e.sampler,
 			},
 		})

@@ -59,13 +59,13 @@ func (e *CullMode) Init(context *common.Context) error {
 	// create pipelines
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -74,13 +74,13 @@ func (e *CullMode) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM,
 			Location:   1,
@@ -255,12 +255,12 @@ func (e *CullMode) Draw(context *common.Context) error {
 		renderPass.BindGraphicsPipeline(e.pipelines[e.currentMode])
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 0, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBufferCW, Offset: 0},
+			{Buffer: e.vertexBufferCW, Offset: 0},
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.SetGPUViewport(&sdl.GPUViewport{X: 320, Y: 0, W: 320, H: 480})
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBufferCCW, Offset: 0},
+			{Buffer: e.vertexBufferCCW, Offset: 0},
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 		renderPass.End()

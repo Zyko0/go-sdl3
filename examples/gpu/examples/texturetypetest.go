@@ -323,7 +323,7 @@ func (e *TextureTypeTest) Draw(context *common.Context) error {
 	if swapchainTexture != nil {
 		// clear the screen
 		renderPass := cmdbuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-			sdl.GPUColorTargetInfo{
+			{
 				Texture:    swapchainTexture.Texture,
 				LoadOp:     sdl.GPU_LOADOP_CLEAR,
 				ClearColor: sdl.FColor{R: 0, G: 0, B: 0, A: 1},
