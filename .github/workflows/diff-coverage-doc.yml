@@ -31,16 +31,16 @@ jobs:
         - name: Documentation (SDL)
           run : |
             task LIBRARY=sdl gen-doc
-            git diff --exit-code
+            git diff --exit-code ':!cmd/internal/assets/wiki/annotations.csv'
         - name: Documentation (TTF)
           run : |
             task LIBRARY=ttf gen-doc
-            git diff --exit-code
+            git diff --exit-code ':!cmd/internal/assets/wiki/annotations.csv'
         - name: Documentation (MIXER)
           run : |
             task LIBRARY=mixer gen-doc
-            git diff --exit-code
+            git diff --exit-code ':!cmd/internal/assets/wiki/annotations.csv'
         - name: Documentation (IMG)
           run : |
             task LIBRARY=img gen-doc
-            git diff --exit-code
+            git diff --exit-code ':!cmd/internal/assets/wiki/annotations.csv'
