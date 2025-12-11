@@ -1,0 +1,66 @@
+name: Build SDL Binaries
+
+on:
+    pull_request:
+    #workflow_dispatch:
+    #  inputs:
+    #    sdl-version:
+    #      description: "SDL version"
+    #      required: true
+    #      type: string
+    #    ttf-version:
+    #      description: "SDL_ttf version"
+    #      required: true
+    #      type: string
+    #    mixer-version:
+    #      description: "SDL_mixer version"
+    #      required: true
+    #      type: string
+    #    image-version:
+    #      description: "SDL_image version"
+    #      required: true
+    #      type: string
+
+# env:
+#   sdl-version: 3.2.16
+#   ttf-version: 3.2.0
+#   mixer-version: main
+#   image-version: 3.2.0
+
+jobs:
+  build-sdl:
+    name: SDL
+    uses: ./.github/workflows/build-sdl.yml
+    with:
+      version: 3.2.16
+    
+  build-ttf:
+    name: SDL_ttf
+    uses: ./.github/workflows/build-sdl-ttf.yml
+    with:
+      version: 3.2.0
+  
+  build-mixer:
+    name: SDL_mixer
+    uses: ./.github/workflows/build-sdl-mixer.yml
+    with:
+      version: main
+  
+  build-image:
+    name: SDL_image
+    uses: ./.github/workflows/build-sdl-image.yml
+    with:
+      version: 3.2.0
+  
+  download-artifacts:
+    needs: [build-sdl, build-ttf, build-mixer, build-image]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v5
+      with:
+        path: artifacts
+        pattern: sdl-*
+        merge-multiple: true
+    - name: List artifacts
+      run: ls -lR ./artifacts
