@@ -1,0 +1,34 @@
+name: Build / Test
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened, ready_for_review]
+    push:
+        branches:
+            - main
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+    
+    name: Check diff
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v5
+        - name: Setup Go
+          uses: actions/setup-go@v6
+        - name: Install Task
+          uses: go-task/setup-task@v1
+        - name: Set up Docker
+          uses: docker/setup-docker-action@v4
+        
+        - name: Coverage
+          run: |
+            task coverage
+            git diff --exit-code
+        
+        - name: Documentation
+          run : |
+            task gen-doc
+            git diff --exit-code
