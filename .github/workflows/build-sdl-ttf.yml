@@ -120,6 +120,7 @@ jobs:
       - name: Configure
         run: >
           cmake -G Ninja
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
@@ -133,9 +134,10 @@ jobs:
           -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
+          -DCMAKE_INSTALL_PREFIX=prefix_cmake
           -S . -B build
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake --build build --config Release --verbose
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
