@@ -24,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-windows-${{ matrix.arch }}
-            path: SDL3.zip
+            path: SDL3-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
 
   build-linux:
     name: Build Linux

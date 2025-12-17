@@ -28,7 +28,7 @@ jobs:
 #        uses: actions/upload-artifact@v4
 #        with: 
 #            name: sdl-mixer-windows-${{ matrix.arch }}
-#            path: SDL2_mixer.zip
+#            path: SDL2_mixer-${{ env.MIXER_VERSION }}-win32-${{ matrix.arch }}.zip
 
   build-linux:
     name: Build Linux

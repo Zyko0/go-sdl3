@@ -72,9 +72,9 @@ jobs:
       run: ls -lR ./artifacts
     - name: Extract windows binaries
       run: |
-        unzip './artifacts/sdl-windows-*.zip' 'SDL3.zip/SDL3.dll' -d ./bin/binsdl/
-        unzip './artifacts/sdl-ttf-windows-*.zip' 'SDL3_ttf.zip/SDL3_ttf.dll' -d ./bin/binttf/
-        unzip './artifacts/sdl-image-windows-*.zip' 'SDL3_image.zip/SDL3_image.dll' -d ./bin/binimg/
+        unzip './artifacts/SDL3-*.zip' 'SDL3.dll' -d ./bin/binsdl/
+        unzip './artifacts/SDL3_ttf-*.zip' 'SDL3_ttf.dll' -d ./bin/binttf/
+        unzip './artifacts/SDL3_image-*.zip' 'SDL3_image.dll' -d ./bin/binimg/
       # TODO: mixer
     
       # TODO: extract linux binaries
