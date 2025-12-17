@@ -64,3 +64,22 @@ jobs:
         merge-multiple: true
     - name: List artifacts
       run: ls -lR ./artifacts
+    - name: Extract windows binaries
+      run: |
+        unzip 'sdl-windows-*.zip' 'SDL3.zip/SDL3.dll' -d ./bin/binsdl/
+        unzip 'sdl-ttf-windows-*.zip' 'SDL3_ttf.zip/SDL3_ttf.dll' -d ./bin/binttf/
+        unzip 'sdl-image-windows-*.zip' 'SDL3_image.zip/SDL3_image.dll' -d ./bin/binimg/
+      # TODO: mixer
+    
+      # TODO: extract linux binaries
+      # TODO: extract macos binaries
+    
+    - name: Push changes & PR
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git checkout -b binaries-update
+        git add ./bin
+        git commit -m "Bump binaries version"
+        git push origin --set-upstream binaries-update
+        gh pr create -B main -H binaries-update --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'

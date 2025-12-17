@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-ttf-windows-${{ matrix.arch }}
-            path: SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+            path: SDL3_ttf.zip
 
   build-linux:
     name: Build Linux
