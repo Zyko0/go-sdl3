@@ -27,6 +27,10 @@ on:
 #   mixer-version: main
 #   image-version: 3.2.0
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-sdl:
     name: SDL
