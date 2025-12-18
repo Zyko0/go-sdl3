@@ -1,10 +1,12 @@
 name: Build SDL
 
 on:
-  workflow_dispatch:
-
-env:
-  SDL3_VERSION: 3.2.16
+  workflow_call:
+    inputs:
+      version:
+        description: "SDL version"
+        required: true
+        type: string
 
 jobs:
   build-windows:
@@ -16,13 +18,22 @@ jobs:
           arch: [x64, x86, arm64]
 
     steps:
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache-windows
+        with:
+          path: SDL3.dll
+          key: sdl-windows-${{ inputs.version }}-${{ matrix.arch }}
       - name: Download release build
-        run: wget https://github.com/libsdl-org/SDL/releases/download/release-${{ env.SDL3_VERSION }}/SDL3-${{ env.SDL3_VERSION }}-win32-${{ matrix.arch }}.zip
+        if: steps.cache-windows.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL/releases/download/release-${{ inputs.version }}/SDL3-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+          unzip SDL3-${{ inputs.version }}-win32-${{ matrix.arch }}.zip SDL3.dll
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-windows-${{ matrix.arch }}
-            path: SDL3-${{ env.SDL3_VERSION }}-win32-${{ matrix.arch }}.zip
+            path: SDL3.dll
 
   build-linux:
     name: Build Linux
@@ -34,7 +45,7 @@ jobs:
     steps:
       - name: Clone SDL3
         working-directory: .
-        run: git clone --depth 1 --branch release-${{ env.SDL3_VERSION }} https://github.com/libsdl-org/SDL.git
+        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
       - name: Configure
         run: >
           cmake -G Ninja
@@ -55,18 +66,18 @@ jobs:
 
   build-macos:
     name: Build for Apple
-    runs-on: macos-14
-    defaults:
-      run:
-        working-directory: SDL
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-          target: [iOS, '']
+          arch: [arm64, x86_64]
+    defaults:
+      run:
+        working-directory: SDL
     steps:
       - name: Clone SDL3
         working-directory: .
-        run: git clone --depth 1 --branch release-${{ env.SDL3_VERSION }} https://github.com/libsdl-org/SDL.git
+        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
       - name: Setup Xcode version
         uses: maxim-lobanov/setup-xcode@v1.6.0
         with:
@@ -75,8 +86,7 @@ jobs:
         run: >
           cmake -G "Xcode"
           -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
-          -DCMAKE_SYSTEM_NAME=${{ matrix.target }}
-          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
@@ -89,5 +99,5 @@ jobs:
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-apple-${{ matrix.target }}
-            path: SDL/build/*
+            name: sdl-apple-macOS-${{ matrix.arch }}
+            path: SDL/build/Release/*.dylib
