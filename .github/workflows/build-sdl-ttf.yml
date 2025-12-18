@@ -17,7 +17,14 @@ jobs:
       matrix:
           arch: [x64, x86, arm64]
     steps:
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache-windows
+        with:
+          path: SDL3_ttf.dll
+          key: sdl-ttf-windows-${{ inputs.version }}-${{ matrix.arch }}
       - name: Download release build
+        if: steps.cache-windows.outputs.cache-hit != 'true'
         run: |
           wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-${{ inputs.version }}/SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
           unzip SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip SDL3_ttf.dll
