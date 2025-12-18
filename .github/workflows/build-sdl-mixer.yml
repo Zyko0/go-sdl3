@@ -174,4 +174,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-mixer-apple-macOS-${{ matrix.platform.arch }}
-            path: SDL_mixer/build/*
+            path: SDL_mixer/build/*.dylib

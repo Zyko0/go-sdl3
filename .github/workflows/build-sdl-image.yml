@@ -18,12 +18,14 @@ jobs:
           arch: [x64, x86, arm64]
     steps:
       - name: Download release build
-        run: wget https://github.com/libsdl-org/SDL_image/releases/download/release-${{ inputs.version }}/SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+        run: |
+          wget https://github.com/libsdl-org/SDL_image/releases/download/release-${{ inputs.version }}/SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+          unzip SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip SDL3_image.dll
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-image-windows-${{ matrix.arch }}
-            path: SDL3_image-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+            path: SDL3_image.dll
 
   build-linux:
     name: Build Linux
@@ -146,4 +148,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-image-apple-macOS-${{ matrix.platform.arch }}
-            path: SDL_image/build/*
+            path: SDL_image/build/*.dylib

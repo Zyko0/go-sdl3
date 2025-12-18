@@ -62,30 +62,49 @@ jobs:
     permissions:
         pull-requests: write
     steps:
+    - name: Checkout
+      uses: actions/checkout@v5
     - name: Download artifacts
       uses: actions/download-artifact@v5
       with:
         path: artifacts
         pattern: sdl-*
-        merge-multiple: true
+        merge-multiple: false
     - name: List artifacts
       run: ls -lR ./artifacts
-    - name: Extract windows binaries
+    - name: Extract Windows binaries
       run: |
-        unzip './artifacts/SDL3-*.zip' 'SDL3.dll' -d ./bin/binsdl/
-        unzip './artifacts/SDL3_ttf-*.zip' 'SDL3_ttf.dll' -d ./bin/binttf/
-        unzip './artifacts/SDL3_image-*.zip' 'SDL3_image.dll' -d ./bin/binimg/
+        mv ./artifacts/sdl-windows-x64/SDL3.dll ./bin/binsdl/assets/sdl_amd64.dll
+        mv ./artifacts/sdl-windows-arm64/SDL3.dll ./bin/binsdl/assets/sdl_arm64.dll
+        mv ./artifacts/sdl-ttf-windows-x64/SDL3_ttf.dll ./bin/binttf/assets/ttf_amd64.dll
+        mv ./artifacts/sdl-ttf-windows-arm64/SDL3_ttf.dll ./bin/binttf/assets/ttf_arm64.dll
+        mv ./artifacts/sdl-image-windows-x64/SDL3_image.dll ./bin/binimg/assets/img_amd64.dll
+        mv ./artifacts/sdl-image-windows-arm64/SDL3_image.dll ./bin/binimg/assets/img_arm64.dll
       # TODO: mixer
-    
-      # TODO: extract linux binaries
-      # TODO: extract macos binaries
+    - name: Extract Linux binaries
+      run: |
+        mv ./artifacts/sdl-linux/libSDL3.so.0 ./bin/binsdl/assets/sdl.so
+        mv ./artifacts/sdl-ttf-linux/libSDL3_ttf.so.0 ./bin/binttf/assets/ttf.so
+        mv ./artifacts/sdl-image-linux/libSDL3_image.so.0 ./bin/binimg/assets/img.so
+        mv ./artifacts/sdl-mixer-linux/libSDL3_mixer.so.0 ./bin/binmix/assets/mix.so
+    - name: Extract MacOS binaries
+      run: |
+        mv ./artifacts/sdl-apple-macOS-x86_64/libSDL3.dylib ./bin/binsdl/assets/sdl_amd64.dylib
+        mv ./artifacts/sdl-apple-macOS-arm64/libSDL3.dylib ./bin/binsdl/assets/sdl_arm64.dylib
+        mv ./artifacts/sdl-ttf-apple-macOS-x86_64/libSDL3_ttf.dylib ./bin/binttf/assets/ttf_amd64.dylib
+        mv ./artifacts/sdl-ttf-apple-macOS-arm64/libSDL3_ttf.dylib ./bin/binttf/assets/ttf_arm64.dylib
+        mv ./artifacts/sdl-image-apple-macOS-x86_64/libSDL3_image.dylib ./bin/binimg/assets/img_amd64.dylib
+        mv ./artifacts/sdl-image-apple-macOS-arm64/libSDL3_image.dylib ./bin/binimg/assets/img_arm64.dylib
+        mv ./artifacts/sdl-mixer-apple-macOS-x86_64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_amd64.dylib
+        mv ./artifacts/sdl-mixer-apple-macOS-arm64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_arm64.dylib
     
     - name: Push changes & PR
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git checkout -b binaries-update
+        git status
         git add ./bin
         git commit -m "Bump binaries version"
         git push origin --set-upstream binaries-update
-        gh pr create -B main -H binaries-update --title 'Merge branch_to_merge into base_branch' --body 'Created by Github action'
+        gh pr create -B main -H binaries-update --title 'Update embedded SDL libraries' --body 'Test'
