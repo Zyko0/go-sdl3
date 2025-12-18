@@ -60,13 +60,13 @@ jobs:
   build-macos:
     name: Build for Apple
     runs-on: macos-latest
-    defaults:
-      run:
-        working-directory: SDL
     strategy:
       fail-fast: false
       matrix:
-          arch: [arm64, x86_64] # target: [iOS, '']
+          arch: [arm64, x86_64]
+    defaults:
+      run:
+        working-directory: SDL
     steps:
       - name: Clone SDL3
         working-directory: .
@@ -93,4 +93,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-apple-macOS-${{ matrix.arch }}
-            path: SDL/build/*.dylib
+            path: SDL/build/Release/*.dylib
