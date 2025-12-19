@@ -131,7 +131,9 @@ jobs:
         git checkout -b binaries-update
         git fetch
         git branch --set-upstream-to=origin/binaries-update binaries-update || echo "No remote branch"
+        git stash
         git pull
+        git stash pop
         git status
         git add ./bin
         git commit -m "Bump binaries version" 
