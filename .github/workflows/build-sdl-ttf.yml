@@ -1,10 +1,12 @@
 name: Build SDL_ttf
 
 on:
-  workflow_dispatch:
-
-env:
-  TTF_VERSION: 3.2.0
+  workflow_call:
+    inputs:
+      version:
+        description: "SDL_ttf version"
+        required: true
+        type: string
 
 jobs:
   build-windows:
@@ -15,13 +17,22 @@ jobs:
       matrix:
           arch: [x64, x86, arm64]
     steps:
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache-windows
+        with:
+          path: SDL3_ttf.dll
+          key: sdl-ttf-windows-${{ inputs.version }}-${{ matrix.arch }}
       - name: Download release build
-        run: wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-${{ env.TTF_VERSION }}/SDL3_ttf-${{ env.TTF_VERSION }}-win32-${{ matrix.arch }}.zip
+        if: steps.cache-windows.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL_ttf/releases/download/release-${{ inputs.version }}/SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+          unzip SDL3_ttf-${{ inputs.version }}-win32-${{ matrix.arch }}.zip SDL3_ttf.dll
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-ttf-windows-${{ matrix.arch }}
-            path: SDL3_ttf-${{ env.TTF_VERSION }}-win32-${{ matrix.arch }}.zip
+            path: SDL3_ttf.dll
 
   build-linux:
     name: Build Linux
@@ -54,7 +65,7 @@ jobs:
             ${NULL+}
       - name: Clone SDL_ttf
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -82,7 +93,7 @@ jobs:
             path: SDL_ttf/build/*.so.0
 
   build-macos:
-    name: Build for Apple
+    name: Build MacOS (${{ matrix.arch }})
     runs-on: macos-latest
     strategy:
       fail-fast: false
@@ -114,10 +125,11 @@ jobs:
               ${NULL+}
       - name: Clone SDL_ttf
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ env.TTF_VERSION }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
       - name: Configure
         run: >
           cmake -G Ninja
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
@@ -131,6 +143,7 @@ jobs:
           -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
+          -DCMAKE_INSTALL_PREFIX=prefix_cmake
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
@@ -138,4 +151,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-ttf-apple-macOS-${{ matrix.arch }}
-            path: SDL_ttf/build/*
+            path: SDL_ttf/build/*.dylib
