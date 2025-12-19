@@ -95,7 +95,7 @@ jobs:
         mv ./artifacts/sdl-ttf-windows-arm64/SDL3_ttf.dll ./bin/binttf/assets/ttf_arm64.dll
         mv ./artifacts/sdl-image-windows-x64/SDL3_image.dll ./bin/binimg/assets/img_amd64.dll
         mv ./artifacts/sdl-image-windows-arm64/SDL3_image.dll ./bin/binimg/assets/img_arm64.dll
-      # TODO: mixer
+      # TODO: do mixer
     - name: Extract Linux binaries
       run: |
         mv ./artifacts/sdl-linux/libSDL3.so.0 ./bin/binsdl/assets/sdl.so
