@@ -99,4 +99,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-apple-macOS-${{ matrix.arch }}
-            path: SDL/build/Release/*.dylib
+            path: SDL/build/*.dylib
