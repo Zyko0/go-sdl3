@@ -1,25 +1,24 @@
 name: Build SDL Binaries
 
 on:
-    pull_request:
-    #workflow_dispatch:
-    #  inputs:
-    #    sdl-version:
-    #      description: "SDL version"
-    #      required: true
-    #      type: string
-    #    ttf-version:
-    #      description: "SDL_ttf version"
-    #      required: true
-    #      type: string
-    #    mixer-version:
-    #      description: "SDL_mixer version"
-    #      required: true
-    #      type: string
-    #    image-version:
-    #      description: "SDL_image version"
-    #      required: true
-    #      type: string
+    workflow_dispatch:
+      inputs:
+        sdl-version:
+          description: "SDL version"
+          required: true
+          type: string
+        ttf-version:
+          description: "SDL_ttf version"
+          required: true
+          type: string
+        mixer-version:
+          description: "SDL_mixer version"
+          required: true
+          type: string
+        image-version:
+          description: "SDL_image version"
+          required: true
+          type: string
 
 # env:
 #   sdl-version: 3.2.16
@@ -36,25 +35,25 @@ jobs:
     name: SDL
     uses: ./.github/workflows/build-sdl.yml
     with:
-      version: 3.2.16
+      version: ${{ inputs.sdl-version }}
     
   build-ttf:
     name: SDL_ttf
     uses: ./.github/workflows/build-sdl-ttf.yml
     with:
-      version: 3.2.0
+      version: ${{ inputs.ttf-version }}
   
   build-mixer:
     name: SDL_mixer
     uses: ./.github/workflows/build-sdl-mixer.yml
     with:
-      version: main
+      version: ${{ inputs.mixer-version }}
   
   build-image:
     name: SDL_image
     uses: ./.github/workflows/build-sdl-image.yml
     with:
-      version: 3.2.0
+      version: ${{ inputs.image-version }}
   
   push-binaries:
     needs: [build-sdl, build-ttf, build-mixer, build-image]
@@ -133,6 +132,6 @@ jobs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git status
         git add ./bin
-        git commit -m "Bump binaries version" 
+        git commit -m "bin: Update embedded libraries" 
         git push -u origin binaries-update
-        gh pr create -B main -H binaries-update --title 'Update embedded SDL libraries' --body $'- SDL version: xyz\n- SDL_ttf: yuw\n' || gh pr edit binaries-update --body $'- SDL version: 123\n- SDL_ttf: 456\n'
+        gh pr create -B main -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n'
