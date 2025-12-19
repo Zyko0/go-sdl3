@@ -129,10 +129,11 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git checkout -b binaries-update
-        git branch --set-upstream-to=origin/binaries-update binaries-update
+        git fetch
+        git branch --set-upstream-to=origin/binaries-update binaries-update || echo "No remote branch"
         git pull
         git status
         git add ./bin
         git commit -m "Bump binaries version" 
-        git push
+        git push -u origin binaries-update
         gh pr create -B main -H binaries-update --title 'Update embedded SDL libraries' --body $'- SDL version: xyz\n- SDL_ttf: yuw\n' || gh pr edit binaries-update --body $'- SDL version: 123\n- SDL_ttf: 456\n'
