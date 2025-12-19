@@ -75,17 +75,14 @@ jobs:
       run:
         working-directory: SDL
     steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
       - name: Clone SDL3
         working-directory: .
         run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
-      - name: Setup Xcode version
-        uses: maxim-lobanov/setup-xcode@v1.6.0
-        with:
-            xcode-version: "16.1"
       - name: Configure
         run: >
-          cmake -G "Xcode"
-          -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+          cmake -G "Ninja"
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
@@ -93,6 +90,8 @@ jobs:
           -DSDL_DISABLE_INSTALL=ON
           -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDL_INSTALL_TESTS=OFF
+          -DSDL_TESTS=false
+          -DSDL_CLANG_TIDY=false \
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
