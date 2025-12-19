@@ -93,7 +93,7 @@ jobs:
             path: SDL_ttf/build/*.so.0
 
   build-macos:
-    name: Build for Apple
+    name: Build MacOS (${{ matrix.arch }})
     runs-on: macos-latest
     strategy:
       fail-fast: false

@@ -76,8 +76,12 @@ jobs:
     - name: List artifacts
       run: ls -lR ./artifacts
 
-    - name: Delete previous binaries
+    - name: Git branch setup
       run: |
+        git checkout -b binaries-update
+        git fetch
+        git branch --set-upstream-to=origin/binaries-update binaries-update || echo "No remote branch"
+        git pull
         rm ./bin/binsdl/assets/*
         rm ./bin/binttf/assets/*
         rm ./bin/binimg/assets/*
@@ -128,12 +132,6 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git checkout -b binaries-update
-        git fetch
-        git branch --set-upstream-to=origin/binaries-update binaries-update || echo "No remote branch"
-        git stash
-        git pull
-        git stash pop
         git status
         git add ./bin
         git commit -m "Bump binaries version" 
