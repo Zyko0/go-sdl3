@@ -77,9 +77,8 @@ jobs:
 
     - name: Git branch setup
       run: |
-        git checkout -b binaries-update
         git fetch
-        (git branch --set-upstream-to=origin/binaries-update binaries-update && git pull) || echo "No remote branch"
+        (git checkout binaries-update && git pull) || git checkout -b binaries-update
         rm ./bin/binsdl/assets/*
         rm ./bin/binttf/assets/*
         rm ./bin/binimg/assets/*
