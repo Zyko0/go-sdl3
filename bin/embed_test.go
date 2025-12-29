@@ -15,43 +15,19 @@ import (
 )
 
 func Test_EmbeddedBinaries(t *testing.T) {
-	debug.SetPanicOnFault(true)
-
-	os.Setenv("SDL_AUDIODRIVER", "dummy")
-	os.Setenv("SDL_VIDEODRIVER", "dummy")
-
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
-
-	binsdl.Load()
-	binttf.Load()
-	// binmix.Load() // TODO:
-	binimg.Load()
-
-	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
-	if err != nil {
-		t.Log(err)
-		t.FailNow()
-	}
-
-	err = ttf.Init()
-	if err != nil {
-		t.Log(err)
-		t.FailNow()
-	}
-
 	// defer ttf.Quit()
 	// defer sdl.Quit()
 
 	t.Run("SDL", func(t *testing.T) {
-		t.Run("Init", func(t *testing.T) {
-
+		t.Run("Version", func(t *testing.T) {
 			v := sdl.GetVersion()
 			t.Log("SDL version:", v.String())
 		})
 	})
 
 	t.Run("SDL_ttf", func(t *testing.T) {
-		t.Run("Init", func(t *testing.T) {
+		t.Run("Version", func(t *testing.T) {
 
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
@@ -81,9 +57,35 @@ func Test_EmbeddedBinaries(t *testing.T) {
 	})*/
 
 	t.Run("SDL_image", func(t *testing.T) {
-		t.Run("Init", func(t *testing.T) {
+		t.Run("Version", func(t *testing.T) {
 			v := img.GetVersion()
 			t.Log("SDL_image version:", v.String())
 		})
 	})
+}
+
+func TestMain(m *testing.M) {
+	runtime.LockOSThread()
+
+	debug.SetPanicOnFault(true)
+
+	os.Setenv("SDL_AUDIODRIVER", "dummy")
+	os.Setenv("SDL_VIDEODRIVER", "dummy")
+
+	binsdl.Load()
+	binttf.Load()
+	// binmix.Load() // TODO:
+	binimg.Load()
+
+	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
+	if err != nil {
+		panic(err)
+	}
+
+	err = ttf.Init()
+	if err != nil {
+		panic(err)
+	}
+
+	m.Run()
 }
