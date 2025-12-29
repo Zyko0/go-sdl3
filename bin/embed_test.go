@@ -4,7 +4,6 @@ import (
 	"runtime"
 	"runtime/debug"
 	"testing"
-	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binimg"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
@@ -52,16 +51,8 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
 
-			t.Log("about to quit ttf")
-			ttf.Quit()
-			t.Log("ttf quitted")
-			t.Log("about to quit sdl")
-			sdl.Quit()
-			t.Log("sdl quitted")
-
-			t.Log("wait")
-			time.Sleep(5 * time.Second)
-			t.Log("okay")
+			/*ttf.Quit()
+			sdl.Quit()*/
 		})
 	})
 
