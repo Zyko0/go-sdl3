@@ -84,11 +84,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 				t.Log(err)
 				t.FailNow()
 			}
-			/*err = img.Init()
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}*/
+
 			v := img.GetVersion()
 			t.Log("SDL_image version:", v.String())
 		})
