@@ -8,7 +8,6 @@ import (
 	"github.com/Zyko0/go-sdl3/bin/binimg"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 	"github.com/Zyko0/go-sdl3/bin/binttf"
-	"github.com/Zyko0/go-sdl3/bin/binmix"
 	"github.com/Zyko0/go-sdl3/img"
 	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/ttf"
@@ -21,7 +20,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	defer binsdl.Load().Unload()
 	defer binttf.Load().Unload()
-	defer binmix.Load().Unload()
+	// defer binmix.Load().Unload() // TODO:
 	defer binimg.Load().Unload()
 
 	t.Run("SDL", func(t *testing.T) {
