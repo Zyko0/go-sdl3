@@ -79,17 +79,21 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
+			t.Log("before load unload")
 			defer binsdl.Load().Unload()
 			defer binimg.Load().Unload()
 			defer sdl.Quit()
 
+			t.Log("before init")
 			err := sdl.Init(0)
 			if err != nil {
 				t.Log(err)
 				t.FailNow()
 			}
 
+			t.Log("before version")
 			v := img.GetVersion()
+			t.Log("after version")
 			t.Log("SDL_image version:", v.String())
 		})
 	})
