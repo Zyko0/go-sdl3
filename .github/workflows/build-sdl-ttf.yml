@@ -36,7 +36,7 @@ jobs:
 
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     # container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
     defaults:
       run:
