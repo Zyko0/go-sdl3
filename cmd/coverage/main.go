@@ -82,6 +82,7 @@ var (
 		"Bits":         {},
 		"Endian":       {},
 		"Assert":       {},
+		"CPUInfo":      {},
 		"Intrinsics":   {},
 		"Locale":       {},
 		"System":       {},

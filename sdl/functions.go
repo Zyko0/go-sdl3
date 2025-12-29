@@ -535,6 +535,18 @@ func CreateGPUDeviceWithProperties(props PropertiesID) (*GPUDevice, error) {
 	return device, nil
 }
 
+// SDL_GetNumGPUDrivers - Get the number of GPU drivers compiled into SDL.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumGPUDrivers)
+func NumGPUDrivers() int {
+	return int(iGetNumGPUDrivers())
+}
+
+// SDL_GetGPUDriver - Get the name of a built in GPU driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGPUDriver)
+func GetGPUDriver(index int32) string {
+	return iGetGPUDriver(index)
+}
+
 // Video
 
 // SDL_GetNumVideoDrivers - Get the number of video drivers compiled into SDL.
