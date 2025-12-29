@@ -22,10 +22,10 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
 
-	defer binsdl.Load().Unload()
-	defer binttf.Load().Unload()
-	// defer binmix.Load().Unload() // TODO:
-	defer binimg.Load().Unload()
+	binsdl.Load()
+	binttf.Load()
+	// binmix.Load() // TODO:
+	binimg.Load()
 
 	defer sdl.Quit()
 	defer ttf.Quit()
