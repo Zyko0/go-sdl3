@@ -52,7 +52,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			t.Log("SDL_ttf version:", v.String())
 
 			ttf.Quit()
-			/*sdl.Quit()*/
+			sdl.Quit()
 		})
 	})
 
@@ -77,7 +77,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			t.Log("SDL_mixer version:", v.String())
 		})
 	})*/
-	return
+
 	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
 			defer binsdl.Load().Unload()
