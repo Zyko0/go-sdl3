@@ -1,6 +1,7 @@
 package bin_test
 
 import (
+	"os"
 	"runtime"
 	"runtime/debug"
 	"testing"
@@ -15,6 +16,9 @@ import (
 
 func Test_EmbeddedBinaries(t *testing.T) {
 	debug.SetPanicOnFault(true)
+
+	os.Setenv("SDL_AUDIODRIVER", "dummy")
+	os.Setenv("SDL_VIDEODRIVER", "dummy")
 
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
 
