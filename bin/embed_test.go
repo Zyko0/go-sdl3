@@ -16,8 +16,6 @@ import (
 
 func Test_EmbeddedBinaries(t *testing.T) {
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
-	// defer ttf.Quit()
-	// defer sdl.Quit()
 
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Version", func(t *testing.T) {
@@ -72,10 +70,13 @@ func TestMain(m *testing.M) {
 	os.Setenv("SDL_AUDIODRIVER", "dummy")
 	os.Setenv("SDL_VIDEODRIVER", "dummy")
 
-	binsdl.Load()
-	binttf.Load()
+	defer binsdl.Load().Unload()
+	defer binttf.Load().Unload()
 	// binmix.Load() // TODO:
-	binimg.Load()
+	defer binimg.Load().Unload()
+
+	defer ttf.Quit()
+	defer sdl.Quit()
 
 	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
 	if err != nil {
