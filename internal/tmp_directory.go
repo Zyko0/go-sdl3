@@ -42,4 +42,6 @@ func RemoveTmpDir() {
 	dir.onceRemove.Do(func() {
 		os.RemoveAll(dir.Dir)
 	})
+	// Clear tmpDir once entry after removal, so that it can be created again
+	dir = tmpDir{}
 }
