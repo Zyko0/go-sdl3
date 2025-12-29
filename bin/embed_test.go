@@ -35,6 +35,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			defer binsdl.Load().Unload()
 			defer binttf.Load().Unload()
 			defer sdl.Quit()
+			defer ttf.Quit()
 
 			err := sdl.Init(0)
 			if err != nil {
