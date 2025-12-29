@@ -37,8 +37,6 @@ func Test_EmbeddedBinaries(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
 			defer binsdl.Load().Unload()
 			defer binttf.Load().Unload()
-			defer ttf.Quit()
-			defer sdl.Quit()
 
 			err := sdl.Init(0)
 			if err != nil {
@@ -52,6 +50,9 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			}
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
+
+			ttf.Quit()
+			sdl.Quit()
 		})
 	})
 
