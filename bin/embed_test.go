@@ -28,7 +28,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			err := sdl.Init(0)
+			err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
 			if err != nil {
 				t.Log(err)
 				t.FailNow()
