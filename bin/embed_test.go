@@ -17,9 +17,11 @@ func Test_EmbeddedBinaries(t *testing.T) {
 	debug.SetPanicOnFault(true)
 
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
-	t.Run("SDL", func(t *testing.T) {
+
+	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
 			defer binsdl.Load().Unload()
+			defer binimg.Load().Unload()
 			defer sdl.Quit()
 
 			err := sdl.Init(0)
@@ -28,8 +30,8 @@ func Test_EmbeddedBinaries(t *testing.T) {
 				t.FailNow()
 			}
 
-			v := sdl.GetVersion()
-			t.Log("SDL version:", v.String())
+			v := img.GetVersion()
+			t.Log("SDL_image version:", v.String())
 		})
 	})
 
@@ -55,6 +57,22 @@ func Test_EmbeddedBinaries(t *testing.T) {
 		})
 	})
 
+	t.Run("SDL", func(t *testing.T) {
+		t.Run("Init", func(t *testing.T) {
+			defer binsdl.Load().Unload()
+			defer sdl.Quit()
+
+			err := sdl.Init(0)
+			if err != nil {
+				t.Log(err)
+				t.FailNow()
+			}
+
+			v := sdl.GetVersion()
+			t.Log("SDL version:", v.String())
+		})
+	})
+
 	// TODO: mixer
 	/*t.Run("SDL_mixer", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
@@ -77,20 +95,4 @@ func Test_EmbeddedBinaries(t *testing.T) {
 		})
 	})*/
 
-	t.Run("SDL_image", func(t *testing.T) {
-		t.Run("Init", func(t *testing.T) {
-			defer binsdl.Load().Unload()
-			defer binimg.Load().Unload()
-			defer sdl.Quit()
-
-			err := sdl.Init(0)
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
-
-			v := img.GetVersion()
-			t.Log("SDL_image version:", v.String())
-		})
-	})
 }
