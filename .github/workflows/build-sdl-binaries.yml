@@ -104,12 +104,12 @@ jobs:
         mv ./artifacts/sdl-mixer-apple-macOS-x86_64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_amd64.dylib
         mv ./artifacts/sdl-mixer-apple-macOS-arm64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_arm64.dylib
     
-    - name: Strip linux binaries
-      run: |
-        strip $(echo ./bin/binsdl/assets/*.so)
-        strip $(echo ./bin/binttf/assets/*.so)
-        strip $(echo ./bin/binimg/assets/*.so)
-        strip $(echo ./bin/binmix/assets/*.so)
+    #- name: Strip linux binaries
+    #  run: |
+    #    strip $(echo ./bin/binsdl/assets/*.so)
+    #    strip $(echo ./bin/binttf/assets/*.so)
+    #    strip $(echo ./bin/binimg/assets/*.so)
+    #    strip $(echo ./bin/binmix/assets/*.so)
     - name: Compress binaries
       run: |
         gzip -f $(echo ./bin/binsdl/assets/*)
