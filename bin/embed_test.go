@@ -87,5 +87,5 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	m.Run()
+	os.Exit(m.Run())
 }
