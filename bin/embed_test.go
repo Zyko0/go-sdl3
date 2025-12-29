@@ -27,16 +27,23 @@ func Test_EmbeddedBinaries(t *testing.T) {
 	// binmix.Load() // TODO:
 	binimg.Load()
 
+	err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
+
+	err = ttf.Init()
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
+
 	// defer ttf.Quit()
 	// defer sdl.Quit()
 
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			err := sdl.Init(sdl.INIT_VIDEO | sdl.INIT_AUDIO)
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
 
 			v := sdl.GetVersion()
 			t.Log("SDL version:", v.String())
@@ -45,11 +52,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL_ttf", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			err := ttf.Init()
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
+
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
 		})
