@@ -37,7 +37,7 @@ jobs:
   build-linux:
     name: Build Linux
     runs-on: ubuntu-latest
-    # container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
     defaults:
       run:
         working-directory: SDL_image
