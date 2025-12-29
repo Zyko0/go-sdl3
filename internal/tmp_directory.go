@@ -29,8 +29,6 @@ func TmpDir() (string, error) {
 			signal.Notify(channel,
 				syscall.SIGTERM,
 				syscall.SIGINT,
-				syscall.SIGSEGV,
-				syscall.SIGABRT,
 				syscall.SIGQUIT,
 			)
 			go func() {
