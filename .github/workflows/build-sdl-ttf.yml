@@ -37,7 +37,7 @@ jobs:
   build-linux:
     name: Build Linux
     runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:beta
+    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
     defaults:
       run:
         working-directory: SDL_ttf
@@ -72,6 +72,7 @@ jobs:
       - name: Configure
         run: >
           cmake -G Ninja
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
           -DSDLTTF_HARFBUZZ=ON
           -DSDLTTF_WERROR=ON

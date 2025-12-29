@@ -20,12 +20,6 @@ on:
           required: true
           type: string
 
-# env:
-#   sdl-version: 3.2.16
-#   ttf-version: 3.2.0
-#   mixer-version: main
-#   image-version: 3.2.0
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

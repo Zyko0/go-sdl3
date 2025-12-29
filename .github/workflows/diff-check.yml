@@ -26,6 +26,7 @@ jobs:
         - name: go fmt
           run: |
             task fmt
+            git diff --exit-code
 
         - name: Coverage
           run: |
