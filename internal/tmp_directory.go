@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"os"
 	"os/signal"
 	"sync"
@@ -21,7 +20,6 @@ var dir tmpDir
 func TmpDir() (string, error) {
 	dir.onceCreate.Do(func() {
 		dir.Dir, dir.Err = os.MkdirTemp("", "")
-		fmt.Println("dir:", dir.Dir)
 		if dir.Err == nil {
 			// Ensure the temporary directory is removed if program
 			// exits outside main function

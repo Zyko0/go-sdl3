@@ -2,6 +2,7 @@ package bin_test
 
 import (
 	"runtime"
+	"runtime/debug"
 	"testing"
 
 	"github.com/Zyko0/go-sdl3/bin/binimg"
@@ -13,6 +14,8 @@ import (
 )
 
 func Test_EmbeddedBinaries(t *testing.T) {
+	debug.SetPanicOnFault(true)
+
 	t.Log("OS:", runtime.GOOS, "Arch:", runtime.GOARCH)
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
