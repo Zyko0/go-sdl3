@@ -51,8 +51,8 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
 
-			/*ttf.Quit()
-			sdl.Quit()*/
+			ttf.Quit()
+			/*sdl.Quit()*/
 		})
 	})
 
