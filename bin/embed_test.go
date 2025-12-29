@@ -23,10 +23,11 @@ func Test_EmbeddedBinaries(t *testing.T) {
 	// defer binmix.Load().Unload() // TODO:
 	defer binimg.Load().Unload()
 
+	defer sdl.Quit()
+	defer ttf.Quit()
+
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			defer sdl.Quit()
-
 			err := sdl.Init(0)
 			if err != nil {
 				t.Log(err)
@@ -40,15 +41,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL_ttf", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			defer sdl.Quit()
-			defer ttf.Quit()
-
-			err := sdl.Init(0)
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
-			err = ttf.Init()
+			err := ttf.Init()
 			if err != nil {
 				t.Log(err)
 				t.FailNow()
@@ -82,14 +75,6 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			defer sdl.Quit()
-
-			err := sdl.Init(0)
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
-
 			v := img.GetVersion()
 			t.Log("SDL_image version:", v.String())
 		})
