@@ -9,8 +9,8 @@ import (
 
 // TTF_Version - This function gets the version of the dynamically linked SDL_ttf library.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_Version)
-func Version() int32 {
-	return iVersion()
+func GetVersion() sdl.Version {
+	return sdl.Version(iVersion())
 }
 
 // TTF_GetFreeTypeVersion - Query the version of the FreeType library in use.

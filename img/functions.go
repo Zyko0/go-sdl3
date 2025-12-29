@@ -9,8 +9,8 @@ import (
 
 // IMG_Version - This function gets the version of the dynamically linked SDL_image library.
 // (https://wiki.libsdl.org/SDL3_img/IMG_Version)
-func Version() int32 {
-	return iVersion()
+func GetVersion() sdl.Version {
+	return sdl.Version(iVersion())
 }
 
 // IMG_LoadTyped_IO - Load an image from an SDL data source into a software surface.
