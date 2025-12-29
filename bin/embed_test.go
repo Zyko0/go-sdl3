@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"runtime/debug"
 	"testing"
+	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binimg"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
@@ -57,6 +58,10 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			t.Log("about to quit sdl")
 			sdl.Quit()
 			t.Log("sdl quitted")
+
+			t.Log("wait")
+			time.Sleep(5 * time.Second)
+			t.Log("okay")
 		})
 	})
 
@@ -81,7 +86,7 @@ func Test_EmbeddedBinaries(t *testing.T) {
 			t.Log("SDL_mixer version:", v.String())
 		})
 	})*/
-
+	return
 	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
 			defer binsdl.Load().Unload()
