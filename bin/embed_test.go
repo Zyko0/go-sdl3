@@ -27,10 +27,8 @@ func Test_EmbeddedBinaries(t *testing.T) {
 	// defer binmix.Load().Unload() // TODO:
 	defer binimg.Load().Unload()
 
-	t.Cleanup(func() {
-		ttf.Quit()
-		sdl.Quit()
-	})
+	//ttf.Quit()
+	//sdl.Quit()
 
 	t.Run("SDL", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
