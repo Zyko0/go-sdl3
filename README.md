@@ -12,6 +12,7 @@ This library wraps SDL3 packages to a more idiomatic go and:
 - Trims `SDL_` prefix from all types, variables, function names.
 - Make methods from global functions when it is possible.
 - Turn some pointer function parameters into return values.
+- Remove the necessity to call `sdl.Free` on returned pointers.
 
 If you are looking for pure Go bindings that are closer to the original API, please have a look at https://github.com/JupiterRider/purego-sdl3. 
 
