@@ -61,7 +61,7 @@ func main() {
 
 	err := shadercross.LoadLibrary(shadercross.Path())
 	if err != nil {
-		panic("couldn't load shadercross library: " + err.Error())
+		log.Fatal("couldn't load shadercross library: ", err)
 	}
 	defer shadercross.CloseLibrary()
 
