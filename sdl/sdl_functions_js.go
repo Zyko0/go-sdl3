@@ -11529,7 +11529,7 @@ func initialize() {
 		return _obj
 	}
 
-	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
+	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *gpuGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -17244,15 +17244,6 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iSetMainReady = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_SDL_SetMainReady",
-		)
-	}
-
 	/*iRunApp = func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32 {
 		panic("not implemented on js")
 		internal.StackSave()
@@ -17300,14 +17291,4 @@ func initialize() {
 
 		return int32(ret.Int())
 	}*/
-
-	iGDKSuspendComplete = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		js.Global().Get("Module").Call(
-			"_SDL_GDKSuspendComplete",
-		)
-	}
-
 }

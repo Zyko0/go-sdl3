@@ -56,7 +56,6 @@ func LoadShader(
 
 	shaderInfo := sdl.GPUShaderCreateInfo{
 		Code:               code,
-		CodeSize:           uint64(len(code)),
 		Entrypoint:         entrypoint,
 		Format:             format,
 		Stage:              stage,
@@ -109,7 +108,6 @@ func CreateComputePipelineFromShader(
 
 	// make a copy of the create data, then overwrite the parts we need
 	createInfo.Code = code
-	createInfo.CodeSize = uint64(len(code))
 	createInfo.Entrypoint = entrypoint
 	createInfo.Format = format
 

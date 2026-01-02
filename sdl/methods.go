@@ -17,15 +17,6 @@ import (
 	"github.com/Zyko0/go-sdl3/internal"
 )
 
-// ThreadPriority
-
-// SDL_SetCurrentThreadPriority - Set the priority for the current thread.
-// (https://wiki.libsdl.org/SDL3/SDL_SetCurrentThreadPriority)
-func (priority ThreadPriority) SetCurrent() bool {
-	panic("not implemented")
-	return iSetCurrentThreadPriority(priority)
-}
-
 // IOStreamInterface
 
 // SDL_OpenIO - Create a custom SDL_IOStream.
@@ -33,15 +24,6 @@ func (priority ThreadPriority) SetCurrent() bool {
 func (iface *IOStreamInterface) OpenIO(userdata *byte) *IOStream {
 	panic("not implemented")
 	//return iOpenIO(iface, userdata)
-}
-
-// ClipboardDataCallback
-
-// SDL_SetClipboardData - Offer clipboard data to the OS.
-// (https://wiki.libsdl.org/SDL3/SDL_SetClipboardData)
-func (callback ClipboardDataCallback) SetClipboardData(cleanup ClipboardCleanupCallback, userdata *byte, mime_types *string, num_mime_types uintptr) bool {
-	panic("not implemented")
-	//return iSetClipboardData(callback, cleanup, userdata, mime_types, num_mime_types)
 }
 
 // WindowID
@@ -154,9 +136,12 @@ func (storage *Storage) CreateDirectory(path string) error {
 
 // SDL_EnumerateStorageDirectory - Enumerate a directory in a storage container through a callback function.
 // (https://wiki.libsdl.org/SDL3/SDL_EnumerateStorageDirectory)
-func (storage *Storage) EnumerateDirectory(path string, callback EnumerateDirectoryCallback, userdata *byte) bool {
-	panic("not implemented")
-	//return iEnumerateStorageDirectory(storage, path, callback, userdata)
+func (storage *Storage) EnumerateDirectory(path string, callback EnumerateDirectoryCallback) error {
+	if !iEnumerateStorageDirectory(storage, path, callback, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_RemoveStoragePath - Remove a file or an empty directory in a writable storage container.
@@ -477,43 +462,6 @@ func (lock *SpinLock) Unlock() {
 	iUnlockSpinlock(lock)
 }
 
-// Thread
-
-// SDL_GetThreadName - Get the thread name as it was specified in SDL_CreateThread().
-// (https://wiki.libsdl.org/SDL3/SDL_GetThreadName)
-func (thread *Thread) Name() string {
-	panic("not implemented")
-	return iGetThreadName(thread)
-}
-
-// SDL_GetThreadID - Get the thread identifier for the specified thread.
-// (https://wiki.libsdl.org/SDL3/SDL_GetThreadID)
-func (thread *Thread) ID() ThreadID {
-	panic("not implemented")
-	return iGetThreadID(thread)
-}
-
-// SDL_WaitThread - Wait for a thread to finish.
-// (https://wiki.libsdl.org/SDL3/SDL_WaitThread)
-func (thread *Thread) Wait(status *int32) {
-	panic("not implemented")
-	iWaitThread(thread, status)
-}
-
-// SDL_GetThreadState - Get the current state of a thread.
-// (https://wiki.libsdl.org/SDL3/SDL_GetThreadState)
-func (thread *Thread) State() ThreadState {
-	panic("not implemented")
-	return iGetThreadState(thread)
-}
-
-// SDL_DetachThread - Let a thread clean up on exit without intervention.
-// (https://wiki.libsdl.org/SDL3/SDL_DetachThread)
-func (thread *Thread) Detach() {
-	panic("not implemented")
-	iDetachThread(thread)
-}
-
 // Sensor
 
 // SDL_GetSensorProperties - Get the properties associated with a sensor.
@@ -591,31 +539,6 @@ func (axis GamepadAxis) GamepadStringForAxis() string {
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyCursor)
 func (cursor *Cursor) Destroy() {
 	iDestroyCursor(cursor)
-}
-
-// X11EventHook
-
-// SDL_SetX11EventHook - Set a callback for every X11 event.
-// (https://wiki.libsdl.org/SDL3/SDL_SetX11EventHook)
-func (callback X11EventHook) Set(userdata *byte) {
-	panic("not implemented")
-	//iSetX11EventHook(callback, userdata)
-}
-
-// TLSID
-
-// SDL_GetTLS - Get the current thread's value associated with a thread local storage ID.
-// (https://wiki.libsdl.org/SDL3/SDL_GetTLS)
-func (id *TLSID) TLS() *byte {
-	panic("not implemented")
-	//return iGetTLS(id)
-}
-
-// SDL_SetTLS - Set the current thread's value associated with a thread local storage ID.
-// (https://wiki.libsdl.org/SDL3/SDL_SetTLS)
-func (id *TLSID) SetTLS(value *byte, destructor TLSDestructorCallback) bool {
-	panic("not implemented")
-	//return iSetTLS(id, value, destructor)
 }
 
 // Rect
@@ -899,18 +822,21 @@ func (cp *GPUComputePass) BindGPUComputePipeline(pipeline *GPUComputePipeline) {
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeSamplers)
 func (cp *GPUComputePass) BindSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUComputeSamplers(cp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUComputeStorageTextures - Binds storage textures as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageTextures)
 func (cp *GPUComputePass) BindStorageTextures(textures []*GPUTexture) {
 	iBindGPUComputeStorageTextures(cp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUComputeStorageBuffers - Binds storage buffers as readonly for use on the compute pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUComputeStorageBuffers)
 func (cp *GPUComputePass) BindStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUComputeStorageBuffers(cp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_DispatchGPUCompute - Dispatches compute work.
@@ -1106,16 +1032,29 @@ func (texture *Texture) Update(rect *Rect, pixels []byte, pitch int32) error {
 
 // SDL_UpdateYUVTexture - Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateYUVTexture)
-func (texture *Texture) UpdateYUV(rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
-	panic("not implemented")
-	return iUpdateYUVTexture(texture, rect, Yplane, Ypitch, Uplane, Upitch, Vplane, Vpitch)
+func (texture *Texture) UpdateYUV(rect *Rect, Yplane []byte, Ypitch int32, Uplane []byte, Upitch int32, Vplane []byte, Vpitch int32) error {
+	if !iUpdateYUVTexture(texture, rect, unsafe.SliceData(Yplane), Ypitch, unsafe.SliceData(Uplane), Upitch, unsafe.SliceData(Vplane), Vpitch) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(Yplane)
+	runtime.KeepAlive(Uplane)
+	runtime.KeepAlive(Vplane)
+
+	return nil
 }
 
 // SDL_UpdateNVTexture - Update a rectangle within a planar NV12 or NV21 texture with new pixels.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateNVTexture)
-func (texture *Texture) UpdateNV(rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool {
-	panic("not implemented")
-	return iUpdateNVTexture(texture, rect, Yplane, Ypitch, UVplane, UVpitch)
+func (texture *Texture) UpdateNV(rect *Rect, Yplane []byte, Ypitch int32, UVplane []byte, UVpitch int32) error {
+	if !iUpdateNVTexture(texture, rect, unsafe.SliceData(Yplane), Ypitch, unsafe.SliceData(UVplane), UVpitch) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(Yplane)
+	runtime.KeepAlive(UVplane)
+
+	return nil
 }
 
 // SDL_LockTexture - Lock a portion of the texture for **write-only** pixel access.
@@ -1239,6 +1178,7 @@ func (rp *GPURenderPass) SetStencilReference(reference uint8) {
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexBuffers)
 func (rp *GPURenderPass) BindVertexBuffers(bindings []GPUBufferBinding) {
 	iBindGPUVertexBuffers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUIndexBuffer - Binds an index buffer on a command buffer for use with subsequent draw calls.
@@ -1251,36 +1191,42 @@ func (rp *GPURenderPass) BindIndexBuffer(binding *GPUBufferBinding, indexElement
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexSamplers)
 func (rp *GPURenderPass) BindVertexSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUVertexSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUVertexStorageTextures - Binds storage textures for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageTextures)
 func (rp *GPURenderPass) BindVertexStorageTextures(textures []*GPUTexture) {
 	iBindGPUVertexStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUVertexStorageBuffers - Binds storage buffers for use on the vertex shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUVertexStorageBuffers)
 func (rp *GPURenderPass) BindVertexStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUVertexStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_BindGPUFragmentSamplers - Binds texture-sampler pairs for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentSamplers)
 func (rp *GPURenderPass) BindFragmentSamplers(bindings []GPUTextureSamplerBinding) {
 	iBindGPUFragmentSamplers(rp, 0, unsafe.SliceData(bindings), uint32(len(bindings)))
+	runtime.KeepAlive(bindings)
 }
 
 // SDL_BindGPUFragmentStorageTextures - Binds storage textures for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageTextures)
 func (rp *GPURenderPass) BindFragmentStorageTextures(textures []*GPUTexture) {
 	iBindGPUFragmentStorageTextures(rp, 0, unsafe.SliceData(textures), uint32(len(textures)))
+	runtime.KeepAlive(textures)
 }
 
 // SDL_BindGPUFragmentStorageBuffers - Binds storage buffers for use on the fragment shader.
 // (https://wiki.libsdl.org/SDL3/SDL_BindGPUFragmentStorageBuffers)
 func (rp *GPURenderPass) BindFragmentStorageBuffers(buffers []*GPUBuffer) {
 	iBindGPUFragmentStorageBuffers(rp, 0, unsafe.SliceData(buffers), uint32(len(buffers)))
+	runtime.KeepAlive(buffers)
 }
 
 // SDL_DrawGPUIndexedPrimitives - Draws data using bound graphics state with an index buffer and instancing enabled.
@@ -1897,26 +1843,12 @@ func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUComputePipeline)
-func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
-	pipeline := iCreateGPUComputePipeline(device, &gpuComputePipelineCreateInfo{
-		CodeSize:                    uintptr(createinfo.CodeSize),
-		Code:                        unsafe.SliceData(createinfo.Code),
-		Entrypoint:                  internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:                      createinfo.Format,
-		NumSamplers:                 createinfo.NumSamplers,
-		NumReadonlyStorageTextures:  createinfo.NumReadonlyStorageTextures,
-		NumReadonlyStorageBuffers:   createinfo.NumReadonlyStorageBuffers,
-		NumReadwriteStorageTextures: createinfo.NumReadwriteStorageTextures,
-		NumReadwriteStorageBuffers:  createinfo.NumReadwriteStorageBuffers,
-		NumUniformBuffers:           createinfo.NumUniformBuffers,
-		ThreadcountX:                createinfo.ThreadcountX,
-		ThreadcountY:                createinfo.ThreadcountY,
-		ThreadcountZ:                createinfo.ThreadcountZ,
-		Props:                       createinfo.Props,
-	})
+func (device *GPUDevice) CreateComputePipeline(info *GPUComputePipelineCreateInfo) (*GPUComputePipeline, error) {
+	pipeline := iCreateGPUComputePipeline(device, info.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return pipeline, nil
 }
@@ -1924,7 +1856,7 @@ func (device *GPUDevice) CreateComputePipeline(createinfo *GPUComputePipelineCre
 // SDL_CreateGPUGraphicsPipeline - Creates a pipeline object to be used in a graphics workflow.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline)
 func (device *GPUDevice) CreateGraphicsPipeline(createinfo *GPUGraphicsPipelineCreateInfo) (*GPUGraphicsPipeline, error) {
-	pipeline := iCreateGPUGraphicsPipeline(device, createinfo)
+	pipeline := iCreateGPUGraphicsPipeline(device, createinfo.as())
 	if pipeline == nil {
 		return nil, internal.LastErr()
 	}
@@ -1945,22 +1877,12 @@ func (device *GPUDevice) CreateSampler(createinfo *GPUSamplerCreateInfo) (*GPUSa
 
 // SDL_CreateGPUShader - Creates a shader to be used when creating a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPUShader)
-func (device *GPUDevice) CreateGPUShader(createinfo *GPUShaderCreateInfo) (*GPUShader, error) {
-	shader := iCreateGPUShader(device, &gpuShaderCreateInfo{
-		CodeSize:           uintptr(createinfo.CodeSize),
-		Code:               unsafe.SliceData(createinfo.Code),
-		Entrypoint:         internal.StringToNullablePtr(createinfo.Entrypoint),
-		Format:             createinfo.Format,
-		Stage:              createinfo.Stage,
-		NumSamplers:        createinfo.NumSamplers,
-		NumStorageTextures: createinfo.NumStorageTextures,
-		NumStorageBuffers:  createinfo.NumStorageBuffers,
-		NumUniformBuffers:  createinfo.NumUniformBuffers,
-		Props:              createinfo.Props,
-	})
+func (device *GPUDevice) CreateGPUShader(info *GPUShaderCreateInfo) (*GPUShader, error) {
+	shader := iCreateGPUShader(device, info.as())
 	if shader == nil {
 		return nil, internal.LastErr()
 	}
+	runtime.KeepAlive(info)
 
 	return shader, nil
 }
@@ -2405,15 +2327,6 @@ func (haptic *Haptic) StopRumble() error {
 	}
 
 	return nil
-}
-
-// FileDialogType
-
-// SDL_ShowFileDialogWithProperties - Create and launch a file dialog with the specified properties.
-// (https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties)
-func (typ FileDialogType) ShowFileDialogWithProperties(callback DialogFileCallback, userdata *byte, props PropertiesID) {
-	panic("not implemented")
-	//iShowFileDialogWithProperties(typ, callback, userdata, props)
 }
 
 // Gamepad
@@ -2951,23 +2864,36 @@ func (renderer *Renderer) LogicalPresentationRect() (*FRect, error) {
 
 // SDL_RenderCoordinatesFromWindow - Get a point in render coordinates when given a point in window coordinates.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesFromWindow)
-func (renderer *Renderer) RenderCoordinatesFromWindow(window_x float32, window_y float32, x *float32, y *float32) bool {
-	panic("not implemented")
-	return iRenderCoordinatesFromWindow(renderer, window_x, window_y, x, y)
+func (renderer *Renderer) RenderCoordinatesFromWindow(windowX, windowY float32) (float32, float32, error) {
+	var x, y float32
+
+	if !iRenderCoordinatesFromWindow(renderer, windowX, windowY, &x, &y) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return x, y, nil
 }
 
 // SDL_RenderCoordinatesToWindow - Get a point in window coordinates when given a point in render coordinates.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderCoordinatesToWindow)
-func (renderer *Renderer) RenderCoordinatesToWindow(x float32, y float32, window_x *float32, window_y *float32) bool {
-	panic("not implemented")
-	return iRenderCoordinatesToWindow(renderer, x, y, window_x, window_y)
+func (renderer *Renderer) RenderCoordinatesToWindow(x, y float32) (float32, float32, error) {
+	var windowX, windowY float32
+
+	if !iRenderCoordinatesToWindow(renderer, x, y, &windowX, &windowY) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return windowX, windowY, nil
 }
 
 // SDL_ConvertEventToRenderCoordinates - Convert the coordinates in an event to render coordinates.
 // (https://wiki.libsdl.org/SDL3/SDL_ConvertEventToRenderCoordinates)
-func (renderer *Renderer) ConvertEventToRenderCoordinates(event *Event) bool {
-	panic("not implemented")
-	return iConvertEventToRenderCoordinates(renderer, event)
+func (renderer *Renderer) ConvertEventToRenderCoordinates(event *Event) error {
+	if !iConvertEventToRenderCoordinates(renderer, event) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetRenderViewport - Set the drawing area for rendering on the current target.
@@ -3375,9 +3301,12 @@ func (renderer *Renderer) RenderMetalCommandEncoder() *byte {
 
 // SDL_AddVulkanRenderSemaphores - Add a set of synchronization semaphores for the current frame.
 // (https://wiki.libsdl.org/SDL3/SDL_AddVulkanRenderSemaphores)
-func (renderer *Renderer) AddVulkanRenderSemaphores(wait_stage_mask uint32, wait_semaphore int64, signal_semaphore int64) bool {
-	panic("not implemented")
-	return iAddVulkanRenderSemaphores(renderer, wait_stage_mask, wait_semaphore, signal_semaphore)
+func (renderer *Renderer) AddVulkanRenderSemaphores(waitStageMask uint32, waitSemaphore, signalSemaphore int64) error {
+	if !iAddVulkanRenderSemaphores(renderer, waitStageMask, waitSemaphore, signalSemaphore) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetRenderVSync - Toggle VSync of the given renderer.
@@ -3418,22 +3347,17 @@ func (renderer *Renderer) DebugTextFormat(x float32, y float32, format string, v
 	return iRenderDebugText(renderer, x, y, fmt.Sprintf(format, values...))
 }
 
-// DateFormat
-
-// SDL_GetDateTimeLocalePreferences - Gets the current preferred date and time format for the system locale.
-// (https://wiki.libsdl.org/SDL3/SDL_GetDateTimeLocalePreferences)
-func (dateFormat *DateFormat) DateTimeLocalePreferences(timeFormat *TimeFormat) bool {
-	panic("not implemented")
-	return iGetDateTimeLocalePreferences(dateFormat, timeFormat)
-}
-
 // AsyncIO
 
 // SDL_GetAsyncIOSize - Use this function to get the size of the data stream in an SDL_AsyncIO.
 // (https://wiki.libsdl.org/SDL3/SDL_GetAsyncIOSize)
-func (asyncio *AsyncIO) Size() int64 {
-	panic("not implemented")
-	return iGetAsyncIOSize(asyncio)
+func (asyncio *AsyncIO) Size() (int64, error) {
+	size := iGetAsyncIOSize(asyncio)
+	if size < 0 {
+		return -1, internal.LastErr()
+	}
+
+	return size, nil
 }
 
 // SDL_ReadAsyncIO - Start an async read.
@@ -3452,9 +3376,12 @@ func (asyncio *AsyncIO) Write(ptr *byte, offset uint64, size uint64, queue *Asyn
 
 // SDL_CloseAsyncIO - Close and free any allocated resources for an async I/O object.
 // (https://wiki.libsdl.org/SDL3/SDL_CloseAsyncIO)
-func (asyncio *AsyncIO) Close(flush bool, queue *AsyncIOQueue, userdata *byte) bool {
-	panic("not implemented")
-	//return iCloseAsyncIO(asyncio, flush, queue, userdata)
+func (asyncio *AsyncIO) Close(flush bool, queue *AsyncIOQueue) error {
+	if !iCloseAsyncIO(asyncio, flush, queue, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // InitState
@@ -3462,21 +3389,18 @@ func (asyncio *AsyncIO) Close(flush bool, queue *AsyncIOQueue, userdata *byte) b
 // SDL_ShouldInit - Return whether initialization should be done.
 // (https://wiki.libsdl.org/SDL3/SDL_ShouldInit)
 func (state *InitState) ShouldInit() bool {
-	panic("not implemented")
 	return iShouldInit(state)
 }
 
 // SDL_ShouldQuit - Return whether cleanup should be done.
 // (https://wiki.libsdl.org/SDL3/SDL_ShouldQuit)
 func (state *InitState) ShouldQuit() bool {
-	panic("not implemented")
 	return iShouldQuit(state)
 }
 
 // SDL_SetInitialized - Finish an initialization state transition.
 // (https://wiki.libsdl.org/SDL3/SDL_SetInitialized)
 func (state *InitState) SetInitialized(initialized bool) {
-	panic("not implemented")
 	iSetInitialized(state, initialized)
 }
 
@@ -3484,9 +3408,17 @@ func (state *InitState) SetInitialized(initialized bool) {
 
 // SDL_GetCameraSupportedFormats - Get the list of native formats/sizes a camera supports.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraSupportedFormats)
-func (instance_id CameraID) CameraSupportedFormats(count *int32) **CameraSpec {
-	panic("not implemented")
-	//return iGetCameraSupportedFormats(instance_id, count)
+func (instance_id CameraID) CameraSupportedFormats() ([]*CameraSpec, error) {
+	var count int32
+
+	ptr := iGetCameraSupportedFormats(instance_id, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	specs := internal.ClonePtrSlice[*CameraSpec](ptr, int(count))
+	internal.Free(ptr)
+
+	return specs, nil
 }
 
 // SDL_GetCameraName - Get the human-readable device name for a camera.
@@ -3499,15 +3431,18 @@ func (instance_id CameraID) CameraName() string {
 // SDL_GetCameraPosition - Get the position of the camera in relation to the system.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraPosition)
 func (instance_id CameraID) CameraPosition() CameraPosition {
-	panic("not implemented")
 	return iGetCameraPosition(instance_id)
 }
 
 // SDL_OpenCamera - Open a video recording device (a "camera").
 // (https://wiki.libsdl.org/SDL3/SDL_OpenCamera)
-func (instance_id CameraID) OpenCamera(spec *CameraSpec) *Camera {
-	panic("not implemented")
-	return iOpenCamera(instance_id, spec)
+func (instance_id CameraID) OpenCamera(spec *CameraSpec) (*Camera, error) {
+	cam := iOpenCamera(instance_id, spec)
+	if cam == nil {
+		return nil, internal.LastErr()
+	}
+
+	return cam, nil
 }
 
 // DisplayID
@@ -3931,7 +3866,6 @@ func (stream *AudioStream) Destroy() {
 // SDL_HasRectIntersectionFloat - Determine whether two rectangles intersect with float precision.
 // (https://wiki.libsdl.org/SDL3/SDL_HasRectIntersectionFloat)
 func (A *FRect) HasRectIntersectionFloat(B *FRect) bool {
-	panic("not implemented")
 	return iHasRectIntersectionFloat(A, B)
 }
 
@@ -3954,52 +3888,6 @@ func (A *FRect) RectUnionFloat(B *FRect, result *FRect) bool {
 func (rect *FRect) RectAndLineIntersectionFloat(X1 *float32, Y1 *float32, X2 *float32, Y2 *float32) bool {
 	panic("not implemented")
 	return iGetRectAndLineIntersectionFloat(rect, X1, Y1, X2, Y2)
-}
-
-// LogOutputFunction
-
-// SDL_SetLogOutputFunction - Replace the default log output function with one of your own.
-// (https://wiki.libsdl.org/SDL3/SDL_SetLogOutputFunction)
-func (callback LogOutputFunction) Set(userdata *byte) {
-	panic("not implemented")
-	//iSetLogOutputFunction(callback, userdata)
-}
-
-// Condition
-
-// SDL_DestroyCondition - Destroy a condition variable.
-// (https://wiki.libsdl.org/SDL3/SDL_DestroyCondition)
-func (cond *Condition) Destroy() {
-	panic("not implemented")
-	iDestroyCondition(cond)
-}
-
-// SDL_SignalCondition - Restart one of the threads that are waiting on the condition variable.
-// (https://wiki.libsdl.org/SDL3/SDL_SignalCondition)
-func (cond *Condition) Signal() {
-	panic("not implemented")
-	iSignalCondition(cond)
-}
-
-// SDL_BroadcastCondition - Restart all threads that are waiting on the condition variable.
-// (https://wiki.libsdl.org/SDL3/SDL_BroadcastCondition)
-func (cond *Condition) Broadcast() {
-	panic("not implemented")
-	iBroadcastCondition(cond)
-}
-
-// SDL_WaitCondition - Wait until a condition variable is signaled.
-// (https://wiki.libsdl.org/SDL3/SDL_WaitCondition)
-func (cond *Condition) Wait(mutex *Mutex) {
-	panic("not implemented")
-	iWaitCondition(cond, mutex)
-}
-
-// SDL_WaitConditionTimeout - Wait until a condition variable is signaled or a certain time has passed.
-// (https://wiki.libsdl.org/SDL3/SDL_WaitConditionTimeout)
-func (cond *Condition) WaitTimeout(mutex *Mutex, timeoutMS int32) bool {
-	panic("not implemented")
-	return iWaitConditionTimeout(cond, mutex, timeoutMS)
 }
 
 // Window
@@ -4638,9 +4526,12 @@ func (window *Window) StopTextInput() error {
 
 // SDL_ClearComposition - Dismiss the composition window/IME without disabling the subsystem.
 // (https://wiki.libsdl.org/SDL3/SDL_ClearComposition)
-func (window *Window) ClearComposition() bool {
-	panic("not implemented")
-	return iClearComposition(window)
+func (window *Window) ClearComposition() error {
+	if !iClearComposition(window) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetTextInputArea - Set the area used to type Unicode text input.
@@ -4744,31 +4635,6 @@ func (scancode Scancode) Name() string {
 
 func (scancode Scancode) ToKeycode() Keycode {
 	return Keycode(scancode | K_SCANCODE_MASK)
-}
-
-// SharedObject
-
-// SDL_LoadFunction - Look up the address of the named function in a shared object.
-// (https://wiki.libsdl.org/SDL3/SDL_LoadFunction)
-func (handle *SharedObject) LoadFunction(name string) FunctionPointer {
-	panic("not implemented")
-	return iLoadFunction(handle, name)
-}
-
-// SDL_UnloadObject - Unload a shared object from memory.
-// (https://wiki.libsdl.org/SDL3/SDL_UnloadObject)
-func (handle *SharedObject) UnloadObject() {
-	panic("not implemented")
-	iUnloadObject(handle)
-}
-
-// TimerID
-
-// SDL_RemoveTimer - Remove a timer created with SDL_AddTimer().
-// (https://wiki.libsdl.org/SDL3/SDL_RemoveTimer)
-func (id TimerID) RemoveTimer() bool {
-	panic("not implemented")
-	return iRemoveTimer(id)
 }
 
 // IOStream
@@ -5610,45 +5476,6 @@ func (mutex *Mutex) Unlock() {
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyMutex)
 func (mutex *Mutex) Destroy() {
 	iDestroyMutex(mutex)
-}
-
-// Time
-
-// SDL_TimeToDateTime - Converts an SDL_Time in nanoseconds since the epoch to a calendar time in the SDL_DateTime format.
-// (https://wiki.libsdl.org/SDL3/SDL_TimeToDateTime)
-func (ticks Time) ToDateTime(dt *DateTime, localTime bool) bool {
-	panic("not implemented")
-	return iTimeToDateTime(ticks, dt, localTime)
-}
-
-// SDL_TimeToWindows - Converts an SDL time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601).
-// (https://wiki.libsdl.org/SDL3/SDL_TimeToWindows)
-func (ticks Time) ToWindows(dwLowDateTime *uint32, dwHighDateTime *uint32) {
-	panic("not implemented")
-	iTimeToWindows(ticks, dwLowDateTime, dwHighDateTime)
-}
-
-// AtomicU32
-
-// SDL_CompareAndSwapAtomicU32 - Set an atomic variable to a new value if it is currently an old value.
-// (https://wiki.libsdl.org/SDL3/SDL_CompareAndSwapAtomicU32)
-func (a *AtomicU32) CompareAndSwap(oldval uint32, newval uint32) bool {
-	panic("not implemented")
-	return iCompareAndSwapAtomicU32(a, oldval, newval)
-}
-
-// SDL_SetAtomicU32 - Set an atomic variable to a value.
-// (https://wiki.libsdl.org/SDL3/SDL_SetAtomicU32)
-func (a *AtomicU32) Set(v uint32) uint32 {
-	panic("not implemented")
-	return iSetAtomicU32(a, v)
-}
-
-// SDL_GetAtomicU32 - Get the value of an atomic variable.
-// (https://wiki.libsdl.org/SDL3/SDL_GetAtomicU32)
-func (a *AtomicU32) Get() uint32 {
-	panic("not implemented")
-	return iGetAtomicU32(a)
 }
 
 // PropertiesID

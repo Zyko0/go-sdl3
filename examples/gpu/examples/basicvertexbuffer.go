@@ -44,13 +44,13 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 	// create pipelines
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 		},
 	}
 
 	vertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-		sdl.GPUVertexBufferDescription{
+		{
 			Slot:             0,
 			InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 			InstanceStepRate: 0,
@@ -59,13 +59,13 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 	}
 
 	vertexAttributes := []sdl.GPUVertexAttribute{
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 			Location:   0,
 			Offset:     0,
 		},
-		sdl.GPUVertexAttribute{
+		{
 			BufferSlot: 0,
 			Format:     sdl.GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM,
 			Location:   1,
@@ -75,14 +75,11 @@ func (e *BasicVertexBuffer) Init(context *common.Context) error {
 
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-			NumColorTargets:         uint32(len(colorTargetDescriptions)),
-			ColorTargetDescriptions: &colorTargetDescriptions[0],
+			ColorTargetDescriptions: colorTargetDescriptions,
 		},
 		VertexInputState: sdl.GPUVertexInputState{
-			NumVertexBuffers:         uint32(len(vertexBufferDescriptions)),
-			VertexBufferDescriptions: &vertexBufferDescriptions[0],
-			NumVertexAttributes:      uint32(len(vertexAttributes)),
-			VertexAttributes:         &vertexAttributes[0],
+			VertexBufferDescriptions: vertexBufferDescriptions,
+			VertexAttributes:         vertexAttributes,
 		},
 		PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 		VertexShader:   vertexShader,
@@ -190,7 +187,7 @@ func (e *BasicVertexBuffer) Draw(context *common.Context) error {
 
 		renderPass.BindGraphicsPipeline(e.pipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.vertexBuffer, Offset: 0},
+			{Buffer: e.vertexBuffer, Offset: 0},
 		})
 		renderPass.DrawPrimitives(3, 1, 0, 0)
 

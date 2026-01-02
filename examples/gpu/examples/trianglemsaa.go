@@ -49,15 +49,14 @@ func (e *TriangleMSAA) Init(context *common.Context) error {
 
 	rtFormat := context.Device.SwapchainTextureFormat(context.Window)
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: rtFormat,
 		},
 	}
 
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-			NumColorTargets:         uint32(len(colorTargetDescriptions)),
-			ColorTargetDescriptions: &colorTargetDescriptions[0],
+			ColorTargetDescriptions: colorTargetDescriptions,
 		},
 		PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 		VertexShader:   vertexShader,

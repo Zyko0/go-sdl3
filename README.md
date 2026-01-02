@@ -7,26 +7,34 @@
 
 ## About
 
-This library wraps SDL3 to more idiomatic go and:
-- Changes return values from `bool` to `error` (`SDL_GetError`).
+This library wraps SDL3 packages to a more idiomatic go and:
+- Changes return values from `bool` to `error`.
 - Trims `SDL_` prefix from all types, variables, function names.
 - Make methods from global functions when it is possible.
 - Turn some pointer function parameters into return values.
+- Remove the necessity to call `sdl.Free` on returned pointers.
 
 If you are looking for pure Go bindings that are closer to the original API, please have a look at https://github.com/JupiterRider/purego-sdl3. 
 
 ## Status
 
 > [!NOTE]
-> The API is currently subject to many changes / refactors, many method functions are also exposed but not implemented yet (need human validation).
+> The API is not completely covered, some method functions are also exposed but not implemented yet (need human validation).
 
-The list of currently supported functions can be found in [COVERAGE.md](COVERAGE.md).
+The list of currently implemented functions can be found in [COVERAGE.md](COVERAGE.md).
+
+Libraries:
+- SDL3
+- SDL3_ttf
+- SDL3_image
+- SDL3_mixer (TBD: v3 is not released yet, see https://github.com/Zyko0/go-sdl3/issues/26)
+- [SDL3_shadercross](shadercross/README.md)
 
 Platforms:
 - Windows (amd64, arm64)
 - Linux (amd64)
 - MacOS (amd64, arm64)
-- WebAssembly
+- WebAssembly (experimental)
 
 ## Usage
 
@@ -42,7 +50,7 @@ sdl.LoadLibrary(sdl.Path()) // "SDL3.dll", "libSDL3.so.0", "libSDL3.dylib"
 ```
 
 <ins>**Example:**</ins>
-> Note that you do not have to pass your update function `sdl.RunLoop`, however doing so allows you to target `GOOS=js`/`GOARCH=wasm`, see [wasmsdl](cmd/wasmsdl/). 
+> Note that you do not have to pass your update function to `sdl.RunLoop`, however doing so allows you to target `GOOS=js`/`GOARCH=wasm`, see [wasmsdl](cmd/wasmsdl/).
 ```go
 package main
 
@@ -87,14 +95,12 @@ func main() {
 
 ## Examples
 
-The [examples](./examples/) folder contains the offical examples that can be found here https://examples.libsdl.org/SDL3, and a few more.
+The [examples](./examples/) folder contains:
+- Some official examples (https://examples.libsdl.org/SDL3)
+  - [examples/renderer](./examples/renderer/)
+  - [examples/input](./examples/input/)
+- GPU API examples (https://github.com/TheSpydog/SDL_gpu_examples)
+  - [examples/gpu](./examples/gpu/) thanks to [@makinori](https://github.com/makinori) [#21](https://github.com/Zyko0/go-sdl3/pull/21)
 
-- Clay UI renderer: https://github.com/TotallyGamerJet/clay/tree/main/examples/sdl3
-
-## Libraries
-
-- SDL3
-- SDL3_ttf
-- SDL3_image
-- SDL3_mixer
-- SDL3_shadercross (TBD)
+External examples:
+- Clay UI renderer: [TotallyGamerJet/clay/examples/sdl3](https://github.com/TotallyGamerJet/clay/blob/main/examples/sdl3/main.go)

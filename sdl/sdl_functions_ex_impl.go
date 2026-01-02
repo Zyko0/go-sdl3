@@ -14,10 +14,13 @@ import (
 var (
 	// Symbols
 	// sdl
-	_addr_SDL_ShowMessageBox           uintptr
-	_addr_SDL_CreateGPUShader          uintptr
-	_addr_SDL_CreateGPUComputePipeline uintptr
-	_addr_SDL_GetVersion               uintptr
+	_addr_SDL_ShowMessageBox            uintptr
+	_addr_SDL_CreateGPUShader           uintptr
+	_addr_SDL_CreateGPUComputePipeline  uintptr
+	_addr_SDL_CreateGPUGraphicsPipeline uintptr
+	_addr_SDL_SetClipboardData          uintptr
+	_addr_SDL_ShowOpenFileDialog        uintptr
+	_addr_SDL_ShowSaveFileDialog        uintptr
 )
 
 func initialize_ex() {
@@ -36,9 +39,21 @@ func initialize_ex() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUComputePipeline")
 	}
-	_addr_SDL_GetVersion, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetVersion")
+	_addr_SDL_CreateGPUGraphicsPipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUGraphicsPipeline")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_GetVersion")
+		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUGraphicsPipeline")
+	}
+	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetClipboardData")
+	}
+	_addr_SDL_ShowOpenFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFileDialog")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_ShowOpenFileDialog")
+	}
+	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -62,9 +77,29 @@ func initialize_ex() {
 		runtime.KeepAlive(createinfo)
 		return __r0
 	}
-	iGetVersion = func() int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVersion)
-		__r0 := int32(_r0)
+	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *gpuGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUGraphicsPipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
+		__r0 := (*GPUGraphicsPipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(device)
+		runtime.KeepAlive(createinfo)
 		return __r0
+	}
+	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types **byte, num_mime_types uintptr) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, uintptr(callback), uintptr(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
+		__r0 := uint8(_r0) != 0
+		runtime.KeepAlive(mime_types)
+		return __r0
+	}
+	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte, allow_many bool) {
+		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(num_filters), uintptr(unsafe.Pointer(default_location)), puregogen.BoolToUintptr(allow_many))
+		runtime.KeepAlive(window)
+		runtime.KeepAlive(filters)
+		runtime.KeepAlive(default_location)
+	}
+	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte) {
+		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(num_filters), uintptr(unsafe.Pointer(default_location)))
+		runtime.KeepAlive(window)
+		runtime.KeepAlive(filters)
+		runtime.KeepAlive(default_location)
 	}
 }

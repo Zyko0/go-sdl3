@@ -299,7 +299,6 @@ var (
 	_addr_SDL_SetPrimarySelectionText               uintptr
 	_addr_SDL_GetPrimarySelectionText               uintptr
 	_addr_SDL_HasPrimarySelectionText               uintptr
-	_addr_SDL_SetClipboardData                      uintptr
 	_addr_SDL_ClearClipboardData                    uintptr
 	_addr_SDL_GetClipboardData                      uintptr
 	_addr_SDL_HasClipboardData                      uintptr
@@ -424,8 +423,6 @@ var (
 	_addr_SDL_GL_GetSwapInterval                    uintptr
 	_addr_SDL_GL_SwapWindow                         uintptr
 	_addr_SDL_GL_DestroyContext                     uintptr
-	_addr_SDL_ShowOpenFileDialog                    uintptr
-	_addr_SDL_ShowSaveFileDialog                    uintptr
 	_addr_SDL_ShowOpenFolderDialog                  uintptr
 	_addr_SDL_ShowFileDialogWithProperties          uintptr
 	_addr_SDL_GUIDToString                          uintptr
@@ -661,7 +658,6 @@ var (
 	_addr_SDL_GetGPUDriver                          uintptr
 	_addr_SDL_GetGPUDeviceDriver                    uintptr
 	_addr_SDL_GetGPUShaderFormats                   uintptr
-	_addr_SDL_CreateGPUGraphicsPipeline             uintptr
 	_addr_SDL_CreateGPUSampler                      uintptr
 	_addr_SDL_CreateGPUTexture                      uintptr
 	_addr_SDL_CreateGPUBuffer                       uintptr
@@ -968,10 +964,8 @@ var (
 	_addr_SDL_GetTrayMenuParentEntry                uintptr
 	_addr_SDL_GetTrayMenuParentTray                 uintptr
 	_addr_SDL_UpdateTrays                           uintptr
-	_addr_SDL_SetMainReady                          uintptr
-	_addr_SDL_RunApp                                uintptr
-	_addr_SDL_EnterAppMainCallbacks                 uintptr
-	_addr_SDL_GDKSuspendComplete                    uintptr
+	_addr_SDL_GetVersion                            uintptr
+	_addr_SDL_GetRevision                           uintptr
 )
 
 func initialize() {
@@ -2110,10 +2104,6 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_HasPrimarySelectionText")
 	}
-	_addr_SDL_SetClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetClipboardData")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_SetClipboardData")
-	}
 	_addr_SDL_ClearClipboardData, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ClearClipboardData")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_ClearClipboardData")
@@ -2609,14 +2599,6 @@ func initialize() {
 	_addr_SDL_GL_DestroyContext, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GL_DestroyContext")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GL_DestroyContext")
-	}
-	_addr_SDL_ShowOpenFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFileDialog")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_ShowOpenFileDialog")
-	}
-	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
 	}
 	_addr_SDL_ShowOpenFolderDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowOpenFolderDialog")
 	if err != nil {
@@ -3557,10 +3539,6 @@ func initialize() {
 	_addr_SDL_GetGPUShaderFormats, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetGPUShaderFormats")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetGPUShaderFormats")
-	}
-	_addr_SDL_CreateGPUGraphicsPipeline, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUGraphicsPipeline")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_CreateGPUGraphicsPipeline")
 	}
 	_addr_SDL_CreateGPUSampler, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPUSampler")
 	if err != nil {
@@ -4786,21 +4764,13 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_UpdateTrays")
 	}
-	_addr_SDL_SetMainReady, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetMainReady")
+	_addr_SDL_GetVersion, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetVersion")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_SetMainReady")
+		panic("cannot puregogen.OpenSymbol: SDL_GetVersion")
 	}
-	_addr_SDL_RunApp, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_RunApp")
+	_addr_SDL_GetRevision, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetRevision")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_RunApp")
-	}
-	_addr_SDL_EnterAppMainCallbacks, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_EnterAppMainCallbacks")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_EnterAppMainCallbacks")
-	}
-	_addr_SDL_GDKSuspendComplete, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GDKSuspendComplete")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_GDKSuspendComplete")
+		panic("cannot puregogen.OpenSymbol: SDL_GetRevision")
 	}
 
 	ifree = func(mem uintptr) {
@@ -6514,12 +6484,6 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		return __r0
 	}
-	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types *string, num_mime_types uintptr) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetClipboardData, uintptr(callback), uintptr(cleanup), uintptr(userdata), uintptr(unsafe.Pointer(mime_types)), uintptr(num_mime_types))
-		__r0 := uint8(_r0) != 0
-		runtime.KeepAlive(mime_types)
-		return __r0
-	}
 	iClearClipboardData = func() bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_ClearClipboardData)
 		__r0 := uint8(_r0) != 0
@@ -7244,20 +7208,8 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		return __r0
 	}
-	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
-		runtime.KeepAlive(window)
-		runtime.KeepAlive(filters)
-		runtime.KeepAlive(default_location)
-	}
-	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string) {
-		purego.SyscallN(_addr_SDL_ShowSaveFileDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(filters)), uintptr(nfilters), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))))
-		runtime.KeepAlive(window)
-		runtime.KeepAlive(filters)
-		runtime.KeepAlive(default_location)
-	}
-	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool) {
-		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(default_location))), puregogen.BoolToUintptr(allow_many))
+	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location *byte, allow_many bool) {
+		purego.SyscallN(_addr_SDL_ShowOpenFolderDialog, uintptr(callback), uintptr(userdata), uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(default_location)), puregogen.BoolToUintptr(allow_many))
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(default_location)
 	}
@@ -8559,13 +8511,6 @@ func initialize() {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetGPUShaderFormats, uintptr(unsafe.Pointer(device)))
 		__r0 := GPUShaderFormat(_r0)
 		runtime.KeepAlive(device)
-		return __r0
-	}
-	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPUGraphicsPipeline, uintptr(unsafe.Pointer(device)), uintptr(unsafe.Pointer(createinfo)))
-		__r0 := (*GPUGraphicsPipeline)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		runtime.KeepAlive(device)
-		runtime.KeepAlive(createinfo)
 		return __r0
 	}
 	iCreateGPUSampler = func(device *GPUDevice, createinfo *GPUSamplerCreateInfo) *GPUSampler {
@@ -10364,22 +10309,14 @@ func initialize() {
 	iUpdateTrays = func() {
 		purego.SyscallN(_addr_SDL_UpdateTrays)
 	}
-	iSetMainReady = func() {
-		purego.SyscallN(_addr_SDL_SetMainReady)
-	}
-	iRunApp = func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_RunApp, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(mainFunction), uintptr(reserved))
+	iGetVersion = func() int32 {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetVersion)
 		__r0 := int32(_r0)
-		runtime.KeepAlive(argv)
 		return __r0
 	}
-	iEnterAppMainCallbacks = func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_EnterAppMainCallbacks, uintptr(argc), uintptr(unsafe.Pointer(argv)), uintptr(appinit), uintptr(appiter), uintptr(appevent), uintptr(appquit))
-		__r0 := int32(_r0)
-		runtime.KeepAlive(argv)
+	iGetRevision = func() string {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetRevision)
+		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
 		return __r0
-	}
-	iGDKSuspendComplete = func() {
-		purego.SyscallN(_addr_SDL_GDKSuspendComplete)
 	}
 }

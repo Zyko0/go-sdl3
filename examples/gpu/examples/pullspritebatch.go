@@ -77,7 +77,7 @@ func (e *PullSpriteBatch) Init(context *common.Context) error {
 	// create the sprite render pipeline
 
 	colorTargetDescriptions := []sdl.GPUColorTargetDescription{
-		sdl.GPUColorTargetDescription{
+		{
 			Format: context.Device.SwapchainTextureFormat(context.Window),
 			BlendState: sdl.GPUColorTargetBlendState{
 				EnableBlend:         true,
@@ -93,8 +93,7 @@ func (e *PullSpriteBatch) Init(context *common.Context) error {
 
 	pipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 		TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-			NumColorTargets:         uint32(len(colorTargetDescriptions)),
-			ColorTargetDescriptions: &colorTargetDescriptions[0],
+			ColorTargetDescriptions: colorTargetDescriptions,
 		},
 		PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 		VertexShader:   vertShader,
@@ -282,7 +281,7 @@ func (e *PullSpriteBatch) Draw(context *common.Context) error {
 
 		// render sprites
 		renderPass := cmdBuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-			sdl.GPUColorTargetInfo{
+			{
 				Texture:    swapchainTexture.Texture,
 				Cycle:      false,
 				LoadOp:     sdl.GPU_LOADOP_CLEAR,
@@ -296,7 +295,7 @@ func (e *PullSpriteBatch) Draw(context *common.Context) error {
 			e.spriteDataBuffer,
 		})
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{Texture: e.texture, Sampler: e.sampler},
+			{Texture: e.texture, Sampler: e.sampler},
 		})
 		cmdBuf.PushVertexUniformData(0, unsafe.Slice(
 			(*byte)(unsafe.Pointer(&cameraMatrix)), unsafe.Sizeof(cameraMatrix),

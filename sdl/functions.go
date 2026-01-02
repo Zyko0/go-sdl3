@@ -244,11 +244,46 @@ func PushEvent(event *Event) error {
 	return nil
 }
 
-// TODO: SetEventFilter
-// TODO: GetEventFilter
-// TODO: AddEventWatch
-// TODO: RemoveEventWatch
-// TODO: FilterEvents
+// SDL_SetEventFilter - Set up a filter to process all events before they are added to the internal event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_SetEventFilter)
+func SetEventFilter(filter EventFilter) {
+	iSetEventFilter(filter, 0)
+}
+
+// SDL_GetEventFilter - Query the current event filter.
+// (https://wiki.libsdl.org/SDL3/SDL_GetEventFilter)
+func GetEventFilter() EventFilter {
+	var filter EventFilter
+	var userData uintptr
+
+	if !iGetEventFilter(&filter, &userData) {
+		return 0
+	}
+
+	return filter
+}
+
+// SDL_AddEventWatch - Add a callback to be triggered when an event is added to the event queue.
+// (https://wiki.libsdl.org/SDL3/SDL_AddEventWatch)
+func AddEventWatch(filter EventFilter) error {
+	if !iAddEventWatch(filter, 0) {
+		internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_RemoveEventWatch - Remove an event watch callback added with [SDL_AddEventWatch](SDL_AddEventWatch)().
+// (https://wiki.libsdl.org/SDL3/SDL_RemoveEventWatch)
+func RemoveEventWatch(filter EventFilter) {
+	iRemoveEventWatch(filter, 0)
+}
+
+// SDL_FilterEvents - Run a specific filter function on the current event queue, removing any events for which the filter returns false.
+// (https://wiki.libsdl.org/SDL3/SDL_FilterEvents)
+func FilterEvents(filter EventFilter) {
+	iFilterEvents(filter, 0)
+}
 
 // SDL_SetEventEnabled - Set the state of processing events by type.
 // (https://wiki.libsdl.org/SDL3/SDL_SetEventEnabled)
@@ -287,7 +322,7 @@ func EventEnabled(typ EventType) bool {
 // SDL_IOFromConstMem - Use this function to prepare a read-only memory buffer for use with SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem)
 // Note: This function is unsafe as it is required for `mem` not to be garbage collected while the IOStream is in use.
-// Please use IOFromBytes or IOFromDynamicMem instead.
+// Please use IOFromBytes or IOFromDynamicMem, unless you can guarantee that `mem` will be kept alive.
 func IOFromConstMem(mem []byte) (*IOStream, error) {
 	stream := iIOFromConstMem(
 		uintptr(unsafe.Pointer(unsafe.SliceData(mem))),
@@ -498,6 +533,18 @@ func CreateGPUDeviceWithProperties(props PropertiesID) (*GPUDevice, error) {
 	}
 
 	return device, nil
+}
+
+// SDL_GetNumGPUDrivers - Get the number of GPU drivers compiled into SDL.
+// (https://wiki.libsdl.org/SDL3/SDL_GetNumGPUDrivers)
+func NumGPUDrivers() int {
+	return int(iGetNumGPUDrivers())
+}
+
+// SDL_GetGPUDriver - Get the name of a built in GPU driver.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGPUDriver)
+func GetGPUDriver(index int32) string {
+	return iGetGPUDriver(index)
 }
 
 // Video
@@ -967,58 +1014,75 @@ func DelayPrecise(ns uint64) {
 
 // Dialog
 
-// TODO: ShowOpenFileDialog
-// TODO: ShowSaveFileDialog
-// TODO: ShowOpenFolderDialog
-// TODO: ShowFileDialogWithProperties
+type dialogFileFilter struct {
+	Name    *byte
+	Pattern *byte
+}
+
+// SDL_ShowOpenFileDialog - Displays a dialog that lets the user select a file on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFileDialog)
+func ShowOpenFileDialog(callback DialogFileCallback, window *Window, filters []DialogFileFilter, defaultLocation string, allowMany bool) {
+	nullableFilters := make([]dialogFileFilter, len(filters))
+	for i, filter := range filters {
+		nullableFilters[i] = dialogFileFilter{
+			Name:    internal.StringToNullablePtr(filter.Name),
+			Pattern: internal.StringToNullablePtr(filter.Pattern),
+		}
+	}
+	iShowOpenFileDialog(callback, 0, window, unsafe.SliceData(nullableFilters), int32(len(nullableFilters)), internal.StringToNullablePtr(defaultLocation), allowMany)
+	runtime.KeepAlive(nullableFilters)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowSaveFileDialog - Displays a dialog that lets the user choose a new or existing file on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowSaveFileDialog)
+func ShowSaveFileDialog(callback DialogFileCallback, window *Window, filters []DialogFileFilter, defaultLocation string) {
+	nullableFilters := make([]dialogFileFilter, len(filters))
+	for i, filter := range filters {
+		nullableFilters[i] = dialogFileFilter{
+			Name:    internal.StringToNullablePtr(filter.Name),
+			Pattern: internal.StringToNullablePtr(filter.Pattern),
+		}
+	}
+	iShowSaveFileDialog(callback, 0, window, unsafe.SliceData(nullableFilters), int32(len(nullableFilters)), internal.StringToNullablePtr(defaultLocation))
+	runtime.KeepAlive(nullableFilters)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowOpenFolderDialog - Displays a dialog that lets the user select a folder on their filesystem.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowOpenFolderDialog)
+func ShowOpenFolderDialog(callback DialogFileCallback, window *Window, defaultLocation string, allowMany bool) {
+	iShowOpenFolderDialog(callback, 0, window, internal.StringToNullablePtr(defaultLocation), allowMany)
+	runtime.KeepAlive(defaultLocation)
+}
+
+// SDL_ShowFileDialogWithProperties - Create and launch a file dialog with the specified properties.
+// (https://wiki.libsdl.org/SDL3/SDL_ShowFileDialogWithProperties)
+func ShowFileDialogWithProperties(callback DialogFileCallback, typ FileDialogType, props PropertiesID) {
+	iShowFileDialogWithProperties(typ, callback, 0, props)
+}
+
+// SDL_EnumerateDirectory - Enumerate a directory through a callback function.
+// (https://wiki.libsdl.org/SDL3/SDL_EnumerateDirectory)
+func EnumerateDirectory(path string, callback EnumerateDirectoryCallback) error {
+	if !iEnumerateDirectory(path, callback, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
 
 // Message
-
-type messageBoxButtonData struct {
-	Flags    MessageBoxButtonFlags
-	ButtonID int32
-	Text     *byte
-}
-
-type messageBoxData struct {
-	Flags       MessageBoxFlags
-	Window      *Window
-	Title       *byte
-	Message     *byte
-	Numbuttons  int32
-	Buttons     *messageBoxButtonData
-	ColorScheme *MessageBoxColorScheme
-}
 
 // SDL_ShowMessageBox - Create a modal message box.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowMessageBox)
 func ShowMessageBox(data *MessageBoxData) (int32, error) {
 	var buttonID int32
 
-	var iData *messageBoxData
-	if data != nil {
-		buttons := make([]messageBoxButtonData, len(data.Buttons))
-		for i, button := range data.Buttons {
-			buttons[i] = messageBoxButtonData{
-				Flags:    button.Flags,
-				ButtonID: button.ButtonID,
-				Text:     internal.StringToNullablePtr(button.Text),
-			}
-		}
-		defer runtime.KeepAlive(buttons)
-		iData = &messageBoxData{
-			Flags:       data.Flags,
-			Window:      data.Window,
-			Title:       internal.StringToNullablePtr(data.Title),
-			Message:     internal.StringToNullablePtr(data.Message),
-			Numbuttons:  int32(len(buttons)),
-			Buttons:     unsafe.SliceData(buttons),
-			ColorScheme: data.ColorScheme,
-		}
-	}
-	if !iShowMessageBox(iData, &buttonID) {
+	if !iShowMessageBox(data.as(), &buttonID) {
 		return 0, internal.LastErr()
 	}
+	runtime.KeepAlive(data)
 
 	return buttonID, nil
 }
@@ -1627,6 +1691,20 @@ func GetClipboardText() (string, error) {
 	defer internal.Free(ptr)
 
 	return internal.ClonePtrString(ptr), nil
+}
+
+// SDL_SetClipboardData - Offer clipboard data to the OS.
+// (https://wiki.libsdl.org/SDL3/SDL_SetClipboardData)
+func SetClipboardData(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, mime_types []string) error {
+	mimeTypes := make([]*byte, len(mime_types))
+	for i, mime := range mime_types {
+		mimeTypes[i] = internal.StringToNullablePtr(mime)
+	}
+	if !iSetClipboardData(callback, cleanup, 0, unsafe.SliceData(mimeTypes), uintptr(len(mimeTypes))) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_GetVersion - Get the version of SDL that is linked against your program.

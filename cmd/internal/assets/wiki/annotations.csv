@@ -29,6 +29,8 @@ SDL_ANDROID_EXTERNAL_STORAGE_WRITE,"See the official Android developer guide for
 ",https://wiki.libsdl.org/SDL3/SDL_ANDROID_EXTERNAL_STORAGE_WRITE
 SDL_ASSERT_CAPABILITY,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_ASSERT_CAPABILITY
+SDL_ASSERT_FILE,"A macro that reports the current file being compiled, for use in assertions.
+",https://wiki.libsdl.org/SDL3/SDL_ASSERT_FILE
 SDL_ASSERT_LEVEL,"The level of assertion aggressiveness.
 ",https://wiki.libsdl.org/SDL3/SDL_ASSERT_LEVEL
 SDL_ASSERT_SHARED_CAPABILITY,"Wrapper around Clang thread safety analysis annotations.
@@ -77,6 +79,8 @@ SDL_AcquireGPUSwapchainTexture,"Acquire a texture to use in presentation.
 ",https://wiki.libsdl.org/SDL3/SDL_AcquireGPUSwapchainTexture
 SDL_AddAtomicInt,"Add to an atomic variable.
 ",https://wiki.libsdl.org/SDL3/SDL_AddAtomicInt
+SDL_AddAtomicU32,"Add to an atomic variable.
+",https://wiki.libsdl.org/SDL3/SDL_AddAtomicU32
 SDL_AddEventWatch,"Add a callback to be triggered when an event is added to the event queue.
 ",https://wiki.libsdl.org/SDL3/SDL_AddEventWatch
 SDL_AddGamepadMapping,"Add support for gamepads that SDL is unaware of or change the binding of an existing gamepad.
@@ -265,6 +269,8 @@ SDL_CameraDeviceEvent,"Camera device event structure (event.cdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent
 SDL_CameraID,"This is a unique ID for a camera device for the time it is connected to the system, and is never reused for the lifetime of the application.
 ",https://wiki.libsdl.org/SDL3/SDL_CameraID
+SDL_CameraPermissionState,"The current state of a request for camera access.
+",https://wiki.libsdl.org/SDL3/SDL_CameraPermissionState
 SDL_CameraPosition,"The position of camera in relation to system device.
 ",https://wiki.libsdl.org/SDL3/SDL_CameraPosition
 SDL_CameraSpec,"The details of an output format for a camera device.
@@ -297,7 +303,7 @@ SDL_ClearSurface,"Clear a surface with a specific color, with floating point pre
 ",https://wiki.libsdl.org/SDL3/SDL_ClearSurface
 SDL_ClickTrayEntry,"Simulate a click on a tray entry.
 ",https://wiki.libsdl.org/SDL3/SDL_ClickTrayEntry
-SDL_ClipboardCleanupCallback,"Callback function that will be called when the clipboard is cleared, or new data is set.
+SDL_ClipboardCleanupCallback,"Callback function that will be called when the clipboard is cleared, or when new data is set.
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardCleanupCallback
 SDL_ClipboardDataCallback,"Callback function that will be called when data for the specified mime-type is requested by the OS.
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardDataCallback
@@ -371,6 +377,8 @@ SDL_CopyProperties,"Copy a group of properties.
 ",https://wiki.libsdl.org/SDL3/SDL_CopyProperties
 SDL_CopyStorageFile,"Copy a file in a writable storage container.
 ",https://wiki.libsdl.org/SDL3/SDL_CopyStorageFile
+SDL_CreateAnimatedCursor,"Create an animated color cursor.
+",https://wiki.libsdl.org/SDL3/SDL_CreateAnimatedCursor
 SDL_CreateAsyncIOQueue,"Create a task queue for tracking multiple I/O operations.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateAsyncIOQueue
 SDL_CreateAudioStream,"Create a new audio stream.
@@ -397,7 +405,7 @@ SDL_CreateGPUGraphicsPipeline,"Creates a pipeline object to be used in a graphic
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPUGraphicsPipeline
 SDL_CreateGPURenderState,"Create custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderState
-SDL_CreateGPURenderer,"Create a 2D GPU rendering context for a window, with support for the specified shader format.
+SDL_CreateGPURenderer,"Create a 2D GPU rendering context.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderer
 SDL_CreateGPUSampler,"Creates a sampler object to be used when binding textures in a graphics workflow.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPUSampler
@@ -465,6 +473,8 @@ SDL_CreateWindowWithProperties,"Create a window with the specified properties.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateWindowWithProperties
 SDL_Cursor,"The structure used to identify an SDL cursor.
 ",https://wiki.libsdl.org/SDL3/SDL_Cursor
+SDL_CursorFrameInfo,"Animated cursor frame info.
+",https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo
 SDL_CursorVisible,"Return whether the cursor is currently being shown.
 ",https://wiki.libsdl.org/SDL3/SDL_CursorVisible
 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE,"The size, in pixels, of a single [SDL_RenderDebugText](SDL_RenderDebugText)() character.
@@ -597,6 +607,14 @@ SDL_EGL_SetAttributeCallbacks,"Sets the callbacks for defining custom EGLAttrib 
 ",https://wiki.libsdl.org/SDL3/SDL_EGL_SetAttributeCallbacks
 SDL_EGLint,"An EGL integer attribute, used when creating an EGL surface.
 ",https://wiki.libsdl.org/SDL3/SDL_EGLint
+SDL_ELF_NOTE_DLOPEN,"Note that your application has dynamic shared library dependencies.
+",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN
+SDL_ELF_NOTE_DLOPEN_PRIORITY_RECOMMENDED,"Use this macro with [SDL_ELF_NOTE_DLOPEN](SDL_ELF_NOTE_DLOPEN)() to note that a dynamic shared library dependency is recommended.
+",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN_PRIORITY_RECOMMENDED
+SDL_ELF_NOTE_DLOPEN_PRIORITY_REQUIRED,"Use this macro with [SDL_ELF_NOTE_DLOPEN](SDL_ELF_NOTE_DLOPEN)() to note that a dynamic shared library dependency is required.
+",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN_PRIORITY_REQUIRED
+SDL_ELF_NOTE_DLOPEN_PRIORITY_SUGGESTED,"Use this macro with [SDL_ELF_NOTE_DLOPEN](SDL_ELF_NOTE_DLOPEN)() to note that a dynamic shared library dependency is optional.
+",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN_PRIORITY_SUGGESTED
 SDL_EXCLUDES,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_EXCLUDES
 SDL_EnableScreenSaver,"Allow the screen to be blanked by a screen saver.
@@ -649,7 +667,7 @@ SDL_FOURCC,"Define a four character code as a [Uint32](Uint32).
 ",https://wiki.libsdl.org/SDL3/SDL_FOURCC
 SDL_FPoint,"The structure that defines a point (using floating point values).
 ",https://wiki.libsdl.org/SDL3/SDL_FPoint
-SDL_FRect,"A rectangle, with the origin at the upper left (using floating point values).
+SDL_FRect,"A rectangle stored using floating point values.
 ",https://wiki.libsdl.org/SDL3/SDL_FRect
 SDL_FUNCTION,"A macro that reports the current function being compiled.
 ",https://wiki.libsdl.org/SDL3/SDL_FUNCTION
@@ -821,6 +839,8 @@ SDL_GPURenderPass,"An opaque handle representing a render pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderPass
 SDL_GPURenderState,"A custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderState
+SDL_GPURenderStateCreateInfo,"A structure specifying the parameters of a GPU render state.
+",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
 SDL_GPURenderStateDesc,"GPU render state description.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
 SDL_GPUSampleCount,"Specifies the sample count of a texture.
@@ -901,6 +921,10 @@ SDL_GPUVertexInputState,"A structure specifying the parameters of a graphics pip
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
 SDL_GPUViewport,"A structure specifying a viewport.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUVulkanOptions,"A structure specifying additional options when using Vulkan.
+",https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPU_RENDERER,"The name of the GPU renderer.
+",https://wiki.libsdl.org/SDL3/SDL_GPU_RENDERER
 SDL_GUARDED_BY,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_GUARDED_BY
 SDL_GUID,"An [SDL_GUID](SDL_GUID) is a 128-bit identifier for an input device that identifies that device across runs of SDL programs on the same platform.
@@ -1035,7 +1059,7 @@ SDL_GetCameraSupportedFormats,"Get the list of native formats/sizes a camera sup
 ",https://wiki.libsdl.org/SDL3/SDL_GetCameraSupportedFormats
 SDL_GetCameras,"Get a list of currently connected camera devices.
 ",https://wiki.libsdl.org/SDL3/SDL_GetCameras
-SDL_GetClipboardData,"Get the data from clipboard for a given mime type.
+SDL_GetClipboardData,"Get the data from the clipboard for a given mime type.
 ",https://wiki.libsdl.org/SDL3/SDL_GetClipboardData
 SDL_GetClipboardMimeTypes,"Retrieve the list of mime types available in the clipboard.
 ",https://wiki.libsdl.org/SDL3/SDL_GetClipboardMimeTypes
@@ -1111,7 +1135,7 @@ SDL_GetEnvironmentVariables,"Get all variables in the environment.
 ",https://wiki.libsdl.org/SDL3/SDL_GetEnvironmentVariables
 SDL_GetError,"Retrieve a message about the last error that occurred on the current thread.
 ",https://wiki.libsdl.org/SDL3/SDL_GetError
-SDL_GetEventDescription,"Generate a human-readable description of an event.
+SDL_GetEventDescription,"Generate an English description of an event.
 ",https://wiki.libsdl.org/SDL3/SDL_GetEventDescription
 SDL_GetEventFilter,"Query the current event filter.
 ",https://wiki.libsdl.org/SDL3/SDL_GetEventFilter
@@ -1129,10 +1153,14 @@ SDL_GetGPUDeviceProperties,"Get the properties associated with a GPU device.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceProperties
 SDL_GetGPUDriver,"Get the name of a built in GPU driver.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUDriver
+SDL_GetGPURendererDevice,"Return the GPU device used by a renderer.
+",https://wiki.libsdl.org/SDL3/SDL_GetGPURendererDevice
 SDL_GetGPUShaderFormats,"Returns the supported shader formats for this GPU context.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats
 SDL_GetGPUSwapchainTextureFormat,"Obtains the texture format of the swapchain for the given window.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUSwapchainTextureFormat
+SDL_GetGPUTextureFormatFromPixelFormat,"Get the GPU texture format corresponding to an SDL pixel format.
+",https://wiki.libsdl.org/SDL3/SDL_GetGPUTextureFormatFromPixelFormat
 SDL_GetGamepadAppleSFSymbolsNameForAxis,"Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForAxis
 SDL_GetGamepadAppleSFSymbolsNameForButton,"Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
@@ -1389,6 +1417,8 @@ SDL_GetOriginalMemoryFunctions,"Get the original set of SDL memory functions.
 ",https://wiki.libsdl.org/SDL3/SDL_GetOriginalMemoryFunctions
 SDL_GetPathInfo,"Get information about a filesystem path.
 ",https://wiki.libsdl.org/SDL3/SDL_GetPathInfo
+SDL_GetPenDeviceType,"Get the device type of the given pen.
+",https://wiki.libsdl.org/SDL3/SDL_GetPenDeviceType
 SDL_GetPerformanceCounter,"Get the current value of the high resolution counter.
 ",https://wiki.libsdl.org/SDL3/SDL_GetPerformanceCounter
 SDL_GetPerformanceFrequency,"Get the count per second of the high resolution counter.
@@ -1397,6 +1427,8 @@ SDL_GetPixelFormatDetails,"Create an [SDL_PixelFormatDetails](SDL_PixelFormatDet
 ",https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatDetails
 SDL_GetPixelFormatForMasks,"Convert a bpp value and RGBA masks to an enumerated pixel format.
 ",https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatForMasks
+SDL_GetPixelFormatFromGPUTextureFormat,"Get the SDL pixel format corresponding to a GPU texture format.
+",https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatFromGPUTextureFormat
 SDL_GetPixelFormatName,"Get the human readable name of a pixel format.
 ",https://wiki.libsdl.org/SDL3/SDL_GetPixelFormatName
 SDL_GetPlatform,"Get the name of the platform.
@@ -1555,6 +1587,8 @@ SDL_GetSurfacePalette,"Get the palette used by a surface.
 ",https://wiki.libsdl.org/SDL3/SDL_GetSurfacePalette
 SDL_GetSurfaceProperties,"Get the properties associated with a surface.
 ",https://wiki.libsdl.org/SDL3/SDL_GetSurfaceProperties
+SDL_GetSystemPageSize,"Report the size of a page of memory.
+",https://wiki.libsdl.org/SDL3/SDL_GetSystemPageSize
 SDL_GetSystemRAM,"Get the amount of RAM configured in the system.
 ",https://wiki.libsdl.org/SDL3/SDL_GetSystemRAM
 SDL_GetSystemTheme,"Get the current system theme.
@@ -1573,6 +1607,8 @@ SDL_GetTextureColorMod,"Get the additional color value multiplied into render co
 ",https://wiki.libsdl.org/SDL3/SDL_GetTextureColorMod
 SDL_GetTextureColorModFloat,"Get the additional color value multiplied into render copy operations.
 ",https://wiki.libsdl.org/SDL3/SDL_GetTextureColorModFloat
+SDL_GetTexturePalette,"Get the palette used by a texture.
+",https://wiki.libsdl.org/SDL3/SDL_GetTexturePalette
 SDL_GetTextureProperties,"Get the properties associated with a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GetTextureProperties
 SDL_GetTextureScaleMode,"Get the scale mode used for texture scale operations.
@@ -1739,6 +1775,8 @@ SDL_HAPTIC_TRIANGLE,"Triangle wave effect supported.
 ",https://wiki.libsdl.org/SDL3/SDL_HAPTIC_TRIANGLE
 SDL_HAS_BUILTIN,"Check if the compiler supports a given builtin functionality.
 ",https://wiki.libsdl.org/SDL3/SDL_HAS_BUILTIN
+SDL_HAS_TARGET_ATTRIBS,"A macro to decide if the compiler supports `__attribute__((target))`.
+",https://wiki.libsdl.org/SDL3/SDL_HAS_TARGET_ATTRIBS
 SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED,"Specify the behavior of Alt+Tab while the keyboard is grabbed.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
 SDL_HINT_ANDROID_ALLOW_RECREATE_ACTIVITY,"A variable to control whether the SDL activity is allowed to be re-created.
@@ -1771,6 +1809,8 @@ SDL_HINT_AUDIO_CHANNELS,"A variable controlling the default audio channel count.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_AUDIO_CHANNELS
 SDL_HINT_AUDIO_DEVICE_APP_ICON_NAME,"Specify an application icon name for an audio device.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_AUDIO_DEVICE_APP_ICON_NAME
+SDL_HINT_AUDIO_DEVICE_RAW_STREAM,"Specify whether this audio device should do audio processing.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_AUDIO_DEVICE_RAW_STREAM
 SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES,"A variable controlling device buffer size.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES
 SDL_HINT_AUDIO_DEVICE_STREAM_NAME,"Specify an audio stream name for an audio device.
@@ -1813,6 +1853,8 @@ SDL_HINT_EMSCRIPTEN_ASYNCIFY,"Disable giving back control to the browser automat
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_ASYNCIFY
 SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR,"Specify the CSS selector used for the ""default"" window/canvas.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR
+SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT,"Dictate that windows on Emscripten will fill the whole browser window.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT
 SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,"Override the binding element for keyboard inputs for Emscripten builds.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
 SDL_HINT_ENABLE_SCREEN_KEYBOARD,"A variable that controls whether the on-screen keyboard should be shown when text input is active.
@@ -1863,7 +1905,9 @@ SDL_HINT_HIDAPI_UDEV,"A variable to control whether HIDAPI uses udev for device 
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_HIDAPI_UDEV
 SDL_HINT_IME_IMPLEMENTED_UI,"A variable describing what IME UI elements the application can display.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_IME_IMPLEMENTED_UI
-SDL_HINT_IOS_HIDE_HOME_INDICATOR,"A variable controlling whether the home indicator bar on iPhone X should be hidden.
+SDL_HINT_INVALID_PARAM_CHECKS,"Set the level of checking for invalid parameters passed to SDL functions.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_INVALID_PARAM_CHECKS
+SDL_HINT_IOS_HIDE_HOME_INDICATOR,"A variable controlling whether the home indicator bar on iPhone X and later should be hidden.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_IOS_HIDE_HOME_INDICATOR
 SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS,"A variable that lets you enable joystick (and gamecontroller) events even when your app is in the background.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
@@ -1947,6 +1991,8 @@ SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI,"A variable controlling whether the HIDAPI d
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI
 SDL_HINT_JOYSTICK_HIDAPI_SWITCH,"A variable controlling whether the HIDAPI driver for Nintendo Switch controllers should be used.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_SWITCH
+SDL_HINT_JOYSTICK_HIDAPI_SWITCH2,"A variable controlling whether the HIDAPI driver for Nintendo Switch 2 controllers should be used.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_SWITCH2
 SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED,"A variable controlling whether the Home button LED should be turned on when a Nintendo Switch Pro controller is opened.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED
 SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED,"A variable controlling whether the player LEDs should be lit to indicate which player is associated with a Nintendo Switch controller.
@@ -1969,6 +2015,8 @@ SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE,"A variable controlling whether the HIDAPI dri
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE
 SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED,"A variable controlling whether the Home button LED should be turned on when an Xbox One controller is opened.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED
+SDL_HINT_JOYSTICK_HIDAPI_ZUIKI,"A variable controlling whether the HIDAPI driver for ZUIKI controllers should be used.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_ZUIKI
 SDL_HINT_JOYSTICK_IOKIT,"A variable controlling whether IOKit should be used for controller handling.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_IOKIT
 SDL_HINT_JOYSTICK_LINUX_CLASSIC,"A variable controlling whether to use the classic /dev/input/js* joystick interface or the newer /dev/input/event* joystick interface on Linux.
@@ -2003,6 +2051,8 @@ SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES,"A variable containing a list of devices
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES
 SDL_HINT_KEYCODE_OPTIONS,"A variable that controls keycode representation in keyboard events.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_KEYCODE_OPTIONS
+SDL_HINT_KMSDRM_ATOMIC,"A variable that controls whether KMSDRM will use ""atomic"" functionality.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_KMSDRM_ATOMIC
 SDL_HINT_KMSDRM_DEVICE_INDEX,"A variable that controls what KMSDRM device to use.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_KMSDRM_DEVICE_INDEX
 SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER,"A variable that controls whether SDL requires DRM master access in order to initialize the KMSDRM video backend.
@@ -2019,6 +2069,8 @@ SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH,"A variable controlling whether dispatching O
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH
 SDL_HINT_MAC_OPTION_AS_ALT,"A variable controlling whether the Option key on macOS should be remapped to act as the Alt key.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_OPTION_AS_ALT
+SDL_HINT_MAC_PRESS_AND_HOLD,"A variable controlling whether holding down a key will repeat the pressed key or open the accents menu on macOS.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_PRESS_AND_HOLD
 SDL_HINT_MAC_SCROLL_MOMENTUM,"A variable controlling whether [SDL_EVENT_MOUSE_WHEEL](SDL_EVENT_MOUSE_WHEEL) event values will have momentum on macOS.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_SCROLL_MOMENTUM
 SDL_HINT_MAIN_CALLBACK_RATE,"Request [SDL_AppIterate](SDL_AppIterate)() be called at a specific rate.
@@ -2031,6 +2083,8 @@ SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS,"A variable setting the double click radius, 
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
 SDL_HINT_MOUSE_DOUBLE_CLICK_TIME,"A variable setting the double click time, in milliseconds.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
+SDL_HINT_MOUSE_DPI_SCALE_CURSORS,"A variable setting whether we should scale cursors by the current display scale.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_MOUSE_DPI_SCALE_CURSORS
 SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE,"A variable controlling whether warping a hidden mouse cursor will activate relative mouse mode.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE
 SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH,"Allow mouse click events when clicking to focus an SDL window.
@@ -2069,10 +2123,20 @@ SDL_HINT_POLL_SENTINEL,"A variable controlling the use of a sentinel event when 
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_POLL_SENTINEL
 SDL_HINT_PREFERRED_LOCALES,"Override for [SDL_GetPreferredLocales](SDL_GetPreferredLocales)().
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PREFERRED_LOCALES
+SDL_HINT_PS2_GS_HEIGHT,"Variable controlling the height of the PS2's framebuffer in pixels
+",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_HEIGHT
+SDL_HINT_PS2_GS_MODE,"Variable controlling the video mode of the console
+",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_MODE
+SDL_HINT_PS2_GS_PROGRESSIVE,"Variable controlling whether the signal is interlaced or progressive
+",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_PROGRESSIVE
+SDL_HINT_PS2_GS_WIDTH,"Variable controlling the width of the PS2's framebuffer in pixels
+",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_WIDTH
 SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE,"A variable that decides whether to send [SDL_EVENT_QUIT](SDL_EVENT_QUIT) when closing the last window.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE
 SDL_HINT_RENDER_DIRECT3D11_DEBUG,"A variable controlling whether to enable Direct3D 11+'s Debug Layer.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_RENDER_DIRECT3D11_DEBUG
+SDL_HINT_RENDER_DIRECT3D11_WARP,"A variable controlling whether to use the Direct3D 11 WARP software rasterizer.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_RENDER_DIRECT3D11_WARP
 SDL_HINT_RENDER_DIRECT3D_THREADSAFE,"A variable controlling whether the Direct3D device is initialized for thread-safe operations.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_RENDER_DIRECT3D_THREADSAFE
 SDL_HINT_RENDER_DRIVER,"A variable specifying which render driver to use.
@@ -2137,6 +2201,8 @@ SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES,"A variable that specifies the policy for f
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES
 SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE,"A variable controlling whether SDL will attempt to automatically set the destination display to a mode most closely matching that of the previous display if an exclusive fullscreen window is moved onto it.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_VIDEO_MATCH_EXCLUSIVE_MODE_ON_MOVE
+SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE,"A variable indicating whether the metal layer drawable size should be updated for the [SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED](SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED) event on macOS.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_VIDEO_METAL_AUTO_RESIZE_DRAWABLE
 SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS,"A variable controlling whether fullscreen windows are minimized when they lose focus.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS
 SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES,"A variable controlling whether the offscreen video driver saves output frames.
@@ -2215,6 +2281,8 @@ SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL,"A variable to specify custom icon resou
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
 SDL_HINT_WINDOWS_RAW_KEYBOARD,"A variable controlling whether raw keyboard events are used on Windows.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_RAW_KEYBOARD
+SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS,"A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when enabling Windows raw keyboard events.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS
 SDL_HINT_WINDOWS_USE_D3D9EX,"A variable controlling whether SDL uses the D3D9Ex API introduced in Windows Vista, instead of normal D3D9.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_USE_D3D9EX
 SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED,"A variable controlling whether the window is activated when the [SDL_RaiseWindow](SDL_RaiseWindow) function is called.
@@ -2425,8 +2493,6 @@ SDL_IsTV,"Query if the current device is a TV.
 ",https://wiki.libsdl.org/SDL3/SDL_IsTV
 SDL_IsTablet,"Query if the current device is a tablet.
 ",https://wiki.libsdl.org/SDL3/SDL_IsTablet
-SDL_IsTraySupported,"Check whether or not tray icons can be created.
-",https://wiki.libsdl.org/SDL3/SDL_IsTraySupported
 SDL_JOYSTICK_AXIS_MAX,"The largest value an [SDL_Joystick](SDL_Joystick)'s axis can report.
 ",https://wiki.libsdl.org/SDL3/SDL_JOYSTICK_AXIS_MAX
 SDL_JOYSTICK_AXIS_MIN,"The smallest value an [SDL_Joystick](SDL_Joystick)'s axis can report.
@@ -2489,6 +2555,14 @@ SDL_LoadFunction,"Look up the address of the named function in a shared object.
 ",https://wiki.libsdl.org/SDL3/SDL_LoadFunction
 SDL_LoadObject,"Dynamically load a shared object.
 ",https://wiki.libsdl.org/SDL3/SDL_LoadObject
+SDL_LoadPNG,"Load a PNG image from a file.
+",https://wiki.libsdl.org/SDL3/SDL_LoadPNG
+SDL_LoadPNG_IO,"Load a PNG image from a seekable SDL data stream.
+",https://wiki.libsdl.org/SDL3/SDL_LoadPNG_IO
+SDL_LoadSurface,"Load a BMP or PNG image from a file.
+",https://wiki.libsdl.org/SDL3/SDL_LoadSurface
+SDL_LoadSurface_IO,"Load a BMP or PNG image from a seekable SDL data stream.
+",https://wiki.libsdl.org/SDL3/SDL_LoadSurface_IO
 SDL_LoadWAV,"Loads a WAV from a file path.
 ",https://wiki.libsdl.org/SDL3/SDL_LoadWAV
 SDL_LoadWAV_IO,"Load the audio data of a WAVE file into memory.
@@ -2541,8 +2615,12 @@ SDL_LogVerbose,"Log a message with [SDL_LOG_PRIORITY_VERBOSE](SDL_LOG_PRIORITY_V
 ",https://wiki.libsdl.org/SDL3/SDL_LogVerbose
 SDL_LogWarn,"Log a message with [SDL_LOG_PRIORITY_WARN](SDL_LOG_PRIORITY_WARN).
 ",https://wiki.libsdl.org/SDL3/SDL_LogWarn
+SDL_MAIN_AVAILABLE,"Defined if the target platform offers a special mainline through SDL.
+",https://wiki.libsdl.org/SDL3/SDL_MAIN_AVAILABLE
 SDL_MAIN_HANDLED,"Inform SDL that the app is providing an entry point instead of SDL.
 ",https://wiki.libsdl.org/SDL3/SDL_MAIN_HANDLED
+SDL_MAIN_NEEDED,"Defined if the target platform _requires_ a special mainline through SDL.
+",https://wiki.libsdl.org/SDL3/SDL_MAIN_NEEDED
 SDL_MAIN_USE_CALLBACKS,"Inform SDL to use the main callbacks instead of main.
 ",https://wiki.libsdl.org/SDL3/SDL_MAIN_USE_CALLBACKS
 SDL_MAJOR_VERSION,"The current major version of SDL headers.
@@ -2751,7 +2829,9 @@ SDL_PLATFORM_HAIKU,"A preprocessor macro that is only defined if compiling for H
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HAIKU
 SDL_PLATFORM_HPUX,"A preprocessor macro that is only defined if compiling for HP-UX.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HPUX
-SDL_PLATFORM_IOS,"A preprocessor macro that is only defined if compiling for iOS.
+SDL_PLATFORM_HURD,"A preprocessor macro that is only defined if compiling for GNU/Hurd.
+",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_HURD
+SDL_PLATFORM_IOS,"A preprocessor macro that is only defined if compiling for iOS or visionOS.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_IOS
 SDL_PLATFORM_IRIX,"A preprocessor macro that is only defined if compiling for IRIX.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_IRIX
@@ -2783,7 +2863,7 @@ SDL_PLATFORM_TVOS,"A preprocessor macro that is only defined if compiling for tv
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_TVOS
 SDL_PLATFORM_UNIX,"A preprocessor macro that is only defined if compiling for a Unix-like system.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_UNIX
-SDL_PLATFORM_VISIONOS,"A preprocessor macro that is only defined if compiling for VisionOS.
+SDL_PLATFORM_VISIONOS,"A preprocessor macro that is only defined if compiling for visionOS.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_VISIONOS
 SDL_PLATFORM_VITA,"A preprocessor macro that is only defined if compiling for Sony Vita.
 ",https://wiki.libsdl.org/SDL3/SDL_PLATFORM_VITA
@@ -2831,6 +2911,8 @@ SDL_PRIx64,"A printf-formatting string for a [Uint64](Uint64) value as lower-cas
 ",https://wiki.libsdl.org/SDL3/SDL_PRIx64
 SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER,"The pointer to the global `wl_display` object used by the Wayland video backend.
 ",https://wiki.libsdl.org/SDL3/SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER
+SDL_PROP_NAME_STRING,"A generic property for naming things.
+",https://wiki.libsdl.org/SDL3/SDL_PROP_NAME_STRING
 SDL_PT_GUARDED_BY,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_PT_GUARDED_BY
 SDL_PackedLayout,"Packed component layout.
@@ -2857,6 +2939,8 @@ SDL_PenAxisEvent,"Pressure-sensitive pen pressure / angle event structure (event
 ",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
 SDL_PenButtonEvent,"Pressure-sensitive pen button event structure (event.pbutton.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenDeviceType,"An enum that describes the type of a pen device.
+",https://wiki.libsdl.org/SDL3/SDL_PenDeviceType
 SDL_PenID,"SDL pen instance IDs.
 ",https://wiki.libsdl.org/SDL3/SDL_PenID
 SDL_PenInputFlags,"Pen input flags, as reported by various pen events' `pen_state` field.
@@ -2867,6 +2951,8 @@ SDL_PenProximityEvent,"Pressure-sensitive pen proximity event structure (event.p
 ",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenTouchEvent,"Pressure-sensitive pen touched event structure (event.ptouch.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PinchFingerEvent,"Pinch event structure (event.pinch.*)
+",https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
 SDL_PixelFormat,"Pixel format.
 ",https://wiki.libsdl.org/SDL3/SDL_PixelFormat
 SDL_PixelFormatDetails,"Details about the format of a pixel.
@@ -2897,7 +2983,7 @@ SDL_ProcessIO,"Description of where standard I/O should be directed when creatin
 ",https://wiki.libsdl.org/SDL3/SDL_ProcessIO
 SDL_ProgressState,"Window progress state
 ",https://wiki.libsdl.org/SDL3/SDL_ProgressState
-SDL_PropertiesID,"SDL properties ID
+SDL_PropertiesID,"An ID that represents a properties set.
 ",https://wiki.libsdl.org/SDL3/SDL_PropertiesID
 SDL_PropertyType,"SDL property type
 ",https://wiki.libsdl.org/SDL3/SDL_PropertyType
@@ -2907,7 +2993,7 @@ SDL_PushEvent,"Add an event to the event queue.
 ",https://wiki.libsdl.org/SDL3/SDL_PushEvent
 SDL_PushGPUComputeUniformData,"Pushes data to a uniform slot on the command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUComputeUniformData
-SDL_PushGPUDebugGroup,"Begins a debug group with an arbitary name.
+SDL_PushGPUDebugGroup,"Begins a debug group with an arbitrary name.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUDebugGroup
 SDL_PushGPUFragmentUniformData,"Pushes data to a fragment uniform slot on the command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_PushGPUFragmentUniformData
@@ -3125,6 +3211,8 @@ SDL_ResumeAudioStreamDevice,"Use this function to unpause audio playback on the 
 ",https://wiki.libsdl.org/SDL3/SDL_ResumeAudioStreamDevice
 SDL_ResumeHaptic,"Resume a haptic device.
 ",https://wiki.libsdl.org/SDL3/SDL_ResumeHaptic
+SDL_RotateSurface,"Return a copy of a surface rotated clockwise a number of degrees.
+",https://wiki.libsdl.org/SDL3/SDL_RotateSurface
 SDL_RumbleGamepad,"Start a rumble effect on a gamepad.
 ",https://wiki.libsdl.org/SDL3/SDL_RumbleGamepad
 SDL_RumbleGamepadTriggers,"Start a rumble effect in the gamepad's triggers.
@@ -3171,7 +3259,7 @@ SDL_STRINGIFY_ARG,"Macro useful for building other macros with strings in them.
 ",https://wiki.libsdl.org/SDL3/SDL_STRINGIFY_ARG
 SDL_Sandbox,"Application sandbox environment.
 ",https://wiki.libsdl.org/SDL3/SDL_Sandbox
-SDL_SaveBMP,"Save a surface to a file.
+SDL_SaveBMP,"Save a surface to a file in BMP format.
 ",https://wiki.libsdl.org/SDL3/SDL_SaveBMP
 SDL_SaveBMP_IO,"Save a surface to a seekable SDL data stream in BMP format.
 ",https://wiki.libsdl.org/SDL3/SDL_SaveBMP_IO
@@ -3179,6 +3267,10 @@ SDL_SaveFile,"Save all the data into a file path.
 ",https://wiki.libsdl.org/SDL3/SDL_SaveFile
 SDL_SaveFile_IO,"Save all the data into an SDL data stream.
 ",https://wiki.libsdl.org/SDL3/SDL_SaveFile_IO
+SDL_SavePNG,"Save a surface to a file in PNG format.
+",https://wiki.libsdl.org/SDL3/SDL_SavePNG
+SDL_SavePNG_IO,"Save a surface to a seekable SDL data stream in PNG format.
+",https://wiki.libsdl.org/SDL3/SDL_SavePNG_IO
 SDL_ScaleMode,"The scaling mode.
 ",https://wiki.libsdl.org/SDL3/SDL_ScaleMode
 SDL_ScaleSurface,"Creates a new surface identical to the existing surface, scaled to the desired size.
@@ -3273,6 +3365,8 @@ SDL_SetGPUBlendConstants,"Sets the current blend constants on a command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPUBlendConstants
 SDL_SetGPUBufferName,"Sets an arbitrary string constant to label a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPUBufferName
+SDL_SetGPURenderState,"Set custom GPU render state.
+",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderState
 SDL_SetGPURenderStateFragmentUniforms,"Set fragment shader uniform variables in a custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateFragmentUniforms
 SDL_SetGPUScissor,"Sets the current scissor state on a command buffer.
@@ -3409,6 +3503,8 @@ SDL_SetTextureColorMod,"Set an additional color value multiplied into render cop
 ",https://wiki.libsdl.org/SDL3/SDL_SetTextureColorMod
 SDL_SetTextureColorModFloat,"Set an additional color value multiplied into render copy operations.
 ",https://wiki.libsdl.org/SDL3/SDL_SetTextureColorModFloat
+SDL_SetTexturePalette,"Set the palette used by a texture.
+",https://wiki.libsdl.org/SDL3/SDL_SetTexturePalette
 SDL_SetTextureScaleMode,"Set the scale mode used for texture scale operations.
 ",https://wiki.libsdl.org/SDL3/SDL_SetTextureScaleMode
 SDL_SetTrayEntryCallback,"Sets a callback to be invoked when the entry is selected.
@@ -3429,6 +3525,8 @@ SDL_SetWindowAspectRatio,"Request that the aspect ratio of a window's client are
 ",https://wiki.libsdl.org/SDL3/SDL_SetWindowAspectRatio
 SDL_SetWindowBordered,"Set the border state of a window.
 ",https://wiki.libsdl.org/SDL3/SDL_SetWindowBordered
+SDL_SetWindowFillDocument,"Set the window to fill the current document space (Emscripten only).
+",https://wiki.libsdl.org/SDL3/SDL_SetWindowFillDocument
 SDL_SetWindowFocusable,"Set whether the window may have input focus.
 ",https://wiki.libsdl.org/SDL3/SDL_SetWindowFocusable
 SDL_SetWindowFullscreen,"Request that the window's fullscreen state be changed.
@@ -4005,6 +4103,8 @@ SDL_hid_get_manufacturer_string,"Get The Manufacturer String from a HID device.
 ",https://wiki.libsdl.org/SDL3/SDL_hid_get_manufacturer_string
 SDL_hid_get_product_string,"Get The Product String from a HID device.
 ",https://wiki.libsdl.org/SDL3/SDL_hid_get_product_string
+SDL_hid_get_properties,"Get the properties associated with an [SDL_hid_device](SDL_hid_device).
+",https://wiki.libsdl.org/SDL3/SDL_hid_get_properties
 SDL_hid_get_report_descriptor,"Get a report descriptor from a HID device.
 ",https://wiki.libsdl.org/SDL3/SDL_hid_get_report_descriptor
 SDL_hid_get_serial_number_string,"Get The Serial Number String from a HID device.
@@ -4179,6 +4279,8 @@ SDL_sscanf,"This works exactly like sscanf() but doesn't require access to a C r
 ",https://wiki.libsdl.org/SDL3/SDL_sscanf
 SDL_stack_alloc,"Allocate memory on the stack (maybe).
 ",https://wiki.libsdl.org/SDL3/SDL_stack_alloc
+SDL_stack_free,"Free memory previously allocated with [SDL_stack_alloc](SDL_stack_alloc).
+",https://wiki.libsdl.org/SDL3/SDL_stack_free
 SDL_static_cast,"Handle a Static Cast properly whether using C or C++.
 ",https://wiki.libsdl.org/SDL3/SDL_static_cast
 SDL_strcasecmp,"Compare two null-terminated UTF-8 strings, case-insensitively.
@@ -4209,7 +4311,7 @@ SDL_strnlen,"This works exactly like strnlen() but doesn't require access to a C
 ",https://wiki.libsdl.org/SDL3/SDL_strnlen
 SDL_strnstr,"Search a string, up to n bytes, for the first instance of a specific substring.
 ",https://wiki.libsdl.org/SDL3/SDL_strnstr
-SDL_strpbrk,"Searches a string for the first occurence of any character contained in a breakset, and returns a pointer from the string to that character.
+SDL_strpbrk,"Searches a string for the first occurrence of any character contained in a breakset, and returns a pointer from the string to that character.
 ",https://wiki.libsdl.org/SDL3/SDL_strpbrk
 SDL_strrchr,"Search a string for the last instance of a specific byte.
 ",https://wiki.libsdl.org/SDL3/SDL_strrchr
@@ -4297,17 +4399,75 @@ SDL_zeroa,"Clear an array's memory to zero.
 ",https://wiki.libsdl.org/SDL3/SDL_zeroa
 SDL_zerop,"Clear an object's memory to zero, using a pointer.
 ",https://wiki.libsdl.org/SDL3/SDL_zerop
+IMG_AddAnimationEncoderFrame,"Add a frame to an animation encoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationEncoderFrame
+IMG_AddAnimationFrame,"Add a frame to a stream of images being saved.
+",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationFrame
 IMG_Animation,"Animated image support
 ",https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_AnimationDecoder,"An object representing animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationDecoder
+IMG_AnimationDecoderStatus,"An enum representing the status of an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationDecoderStatus
+IMG_AnimationEncoder,"An object representing the encoder context.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationEncoder
+IMG_AnimationStream,"An object representing a stream of images being saved.
+",https://wiki.libsdl.org/SDL3_image/IMG_AnimationStream
+IMG_CloseAnimationDecoder,"Close an animation decoder, finishing any decoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationDecoder
+IMG_CloseAnimationEncoder,"Close an animation encoder, finishing any encoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationEncoder
+IMG_CloseAnimationStream,"Close an animation stream, finishing any encoding.
+",https://wiki.libsdl.org/SDL3_image/IMG_CloseAnimationStream
+IMG_CreateAnimatedCursor,"Create an animated cursor from an animation.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimatedCursor
+IMG_CreateAnimationDecoder,"Create a decoder to read a series of images from a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder
+IMG_CreateAnimationDecoderWithProperties,"Create an animation decoder with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoderWithProperties
+IMG_CreateAnimationDecoder_IO,"Create a decoder to read a series of images from an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationDecoder_IO
+IMG_CreateAnimationEncoder,"Create an encoder to save a series of images to a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder
+IMG_CreateAnimationEncoderWithProperties,"Create an animation encoder with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoderWithProperties
+IMG_CreateAnimationEncoder_IO,"Create an encoder to save a series of images to an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationEncoder_IO
+IMG_CreateAnimationStream,"Create an animation stream and save it to a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStream
+IMG_CreateAnimationStreamWithProperties,"Create an animation stream with the specified properties.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStreamWithProperties
+IMG_CreateAnimationStream_IO,"Create an animation stream and save it to an IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_CreateAnimationStream_IO
 IMG_FreeAnimation,"Dispose of an [IMG_Animation](IMG_Animation) and free its resources.
 ",https://wiki.libsdl.org/SDL3_image/IMG_FreeAnimation
+IMG_GetAnimationDecoderFrame,"Get the next frame in an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderFrame
+IMG_GetAnimationDecoderMetadata,"Get the metadata of an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderMetadata
+IMG_GetAnimationDecoderPresentationTimestampMS,"Get the presentation timestamp of a frame in milliseconds.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderPresentationTimestampMS
+IMG_GetAnimationDecoderProperties,"Get the properties of an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderProperties
+IMG_GetAnimationDecoderStatus,"Get the decoder status indicating the current state of the decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetAnimationDecoderStatus
+IMG_GetClipboardImage,"Get the image currently in the clipboard.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetClipboardImage
+IMG_GetNextAnimationDecoderFrame,"Get the next frame in an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_GetNextAnimationDecoderFrame
 IMG_Load,"Load an image from a filesystem path into a software surface.
 ",https://wiki.libsdl.org/SDL3_image/IMG_Load
+IMG_LoadANIAnimation_IO,"Load an ANI animation directly from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadANIAnimation_IO
+IMG_LoadAPNGAnimation_IO,"Load an APNG animation directly from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadAPNGAnimation_IO
+IMG_LoadAVIFAnimation_IO,"Load an AVIF animation directly from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadAVIFAnimation_IO
 IMG_LoadAVIF_IO,"Load a AVIF image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadAVIF_IO
 IMG_LoadAnimation,"Load an animation from a file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimation
-IMG_LoadAnimationTyped_IO,"Load an animation from an SDL datasource
+IMG_LoadAnimationTyped_IO,"Load an animation from an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimationTyped_IO
 IMG_LoadAnimation_IO,"Load an animation from an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadAnimation_IO
@@ -4367,10 +4527,42 @@ IMG_ReadXPMFromArray,"Load an XPM image from a memory array.
 ",https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArray
 IMG_ReadXPMFromArrayToRGB888,"Load an XPM image from a memory array.
 ",https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArrayToRGB888
+IMG_ResetAnimationDecoder,"Reset an animation decoder.
+",https://wiki.libsdl.org/SDL3_image/IMG_ResetAnimationDecoder
+IMG_Save,"Save an SDL_Surface into an image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_Save
+IMG_SaveANIAnimation_IO,"Save an animation in ANI format to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveANIAnimation_IO
+IMG_SaveAPNGAnimation_IO,"Save an animation in APNG format to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveAPNGAnimation_IO
 IMG_SaveAVIF,"Save an SDL_Surface into a AVIF image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF
+IMG_SaveAVIFAnimation_IO,"Save an animation in AVIF format to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIFAnimation_IO
 IMG_SaveAVIF_IO,"Save an SDL_Surface into AVIF image data, via an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveAVIF_IO
+IMG_SaveAnimation,"Save an animation to a file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveAnimation
+IMG_SaveAnimationTyped_IO,"Save an animation to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveAnimationTyped_IO
+IMG_SaveBMP,"Save an SDL_Surface into a BMP image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP
+IMG_SaveBMP_IO,"Save an SDL_Surface into BMP image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveBMP_IO
+IMG_SaveCUR,"Save an SDL_Surface into a CUR image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveCUR
+IMG_SaveCUR_IO,"Save an SDL_Surface into CUR image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveCUR_IO
+IMG_SaveGIF,"Save an SDL_Surface into a GIF image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF
+IMG_SaveGIFAnimation_IO,"Save an animation in GIF format to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveGIFAnimation_IO
+IMG_SaveGIF_IO,"Save an SDL_Surface into GIF image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveGIF_IO
+IMG_SaveICO,"Save an SDL_Surface into a ICO image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveICO
+IMG_SaveICO_IO,"Save an SDL_Surface into ICO image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveICO_IO
 IMG_SaveJPG,"Save an SDL_Surface into a JPEG image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SaveJPG
 IMG_SaveJPG_IO,"Save an SDL_Surface into JPEG image data, via an SDL_IOStream.
@@ -4379,8 +4571,22 @@ IMG_SavePNG,"Save an SDL_Surface into a PNG image file.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SavePNG
 IMG_SavePNG_IO,"Save an SDL_Surface into PNG image data, via an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_SavePNG_IO
+IMG_SaveTGA,"Save an SDL_Surface into a TGA image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA
+IMG_SaveTGA_IO,"Save an SDL_Surface into TGA image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTGA_IO
+IMG_SaveTyped_IO,"Save an SDL_Surface into formatted image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveTyped_IO
+IMG_SaveWEBP,"Save an SDL_Surface into a WEBP image file.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP
+IMG_SaveWEBPAnimation_IO,"Save an animation in WEBP format to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBPAnimation_IO
+IMG_SaveWEBP_IO,"Save an SDL_Surface into WEBP image data, via an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_SaveWEBP_IO
 IMG_Version,"This function gets the version of the dynamically linked SDL_image library.
 ",https://wiki.libsdl.org/SDL3_image/IMG_Version
+IMG_isANI,"Detect ANI animated cursor data on a readable/seekable SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_image/IMG_isANI
 IMG_isAVIF,"Detect AVIF image data on a readable/seekable SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_isAVIF
 IMG_isBMP,"Detect BMP image data on a readable/seekable SDL_IOStream.
@@ -4663,6 +4869,8 @@ TTF_GPUTextEngineWinding,"The winding order of the vertices returned by [TTF_Get
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GPUTextEngineWinding
 TTF_GetFontAscent,"Query the offset from the baseline to the top of a font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontAscent
+TTF_GetFontCharSpacing,"Get the additional character spacing in pixels to be applied between any two rendered characters.
+",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontCharSpacing
 TTF_GetFontDPI,"Get font target resolutions, in dots per inch.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GetFontDPI
 TTF_GetFontDescent,"Query the offset from the baseline to the bottom of a font.
@@ -4807,6 +5015,8 @@ TTF_RenderText_Solid_Wrapped,"Render word-wrapped UTF-8 text at fast quality to 
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_RenderText_Solid_Wrapped
 TTF_STYLE_NORMAL,"Font style flags
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_STYLE_NORMAL
+TTF_SetFontCharSpacing,"Set additional space in pixels to be applied between any two rendered characters.
+",https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontCharSpacing
 TTF_SetFontDirection,"Set the direction to be used for text shaping by a font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_SetFontDirection
 TTF_SetFontHinting,"Set a font's current hinter setting.

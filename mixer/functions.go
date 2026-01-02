@@ -5,10 +5,10 @@ import (
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-// MIX_Version - Get the version of SDL_mixer that is linked against your program.
-// (https://wiki.libsdl.org/SDL3_mixer/MIX_Version)
-func Version() int32 {
-	return iVersion()
+// Mix_Version - This function gets the version of the dynamically linked SDL_mixer library.
+// (https://wiki.libsdl.org/SDL3_mixer/Mix_Version)
+func GetVersion() sdl.Version {
+	return sdl.Version(iVersion())
 }
 
 // MIX_Init - Initialize the SDL_mixer library.

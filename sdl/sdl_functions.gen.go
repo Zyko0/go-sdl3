@@ -1496,17 +1496,12 @@ var (
 	//puregogen:function symbol=SDL_HasPrimarySelectionText
 	iHasPrimarySelectionText func() bool
 
-	// SDL_SetClipboardData => Offer clipboard data to the OS.
-	//
-	//puregogen:function symbol=SDL_SetClipboardData
-	iSetClipboardData func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types *string, num_mime_types uintptr) bool
-
 	// SDL_ClearClipboardData => Clear the clipboard data.
 	//
 	//puregogen:function symbol=SDL_ClearClipboardData
 	iClearClipboardData func() bool
 
-	// SDL_GetClipboardData => Get the data from clipboard for a given mime type.
+	// SDL_GetClipboardData => Get the data from the clipboard for a given mime type.
 	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=SDL_GetClipboardData
@@ -2162,20 +2157,10 @@ var (
 	//puregogen:function symbol=SDL_GL_DestroyContext
 	iGL_DestroyContext func(context GLContext) bool
 
-	// SDL_ShowOpenFileDialog => Displays a dialog that lets the user select a file on their filesystem.
-	//
-	//puregogen:function symbol=SDL_ShowOpenFileDialog
-	iShowOpenFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string, allow_many bool)
-
-	// SDL_ShowSaveFileDialog => Displays a dialog that lets the user choose a new or existing file on their filesystem.
-	//
-	//puregogen:function symbol=SDL_ShowSaveFileDialog
-	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *DialogFileFilter, nfilters int32, default_location string)
-
 	// SDL_ShowOpenFolderDialog => Displays a dialog that lets the user select a folder on their filesystem.
 	//
 	//puregogen:function symbol=SDL_ShowOpenFolderDialog
-	iShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window *Window, default_location string, allow_many bool)
+	iShowOpenFolderDialog func(callback DialogFileCallback, userdata uintptr, window *Window, default_location *byte, allow_many bool)
 
 	// SDL_ShowFileDialogWithProperties => Create and launch a file dialog with the specified properties.
 	//
@@ -3382,11 +3367,6 @@ var (
 	//puregogen:function symbol=SDL_GetGPUShaderFormats
 	iGetGPUShaderFormats func(device *GPUDevice) GPUShaderFormat
 
-	// SDL_CreateGPUGraphicsPipeline => Creates a pipeline object to be used in a graphics workflow.
-	//
-	//puregogen:function symbol=SDL_CreateGPUGraphicsPipeline
-	iCreateGPUGraphicsPipeline func(device *GPUDevice, createinfo *GPUGraphicsPipelineCreateInfo) *GPUGraphicsPipeline
-
 	// SDL_CreateGPUSampler => Creates a sampler object to be used when binding textures in a graphics workflow.
 	//
 	//puregogen:function symbol=SDL_CreateGPUSampler
@@ -3422,7 +3402,7 @@ var (
 	//puregogen:function symbol=SDL_InsertGPUDebugLabel
 	iInsertGPUDebugLabel func(command_buffer *GPUCommandBuffer, text string)
 
-	// SDL_PushGPUDebugGroup => Begins a debug group with an arbitary name.
+	// SDL_PushGPUDebugGroup => Begins a debug group with an arbitrary name.
 	//
 	//puregogen:function symbol=SDL_PushGPUDebugGroup
 	iPushGPUDebugGroup func(command_buffer *GPUCommandBuffer, name string)
@@ -4995,23 +4975,13 @@ var (
 	//puregogen:function symbol=SDL_UpdateTrays
 	iUpdateTrays func()
 
-	// SDL_SetMainReady => Circumvent failure of SDL_Init() when not using SDL_main() as an entry point.
+	// SDL_GetVersion => Get the version of SDL that is linked against your program.
 	//
-	//puregogen:function symbol=SDL_SetMainReady
-	iSetMainReady func()
+	//puregogen:function symbol=SDL_GetVersion
+	iGetVersion func() int32
 
-	// SDL_RunApp => Initializes and launches an SDL application, by doing platform-specific initialization before calling your mainFunction and cleanups after it returns, if that is needed for a specific platform, otherwise it just calls mainFunction.
+	// SDL_GetRevision => Get the code revision of the SDL library that is linked against your program.
 	//
-	//puregogen:function symbol=SDL_RunApp
-	iRunApp func(argc int32, argv *string, mainFunction main_func, reserved uintptr) int32
-
-	// SDL_EnterAppMainCallbacks => An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.
-	//
-	//puregogen:function symbol=SDL_EnterAppMainCallbacks
-	iEnterAppMainCallbacks func(argc int32, argv *string, appinit AppInit_func, appiter AppIterate_func, appevent AppEvent_func, appquit AppQuit_func) int32
-
-	// SDL_GDKSuspendComplete => Callback from the application to let the suspend continue.
-	//
-	//puregogen:function symbol=SDL_GDKSuspendComplete
-	iGDKSuspendComplete func()
+	//puregogen:function symbol=SDL_GetRevision
+	iGetRevision func() string
 )

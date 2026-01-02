@@ -1,0 +1,130 @@
+name: Build SDL Binaries
+
+on:
+    workflow_dispatch:
+      inputs:
+        sdl-version:
+          description: "SDL version"
+          required: true
+          type: string
+        ttf-version:
+          description: "SDL_ttf version"
+          required: true
+          type: string
+        mixer-version:
+          description: "SDL_mixer version"
+          required: true
+          type: string
+        image-version:
+          description: "SDL_image version"
+          required: true
+          type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-sdl:
+    name: SDL
+    uses: ./.github/workflows/build-sdl.yml
+    with:
+      version: ${{ inputs.sdl-version }}
+    
+  build-ttf:
+    name: SDL_ttf
+    uses: ./.github/workflows/build-sdl-ttf.yml
+    with:
+      version: ${{ inputs.ttf-version }}
+  
+  build-mixer:
+    name: SDL_mixer
+    uses: ./.github/workflows/build-sdl-mixer.yml
+    with:
+      version: ${{ inputs.mixer-version }}
+  
+  build-image:
+    name: SDL_image
+    uses: ./.github/workflows/build-sdl-image.yml
+    with:
+      version: ${{ inputs.image-version }}
+  
+  push-binaries:
+    needs: [build-sdl, build-ttf, build-mixer, build-image]
+    runs-on: ubuntu-latest
+    permissions:
+        contents: write
+        pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        ref: main
+    - name: Download artifacts
+      uses: actions/download-artifact@v5
+      with:
+        path: artifacts
+        pattern: sdl-*
+        merge-multiple: false
+    - name: List artifacts
+      run: ls -lR ./artifacts
+
+    - name: Git branch setup
+      run: |
+        git fetch
+        (git checkout binaries-update && git pull) || git checkout -b binaries-update
+        rm ./bin/binsdl/assets/*
+        rm ./bin/binttf/assets/*
+        rm ./bin/binimg/assets/*
+        rm ./bin/binmix/assets/*
+
+    - name: Extract Windows binaries
+      run: |
+        mv ./artifacts/sdl-windows-x64/SDL3.dll ./bin/binsdl/assets/sdl_amd64.dll
+        mv ./artifacts/sdl-windows-arm64/SDL3.dll ./bin/binsdl/assets/sdl_arm64.dll
+        mv ./artifacts/sdl-ttf-windows-x64/SDL3_ttf.dll ./bin/binttf/assets/ttf_amd64.dll
+        mv ./artifacts/sdl-ttf-windows-arm64/SDL3_ttf.dll ./bin/binttf/assets/ttf_arm64.dll
+        mv ./artifacts/sdl-image-windows-x64/SDL3_image.dll ./bin/binimg/assets/img_amd64.dll
+        mv ./artifacts/sdl-image-windows-arm64/SDL3_image.dll ./bin/binimg/assets/img_arm64.dll
+      # TODO: do mixer
+    - name: Extract Linux binaries
+      run: |
+        mv ./artifacts/sdl-linux/libSDL3.so.0 ./bin/binsdl/assets/sdl.so
+        mv ./artifacts/sdl-ttf-linux/libSDL3_ttf.so.0 ./bin/binttf/assets/ttf.so
+        mv ./artifacts/sdl-image-linux/libSDL3_image.so.0 ./bin/binimg/assets/img.so
+        mv ./artifacts/sdl-mixer-linux/libSDL3_mixer.so.0 ./bin/binmix/assets/mix.so
+    - name: Extract MacOS binaries
+      run: |
+        mv ./artifacts/sdl-apple-macOS-x86_64/libSDL3.0.dylib ./bin/binsdl/assets/sdl_amd64.dylib
+        mv ./artifacts/sdl-apple-macOS-arm64/libSDL3.0.dylib ./bin/binsdl/assets/sdl_arm64.dylib
+        mv ./artifacts/sdl-ttf-apple-macOS-x86_64/libSDL3_ttf.dylib ./bin/binttf/assets/ttf_amd64.dylib
+        mv ./artifacts/sdl-ttf-apple-macOS-arm64/libSDL3_ttf.dylib ./bin/binttf/assets/ttf_arm64.dylib
+        mv ./artifacts/sdl-image-apple-macOS-x86_64/libSDL3_image.dylib ./bin/binimg/assets/img_amd64.dylib
+        mv ./artifacts/sdl-image-apple-macOS-arm64/libSDL3_image.dylib ./bin/binimg/assets/img_arm64.dylib
+        mv ./artifacts/sdl-mixer-apple-macOS-x86_64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_amd64.dylib
+        mv ./artifacts/sdl-mixer-apple-macOS-arm64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_arm64.dylib
+    
+    - name: Strip linux binaries
+      run: |
+        strip $(echo ./bin/binsdl/assets/*.so)
+        strip $(echo ./bin/binttf/assets/*.so)
+        strip $(echo ./bin/binimg/assets/*.so)
+        strip $(echo ./bin/binmix/assets/*.so)
+    - name: Compress binaries
+      run: |
+        gzip -f $(echo ./bin/binsdl/assets/*)
+        gzip -f $(echo ./bin/binttf/assets/*)
+        gzip -f $(echo ./bin/binimg/assets/*)
+        gzip -f $(echo ./bin/binmix/assets/*)
+    
+    - name: Push changes & PR
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git status
+        git add ./bin
+        git commit -m "bin: Update embedded libraries" 
+        git push -u origin binaries-update
+        gh pr create -B main -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n'

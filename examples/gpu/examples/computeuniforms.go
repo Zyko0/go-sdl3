@@ -83,7 +83,7 @@ func (e *ComputeUniforms) Draw(context *common.Context) error {
 	if swapchainTexture != nil {
 		computePass := cmdbuf.BeginComputePass(
 			[]sdl.GPUStorageTextureReadWriteBinding{
-				sdl.GPUStorageTextureReadWriteBinding{
+				{
 					Texture: e.gradientRenderTexture,
 					Cycle:   true,
 				},

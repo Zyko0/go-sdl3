@@ -69,13 +69,13 @@ func (e *DepthSampler) Init(context *common.Context) error {
 		}
 
 		sceneColorTargetDescriptions := []sdl.GPUColorTargetDescription{
-			sdl.GPUColorTargetDescription{
+			{
 				Format: sdl.GPU_TEXTUREFORMAT_R8G8B8A8_UNORM,
 			},
 		}
 
 		sceneVertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-			sdl.GPUVertexBufferDescription{
+			{
 				Slot:             0,
 				InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 				InstanceStepRate: 0,
@@ -84,13 +84,13 @@ func (e *DepthSampler) Init(context *common.Context) error {
 		}
 
 		sceneVertexAttributes := []sdl.GPUVertexAttribute{
-			sdl.GPUVertexAttribute{
+			{
 				BufferSlot: 0,
 				Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 				Location:   0,
 				Offset:     0,
 			},
-			sdl.GPUVertexAttribute{
+			{
 				BufferSlot: 0,
 				Format:     sdl.GPU_VERTEXELEMENTFORMAT_UBYTE4_NORM,
 				Location:   1,
@@ -100,8 +100,7 @@ func (e *DepthSampler) Init(context *common.Context) error {
 
 		scenePipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 			TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-				NumColorTargets:         uint32(len(sceneColorTargetDescriptions)),
-				ColorTargetDescriptions: &sceneColorTargetDescriptions[0],
+				ColorTargetDescriptions: sceneColorTargetDescriptions,
 				HasDepthStencilTarget:   true,
 				DepthStencilFormat:      sdl.GPU_TEXTUREFORMAT_D16_UNORM,
 			},
@@ -118,10 +117,8 @@ func (e *DepthSampler) Init(context *common.Context) error {
 				FrontFace: sdl.GPU_FRONTFACE_COUNTER_CLOCKWISE,
 			},
 			VertexInputState: sdl.GPUVertexInputState{
-				NumVertexBuffers:         uint32(len(sceneVertexBufferDescriptions)),
-				VertexBufferDescriptions: &sceneVertexBufferDescriptions[0],
-				NumVertexAttributes:      uint32(len(sceneVertexAttributes)),
-				VertexAttributes:         &sceneVertexAttributes[0],
+				VertexBufferDescriptions: sceneVertexBufferDescriptions,
+				VertexAttributes:         sceneVertexAttributes,
 			},
 			PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 			VertexShader:   sceneVertexShader,
@@ -134,7 +131,7 @@ func (e *DepthSampler) Init(context *common.Context) error {
 		}
 
 		effectColorTargetDescriptions := []sdl.GPUColorTargetDescription{
-			sdl.GPUColorTargetDescription{
+			{
 				Format: context.Device.SwapchainTextureFormat(context.Window),
 				BlendState: sdl.GPUColorTargetBlendState{
 					EnableBlend:         true,
@@ -149,7 +146,7 @@ func (e *DepthSampler) Init(context *common.Context) error {
 		}
 
 		effectVertexBufferDescriptions := []sdl.GPUVertexBufferDescription{
-			sdl.GPUVertexBufferDescription{
+			{
 				Slot:             0,
 				InputRate:        sdl.GPU_VERTEXINPUTRATE_VERTEX,
 				InstanceStepRate: 0,
@@ -158,13 +155,13 @@ func (e *DepthSampler) Init(context *common.Context) error {
 		}
 
 		effectVertexAttributes := []sdl.GPUVertexAttribute{
-			sdl.GPUVertexAttribute{
+			{
 				BufferSlot: 0,
 				Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT3,
 				Location:   0,
 				Offset:     0,
 			},
-			sdl.GPUVertexAttribute{
+			{
 				BufferSlot: 0,
 				Format:     sdl.GPU_VERTEXELEMENTFORMAT_FLOAT2,
 				Location:   1,
@@ -174,14 +171,11 @@ func (e *DepthSampler) Init(context *common.Context) error {
 
 		effectPipelineCreateInfo := sdl.GPUGraphicsPipelineCreateInfo{
 			TargetInfo: sdl.GPUGraphicsPipelineTargetInfo{
-				NumColorTargets:         uint32(len(effectColorTargetDescriptions)),
-				ColorTargetDescriptions: &effectColorTargetDescriptions[0],
+				ColorTargetDescriptions: effectColorTargetDescriptions,
 			},
 			VertexInputState: sdl.GPUVertexInputState{
-				NumVertexBuffers:         uint32(len(effectVertexBufferDescriptions)),
-				VertexBufferDescriptions: &effectVertexBufferDescriptions[0],
-				NumVertexAttributes:      uint32(len(effectVertexAttributes)),
-				VertexAttributes:         &effectVertexAttributes[0],
+				VertexBufferDescriptions: effectVertexBufferDescriptions,
+				VertexAttributes:         effectVertexAttributes,
 			},
 			PrimitiveType:  sdl.GPU_PRIMITIVETYPE_TRIANGLELIST,
 			VertexShader:   effectVertexShader,
@@ -548,7 +542,7 @@ func (e *DepthSampler) Draw(context *common.Context) error {
 			[]sdl.GPUColorTargetInfo{colorTargetInfo}, &depthStencilTargetInfo,
 		)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.sceneVertexBuffer, Offset: 0},
+			{Buffer: e.sceneVertexBuffer, Offset: 0},
 		})
 		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
 			Buffer: e.sceneIndexBuffer, Offset: 0,
@@ -572,14 +566,14 @@ func (e *DepthSampler) Draw(context *common.Context) error {
 		)
 		renderPass.BindGraphicsPipeline(e.effectPipeline)
 		renderPass.BindVertexBuffers([]sdl.GPUBufferBinding{
-			sdl.GPUBufferBinding{Buffer: e.effectVertexBuffer, Offset: 0},
+			{Buffer: e.effectVertexBuffer, Offset: 0},
 		})
 		renderPass.BindIndexBuffer(&sdl.GPUBufferBinding{
 			Buffer: e.effectIndexBuffer, Offset: 0,
 		}, sdl.GPU_INDEXELEMENTSIZE_16BIT)
 		renderPass.BindFragmentSamplers([]sdl.GPUTextureSamplerBinding{
-			sdl.GPUTextureSamplerBinding{Texture: e.sceneColorTexture, Sampler: e.effectSampler},
-			sdl.GPUTextureSamplerBinding{Texture: e.sceneDepthTexture, Sampler: e.effectSampler},
+			{Texture: e.sceneColorTexture, Sampler: e.effectSampler},
+			{Texture: e.sceneDepthTexture, Sampler: e.effectSampler},
 		})
 		renderPass.DrawIndexedPrimitives(
 			6, 1, 0, 0, 0,

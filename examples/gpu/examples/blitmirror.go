@@ -115,7 +115,7 @@ func (e *BlitMirror) Draw(context *common.Context) error {
 
 	if swapchainTexture != nil {
 		clearPass := cmdbuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-			sdl.GPUColorTargetInfo{
+			{
 				Texture:    swapchainTexture.Texture,
 				LoadOp:     sdl.GPU_LOADOP_CLEAR,
 				StoreOp:    sdl.GPU_STOREOP_STORE,

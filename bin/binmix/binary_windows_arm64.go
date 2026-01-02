@@ -8,7 +8,7 @@ import (
 
 var (
 	// TODO: not available for downloads apparently
-	// //go:embed assets/img_arm64.dll
+	// //go:embed assets/img_arm64.dll.gz
 
 	mixBlob    []byte
 	mixLibName = "SDL3_mixer.dll"

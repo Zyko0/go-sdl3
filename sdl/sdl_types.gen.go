@@ -6,7 +6,7 @@ package sdl
 // (https://wiki.libsdl.org/SDL3/SDL_SpinLock)
 type SpinLock int32
 
-// SDL_PropertiesID - SDL properties ID
+// SDL_PropertiesID - An ID that represents a properties set.
 // (https://wiki.libsdl.org/SDL3/SDL_PropertiesID)
 type PropertiesID uint32
 

@@ -153,7 +153,7 @@ type Rect struct {
 	H int32
 }
 
-// SDL_FRect - A rectangle, with the origin at the upper left (using floating point values).
+// SDL_FRect - A rectangle stored using floating point values.
 // (https://wiki.libsdl.org/SDL3/SDL_FRect)
 type FRect struct {
 	X float32
@@ -917,15 +917,6 @@ type GPUVertexAttribute struct {
 	Offset     uint32
 }
 
-// SDL_GPUVertexInputState - A structure specifying the parameters of a graphics pipeline vertex input state.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState)
-type GPUVertexInputState struct {
-	VertexBufferDescriptions *GPUVertexBufferDescription
-	NumVertexBuffers         uint32
-	VertexAttributes         *GPUVertexAttribute
-	NumVertexAttributes      uint32
-}
-
 // SDL_GPUStencilOpState - A structure specifying the stencil operation state of a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState)
 type GPUStencilOpState struct {
@@ -1028,32 +1019,6 @@ type GPUDepthStencilState struct {
 type GPUColorTargetDescription struct {
 	Format     GPUTextureFormat
 	BlendState GPUColorTargetBlendState
-}
-
-// SDL_GPUGraphicsPipelineTargetInfo - A structure specifying the descriptions of render targets used in a graphics pipeline.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo)
-type GPUGraphicsPipelineTargetInfo struct {
-	ColorTargetDescriptions *GPUColorTargetDescription
-	NumColorTargets         uint32
-	DepthStencilFormat      GPUTextureFormat
-	HasDepthStencilTarget   bool
-	Padding1                uint8
-	Padding2                uint8
-	Padding3                uint8
-}
-
-// SDL_GPUGraphicsPipelineCreateInfo - A structure specifying the parameters of a graphics pipeline state.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo)
-type GPUGraphicsPipelineCreateInfo struct {
-	VertexShader      *GPUShader
-	FragmentShader    *GPUShader
-	VertexInputState  GPUVertexInputState
-	PrimitiveType     GPUPrimitiveType
-	RasterizerState   GPURasterizerState
-	MultisampleState  GPUMultisampleState
-	DepthStencilState GPUDepthStencilState
-	TargetInfo        GPUGraphicsPipelineTargetInfo
-	Props             PropertiesID
 }
 
 // SDL_GPUColorTargetInfo - A structure specifying the parameters of a color target used by a render pass.

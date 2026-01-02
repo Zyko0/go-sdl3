@@ -317,7 +317,7 @@ func (e *CompressedTextures) Draw(context *common.Context) error {
 			})
 		} else {
 			renderPass := cmdbuf.BeginRenderPass([]sdl.GPUColorTargetInfo{
-				sdl.GPUColorTargetInfo{
+				{
 					Texture:    swapchainTexture.Texture,
 					LoadOp:     sdl.GPU_LOADOP_CLEAR,
 					ClearColor: sdl.FColor{R: 1, G: 1, B: 1, A: 1},

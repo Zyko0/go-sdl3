@@ -21,6 +21,9 @@
         "MessageBoxData",
         "GPUShaderCreateInfo",
         "GPUComputePipelineCreateInfo",
+        "GPUGraphicsPipelineCreateInfo",
+        "GPUGraphicsPipelineTargetInfo",
+        "GPUVertexInputState",
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
         "Palette"
@@ -32,7 +35,11 @@
         "SDL_ShowMessageBox",
         "SDL_CreateGPUShader",
         "SDL_CreateGPUComputePipeline",
-        "SDL_SetTrayEntryCallback"
+        "SDL_CreateGPUGraphicsPipeline",
+        "SDL_SetTrayEntryCallback",
+        "SDL_SetClipboardData",
+        "SDL_ShowOpenFileDialog",
+        "SDL_ShowSaveFileDialog"
     ],
     "allowlisted_functions": [
         "SDL_free"
@@ -88,6 +95,9 @@
     ],
     "no_auto_string_functions": [
         "SDL_GPUSupportsShaderFormats",
-        "SDL_CreateGPUDevice"
+        "SDL_CreateGPUDevice",
+        "SDL_ShowOpenFileDialog",
+        "SDL_ShowSaveFileDialog",
+        "SDL_ShowOpenFolderDialog"
     ]
 }
