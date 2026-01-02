@@ -162,14 +162,16 @@ var (
 	iUntagTrack func(track *Track, tag string)
 
 	// MIX_GetTrackTags => Get the tags currently associated with a track.
+	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=MIX_GetTrackTags
-	iGetTrackTags func(track *Track, count *int32) *string
+	iGetTrackTags func(track *Track, count *int32) uintptr
 
 	// MIX_GetTaggedTracks => Get all tracks with a specific tag.
+	// SDL_free() must be called on the returned pointer.
 	//
 	//puregogen:function symbol=MIX_GetTaggedTracks
-	iGetTaggedTracks func(mixer *Mixer, tag string, count *int32) **Track
+	iGetTaggedTracks func(mixer *Mixer, tag string, count *int32) uintptr
 
 	// MIX_SetTrackPlaybackPosition => Seek a playing track to a new position in its input.
 	//

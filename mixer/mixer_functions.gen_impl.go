@@ -609,16 +609,16 @@ func initialize() {
 		runtime.KeepAlive(track)
 		runtime.KeepAlive(tag)
 	}
-	iGetTrackTags = func(track *Track, count *int32) *string {
+	iGetTrackTags = func(track *Track, count *int32) uintptr {
 		_r0, _, _ := purego.SyscallN(_addr_MIX_GetTrackTags, uintptr(unsafe.Pointer(track)), uintptr(unsafe.Pointer(count)))
-		__r0 := (*string)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		__r0 := uintptr(_r0)
 		runtime.KeepAlive(track)
 		runtime.KeepAlive(count)
 		return __r0
 	}
-	iGetTaggedTracks = func(mixer *Mixer, tag string, count *int32) **Track {
+	iGetTaggedTracks = func(mixer *Mixer, tag string, count *int32) uintptr {
 		_r0, _, _ := purego.SyscallN(_addr_MIX_GetTaggedTracks, uintptr(unsafe.Pointer(mixer)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(tag))), uintptr(unsafe.Pointer(count)))
-		__r0 := (**Track)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		__r0 := uintptr(_r0)
 		runtime.KeepAlive(mixer)
 		runtime.KeepAlive(tag)
 		runtime.KeepAlive(count)

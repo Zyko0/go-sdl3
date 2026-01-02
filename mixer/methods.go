@@ -35,9 +35,12 @@ func (group *Group) Mixer() *Mixer {
 
 // MIX_SetGroupPostMixCallback - Set a callback that fires when a mixer group has completed mixing.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback)
-func (group *Group) SetPostMixCallback(cb GroupMixCallback) bool {
-	panic("not implemented")
-	return iSetGroupPostMixCallback(group, cb, 0)
+func (group *Group) SetPostMixCallback(cb GroupMixCallback) error {
+	if !iSetGroupPostMixCallback(group, cb, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // AudioDecoder
@@ -303,9 +306,12 @@ func (mixer *Mixer) CreateGroup() (*Group, error) {
 
 // MIX_SetPostMixCallback - Set a callback that fires when all mixing has completed.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback)
-func (mixer *Mixer) SetPostMixCallback(cb PostMixCallback) bool {
-	panic("not implemented")
-	return iSetPostMixCallback(mixer, cb, 0)
+func (mixer *Mixer) SetPostMixCallback(cb PostMixCallback) error {
+	if !iSetPostMixCallback(mixer, cb, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // MIX_Generate - Generate mixer output when not driving an audio device.
@@ -317,6 +323,25 @@ func (mixer *Mixer) Generate(buffer []byte) error {
 	runtime.KeepAlive(buffer)
 
 	return nil
+}
+
+// MIX_GetTaggedTracks - Get all tracks with a specific tag.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_GetTaggedTracks)
+func (mixer *Mixer) TaggedTracks(tag string) ([]*Track, error) {
+	var count int32
+
+	ptr := iGetTaggedTracks(mixer, tag, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+	if count == 0 {
+		return []*Track{}, nil
+	}
+
+	tracks := internal.ClonePtrSlice[*Track](ptr, int(count))
+	internal.Free(ptr)
+
+	return tracks, nil
 }
 
 // Audio
@@ -426,6 +451,16 @@ func (track *Track) SetIOStream(io *sdl.IOStream, closeio bool) error {
 	return nil
 }
 
+// MIX_SetTrackRawIOStream - Set a [MIX_Track](MIX_Track)'s input to an SDL_IOStream providing raw PCM data.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawIOStream)
+func (track *Track) SetRawIOStream(io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) error {
+	if !iSetTrackRawIOStream(track, io, spec, closeio) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
 // MIX_TagTrack - Assign an arbitrary tag to a track.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_TagTrack)
 func (track *Track) SetTag(tag string) error {
@@ -440,6 +475,27 @@ func (track *Track) SetTag(tag string) error {
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_UntagTrack)
 func (track *Track) RemoveTag(tag string) {
 	iUntagTrack(track, tag)
+}
+
+// MIX_GetTrackTags - Get the tags currently associated with a track.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackTags)
+func (track *Track) Tags() ([]string, error) {
+	var count int32
+
+	ptr := iGetTrackTags(track, &count)
+	if ptr == 0 {
+		return nil, internal.LastErr()
+	}
+
+	ptrSlice := unsafe.Slice((**byte)(unsafe.Pointer(ptr)), count)
+	tags := make([]string, count)
+	for i := range tags {
+		tags[i] = internal.ClonePtrString(uintptr(unsafe.Pointer(ptrSlice[i])))
+	}
+
+	internal.Free(ptr)
+
+	return tags, nil
 }
 
 // MIX_SetTrackPlaybackPosition - Seek a playing track to a new position in its input.
@@ -463,10 +519,26 @@ func (track *Track) PlaybackPosition() (int64, error) {
 	return pos, nil
 }
 
+// MIX_GetTrackFadeFrames - Query whether a given track is fading.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFadeFrames)
+func (track *Track) FadeFrames() int64 {
+	return iGetTrackFadeFrames(track)
+}
+
 // MIX_TrackLooping - Query whether a given track is looping.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackLooping)
 func (track *Track) Looping() bool {
 	return iTrackLooping(track)
+}
+
+// MIX_SetTrackLoops - Change the number of times a currently-playing track will loop.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackLoops)
+func (track *Track) SetLoops(num int32) error {
+	if !iSetTrackLoops(track, num) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // MIX_GetTrackAudio - Query the [MIX_Audio](MIX_Audio) assigned to a track.
@@ -639,21 +711,30 @@ func (track *Track) SetGroup(group *Group) error {
 
 // MIX_SetTrackStoppedCallback - Set a callback that fires when a [MIX_Track](MIX_Track) is stopped.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStoppedCallback)
-func (track *Track) SetStoppedCallback(cb TrackStoppedCallback) bool {
-	panic("not implemented")
-	return iSetTrackStoppedCallback(track, cb, 0)
+func (track *Track) SetStoppedCallback(cb TrackStoppedCallback) error {
+	if !iSetTrackStoppedCallback(track, cb, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // MIX_SetTrackRawCallback - Set a callback that fires when a [MIX_Track](MIX_Track) has initial decoded audio.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawCallback)
-func (track *Track) SetRawCallback(cb TrackMixCallback) bool {
-	panic("not implemented")
-	return iSetTrackRawCallback(track, cb, 0)
+func (track *Track) SetRawCallback(cb TrackMixCallback) error {
+	if !iSetTrackRawCallback(track, cb, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // MIX_SetTrackCookedCallback - Set a callback that fires when the mixer has transformed a track's audio.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackCookedCallback)
-func (track *Track) SetCookedCallback(cb TrackMixCallback) bool {
-	panic("not implemented")
-	return iSetTrackCookedCallback(track, cb, 0)
+func (track *Track) SetCookedCallback(cb TrackMixCallback) error {
+	if !iSetTrackCookedCallback(track, cb, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
