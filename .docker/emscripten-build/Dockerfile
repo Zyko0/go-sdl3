@@ -2,6 +2,11 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-c"]
 
+ARG SDL_VERSION=3.4.0
+ARG TTF_VERSION=3.2.2
+ARG MIXER_VERSION=main
+ARG IMAGE_VERSION=3.2.6
+
 # Install dependencies
 RUN apt update -y
 RUN apt-get install -y wget
@@ -18,15 +23,10 @@ RUN git clone https://github.com/emscripten-core/emsdk.git --depth=1 && \
         ./emsdk install tot && \
         ./emsdk activate tot
 
-ENV SDL3_VERSION=3.2.16
-ENV TTF_VERSION=3.2.0
-ENV IMAGE_VERSION=3.2.4
-ENV MIXER_VERSION=main
-
 # Clone SDL and satellite libraries
-RUN git clone --depth 1 --branch release-$SDL3_VERSION https://github.com/libsdl-org/SDL.git
-RUN git clone --recurse-submodules --branch release-$TTF_VERSION https://github.com/libsdl-org/SDL_ttf.git
-RUN git clone --recurse-submodules --branch release-$IMAGE_VERSION https://github.com/libsdl-org/SDL_image.git
+RUN git clone --depth 1 --branch release-${SDL_VERSION} https://github.com/libsdl-org/SDL.git
+RUN git clone --recurse-submodules --branch release-${TTF_VERSION} https://github.com/libsdl-org/SDL_ttf.git
+RUN git clone --recurse-submodules --branch release-${IMAGE_VERSION} https://github.com/libsdl-org/SDL_image.git
 RUN git clone --recurse-submodules https://github.com/libsdl-org/SDL_mixer.git
 
 # Build SDL
