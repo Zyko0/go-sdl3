@@ -24,9 +24,9 @@ If you are looking for pure Go bindings that are closer to the original API, ple
 The list of currently implemented functions can be found in [COVERAGE.md](COVERAGE.md).
 
 Libraries:
-- SDL3
-- SDL3_ttf
-- SDL3_image
+- SDL3 (v3.4.0)
+- SDL3_ttf (v3.2.2)
+- SDL3_image (v3.2.6)
 - SDL3_mixer (TBD: v3 is not released yet, see https://github.com/Zyko0/go-sdl3/issues/26)
 - [SDL3_shadercross](shadercross/README.md)
 

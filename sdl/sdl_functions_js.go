@@ -5350,7 +5350,7 @@ func initialize() {
 		return _obj
 	}
 
-	iGetCameraPermissionState = func(camera *Camera) int32 {
+	iGetCameraPermissionState = func(camera *Camera) CameraPermissionState {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -5363,7 +5363,7 @@ func initialize() {
 			_camera,
 		)
 
-		return int32(ret.Int())
+		return CameraPermissionState(ret.Int())
 	}
 
 	iGetCameraID = func(camera *Camera) CameraID {
@@ -13515,7 +13515,7 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iCreateHapticEffect = func(haptic *Haptic, effect *HapticEffect) int32 {
+	iCreateHapticEffect = func(haptic *Haptic, effect *HapticEffect) HapticEffectID {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -13533,10 +13533,10 @@ func initialize() {
 			_effect,
 		)
 
-		return int32(ret.Int())
+		return HapticEffectID(ret.Int())
 	}
 
-	iUpdateHapticEffect = func(haptic *Haptic, effect int32, data *HapticEffect) bool {
+	iUpdateHapticEffect = func(haptic *Haptic, effect HapticEffectID, data *HapticEffect) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -13559,7 +13559,7 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iRunHapticEffect = func(haptic *Haptic, effect int32, iterations uint32) bool {
+	iRunHapticEffect = func(haptic *Haptic, effect HapticEffectID, iterations uint32) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -13579,7 +13579,7 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iStopHapticEffect = func(haptic *Haptic, effect int32) bool {
+	iStopHapticEffect = func(haptic *Haptic, effect HapticEffectID) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -13597,7 +13597,7 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iDestroyHapticEffect = func(haptic *Haptic, effect int32) {
+	iDestroyHapticEffect = func(haptic *Haptic, effect HapticEffectID) {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -13613,7 +13613,7 @@ func initialize() {
 		)
 	}
 
-	iGetHapticEffectStatus = func(haptic *Haptic, effect int32) bool {
+	iGetHapticEffectStatus = func(haptic *Haptic, effect HapticEffectID) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()

@@ -1,6 +1,11 @@
 FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND=noninteractive
 
+ARG SDL_VERSION=3.4.0
+ARG TTF_VERSION=3.2.2
+ARG MIXER_VERSION=main
+ARG IMAGE_VERSION=3.2.6
+
 RUN apt update -y
 
 # Apparently wget is not installed by default
@@ -26,7 +31,7 @@ RUN cd c2ffi && mkdir -p build && cd build && \
 
 # Clone SDL repository
 RUN git clone https://github.com/libsdl-org/SDL.git && \
-        cd SDL && git checkout tags/release-3.2.16 && \
+        cd SDL && git checkout tags/release-${SDL_VERSION} && \
         cp -r include/SDL3 /usr/include/SDL3
 
 # Generate SDL ffi
@@ -35,7 +40,7 @@ RUN /c2ffi/build/bin/c2ffi sdl.c > sdl_ffi.json
 
 # Clone SDL_ttf repository
 RUN git clone https://github.com/libsdl-org/SDL_ttf.git && \
-        cd SDL_ttf && git checkout tags/release-3.2.0 && \
+        cd SDL_ttf && git checkout tags/release-${TTF_VERSION} && \
         cp -r include/SDL3_ttf /usr/include/SDL3_ttf
 
 # Generate SDL_ttf ffi
@@ -53,7 +58,7 @@ RUN /c2ffi/build/bin/c2ffi mixer.c > mixer_ffi.json
 
 # Clone SDL_image repository
 RUN git clone https://github.com/libsdl-org/SDL_image.git && \
-        cd SDL_image && git checkout tags/release-3.2.4 && \
+        cd SDL_image && git checkout tags/release-${IMAGE_VERSION} && \
         cp -r include/SDL3_image/ /usr/include/SDL3_image/
 
 # Generate SDL_image ffi

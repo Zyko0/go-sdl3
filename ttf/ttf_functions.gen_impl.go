@@ -38,6 +38,7 @@ var (
 	_addr_TTF_GetFontHinting                         uintptr
 	_addr_TTF_SetFontSDF                             uintptr
 	_addr_TTF_GetFontSDF                             uintptr
+	_addr_TTF_GetFontWeight                          uintptr
 	_addr_TTF_SetFontWrapAlignment                   uintptr
 	_addr_TTF_GetFontWrapAlignment                   uintptr
 	_addr_TTF_GetFontHeight                          uintptr
@@ -202,6 +203,10 @@ func initialize() {
 	_addr_TTF_GetFontSDF, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetFontSDF")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: TTF_GetFontSDF")
+	}
+	_addr_TTF_GetFontWeight, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_GetFontWeight")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: TTF_GetFontWeight")
 	}
 	_addr_TTF_SetFontWrapAlignment, err = puregogen.OpenSymbol(_hnd_ttf, "TTF_SetFontWrapAlignment")
 	if err != nil {
@@ -625,6 +630,12 @@ func initialize() {
 	iGetFontSDF = func(font *Font) bool {
 		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontSDF, uintptr(unsafe.Pointer(font)))
 		__r0 := uint8(_r0) != 0
+		runtime.KeepAlive(font)
+		return __r0
+	}
+	iGetFontWeight = func(font *Font) int32 {
+		_r0, _, _ := purego.SyscallN(_addr_TTF_GetFontWeight, uintptr(unsafe.Pointer(font)))
+		__r0 := int32(_r0)
 		runtime.KeepAlive(font)
 		return __r0
 	}

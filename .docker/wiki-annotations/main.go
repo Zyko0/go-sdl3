@@ -24,7 +24,7 @@ func main() {
 	cfgs := []*config{
 		{"SDL3", "SDL_"},
 		{"SDL3_image", "IMG_"},
-		{"SDL3_mixer", "Mix_"},
+		{"SDL3_mixer", "MIX_"},
 		{"SDL3_ttf", "TTF_"},
 	}
 

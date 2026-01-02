@@ -146,7 +146,9 @@ func main() {
 		f.Comment("// " + receiver).Line()
 		for _, fn := range funcs {
 			newFnName := strings.Replace(fn.Name, receiver, "", 1)
-			if newFnName != "Get" && strings.HasPrefix(newFnName, "Get") {
+			// If the function name starts with "Get" remove it
+			// Except if it leaves the name starting with a digit (invalid in Go)
+			if newFnName != "Get" && strings.HasPrefix(newFnName, "Get") && (newFnName[3] < '0' || newFnName[3] > '9') {
 				newFnName = newFnName[3:]
 			}
 			f.Func().

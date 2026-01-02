@@ -225,7 +225,7 @@ const (
 	COLORSPACE_BT2020_LIMITED Colorspace = 554706441
 	COLORSPACE_BT2020_FULL    Colorspace = 571483657
 	COLORSPACE_RGB_DEFAULT    Colorspace = 301991328
-	COLORSPACE_YUV_DEFAULT    Colorspace = 570426566
+	COLORSPACE_YUV_DEFAULT    Colorspace = 554703046
 )
 
 // SDL_ScaleMode - The scaling mode.
@@ -233,9 +233,10 @@ const (
 type ScaleMode uint32
 
 const (
-	SCALEMODE_INVALID ScaleMode = 4294967295
-	SCALEMODE_NEAREST ScaleMode = 0
-	SCALEMODE_LINEAR  ScaleMode = 1
+	SCALEMODE_INVALID  ScaleMode = 4294967295
+	SCALEMODE_NEAREST  ScaleMode = 0
+	SCALEMODE_LINEAR   ScaleMode = 1
+	SCALEMODE_PIXELART ScaleMode = 2
 )
 
 // SDL_FlipMode - The flip mode.
@@ -243,9 +244,10 @@ const (
 type FlipMode uint32
 
 const (
-	FLIP_NONE       FlipMode = 0
-	FLIP_HORIZONTAL FlipMode = 1
-	FLIP_VERTICAL   FlipMode = 2
+	FLIP_NONE                    FlipMode = 0
+	FLIP_HORIZONTAL              FlipMode = 1
+	FLIP_VERTICAL                FlipMode = 2
+	FLIP_HORIZONTAL_AND_VERTICAL FlipMode = 3
 )
 
 // SDL_CameraPosition - The position of camera in relation to system device.
@@ -256,6 +258,16 @@ const (
 	CAMERA_POSITION_UNKNOWN      CameraPosition = 0
 	CAMERA_POSITION_FRONT_FACING CameraPosition = 1
 	CAMERA_POSITION_BACK_FACING  CameraPosition = 2
+)
+
+// SDL_CameraPermissionState - The current state of a request for camera access.
+// (https://wiki.libsdl.org/SDL3/SDL_CameraPermissionState)
+type CameraPermissionState uint32
+
+const (
+	CAMERA_PERMISSION_STATE_DENIED   CameraPermissionState = 4294967295
+	CAMERA_PERMISSION_STATE_PENDING  CameraPermissionState = 0
+	CAMERA_PERMISSION_STATE_APPROVED CameraPermissionState = 1
 )
 
 // SDL_SystemTheme - System theme.
@@ -288,6 +300,19 @@ const (
 	FLASH_CANCEL        FlashOperation = 0
 	FLASH_BRIEFLY       FlashOperation = 1
 	FLASH_UNTIL_FOCUSED FlashOperation = 2
+)
+
+// SDL_ProgressState - Window progress state
+// (https://wiki.libsdl.org/SDL3/SDL_ProgressState)
+type ProgressState uint32
+
+const (
+	PROGRESS_STATE_INVALID       ProgressState = 4294967295
+	PROGRESS_STATE_NONE          ProgressState = 0
+	PROGRESS_STATE_INDETERMINATE ProgressState = 1
+	PROGRESS_STATE_NORMAL        ProgressState = 2
+	PROGRESS_STATE_PAUSED        ProgressState = 3
+	PROGRESS_STATE_ERROR         ProgressState = 4
 )
 
 // SDL_GLAttr - An enumeration of OpenGL configuration attributes.
@@ -361,6 +386,7 @@ const (
 	SENSOR_GYRO_L  SensorType = 4
 	SENSOR_ACCEL_R SensorType = 5
 	SENSOR_GYRO_R  SensorType = 6
+	SENSOR_COUNT   SensorType = 7
 )
 
 // SDL_JoystickType - An enum of some common joystick types.
@@ -408,7 +434,8 @@ const (
 	GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_LEFT  GamepadType = 8
 	GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_RIGHT GamepadType = 9
 	GAMEPAD_TYPE_NINTENDO_SWITCH_JOYCON_PAIR  GamepadType = 10
-	GAMEPAD_TYPE_COUNT                        GamepadType = 11
+	GAMEPAD_TYPE_GAMECUBE                     GamepadType = 11
+	GAMEPAD_TYPE_COUNT                        GamepadType = 12
 )
 
 // SDL_GamepadButton - The list of buttons available on a gamepad
@@ -829,8 +856,9 @@ const (
 	EVENT_DISPLAY_DESKTOP_MODE_CHANGED  EventType = 341
 	EVENT_DISPLAY_CURRENT_MODE_CHANGED  EventType = 342
 	EVENT_DISPLAY_CONTENT_SCALE_CHANGED EventType = 343
+	EVENT_DISPLAY_USABLE_BOUNDS_CHANGED EventType = 344
 	EVENT_DISPLAY_FIRST                 EventType = 337
-	EVENT_DISPLAY_LAST                  EventType = 343
+	EVENT_DISPLAY_LAST                  EventType = 344
 	EVENT_WINDOW_SHOWN                  EventType = 514
 	EVENT_WINDOW_HIDDEN                 EventType = 515
 	EVENT_WINDOW_EXPOSED                EventType = 516
@@ -866,6 +894,8 @@ const (
 	EVENT_KEYBOARD_ADDED                EventType = 773
 	EVENT_KEYBOARD_REMOVED              EventType = 774
 	EVENT_TEXT_EDITING_CANDIDATES       EventType = 775
+	EVENT_SCREEN_KEYBOARD_SHOWN         EventType = 776
+	EVENT_SCREEN_KEYBOARD_HIDDEN        EventType = 777
 	EVENT_MOUSE_MOTION                  EventType = 1024
 	EVENT_MOUSE_BUTTON_DOWN             EventType = 1025
 	EVENT_MOUSE_BUTTON_UP               EventType = 1026
@@ -897,6 +927,9 @@ const (
 	EVENT_FINGER_UP                     EventType = 1793
 	EVENT_FINGER_MOTION                 EventType = 1794
 	EVENT_FINGER_CANCELED               EventType = 1795
+	EVENT_PINCH_BEGIN                   EventType = 1808
+	EVENT_PINCH_UPDATE                  EventType = 1809
+	EVENT_PINCH_END                     EventType = 1810
 	EVENT_CLIPBOARD_UPDATE              EventType = 2304
 	EVENT_DROP_FILE                     EventType = 4096
 	EVENT_DROP_TEXT                     EventType = 4097
@@ -1391,6 +1424,17 @@ const (
 	TEXTUREACCESS_STATIC    TextureAccess = 0
 	TEXTUREACCESS_STREAMING TextureAccess = 1
 	TEXTUREACCESS_TARGET    TextureAccess = 2
+)
+
+// SDL_TextureAddressMode - The addressing mode for a texture when used in [SDL_RenderGeometry](SDL_RenderGeometry)().
+// (https://wiki.libsdl.org/SDL3/SDL_TextureAddressMode)
+type TextureAddressMode uint32
+
+const (
+	TEXTURE_ADDRESS_INVALID TextureAddressMode = 4294967295
+	TEXTURE_ADDRESS_AUTO    TextureAddressMode = 0
+	TEXTURE_ADDRESS_CLAMP   TextureAddressMode = 1
+	TEXTURE_ADDRESS_WRAP    TextureAddressMode = 2
 )
 
 // SDL_RendererLogicalPresentation - How the logical size is mapped to the output.

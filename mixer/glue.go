@@ -9,27 +9,21 @@ import (
 
 type Pointer = internal.Pointer
 
-type MIX_InitFlags uint32
+// MIX_TrackStoppedCallback - A callback that fires when a [MIX_Track](MIX_Track) is stopped.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackStoppedCallback)
+type TrackStoppedCallback uintptr
 
-type InitFlags MIX_InitFlags
+// MIX_TrackMixCallback - A callback that fires when a [MIX_Track](MIX_Track) is mixing at various stages.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMixCallback)
+type TrackMixCallback uintptr
 
-// Mix_Chunk - The internal format for an audio chunk
-// (https://wiki.libsdl.org/SDL3_mixer/Mix_Chunk)
-type Chunk struct {
-	Allocated int32
-	abuf      Pointer
-	alen      uint32
-	Volume    uint8
-}
+// MIX_GroupMixCallback - A callback that fires when a [MIX_Group](MIX_Group) has completed mixing.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_GroupMixCallback)
+type GroupMixCallback uintptr
 
-type (
-	MixCallback             func()
-	MusicFinishedCallback   func()
-	ChannelFinishedCallback func()
-	EffectFunc_t            func()
-	EffectDone_t            func()
-	EachSoundFontCallback   func()
-)
+// MIX_PostMixCallback - A callback that fires when all mixing has completed.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_PostMixCallback)
+type PostMixCallback uintptr
 
 // Custom
 

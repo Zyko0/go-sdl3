@@ -357,7 +357,7 @@ func (devid AudioDeviceID) SetAudioPostmixCallback(callback AudioPostmixCallback
 
 // SDL_GetCameraPermissionState - Query if camera access has been approved by the user.
 // (https://wiki.libsdl.org/SDL3/SDL_GetCameraPermissionState)
-func (camera *Camera) PermissionState() int32 {
+func (camera *Camera) PermissionState() CameraPermissionState {
 	return iGetCameraPermissionState(camera)
 }
 
@@ -2192,7 +2192,7 @@ func (haptic *Haptic) EffectSupported(effect *HapticEffect) bool {
 
 // SDL_CreateHapticEffect - Create a new haptic effect on a specified device.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateHapticEffect)
-func (haptic *Haptic) CreateEffect(effect *HapticEffect) (int32, error) {
+func (haptic *Haptic) CreateEffect(effect *HapticEffect) (HapticEffectID, error) {
 	id := iCreateHapticEffect(haptic, effect)
 	if id == -1 {
 		return -1, internal.LastErr()
@@ -2203,7 +2203,7 @@ func (haptic *Haptic) CreateEffect(effect *HapticEffect) (int32, error) {
 
 // SDL_UpdateHapticEffect - Update the properties of an effect.
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateHapticEffect)
-func (haptic *Haptic) UpdateEffect(effect int32, data *HapticEffect) error {
+func (haptic *Haptic) UpdateEffect(effect HapticEffectID, data *HapticEffect) error {
 	if !iUpdateHapticEffect(haptic, effect, data) {
 		return internal.LastErr()
 	}
@@ -2213,7 +2213,7 @@ func (haptic *Haptic) UpdateEffect(effect int32, data *HapticEffect) error {
 
 // SDL_RunHapticEffect - Run the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_RunHapticEffect)
-func (haptic *Haptic) RunEffect(effect int32, iterations uint32) error {
+func (haptic *Haptic) RunEffect(effect HapticEffectID, iterations uint32) error {
 	if !iRunHapticEffect(haptic, effect, iterations) {
 		return internal.LastErr()
 	}
@@ -2223,7 +2223,7 @@ func (haptic *Haptic) RunEffect(effect int32, iterations uint32) error {
 
 // SDL_StopHapticEffect - Stop the haptic effect on its associated haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_StopHapticEffect)
-func (haptic *Haptic) StopEffect(effect int32) error {
+func (haptic *Haptic) StopEffect(effect HapticEffectID) error {
 	if !iStopHapticEffect(haptic, effect) {
 		return internal.LastErr()
 	}
@@ -2233,13 +2233,13 @@ func (haptic *Haptic) StopEffect(effect int32) error {
 
 // SDL_DestroyHapticEffect - Destroy a haptic effect on the device.
 // (https://wiki.libsdl.org/SDL3/SDL_DestroyHapticEffect)
-func (haptic *Haptic) DestroyEffect(effect int32) {
+func (haptic *Haptic) DestroyEffect(effect HapticEffectID) {
 	iDestroyHapticEffect(haptic, effect)
 }
 
 // SDL_GetHapticEffectStatus - Get the status of the current effect on the specified haptic device.
 // (https://wiki.libsdl.org/SDL3/SDL_GetHapticEffectStatus)
-func (haptic *Haptic) EffectStatus(effect int32) bool {
+func (haptic *Haptic) EffectStatus(effect HapticEffectID) bool {
 	return iGetHapticEffectStatus(haptic, effect)
 }
 

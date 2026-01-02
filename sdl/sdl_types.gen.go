@@ -126,6 +126,18 @@ type GPUShaderFormat uint32
 // (https://wiki.libsdl.org/SDL3/SDL_GPUColorComponentFlags)
 type GPUColorComponentFlags uint8
 
+// SDL_HapticEffectType - Type of haptic effect.
+// (https://wiki.libsdl.org/SDL3/SDL_HapticEffectType)
+type HapticEffectType uint16
+
+// SDL_HapticDirectionType - Type of coordinates used for haptic direction.
+// (https://wiki.libsdl.org/SDL3/SDL_HapticDirectionType)
+type HapticDirectionType uint8
+
+// SDL_HapticEffectID - ID for haptic effects.
+// (https://wiki.libsdl.org/SDL3/SDL_HapticEffectID)
+type HapticEffectID int32
+
 // SDL_HapticID - This is a unique ID for a haptic device for the time it is connected to the system, and is never reused for the lifetime of the application.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticID)
 type HapticID uint32

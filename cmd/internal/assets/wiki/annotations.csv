@@ -607,7 +607,7 @@ SDL_EGL_SetAttributeCallbacks,"Sets the callbacks for defining custom EGLAttrib 
 ",https://wiki.libsdl.org/SDL3/SDL_EGL_SetAttributeCallbacks
 SDL_EGLint,"An EGL integer attribute, used when creating an EGL surface.
 ",https://wiki.libsdl.org/SDL3/SDL_EGLint
-SDL_ELF_NOTE_DLOPEN,"Note that your application has dynamic shared library dependencies.
+SDL_ELF_NOTE_DLOPEN,"Add a note that your application has dynamic shared library dependencies.
 ",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN
 SDL_ELF_NOTE_DLOPEN_PRIORITY_RECOMMENDED,"Use this macro with [SDL_ELF_NOTE_DLOPEN](SDL_ELF_NOTE_DLOPEN)() to note that a dynamic shared library dependency is recommended.
 ",https://wiki.libsdl.org/SDL3/SDL_ELF_NOTE_DLOPEN_PRIORITY_RECOMMENDED
@@ -1899,6 +1899,8 @@ SDL_HINT_HIDAPI_IGNORE_DEVICES,"A variable containing a list of devices to ignor
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_HIDAPI_IGNORE_DEVICES
 SDL_HINT_HIDAPI_LIBUSB,"A variable to control whether HIDAPI uses libusb for device access.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_HIDAPI_LIBUSB
+SDL_HINT_HIDAPI_LIBUSB_GAMECUBE,"A variable to control whether HIDAPI uses libusb for GameCube adapters.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_HIDAPI_LIBUSB_GAMECUBE
 SDL_HINT_HIDAPI_LIBUSB_WHITELIST,"A variable to control whether HIDAPI uses libusb only for whitelisted devices.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_HIDAPI_LIBUSB_WHITELIST
 SDL_HINT_HIDAPI_UDEV,"A variable to control whether HIDAPI uses udev for device detection.
@@ -2123,13 +2125,13 @@ SDL_HINT_POLL_SENTINEL,"A variable controlling the use of a sentinel event when 
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_POLL_SENTINEL
 SDL_HINT_PREFERRED_LOCALES,"Override for [SDL_GetPreferredLocales](SDL_GetPreferredLocales)().
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PREFERRED_LOCALES
-SDL_HINT_PS2_GS_HEIGHT,"Variable controlling the height of the PS2's framebuffer in pixels
+SDL_HINT_PS2_GS_HEIGHT,"A variable controlling the height of the PS2's framebuffer in pixels.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_HEIGHT
-SDL_HINT_PS2_GS_MODE,"Variable controlling the video mode of the console
+SDL_HINT_PS2_GS_MODE,"A variable controlling the video mode of the console.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_MODE
-SDL_HINT_PS2_GS_PROGRESSIVE,"Variable controlling whether the signal is interlaced or progressive
+SDL_HINT_PS2_GS_PROGRESSIVE,"A variable controlling whether the signal is interlaced or progressive.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_PROGRESSIVE
-SDL_HINT_PS2_GS_WIDTH,"Variable controlling the width of the PS2's framebuffer in pixels
+SDL_HINT_PS2_GS_WIDTH,"A variable controlling the width of the PS2's framebuffer in pixels.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_PS2_GS_WIDTH
 SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE,"A variable that decides whether to send [SDL_EVENT_QUIT](SDL_EVENT_QUIT) when closing the last window.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE
@@ -4623,6 +4625,206 @@ IMG_isXPM,"Detect XPM image data on a readable/seekable SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_isXPM
 IMG_isXV,"Detect XV image data on a readable/seekable SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_image/IMG_isXV
+MIX_Audio,"An opaque object that represents audio data.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Audio
+MIX_AudioDecoder,"An opaque object that represents an audio decoder.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_AudioDecoder
+MIX_AudioFramesToMS,"Convert sample frames for a [MIX_Audio](MIX_Audio)'s format to milliseconds.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_AudioFramesToMS
+MIX_AudioMSToFrames,"Convert milliseconds to sample frames for a [MIX_Audio](MIX_Audio)'s format.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_AudioMSToFrames
+MIX_CreateAudioDecoder,"Create a [MIX_AudioDecoder](MIX_AudioDecoder) from a path on the filesystem.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder
+MIX_CreateAudioDecoder_IO,"Create a [MIX_AudioDecoder](MIX_AudioDecoder) from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateAudioDecoder_IO
+MIX_CreateGroup,"Create a mixing group.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateGroup
+MIX_CreateMixer,"Create a mixer that generates audio to a memory buffer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixer
+MIX_CreateMixerDevice,"Create a mixer that plays sound directly to an audio device.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateMixerDevice
+MIX_CreateSineWaveAudio,"Create a [MIX_Audio](MIX_Audio) that generates a sinewave.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateSineWaveAudio
+MIX_CreateTrack,"Create a new track on a mixer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_CreateTrack
+MIX_DecodeAudio,"Decode more audio from a [MIX_AudioDecoder](MIX_AudioDecoder).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DecodeAudio
+MIX_DestroyAudio,"Destroy the specified audio.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyAudio
+MIX_DestroyAudioDecoder,"Destroy the specified audio decoder.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyAudioDecoder
+MIX_DestroyGroup,"Destroy a mixing group.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyGroup
+MIX_DestroyMixer,"Free a mixer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyMixer
+MIX_DestroyTrack,"Destroy the specified track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_DestroyTrack
+MIX_FramesToMS,"Convert sample frames, at a specific sample rate, to milliseconds.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_FramesToMS
+MIX_Generate,"Generate mixer output when not driving an audio device.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Generate
+MIX_GetAudioDecoder,"Report the name of a specific audio decoders.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoder
+MIX_GetAudioDecoderFormat,"Query the initial audio format of a [MIX_AudioDecoder](MIX_AudioDecoder).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderFormat
+MIX_GetAudioDecoderProperties,"Get the properties associated with a [MIX_AudioDecoder](MIX_AudioDecoder).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDecoderProperties
+MIX_GetAudioDuration,"Get the length of a [MIX_Audio](MIX_Audio)'s playback in sample frames.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioDuration
+MIX_GetAudioFormat,"Query the initial audio format of a [MIX_Audio](MIX_Audio).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioFormat
+MIX_GetAudioProperties,"Get the properties associated with a [MIX_Audio](MIX_Audio).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetAudioProperties
+MIX_GetGroupMixer,"Get the [MIX_Mixer](MIX_Mixer) that owns a [MIX_Group](MIX_Group).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupMixer
+MIX_GetGroupProperties,"Get the properties associated with a group.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupProperties
+MIX_GetMasterGain,"Get a mixer's master gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMasterGain
+MIX_GetMixerFormat,"Get the audio format a mixer is generating.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerFormat
+MIX_GetMixerProperties,"Get the properties associated with a mixer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerProperties
+MIX_GetNumAudioDecoders,"Report the number of audio decoders available for use.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetNumAudioDecoders
+MIX_GetTaggedTracks,"Get all tracks with a specific tag.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTaggedTracks
+MIX_GetTrack3DPosition,"Get a track's current position in 3D space.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrack3DPosition
+MIX_GetTrackAudio,"Query the [MIX_Audio](MIX_Audio) assigned to a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackAudio
+MIX_GetTrackAudioStream,"Query the SDL_AudioStream assigned to a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackAudioStream
+MIX_GetTrackFadeFrames,"Query whether a given track is fading.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFadeFrames
+MIX_GetTrackFrequencyRatio,"Query the frequency ratio of a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFrequencyRatio
+MIX_GetTrackGain,"Get a track's gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackGain
+MIX_GetTrackMixer,"Get the [MIX_Mixer](MIX_Mixer) that owns a [MIX_Track](MIX_Track).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackMixer
+MIX_GetTrackPlaybackPosition,"Get the current input position of a playing track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackPlaybackPosition
+MIX_GetTrackProperties,"Get the properties associated with a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackProperties
+MIX_GetTrackRemaining,"Return the number of sample frames remaining to be mixed in a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackRemaining
+MIX_GetTrackTags,"Get the tags currently associated with a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackTags
+MIX_Group,"An opaque object that represents a grouping of tracks.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Group
+MIX_GroupMixCallback,"A callback that fires when a [MIX_Group](MIX_Group) has completed mixing.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GroupMixCallback
+MIX_Init,"Initialize the SDL_mixer library.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Init
+MIX_LoadAudio,"Load audio for playback from a file.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio
+MIX_LoadAudioWithProperties,"Load audio for playback through a collection of properties.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioWithProperties
+MIX_LoadAudio_IO,"Load audio for playback from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio_IO
+MIX_LoadRawAudio,"Load raw PCM data from a memory buffer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio
+MIX_LoadRawAudioNoCopy,"Load raw PCM data from a memory buffer without making a copy.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudioNoCopy
+MIX_LoadRawAudio_IO,"Load raw PCM data from an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio_IO
+MIX_MSToFrames,"Convert milliseconds to sample frames at a specific sample rate.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames
+MIX_Mixer,"An opaque object that represents a mixer.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Mixer
+MIX_PauseAllTracks,"Pause all currently-playing tracks.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PauseAllTracks
+MIX_PauseTag,"Pause all tracks with a specific tag.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PauseTag
+MIX_PauseTrack,"Pause a currently-playing track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PauseTrack
+MIX_PlayAudio,"Play a [MIX_Audio](MIX_Audio) from start to finish without any management.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PlayAudio
+MIX_PlayTag,"Start (or restart) mixing all tracks with a specific tag for playback.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTag
+MIX_PlayTrack,"Start (or restart) mixing a track for playback.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTrack
+MIX_Point3D,"3D coordinates for [MIX_SetTrack3DPosition](MIX_SetTrack3DPosition).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D
+MIX_PostMixCallback,"A callback that fires when all mixing has completed.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_PostMixCallback
+MIX_Quit,"Deinitialize the SDL_mixer library.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Quit
+MIX_ResumeAllTracks,"Resume all currently-paused tracks.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeAllTracks
+MIX_ResumeTag,"Resume all tracks with a specific tag.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeTag
+MIX_ResumeTrack,"Resume a currently-paused track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeTrack
+MIX_SetGroupPostMixCallback,"Set a callback that fires when a mixer group has completed mixing.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback
+MIX_SetMasterGain,"Set a mixer's master gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetMasterGain
+MIX_SetPostMixCallback,"Set a callback that fires when all mixing has completed.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback
+MIX_SetTagGain,"Set the gain control of all tracks with a specific tag.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTagGain
+MIX_SetTrack3DPosition,"Set a track's position in 3D space.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrack3DPosition
+MIX_SetTrackAudio,"Set a [MIX_Track](MIX_Track)'s input to a [MIX_Audio](MIX_Audio).
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackAudio
+MIX_SetTrackAudioStream,"Set a [MIX_Track](MIX_Track)'s input to an SDL_AudioStream.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackAudioStream
+MIX_SetTrackCookedCallback,"Set a callback that fires when the mixer has transformed a track's audio.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackCookedCallback
+MIX_SetTrackFrequencyRatio,"Change the frequency ratio of a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackFrequencyRatio
+MIX_SetTrackGain,"Set a track's gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackGain
+MIX_SetTrackGroup,"Assign a track to a mixing group.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackGroup
+MIX_SetTrackIOStream,"Set a [MIX_Track](MIX_Track)'s input to an SDL_IOStream.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackIOStream
+MIX_SetTrackLoops,"Change the number of times a currently-playing track will loop.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackLoops
+MIX_SetTrackOutputChannelMap,"Set the current output channel map of a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackOutputChannelMap
+MIX_SetTrackPlaybackPosition,"Seek a playing track to a new position in its input.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackPlaybackPosition
+MIX_SetTrackRawCallback,"Set a callback that fires when a [MIX_Track](MIX_Track) has initial decoded audio.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawCallback
+MIX_SetTrackRawIOStream,"Set a [MIX_Track](MIX_Track)'s input to an SDL_IOStream providing raw PCM data.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackRawIOStream
+MIX_SetTrackStereo,"Force a track to stereo output, with optionally left/right panning.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStereo
+MIX_SetTrackStoppedCallback,"Set a callback that fires when a [MIX_Track](MIX_Track) is stopped.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStoppedCallback
+MIX_StereoGains,"A set of per-channel gains for tracks using [MIX_SetTrackStereo](MIX_SetTrackStereo)().
+",https://wiki.libsdl.org/SDL3_mixer/MIX_StereoGains
+MIX_StopAllTracks,"Halt all currently-playing tracks, possibly fading out over time.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_StopAllTracks
+MIX_StopTag,"Halt all tracks with a specific tag, possibly fading out over time.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_StopTag
+MIX_StopTrack,"Halt a currently-playing track, possibly fading out over time.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_StopTrack
+MIX_TagTrack,"Assign an arbitrary tag to a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TagTrack
+MIX_Track,"An opaque object that represents a source of sound output to be mixed.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Track
+MIX_TrackFramesToMS,"Convert sample frames for a track's current format to milliseconds.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackFramesToMS
+MIX_TrackLooping,"Query whether a given track is looping.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackLooping
+MIX_TrackMSToFrames,"Convert milliseconds to sample frames for a track's current format.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMSToFrames
+MIX_TrackMixCallback,"A callback that fires when a [MIX_Track](MIX_Track) is mixing at various stages.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMixCallback
+MIX_TrackPaused,"Query if a track is currently paused.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackPaused
+MIX_TrackPlaying,"Query if a track is currently playing.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackPlaying
+MIX_TrackStoppedCallback,"A callback that fires when a [MIX_Track](MIX_Track) is stopped.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackStoppedCallback
+MIX_UntagTrack,"Remove an arbitrary tag from a track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_UntagTrack
+MIX_Version,"Get the version of SDL_mixer that is linked against your program.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_Version
 TTF_AddFallbackFont,"Add a fallback font.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_AddFallbackFont
 TTF_AppendTextString,"Append UTF-8 text to a text object.

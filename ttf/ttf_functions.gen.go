@@ -136,6 +136,11 @@ var (
 	//puregogen:function symbol=TTF_GetFontSDF
 	iGetFontSDF func(font *Font) bool
 
+	// TTF_GetFontWeight => Query a font's weight, in terms of the lightness/heaviness of the strokes.
+	//
+	//puregogen:function symbol=TTF_GetFontWeight
+	iGetFontWeight func(font *Font) int32
+
 	// TTF_SetFontWrapAlignment => Set a font's current wrap alignment option.
 	//
 	//puregogen:function symbol=TTF_SetFontWrapAlignment

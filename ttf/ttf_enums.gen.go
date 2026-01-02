@@ -7,6 +7,7 @@ package ttf
 type HintingFlags uint32
 
 const (
+	HINTING_INVALID        HintingFlags = 4294967295
 	HINTING_NORMAL         HintingFlags = 0
 	HINTING_LIGHT          HintingFlags = 1
 	HINTING_MONO           HintingFlags = 2

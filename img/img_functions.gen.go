@@ -281,7 +281,7 @@ var (
 	//puregogen:function symbol=IMG_LoadAnimation_IO
 	iLoadAnimation_IO func(src *sdl.IOStream, closeio bool) *Animation
 
-	// IMG_LoadAnimationTyped_IO => Load an animation from an SDL datasource
+	// IMG_LoadAnimationTyped_IO => Load an animation from an SDL_IOStream.
 	//
 	//puregogen:function symbol=IMG_LoadAnimationTyped_IO
 	iLoadAnimationTyped_IO func(src *sdl.IOStream, closeio bool, typ string) *Animation
