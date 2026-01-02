@@ -146,6 +146,11 @@ var (
 	//puregogen:function symbol=MIX_SetTrackIOStream
 	iSetTrackIOStream func(track *Track, io *sdl.IOStream, closeio bool) bool
 
+	// MIX_SetTrackRawIOStream => Set a MIX_Track's input to an SDL_IOStream providing raw PCM data.
+	//
+	//puregogen:function symbol=MIX_SetTrackRawIOStream
+	iSetTrackRawIOStream func(track *Track, io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) bool
+
 	// MIX_TagTrack => Assign an arbitrary tag to a track.
 	//
 	//puregogen:function symbol=MIX_TagTrack
@@ -156,20 +161,40 @@ var (
 	//puregogen:function symbol=MIX_UntagTrack
 	iUntagTrack func(track *Track, tag string)
 
+	// MIX_GetTrackTags => Get the tags currently associated with a track.
+	//
+	//puregogen:function symbol=MIX_GetTrackTags
+	iGetTrackTags func(track *Track, count *int32) *string
+
+	// MIX_GetTaggedTracks => Get all tracks with a specific tag.
+	//
+	//puregogen:function symbol=MIX_GetTaggedTracks
+	iGetTaggedTracks func(mixer *Mixer, tag string, count *int32) **Track
+
 	// MIX_SetTrackPlaybackPosition => Seek a playing track to a new position in its input.
 	//
 	//puregogen:function symbol=MIX_SetTrackPlaybackPosition
-	iSetTrackPlaybackPosition func(track *Track, frames uint64) bool
+	iSetTrackPlaybackPosition func(track *Track, frames int64) bool
 
 	// MIX_GetTrackPlaybackPosition => Get the current input position of a playing track.
 	//
 	//puregogen:function symbol=MIX_GetTrackPlaybackPosition
 	iGetTrackPlaybackPosition func(track *Track) int64
 
+	// MIX_GetTrackFadeFrames => Query whether a given track is fading.
+	//
+	//puregogen:function symbol=MIX_GetTrackFadeFrames
+	iGetTrackFadeFrames func(track *Track) int64
+
 	// MIX_TrackLooping => Query whether a given track is looping.
 	//
 	//puregogen:function symbol=MIX_TrackLooping
 	iTrackLooping func(track *Track) bool
+
+	// MIX_SetTrackLoops => Change the number of times a currently-playing track will loop.
+	//
+	//puregogen:function symbol=MIX_SetTrackLoops
+	iSetTrackLoops func(track *Track, num_loops int32) bool
 
 	// MIX_GetTrackAudio => Query the MIX_Audio assigned to a track.
 	//
@@ -189,32 +214,32 @@ var (
 	// MIX_TrackMSToFrames => Convert milliseconds to sample frames for a track's current format.
 	//
 	//puregogen:function symbol=MIX_TrackMSToFrames
-	iTrackMSToFrames func(track *Track, ms uint64) uint64
+	iTrackMSToFrames func(track *Track, ms int64) int64
 
 	// MIX_TrackFramesToMS => Convert sample frames for a track's current format to milliseconds.
 	//
 	//puregogen:function symbol=MIX_TrackFramesToMS
-	iTrackFramesToMS func(track *Track, frames uint64) uint64
+	iTrackFramesToMS func(track *Track, frames int64) int64
 
 	// MIX_AudioMSToFrames => Convert milliseconds to sample frames for a MIX_Audio's format.
 	//
 	//puregogen:function symbol=MIX_AudioMSToFrames
-	iAudioMSToFrames func(audio *Audio, ms uint64) uint64
+	iAudioMSToFrames func(audio *Audio, ms int64) int64
 
 	// MIX_AudioFramesToMS => Convert sample frames for a MIX_Audio's format to milliseconds.
 	//
 	//puregogen:function symbol=MIX_AudioFramesToMS
-	iAudioFramesToMS func(audio *Audio, frames uint64) uint64
+	iAudioFramesToMS func(audio *Audio, frames int64) int64
 
 	// MIX_MSToFrames => Convert milliseconds to sample frames at a specific sample rate.
 	//
 	//puregogen:function symbol=MIX_MSToFrames
-	iMSToFrames func(sample_rate int32, ms uint64) uint64
+	iMSToFrames func(sample_rate int32, ms int64) int64
 
 	// MIX_FramesToMS => Convert sample frames, at a specific sample rate, to milliseconds.
 	//
 	//puregogen:function symbol=MIX_FramesToMS
-	iFramesToMS func(sample_rate int32, frames uint64) uint64
+	iFramesToMS func(sample_rate int32, frames int64) int64
 
 	// MIX_PlayTrack => Start (or restart) mixing a track for playback.
 	//
