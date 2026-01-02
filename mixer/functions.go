@@ -74,13 +74,13 @@ func LoadAudioWithProperties(props sdl.PropertiesID) (*Audio, error) {
 
 // MIX_MSToFrames - Convert milliseconds to sample frames at a specific sample rate.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames)
-func MSToFrames(sampleRate int32, ms uint64) uint64 {
+func MSToFrames(sampleRate int32, ms int64) int64 {
 	return iMSToFrames(sampleRate, ms)
 }
 
 // MIX_FramesToMS - Convert sample frames, at a specific sample rate, to milliseconds.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_FramesToMS)
-func FramesToMS(sampleRate int32, frames uint64) uint64 {
+func FramesToMS(sampleRate int32, frames int64) int64 {
 	return iFramesToMS(sampleRate, frames)
 }
 

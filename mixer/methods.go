@@ -356,13 +356,13 @@ func (audio *Audio) Destroy() {
 
 // MIX_AudioMSToFrames - Convert milliseconds to sample frames for a [MIX_Audio](MIX_Audio)'s format.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_AudioMSToFrames)
-func (audio *Audio) MSToFrames(ms uint64) uint64 {
+func (audio *Audio) MSToFrames(ms int64) int64 {
 	return iAudioMSToFrames(audio, ms)
 }
 
 // MIX_AudioFramesToMS - Convert sample frames for a [MIX_Audio](MIX_Audio)'s format to milliseconds.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_AudioFramesToMS)
-func (audio *Audio) FramesToMS(frames uint64) uint64 {
+func (audio *Audio) FramesToMS(frames int64) int64 {
 	return iAudioFramesToMS(audio, frames)
 }
 
@@ -444,7 +444,7 @@ func (track *Track) RemoveTag(tag string) {
 
 // MIX_SetTrackPlaybackPosition - Seek a playing track to a new position in its input.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackPlaybackPosition)
-func (track *Track) SetPlaybackPosition(frames uint64) error {
+func (track *Track) SetPlaybackPosition(frames int64) error {
 	if !iSetTrackPlaybackPosition(track, frames) {
 		return internal.LastErr()
 	}
@@ -489,13 +489,13 @@ func (track *Track) Remaining() int64 {
 
 // MIX_TrackMSToFrames - Convert milliseconds to sample frames for a track's current format.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMSToFrames)
-func (track *Track) MSToFrames(ms uint64) uint64 {
+func (track *Track) MSToFrames(ms int64) int64 {
 	return iTrackMSToFrames(track, ms)
 }
 
 // MIX_TrackFramesToMS - Convert sample frames for a track's current format to milliseconds.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackFramesToMS)
-func (track *Track) FramesToMS(frames uint64) uint64 {
+func (track *Track) FramesToMS(frames int64) int64 {
 	return iTrackFramesToMS(track, frames)
 }
 
