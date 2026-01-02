@@ -3,6 +3,11 @@ name: Build SDL Binaries
 on:
     workflow_dispatch:
       inputs:
+        target-branch:
+          description: "Branch to merge with"
+          required: true
+          type: string
+          default: 'main'
         sdl-version:
           description: "SDL version"
           required: true
@@ -127,4 +132,4 @@ jobs:
         git add ./bin
         git commit -m "bin: Update embedded libraries" 
         git push -u origin binaries-update
-        gh pr create -B main -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n'
+        gh pr create -B ${{ inputs.target-branch }} -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n'
