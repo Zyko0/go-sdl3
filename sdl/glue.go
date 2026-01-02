@@ -884,6 +884,10 @@ type AppQuit_func uintptr
 // (https://wiki.libsdl.org/SDL3/SDL_EventFilter)
 type EventFilter uintptr
 
+// SDL_AudioStreamDataCompleteCallback - A callback that fires for completed [SDL_PutAudioStreamDataNoCopy](SDL_PutAudioStreamDataNoCopy)() data.
+// (https://wiki.libsdl.org/SDL3/SDL_AudioStreamDataCompleteCallback)
 type AudioStreamDataCompleteCallback uintptr
 
+// SDL_MouseMotionTransformCallback - A callback used to transform mouse motion delta from raw values.
+// (https://wiki.libsdl.org/SDL3/SDL_MouseMotionTransformCallback)
 type MouseMotionTransformCallback uintptr
