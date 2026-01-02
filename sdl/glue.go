@@ -883,3 +883,7 @@ type AppQuit_func uintptr
 // SDL_EventFilter - A function pointer used for callbacks that watch the event queue.
 // (https://wiki.libsdl.org/SDL3/SDL_EventFilter)
 type EventFilter uintptr
+
+type AudioStreamDataCompleteCallback uintptr
+
+type MouseMotionTransformCallback uintptr
