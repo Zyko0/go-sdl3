@@ -9,8 +9,8 @@ import (
 
 // Mix_Version - This function gets the version of the dynamically linked SDL_mixer library.
 // (https://wiki.libsdl.org/SDL3_mixer/Mix_Version)
-func Version() int32 {
-	return iVersion()
+func GetVersion() sdl.Version {
+	return sdl.Version(iVersion())
 }
 
 // Mix_Init - Initialize SDL_mixer.
