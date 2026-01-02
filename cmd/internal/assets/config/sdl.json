@@ -98,6 +98,8 @@
         "SDL_CreateGPUDevice",
         "SDL_ShowOpenFileDialog",
         "SDL_ShowSaveFileDialog",
-        "SDL_ShowOpenFolderDialog"
+        "SDL_ShowOpenFolderDialog",
+        "SDL_GetEventDescription",
+        "SDL_SetGamepadMapping"
     ]
 }

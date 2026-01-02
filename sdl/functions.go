@@ -186,7 +186,7 @@ func PumpEvents() {
 	iPumpEvents()
 }
 
-// TODO: PeepEvents
+// TODO: PeepEvents()
 
 // SDL_HasEvent - Check for the existence of a certain event type in the event queue.
 // (https://wiki.libsdl.org/SDL3/SDL_HasEvent)
@@ -689,6 +689,18 @@ func GL_LoadLibrary(path string) error {
 	return nil
 }
 
+// SDL_GL_GetProcAddress - Get an OpenGL function by name.
+// (https://wiki.libsdl.org/SDL3/SDL_GL_GetProcAddress)
+func GL_GetProcAddress(proc string) FunctionPointer {
+	return iGL_GetProcAddress(proc)
+}
+
+// SDL_EGL_GetProcAddress - Get an EGL library function by name.
+// (https://wiki.libsdl.org/SDL3/SDL_EGL_GetProcAddress)
+func EGL_GetProcAddress(proc string) FunctionPointer {
+	return iEGL_GetProcAddress(proc)
+}
+
 // SDL_GL_ExtensionSupported - Check if an OpenGL extension is supported for the current context.
 // (https://wiki.libsdl.org/SDL3/SDL_GL_ExtensionSupported)
 func GL_ExtensionSupported(extension string) bool {
@@ -814,6 +826,16 @@ func EGL_GetCurrentConfig() (EGLConfig, error) {
 	}
 
 	return config, nil
+}
+
+// SDL_EGL_SetAttributeCallbacks - Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.
+// (https://wiki.libsdl.org/SDL3/SDL_EGL_SetAttributeCallbacks)
+func EGL_SetAttributeCallbacks(
+	platformAttribCallback EGLAttribArrayCallback,
+	surfaceAttribCallback EGLIntArrayCallback,
+	contextAttribCallback EGLIntArrayCallback,
+) {
+	iEGL_SetAttributeCallbacks(platformAttribCallback, surfaceAttribCallback, contextAttribCallback, 0)
 }
 
 // SDL_GL_SetSwapInterval - Set the swap interval for the current OpenGL context.
@@ -1217,6 +1239,12 @@ func GetKeyboards() ([]KeyboardID, error) {
 	return internal.ClonePtrSlice[KeyboardID](ptr, int(count)), nil
 }
 
+// SDL_GetKeyboardFocus - Query the window which currently has keyboard focus.
+// (https://wiki.libsdl.org/SDL3/SDL_GetKeyboardFocus)
+func GetKeyboardFocus() *Window {
+	return iGetKeyboardFocus()
+}
+
 // SDL_GetKeyboardState - Get a snapshot of the current state of the keyboard.
 // (https://wiki.libsdl.org/SDL3/SDL_GetKeyboardState)
 func GetKeyboardState() []bool {
@@ -1231,6 +1259,18 @@ func GetKeyboardState() []bool {
 // (https://wiki.libsdl.org/SDL3/SDL_ResetKeyboard)
 func ResetKeyboard() {
 	iResetKeyboard()
+}
+
+// SDL_GetModState - Get the current key modifier state for the keyboard.
+// (https://wiki.libsdl.org/SDL3/SDL_GetModState)
+func GetModState() Keymod {
+	return iGetModState()
+}
+
+// SDL_SetModState - Set the current key modifier state for the keyboard.
+// (https://wiki.libsdl.org/SDL3/SDL_SetModState)
+func SetModState(state Keymod) {
+	iSetModState(state)
 }
 
 // SDL_GetScancodeFromName - Get a scancode from a human-readable name.
@@ -1319,6 +1359,16 @@ func WarpMouseGlobal(x, y float32) error {
 	return nil
 }
 
+// SDL_SetRelativeMouseTransform - Set a user-defined function by which to transform relative mouse inputs.
+// (https://wiki.libsdl.org/SDL3/SDL_SetRelativeMouseTransform)
+func SetRelativeMouseTransform(callback MouseMotionTransformCallback) error {
+	if !iSetRelativeMouseTransform(callback, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
 // SDL_CaptureMouse - Capture the mouse and to track input outside an SDL window.
 // (https://wiki.libsdl.org/SDL3/SDL_CaptureMouse)
 func CaptureMouse(enabled bool) error {
@@ -1340,6 +1390,18 @@ func CreateCursor(data, mask []byte, width, height, hotX, hotY int) (*Cursor, er
 	if cursor == nil {
 		return nil, internal.LastErr()
 	}
+
+	return cursor, nil
+}
+
+// SDL_CreateAnimatedCursor - Create an animated color cursor.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateAnimatedCursor)
+func CreateAnimatedCursor(frames []CursorFrameInfo, hotX, hotY int32) (*Cursor, error) {
+	cursor := iCreateAnimatedCursor(unsafe.SliceData(frames), int32(len(frames)), hotX, hotY)
+	if cursor == nil {
+		return nil, internal.LastErr()
+	}
+	runtime.KeepAlive(frames)
 
 	return cursor, nil
 }
@@ -1512,6 +1574,12 @@ func GamepadEventsEnabled() bool {
 // (https://wiki.libsdl.org/SDL3/SDL_UpdateGamepads)
 func UpdateGamepads() {
 	iUpdateGamepads()
+}
+
+// SDL_GetGamepadTypeFromString - Convert a string into [SDL_GamepadType](SDL_GamepadType) enum.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGamepadTypeFromString)
+func GetGamepadTypeFromString(str string) GamepadType {
+	return iGetGamepadTypeFromString(str)
 }
 
 // SDL_GetGamepadAxisFromString - Convert a string into SDL_GamepadAxis enum.

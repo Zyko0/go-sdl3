@@ -3,6 +3,7 @@
 package sdl
 
 import (
+	"runtime"
 	js "syscall/js"
 	"unsafe"
 
@@ -9078,17 +9079,19 @@ func initialize() {
 		return uintptr(internal.GetInt64(ret))
 	}
 
-	iSetGamepadMapping = func(instance_id JoystickID, mapping string) bool {
+	iSetGamepadMapping = func(instance_id JoystickID, mapping *byte) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_instance_id := int32(instance_id)
-		_mapping := internal.StringOnJSStack(mapping)
+		_mapping := internal.StringOnJSStack(internal.PtrToString(uintptr(unsafe.Pointer(mapping))))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetGamepadMapping",
 			_instance_id,
 			_mapping,
 		)
+
+		runtime.KeepAlive(mapping)
 
 		return internal.GetBool(ret)
 	}

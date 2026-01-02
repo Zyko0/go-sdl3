@@ -2665,7 +2665,7 @@ var (
 	// SDL_SetGamepadMapping => Set the current mapping of a joystick or gamepad.
 	//
 	//puregogen:function symbol=SDL_SetGamepadMapping
-	iSetGamepadMapping func(instance_id JoystickID, mapping string) bool
+	iSetGamepadMapping func(instance_id JoystickID, mapping *byte) bool
 
 	// SDL_HasGamepad => Return whether a gamepad is currently connected.
 	//
@@ -3357,7 +3357,7 @@ var (
 	// SDL_GetEventDescription => Generate an English description of an event.
 	//
 	//puregogen:function symbol=SDL_GetEventDescription
-	iGetEventDescription func(event *Event, buf string, buflen int32) int32
+	iGetEventDescription func(event *Event, buf *byte, buflen int32) int32
 
 	// SDL_GetBasePath => Get the directory where the application was run from.
 	//

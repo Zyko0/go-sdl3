@@ -674,9 +674,14 @@ func (id JoystickID) IsJoystickVirtual() bool {
 
 // SDL_SetGamepadMapping - Set the current mapping of a joystick or gamepad.
 // (https://wiki.libsdl.org/SDL3/SDL_SetGamepadMapping)
-func (instance_id JoystickID) SetGamepadMapping(mapping string) bool {
-	panic("not implemented")
-	return iSetGamepadMapping(instance_id, mapping)
+func (instance_id JoystickID) SetGamepadMapping(mapping string) error {
+	if !iSetGamepadMapping(instance_id, internal.StringToNullablePtr(mapping)) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(mapping)
+
+	return nil
 }
 
 // SDL_IsGamepad - Check if the given joystick is supported by the gamepad interface.
@@ -890,6 +895,22 @@ func (texture *Texture) Size() (float32, float32, error) {
 	}
 
 	return w, h, nil
+}
+
+// SDL_SetTexturePalette - Set the palette used by a texture.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTexturePalette)
+func (texture *Texture) SetPalette(palette *Palette) error {
+	if !iSetTexturePalette(texture, palette) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetTexturePalette - Get the palette used by a texture.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTexturePalette)
+func (texture *Texture) Palette() *Palette {
+	return iGetTexturePalette(texture)
 }
 
 // SDL_SetTextureColorMod - Set an additional color value multiplied into render copy operations.
@@ -1821,6 +1842,18 @@ func (event *Event) Window() *Window {
 	return iGetWindowFromEvent(event)
 }
 
+// SDL_GetEventDescription - Generate an English description of an event.
+// (https://wiki.libsdl.org/SDL3/SDL_GetEventDescription)
+func (event *Event) Description() string {
+	var buf [256]byte
+
+	count := iGetEventDescription(event, &buf[0], int32(len(buf)-1))
+	str := make([]byte, count)
+	copy(str, buf[:count])
+
+	return string(str)
+}
+
 // GPUDevice
 
 // SDL_DestroyGPUDevice - Destroys a GPU context previously returned by SDL_CreateGPUDevice.
@@ -1839,6 +1872,17 @@ func (device *GPUDevice) Driver() string {
 // (https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats)
 func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
 	return iGetGPUShaderFormats(device)
+}
+
+// SDL_CreateGPURenderer - Create a 2D GPU rendering context.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderer)
+func (device *GPUDevice) CreateGPURenderer(window *Window) (*Renderer, error) {
+	renderer := iCreateGPURenderer(device, window)
+	if renderer == nil {
+		return nil, internal.LastErr()
+	}
+
+	return renderer, nil
 }
 
 // SDL_CreateGPUComputePipeline - Creates a pipeline object to be used in a compute workflow.
@@ -2628,24 +2672,13 @@ func (gamepad *Gamepad) Close() {
 // SDL_GetGamepadAppleSFSymbolsNameForButton - Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForButton)
 func (gamepad *Gamepad) AppleSFSymbolsNameForButton(button GamepadButton) string {
-	panic("not implemented")
 	return iGetGamepadAppleSFSymbolsNameForButton(gamepad, button)
 }
 
 // SDL_GetGamepadAppleSFSymbolsNameForAxis - Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForAxis)
 func (gamepad *Gamepad) AppleSFSymbolsNameForAxis(axis GamepadAxis) string {
-	panic("not implemented")
 	return iGetGamepadAppleSFSymbolsNameForAxis(gamepad, axis)
-}
-
-// Keymod
-
-// SDL_SetModState - Set the current key modifier state for the keyboard.
-// (https://wiki.libsdl.org/SDL3/SDL_SetModState)
-func (modstate Keymod) SetModState() {
-	panic("not implemented")
-	iSetModState(modstate)
 }
 
 // GPUCopyPass
@@ -2738,6 +2771,17 @@ func (renderer *Renderer) Window() (*Window, error) {
 	}
 
 	return window, nil
+}
+
+// SDL_GetGPURendererDevice - Return the GPU device used by a renderer.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGPURendererDevice)
+func (renderer *Renderer) GPUDevice() (*GPUDevice, error) {
+	device := iGetGPURendererDevice(renderer)
+	if device == nil {
+		return nil, internal.LastErr()
+	}
+
+	return device, nil
 }
 
 // SDL_GetRendererName - Get the name of a renderer.
@@ -3248,6 +3292,53 @@ func (renderer *Renderer) RenderGeometryRaw(texture *Texture, xy []float32, xySt
 	return nil
 }
 
+// SDL_SetRenderTextureAddressMode - Set the texture addressing mode used in [SDL_RenderGeometry](SDL_RenderGeometry)().
+// (https://wiki.libsdl.org/SDL3/SDL_SetRenderTextureAddressMode)
+func (renderer *Renderer) SetTextureAddressMode(uMode, vMode TextureAddressMode) error {
+	if !iSetRenderTextureAddressMode(renderer, uMode, vMode) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetRenderTextureAddressMode - Get the texture addressing mode used in [SDL_RenderGeometry](SDL_RenderGeometry)().
+// (https://wiki.libsdl.org/SDL3/SDL_GetRenderTextureAddressMode)
+func (renderer *Renderer) TextureAddressMode() (TextureAddressMode, TextureAddressMode, error) {
+	var u, v TextureAddressMode
+
+	if !iGetRenderTextureAddressMode(renderer, &u, &v) {
+		return 0, 0, internal.LastErr()
+	}
+
+	return u, v, nil
+}
+
+// SDL_CreateGPURenderState - Create custom GPU render state.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderState)
+func (renderer *Renderer) CreateGPURenderState(info *GPURenderStateCreateInfo) (*GPURenderState, error) {
+	state := iCreateGPURenderState(renderer, info)
+	if state == nil {
+		return nil, internal.LastErr()
+	}
+
+	runtime.KeepAlive(info)
+
+	return state, nil
+}
+
+// SDL_SetGPURenderState - Set custom GPU render state.
+// (https://wiki.libsdl.org/SDL3/SDL_SetGPURenderState)
+func (renderer *Renderer) SetGPURenderState(state *GPURenderState) error {
+	if !iSetGPURenderState(renderer, state) {
+		return internal.LastErr()
+	}
+
+	runtime.KeepAlive(state)
+
+	return nil
+}
+
 // SDL_RenderReadPixels - Read pixels from the current rendering target.
 // (https://wiki.libsdl.org/SDL3/SDL_RenderReadPixels)
 func (renderer *Renderer) ReadPixels(rect *Rect) (*Surface, error) {
@@ -3345,6 +3436,36 @@ func (renderer *Renderer) DebugText(x float32, y float32, str string) error {
 // (https://wiki.libsdl.org/SDL3/SDL_RenderDebugText)
 func (renderer *Renderer) DebugTextFormat(x float32, y float32, format string, values ...any) bool {
 	return iRenderDebugText(renderer, x, y, fmt.Sprintf(format, values...))
+}
+
+// SDL_SetDefaultTextureScaleMode - Set default scale mode for new textures for given renderer.
+// (https://wiki.libsdl.org/SDL3/SDL_SetDefaultTextureScaleMode)
+func (renderer *Renderer) SetDefaultTextureScaleMode(mode ScaleMode) error {
+	if !iSetDefaultTextureScaleMode(renderer, mode) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetDefaultTextureScaleMode - Get default texture scale mode of the given renderer.
+// (https://wiki.libsdl.org/SDL3/SDL_GetDefaultTextureScaleMode)
+func (renderer *Renderer) DefaultTextureScaleMode() (ScaleMode, error) {
+	var mode ScaleMode
+
+	if !iGetDefaultTextureScaleMode(renderer, &mode) {
+		return 0, internal.LastErr()
+	}
+
+	return mode, nil
+}
+
+// RenderState
+
+// SDL_DestroyGPURenderState - Destroy custom GPU render state.
+// (https://wiki.libsdl.org/SDL3/SDL_DestroyGPURenderState)
+func (render_state *GPURenderState) Destroy() {
+	iDestroyGPURenderState(render_state)
 }
 
 // AsyncIO
@@ -3592,13 +3713,6 @@ func (id MouseID) Name() (string, error) {
 
 // EventFilter
 
-// SDL_GetEventFilter - Query the current event filter.
-// (https://wiki.libsdl.org/SDL3/SDL_GetEventFilter)
-func (filter *EventFilter) Get(userdata **byte) bool {
-	panic("not implemented")
-	//return iGetEventFilter(filter, userdata)
-}
-
 // AudioStream
 
 // SDL_UnbindAudioStream - Unbind a single audio stream from its audio device.
@@ -3740,6 +3854,8 @@ func (stream *AudioStream) PutData(buf []byte) error {
 	if !iPutAudioStreamData(stream, uintptr(unsafe.Pointer(unsafe.SliceData(buf))), int32(len(buf))) {
 		return internal.LastErr()
 	}
+
+	runtime.KeepAlive(buf)
 
 	return nil
 }
@@ -4202,6 +4318,16 @@ func (window *Window) SetAlwaysOnTop(onTop bool) error {
 	return nil
 }
 
+// SDL_SetWindowFillDocument - Set the window to fill the current document space (Emscripten only).
+// (https://wiki.libsdl.org/SDL3/SDL_SetWindowFillDocument)
+func (w *Window) SetFillDocument(fill bool) error {
+	if !iSetWindowFillDocument(w, fill) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
 // SDL_ShowWindow - Show a window.
 // (https://wiki.libsdl.org/SDL3/SDL_ShowWindow)
 func (window *Window) Show() error {
@@ -4457,9 +4583,12 @@ func (window *Window) ShowSystemMenu(x, y int32) error {
 
 // SDL_SetWindowHitTest - Provide a callback that decides if a window region has special properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetWindowHitTest)
-func (window *Window) SetHitTest(callback HitTest, callback_data *byte) bool {
-	panic("not implemented")
-	//return iSetWindowHitTest(window, callback, callback_data)
+func (window *Window) SetHitTest(callback HitTest) error {
+	if !iSetWindowHitTest(window, callback, 0) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetWindowShape - Set the shape of a transparent window.
@@ -4480,6 +4609,48 @@ func (window *Window) Flash(operation FlashOperation) error {
 	}
 
 	return nil
+}
+
+// SDL_SetWindowProgressState - Sets the state of the progress bar for the given window’s taskbar icon.
+// (https://wiki.libsdl.org/SDL3/SDL_SetWindowProgressState)
+func (window *Window) SetProgressState(state ProgressState) error {
+	if !iSetWindowProgressState(window, state) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetWindowProgressState - Get the state of the progress bar for the given window’s taskbar icon.
+// (https://wiki.libsdl.org/SDL3/SDL_GetWindowProgressState)
+func (window *Window) GetProgressState() (ProgressState, error) {
+	state := iGetWindowProgressState(window)
+	if state == PROGRESS_STATE_INVALID {
+		return PROGRESS_STATE_INVALID, internal.LastErr()
+	}
+
+	return state, nil
+}
+
+// SDL_SetWindowProgressValue - Sets the value of the progress bar for the given window’s taskbar icon.
+// (https://wiki.libsdl.org/SDL3/SDL_SetWindowProgressValue)
+func (window *Window) SetProgressValue(value float32) error {
+	if !iSetWindowProgressValue(window, value) {
+		return internal.LastErr()
+	}
+
+	return nil
+}
+
+// SDL_GetWindowProgressValue - Get the value of the progress bar for the given window’s taskbar icon.
+// (https://wiki.libsdl.org/SDL3/SDL_GetWindowProgressValue)
+func (window *Window) GetProgressValue() (float32, error) {
+	value := iGetWindowProgressValue(window)
+	if value < 0 {
+		return -1, internal.LastErr()
+	}
+
+	return value, nil
 }
 
 // SDL_DestroyWindow - Destroy a window.

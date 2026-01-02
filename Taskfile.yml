@@ -78,22 +78,6 @@ tasks:
             # Generate SDL3 documentation on top of functions and types
             - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }} --annotations "cmd/internal/assets/wiki/annotations.csv"
 
-    compress-binaries:
-        desc: Compress the embedded SDL3 library binaries
-        vars:
-            DIRS: [binsdl, binttf, binimg, binmix]
-        cmds:
-            # Strip linux binaries
-            - for:
-                var: DIRS
-              cmd:
-                strip $(echo ./bin/{{.ITEM}}/assets/*.so)
-            # Compress library binaries
-            - for:
-                var: DIRS
-              cmd:
-                gzip -f $(echo ./bin/{{.ITEM}}/assets/*)
-
     coverage:
         desc: Update the COVERAGE.md file with functions covered by the bindings for SDL3 libraries
         vars:

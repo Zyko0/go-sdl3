@@ -7906,8 +7906,8 @@ func initialize() {
 		runtime.KeepAlive(gamepad)
 		return __r0
 	}
-	iSetGamepadMapping = func(instance_id JoystickID, mapping string) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_SetGamepadMapping, uintptr(instance_id), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(mapping))))
+	iSetGamepadMapping = func(instance_id JoystickID, mapping *byte) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_SetGamepadMapping, uintptr(instance_id), uintptr(unsafe.Pointer(mapping)))
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(mapping)
 		return __r0
@@ -8645,8 +8645,8 @@ func initialize() {
 		runtime.KeepAlive(event)
 		return __r0
 	}
-	iGetEventDescription = func(event *Event, buf string, buflen int32) int32 {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_GetEventDescription, uintptr(unsafe.Pointer(event)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(buf))), uintptr(buflen))
+	iGetEventDescription = func(event *Event, buf *byte, buflen int32) int32 {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_GetEventDescription, uintptr(unsafe.Pointer(event)), uintptr(unsafe.Pointer(buf)), uintptr(buflen))
 		__r0 := int32(_r0)
 		runtime.KeepAlive(event)
 		runtime.KeepAlive(buf)
