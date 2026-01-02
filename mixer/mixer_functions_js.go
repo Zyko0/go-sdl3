@@ -548,7 +548,7 @@ func initialize() {
 		)
 	}
 
-	iSetTrackPlaybackPosition = func(track *Track, frames uint64) bool {
+	iSetTrackPlaybackPosition = func(track *Track, frames int64) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -648,7 +648,7 @@ func initialize() {
 		return int64(internal.GetInt64(ret))
 	}
 
-	iTrackMSToFrames = func(track *Track, ms uint64) uint64 {
+	iTrackMSToFrames = func(track *Track, ms int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -663,10 +663,10 @@ func initialize() {
 			_ms,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
-	iTrackFramesToMS = func(track *Track, frames uint64) uint64 {
+	iTrackFramesToMS = func(track *Track, frames int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -681,10 +681,10 @@ func initialize() {
 			_frames,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
-	iAudioMSToFrames = func(audio *Audio, ms uint64) uint64 {
+	iAudioMSToFrames = func(audio *Audio, ms int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -699,10 +699,10 @@ func initialize() {
 			_ms,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
-	iAudioFramesToMS = func(audio *Audio, frames uint64) uint64 {
+	iAudioFramesToMS = func(audio *Audio, frames int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -717,10 +717,10 @@ func initialize() {
 			_frames,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
-	iMSToFrames = func(sample_rate int32, ms uint64) uint64 {
+	iMSToFrames = func(sample_rate int32, ms int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -732,10 +732,10 @@ func initialize() {
 			_ms,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
-	iFramesToMS = func(sample_rate int32, frames uint64) uint64 {
+	iFramesToMS = func(sample_rate int32, frames int64) int64 {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -747,7 +747,7 @@ func initialize() {
 			_frames,
 		)
 
-		return uint64(internal.GetInt64(ret))
+		return int64(internal.GetInt64(ret))
 	}
 
 	iPlayTrack = func(track *Track, options sdl.PropertiesID) bool {
