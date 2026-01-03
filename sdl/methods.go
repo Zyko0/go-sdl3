@@ -3432,8 +3432,8 @@ func (renderer *Renderer) DebugText(x float32, y float32, str string) error {
 	return nil
 }
 
-// SDL_RenderDebugText - Draw debug text to an SDL_Renderer.
-// (https://wiki.libsdl.org/SDL3/SDL_RenderDebugText)
+// SDL_RenderDebugTextFormat - Draw debug text to an SDL_Renderer.
+// (https://wiki.libsdl.org/SDL3/SDL_RenderDebugTextFormat)
 func (renderer *Renderer) DebugTextFormat(x float32, y float32, format string, values ...any) bool {
 	return iRenderDebugText(renderer, x, y, fmt.Sprintf(format, values...))
 }
