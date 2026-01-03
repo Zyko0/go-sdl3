@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-c"]
 
@@ -8,14 +8,11 @@ ARG MIXER_VERSION=main
 ARG IMAGE_VERSION=3.2.6
 
 # Install dependencies
-RUN apt update -y
-RUN apt-get install -y wget
+RUN apt update -y && \
+        apt-get install -y wget
 RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.gpg.d/apt.llvm.org.asc
-RUN apt-get install -y software-properties-common
-RUN apt-get install -y git
-RUN apt-get install -y cmake
-RUN add-apt-repository -s -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-18 main"
-RUN apt-get install -y llvm-18 clang-18 libclang-18-dev libclang-cpp18-dev python3-pip
+RUN apt update -y && \
+        apt-get install -y software-properties-common git cmake python3-pip
 
 # Clone and install emscripten
 RUN git clone https://github.com/emscripten-core/emsdk.git --depth=1 && \
@@ -50,7 +47,7 @@ RUN source emsdk/emsdk_env.sh && \
 # Build SDL_mixer
 RUN source emsdk/emsdk_env.sh && \
         mkdir build_mixer && cd build_mixer && \
-        emcmake cmake -DSDLMIXER_MOD_XMP=OFF -DSDLMIXER_MOD=OFF -DSDLMIXER_WAVPACK=OFF -DSDLMIXER_GME=OFF -DSDLMIXER_OPUS=OFF -DSDLMIXER_SAMPLES=OFF -DSDLMIXER_VENDORED=ON -DSDL_SHARED=OFF -DSDL3_DIR=/build_sdl -DCMAKE_BUILD_TYPE=Release ../SDL_mixer && \
+        emcmake cmake -DSDLMIXER_VORBIS_VORBISFILE=OFF -DSDLMIXER_FLAC_LIBFLAC=OFF -DSDLMIXER_MP3_MPG123=OFF -DSDLMIXER_MOD_XMP=OFF -DSDLMIXER_MOD=OFF -DSDLMIXER_WAVPACK=OFF -DSDLMIXER_GME=OFF -DSDLMIXER_OPUS=OFF -DSDLMIXER_SAMPLES=OFF -DSDLMIXER_VENDORED=ON -DSDL_SHARED=OFF -DSDL3_DIR=/build_sdl -DCMAKE_BUILD_TYPE=Release ../SDL_mixer && \
         emmake make -j4
 
 # Build final wasm library
