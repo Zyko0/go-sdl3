@@ -37,4 +37,13 @@ type FFIEntry struct {
 	Location     string      `json:"location"`
 
 	SymbolHasPrefix bool
+	TagHasPrefix    bool
+}
+
+func (e FFIEntry) PrefixedName(prefix string) string {
+	if e.SymbolHasPrefix {
+		return prefix + e.Name
+	} else {
+		return e.Name
+	}
 }

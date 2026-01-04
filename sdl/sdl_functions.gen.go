@@ -5159,4 +5159,39 @@ var (
 	//
 	//puregogen:function symbol=SDL_GetRevision
 	iGetRevision func() string
+
+	// SDL_Vulkan_LoadLibrary => Dynamically load the Vulkan loader library.
+	//
+	//puregogen:function symbol=SDL_Vulkan_LoadLibrary
+	iVulkan_LoadLibrary func(path string) bool
+
+	// SDL_Vulkan_GetVkGetInstanceProcAddr => Get the address of the `vkGetInstanceProcAddr` function.
+	//
+	//puregogen:function symbol=SDL_Vulkan_GetVkGetInstanceProcAddr
+	iVulkan_GetVkGetInstanceProcAddr func() FunctionPointer
+
+	// SDL_Vulkan_UnloadLibrary => Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary().
+	//
+	//puregogen:function symbol=SDL_Vulkan_UnloadLibrary
+	iVulkan_UnloadLibrary func()
+
+	// SDL_Vulkan_GetInstanceExtensions => Get the Vulkan instance extensions needed for vkCreateInstance.
+	//
+	//puregogen:function symbol=SDL_Vulkan_GetInstanceExtensions
+	iVulkan_GetInstanceExtensions func(count *uint32) *string
+
+	// SDL_Vulkan_CreateSurface => Create a Vulkan rendering surface for a window.
+	//
+	//puregogen:function symbol=SDL_Vulkan_CreateSurface
+	iVulkan_CreateSurface func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool
+
+	// SDL_Vulkan_DestroySurface => Destroy the Vulkan rendering surface of a window.
+	//
+	//puregogen:function symbol=SDL_Vulkan_DestroySurface
+	iVulkan_DestroySurface func(instance VkInstance, surface VkSurfaceKHR, allocator *VkAllocationCallbacks)
+
+	// SDL_Vulkan_GetPresentationSupport => Query support for presentation via a given physical device and queue family.
+	//
+	//puregogen:function symbol=SDL_Vulkan_GetPresentationSupport
+	iVulkan_GetPresentationSupport func(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool
 )

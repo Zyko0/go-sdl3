@@ -165,3 +165,9 @@ type TimerID uint32
 // SDL_TrayEntryFlags - Flags that control the creation of system tray entries.
 // (https://wiki.libsdl.org/SDL3/SDL_TrayEntryFlags)
 type TrayEntryFlags uint32
+
+type VkInstance *VkInstance_T
+
+type VkPhysicalDevice *VkPhysicalDevice_T
+
+type VkSurfaceKHR *VkSurfaceKHR_T

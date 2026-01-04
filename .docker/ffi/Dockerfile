@@ -35,7 +35,7 @@ RUN git clone https://github.com/libsdl-org/SDL.git && \
         cp -r include/SDL3 /usr/include/SDL3
 
 # Generate SDL ffi
-RUN echo "#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>" > sdl.c
+RUN echo "#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>\n#include <SDL3/SDL_vulkan.h>" > sdl.c
 RUN /c2ffi/build/bin/c2ffi sdl.c > sdl_ffi.json
 
 # Clone SDL_ttf repository
