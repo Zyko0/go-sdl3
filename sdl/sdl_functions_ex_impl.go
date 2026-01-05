@@ -14,13 +14,13 @@ import (
 var (
 	// Symbols
 	// sdl
-	_addr_SDL_ShowMessageBox            uintptr
-	_addr_SDL_CreateGPUShader           uintptr
-	_addr_SDL_CreateGPUComputePipeline  uintptr
-	_addr_SDL_CreateGPUGraphicsPipeline uintptr
-	_addr_SDL_SetClipboardData          uintptr
-	_addr_SDL_ShowOpenFileDialog        uintptr
-	_addr_SDL_ShowSaveFileDialog        uintptr
+	_addr_SDL_ShowMessageBox               uintptr
+	_addr_SDL_CreateGPUShader              uintptr
+	_addr_SDL_CreateGPUComputePipeline     uintptr
+	_addr_SDL_CreateGPUGraphicsPipeline    uintptr
+	_addr_SDL_SetClipboardData             uintptr
+	_addr_SDL_ShowOpenFileDialog           uintptr
+	_addr_SDL_ShowSaveFileDialog           uintptr
 	_addr_SDL_Vulkan_GetInstanceExtensions uintptr
 )
 

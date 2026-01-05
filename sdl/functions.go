@@ -1820,11 +1820,11 @@ func Vulkan_GetInstanceExtensions() []string {
 func Vulkan_CreateSurface(window *Window, instance VkInstance, allocator VkAllocationCallbacksPtr) (VkSurfaceKHR, error) {
 	var surface VkSurfaceKHR
 	success := iVulkan_CreateSurface(window, instance, (*VkAllocationCallbacks)(unsafe.Pointer(uintptr(allocator))), &surface)
-	if success && surface != 0 {
-		return surface, nil
-	} else {
+	if !success {
 		return 0, internal.LastErr()
 	}
+
+	return surface, nil
 }
 
 // SDL_Vulkan_DestroySurface - Destroy the Vulkan rendering surface of a window.
@@ -1835,7 +1835,12 @@ func Vulkan_DestroySurface(instance VkInstance, surface VkSurfaceKHR, allocator 
 
 // SDL_Vulkan_GetPresentationSupport - Query support for presentation via a given physical device and queue family.
 // (https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetPresentationSupport)
-func Vulkan_GetPresentationSupport(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool {
-	// CHECK - Cannot handle error as not sure if internal.LastErr() would be empty on not supported but no error
-	return iVulkan_GetPresentationSupport(instance, physicalDevice, queueFamilyIndex)
+func Vulkan_GetPresentationSupport(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) (bool, error) {
+	iClearError()
+	support := iVulkan_GetPresentationSupport(instance, physicalDevice, queueFamilyIndex)
+	if !support {
+		return false, internal.LastErr()
+	}
+
+	return support, nil
 }
