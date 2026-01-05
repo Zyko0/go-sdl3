@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package sdl
 
@@ -21,6 +21,7 @@ var (
 	_addr_SDL_SetClipboardData          uintptr
 	_addr_SDL_ShowOpenFileDialog        uintptr
 	_addr_SDL_ShowSaveFileDialog        uintptr
+	_addr_SDL_Vulkan_GetInstanceExtensions uintptr
 )
 
 func initialize_ex() {
@@ -54,6 +55,10 @@ func initialize_ex() {
 	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
+	}
+	_addr_SDL_Vulkan_GetInstanceExtensions, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetInstanceExtensions")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetInstanceExtensions")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -101,5 +106,17 @@ func initialize_ex() {
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
+	}
+	iVulkan_GetInstanceExtensions= func () []string {
+		var count uint32
+		pointer, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(&count)))
+		
+		strslice := make([]string, int(count))
+		for i:=0; i < int(count); i++ {
+			strslice[i] = puregogen.BytePtrToString((*byte)(unsafe.Pointer(pointer)))
+			pointer += uintptr(len(strslice[i]) + 1) // +1 to deal with null terminator
+		}
+
+		return strslice
 	}
 }

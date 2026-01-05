@@ -17294,4 +17294,58 @@ func initialize() {
 
 		return int32(ret.Int())
 	}*/
+
+	iVulkan_LoadLibrary = func(path string) bool {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_LoadLibrary",
+		)
+		return false
+	}
+
+	iVulkan_GetVkGetInstanceProcAddr = func() FunctionPointer {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_GetVkGetInstanceProcAddr",
+		)
+		return FunctionPointer(0)
+	}
+
+	iVulkan_UnloadLibrary = func() {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_UnloadLibrary",
+		)
+	}
+
+	iVulkan_GetInstanceExtensions = func() []string {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_GetInstanceExtensions",
+		)
+		return []string{}
+	}
+
+	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_CreateSurface",
+		)
+		return false
+	}
+
+	iVulkan_DestroySurface = func(instance VkInstance, surface VkSurfaceKHR, allocator *VkAllocationCallbacks) {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_DestroySurface",
+		)
+	}
+
+	iVulkan_GetPresentationSupport = func(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool {
+		panic("not implemented on js")
+		js.Global().Get("Module").Call(
+			"_SDL_Vulkan_GetPresentationSupport",
+		)
+		return false
+	}
 }

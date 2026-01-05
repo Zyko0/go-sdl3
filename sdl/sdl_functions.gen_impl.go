@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package sdl
 
@@ -1000,7 +1000,6 @@ var (
 	_addr_SDL_Vulkan_LoadLibrary                    uintptr
 	_addr_SDL_Vulkan_GetVkGetInstanceProcAddr       uintptr
 	_addr_SDL_Vulkan_UnloadLibrary                  uintptr
-	_addr_SDL_Vulkan_GetInstanceExtensions          uintptr
 	_addr_SDL_Vulkan_CreateSurface                  uintptr
 	_addr_SDL_Vulkan_DestroySurface                 uintptr
 	_addr_SDL_Vulkan_GetPresentationSupport         uintptr
@@ -4945,10 +4944,6 @@ func initialize() {
 	_addr_SDL_Vulkan_UnloadLibrary, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_UnloadLibrary")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_UnloadLibrary")
-	}
-	_addr_SDL_Vulkan_GetInstanceExtensions, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetInstanceExtensions")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetInstanceExtensions")
 	}
 	_addr_SDL_Vulkan_CreateSurface, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_CreateSurface")
 	if err != nil {
@@ -10717,12 +10712,6 @@ func initialize() {
 	}
 	iVulkan_UnloadLibrary = func() {
 		purego.SyscallN(_addr_SDL_Vulkan_UnloadLibrary)
-	}
-	iVulkan_GetInstanceExtensions = func(count *uint32) *string {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(count)))
-		__r0 := (*string)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		runtime.KeepAlive(count)
-		return __r0
 	}
 	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_CreateSurface, uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(instance)), uintptr(unsafe.Pointer(allocator)), uintptr(unsafe.Pointer(surface)))

@@ -26,7 +26,14 @@
         "GPUVertexInputState",
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
-        "Palette"
+        "Palette",
+        "VkInstance",
+        "VkPhysicalDevice",
+        "VkSurfaceKHR",
+        "VkInstance_T",
+        "VkPhysicalDevice_T",
+        "VkSurfaceKHR_T",
+        "VkAllocationCallbacks"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",
@@ -39,7 +46,8 @@
         "SDL_SetTrayEntryCallback",
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
-        "SDL_ShowSaveFileDialog"
+        "SDL_ShowSaveFileDialog",
+        "SDL_Vulkan_GetInstanceExtensions"
     ],
     "allowlisted_functions": [
         "SDL_free"

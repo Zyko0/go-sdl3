@@ -1351,11 +1351,3 @@ type TrayMenu struct{}
 // SDL_TrayEntry - An opaque handle representing an entry on a system tray object.
 // (https://wiki.libsdl.org/SDL3/SDL_TrayEntry)
 type TrayEntry struct{}
-
-type VkInstance_T struct{}
-
-type VkPhysicalDevice_T struct{}
-
-type VkSurfaceKHR_T struct{}
-
-type VkAllocationCallbacks struct{}

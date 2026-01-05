@@ -5175,11 +5175,6 @@ var (
 	//puregogen:function symbol=SDL_Vulkan_UnloadLibrary
 	iVulkan_UnloadLibrary func()
 
-	// SDL_Vulkan_GetInstanceExtensions => Get the Vulkan instance extensions needed for vkCreateInstance.
-	//
-	//puregogen:function symbol=SDL_Vulkan_GetInstanceExtensions
-	iVulkan_GetInstanceExtensions func(count *uint32) *string
-
 	// SDL_Vulkan_CreateSurface => Create a Vulkan rendering surface for a window.
 	//
 	//puregogen:function symbol=SDL_Vulkan_CreateSurface

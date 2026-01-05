@@ -529,6 +529,9 @@ func main() {
 				e.Type.Tag == ":function-pointer":
 				continue
 			}
+			if slices.Contains(cfg.IgnoredTypes, e.Name) {
+				continue
+			}
 			if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 				continue
 			}
