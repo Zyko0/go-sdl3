@@ -107,14 +107,17 @@ func initialize_ex() {
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
 	}
-	iVulkan_GetInstanceExtensions= func () []string {
+	iVulkan_GetInstanceExtensions = func() []string {
 		var count uint32
-		pointer, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(&count)))
-		
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(&count)))
+		pointer := *(*uintptr)(unsafe.Pointer(_r0))
 		strslice := make([]string, int(count))
-		for i:=0; i < int(count); i++ {
-			strslice[i] = puregogen.BytePtrToString((*byte)(unsafe.Pointer(pointer)))
-			pointer += uintptr(len(strslice[i]) + 1) // +1 to deal with null terminator
+		for i := 0; i < int(count); i++ {
+			for ; *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) != 0; pointer++ {
+				strslice[i] += string(*(*uint8)(unsafe.Pointer(pointer)))
+			}
+			for ; *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) == 0; pointer++ {
+			}
 		}
 
 		return strslice
