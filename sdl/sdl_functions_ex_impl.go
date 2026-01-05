@@ -116,7 +116,7 @@ func initialize_ex() {
 			for ; *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) != 0; pointer++ {
 				strslice[i] += string(*(*uint8)(unsafe.Pointer(pointer)))
 			}
-			for ; *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) == 0; pointer++ {
+			for ; i < int(count)-1 && *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) == 0; pointer++ {
 			}
 		}
 
