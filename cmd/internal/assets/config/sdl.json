@@ -26,7 +26,14 @@
         "GPUVertexInputState",
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
-        "Palette"
+        "Palette",
+        "VkInstance",
+        "VkPhysicalDevice",
+        "VkSurfaceKHR",
+        "VkInstance_T",
+        "VkPhysicalDevice_T",
+        "VkSurfaceKHR_T",
+        "VkAllocationCallbacks"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",
@@ -100,6 +107,7 @@
         "SDL_ShowSaveFileDialog",
         "SDL_ShowOpenFolderDialog",
         "SDL_GetEventDescription",
-        "SDL_SetGamepadMapping"
+        "SDL_SetGamepadMapping",
+        "SDL_Vulkan_GetInstanceExtensions"
     ]
 }

@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package sdl
 
@@ -997,6 +997,13 @@ var (
 	_addr_SDL_UpdateTrays                           uintptr
 	_addr_SDL_GetVersion                            uintptr
 	_addr_SDL_GetRevision                           uintptr
+	_addr_SDL_Vulkan_LoadLibrary                    uintptr
+	_addr_SDL_Vulkan_GetVkGetInstanceProcAddr       uintptr
+	_addr_SDL_Vulkan_UnloadLibrary                  uintptr
+	_addr_SDL_Vulkan_GetInstanceExtensions          uintptr
+	_addr_SDL_Vulkan_CreateSurface                  uintptr
+	_addr_SDL_Vulkan_DestroySurface                 uintptr
+	_addr_SDL_Vulkan_GetPresentationSupport         uintptr
 )
 
 func initialize() {
@@ -4926,6 +4933,34 @@ func initialize() {
 	_addr_SDL_GetRevision, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetRevision")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetRevision")
+	}
+	_addr_SDL_Vulkan_LoadLibrary, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_LoadLibrary")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_LoadLibrary")
+	}
+	_addr_SDL_Vulkan_GetVkGetInstanceProcAddr, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetVkGetInstanceProcAddr")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetVkGetInstanceProcAddr")
+	}
+	_addr_SDL_Vulkan_UnloadLibrary, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_UnloadLibrary")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_UnloadLibrary")
+	}
+	_addr_SDL_Vulkan_GetInstanceExtensions, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetInstanceExtensions")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetInstanceExtensions")
+	}
+	_addr_SDL_Vulkan_CreateSurface, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_CreateSurface")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_CreateSurface")
+	}
+	_addr_SDL_Vulkan_DestroySurface, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_DestroySurface")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_DestroySurface")
+	}
+	_addr_SDL_Vulkan_GetPresentationSupport, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetPresentationSupport")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetPresentationSupport")
 	}
 
 	ifree = func(mem uintptr) {
@@ -10667,6 +10702,43 @@ func initialize() {
 	iGetRevision = func() string {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetRevision)
 		__r0 := "" + puregogen.BytePtrToString(*(**byte)(unsafe.Pointer(&_r0)))
+		return __r0
+	}
+	iVulkan_LoadLibrary = func(path string) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_LoadLibrary, uintptr(unsafe.Pointer(puregogen.BytePtrFromString(path))))
+		__r0 := uint8(_r0) != 0
+		runtime.KeepAlive(path)
+		return __r0
+	}
+	iVulkan_GetVkGetInstanceProcAddr = func() FunctionPointer {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetVkGetInstanceProcAddr)
+		__r0 := FunctionPointer(_r0)
+		return __r0
+	}
+	iVulkan_UnloadLibrary = func() {
+		purego.SyscallN(_addr_SDL_Vulkan_UnloadLibrary)
+	}
+	iVulkan_GetInstanceExtensions = func(count *uint32) **byte {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(count)))
+		__r0 := (**byte)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(count)
+		return __r0
+	}
+	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_CreateSurface, uintptr(unsafe.Pointer(window)), uintptr(instance), uintptr(unsafe.Pointer(allocator)), uintptr(unsafe.Pointer(surface)))
+		__r0 := uint8(_r0) != 0
+		runtime.KeepAlive(window)
+		runtime.KeepAlive(allocator)
+		runtime.KeepAlive(surface)
+		return __r0
+	}
+	iVulkan_DestroySurface = func(instance VkInstance, surface VkSurfaceKHR, allocator *VkAllocationCallbacks) {
+		purego.SyscallN(_addr_SDL_Vulkan_DestroySurface, uintptr(instance), uintptr(surface), uintptr(unsafe.Pointer(allocator)))
+		runtime.KeepAlive(allocator)
+	}
+	iVulkan_GetPresentationSupport = func(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetPresentationSupport, uintptr(instance), uintptr(physicalDevice), uintptr(queueFamilyIndex))
+		__r0 := uint8(_r0) != 0
 		return __r0
 	}
 }

@@ -1780,3 +1780,70 @@ func SetClipboardData(callback ClipboardDataCallback, cleanup ClipboardCleanupCa
 func GetVersion() Version {
 	return Version(iGetVersion())
 }
+
+// SDL_Vulkan_LoadLibrary - Dynamically load the Vulkan loader library.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_LoadLibrary)
+func Vulkan_LoadLibrary(path string) error {
+	success := iVulkan_LoadLibrary(path)
+	if success {
+		return nil
+	} else {
+		return internal.LastErr()
+	}
+}
+
+// SDL_Vulkan_GetVkGetInstanceProcAddr - Get the address of the `vkGetInstanceProcAddr` function.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetVkGetInstanceProcAddr)
+func Vulkan_GetVkGetInstanceProcAddr() (FunctionPointer, error) {
+	fp := iVulkan_GetVkGetInstanceProcAddr()
+	if fp != 0 {
+		return fp, nil
+	} else {
+		return 0, internal.LastErr()
+	}
+}
+
+// SDL_Vulkan_UnloadLibrary - Unload the Vulkan library previously loaded by [SDL_Vulkan_LoadLibrary](SDL_Vulkan_LoadLibrary)().
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_UnloadLibrary)
+func Vulkan_UnloadLibrary() {
+	iVulkan_UnloadLibrary()
+}
+
+// SDL_Vulkan_GetInstanceExtensions - Get the Vulkan instance extensions needed for vkCreateInstance.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetInstanceExtensions)
+func Vulkan_GetInstanceExtensions() []string {
+	var count uint32
+	byteptrptr := iVulkan_GetInstanceExtensions(&count)
+	// Dont free pointer, its owned by sdl
+	return internal.BytePtrPtrToStrSlice(byteptrptr, count, true)
+}
+
+// SDL_Vulkan_CreateSurface - Create a Vulkan rendering surface for a window.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_CreateSurface)
+func Vulkan_CreateSurface(window *Window, instance VkInstance, allocator VkAllocationCallbacksPtr) (VkSurfaceKHR, error) {
+	var surface VkSurfaceKHR
+	success := iVulkan_CreateSurface(window, instance, (*VkAllocationCallbacks)(unsafe.Pointer(uintptr(allocator))), &surface)
+	if !success {
+		return 0, internal.LastErr()
+	}
+
+	return surface, nil
+}
+
+// SDL_Vulkan_DestroySurface - Destroy the Vulkan rendering surface of a window.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_DestroySurface)
+func Vulkan_DestroySurface(instance VkInstance, surface VkSurfaceKHR, allocator VkAllocationCallbacksPtr) {
+	iVulkan_DestroySurface(instance, surface, (*VkAllocationCallbacks)(unsafe.Pointer(uintptr(allocator))))
+}
+
+// SDL_Vulkan_GetPresentationSupport - Query support for presentation via a given physical device and queue family.
+// (https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetPresentationSupport)
+func Vulkan_GetPresentationSupport(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) (bool, error) {
+	iClearError()
+	support := iVulkan_GetPresentationSupport(instance, physicalDevice, queueFamilyIndex)
+	if !support {
+		return false, internal.LastErr()
+	}
+
+	return support, nil
+}

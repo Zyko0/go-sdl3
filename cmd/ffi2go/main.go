@@ -116,26 +116,36 @@ func postConvertType(s string) string {
 	}
 }
 
-func extractType(e *assets.FFIEntry) string {
-	var typ string
+func extractType(e *assets.FFIEntry) (typ string, prefix bool) {
 	switch e.Tag {
 	case ":array":
-		typ = fmt.Sprintf("[%d]", e.Size) + extractType(e.Type)
+		typ, prefix = extractType(e.Type)
+		typ = fmt.Sprintf("[%d]", e.Size) + typ
 	case ":function-pointer":
 		typ = "uintptr"
+		prefix = false
 	case ":pointer":
-		typ = "*" + extractType(e.Type)
+		typ, prefix = extractType(e.Type)
+		typ = "*" + typ
 	case ":struct", "struct":
 		typ = e.Name
+		prefix = e.SymbolHasPrefix
 	default:
 		typ = convType(e.Tag, e.BitSize)
+		prefix = e.TagHasPrefix
 	}
 
-	return postConvertType(typ)
+	return postConvertType(typ), prefix
 }
 
 func trimPrefix(e *assets.FFIEntry) {
+	if strings.HasPrefix(e.Tag, cfg.Prefix) {
+		e.TagHasPrefix = true
+	}
 	e.Tag = strings.TrimPrefix(e.Tag, cfg.Prefix)
+	if strings.HasPrefix(e.Name, cfg.Prefix) {
+		e.SymbolHasPrefix = true
+	}
 	e.Name = strings.TrimPrefix(e.Name, cfg.Prefix)
 	if e.Type != nil {
 		trimPrefix(e.Type)
@@ -248,6 +258,14 @@ func jenType(stmt *jen.Statement, typ string) *jen.Statement {
 	return stmt
 }
 
+func conditionalPrepend(head, tail string, cond bool) string {
+	if cond {
+		return head + tail
+	} else {
+		return tail
+	}
+}
+
 func main() {
 	var configPath, ffiPath string
 
@@ -304,15 +322,12 @@ func main() {
 			continue
 		}
 		// Trim prefixes
-		if strings.HasPrefix(e.Name, cfg.Prefix) {
-			e.SymbolHasPrefix = true
-		}
 		trimPrefix(e)
 		var allowlisted bool
 		if e.Tag == "function" {
-			allowlisted = slices.Contains(cfg.AllowlistedFunctions, cfg.Prefix+e.Name)
+			allowlisted = slices.Contains(cfg.AllowlistedFunctions, e.PrefixedName(cfg.Prefix))
 			if !allowlisted {
-				if slices.Contains(cfg.IgnoredFunctions, cfg.Prefix+e.Name) {
+				if slices.Contains(cfg.IgnoredFunctions, e.PrefixedName(cfg.Prefix)) {
 					continue
 				}
 				// Skip lower case functions
@@ -339,12 +354,13 @@ func main() {
 		var registration bool
 		for _, f := range e.Fields {
 			// Remove pointer or array potential prefix
-			t := strings.ReplaceAll(extractType(f.Type), "*", "")
+			t, prefix := extractType(f.Type)
+			t = strings.ReplaceAll(t, "*", "")
 			if idx := strings.Index(t, "]"); idx != -1 {
 				t = t[idx+1:]
 			}
-			if _, ok := uniqueTypes[cfg.Prefix+t]; !ok {
-				uniqueTypes[cfg.Prefix+t] = struct{}{}
+			if _, ok := uniqueTypes[conditionalPrepend(cfg.Prefix, t, prefix)]; !ok {
+				uniqueTypes[conditionalPrepend(cfg.Prefix, t, prefix)] = struct{}{}
 				registration = true
 			}
 		}
@@ -354,8 +370,8 @@ func main() {
 	for !done {
 		done = true
 		for _, e := range ffiEntries {
-			_, ok := uniqueTypes[cfg.Prefix+e.Name]
-			ok = ok || slices.Contains(cfg.BaseTypes, cfg.Prefix+e.Name)
+			_, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]
+			ok = ok || slices.Contains(cfg.BaseTypes, e.PrefixedName(cfg.Prefix))
 			if ok {
 				switch e.Tag {
 				case "struct", "union":
@@ -364,12 +380,13 @@ func main() {
 					}
 				case "typedef":
 					if _, ok := uniqueTypes[cfg.Prefix+e.Tag]; !ok {
-						t := strings.ReplaceAll(extractType(e.Type), "*", "")
+						t, prefix := extractType(e.Type)
+						t = strings.ReplaceAll(t, "*", "")
 						if idx := strings.Index(t, "]"); idx != -1 {
 							t = t[idx+1:]
 						}
-						if _, ok := uniqueTypes[cfg.Prefix+t]; !ok {
-							uniqueTypes[cfg.Prefix+t] = struct{}{}
+						if _, ok := uniqueTypes[conditionalPrepend(cfg.Prefix, t, prefix)]; !ok {
+							uniqueTypes[conditionalPrepend(cfg.Prefix, t, prefix)] = struct{}{}
 							done = false
 						}
 					}
@@ -393,17 +410,23 @@ func main() {
 			if e.Tag != "function" || e.Inline {
 				continue
 			}
-			if ref, ok := uniqueAPIFunctions[cfg.Prefix+e.Name]; ok {
+			if ref, ok := uniqueAPIFunctions[e.PrefixedName(cfg.Prefix)]; ok {
 				found++
 				apifunc[e.Name] = struct{}{}
 				// Only add once
 				fn := jen.Id("i" + e.Name).Func()
 				fn.ParamsFunc(func(h *jen.Group) {
 					for _, ee := range e.Parameters {
-						typ := extractType(ee.Type)
-						if slices.Contains(cfg.NoAutoStringFunctions, cfg.Prefix+e.Name) &&
+						typ, _ := extractType(ee.Type)
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
 							typ == "string" {
 							typ = "*byte"
+
+						}
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							typ == "*string" {
+							typ = "**byte"
+
 						}
 						h.Add(
 							jenType(jen.Id(sanitizeArgName(ee.Name)), typ),
@@ -411,10 +434,21 @@ func main() {
 					}
 				})
 				if e.ReturnType != nil && e.ReturnType.Tag != ":void" {
-					if slices.Contains(cfg.SDLFreeFunctions, cfg.Prefix+e.Name) {
+					if slices.Contains(cfg.SDLFreeFunctions, e.PrefixedName(cfg.Prefix)) {
 						fn.Uintptr()
 					} else {
-						jenType(fn, extractType(e.ReturnType))
+						t, _ := extractType(e.ReturnType)
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							t == "string" {
+							t = "*byte"
+
+						}
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							t == "*string" {
+							t = "**byte"
+
+						}
+						jenType(fn, t)
 					}
 				}
 				if e.SymbolHasPrefix {
@@ -425,7 +459,7 @@ func main() {
 				g.Add(jen.Comment(
 					"// " + ref.Description,
 				))
-				if slices.Contains(cfg.SDLFreeFunctions, cfg.Prefix+e.Name) {
+				if slices.Contains(cfg.SDLFreeFunctions, e.PrefixedName(cfg.Prefix)) {
 					g.Add(jen.Comment(
 						"// SDL_free() must be called on the returned pointer.",
 					))
@@ -448,7 +482,7 @@ func main() {
 		if e.Tag != "enum" {
 			continue
 		}
-		if _, ok := uniqueTypes[cfg.Prefix+e.Name]; !ok {
+		if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 			continue
 		}
 		f.Type().Id(e.Name).Uint32()
@@ -476,12 +510,12 @@ func main() {
 		if slices.Contains(cfg.IgnoredTypes, e.Name) {
 			continue
 		}
-		if _, ok := uniqueTypes[cfg.Prefix+e.Name]; !ok {
+		if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 			continue
 		}
 		f.Type().Id(e.Name).StructFunc(func(g *jen.Group) {
 			for _, ee := range e.Fields {
-				typ := extractType(ee.Type)
+				typ, _ := extractType(ee.Type)
 				// Replacement for structs only to account for offset/alignment in wasm
 				if typ == "uintptr" {
 					typ = "Pointer"
@@ -511,13 +545,16 @@ func main() {
 				e.Type.Tag == ":function-pointer":
 				continue
 			}
-			if _, ok := uniqueTypes[cfg.Prefix+e.Name]; !ok {
+			if slices.Contains(cfg.IgnoredTypes, e.Name) {
+				continue
+			}
+			if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 				continue
 			}
 			if _, handled := typesConversions[e.Name]; handled {
 				continue
 			}
-			typ := extractType(e.Type)
+			typ, _ := extractType(e.Type)
 			if e.Name == typ {
 				continue
 			}
