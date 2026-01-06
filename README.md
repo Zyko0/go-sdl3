@@ -102,3 +102,4 @@ The [examples](./examples/) folder contains:
 
 External examples:
 - Clay UI renderer: [TotallyGamerJet/clay/examples/sdl3](https://github.com/TotallyGamerJet/clay/blob/main/examples/sdl3/main.go)
+- Masterplan: [SolarLune/masterplan](https://github.com/SolarLune/masterplan)
