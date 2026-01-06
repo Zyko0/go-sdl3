@@ -1811,11 +1811,15 @@ func Vulkan_UnloadLibrary() {
 
 // SDL_Vulkan_GetInstanceExtensions - Get the Vulkan instance extensions needed for vkCreateInstance.
 // (https://wiki.libsdl.org/SDL3/SDL_Vulkan_GetInstanceExtensions)
-func Vulkan_GetInstanceExtensions() []string {
+func Vulkan_GetInstanceExtensions() ([]string, error) {
 	var count uint32
-	byteptrptr := iVulkan_GetInstanceExtensions(&count)
+
+	ptr := iVulkan_GetInstanceExtensions(&count)
+	if ptr == nil {
+		return nil, internal.LastErr()
+	}
 	// Dont free pointer, its owned by sdl
-	return internal.BytePtrPtrToStrSlice(byteptrptr, count, true)
+	return internal.BytePtrPtrToStrSlice(ptr, count, true), nil
 }
 
 // SDL_Vulkan_CreateSurface - Create a Vulkan rendering surface for a window.
