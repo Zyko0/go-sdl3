@@ -2,11 +2,11 @@
 
 Examples from https://github.com/TheSpydog/SDL_gpu_examples
 
-Run `go run ./examples`, optionally use example name as argument
+Run `go run .`, optionally use example name as argument
 
 ## Building
 
-Run `CGO_ENABLED=0 go build -o gpu ./examples`
+Run `CGO_ENABLED=0 go build -o gpu .`
 
 Can cross compile with `GOOS=windows` and test in Wine
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/content"
+	"github.com/Zyko0/go-sdl3/examples/gpu/assets"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
@@ -49,7 +49,7 @@ func LoadShader(
 		return nil, errors.New("unrecognized backend shader format")
 	}
 
-	code, err := content.ReadFile(path)
+	code, err := assets.ReadFile(path)
 	if err != nil {
 		return nil, errors.New("failed to open shader: " + err.Error())
 	}
@@ -101,7 +101,7 @@ func CreateComputePipelineFromShader(
 		return nil, errors.New("unrecognized backend shader format")
 	}
 
-	code, err := content.ReadFile(path)
+	code, err := assets.ReadFile(path)
 	if err != nil {
 		return nil, errors.New("failed to open computer shader: " + err.Error())
 	}

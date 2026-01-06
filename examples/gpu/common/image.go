@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/content"
+	"github.com/Zyko0/go-sdl3/examples/gpu/assets"
 	"github.com/mdouchement/hdr"
 	"github.com/mdouchement/hdr/codec/rgbe"
 	"golang.org/x/image/bmp"
@@ -21,7 +21,7 @@ type HDRImage struct {
 }
 
 func LoadHDR(filename string) (HDRImage, error) {
-	data, err := content.ReadFile("images/" + filename)
+	data, err := assets.ReadFile("images/" + filename)
 	if err != nil {
 		return HDRImage{}, errors.New("failed to read data: " + err.Error())
 	}
@@ -62,7 +62,7 @@ type Image struct {
 }
 
 func LoadBMP(filename string) (Image, error) {
-	imgBytes, err := content.ReadFile("images/" + filename)
+	imgBytes, err := assets.ReadFile("images/" + filename)
 	if err != nil {
 		return Image{}, errors.New("failed to read file: " + err.Error())
 	}
@@ -104,7 +104,7 @@ type ASTCHeader struct {
 }
 
 func LoadASTC(filename string) (Image, error) {
-	fileContents, err := content.ReadFile("images/" + filename)
+	fileContents, err := assets.ReadFile("images/" + filename)
 	if err != nil {
 		return Image{}, errors.New("failed to read file: " + err.Error())
 	}
@@ -173,7 +173,7 @@ type DDSHeaderDXT10 struct {
 }
 
 func LoadDDS(filename string) (Image, error) {
-	fileContents, err := content.ReadFile("images/" + filename)
+	fileContents, err := assets.ReadFile("images/" + filename)
 	if err != nil {
 		return Image{}, errors.New("failed to read file: " + err.Error())
 	}

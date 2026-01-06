@@ -1,11 +1,11 @@
-package main
+package examples
 
 import (
 	"errors"
 	"fmt"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
+	"github.com/Zyko0/go-sdl3/examples/gpu/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 

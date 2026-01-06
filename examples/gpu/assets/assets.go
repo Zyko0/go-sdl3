@@ -1,10 +1,10 @@
-package content
+package assets
 
 import "embed"
 
 //go:embed shaders/compiled images
-var content embed.FS
+var assets embed.FS
 
 func ReadFile(path string) ([]byte, error) {
-	return content.ReadFile(path)
+	return assets.ReadFile(path)
 }

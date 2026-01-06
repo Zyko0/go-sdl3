@@ -1,11 +1,11 @@
-package main
+package examples
 
 import (
 	"errors"
 	"math"
 	"unsafe"
 
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
+	"github.com/Zyko0/go-sdl3/examples/gpu/common"
 	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/go-gl/mathgl/mgl32"
 )

@@ -7,43 +7,52 @@ import (
 	"time"
 
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
-	"github.com/Zyko0/go-sdl3/examples/gpu/examples/common"
+	"github.com/Zyko0/go-sdl3/examples/gpu/common"
+	"github.com/Zyko0/go-sdl3/examples/gpu/examples"
 	"github.com/Zyko0/go-sdl3/sdl"
 )
 
-var examples = []common.ExampleInterface{
-	ClearScreenExample,
-	ClearScreenMultiWindowExample,
-	BasicTriangleExample,
-	BasicVertexBufferExample,
-	CullModeExample,
-	BasicStencilExample,
-	InstancedIndexedExample,
-	TexturedQuadExample,
-	TexturedAnimatedQuadExample,
-	Clear3DSliceExample,
-	BasicComputeExample,
-	ComputeUniformsExample,
-	ToneMappingExample,
-	CustomSamplingExample,
-	DrawIndirectExample,
-	ComputeSamplerExample,
-	CopyAndReadbackExample,
-	CopyConsistencyExample,
-	Texture2DArrayExample,
-	TriangleMSAAExample,
-	CubemapExample,
-	WindowResizeExample,
-	Blit2DArrayExample,
-	BlitCubeExample,
-	BlitMirrorExample,
-	GenerateMipmapsExample,
-	LatencyExample,
-	DepthSamplerExample,
-	ComputeSpriteBatchExample,
-	PullSpriteBatchExample,
-	TextureTypeTestExample,
-	CompressedTexturesExample,
+type ExampleInterface interface {
+	String() string
+	Init(context *common.Context) error
+	Update(context *common.Context) error
+	Draw(context *common.Context) error
+	Quit(context *common.Context)
+}
+
+var allExamples = []ExampleInterface{
+	examples.ClearScreenExample,
+	examples.ClearScreenMultiWindowExample,
+	examples.BasicTriangleExample,
+	examples.BasicVertexBufferExample,
+	examples.CullModeExample,
+	examples.BasicStencilExample,
+	examples.InstancedIndexedExample,
+	examples.TexturedQuadExample,
+	examples.TexturedAnimatedQuadExample,
+	examples.Clear3DSliceExample,
+	examples.BasicComputeExample,
+	examples.ComputeUniformsExample,
+	examples.ToneMappingExample,
+	examples.CustomSamplingExample,
+	examples.DrawIndirectExample,
+	examples.ComputeSamplerExample,
+	examples.CopyAndReadbackExample,
+	examples.CopyConsistencyExample,
+	examples.Texture2DArrayExample,
+	examples.TriangleMSAAExample,
+	examples.CubemapExample,
+	examples.WindowResizeExample,
+	examples.Blit2DArrayExample,
+	examples.BlitCubeExample,
+	examples.BlitMirrorExample,
+	examples.GenerateMipmapsExample,
+	examples.LatencyExample,
+	examples.DepthSamplerExample,
+	examples.ComputeSpriteBatchExample,
+	examples.PullSpriteBatchExample,
+	examples.TextureTypeTestExample,
+	examples.CompressedTexturesExample,
 }
 
 func main() {
@@ -51,14 +60,14 @@ func main() {
 	var exampleIndex int = -1
 	var gotoExampleIndex int
 	var quit bool
-	var lastTime time.Time = time.Now()
+	var lastTime = time.Now()
 
 	if len(os.Args) > 1 {
 		exampleName := os.Args[1]
 		exampleNameLower := strings.ToLower(os.Args[1])
 		foundExample := false
 
-		for i, example := range examples {
+		for i, example := range allExamples {
 			if strings.ToLower(example.String()) == exampleNameLower {
 				gotoExampleIndex = i
 				foundExample = true
@@ -110,7 +119,7 @@ func main() {
 			switch event.Type {
 			case sdl.EVENT_QUIT:
 				if exampleIndex != -1 {
-					examples[exampleIndex].Quit(&context)
+					allExamples[exampleIndex].Quit(&context)
 				}
 				quit = true
 			case sdl.EVENT_GAMEPAD_ADDED:
@@ -139,13 +148,13 @@ func main() {
 				switch keyEvent.Key {
 				case sdl.K_D:
 					gotoExampleIndex = exampleIndex + 1
-					if gotoExampleIndex >= len(examples) {
+					if gotoExampleIndex >= len(allExamples) {
 						gotoExampleIndex = 0
 					}
 				case sdl.K_A:
 					gotoExampleIndex = exampleIndex - 1
 					if gotoExampleIndex < 0 {
-						gotoExampleIndex = len(examples) - 1
+						gotoExampleIndex = len(allExamples) - 1
 					}
 				case sdl.K_LEFT:
 					context.LeftPressed = true
@@ -169,14 +178,14 @@ func main() {
 
 		if gotoExampleIndex != -1 {
 			if exampleIndex != -1 {
-				examples[exampleIndex].Quit(&context)
+				allExamples[exampleIndex].Quit(&context)
 				context = common.Context{}
 			}
 
 			exampleIndex = gotoExampleIndex
-			context.ExampleName = examples[exampleIndex].String()
+			context.ExampleName = allExamples[exampleIndex].String()
 			fmt.Println("STARTING EXAMPLE: " + context.ExampleName)
-			err = examples[exampleIndex].Init(&context)
+			err = allExamples[exampleIndex].Init(&context)
 			if err != nil {
 				panic("failed to initialize: " + err.Error())
 			}
@@ -190,13 +199,13 @@ func main() {
 		)
 		lastTime = newTime
 
-		err = examples[exampleIndex].Update(&context)
+		err = allExamples[exampleIndex].Update(&context)
 		if err != nil {
 			panic("failed to update: " + err.Error())
 		}
 
 		if canDraw {
-			err = examples[exampleIndex].Draw(&context)
+			err = allExamples[exampleIndex].Draw(&context)
 			if err != nil {
 				panic("failed to draw: " + err.Error())
 			}
