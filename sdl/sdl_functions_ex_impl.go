@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package sdl
 
@@ -14,14 +14,13 @@ import (
 var (
 	// Symbols
 	// sdl
-	_addr_SDL_ShowMessageBox               uintptr
-	_addr_SDL_CreateGPUShader              uintptr
-	_addr_SDL_CreateGPUComputePipeline     uintptr
-	_addr_SDL_CreateGPUGraphicsPipeline    uintptr
-	_addr_SDL_SetClipboardData             uintptr
-	_addr_SDL_ShowOpenFileDialog           uintptr
-	_addr_SDL_ShowSaveFileDialog           uintptr
-	_addr_SDL_Vulkan_GetInstanceExtensions uintptr
+	_addr_SDL_ShowMessageBox            uintptr
+	_addr_SDL_CreateGPUShader           uintptr
+	_addr_SDL_CreateGPUComputePipeline  uintptr
+	_addr_SDL_CreateGPUGraphicsPipeline uintptr
+	_addr_SDL_SetClipboardData          uintptr
+	_addr_SDL_ShowOpenFileDialog        uintptr
+	_addr_SDL_ShowSaveFileDialog        uintptr
 )
 
 func initialize_ex() {
@@ -55,10 +54,6 @@ func initialize_ex() {
 	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
-	}
-	_addr_SDL_Vulkan_GetInstanceExtensions, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetInstanceExtensions")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetInstanceExtensions")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -106,20 +101,5 @@ func initialize_ex() {
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
-	}
-	iVulkan_GetInstanceExtensions = func() []string {
-		var count uint32
-		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(&count)))
-		pointer := *(*uintptr)(unsafe.Pointer(_r0))
-		strslice := make([]string, int(count))
-		for i := 0; i < int(count); i++ {
-			for ; *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) != 0; pointer++ {
-				strslice[i] += string(*(*uint8)(unsafe.Pointer(pointer)))
-			}
-			for ; i < int(count)-1 && *(*uint8)(unsafe.Pointer(pointer + uintptr(0))) == 0; pointer++ {
-			}
-		}
-
-		return strslice
 	}
 }

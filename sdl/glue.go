@@ -891,3 +891,20 @@ type AudioStreamDataCompleteCallback uintptr
 // SDL_MouseMotionTransformCallback - A callback used to transform mouse motion delta from raw values.
 // (https://wiki.libsdl.org/SDL3/SDL_MouseMotionTransformCallback)
 type MouseMotionTransformCallback uintptr
+
+// Vulkan Types
+
+// Pointer to Vulkan_Instance
+type VkInstance uintptr
+
+// Pointer to Vulkan_PhysicalDevice
+type VkPhysicalDevice uintptr
+
+// Pointer to Vulkan_SurfaceKHR
+type VkSurfaceKHR uintptr
+
+// PlaceholderType for Vulkan_AllocationCallbacks
+type VkAllocationCallbacks struct{}
+
+// Pointer to for Vulkan_AllocationCallbacks
+type VkAllocationCallbacksPtr uintptr

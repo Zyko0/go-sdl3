@@ -17318,12 +17318,12 @@ func initialize() {
 		)
 	}
 
-	iVulkan_GetInstanceExtensions = func() []string {
+	iVulkan_GetInstanceExtensions = func(count *uint32) **byte {
 		panic("not implemented on js")
 		js.Global().Get("Module").Call(
 			"_SDL_Vulkan_GetInstanceExtensions",
 		)
-		return []string{}
+		return nil
 	}
 
 	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {

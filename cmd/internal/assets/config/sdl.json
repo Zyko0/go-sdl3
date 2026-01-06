@@ -46,8 +46,7 @@
         "SDL_SetTrayEntryCallback",
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
-        "SDL_ShowSaveFileDialog",
-        "SDL_Vulkan_GetInstanceExtensions"
+        "SDL_ShowSaveFileDialog"
     ],
     "allowlisted_functions": [
         "SDL_free"
@@ -108,6 +107,7 @@
         "SDL_ShowSaveFileDialog",
         "SDL_ShowOpenFolderDialog",
         "SDL_GetEventDescription",
-        "SDL_SetGamepadMapping"
+        "SDL_SetGamepadMapping",
+        "SDL_Vulkan_GetInstanceExtensions"
     ]
 }

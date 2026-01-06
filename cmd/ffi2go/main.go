@@ -421,6 +421,12 @@ func main() {
 						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
 							typ == "string" {
 							typ = "*byte"
+
+						}
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							typ == "*string" {
+							typ = "**byte"
+
 						}
 						h.Add(
 							jenType(jen.Id(sanitizeArgName(ee.Name)), typ),
@@ -432,6 +438,16 @@ func main() {
 						fn.Uintptr()
 					} else {
 						t, _ := extractType(e.ReturnType)
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							t == "string" {
+							t = "*byte"
+
+						}
+						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
+							t == "*string" {
+							t = "**byte"
+
+						}
 						jenType(fn, t)
 					}
 				}

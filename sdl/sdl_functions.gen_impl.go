@@ -1,4 +1,4 @@
-//go:build windows || unix
+//go:build unix || windows
 
 package sdl
 
@@ -1000,6 +1000,7 @@ var (
 	_addr_SDL_Vulkan_LoadLibrary                    uintptr
 	_addr_SDL_Vulkan_GetVkGetInstanceProcAddr       uintptr
 	_addr_SDL_Vulkan_UnloadLibrary                  uintptr
+	_addr_SDL_Vulkan_GetInstanceExtensions          uintptr
 	_addr_SDL_Vulkan_CreateSurface                  uintptr
 	_addr_SDL_Vulkan_DestroySurface                 uintptr
 	_addr_SDL_Vulkan_GetPresentationSupport         uintptr
@@ -4944,6 +4945,10 @@ func initialize() {
 	_addr_SDL_Vulkan_UnloadLibrary, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_UnloadLibrary")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_UnloadLibrary")
+	}
+	_addr_SDL_Vulkan_GetInstanceExtensions, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_GetInstanceExtensions")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_Vulkan_GetInstanceExtensions")
 	}
 	_addr_SDL_Vulkan_CreateSurface, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_Vulkan_CreateSurface")
 	if err != nil {
@@ -10713,8 +10718,14 @@ func initialize() {
 	iVulkan_UnloadLibrary = func() {
 		purego.SyscallN(_addr_SDL_Vulkan_UnloadLibrary)
 	}
+	iVulkan_GetInstanceExtensions = func(count *uint32) **byte {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetInstanceExtensions, uintptr(unsafe.Pointer(count)))
+		__r0 := (**byte)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(count)
+		return __r0
+	}
 	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_CreateSurface, uintptr(unsafe.Pointer(window)), uintptr(unsafe.Pointer(instance)), uintptr(unsafe.Pointer(allocator)), uintptr(unsafe.Pointer(surface)))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_CreateSurface, uintptr(unsafe.Pointer(window)), uintptr(instance), uintptr(unsafe.Pointer(allocator)), uintptr(unsafe.Pointer(surface)))
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(allocator)
@@ -10722,11 +10733,11 @@ func initialize() {
 		return __r0
 	}
 	iVulkan_DestroySurface = func(instance VkInstance, surface VkSurfaceKHR, allocator *VkAllocationCallbacks) {
-		purego.SyscallN(_addr_SDL_Vulkan_DestroySurface, uintptr(unsafe.Pointer(instance)), uintptr(unsafe.Pointer(surface)), uintptr(unsafe.Pointer(allocator)))
+		purego.SyscallN(_addr_SDL_Vulkan_DestroySurface, uintptr(instance), uintptr(surface), uintptr(unsafe.Pointer(allocator)))
 		runtime.KeepAlive(allocator)
 	}
 	iVulkan_GetPresentationSupport = func(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetPresentationSupport, uintptr(unsafe.Pointer(instance)), uintptr(unsafe.Pointer(physicalDevice)), uintptr(queueFamilyIndex))
+		_r0, _, _ := purego.SyscallN(_addr_SDL_Vulkan_GetPresentationSupport, uintptr(instance), uintptr(physicalDevice), uintptr(queueFamilyIndex))
 		__r0 := uint8(_r0) != 0
 		return __r0
 	}
