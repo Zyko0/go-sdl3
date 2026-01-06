@@ -19,9 +19,7 @@ If you are looking for pure Go bindings that are closer to the original API, ple
 ## Status
 
 > [!NOTE]
-> The API is not completely covered, some method functions are also exposed but not implemented yet (need human validation).
-
-The list of currently implemented functions can be found in [COVERAGE.md](COVERAGE.md).
+> The list of currently implemented functions can be found in [COVERAGE.md](COVERAGE.md).
 
 Libraries:
 - SDL3 (v3.4.0)
