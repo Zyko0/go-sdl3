@@ -1815,7 +1815,7 @@ func Vulkan_GetInstanceExtensions() []string {
 	var count uint32
 	byteptrptr := iVulkan_GetInstanceExtensions(&count)
 	// Dont free pointer, its owned by sdl
-	return internal.BytePtrPtrToStrSlice(byteptrptr, count)
+	return internal.BytePtrPtrToStrSlice(byteptrptr, count, true)
 }
 
 // SDL_Vulkan_CreateSurface - Create a Vulkan rendering surface for a window.
