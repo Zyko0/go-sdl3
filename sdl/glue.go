@@ -894,17 +894,17 @@ type MouseMotionTransformCallback uintptr
 
 // Vulkan Types
 
-// Pointer to Vulkan_Instance
+// VkInstance is a pointer to a Vulkan_Instance
 type VkInstance uintptr
 
-// Pointer to Vulkan_PhysicalDevice
+// VkPhysicalDevice is a pointer to a Vulkan_PhysicalDevice
 type VkPhysicalDevice uintptr
 
-// Pointer to Vulkan_SurfaceKHR
+// VkSurfaceKHR is a pointer to a Vulkan_SurfaceKHR
 type VkSurfaceKHR uintptr
 
-// PlaceholderType for Vulkan_AllocationCallbacks
+// VkAllocationCallbacks is a placeholder type for Vulkan_AllocationCallbacks
 type VkAllocationCallbacks struct{}
 
-// Pointer to for Vulkan_AllocationCallbacks
+// VkAllocationCallbacksPtr is a pointer to for VkAllocationCallbacks
 type VkAllocationCallbacksPtr uintptr
