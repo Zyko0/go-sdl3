@@ -319,6 +319,20 @@ func EventEnabled(typ EventType) bool {
 
 // IOStream
 
+// SDL_IOFromFile - Use this function to create a new [SDL_IOStream](SDL_IOStream) structure for reading from and/or writing to a named file.
+// (https://wiki.libsdl.org/SDL3/SDL_IOFromFile)
+func IOFromFile(file, mode string) (*IOStream, error) {
+	stream := iIOFromFile(file, mode)
+	if stream == nil {
+		return nil, internal.LastErr()
+	}
+
+	runtime.KeepAlive(file)
+	runtime.KeepAlive(mode)
+
+	return stream, nil
+}
+
 // SDL_IOFromConstMem - Use this function to prepare a read-only memory buffer for use with SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOFromConstMem)
 // Note: This function is unsafe as it is required for `mem` not to be garbage collected while the IOStream is in use.
