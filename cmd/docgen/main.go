@@ -16,13 +16,13 @@ import (
 )
 
 var (
-	reg = regexp.MustCompile(`i([A-Za-z][A-Za-z_0-9]+)\(`)
+	regFunc = regexp.MustCompile(`i([A-Za-z][A-Za-z_0-9]+)\(`)
 
 	cfg assets.Config
 )
 
 type Entry struct {
-	Id          string
+	ID          string
 	Description string
 	URL         string
 }
@@ -66,7 +66,7 @@ func main() {
 
 	for _, record := range records[1:] { // Skip header
 		uniqueAPIIdentifiers[record[0]] = &Entry{
-			Id:          record[0],
+			ID:          record[0],
 			Description: strings.ReplaceAll(record[1], "\n", ""),
 			URL:         record[2],
 		}
@@ -85,6 +85,7 @@ func main() {
 
 	var fnAnnotations int
 	var typesAnnotations int
+	var enumsAnnotations int
 
 	for _, e := range files {
 		if !strings.HasSuffix(e.Name(), ".go") {
@@ -103,20 +104,25 @@ func main() {
 		var braces int
 		var fnName string
 		var fnLineIndex int
+		var typeName string
+		var regEnumDef *regexp.Regexp
 
 		lines := strings.Split(string(b), "\n")
 		for i, l := range lines {
 			// Type
 			if strings.HasPrefix(l, "type ") {
-				if i > 0 && strings.TrimSpace(lines[i-1]) == "" {
-					parts := strings.Split(l, " ")
-					if len(parts) > 2 {
-						name := parts[1]
-						entry, found := uniqueAPIIdentifiers[cfg.Prefix+name]
-						if found {
+				parts := strings.Split(l, " ")
+				if len(parts) > 2 {
+					typeName = parts[1]
+					entry, found := uniqueAPIIdentifiers[cfg.Prefix+typeName]
+					if found {
+						// Define regexp for enum values matching
+						regEnumDef = regexp.MustCompile(`([A-Za-z0-9_]*)\s+` + typeName + `\s=\s`)
+						// Only append comment lines if there are none
+						if i > 0 && strings.TrimSpace(lines[i-1]) == "" {
 							// Add comments on top of the type
 							outLines = append(outLines, fmt.Sprintf(
-								"// %s - %s", entry.Id, entry.Description,
+								"// %s - %s", entry.ID, entry.Description,
 							))
 							outLines = append(outLines, fmt.Sprintf(
 								"// (%s)", entry.URL,
@@ -129,13 +135,30 @@ func main() {
 				outLines = append(outLines, l)
 				continue
 			}
+			// Enum values
+			if regEnumDef != nil && regEnumDef.Match([]byte(l)) {
+				matches := regEnumDef.FindAllStringSubmatch(l, -1)
+				if len(matches) > 0 && len(matches[0]) == 2 {
+					enum := matches[0][1]
+					entry, found := uniqueAPIIdentifiers[cfg.Prefix+enum]
+					if found {
+						desc := " // " + entry.Description
+						if !strings.Contains(l, desc) {
+							outLines = append(outLines, l+desc)
+							enumsAnnotations++
+							edited = true
+							continue
+						}
+					}
+				}
+			}
 			// Function
 			if inFunc {
 				braces += strings.Count(l, "{")
 				braces -= strings.Count(l, "}")
 				if braces > 0 {
-					if reg.MatchString(l) {
-						matches := reg.FindAll([]byte(l), -1)
+					if regFunc.MatchString(l) {
+						matches := regFunc.FindAll([]byte(l), -1)
 						for _, m := range matches {
 							name := string(m[1 : len(m)-1])
 							_, found := uniqueAPIIdentifiers[name]
@@ -155,7 +178,7 @@ func main() {
 					entry, found := uniqueAPIIdentifiers[fnName]
 					if found {
 						outLines = append(outLines, fmt.Sprintf(
-							"// %s - %s", entry.Id, entry.Description,
+							"// %s - %s", entry.ID, entry.Description,
 						))
 						outLines = append(outLines, fmt.Sprintf(
 							"// (%s)", entry.URL,
@@ -199,4 +222,5 @@ func main() {
 
 	fmt.Println("Total functions annotated:", fnAnnotations)
 	fmt.Println("Total types annotated:", typesAnnotations)
+	fmt.Println("Total enums annotated:", enumsAnnotations)
 }
