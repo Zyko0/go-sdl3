@@ -7,9 +7,9 @@ package sdl
 type AsyncIOTaskType uint32
 
 const (
-	ASYNCIO_TASK_READ  AsyncIOTaskType = 0
-	ASYNCIO_TASK_WRITE AsyncIOTaskType = 1
-	ASYNCIO_TASK_CLOSE AsyncIOTaskType = 2
+	ASYNCIO_TASK_READ  AsyncIOTaskType = 0 // A read operation.
+	ASYNCIO_TASK_WRITE AsyncIOTaskType = 1 // A write operation.
+	ASYNCIO_TASK_CLOSE AsyncIOTaskType = 2 // A close operation.
 )
 
 // SDL_AsyncIOResult - Possible outcomes of an asynchronous I/O task.
@@ -17,9 +17,9 @@ const (
 type AsyncIOResult uint32
 
 const (
-	ASYNCIO_COMPLETE AsyncIOResult = 0
-	ASYNCIO_FAILURE  AsyncIOResult = 1
-	ASYNCIO_CANCELED AsyncIOResult = 2
+	ASYNCIO_COMPLETE AsyncIOResult = 0 // request was completed without error
+	ASYNCIO_FAILURE  AsyncIOResult = 1 // request failed for some reason; check SDL_GetError()!
+	ASYNCIO_CANCELED AsyncIOResult = 2 // request was canceled before completing.
 )
 
 // SDL_PropertyType - SDL property type
@@ -51,10 +51,10 @@ const (
 type ThreadState uint32
 
 const (
-	THREAD_UNKNOWN  ThreadState = 0
-	THREAD_ALIVE    ThreadState = 1
-	THREAD_DETACHED ThreadState = 2
-	THREAD_COMPLETE ThreadState = 3
+	THREAD_UNKNOWN  ThreadState = 0 // The thread is not valid
+	THREAD_ALIVE    ThreadState = 1 // The thread is currently running
+	THREAD_DETACHED ThreadState = 2 // The thread is detached and can't be waited on
+	THREAD_COMPLETE ThreadState = 3 // The thread has finished and should be cleaned up with SDL_WaitThread()
 )
 
 // SDL_IOStatus - [SDL_IOStream](SDL_IOStream) status, set by a read or write operation.
@@ -62,12 +62,12 @@ const (
 type IOStatus uint32
 
 const (
-	IO_STATUS_READY     IOStatus = 0
-	IO_STATUS_ERROR     IOStatus = 1
-	IO_STATUS_EOF       IOStatus = 2
-	IO_STATUS_NOT_READY IOStatus = 3
-	IO_STATUS_READONLY  IOStatus = 4
-	IO_STATUS_WRITEONLY IOStatus = 5
+	IO_STATUS_READY     IOStatus = 0 // Everything is ready (no errors and not EOF).
+	IO_STATUS_ERROR     IOStatus = 1 // Read or write I/O error
+	IO_STATUS_EOF       IOStatus = 2 // End of file
+	IO_STATUS_NOT_READY IOStatus = 3 // Non blocking I/O, not ready
+	IO_STATUS_READONLY  IOStatus = 4 // Tried to write a read-only buffer
+	IO_STATUS_WRITEONLY IOStatus = 5 // Tried to read a write-only buffer
 )
 
 // SDL_IOWhence - Possible `whence` values for [SDL_IOStream](SDL_IOStream) seeking.
@@ -75,9 +75,9 @@ const (
 type IOWhence uint32
 
 const (
-	IO_SEEK_SET IOWhence = 0
-	IO_SEEK_CUR IOWhence = 1
-	IO_SEEK_END IOWhence = 2
+	IO_SEEK_SET IOWhence = 0 // Seek from the beginning of data
+	IO_SEEK_CUR IOWhence = 1 // Seek relative to current read point
+	IO_SEEK_END IOWhence = 2 // Seek relative to the end of data
 )
 
 // SDL_AudioFormat - Audio format.
@@ -85,15 +85,15 @@ const (
 type AudioFormat uint32
 
 const (
-	AUDIO_UNKNOWN AudioFormat = 0
-	AUDIO_U8      AudioFormat = 8
-	AUDIO_S8      AudioFormat = 32776
-	AUDIO_S16LE   AudioFormat = 32784
-	AUDIO_S16BE   AudioFormat = 36880
-	AUDIO_S32LE   AudioFormat = 32800
-	AUDIO_S32BE   AudioFormat = 36896
-	AUDIO_F32LE   AudioFormat = 33056
-	AUDIO_F32BE   AudioFormat = 37152
+	AUDIO_UNKNOWN AudioFormat = 0 // Unspecified audio format
+	AUDIO_U8      AudioFormat = 8 // Unsigned 8-bit samples
+	AUDIO_S8      AudioFormat = 32776 // Signed 8-bit samples
+	AUDIO_S16LE   AudioFormat = 32784 // Signed 16-bit samples
+	AUDIO_S16BE   AudioFormat = 36880 // As above, but big-endian byte order
+	AUDIO_S32LE   AudioFormat = 32800 // 32-bit integer samples
+	AUDIO_S32BE   AudioFormat = 36896 // As above, but big-endian byte order
+	AUDIO_F32LE   AudioFormat = 33056 // 32-bit floating point samples
+	AUDIO_F32BE   AudioFormat = 37152 // As above, but big-endian byte order
 	AUDIO_S16     AudioFormat = 32784
 	AUDIO_S32     AudioFormat = 32800
 	AUDIO_F32     AudioFormat = 33056
@@ -104,11 +104,11 @@ const (
 type BlendOperation uint32
 
 const (
-	BLENDOPERATION_ADD          BlendOperation = 1
-	BLENDOPERATION_SUBTRACT     BlendOperation = 2
-	BLENDOPERATION_REV_SUBTRACT BlendOperation = 3
-	BLENDOPERATION_MINIMUM      BlendOperation = 4
-	BLENDOPERATION_MAXIMUM      BlendOperation = 5
+	BLENDOPERATION_ADD          BlendOperation = 1 // dst + src: supported by all renderers
+	BLENDOPERATION_SUBTRACT     BlendOperation = 2 // src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
+	BLENDOPERATION_REV_SUBTRACT BlendOperation = 3 // dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
+	BLENDOPERATION_MINIMUM      BlendOperation = 4 // min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+	BLENDOPERATION_MAXIMUM      BlendOperation = 5 // max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
 )
 
 // SDL_BlendFactor - The normalized factor used to multiply pixel components.
@@ -116,16 +116,16 @@ const (
 type BlendFactor uint32
 
 const (
-	BLENDFACTOR_ZERO                BlendFactor = 1
-	BLENDFACTOR_ONE                 BlendFactor = 2
-	BLENDFACTOR_SRC_COLOR           BlendFactor = 3
-	BLENDFACTOR_ONE_MINUS_SRC_COLOR BlendFactor = 4
-	BLENDFACTOR_SRC_ALPHA           BlendFactor = 5
-	BLENDFACTOR_ONE_MINUS_SRC_ALPHA BlendFactor = 6
-	BLENDFACTOR_DST_COLOR           BlendFactor = 7
-	BLENDFACTOR_ONE_MINUS_DST_COLOR BlendFactor = 8
-	BLENDFACTOR_DST_ALPHA           BlendFactor = 9
-	BLENDFACTOR_ONE_MINUS_DST_ALPHA BlendFactor = 10
+	BLENDFACTOR_ZERO                BlendFactor = 1 // 0, 0, 0, 0
+	BLENDFACTOR_ONE                 BlendFactor = 2 // 1, 1, 1, 1
+	BLENDFACTOR_SRC_COLOR           BlendFactor = 3 // srcR, srcG, srcB, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_COLOR BlendFactor = 4 // 1-srcR, 1-srcG, 1-srcB, 1-srcA
+	BLENDFACTOR_SRC_ALPHA           BlendFactor = 5 // srcA, srcA, srcA, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_ALPHA BlendFactor = 6 // 1-srcA, 1-srcA, 1-srcA, 1-srcA
+	BLENDFACTOR_DST_COLOR           BlendFactor = 7 // dstR, dstG, dstB, dstA
+	BLENDFACTOR_ONE_MINUS_DST_COLOR BlendFactor = 8 // 1-dstR, 1-dstG, 1-dstB, 1-dstA
+	BLENDFACTOR_DST_ALPHA           BlendFactor = 9 // dstA, dstA, dstA, dstA
+	BLENDFACTOR_ONE_MINUS_DST_ALPHA BlendFactor = 10 // 1-dstA, 1-dstA, 1-dstA, 1-dstA
 )
 
 // SDL_PixelFormat - Pixel format.
@@ -188,16 +188,16 @@ const (
 	PIXELFORMAT_ARGB128_FLOAT PixelFormat = 456163344
 	PIXELFORMAT_BGRA128_FLOAT PixelFormat = 458260496
 	PIXELFORMAT_ABGR128_FLOAT PixelFormat = 459309072
-	PIXELFORMAT_YV12          PixelFormat = 842094169
-	PIXELFORMAT_IYUV          PixelFormat = 1448433993
-	PIXELFORMAT_YUY2          PixelFormat = 844715353
-	PIXELFORMAT_UYVY          PixelFormat = 1498831189
-	PIXELFORMAT_YVYU          PixelFormat = 1431918169
-	PIXELFORMAT_NV12          PixelFormat = 842094158
-	PIXELFORMAT_NV21          PixelFormat = 825382478
-	PIXELFORMAT_P010          PixelFormat = 808530000
-	PIXELFORMAT_EXTERNAL_OES  PixelFormat = 542328143
-	PIXELFORMAT_MJPG          PixelFormat = 1196444237
+	PIXELFORMAT_YV12          PixelFormat = 842094169 // Planar mode: Y + V + U  (3 planes)
+	PIXELFORMAT_IYUV          PixelFormat = 1448433993 // Planar mode: Y + U + V  (3 planes)
+	PIXELFORMAT_YUY2          PixelFormat = 844715353 // Packed mode: Y0+U0+Y1+V0 (1 plane)
+	PIXELFORMAT_UYVY          PixelFormat = 1498831189 // Packed mode: U0+Y0+V0+Y1 (1 plane)
+	PIXELFORMAT_YVYU          PixelFormat = 1431918169 // Packed mode: Y0+V0+Y1+U0 (1 plane)
+	PIXELFORMAT_NV12          PixelFormat = 842094158 // Planar mode: Y + U/V interleaved  (2 planes)
+	PIXELFORMAT_NV21          PixelFormat = 825382478 // Planar mode: Y + V/U interleaved  (2 planes)
+	PIXELFORMAT_P010          PixelFormat = 808530000 // Planar mode: Y + U/V interleaved  (2 planes)
+	PIXELFORMAT_EXTERNAL_OES  PixelFormat = 542328143 // Android video texture format
+	PIXELFORMAT_MJPG          PixelFormat = 1196444237 // Motion JPEG
 	PIXELFORMAT_RGBA32        PixelFormat = 376840196
 	PIXELFORMAT_ARGB32        PixelFormat = 377888772
 	PIXELFORMAT_BGRA32        PixelFormat = 372645892
@@ -214,18 +214,18 @@ type Colorspace uint32
 
 const (
 	COLORSPACE_UNKNOWN        Colorspace = 0
-	COLORSPACE_SRGB           Colorspace = 301991328
-	COLORSPACE_SRGB_LINEAR    Colorspace = 301991168
-	COLORSPACE_HDR10          Colorspace = 301999616
-	COLORSPACE_JPEG           Colorspace = 570426566
-	COLORSPACE_BT601_LIMITED  Colorspace = 554703046
-	COLORSPACE_BT601_FULL     Colorspace = 571480262
-	COLORSPACE_BT709_LIMITED  Colorspace = 554697761
-	COLORSPACE_BT709_FULL     Colorspace = 571474977
-	COLORSPACE_BT2020_LIMITED Colorspace = 554706441
-	COLORSPACE_BT2020_FULL    Colorspace = 571483657
-	COLORSPACE_RGB_DEFAULT    Colorspace = 301991328
-	COLORSPACE_YUV_DEFAULT    Colorspace = 554703046
+	COLORSPACE_SRGB           Colorspace = 301991328 // Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
+	COLORSPACE_SRGB_LINEAR    Colorspace = 301991168 // Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+	COLORSPACE_HDR10          Colorspace = 301999616 // Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+	COLORSPACE_JPEG           Colorspace = 570426566 // Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
+	COLORSPACE_BT601_LIMITED  Colorspace = 554703046 // Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+	COLORSPACE_BT601_FULL     Colorspace = 571480262 // Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+	COLORSPACE_BT709_LIMITED  Colorspace = 554697761 // Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+	COLORSPACE_BT709_FULL     Colorspace = 571474977 // Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+	COLORSPACE_BT2020_LIMITED Colorspace = 554706441 // Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
+	COLORSPACE_BT2020_FULL    Colorspace = 571483657 // Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
+	COLORSPACE_RGB_DEFAULT    Colorspace = 301991328 // The default colorspace for RGB surfaces if no colorspace is specified
+	COLORSPACE_YUV_DEFAULT    Colorspace = 554703046 // The default colorspace for YUV surfaces if no colorspace is specified
 )
 
 // SDL_ScaleMode - The scaling mode.
@@ -234,9 +234,9 @@ type ScaleMode uint32
 
 const (
 	SCALEMODE_INVALID  ScaleMode = 4294967295
-	SCALEMODE_NEAREST  ScaleMode = 0
-	SCALEMODE_LINEAR   ScaleMode = 1
-	SCALEMODE_PIXELART ScaleMode = 2
+	SCALEMODE_NEAREST  ScaleMode = 0 // nearest pixel sampling
+	SCALEMODE_LINEAR   ScaleMode = 1 // linear filtering
+	SCALEMODE_PIXELART ScaleMode = 2 // nearest pixel sampling with improved scaling for pixel art, available since SDL 3.4.0
 )
 
 // SDL_FlipMode - The flip mode.
@@ -244,10 +244,10 @@ const (
 type FlipMode uint32
 
 const (
-	FLIP_NONE                    FlipMode = 0
-	FLIP_HORIZONTAL              FlipMode = 1
-	FLIP_VERTICAL                FlipMode = 2
-	FLIP_HORIZONTAL_AND_VERTICAL FlipMode = 3
+	FLIP_NONE                    FlipMode = 0 // Do not flip
+	FLIP_HORIZONTAL              FlipMode = 1 // flip horizontally
+	FLIP_VERTICAL                FlipMode = 2 // flip vertically
+	FLIP_HORIZONTAL_AND_VERTICAL FlipMode = 3 // flip horizontally and vertically (not a diagonal flip)
 )
 
 // SDL_CameraPosition - The position of camera in relation to system device.
@@ -275,9 +275,9 @@ const (
 type SystemTheme uint32
 
 const (
-	SYSTEM_THEME_UNKNOWN SystemTheme = 0
-	SYSTEM_THEME_LIGHT   SystemTheme = 1
-	SYSTEM_THEME_DARK    SystemTheme = 2
+	SYSTEM_THEME_UNKNOWN SystemTheme = 0 // Unknown system theme
+	SYSTEM_THEME_LIGHT   SystemTheme = 1 // Light colored system theme
+	SYSTEM_THEME_DARK    SystemTheme = 2 // Dark colored system theme
 )
 
 // SDL_DisplayOrientation - Display orientation values; the way a display is rotated.
@@ -285,11 +285,11 @@ const (
 type DisplayOrientation uint32
 
 const (
-	ORIENTATION_UNKNOWN           DisplayOrientation = 0
-	ORIENTATION_LANDSCAPE         DisplayOrientation = 1
-	ORIENTATION_LANDSCAPE_FLIPPED DisplayOrientation = 2
-	ORIENTATION_PORTRAIT          DisplayOrientation = 3
-	ORIENTATION_PORTRAIT_FLIPPED  DisplayOrientation = 4
+	ORIENTATION_UNKNOWN           DisplayOrientation = 0 // The display orientation can't be determined
+	ORIENTATION_LANDSCAPE         DisplayOrientation = 1 // The display is in landscape mode, with the right side up, relative to portrait mode
+	ORIENTATION_LANDSCAPE_FLIPPED DisplayOrientation = 2 // The display is in landscape mode, with the left side up, relative to portrait mode
+	ORIENTATION_PORTRAIT          DisplayOrientation = 3 // The display is in portrait mode
+	ORIENTATION_PORTRAIT_FLIPPED  DisplayOrientation = 4 // The display is in portrait mode, upside down
 )
 
 // SDL_FlashOperation - Window flash operation.
@@ -297,9 +297,9 @@ const (
 type FlashOperation uint32
 
 const (
-	FLASH_CANCEL        FlashOperation = 0
-	FLASH_BRIEFLY       FlashOperation = 1
-	FLASH_UNTIL_FOCUSED FlashOperation = 2
+	FLASH_CANCEL        FlashOperation = 0 // Cancel any window flash state
+	FLASH_BRIEFLY       FlashOperation = 1 // Flash the window briefly to get attention
+	FLASH_UNTIL_FOCUSED FlashOperation = 2 // Flash the window until it gets focus
 )
 
 // SDL_ProgressState - Window progress state
@@ -307,12 +307,12 @@ const (
 type ProgressState uint32
 
 const (
-	PROGRESS_STATE_INVALID       ProgressState = 4294967295
-	PROGRESS_STATE_NONE          ProgressState = 0
-	PROGRESS_STATE_INDETERMINATE ProgressState = 1
-	PROGRESS_STATE_NORMAL        ProgressState = 2
-	PROGRESS_STATE_PAUSED        ProgressState = 3
-	PROGRESS_STATE_ERROR         ProgressState = 4
+	PROGRESS_STATE_INVALID       ProgressState = 4294967295 // An invalid progress state indicating an error; check SDL_GetError()
+	PROGRESS_STATE_NONE          ProgressState = 0 // No progress bar is shown
+	PROGRESS_STATE_INDETERMINATE ProgressState = 1 // The progress bar is shown in a indeterminate state
+	PROGRESS_STATE_NORMAL        ProgressState = 2 // The progress bar is shown in a normal state
+	PROGRESS_STATE_PAUSED        ProgressState = 3 // The progress bar is shown in a paused state
+	PROGRESS_STATE_ERROR         ProgressState = 4 // The progress bar is shown in a state indicating the application had an error
 )
 
 // SDL_GLAttr - An enumeration of OpenGL configuration attributes.
@@ -320,31 +320,31 @@ const (
 type GLAttr uint32
 
 const (
-	GL_RED_SIZE                   GLAttr = 0
-	GL_GREEN_SIZE                 GLAttr = 1
-	GL_BLUE_SIZE                  GLAttr = 2
-	GL_ALPHA_SIZE                 GLAttr = 3
-	GL_BUFFER_SIZE                GLAttr = 4
-	GL_DOUBLEBUFFER               GLAttr = 5
-	GL_DEPTH_SIZE                 GLAttr = 6
-	GL_STENCIL_SIZE               GLAttr = 7
-	GL_ACCUM_RED_SIZE             GLAttr = 8
-	GL_ACCUM_GREEN_SIZE           GLAttr = 9
-	GL_ACCUM_BLUE_SIZE            GLAttr = 10
-	GL_ACCUM_ALPHA_SIZE           GLAttr = 11
-	GL_STEREO                     GLAttr = 12
-	GL_MULTISAMPLEBUFFERS         GLAttr = 13
-	GL_MULTISAMPLESAMPLES         GLAttr = 14
-	GL_ACCELERATED_VISUAL         GLAttr = 15
-	GL_RETAINED_BACKING           GLAttr = 16
-	GL_CONTEXT_MAJOR_VERSION      GLAttr = 17
-	GL_CONTEXT_MINOR_VERSION      GLAttr = 18
-	GL_CONTEXT_FLAGS              GLAttr = 19
-	GL_CONTEXT_PROFILE_MASK       GLAttr = 20
-	GL_SHARE_WITH_CURRENT_CONTEXT GLAttr = 21
-	GL_FRAMEBUFFER_SRGB_CAPABLE   GLAttr = 22
-	GL_CONTEXT_RELEASE_BEHAVIOR   GLAttr = 23
-	GL_CONTEXT_RESET_NOTIFICATION GLAttr = 24
+	GL_RED_SIZE                   GLAttr = 0 // the minimum number of bits for the red channel of the color buffer; defaults to 8.
+	GL_GREEN_SIZE                 GLAttr = 1 // the minimum number of bits for the green channel of the color buffer; defaults to 8.
+	GL_BLUE_SIZE                  GLAttr = 2 // the minimum number of bits for the blue channel of the color buffer; defaults to 8.
+	GL_ALPHA_SIZE                 GLAttr = 3 // the minimum number of bits for the alpha channel of the color buffer; defaults to 8.
+	GL_BUFFER_SIZE                GLAttr = 4 // the minimum number of bits for frame buffer size; defaults to 0.
+	GL_DOUBLEBUFFER               GLAttr = 5 // whether the output is single or double buffered; defaults to double buffering on.
+	GL_DEPTH_SIZE                 GLAttr = 6 // the minimum number of bits in the depth buffer; defaults to 16.
+	GL_STENCIL_SIZE               GLAttr = 7 // the minimum number of bits in the stencil buffer; defaults to 0.
+	GL_ACCUM_RED_SIZE             GLAttr = 8 // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0.
+	GL_ACCUM_GREEN_SIZE           GLAttr = 9 // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0.
+	GL_ACCUM_BLUE_SIZE            GLAttr = 10 // the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0.
+	GL_ACCUM_ALPHA_SIZE           GLAttr = 11 // the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0.
+	GL_STEREO                     GLAttr = 12 // whether the output is stereo 3D; defaults to off.
+	GL_MULTISAMPLEBUFFERS         GLAttr = 13 // the number of buffers used for multisample anti-aliasing; defaults to 0.
+	GL_MULTISAMPLESAMPLES         GLAttr = 14 // the number of samples used around the current pixel used for multisample anti-aliasing.
+	GL_ACCELERATED_VISUAL         GLAttr = 15 // set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either.
+	GL_RETAINED_BACKING           GLAttr = 16 // not used (deprecated).
+	GL_CONTEXT_MAJOR_VERSION      GLAttr = 17 // OpenGL context major version.
+	GL_CONTEXT_MINOR_VERSION      GLAttr = 18 // OpenGL context minor version.
+	GL_CONTEXT_FLAGS              GLAttr = 19 // some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0.
+	GL_CONTEXT_PROFILE_MASK       GLAttr = 20 // type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.
+	GL_SHARE_WITH_CURRENT_CONTEXT GLAttr = 21 // OpenGL context sharing; defaults to 0.
+	GL_FRAMEBUFFER_SRGB_CAPABLE   GLAttr = 22 // requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a request; GL drivers might not comply!
+	GL_CONTEXT_RELEASE_BEHAVIOR   GLAttr = 23 // sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.
+	GL_CONTEXT_RESET_NOTIFICATION GLAttr = 24 // set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.
 	GL_CONTEXT_NO_ERROR           GLAttr = 25
 	GL_FLOATBUFFERS               GLAttr = 26
 	GL_EGL_PLATFORM               GLAttr = 27
@@ -365,12 +365,12 @@ const (
 type PowerState uint32
 
 const (
-	POWERSTATE_ERROR      PowerState = 4294967295
-	POWERSTATE_UNKNOWN    PowerState = 0
-	POWERSTATE_ON_BATTERY PowerState = 1
-	POWERSTATE_NO_BATTERY PowerState = 2
-	POWERSTATE_CHARGING   PowerState = 3
-	POWERSTATE_CHARGED    PowerState = 4
+	POWERSTATE_ERROR      PowerState = 4294967295 // error determining power status
+	POWERSTATE_UNKNOWN    PowerState = 0 // cannot determine power status
+	POWERSTATE_ON_BATTERY PowerState = 1 // Not plugged in, running on the battery
+	POWERSTATE_NO_BATTERY PowerState = 2 // Plugged in, no battery available
+	POWERSTATE_CHARGING   PowerState = 3 // Plugged in, charging battery
+	POWERSTATE_CHARGED    PowerState = 4 // Plugged in, battery charged
 )
 
 // SDL_SensorType - The different sensors defined by SDL.
@@ -378,14 +378,14 @@ const (
 type SensorType uint32
 
 const (
-	SENSOR_INVALID SensorType = 4294967295
-	SENSOR_UNKNOWN SensorType = 0
-	SENSOR_ACCEL   SensorType = 1
-	SENSOR_GYRO    SensorType = 2
-	SENSOR_ACCEL_L SensorType = 3
-	SENSOR_GYRO_L  SensorType = 4
-	SENSOR_ACCEL_R SensorType = 5
-	SENSOR_GYRO_R  SensorType = 6
+	SENSOR_INVALID SensorType = 4294967295 // Returned for an invalid sensor
+	SENSOR_UNKNOWN SensorType = 0 // Unknown sensor type
+	SENSOR_ACCEL   SensorType = 1 // Accelerometer
+	SENSOR_GYRO    SensorType = 2 // Gyroscope
+	SENSOR_ACCEL_L SensorType = 3 // Accelerometer for left Joy-Con controller and Wii nunchuk
+	SENSOR_GYRO_L  SensorType = 4 // Gyroscope for left Joy-Con controller
+	SENSOR_ACCEL_R SensorType = 5 // Accelerometer for right Joy-Con controller
+	SENSOR_GYRO_R  SensorType = 6 // Gyroscope for right Joy-Con controller
 	SENSOR_COUNT   SensorType = 7
 )
 
@@ -444,10 +444,10 @@ type GamepadButton uint32
 
 const (
 	GAMEPAD_BUTTON_INVALID        GamepadButton = 4294967295
-	GAMEPAD_BUTTON_SOUTH          GamepadButton = 0
-	GAMEPAD_BUTTON_EAST           GamepadButton = 1
-	GAMEPAD_BUTTON_WEST           GamepadButton = 2
-	GAMEPAD_BUTTON_NORTH          GamepadButton = 3
+	GAMEPAD_BUTTON_SOUTH          GamepadButton = 0 // Bottom face button (e.g. Xbox A button)
+	GAMEPAD_BUTTON_EAST           GamepadButton = 1 // Right face button (e.g. Xbox B button)
+	GAMEPAD_BUTTON_WEST           GamepadButton = 2 // Left face button (e.g. Xbox X button)
+	GAMEPAD_BUTTON_NORTH          GamepadButton = 3 // Top face button (e.g. Xbox Y button)
 	GAMEPAD_BUTTON_BACK           GamepadButton = 4
 	GAMEPAD_BUTTON_GUIDE          GamepadButton = 5
 	GAMEPAD_BUTTON_START          GamepadButton = 6
@@ -459,17 +459,17 @@ const (
 	GAMEPAD_BUTTON_DPAD_DOWN      GamepadButton = 12
 	GAMEPAD_BUTTON_DPAD_LEFT      GamepadButton = 13
 	GAMEPAD_BUTTON_DPAD_RIGHT     GamepadButton = 14
-	GAMEPAD_BUTTON_MISC1          GamepadButton = 15
-	GAMEPAD_BUTTON_RIGHT_PADDLE1  GamepadButton = 16
-	GAMEPAD_BUTTON_LEFT_PADDLE1   GamepadButton = 17
-	GAMEPAD_BUTTON_RIGHT_PADDLE2  GamepadButton = 18
-	GAMEPAD_BUTTON_LEFT_PADDLE2   GamepadButton = 19
-	GAMEPAD_BUTTON_TOUCHPAD       GamepadButton = 20
-	GAMEPAD_BUTTON_MISC2          GamepadButton = 21
-	GAMEPAD_BUTTON_MISC3          GamepadButton = 22
-	GAMEPAD_BUTTON_MISC4          GamepadButton = 23
-	GAMEPAD_BUTTON_MISC5          GamepadButton = 24
-	GAMEPAD_BUTTON_MISC6          GamepadButton = 25
+	GAMEPAD_BUTTON_MISC1          GamepadButton = 15 // Additional button (e.g. Xbox Series X share button, PS5 microphone button, Nintendo Switch Pro capture button, Amazon Luna microphone button, Google Stadia capture button)
+	GAMEPAD_BUTTON_RIGHT_PADDLE1  GamepadButton = 16 // Upper or primary paddle, under your right hand (e.g. Xbox Elite paddle P1, DualSense Edge RB button, Right Joy-Con SR button)
+	GAMEPAD_BUTTON_LEFT_PADDLE1   GamepadButton = 17 // Upper or primary paddle, under your left hand (e.g. Xbox Elite paddle P3, DualSense Edge LB button, Left Joy-Con SL button)
+	GAMEPAD_BUTTON_RIGHT_PADDLE2  GamepadButton = 18 // Lower or secondary paddle, under your right hand (e.g. Xbox Elite paddle P2, DualSense Edge right Fn button, Right Joy-Con SL button)
+	GAMEPAD_BUTTON_LEFT_PADDLE2   GamepadButton = 19 // Lower or secondary paddle, under your left hand (e.g. Xbox Elite paddle P4, DualSense Edge left Fn button, Left Joy-Con SR button)
+	GAMEPAD_BUTTON_TOUCHPAD       GamepadButton = 20 // PS4/PS5 touchpad button
+	GAMEPAD_BUTTON_MISC2          GamepadButton = 21 // Additional button
+	GAMEPAD_BUTTON_MISC3          GamepadButton = 22 // Additional button (e.g. Nintendo GameCube left trigger click)
+	GAMEPAD_BUTTON_MISC4          GamepadButton = 23 // Additional button (e.g. Nintendo GameCube right trigger click)
+	GAMEPAD_BUTTON_MISC5          GamepadButton = 24 // Additional button
+	GAMEPAD_BUTTON_MISC6          GamepadButton = 25 // Additional button
 	GAMEPAD_BUTTON_COUNT          GamepadButton = 26
 )
 
@@ -566,11 +566,11 @@ const (
 	SCANCODE_EQUALS               Scancode = 46
 	SCANCODE_LEFTBRACKET          Scancode = 47
 	SCANCODE_RIGHTBRACKET         Scancode = 48
-	SCANCODE_BACKSLASH            Scancode = 49
-	SCANCODE_NONUSHASH            Scancode = 50
+	SCANCODE_BACKSLASH            Scancode = 49 // Located at the lower left of the return *   key on ISO keyboards and at the right end *   of the QWERTY row on ANSI keyboards. *   Produces REVERSE SOLIDUS (backslash) and *   VERTICAL LINE in a US layout, REVERSE *   SOLIDUS and VERTICAL LINE in a UK Mac *   layout, NUMBER SIGN and TILDE in a UK *   Windows layout, DOLLAR SIGN and POUND SIGN *   in a Swiss German layout, NUMBER SIGN and *   APOSTROPHE in a German layout, GRAVE *   ACCENT and POUND SIGN in a French Mac *   layout, and ASTERISK and MICRO SIGN in a *   French Windows layout.
+	SCANCODE_NONUSHASH            Scancode = 50 // ISO USB keyboards actually use this code *   instead of 49 for the same key, but all *   OSes I've seen treat the two codes *   identically. So, as an implementor, unless *   your keyboard generates both of those *   codes and your OS treats them differently, *   you should generate SDL_SCANCODE_BACKSLASH *   instead of this code. As a user, you *   should not rely on this code because SDL *   will never generate it with most (all?) *   keyboards.
 	SCANCODE_SEMICOLON            Scancode = 51
 	SCANCODE_APOSTROPHE           Scancode = 52
-	SCANCODE_GRAVE                Scancode = 53
+	SCANCODE_GRAVE                Scancode = 53 // Located in the top left corner (on both ANSI *   and ISO keyboards). Produces GRAVE ACCENT and *   TILDE in a US Windows layout and in US and UK *   Mac layouts on ANSI keyboards, GRAVE ACCENT *   and NOT SIGN in a UK Windows layout, SECTION *   SIGN and PLUS-MINUS SIGN in US and UK Mac *   layouts on ISO keyboards, SECTION SIGN and *   DEGREE SIGN in a Swiss German layout (Mac: *   only on ISO keyboards), CIRCUMFLEX ACCENT and *   DEGREE SIGN in a German layout (Mac: only on *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a *   French Windows layout, COMMERCIAL AT and *   NUMBER SIGN in a French Mac layout on ISO *   keyboards, and LESS-THAN SIGN and GREATER-THAN *   SIGN in a Swiss German, German, or French Mac *   layout on ANSI keyboards.
 	SCANCODE_COMMA                Scancode = 54
 	SCANCODE_PERIOD               Scancode = 55
 	SCANCODE_SLASH                Scancode = 56
@@ -590,7 +590,7 @@ const (
 	SCANCODE_PRINTSCREEN          Scancode = 70
 	SCANCODE_SCROLLLOCK           Scancode = 71
 	SCANCODE_PAUSE                Scancode = 72
-	SCANCODE_INSERT               Scancode = 73
+	SCANCODE_INSERT               Scancode = 73 // insert on PC, help on some Mac keyboards (but does send code 73, not 117)
 	SCANCODE_HOME                 Scancode = 74
 	SCANCODE_PAGEUP               Scancode = 75
 	SCANCODE_DELETE               Scancode = 76
@@ -600,7 +600,7 @@ const (
 	SCANCODE_LEFT                 Scancode = 80
 	SCANCODE_DOWN                 Scancode = 81
 	SCANCODE_UP                   Scancode = 82
-	SCANCODE_NUMLOCKCLEAR         Scancode = 83
+	SCANCODE_NUMLOCKCLEAR         Scancode = 83 // num lock on PC, clear on Mac keyboards
 	SCANCODE_KP_DIVIDE            Scancode = 84
 	SCANCODE_KP_MULTIPLY          Scancode = 85
 	SCANCODE_KP_MINUS             Scancode = 86
@@ -617,9 +617,9 @@ const (
 	SCANCODE_KP_9                 Scancode = 97
 	SCANCODE_KP_0                 Scancode = 98
 	SCANCODE_KP_PERIOD            Scancode = 99
-	SCANCODE_NONUSBACKSLASH       Scancode = 100
-	SCANCODE_APPLICATION          Scancode = 101
-	SCANCODE_POWER                Scancode = 102
+	SCANCODE_NONUSBACKSLASH       Scancode = 100 // This is the additional key that ISO *   keyboards have over ANSI ones, *   located between left shift and Z. *   Produces GRAVE ACCENT and TILDE in a *   US or UK Mac layout, REVERSE SOLIDUS *   (backslash) and VERTICAL LINE in a *   US or UK Windows layout, and *   LESS-THAN SIGN and GREATER-THAN SIGN *   in a Swiss German, German, or French *   layout.
+	SCANCODE_APPLICATION          Scancode = 101 // windows contextual menu, compose
+	SCANCODE_POWER                Scancode = 102 // The USB document says this is a status flag, *   not a physical key - but some Mac keyboards *   do have a power key.
 	SCANCODE_KP_EQUALS            Scancode = 103
 	SCANCODE_F13                  Scancode = 104
 	SCANCODE_F14                  Scancode = 105
@@ -634,42 +634,42 @@ const (
 	SCANCODE_F23                  Scancode = 114
 	SCANCODE_F24                  Scancode = 115
 	SCANCODE_EXECUTE              Scancode = 116
-	SCANCODE_HELP                 Scancode = 117
-	SCANCODE_MENU                 Scancode = 118
+	SCANCODE_HELP                 Scancode = 117 // AL Integrated Help Center
+	SCANCODE_MENU                 Scancode = 118 // Menu (show menu)
 	SCANCODE_SELECT               Scancode = 119
-	SCANCODE_STOP                 Scancode = 120
-	SCANCODE_AGAIN                Scancode = 121
-	SCANCODE_UNDO                 Scancode = 122
-	SCANCODE_CUT                  Scancode = 123
-	SCANCODE_COPY                 Scancode = 124
-	SCANCODE_PASTE                Scancode = 125
-	SCANCODE_FIND                 Scancode = 126
+	SCANCODE_STOP                 Scancode = 120 // AC Stop
+	SCANCODE_AGAIN                Scancode = 121 // AC Redo/Repeat
+	SCANCODE_UNDO                 Scancode = 122 // AC Undo
+	SCANCODE_CUT                  Scancode = 123 // AC Cut
+	SCANCODE_COPY                 Scancode = 124 // AC Copy
+	SCANCODE_PASTE                Scancode = 125 // AC Paste
+	SCANCODE_FIND                 Scancode = 126 // AC Find
 	SCANCODE_MUTE                 Scancode = 127
 	SCANCODE_VOLUMEUP             Scancode = 128
 	SCANCODE_VOLUMEDOWN           Scancode = 129
 	SCANCODE_KP_COMMA             Scancode = 133
 	SCANCODE_KP_EQUALSAS400       Scancode = 134
-	SCANCODE_INTERNATIONAL1       Scancode = 135
+	SCANCODE_INTERNATIONAL1       Scancode = 135 // used on Asian keyboards, see footnotes in USB doc
 	SCANCODE_INTERNATIONAL2       Scancode = 136
-	SCANCODE_INTERNATIONAL3       Scancode = 137
+	SCANCODE_INTERNATIONAL3       Scancode = 137 // Yen
 	SCANCODE_INTERNATIONAL4       Scancode = 138
 	SCANCODE_INTERNATIONAL5       Scancode = 139
 	SCANCODE_INTERNATIONAL6       Scancode = 140
 	SCANCODE_INTERNATIONAL7       Scancode = 141
 	SCANCODE_INTERNATIONAL8       Scancode = 142
 	SCANCODE_INTERNATIONAL9       Scancode = 143
-	SCANCODE_LANG1                Scancode = 144
-	SCANCODE_LANG2                Scancode = 145
-	SCANCODE_LANG3                Scancode = 146
-	SCANCODE_LANG4                Scancode = 147
-	SCANCODE_LANG5                Scancode = 148
-	SCANCODE_LANG6                Scancode = 149
-	SCANCODE_LANG7                Scancode = 150
-	SCANCODE_LANG8                Scancode = 151
-	SCANCODE_LANG9                Scancode = 152
-	SCANCODE_ALTERASE             Scancode = 153
+	SCANCODE_LANG1                Scancode = 144 // Hangul/English toggle
+	SCANCODE_LANG2                Scancode = 145 // Hanja conversion
+	SCANCODE_LANG3                Scancode = 146 // Katakana
+	SCANCODE_LANG4                Scancode = 147 // Hiragana
+	SCANCODE_LANG5                Scancode = 148 // Zenkaku/Hankaku
+	SCANCODE_LANG6                Scancode = 149 // reserved
+	SCANCODE_LANG7                Scancode = 150 // reserved
+	SCANCODE_LANG8                Scancode = 151 // reserved
+	SCANCODE_LANG9                Scancode = 152 // reserved
+	SCANCODE_ALTERASE             Scancode = 153 // Erase-Eaze
 	SCANCODE_SYSREQ               Scancode = 154
-	SCANCODE_CANCEL               Scancode = 155
+	SCANCODE_CANCEL               Scancode = 155 // AC Cancel
 	SCANCODE_CLEAR                Scancode = 156
 	SCANCODE_PRIOR                Scancode = 157
 	SCANCODE_RETURN2              Scancode = 158
@@ -727,48 +727,48 @@ const (
 	SCANCODE_KP_HEXADECIMAL       Scancode = 221
 	SCANCODE_LCTRL                Scancode = 224
 	SCANCODE_LSHIFT               Scancode = 225
-	SCANCODE_LALT                 Scancode = 226
-	SCANCODE_LGUI                 Scancode = 227
+	SCANCODE_LALT                 Scancode = 226 // alt, option
+	SCANCODE_LGUI                 Scancode = 227 // windows, command (apple), meta
 	SCANCODE_RCTRL                Scancode = 228
 	SCANCODE_RSHIFT               Scancode = 229
-	SCANCODE_RALT                 Scancode = 230
-	SCANCODE_RGUI                 Scancode = 231
-	SCANCODE_MODE                 Scancode = 257
-	SCANCODE_SLEEP                Scancode = 258
-	SCANCODE_WAKE                 Scancode = 259
-	SCANCODE_CHANNEL_INCREMENT    Scancode = 260
-	SCANCODE_CHANNEL_DECREMENT    Scancode = 261
-	SCANCODE_MEDIA_PLAY           Scancode = 262
-	SCANCODE_MEDIA_PAUSE          Scancode = 263
-	SCANCODE_MEDIA_RECORD         Scancode = 264
-	SCANCODE_MEDIA_FAST_FORWARD   Scancode = 265
-	SCANCODE_MEDIA_REWIND         Scancode = 266
-	SCANCODE_MEDIA_NEXT_TRACK     Scancode = 267
-	SCANCODE_MEDIA_PREVIOUS_TRACK Scancode = 268
-	SCANCODE_MEDIA_STOP           Scancode = 269
-	SCANCODE_MEDIA_EJECT          Scancode = 270
-	SCANCODE_MEDIA_PLAY_PAUSE     Scancode = 271
+	SCANCODE_RALT                 Scancode = 230 // alt gr, option
+	SCANCODE_RGUI                 Scancode = 231 // windows, command (apple), meta
+	SCANCODE_MODE                 Scancode = 257 // I'm not sure if this is really not covered *   by any of the above, but since there's a *   special SDL_KMOD_MODE for it I'm adding it here
+	SCANCODE_SLEEP                Scancode = 258 // Sleep
+	SCANCODE_WAKE                 Scancode = 259 // Wake
+	SCANCODE_CHANNEL_INCREMENT    Scancode = 260 // Channel Increment
+	SCANCODE_CHANNEL_DECREMENT    Scancode = 261 // Channel Decrement
+	SCANCODE_MEDIA_PLAY           Scancode = 262 // Play
+	SCANCODE_MEDIA_PAUSE          Scancode = 263 // Pause
+	SCANCODE_MEDIA_RECORD         Scancode = 264 // Record
+	SCANCODE_MEDIA_FAST_FORWARD   Scancode = 265 // Fast Forward
+	SCANCODE_MEDIA_REWIND         Scancode = 266 // Rewind
+	SCANCODE_MEDIA_NEXT_TRACK     Scancode = 267 // Next Track
+	SCANCODE_MEDIA_PREVIOUS_TRACK Scancode = 268 // Previous Track
+	SCANCODE_MEDIA_STOP           Scancode = 269 // Stop
+	SCANCODE_MEDIA_EJECT          Scancode = 270 // Eject
+	SCANCODE_MEDIA_PLAY_PAUSE     Scancode = 271 // Play / Pause
 	SCANCODE_MEDIA_SELECT         Scancode = 272
-	SCANCODE_AC_NEW               Scancode = 273
-	SCANCODE_AC_OPEN              Scancode = 274
-	SCANCODE_AC_CLOSE             Scancode = 275
-	SCANCODE_AC_EXIT              Scancode = 276
-	SCANCODE_AC_SAVE              Scancode = 277
-	SCANCODE_AC_PRINT             Scancode = 278
-	SCANCODE_AC_PROPERTIES        Scancode = 279
-	SCANCODE_AC_SEARCH            Scancode = 280
-	SCANCODE_AC_HOME              Scancode = 281
-	SCANCODE_AC_BACK              Scancode = 282
-	SCANCODE_AC_FORWARD           Scancode = 283
-	SCANCODE_AC_STOP              Scancode = 284
-	SCANCODE_AC_REFRESH           Scancode = 285
-	SCANCODE_AC_BOOKMARKS         Scancode = 286
-	SCANCODE_SOFTLEFT             Scancode = 287
-	SCANCODE_SOFTRIGHT            Scancode = 288
-	SCANCODE_CALL                 Scancode = 289
-	SCANCODE_ENDCALL              Scancode = 290
-	SCANCODE_RESERVED             Scancode = 400
-	SCANCODE_COUNT                Scancode = 512
+	SCANCODE_AC_NEW               Scancode = 273 // AC New
+	SCANCODE_AC_OPEN              Scancode = 274 // AC Open
+	SCANCODE_AC_CLOSE             Scancode = 275 // AC Close
+	SCANCODE_AC_EXIT              Scancode = 276 // AC Exit
+	SCANCODE_AC_SAVE              Scancode = 277 // AC Save
+	SCANCODE_AC_PRINT             Scancode = 278 // AC Print
+	SCANCODE_AC_PROPERTIES        Scancode = 279 // AC Properties
+	SCANCODE_AC_SEARCH            Scancode = 280 // AC Search
+	SCANCODE_AC_HOME              Scancode = 281 // AC Home
+	SCANCODE_AC_BACK              Scancode = 282 // AC Back
+	SCANCODE_AC_FORWARD           Scancode = 283 // AC Forward
+	SCANCODE_AC_STOP              Scancode = 284 // AC Stop
+	SCANCODE_AC_REFRESH           Scancode = 285 // AC Refresh
+	SCANCODE_AC_BOOKMARKS         Scancode = 286 // AC Bookmarks
+	SCANCODE_SOFTLEFT             Scancode = 287 // Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom left of the display.
+	SCANCODE_SOFTRIGHT            Scancode = 288 // Usually situated below the display on phones and used as a multi-function feature key for selecting a software defined function shown on the bottom right of the display.
+	SCANCODE_CALL                 Scancode = 289 // Used for accepting phone calls.
+	SCANCODE_ENDCALL              Scancode = 290 // Used for rejecting phone calls.
+	SCANCODE_RESERVED             Scancode = 400 // 400-500 reserved for dynamic keycodes
+	SCANCODE_COUNT                Scancode = 512 // not a key, just marks the number of scancodes for array bounds
 )
 
 // SDL_SystemCursor - Cursor types for [SDL_CreateSystemCursor](SDL_CreateSystemCursor)().
@@ -776,26 +776,26 @@ const (
 type SystemCursor uint32
 
 const (
-	SYSTEM_CURSOR_DEFAULT     SystemCursor = 0
-	SYSTEM_CURSOR_TEXT        SystemCursor = 1
-	SYSTEM_CURSOR_WAIT        SystemCursor = 2
-	SYSTEM_CURSOR_CROSSHAIR   SystemCursor = 3
-	SYSTEM_CURSOR_PROGRESS    SystemCursor = 4
-	SYSTEM_CURSOR_NWSE_RESIZE SystemCursor = 5
-	SYSTEM_CURSOR_NESW_RESIZE SystemCursor = 6
-	SYSTEM_CURSOR_EW_RESIZE   SystemCursor = 7
-	SYSTEM_CURSOR_NS_RESIZE   SystemCursor = 8
-	SYSTEM_CURSOR_MOVE        SystemCursor = 9
-	SYSTEM_CURSOR_NOT_ALLOWED SystemCursor = 10
-	SYSTEM_CURSOR_POINTER     SystemCursor = 11
-	SYSTEM_CURSOR_NW_RESIZE   SystemCursor = 12
-	SYSTEM_CURSOR_N_RESIZE    SystemCursor = 13
-	SYSTEM_CURSOR_NE_RESIZE   SystemCursor = 14
-	SYSTEM_CURSOR_E_RESIZE    SystemCursor = 15
-	SYSTEM_CURSOR_SE_RESIZE   SystemCursor = 16
-	SYSTEM_CURSOR_S_RESIZE    SystemCursor = 17
-	SYSTEM_CURSOR_SW_RESIZE   SystemCursor = 18
-	SYSTEM_CURSOR_W_RESIZE    SystemCursor = 19
+	SYSTEM_CURSOR_DEFAULT     SystemCursor = 0 // Default cursor. Usually an arrow.
+	SYSTEM_CURSOR_TEXT        SystemCursor = 1 // Text selection. Usually an I-beam.
+	SYSTEM_CURSOR_WAIT        SystemCursor = 2 // Wait. Usually an hourglass or watch or spinning ball.
+	SYSTEM_CURSOR_CROSSHAIR   SystemCursor = 3 // Crosshair.
+	SYSTEM_CURSOR_PROGRESS    SystemCursor = 4 // Program is busy but still interactive. Usually it's WAIT with an arrow.
+	SYSTEM_CURSOR_NWSE_RESIZE SystemCursor = 5 // Double arrow pointing northwest and southeast.
+	SYSTEM_CURSOR_NESW_RESIZE SystemCursor = 6 // Double arrow pointing northeast and southwest.
+	SYSTEM_CURSOR_EW_RESIZE   SystemCursor = 7 // Double arrow pointing west and east.
+	SYSTEM_CURSOR_NS_RESIZE   SystemCursor = 8 // Double arrow pointing north and south.
+	SYSTEM_CURSOR_MOVE        SystemCursor = 9 // Four pointed arrow pointing north, south, east, and west.
+	SYSTEM_CURSOR_NOT_ALLOWED SystemCursor = 10 // Not permitted. Usually a slashed circle or crossbones.
+	SYSTEM_CURSOR_POINTER     SystemCursor = 11 // Pointer that indicates a link. Usually a pointing hand.
+	SYSTEM_CURSOR_NW_RESIZE   SystemCursor = 12 // Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE.
+	SYSTEM_CURSOR_N_RESIZE    SystemCursor = 13 // Window resize top. May be NS_RESIZE.
+	SYSTEM_CURSOR_NE_RESIZE   SystemCursor = 14 // Window resize top-right. May be NESW_RESIZE.
+	SYSTEM_CURSOR_E_RESIZE    SystemCursor = 15 // Window resize right. May be EW_RESIZE.
+	SYSTEM_CURSOR_SE_RESIZE   SystemCursor = 16 // Window resize bottom-right. May be NWSE_RESIZE.
+	SYSTEM_CURSOR_S_RESIZE    SystemCursor = 17 // Window resize bottom. May be NS_RESIZE.
+	SYSTEM_CURSOR_SW_RESIZE   SystemCursor = 18 // Window resize bottom-left. May be NESW_RESIZE.
+	SYSTEM_CURSOR_W_RESIZE    SystemCursor = 19 // Window resize left. May be EW_RESIZE.
 	SYSTEM_CURSOR_COUNT       SystemCursor = 20
 )
 
@@ -804,8 +804,8 @@ const (
 type MouseWheelDirection uint32
 
 const (
-	MOUSEWHEEL_NORMAL  MouseWheelDirection = 0
-	MOUSEWHEEL_FLIPPED MouseWheelDirection = 1
+	MOUSEWHEEL_NORMAL  MouseWheelDirection = 0 // The scroll direction is normal
+	MOUSEWHEEL_FLIPPED MouseWheelDirection = 1 // The scroll direction is flipped / natural
 )
 
 // SDL_TouchDeviceType - An enum that describes the type of a touch device.
@@ -814,9 +814,9 @@ type TouchDeviceType uint32
 
 const (
 	TOUCH_DEVICE_INVALID           TouchDeviceType = 4294967295
-	TOUCH_DEVICE_DIRECT            TouchDeviceType = 0
-	TOUCH_DEVICE_INDIRECT_ABSOLUTE TouchDeviceType = 1
-	TOUCH_DEVICE_INDIRECT_RELATIVE TouchDeviceType = 2
+	TOUCH_DEVICE_DIRECT            TouchDeviceType = 0 // touch screen with window-relative coordinates
+	TOUCH_DEVICE_INDIRECT_ABSOLUTE TouchDeviceType = 1 // trackpad with absolute device coordinates
+	TOUCH_DEVICE_INDIRECT_RELATIVE TouchDeviceType = 2 // trackpad with screen cursor-relative coordinates
 )
 
 // SDL_PenAxis - Pen axis indices.
@@ -824,14 +824,14 @@ const (
 type PenAxis uint32
 
 const (
-	PEN_AXIS_PRESSURE            PenAxis = 0
-	PEN_AXIS_XTILT               PenAxis = 1
-	PEN_AXIS_YTILT               PenAxis = 2
-	PEN_AXIS_DISTANCE            PenAxis = 3
-	PEN_AXIS_ROTATION            PenAxis = 4
-	PEN_AXIS_SLIDER              PenAxis = 5
-	PEN_AXIS_TANGENTIAL_PRESSURE PenAxis = 6
-	PEN_AXIS_COUNT               PenAxis = 7
+	PEN_AXIS_PRESSURE            PenAxis = 0 // Pen pressure.  Unidirectional: 0 to 1.0
+	PEN_AXIS_XTILT               PenAxis = 1 // Pen horizontal tilt angle.  Bidirectional: -90.0 to 90.0 (left-to-right).
+	PEN_AXIS_YTILT               PenAxis = 2 // Pen vertical tilt angle.  Bidirectional: -90.0 to 90.0 (top-to-down).
+	PEN_AXIS_DISTANCE            PenAxis = 3 // Pen distance to drawing surface.  Unidirectional: 0.0 to 1.0
+	PEN_AXIS_ROTATION            PenAxis = 4 // Pen barrel rotation.  Bidirectional: -180 to 179.9 (clockwise, 0 is facing up, -180.0 is facing down).
+	PEN_AXIS_SLIDER              PenAxis = 5 // Pen finger wheel or slider (e.g., Airbrush Pen).  Unidirectional: 0 to 1.0
+	PEN_AXIS_TANGENTIAL_PRESSURE PenAxis = 6 // Pressure from squeezing the pen ("barrel pressure").
+	PEN_AXIS_COUNT               PenAxis = 7 // Total known pen axis types in this version of SDL. This number may grow in future releases!
 )
 
 // SDL_EventType - The types of events that can be delivered.
@@ -839,127 +839,127 @@ const (
 type EventType uint32
 
 const (
-	EVENT_FIRST                         EventType = 0
-	EVENT_QUIT                          EventType = 256
-	EVENT_TERMINATING                   EventType = 257
-	EVENT_LOW_MEMORY                    EventType = 258
-	EVENT_WILL_ENTER_BACKGROUND         EventType = 259
-	EVENT_DID_ENTER_BACKGROUND          EventType = 260
-	EVENT_WILL_ENTER_FOREGROUND         EventType = 261
-	EVENT_DID_ENTER_FOREGROUND          EventType = 262
-	EVENT_LOCALE_CHANGED                EventType = 263
-	EVENT_SYSTEM_THEME_CHANGED          EventType = 264
-	EVENT_DISPLAY_ORIENTATION           EventType = 337
-	EVENT_DISPLAY_ADDED                 EventType = 338
-	EVENT_DISPLAY_REMOVED               EventType = 339
-	EVENT_DISPLAY_MOVED                 EventType = 340
-	EVENT_DISPLAY_DESKTOP_MODE_CHANGED  EventType = 341
-	EVENT_DISPLAY_CURRENT_MODE_CHANGED  EventType = 342
-	EVENT_DISPLAY_CONTENT_SCALE_CHANGED EventType = 343
-	EVENT_DISPLAY_USABLE_BOUNDS_CHANGED EventType = 344
+	EVENT_FIRST                         EventType = 0 // Unused (do not remove)
+	EVENT_QUIT                          EventType = 256 // User-requested quit
+	EVENT_TERMINATING                   EventType = 257 // The application is being terminated by the OS. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillTerminate() Called on Android in onDestroy()
+	EVENT_LOW_MEMORY                    EventType = 258 // The application is low on memory, free memory if possible. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
+	EVENT_WILL_ENTER_BACKGROUND         EventType = 259 // The application is about to enter the background. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillResignActive() Called on Android in onPause()
+	EVENT_DID_ENTER_BACKGROUND          EventType = 260 // The application did enter the background and may not get CPU for some time. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidEnterBackground() Called on Android in onPause()
+	EVENT_WILL_ENTER_FOREGROUND         EventType = 261 // The application is about to enter the foreground. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillEnterForeground() Called on Android in onResume()
+	EVENT_DID_ENTER_FOREGROUND          EventType = 262 // The application is now interactive. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive() Called on Android in onResume()
+	EVENT_LOCALE_CHANGED                EventType = 263 // The user's locale preferences have changed.
+	EVENT_SYSTEM_THEME_CHANGED          EventType = 264 // The system theme changed
+	EVENT_DISPLAY_ORIENTATION           EventType = 337 // Display orientation has changed to data1
+	EVENT_DISPLAY_ADDED                 EventType = 338 // Display has been added to the system
+	EVENT_DISPLAY_REMOVED               EventType = 339 // Display has been removed from the system
+	EVENT_DISPLAY_MOVED                 EventType = 340 // Display has changed position
+	EVENT_DISPLAY_DESKTOP_MODE_CHANGED  EventType = 341 // Display has changed desktop mode
+	EVENT_DISPLAY_CURRENT_MODE_CHANGED  EventType = 342 // Display has changed current mode
+	EVENT_DISPLAY_CONTENT_SCALE_CHANGED EventType = 343 // Display has changed content scale
+	EVENT_DISPLAY_USABLE_BOUNDS_CHANGED EventType = 344 // Display has changed usable bounds
 	EVENT_DISPLAY_FIRST                 EventType = 337
 	EVENT_DISPLAY_LAST                  EventType = 344
-	EVENT_WINDOW_SHOWN                  EventType = 514
-	EVENT_WINDOW_HIDDEN                 EventType = 515
-	EVENT_WINDOW_EXPOSED                EventType = 516
-	EVENT_WINDOW_MOVED                  EventType = 517
-	EVENT_WINDOW_RESIZED                EventType = 518
-	EVENT_WINDOW_PIXEL_SIZE_CHANGED     EventType = 519
-	EVENT_WINDOW_METAL_VIEW_RESIZED     EventType = 520
-	EVENT_WINDOW_MINIMIZED              EventType = 521
-	EVENT_WINDOW_MAXIMIZED              EventType = 522
-	EVENT_WINDOW_RESTORED               EventType = 523
-	EVENT_WINDOW_MOUSE_ENTER            EventType = 524
-	EVENT_WINDOW_MOUSE_LEAVE            EventType = 525
-	EVENT_WINDOW_FOCUS_GAINED           EventType = 526
-	EVENT_WINDOW_FOCUS_LOST             EventType = 527
-	EVENT_WINDOW_CLOSE_REQUESTED        EventType = 528
-	EVENT_WINDOW_HIT_TEST               EventType = 529
-	EVENT_WINDOW_ICCPROF_CHANGED        EventType = 530
-	EVENT_WINDOW_DISPLAY_CHANGED        EventType = 531
-	EVENT_WINDOW_DISPLAY_SCALE_CHANGED  EventType = 532
-	EVENT_WINDOW_SAFE_AREA_CHANGED      EventType = 533
-	EVENT_WINDOW_OCCLUDED               EventType = 534
-	EVENT_WINDOW_ENTER_FULLSCREEN       EventType = 535
-	EVENT_WINDOW_LEAVE_FULLSCREEN       EventType = 536
-	EVENT_WINDOW_DESTROYED              EventType = 537
-	EVENT_WINDOW_HDR_STATE_CHANGED      EventType = 538
+	EVENT_WINDOW_SHOWN                  EventType = 514 // Window has been shown
+	EVENT_WINDOW_HIDDEN                 EventType = 515 // Window has been hidden
+	EVENT_WINDOW_EXPOSED                EventType = 516 // Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event. data1 is 1 for live-resize expose events, 0 otherwise.
+	EVENT_WINDOW_MOVED                  EventType = 517 // Window has been moved to data1, data2
+	EVENT_WINDOW_RESIZED                EventType = 518 // Window has been resized to data1xdata2
+	EVENT_WINDOW_PIXEL_SIZE_CHANGED     EventType = 519 // The pixel size of the window has changed to data1xdata2
+	EVENT_WINDOW_METAL_VIEW_RESIZED     EventType = 520 // The pixel size of a Metal view associated with the window has changed
+	EVENT_WINDOW_MINIMIZED              EventType = 521 // Window has been minimized
+	EVENT_WINDOW_MAXIMIZED              EventType = 522 // Window has been maximized
+	EVENT_WINDOW_RESTORED               EventType = 523 // Window has been restored to normal size and position
+	EVENT_WINDOW_MOUSE_ENTER            EventType = 524 // Window has gained mouse focus
+	EVENT_WINDOW_MOUSE_LEAVE            EventType = 525 // Window has lost mouse focus
+	EVENT_WINDOW_FOCUS_GAINED           EventType = 526 // Window has gained keyboard focus
+	EVENT_WINDOW_FOCUS_LOST             EventType = 527 // Window has lost keyboard focus
+	EVENT_WINDOW_CLOSE_REQUESTED        EventType = 528 // The window manager requests that the window be closed
+	EVENT_WINDOW_HIT_TEST               EventType = 529 // Window had a hit test that wasn't SDL_HITTEST_NORMAL
+	EVENT_WINDOW_ICCPROF_CHANGED        EventType = 530 // The ICC profile of the window's display has changed
+	EVENT_WINDOW_DISPLAY_CHANGED        EventType = 531 // Window has been moved to display data1
+	EVENT_WINDOW_DISPLAY_SCALE_CHANGED  EventType = 532 // Window display scale has been changed
+	EVENT_WINDOW_SAFE_AREA_CHANGED      EventType = 533 // The window safe area has been changed
+	EVENT_WINDOW_OCCLUDED               EventType = 534 // The window has been occluded
+	EVENT_WINDOW_ENTER_FULLSCREEN       EventType = 535 // The window has entered fullscreen mode
+	EVENT_WINDOW_LEAVE_FULLSCREEN       EventType = 536 // The window has left fullscreen mode
+	EVENT_WINDOW_DESTROYED              EventType = 537 // The window with the associated ID is being or has been destroyed. If this message is being handled in an event watcher, the window handle is still valid and can still be used to retrieve any properties associated with the window. Otherwise, the handle has already been destroyed and all resources associated with it are invalid
+	EVENT_WINDOW_HDR_STATE_CHANGED      EventType = 538 // Window HDR properties have changed
 	EVENT_WINDOW_FIRST                  EventType = 514
 	EVENT_WINDOW_LAST                   EventType = 538
-	EVENT_KEY_DOWN                      EventType = 768
-	EVENT_KEY_UP                        EventType = 769
-	EVENT_TEXT_EDITING                  EventType = 770
-	EVENT_TEXT_INPUT                    EventType = 771
-	EVENT_KEYMAP_CHANGED                EventType = 772
-	EVENT_KEYBOARD_ADDED                EventType = 773
-	EVENT_KEYBOARD_REMOVED              EventType = 774
-	EVENT_TEXT_EDITING_CANDIDATES       EventType = 775
-	EVENT_SCREEN_KEYBOARD_SHOWN         EventType = 776
-	EVENT_SCREEN_KEYBOARD_HIDDEN        EventType = 777
-	EVENT_MOUSE_MOTION                  EventType = 1024
-	EVENT_MOUSE_BUTTON_DOWN             EventType = 1025
-	EVENT_MOUSE_BUTTON_UP               EventType = 1026
-	EVENT_MOUSE_WHEEL                   EventType = 1027
-	EVENT_MOUSE_ADDED                   EventType = 1028
-	EVENT_MOUSE_REMOVED                 EventType = 1029
-	EVENT_JOYSTICK_AXIS_MOTION          EventType = 1536
-	EVENT_JOYSTICK_BALL_MOTION          EventType = 1537
-	EVENT_JOYSTICK_HAT_MOTION           EventType = 1538
-	EVENT_JOYSTICK_BUTTON_DOWN          EventType = 1539
-	EVENT_JOYSTICK_BUTTON_UP            EventType = 1540
-	EVENT_JOYSTICK_ADDED                EventType = 1541
-	EVENT_JOYSTICK_REMOVED              EventType = 1542
-	EVENT_JOYSTICK_BATTERY_UPDATED      EventType = 1543
-	EVENT_JOYSTICK_UPDATE_COMPLETE      EventType = 1544
-	EVENT_GAMEPAD_AXIS_MOTION           EventType = 1616
-	EVENT_GAMEPAD_BUTTON_DOWN           EventType = 1617
-	EVENT_GAMEPAD_BUTTON_UP             EventType = 1618
-	EVENT_GAMEPAD_ADDED                 EventType = 1619
-	EVENT_GAMEPAD_REMOVED               EventType = 1620
-	EVENT_GAMEPAD_REMAPPED              EventType = 1621
-	EVENT_GAMEPAD_TOUCHPAD_DOWN         EventType = 1622
-	EVENT_GAMEPAD_TOUCHPAD_MOTION       EventType = 1623
-	EVENT_GAMEPAD_TOUCHPAD_UP           EventType = 1624
-	EVENT_GAMEPAD_SENSOR_UPDATE         EventType = 1625
-	EVENT_GAMEPAD_UPDATE_COMPLETE       EventType = 1626
-	EVENT_GAMEPAD_STEAM_HANDLE_UPDATED  EventType = 1627
+	EVENT_KEY_DOWN                      EventType = 768 // Key pressed
+	EVENT_KEY_UP                        EventType = 769 // Key released
+	EVENT_TEXT_EDITING                  EventType = 770 // Keyboard text editing (composition)
+	EVENT_TEXT_INPUT                    EventType = 771 // Keyboard text input
+	EVENT_KEYMAP_CHANGED                EventType = 772 // Keymap changed due to a system event such as an input language or keyboard layout change.
+	EVENT_KEYBOARD_ADDED                EventType = 773 // A new keyboard has been inserted into the system
+	EVENT_KEYBOARD_REMOVED              EventType = 774 // A keyboard has been removed
+	EVENT_TEXT_EDITING_CANDIDATES       EventType = 775 // Keyboard text editing candidates
+	EVENT_SCREEN_KEYBOARD_SHOWN         EventType = 776 // The on-screen keyboard has been shown
+	EVENT_SCREEN_KEYBOARD_HIDDEN        EventType = 777 // The on-screen keyboard has been hidden
+	EVENT_MOUSE_MOTION                  EventType = 1024 // Mouse moved
+	EVENT_MOUSE_BUTTON_DOWN             EventType = 1025 // Mouse button pressed
+	EVENT_MOUSE_BUTTON_UP               EventType = 1026 // Mouse button released
+	EVENT_MOUSE_WHEEL                   EventType = 1027 // Mouse wheel motion
+	EVENT_MOUSE_ADDED                   EventType = 1028 // A new mouse has been inserted into the system
+	EVENT_MOUSE_REMOVED                 EventType = 1029 // A mouse has been removed
+	EVENT_JOYSTICK_AXIS_MOTION          EventType = 1536 // Joystick axis motion
+	EVENT_JOYSTICK_BALL_MOTION          EventType = 1537 // Joystick trackball motion
+	EVENT_JOYSTICK_HAT_MOTION           EventType = 1538 // Joystick hat position change
+	EVENT_JOYSTICK_BUTTON_DOWN          EventType = 1539 // Joystick button pressed
+	EVENT_JOYSTICK_BUTTON_UP            EventType = 1540 // Joystick button released
+	EVENT_JOYSTICK_ADDED                EventType = 1541 // A new joystick has been inserted into the system
+	EVENT_JOYSTICK_REMOVED              EventType = 1542 // An opened joystick has been removed
+	EVENT_JOYSTICK_BATTERY_UPDATED      EventType = 1543 // Joystick battery level change
+	EVENT_JOYSTICK_UPDATE_COMPLETE      EventType = 1544 // Joystick update is complete
+	EVENT_GAMEPAD_AXIS_MOTION           EventType = 1616 // Gamepad axis motion
+	EVENT_GAMEPAD_BUTTON_DOWN           EventType = 1617 // Gamepad button pressed
+	EVENT_GAMEPAD_BUTTON_UP             EventType = 1618 // Gamepad button released
+	EVENT_GAMEPAD_ADDED                 EventType = 1619 // A new gamepad has been inserted into the system
+	EVENT_GAMEPAD_REMOVED               EventType = 1620 // A gamepad has been removed
+	EVENT_GAMEPAD_REMAPPED              EventType = 1621 // The gamepad mapping was updated
+	EVENT_GAMEPAD_TOUCHPAD_DOWN         EventType = 1622 // Gamepad touchpad was touched
+	EVENT_GAMEPAD_TOUCHPAD_MOTION       EventType = 1623 // Gamepad touchpad finger was moved
+	EVENT_GAMEPAD_TOUCHPAD_UP           EventType = 1624 // Gamepad touchpad finger was lifted
+	EVENT_GAMEPAD_SENSOR_UPDATE         EventType = 1625 // Gamepad sensor was updated
+	EVENT_GAMEPAD_UPDATE_COMPLETE       EventType = 1626 // Gamepad update is complete
+	EVENT_GAMEPAD_STEAM_HANDLE_UPDATED  EventType = 1627 // Gamepad Steam handle has changed
 	EVENT_FINGER_DOWN                   EventType = 1792
 	EVENT_FINGER_UP                     EventType = 1793
 	EVENT_FINGER_MOTION                 EventType = 1794
 	EVENT_FINGER_CANCELED               EventType = 1795
-	EVENT_PINCH_BEGIN                   EventType = 1808
-	EVENT_PINCH_UPDATE                  EventType = 1809
-	EVENT_PINCH_END                     EventType = 1810
-	EVENT_CLIPBOARD_UPDATE              EventType = 2304
-	EVENT_DROP_FILE                     EventType = 4096
-	EVENT_DROP_TEXT                     EventType = 4097
-	EVENT_DROP_BEGIN                    EventType = 4098
-	EVENT_DROP_COMPLETE                 EventType = 4099
-	EVENT_DROP_POSITION                 EventType = 4100
-	EVENT_AUDIO_DEVICE_ADDED            EventType = 4352
-	EVENT_AUDIO_DEVICE_REMOVED          EventType = 4353
-	EVENT_AUDIO_DEVICE_FORMAT_CHANGED   EventType = 4354
-	EVENT_SENSOR_UPDATE                 EventType = 4608
-	EVENT_PEN_PROXIMITY_IN              EventType = 4864
-	EVENT_PEN_PROXIMITY_OUT             EventType = 4865
-	EVENT_PEN_DOWN                      EventType = 4866
-	EVENT_PEN_UP                        EventType = 4867
-	EVENT_PEN_BUTTON_DOWN               EventType = 4868
-	EVENT_PEN_BUTTON_UP                 EventType = 4869
-	EVENT_PEN_MOTION                    EventType = 4870
-	EVENT_PEN_AXIS                      EventType = 4871
-	EVENT_CAMERA_DEVICE_ADDED           EventType = 5120
-	EVENT_CAMERA_DEVICE_REMOVED         EventType = 5121
-	EVENT_CAMERA_DEVICE_APPROVED        EventType = 5122
-	EVENT_CAMERA_DEVICE_DENIED          EventType = 5123
-	EVENT_RENDER_TARGETS_RESET          EventType = 8192
-	EVENT_RENDER_DEVICE_RESET           EventType = 8193
-	EVENT_RENDER_DEVICE_LOST            EventType = 8194
+	EVENT_PINCH_BEGIN                   EventType = 1808 // Pinch gesture started
+	EVENT_PINCH_UPDATE                  EventType = 1809 // Pinch gesture updated
+	EVENT_PINCH_END                     EventType = 1810 // Pinch gesture ended
+	EVENT_CLIPBOARD_UPDATE              EventType = 2304 // The clipboard changed
+	EVENT_DROP_FILE                     EventType = 4096 // The system requests a file open
+	EVENT_DROP_TEXT                     EventType = 4097 // text/plain drag-and-drop event
+	EVENT_DROP_BEGIN                    EventType = 4098 // A new set of drops is beginning (NULL filename)
+	EVENT_DROP_COMPLETE                 EventType = 4099 // Current set of drops is now complete (NULL filename)
+	EVENT_DROP_POSITION                 EventType = 4100 // Position while moving over the window
+	EVENT_AUDIO_DEVICE_ADDED            EventType = 4352 // A new audio device is available
+	EVENT_AUDIO_DEVICE_REMOVED          EventType = 4353 // An audio device has been removed.
+	EVENT_AUDIO_DEVICE_FORMAT_CHANGED   EventType = 4354 // An audio device's format has been changed by the system.
+	EVENT_SENSOR_UPDATE                 EventType = 4608 // A sensor was updated
+	EVENT_PEN_PROXIMITY_IN              EventType = 4864 // Pressure-sensitive pen has become available
+	EVENT_PEN_PROXIMITY_OUT             EventType = 4865 // Pressure-sensitive pen has become unavailable
+	EVENT_PEN_DOWN                      EventType = 4866 // Pressure-sensitive pen touched drawing surface
+	EVENT_PEN_UP                        EventType = 4867 // Pressure-sensitive pen stopped touching drawing surface
+	EVENT_PEN_BUTTON_DOWN               EventType = 4868 // Pressure-sensitive pen button pressed
+	EVENT_PEN_BUTTON_UP                 EventType = 4869 // Pressure-sensitive pen button released
+	EVENT_PEN_MOTION                    EventType = 4870 // Pressure-sensitive pen is moving on the tablet
+	EVENT_PEN_AXIS                      EventType = 4871 // Pressure-sensitive pen angle/pressure/etc changed
+	EVENT_CAMERA_DEVICE_ADDED           EventType = 5120 // A new camera device is available
+	EVENT_CAMERA_DEVICE_REMOVED         EventType = 5121 // A camera device has been removed.
+	EVENT_CAMERA_DEVICE_APPROVED        EventType = 5122 // A camera device has been approved for use by the user.
+	EVENT_CAMERA_DEVICE_DENIED          EventType = 5123 // A camera device has been denied for use by the user.
+	EVENT_RENDER_TARGETS_RESET          EventType = 8192 // The render targets have been reset and their contents need to be updated
+	EVENT_RENDER_DEVICE_RESET           EventType = 8193 // The device has been reset and all textures need to be recreated
+	EVENT_RENDER_DEVICE_LOST            EventType = 8194 // The device has been lost and can't be recovered.
 	EVENT_PRIVATE0                      EventType = 16384
 	EVENT_PRIVATE1                      EventType = 16385
 	EVENT_PRIVATE2                      EventType = 16386
 	EVENT_PRIVATE3                      EventType = 16387
-	EVENT_POLL_SENTINEL                 EventType = 32512
+	EVENT_POLL_SENTINEL                 EventType = 32512 // Signals the end of an event poll cycle
 	EVENT_USER                          EventType = 32768
 	EVENT_LAST                          EventType = 65535
 	EVENT_ENUM_PADDING                  EventType = 2147483647
@@ -970,9 +970,9 @@ const (
 type EventAction uint32
 
 const (
-	ADDEVENT  EventAction = 0
-	PEEKEVENT EventAction = 1
-	GETEVENT  EventAction = 2
+	ADDEVENT  EventAction = 0 // Add events to the back of the queue.
+	PEEKEVENT EventAction = 1 // Check but don't remove events from the queue front.
+	GETEVENT  EventAction = 2 // Retrieve/remove events from the front of the queue.
 )
 
 // SDL_Folder - The type of the OS-provided default folder for a specific purpose.
@@ -980,18 +980,18 @@ const (
 type Folder uint32
 
 const (
-	FOLDER_HOME        Folder = 0
-	FOLDER_DESKTOP     Folder = 1
-	FOLDER_DOCUMENTS   Folder = 2
-	FOLDER_DOWNLOADS   Folder = 3
-	FOLDER_MUSIC       Folder = 4
-	FOLDER_PICTURES    Folder = 5
-	FOLDER_PUBLICSHARE Folder = 6
-	FOLDER_SAVEDGAMES  Folder = 7
-	FOLDER_SCREENSHOTS Folder = 8
-	FOLDER_TEMPLATES   Folder = 9
-	FOLDER_VIDEOS      Folder = 10
-	FOLDER_COUNT       Folder = 11
+	FOLDER_HOME        Folder = 0 // The folder which contains all of the current user's data, preferences, and documents. It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents.
+	FOLDER_DESKTOP     Folder = 1 // The folder of files that are displayed on the desktop. Note that the existence of a desktop folder does not guarantee that the system does show icons on its desktop; certain GNU/Linux distros with a graphical environment may not have desktop icons.
+	FOLDER_DOCUMENTS   Folder = 2 // User document files, possibly application-specific. This is a good place to save a user's projects.
+	FOLDER_DOWNLOADS   Folder = 3 // Standard folder for user files downloaded from the internet.
+	FOLDER_MUSIC       Folder = 4 // Music files that can be played using a standard music player (mp3, ogg...).
+	FOLDER_PICTURES    Folder = 5 // Image files that can be displayed using a standard viewer (png, jpg...).
+	FOLDER_PUBLICSHARE Folder = 6 // Files that are meant to be shared with other users on the same computer.
+	FOLDER_SAVEDGAMES  Folder = 7 // Save files for games.
+	FOLDER_SCREENSHOTS Folder = 8 // Application screenshots.
+	FOLDER_TEMPLATES   Folder = 9 // Template files to be used when the user requests the desktop environment to create a new file in a certain folder, such as "New Text File.txt".  Any file in the Templates folder can be used as a starting point for a new file.
+	FOLDER_VIDEOS      Folder = 10 // Video files that can be played using a standard video player (mp4, webm...).
+	FOLDER_COUNT       Folder = 11 // Total number of types in this enum, not a folder type by itself.
 )
 
 // SDL_PathType - Types of filesystem entries.
@@ -999,10 +999,10 @@ const (
 type PathType uint32
 
 const (
-	PATHTYPE_NONE      PathType = 0
-	PATHTYPE_FILE      PathType = 1
-	PATHTYPE_DIRECTORY PathType = 2
-	PATHTYPE_OTHER     PathType = 3
+	PATHTYPE_NONE      PathType = 0 // path does not exist
+	PATHTYPE_FILE      PathType = 1 // a normal file
+	PATHTYPE_DIRECTORY PathType = 2 // a directory
+	PATHTYPE_OTHER     PathType = 3 // something completely different like a device node (not a symlink, those are always followed)
 )
 
 // SDL_GPUPrimitiveType - Specifies the primitive topology of a graphics pipeline.
@@ -1010,11 +1010,11 @@ const (
 type GPUPrimitiveType uint32
 
 const (
-	GPU_PRIMITIVETYPE_TRIANGLELIST  GPUPrimitiveType = 0
-	GPU_PRIMITIVETYPE_TRIANGLESTRIP GPUPrimitiveType = 1
-	GPU_PRIMITIVETYPE_LINELIST      GPUPrimitiveType = 2
-	GPU_PRIMITIVETYPE_LINESTRIP     GPUPrimitiveType = 3
-	GPU_PRIMITIVETYPE_POINTLIST     GPUPrimitiveType = 4
+	GPU_PRIMITIVETYPE_TRIANGLELIST  GPUPrimitiveType = 0 // A series of separate triangles.
+	GPU_PRIMITIVETYPE_TRIANGLESTRIP GPUPrimitiveType = 1 // A series of connected triangles.
+	GPU_PRIMITIVETYPE_LINELIST      GPUPrimitiveType = 2 // A series of separate lines.
+	GPU_PRIMITIVETYPE_LINESTRIP     GPUPrimitiveType = 3 // A series of connected lines.
+	GPU_PRIMITIVETYPE_POINTLIST     GPUPrimitiveType = 4 // A series of separate points.
 )
 
 // SDL_GPULoadOp - Specifies how the contents of a texture attached to a render pass are treated at the beginning of the render pass.
@@ -1022,9 +1022,9 @@ const (
 type GPULoadOp uint32
 
 const (
-	GPU_LOADOP_LOAD      GPULoadOp = 0
-	GPU_LOADOP_CLEAR     GPULoadOp = 1
-	GPU_LOADOP_DONT_CARE GPULoadOp = 2
+	GPU_LOADOP_LOAD      GPULoadOp = 0 // The previous contents of the texture will be preserved.
+	GPU_LOADOP_CLEAR     GPULoadOp = 1 // The contents of the texture will be cleared to a color.
+	GPU_LOADOP_DONT_CARE GPULoadOp = 2 // The previous contents of the texture need not be preserved. The contents will be undefined.
 )
 
 // SDL_GPUStoreOp - Specifies how the contents of a texture attached to a render pass are treated at the end of the render pass.
@@ -1032,10 +1032,10 @@ const (
 type GPUStoreOp uint32
 
 const (
-	GPU_STOREOP_STORE             GPUStoreOp = 0
-	GPU_STOREOP_DONT_CARE         GPUStoreOp = 1
-	GPU_STOREOP_RESOLVE           GPUStoreOp = 2
-	GPU_STOREOP_RESOLVE_AND_STORE GPUStoreOp = 3
+	GPU_STOREOP_STORE             GPUStoreOp = 0 // The contents generated during the render pass will be written to memory.
+	GPU_STOREOP_DONT_CARE         GPUStoreOp = 1 // The contents generated during the render pass are not needed and may be discarded. The contents will be undefined.
+	GPU_STOREOP_RESOLVE           GPUStoreOp = 2 // The multisample contents generated during the render pass will be resolved to a non-multisample texture. The contents in the multisample texture may then be discarded and will be undefined.
+	GPU_STOREOP_RESOLVE_AND_STORE GPUStoreOp = 3 // The multisample contents generated during the render pass will be resolved to a non-multisample texture. The contents in the multisample texture will be written to memory.
 )
 
 // SDL_GPUIndexElementSize - Specifies the size of elements in an index buffer.
@@ -1043,8 +1043,8 @@ const (
 type GPUIndexElementSize uint32
 
 const (
-	GPU_INDEXELEMENTSIZE_16BIT GPUIndexElementSize = 0
-	GPU_INDEXELEMENTSIZE_32BIT GPUIndexElementSize = 1
+	GPU_INDEXELEMENTSIZE_16BIT GPUIndexElementSize = 0 // The index elements are 16-bit.
+	GPU_INDEXELEMENTSIZE_32BIT GPUIndexElementSize = 1 // The index elements are 32-bit.
 )
 
 // SDL_GPUTextureFormat - Specifies the pixel format of a texture.
@@ -1164,11 +1164,11 @@ const (
 type GPUTextureType uint32
 
 const (
-	GPU_TEXTURETYPE_2D         GPUTextureType = 0
-	GPU_TEXTURETYPE_2D_ARRAY   GPUTextureType = 1
-	GPU_TEXTURETYPE_3D         GPUTextureType = 2
-	GPU_TEXTURETYPE_CUBE       GPUTextureType = 3
-	GPU_TEXTURETYPE_CUBE_ARRAY GPUTextureType = 4
+	GPU_TEXTURETYPE_2D         GPUTextureType = 0 // The texture is a 2-dimensional image.
+	GPU_TEXTURETYPE_2D_ARRAY   GPUTextureType = 1 // The texture is a 2-dimensional array image.
+	GPU_TEXTURETYPE_3D         GPUTextureType = 2 // The texture is a 3-dimensional image.
+	GPU_TEXTURETYPE_CUBE       GPUTextureType = 3 // The texture is a cube image.
+	GPU_TEXTURETYPE_CUBE_ARRAY GPUTextureType = 4 // The texture is a cube array image.
 )
 
 // SDL_GPUSampleCount - Specifies the sample count of a texture.
@@ -1176,10 +1176,10 @@ const (
 type GPUSampleCount uint32
 
 const (
-	GPU_SAMPLECOUNT_1 GPUSampleCount = 0
-	GPU_SAMPLECOUNT_2 GPUSampleCount = 1
-	GPU_SAMPLECOUNT_4 GPUSampleCount = 2
-	GPU_SAMPLECOUNT_8 GPUSampleCount = 3
+	GPU_SAMPLECOUNT_1 GPUSampleCount = 0 // No multisampling.
+	GPU_SAMPLECOUNT_2 GPUSampleCount = 1 // MSAA 2x
+	GPU_SAMPLECOUNT_4 GPUSampleCount = 2 // MSAA 4x
+	GPU_SAMPLECOUNT_8 GPUSampleCount = 3 // MSAA 8x
 )
 
 // SDL_GPUTransferBufferUsage - Specifies how a transfer buffer is intended to be used by the client.
@@ -1243,8 +1243,8 @@ const (
 type GPUVertexInputRate uint32
 
 const (
-	GPU_VERTEXINPUTRATE_VERTEX   GPUVertexInputRate = 0
-	GPU_VERTEXINPUTRATE_INSTANCE GPUVertexInputRate = 1
+	GPU_VERTEXINPUTRATE_VERTEX   GPUVertexInputRate = 0 // Attribute addressing is a function of the vertex index.
+	GPU_VERTEXINPUTRATE_INSTANCE GPUVertexInputRate = 1 // Attribute addressing is a function of the instance index.
 )
 
 // SDL_GPUFillMode - Specifies the fill mode of the graphics pipeline.
@@ -1252,8 +1252,8 @@ const (
 type GPUFillMode uint32
 
 const (
-	GPU_FILLMODE_FILL GPUFillMode = 0
-	GPU_FILLMODE_LINE GPUFillMode = 1
+	GPU_FILLMODE_FILL GPUFillMode = 0 // Polygons will be rendered via rasterization.
+	GPU_FILLMODE_LINE GPUFillMode = 1 // Polygon edges will be drawn as line segments.
 )
 
 // SDL_GPUCullMode - Specifies the facing direction in which triangle faces will be culled.
@@ -1261,9 +1261,9 @@ const (
 type GPUCullMode uint32
 
 const (
-	GPU_CULLMODE_NONE  GPUCullMode = 0
-	GPU_CULLMODE_FRONT GPUCullMode = 1
-	GPU_CULLMODE_BACK  GPUCullMode = 2
+	GPU_CULLMODE_NONE  GPUCullMode = 0 // No triangles are culled.
+	GPU_CULLMODE_FRONT GPUCullMode = 1 // Front-facing triangles are culled.
+	GPU_CULLMODE_BACK  GPUCullMode = 2 // Back-facing triangles are culled.
 )
 
 // SDL_GPUFrontFace - Specifies the vertex winding that will cause a triangle to be determined to be front-facing.
@@ -1271,8 +1271,8 @@ const (
 type GPUFrontFace uint32
 
 const (
-	GPU_FRONTFACE_COUNTER_CLOCKWISE GPUFrontFace = 0
-	GPU_FRONTFACE_CLOCKWISE         GPUFrontFace = 1
+	GPU_FRONTFACE_COUNTER_CLOCKWISE GPUFrontFace = 0 // A triangle with counter-clockwise vertex winding will be considered front-facing.
+	GPU_FRONTFACE_CLOCKWISE         GPUFrontFace = 1 // A triangle with clockwise vertex winding will be considered front-facing.
 )
 
 // SDL_GPUCompareOp - Specifies a comparison operator for depth, stencil and sampler operations.
@@ -1281,14 +1281,14 @@ type GPUCompareOp uint32
 
 const (
 	GPU_COMPAREOP_INVALID          GPUCompareOp = 0
-	GPU_COMPAREOP_NEVER            GPUCompareOp = 1
-	GPU_COMPAREOP_LESS             GPUCompareOp = 2
-	GPU_COMPAREOP_EQUAL            GPUCompareOp = 3
-	GPU_COMPAREOP_LESS_OR_EQUAL    GPUCompareOp = 4
-	GPU_COMPAREOP_GREATER          GPUCompareOp = 5
-	GPU_COMPAREOP_NOT_EQUAL        GPUCompareOp = 6
-	GPU_COMPAREOP_GREATER_OR_EQUAL GPUCompareOp = 7
-	GPU_COMPAREOP_ALWAYS           GPUCompareOp = 8
+	GPU_COMPAREOP_NEVER            GPUCompareOp = 1 // The comparison always evaluates false.
+	GPU_COMPAREOP_LESS             GPUCompareOp = 2 // The comparison evaluates reference < test.
+	GPU_COMPAREOP_EQUAL            GPUCompareOp = 3 // The comparison evaluates reference == test.
+	GPU_COMPAREOP_LESS_OR_EQUAL    GPUCompareOp = 4 // The comparison evaluates reference <= test.
+	GPU_COMPAREOP_GREATER          GPUCompareOp = 5 // The comparison evaluates reference > test.
+	GPU_COMPAREOP_NOT_EQUAL        GPUCompareOp = 6 // The comparison evaluates reference != test.
+	GPU_COMPAREOP_GREATER_OR_EQUAL GPUCompareOp = 7 // The comparison evaluates reference >= test.
+	GPU_COMPAREOP_ALWAYS           GPUCompareOp = 8 // The comparison always evaluates true.
 )
 
 // SDL_GPUStencilOp - Specifies what happens to a stored stencil value if stencil tests fail or pass.
@@ -1297,14 +1297,14 @@ type GPUStencilOp uint32
 
 const (
 	GPU_STENCILOP_INVALID             GPUStencilOp = 0
-	GPU_STENCILOP_KEEP                GPUStencilOp = 1
-	GPU_STENCILOP_ZERO                GPUStencilOp = 2
-	GPU_STENCILOP_REPLACE             GPUStencilOp = 3
-	GPU_STENCILOP_INCREMENT_AND_CLAMP GPUStencilOp = 4
-	GPU_STENCILOP_DECREMENT_AND_CLAMP GPUStencilOp = 5
-	GPU_STENCILOP_INVERT              GPUStencilOp = 6
-	GPU_STENCILOP_INCREMENT_AND_WRAP  GPUStencilOp = 7
-	GPU_STENCILOP_DECREMENT_AND_WRAP  GPUStencilOp = 8
+	GPU_STENCILOP_KEEP                GPUStencilOp = 1 // Keeps the current value.
+	GPU_STENCILOP_ZERO                GPUStencilOp = 2 // Sets the value to 0.
+	GPU_STENCILOP_REPLACE             GPUStencilOp = 3 // Sets the value to reference.
+	GPU_STENCILOP_INCREMENT_AND_CLAMP GPUStencilOp = 4 // Increments the current value and clamps to the maximum value.
+	GPU_STENCILOP_DECREMENT_AND_CLAMP GPUStencilOp = 5 // Decrements the current value and clamps to 0.
+	GPU_STENCILOP_INVERT              GPUStencilOp = 6 // Bitwise-inverts the current value.
+	GPU_STENCILOP_INCREMENT_AND_WRAP  GPUStencilOp = 7 // Increments the current value and wraps back to 0.
+	GPU_STENCILOP_DECREMENT_AND_WRAP  GPUStencilOp = 8 // Decrements the current value and wraps to the maximum value.
 )
 
 // SDL_GPUBlendOp - Specifies the operator to be used when pixels in a render target are blended with existing pixels in the texture.
@@ -1313,11 +1313,11 @@ type GPUBlendOp uint32
 
 const (
 	GPU_BLENDOP_INVALID          GPUBlendOp = 0
-	GPU_BLENDOP_ADD              GPUBlendOp = 1
-	GPU_BLENDOP_SUBTRACT         GPUBlendOp = 2
-	GPU_BLENDOP_REVERSE_SUBTRACT GPUBlendOp = 3
-	GPU_BLENDOP_MIN              GPUBlendOp = 4
-	GPU_BLENDOP_MAX              GPUBlendOp = 5
+	GPU_BLENDOP_ADD              GPUBlendOp = 1 // (source * source_factor) + (destination * destination_factor)
+	GPU_BLENDOP_SUBTRACT         GPUBlendOp = 2 // (source * source_factor) - (destination * destination_factor)
+	GPU_BLENDOP_REVERSE_SUBTRACT GPUBlendOp = 3 // (destination * destination_factor) - (source * source_factor)
+	GPU_BLENDOP_MIN              GPUBlendOp = 4 // min(source, destination)
+	GPU_BLENDOP_MAX              GPUBlendOp = 5 // max(source, destination)
 )
 
 // SDL_GPUBlendFactor - Specifies a blending factor to be used when pixels in a render target are blended with existing pixels in the texture.
@@ -1326,19 +1326,19 @@ type GPUBlendFactor uint32
 
 const (
 	GPU_BLENDFACTOR_INVALID                  GPUBlendFactor = 0
-	GPU_BLENDFACTOR_ZERO                     GPUBlendFactor = 1
-	GPU_BLENDFACTOR_ONE                      GPUBlendFactor = 2
-	GPU_BLENDFACTOR_SRC_COLOR                GPUBlendFactor = 3
-	GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR      GPUBlendFactor = 4
-	GPU_BLENDFACTOR_DST_COLOR                GPUBlendFactor = 5
-	GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR      GPUBlendFactor = 6
-	GPU_BLENDFACTOR_SRC_ALPHA                GPUBlendFactor = 7
-	GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA      GPUBlendFactor = 8
-	GPU_BLENDFACTOR_DST_ALPHA                GPUBlendFactor = 9
-	GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA      GPUBlendFactor = 10
-	GPU_BLENDFACTOR_CONSTANT_COLOR           GPUBlendFactor = 11
-	GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR GPUBlendFactor = 12
-	GPU_BLENDFACTOR_SRC_ALPHA_SATURATE       GPUBlendFactor = 13
+	GPU_BLENDFACTOR_ZERO                     GPUBlendFactor = 1 // 0
+	GPU_BLENDFACTOR_ONE                      GPUBlendFactor = 2 // 1
+	GPU_BLENDFACTOR_SRC_COLOR                GPUBlendFactor = 3 // source color
+	GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR      GPUBlendFactor = 4 // 1 - source color
+	GPU_BLENDFACTOR_DST_COLOR                GPUBlendFactor = 5 // destination color
+	GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR      GPUBlendFactor = 6 // 1 - destination color
+	GPU_BLENDFACTOR_SRC_ALPHA                GPUBlendFactor = 7 // source alpha
+	GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA      GPUBlendFactor = 8 // 1 - source alpha
+	GPU_BLENDFACTOR_DST_ALPHA                GPUBlendFactor = 9 // destination alpha
+	GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA      GPUBlendFactor = 10 // 1 - destination alpha
+	GPU_BLENDFACTOR_CONSTANT_COLOR           GPUBlendFactor = 11 // blend constant
+	GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR GPUBlendFactor = 12 // 1 - blend constant
+	GPU_BLENDFACTOR_SRC_ALPHA_SATURATE       GPUBlendFactor = 13 // min(source alpha, 1 - destination alpha)
 )
 
 // SDL_GPUFilter - Specifies a filter operation used by a sampler.
@@ -1346,8 +1346,8 @@ const (
 type GPUFilter uint32
 
 const (
-	GPU_FILTER_NEAREST GPUFilter = 0
-	GPU_FILTER_LINEAR  GPUFilter = 1
+	GPU_FILTER_NEAREST GPUFilter = 0 // Point filtering.
+	GPU_FILTER_LINEAR  GPUFilter = 1 // Linear filtering.
 )
 
 // SDL_GPUSamplerMipmapMode - Specifies a mipmap mode used by a sampler.
@@ -1355,8 +1355,8 @@ const (
 type GPUSamplerMipmapMode uint32
 
 const (
-	GPU_SAMPLERMIPMAPMODE_NEAREST GPUSamplerMipmapMode = 0
-	GPU_SAMPLERMIPMAPMODE_LINEAR  GPUSamplerMipmapMode = 1
+	GPU_SAMPLERMIPMAPMODE_NEAREST GPUSamplerMipmapMode = 0 // Point filtering.
+	GPU_SAMPLERMIPMAPMODE_LINEAR  GPUSamplerMipmapMode = 1 // Linear filtering.
 )
 
 // SDL_GPUSamplerAddressMode - Specifies behavior of texture sampling when the coordinates exceed the 0-1 range.
@@ -1364,9 +1364,9 @@ const (
 type GPUSamplerAddressMode uint32
 
 const (
-	GPU_SAMPLERADDRESSMODE_REPEAT          GPUSamplerAddressMode = 0
-	GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT GPUSamplerAddressMode = 1
-	GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE   GPUSamplerAddressMode = 2
+	GPU_SAMPLERADDRESSMODE_REPEAT          GPUSamplerAddressMode = 0 // Specifies that the coordinates will wrap around.
+	GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT GPUSamplerAddressMode = 1 // Specifies that the coordinates will wrap around mirrored.
+	GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE   GPUSamplerAddressMode = 2 // Specifies that the coordinates will clamp to the 0-1 range.
 )
 
 // SDL_GPUPresentMode - Specifies the timing that will be used to present swapchain textures to the OS.
@@ -1421,9 +1421,9 @@ const (
 type TextureAccess uint32
 
 const (
-	TEXTUREACCESS_STATIC    TextureAccess = 0
-	TEXTUREACCESS_STREAMING TextureAccess = 1
-	TEXTUREACCESS_TARGET    TextureAccess = 2
+	TEXTUREACCESS_STATIC    TextureAccess = 0 // Changes rarely, not lockable
+	TEXTUREACCESS_STREAMING TextureAccess = 1 // Changes frequently, lockable
+	TEXTUREACCESS_TARGET    TextureAccess = 2 // Texture can be used as a render target
 )
 
 // SDL_TextureAddressMode - The addressing mode for a texture when used in [SDL_RenderGeometry](SDL_RenderGeometry)().
@@ -1432,9 +1432,9 @@ type TextureAddressMode uint32
 
 const (
 	TEXTURE_ADDRESS_INVALID TextureAddressMode = 4294967295
-	TEXTURE_ADDRESS_AUTO    TextureAddressMode = 0
-	TEXTURE_ADDRESS_CLAMP   TextureAddressMode = 1
-	TEXTURE_ADDRESS_WRAP    TextureAddressMode = 2
+	TEXTURE_ADDRESS_AUTO    TextureAddressMode = 0 // Wrapping is enabled if texture coordinates are outside [0, 1], this is the default
+	TEXTURE_ADDRESS_CLAMP   TextureAddressMode = 1 // Texture coordinates are clamped to the [0, 1] range
+	TEXTURE_ADDRESS_WRAP    TextureAddressMode = 2 // The texture is repeated (tiled)
 )
 
 // SDL_RendererLogicalPresentation - How the logical size is mapped to the output.
@@ -1442,11 +1442,11 @@ const (
 type RendererLogicalPresentation uint32
 
 const (
-	LOGICAL_PRESENTATION_DISABLED      RendererLogicalPresentation = 0
-	LOGICAL_PRESENTATION_STRETCH       RendererLogicalPresentation = 1
-	LOGICAL_PRESENTATION_LETTERBOX     RendererLogicalPresentation = 2
-	LOGICAL_PRESENTATION_OVERSCAN      RendererLogicalPresentation = 3
-	LOGICAL_PRESENTATION_INTEGER_SCALE RendererLogicalPresentation = 4
+	LOGICAL_PRESENTATION_DISABLED      RendererLogicalPresentation = 0 // There is no logical size in effect
+	LOGICAL_PRESENTATION_STRETCH       RendererLogicalPresentation = 1 // The rendered content is stretched to the output resolution
+	LOGICAL_PRESENTATION_LETTERBOX     RendererLogicalPresentation = 2 // The rendered content is fit to the largest dimension and the other dimension is letterboxed with the clear color
+	LOGICAL_PRESENTATION_OVERSCAN      RendererLogicalPresentation = 3 // The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds
+	LOGICAL_PRESENTATION_INTEGER_SCALE RendererLogicalPresentation = 4 // The rendered content is scaled up by integer multiples to fit the output resolution
 )
 
 // SDL_Sandbox - Application sandbox environment.
@@ -1466,9 +1466,9 @@ const (
 type DateFormat uint32
 
 const (
-	DATE_FORMAT_YYYYMMDD DateFormat = 0
-	DATE_FORMAT_DDMMYYYY DateFormat = 1
-	DATE_FORMAT_MMDDYYYY DateFormat = 2
+	DATE_FORMAT_YYYYMMDD DateFormat = 0 // Year/Month/Day
+	DATE_FORMAT_DDMMYYYY DateFormat = 1 // Day/Month/Year
+	DATE_FORMAT_MMDDYYYY DateFormat = 2 // Month/Day/Year
 )
 
 // SDL_TimeFormat - The preferred time format of the current system locale.
@@ -1476,6 +1476,6 @@ const (
 type TimeFormat uint32
 
 const (
-	TIME_FORMAT_24HR TimeFormat = 0
-	TIME_FORMAT_12HR TimeFormat = 1
+	TIME_FORMAT_24HR TimeFormat = 0 // 24 hour time
+	TIME_FORMAT_12HR TimeFormat = 1 // 12 hour time
 )
