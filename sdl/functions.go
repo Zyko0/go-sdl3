@@ -2,6 +2,7 @@ package sdl
 
 import (
 	"runtime"
+	"slices"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -187,6 +188,51 @@ func PumpEvents() {
 }
 
 // TODO: PeepEvents()
+
+// NumEvents returns the number of messages from the event queue, it is similar to
+// calling SDL_PeepEvents(nil, 0, SDL_PEEKEVENT, SDL_EVENT_FIRST, SDL_EVENT_LAST).
+// You may have to call PumpEvents() before calling this function.
+// https://wiki.libsdl.org/SDL3/SDL_PeepEvents
+func NumEvents() (int32, error) {
+	count := iPeepEvents(nil, 0, PEEKEVENT, uint32(EVENT_FIRST), uint32(EVENT_LAST))
+	if count == -1 {
+		return -1, internal.LastErr()
+	}
+
+	return count, nil
+}
+
+// AppendEvents adds the messages from the event queue to the provided slice and returns it.
+// It is useful to avoid re-allocation, assuming events already has the required capacity.
+// A good pattern would be to zero the same slice each update: events = events[:0] before
+// calling PumpEvents() and then AppendEvents().
+// This function calls SDL_PeepEvents with the action GETEVENT, which means that it will
+// remove the messages from the event queue, just like PollEvent.
+// This helper exists to minimize calls to the library, so that there is
+// only a fixed cost of purego/Cgo syscall overhead as opposed to calling PollEvent in a loop.
+func AppendEvents(events []Event) ([]Event, error) {
+	count, err := NumEvents()
+	if err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		return events, nil
+	}
+	initialLength := len(events)
+
+	available := cap(events) - len(events)
+	if available < int(count) {
+		events = slices.Grow(events, int(count)-available)
+	}
+	events = events[len(events) : len(events)+int(count)]
+
+	num := iPeepEvents(unsafe.SliceData(events[initialLength:]), count, GETEVENT, uint32(EVENT_FIRST), uint32(EVENT_LAST))
+	if num < 0 {
+		return nil, internal.LastErr()
+	}
+
+	return events, nil
+}
 
 // SDL_HasEvent - Check for the existence of a certain event type in the event queue.
 // (https://wiki.libsdl.org/SDL3/SDL_HasEvent)
