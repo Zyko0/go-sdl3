@@ -40,6 +40,7 @@ func main() {
 				continue
 			}
 
+			id := strings.TrimSuffix(file.Name(), ".md")
 			fullpath := filepath.Join(path, file.Name())
 			content, err := os.ReadFile(fullpath)
 			if err != nil {
@@ -49,7 +50,8 @@ func main() {
 			lines := strings.Split(string(content), "\n")
 			var description string
 			var hasTitle bool
-			for i := 0; i < len(lines); i++ {
+			var i int
+			for i = 0; i < len(lines); i++ {
 				if lines[i] == "" {
 					// Documentation content ended
 					if description != "" {
@@ -73,8 +75,64 @@ func main() {
 			if description == "" {
 				continue
 			}
+			// Try to add enum comments if any
+			enumTypedef := "typedef enum " + id
+			for i = 0; i < len(lines); i++ {
+				if strings.HasPrefix(lines[i], enumTypedef) {
+					i += 2 // Skip open brace
+					// List enums
+					for ; i < len(lines); i++ {
+						lines[i] = strings.Trim(lines[i], " \t")
+						if strings.HasPrefix(lines[i], "}") {
+							break
+						}
+						if !strings.HasPrefix(lines[i], c.Prefix) {
+							continue
+						}
+						idx := strings.IndexAny(lines[i], " ,")
+						if idx == -1 {
+							continue
+						}
+						enumID := lines[i][:idx]
+						idx = strings.Index(lines[i], "/**<")
+						if idx == -1 {
+							continue
+						}
+						idx += 4
+						// Start building comment
+						var comment string
+						end := strings.Index(lines[i], "*/")
+						if end != -1 {
+							comment = lines[i][idx : end-1]
+						}
+						if end == -1 {
+							var found bool
+							for ; i < len(lines); i++ {
+								lines[i] = strings.TrimSpace(lines[i])
+								end = strings.Index(lines[i], "*/")
+								if end != -1 {
+									found = true
+									comment += " " + lines[i][:end]
+									break
+								}
+								comment += " " + lines[i][idx:]
+								idx = 0
+							}
+							if !found {
+								break
+							}
+						}
+						// Add entry
+						entries = append(entries, &Entry{
+							Id:          enumID,
+							Description: strings.TrimSpace(comment),
+							URL:         fmt.Sprintf("https://wiki.libsdl.org/%s/%s", c.Library, id),
+						})
+					}
+					break
+				}
+			}
 
-			id := strings.TrimSuffix(file.Name(), ".md")
 			entries = append(entries, &Entry{
 				Id:          id,
 				Description: description,
