@@ -142,8 +142,9 @@ func main() {
 					enum := matches[0][1]
 					entry, found := uniqueAPIIdentifiers[cfg.Prefix+enum]
 					if found {
-						desc := " // " + entry.Description
-						if !strings.Contains(l, desc) {
+						// Don't comment twice
+						if !strings.Contains(l, " // ") {
+							desc := " // " + entry.Description
 							outLines = append(outLines, l+desc)
 							enumsAnnotations++
 							edited = true
