@@ -85,8 +85,8 @@ const (
 type AudioFormat uint32
 
 const (
-	AUDIO_UNKNOWN AudioFormat = 0 // Unspecified audio format
-	AUDIO_U8      AudioFormat = 8 // Unsigned 8-bit samples
+	AUDIO_UNKNOWN AudioFormat = 0     // Unspecified audio format
+	AUDIO_U8      AudioFormat = 8     // Unsigned 8-bit samples
 	AUDIO_S8      AudioFormat = 32776 // Signed 8-bit samples
 	AUDIO_S16LE   AudioFormat = 32784 // Signed 16-bit samples
 	AUDIO_S16BE   AudioFormat = 36880 // As above, but big-endian byte order
@@ -116,15 +116,15 @@ const (
 type BlendFactor uint32
 
 const (
-	BLENDFACTOR_ZERO                BlendFactor = 1 // 0, 0, 0, 0
-	BLENDFACTOR_ONE                 BlendFactor = 2 // 1, 1, 1, 1
-	BLENDFACTOR_SRC_COLOR           BlendFactor = 3 // srcR, srcG, srcB, srcA
-	BLENDFACTOR_ONE_MINUS_SRC_COLOR BlendFactor = 4 // 1-srcR, 1-srcG, 1-srcB, 1-srcA
-	BLENDFACTOR_SRC_ALPHA           BlendFactor = 5 // srcA, srcA, srcA, srcA
-	BLENDFACTOR_ONE_MINUS_SRC_ALPHA BlendFactor = 6 // 1-srcA, 1-srcA, 1-srcA, 1-srcA
-	BLENDFACTOR_DST_COLOR           BlendFactor = 7 // dstR, dstG, dstB, dstA
-	BLENDFACTOR_ONE_MINUS_DST_COLOR BlendFactor = 8 // 1-dstR, 1-dstG, 1-dstB, 1-dstA
-	BLENDFACTOR_DST_ALPHA           BlendFactor = 9 // dstA, dstA, dstA, dstA
+	BLENDFACTOR_ZERO                BlendFactor = 1  // 0, 0, 0, 0
+	BLENDFACTOR_ONE                 BlendFactor = 2  // 1, 1, 1, 1
+	BLENDFACTOR_SRC_COLOR           BlendFactor = 3  // srcR, srcG, srcB, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_COLOR BlendFactor = 4  // 1-srcR, 1-srcG, 1-srcB, 1-srcA
+	BLENDFACTOR_SRC_ALPHA           BlendFactor = 5  // srcA, srcA, srcA, srcA
+	BLENDFACTOR_ONE_MINUS_SRC_ALPHA BlendFactor = 6  // 1-srcA, 1-srcA, 1-srcA, 1-srcA
+	BLENDFACTOR_DST_COLOR           BlendFactor = 7  // dstR, dstG, dstB, dstA
+	BLENDFACTOR_ONE_MINUS_DST_COLOR BlendFactor = 8  // 1-dstR, 1-dstG, 1-dstB, 1-dstA
+	BLENDFACTOR_DST_ALPHA           BlendFactor = 9  // dstA, dstA, dstA, dstA
 	BLENDFACTOR_ONE_MINUS_DST_ALPHA BlendFactor = 10 // 1-dstA, 1-dstA, 1-dstA, 1-dstA
 )
 
@@ -188,15 +188,15 @@ const (
 	PIXELFORMAT_ARGB128_FLOAT PixelFormat = 456163344
 	PIXELFORMAT_BGRA128_FLOAT PixelFormat = 458260496
 	PIXELFORMAT_ABGR128_FLOAT PixelFormat = 459309072
-	PIXELFORMAT_YV12          PixelFormat = 842094169 // Planar mode: Y + V + U  (3 planes)
+	PIXELFORMAT_YV12          PixelFormat = 842094169  // Planar mode: Y + V + U  (3 planes)
 	PIXELFORMAT_IYUV          PixelFormat = 1448433993 // Planar mode: Y + U + V  (3 planes)
-	PIXELFORMAT_YUY2          PixelFormat = 844715353 // Packed mode: Y0+U0+Y1+V0 (1 plane)
+	PIXELFORMAT_YUY2          PixelFormat = 844715353  // Packed mode: Y0+U0+Y1+V0 (1 plane)
 	PIXELFORMAT_UYVY          PixelFormat = 1498831189 // Packed mode: U0+Y0+V0+Y1 (1 plane)
 	PIXELFORMAT_YVYU          PixelFormat = 1431918169 // Packed mode: Y0+V0+Y1+U0 (1 plane)
-	PIXELFORMAT_NV12          PixelFormat = 842094158 // Planar mode: Y + U/V interleaved  (2 planes)
-	PIXELFORMAT_NV21          PixelFormat = 825382478 // Planar mode: Y + V/U interleaved  (2 planes)
-	PIXELFORMAT_P010          PixelFormat = 808530000 // Planar mode: Y + U/V interleaved  (2 planes)
-	PIXELFORMAT_EXTERNAL_OES  PixelFormat = 542328143 // Android video texture format
+	PIXELFORMAT_NV12          PixelFormat = 842094158  // Planar mode: Y + U/V interleaved  (2 planes)
+	PIXELFORMAT_NV21          PixelFormat = 825382478  // Planar mode: Y + V/U interleaved  (2 planes)
+	PIXELFORMAT_P010          PixelFormat = 808530000  // Planar mode: Y + U/V interleaved  (2 planes)
+	PIXELFORMAT_EXTERNAL_OES  PixelFormat = 542328143  // Android video texture format
 	PIXELFORMAT_MJPG          PixelFormat = 1196444237 // Motion JPEG
 	PIXELFORMAT_RGBA32        PixelFormat = 376840196
 	PIXELFORMAT_ARGB32        PixelFormat = 377888772
@@ -308,11 +308,11 @@ type ProgressState uint32
 
 const (
 	PROGRESS_STATE_INVALID       ProgressState = 4294967295 // An invalid progress state indicating an error; check SDL_GetError()
-	PROGRESS_STATE_NONE          ProgressState = 0 // No progress bar is shown
-	PROGRESS_STATE_INDETERMINATE ProgressState = 1 // The progress bar is shown in a indeterminate state
-	PROGRESS_STATE_NORMAL        ProgressState = 2 // The progress bar is shown in a normal state
-	PROGRESS_STATE_PAUSED        ProgressState = 3 // The progress bar is shown in a paused state
-	PROGRESS_STATE_ERROR         ProgressState = 4 // The progress bar is shown in a state indicating the application had an error
+	PROGRESS_STATE_NONE          ProgressState = 0          // No progress bar is shown
+	PROGRESS_STATE_INDETERMINATE ProgressState = 1          // The progress bar is shown in a indeterminate state
+	PROGRESS_STATE_NORMAL        ProgressState = 2          // The progress bar is shown in a normal state
+	PROGRESS_STATE_PAUSED        ProgressState = 3          // The progress bar is shown in a paused state
+	PROGRESS_STATE_ERROR         ProgressState = 4          // The progress bar is shown in a state indicating the application had an error
 )
 
 // SDL_GLAttr - An enumeration of OpenGL configuration attributes.
@@ -320,16 +320,16 @@ const (
 type GLAttr uint32
 
 const (
-	GL_RED_SIZE                   GLAttr = 0 // the minimum number of bits for the red channel of the color buffer; defaults to 8.
-	GL_GREEN_SIZE                 GLAttr = 1 // the minimum number of bits for the green channel of the color buffer; defaults to 8.
-	GL_BLUE_SIZE                  GLAttr = 2 // the minimum number of bits for the blue channel of the color buffer; defaults to 8.
-	GL_ALPHA_SIZE                 GLAttr = 3 // the minimum number of bits for the alpha channel of the color buffer; defaults to 8.
-	GL_BUFFER_SIZE                GLAttr = 4 // the minimum number of bits for frame buffer size; defaults to 0.
-	GL_DOUBLEBUFFER               GLAttr = 5 // whether the output is single or double buffered; defaults to double buffering on.
-	GL_DEPTH_SIZE                 GLAttr = 6 // the minimum number of bits in the depth buffer; defaults to 16.
-	GL_STENCIL_SIZE               GLAttr = 7 // the minimum number of bits in the stencil buffer; defaults to 0.
-	GL_ACCUM_RED_SIZE             GLAttr = 8 // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0.
-	GL_ACCUM_GREEN_SIZE           GLAttr = 9 // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0.
+	GL_RED_SIZE                   GLAttr = 0  // the minimum number of bits for the red channel of the color buffer; defaults to 8.
+	GL_GREEN_SIZE                 GLAttr = 1  // the minimum number of bits for the green channel of the color buffer; defaults to 8.
+	GL_BLUE_SIZE                  GLAttr = 2  // the minimum number of bits for the blue channel of the color buffer; defaults to 8.
+	GL_ALPHA_SIZE                 GLAttr = 3  // the minimum number of bits for the alpha channel of the color buffer; defaults to 8.
+	GL_BUFFER_SIZE                GLAttr = 4  // the minimum number of bits for frame buffer size; defaults to 0.
+	GL_DOUBLEBUFFER               GLAttr = 5  // whether the output is single or double buffered; defaults to double buffering on.
+	GL_DEPTH_SIZE                 GLAttr = 6  // the minimum number of bits in the depth buffer; defaults to 16.
+	GL_STENCIL_SIZE               GLAttr = 7  // the minimum number of bits in the stencil buffer; defaults to 0.
+	GL_ACCUM_RED_SIZE             GLAttr = 8  // the minimum number of bits for the red channel of the accumulation buffer; defaults to 0.
+	GL_ACCUM_GREEN_SIZE           GLAttr = 9  // the minimum number of bits for the green channel of the accumulation buffer; defaults to 0.
 	GL_ACCUM_BLUE_SIZE            GLAttr = 10 // the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0.
 	GL_ACCUM_ALPHA_SIZE           GLAttr = 11 // the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0.
 	GL_STEREO                     GLAttr = 12 // whether the output is stereo 3D; defaults to off.
@@ -366,11 +366,11 @@ type PowerState uint32
 
 const (
 	POWERSTATE_ERROR      PowerState = 4294967295 // error determining power status
-	POWERSTATE_UNKNOWN    PowerState = 0 // cannot determine power status
-	POWERSTATE_ON_BATTERY PowerState = 1 // Not plugged in, running on the battery
-	POWERSTATE_NO_BATTERY PowerState = 2 // Plugged in, no battery available
-	POWERSTATE_CHARGING   PowerState = 3 // Plugged in, charging battery
-	POWERSTATE_CHARGED    PowerState = 4 // Plugged in, battery charged
+	POWERSTATE_UNKNOWN    PowerState = 0          // cannot determine power status
+	POWERSTATE_ON_BATTERY PowerState = 1          // Not plugged in, running on the battery
+	POWERSTATE_NO_BATTERY PowerState = 2          // Plugged in, no battery available
+	POWERSTATE_CHARGING   PowerState = 3          // Plugged in, charging battery
+	POWERSTATE_CHARGED    PowerState = 4          // Plugged in, battery charged
 )
 
 // SDL_SensorType - The different sensors defined by SDL.
@@ -379,13 +379,13 @@ type SensorType uint32
 
 const (
 	SENSOR_INVALID SensorType = 4294967295 // Returned for an invalid sensor
-	SENSOR_UNKNOWN SensorType = 0 // Unknown sensor type
-	SENSOR_ACCEL   SensorType = 1 // Accelerometer
-	SENSOR_GYRO    SensorType = 2 // Gyroscope
-	SENSOR_ACCEL_L SensorType = 3 // Accelerometer for left Joy-Con controller and Wii nunchuk
-	SENSOR_GYRO_L  SensorType = 4 // Gyroscope for left Joy-Con controller
-	SENSOR_ACCEL_R SensorType = 5 // Accelerometer for right Joy-Con controller
-	SENSOR_GYRO_R  SensorType = 6 // Gyroscope for right Joy-Con controller
+	SENSOR_UNKNOWN SensorType = 0          // Unknown sensor type
+	SENSOR_ACCEL   SensorType = 1          // Accelerometer
+	SENSOR_GYRO    SensorType = 2          // Gyroscope
+	SENSOR_ACCEL_L SensorType = 3          // Accelerometer for left Joy-Con controller and Wii nunchuk
+	SENSOR_GYRO_L  SensorType = 4          // Gyroscope for left Joy-Con controller
+	SENSOR_ACCEL_R SensorType = 5          // Accelerometer for right Joy-Con controller
+	SENSOR_GYRO_R  SensorType = 6          // Gyroscope for right Joy-Con controller
 	SENSOR_COUNT   SensorType = 7
 )
 
@@ -776,16 +776,16 @@ const (
 type SystemCursor uint32
 
 const (
-	SYSTEM_CURSOR_DEFAULT     SystemCursor = 0 // Default cursor. Usually an arrow.
-	SYSTEM_CURSOR_TEXT        SystemCursor = 1 // Text selection. Usually an I-beam.
-	SYSTEM_CURSOR_WAIT        SystemCursor = 2 // Wait. Usually an hourglass or watch or spinning ball.
-	SYSTEM_CURSOR_CROSSHAIR   SystemCursor = 3 // Crosshair.
-	SYSTEM_CURSOR_PROGRESS    SystemCursor = 4 // Program is busy but still interactive. Usually it's WAIT with an arrow.
-	SYSTEM_CURSOR_NWSE_RESIZE SystemCursor = 5 // Double arrow pointing northwest and southeast.
-	SYSTEM_CURSOR_NESW_RESIZE SystemCursor = 6 // Double arrow pointing northeast and southwest.
-	SYSTEM_CURSOR_EW_RESIZE   SystemCursor = 7 // Double arrow pointing west and east.
-	SYSTEM_CURSOR_NS_RESIZE   SystemCursor = 8 // Double arrow pointing north and south.
-	SYSTEM_CURSOR_MOVE        SystemCursor = 9 // Four pointed arrow pointing north, south, east, and west.
+	SYSTEM_CURSOR_DEFAULT     SystemCursor = 0  // Default cursor. Usually an arrow.
+	SYSTEM_CURSOR_TEXT        SystemCursor = 1  // Text selection. Usually an I-beam.
+	SYSTEM_CURSOR_WAIT        SystemCursor = 2  // Wait. Usually an hourglass or watch or spinning ball.
+	SYSTEM_CURSOR_CROSSHAIR   SystemCursor = 3  // Crosshair.
+	SYSTEM_CURSOR_PROGRESS    SystemCursor = 4  // Program is busy but still interactive. Usually it's WAIT with an arrow.
+	SYSTEM_CURSOR_NWSE_RESIZE SystemCursor = 5  // Double arrow pointing northwest and southeast.
+	SYSTEM_CURSOR_NESW_RESIZE SystemCursor = 6  // Double arrow pointing northeast and southwest.
+	SYSTEM_CURSOR_EW_RESIZE   SystemCursor = 7  // Double arrow pointing west and east.
+	SYSTEM_CURSOR_NS_RESIZE   SystemCursor = 8  // Double arrow pointing north and south.
+	SYSTEM_CURSOR_MOVE        SystemCursor = 9  // Four pointed arrow pointing north, south, east, and west.
 	SYSTEM_CURSOR_NOT_ALLOWED SystemCursor = 10 // Not permitted. Usually a slashed circle or crossbones.
 	SYSTEM_CURSOR_POINTER     SystemCursor = 11 // Pointer that indicates a link. Usually a pointing hand.
 	SYSTEM_CURSOR_NW_RESIZE   SystemCursor = 12 // Window resize top-left. This may be a single arrow or a double arrow like NWSE_RESIZE.
@@ -839,7 +839,7 @@ const (
 type EventType uint32
 
 const (
-	EVENT_FIRST                         EventType = 0 // Unused (do not remove)
+	EVENT_FIRST                         EventType = 0   // Unused (do not remove)
 	EVENT_QUIT                          EventType = 256 // User-requested quit
 	EVENT_TERMINATING                   EventType = 257 // The application is being terminated by the OS. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillTerminate() Called on Android in onDestroy()
 	EVENT_LOW_MEMORY                    EventType = 258 // The application is low on memory, free memory if possible. This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
@@ -886,16 +886,16 @@ const (
 	EVENT_WINDOW_HDR_STATE_CHANGED      EventType = 538 // Window HDR properties have changed
 	EVENT_WINDOW_FIRST                  EventType = 514
 	EVENT_WINDOW_LAST                   EventType = 538
-	EVENT_KEY_DOWN                      EventType = 768 // Key pressed
-	EVENT_KEY_UP                        EventType = 769 // Key released
-	EVENT_TEXT_EDITING                  EventType = 770 // Keyboard text editing (composition)
-	EVENT_TEXT_INPUT                    EventType = 771 // Keyboard text input
-	EVENT_KEYMAP_CHANGED                EventType = 772 // Keymap changed due to a system event such as an input language or keyboard layout change.
-	EVENT_KEYBOARD_ADDED                EventType = 773 // A new keyboard has been inserted into the system
-	EVENT_KEYBOARD_REMOVED              EventType = 774 // A keyboard has been removed
-	EVENT_TEXT_EDITING_CANDIDATES       EventType = 775 // Keyboard text editing candidates
-	EVENT_SCREEN_KEYBOARD_SHOWN         EventType = 776 // The on-screen keyboard has been shown
-	EVENT_SCREEN_KEYBOARD_HIDDEN        EventType = 777 // The on-screen keyboard has been hidden
+	EVENT_KEY_DOWN                      EventType = 768  // Key pressed
+	EVENT_KEY_UP                        EventType = 769  // Key released
+	EVENT_TEXT_EDITING                  EventType = 770  // Keyboard text editing (composition)
+	EVENT_TEXT_INPUT                    EventType = 771  // Keyboard text input
+	EVENT_KEYMAP_CHANGED                EventType = 772  // Keymap changed due to a system event such as an input language or keyboard layout change.
+	EVENT_KEYBOARD_ADDED                EventType = 773  // A new keyboard has been inserted into the system
+	EVENT_KEYBOARD_REMOVED              EventType = 774  // A keyboard has been removed
+	EVENT_TEXT_EDITING_CANDIDATES       EventType = 775  // Keyboard text editing candidates
+	EVENT_SCREEN_KEYBOARD_SHOWN         EventType = 776  // The on-screen keyboard has been shown
+	EVENT_SCREEN_KEYBOARD_HIDDEN        EventType = 777  // The on-screen keyboard has been hidden
 	EVENT_MOUSE_MOTION                  EventType = 1024 // Mouse moved
 	EVENT_MOUSE_BUTTON_DOWN             EventType = 1025 // Mouse button pressed
 	EVENT_MOUSE_BUTTON_UP               EventType = 1026 // Mouse button released
@@ -980,16 +980,16 @@ const (
 type Folder uint32
 
 const (
-	FOLDER_HOME        Folder = 0 // The folder which contains all of the current user's data, preferences, and documents. It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents.
-	FOLDER_DESKTOP     Folder = 1 // The folder of files that are displayed on the desktop. Note that the existence of a desktop folder does not guarantee that the system does show icons on its desktop; certain GNU/Linux distros with a graphical environment may not have desktop icons.
-	FOLDER_DOCUMENTS   Folder = 2 // User document files, possibly application-specific. This is a good place to save a user's projects.
-	FOLDER_DOWNLOADS   Folder = 3 // Standard folder for user files downloaded from the internet.
-	FOLDER_MUSIC       Folder = 4 // Music files that can be played using a standard music player (mp3, ogg...).
-	FOLDER_PICTURES    Folder = 5 // Image files that can be displayed using a standard viewer (png, jpg...).
-	FOLDER_PUBLICSHARE Folder = 6 // Files that are meant to be shared with other users on the same computer.
-	FOLDER_SAVEDGAMES  Folder = 7 // Save files for games.
-	FOLDER_SCREENSHOTS Folder = 8 // Application screenshots.
-	FOLDER_TEMPLATES   Folder = 9 // Template files to be used when the user requests the desktop environment to create a new file in a certain folder, such as "New Text File.txt".  Any file in the Templates folder can be used as a starting point for a new file.
+	FOLDER_HOME        Folder = 0  // The folder which contains all of the current user's data, preferences, and documents. It usually contains most of the other folders. If a requested folder does not exist, the home folder can be considered a safe fallback to store a user's documents.
+	FOLDER_DESKTOP     Folder = 1  // The folder of files that are displayed on the desktop. Note that the existence of a desktop folder does not guarantee that the system does show icons on its desktop; certain GNU/Linux distros with a graphical environment may not have desktop icons.
+	FOLDER_DOCUMENTS   Folder = 2  // User document files, possibly application-specific. This is a good place to save a user's projects.
+	FOLDER_DOWNLOADS   Folder = 3  // Standard folder for user files downloaded from the internet.
+	FOLDER_MUSIC       Folder = 4  // Music files that can be played using a standard music player (mp3, ogg...).
+	FOLDER_PICTURES    Folder = 5  // Image files that can be displayed using a standard viewer (png, jpg...).
+	FOLDER_PUBLICSHARE Folder = 6  // Files that are meant to be shared with other users on the same computer.
+	FOLDER_SAVEDGAMES  Folder = 7  // Save files for games.
+	FOLDER_SCREENSHOTS Folder = 8  // Application screenshots.
+	FOLDER_TEMPLATES   Folder = 9  // Template files to be used when the user requests the desktop environment to create a new file in a certain folder, such as "New Text File.txt".  Any file in the Templates folder can be used as a starting point for a new file.
 	FOLDER_VIDEOS      Folder = 10 // Video files that can be played using a standard video player (mp4, webm...).
 	FOLDER_COUNT       Folder = 11 // Total number of types in this enum, not a folder type by itself.
 )
@@ -1326,15 +1326,15 @@ type GPUBlendFactor uint32
 
 const (
 	GPU_BLENDFACTOR_INVALID                  GPUBlendFactor = 0
-	GPU_BLENDFACTOR_ZERO                     GPUBlendFactor = 1 // 0
-	GPU_BLENDFACTOR_ONE                      GPUBlendFactor = 2 // 1
-	GPU_BLENDFACTOR_SRC_COLOR                GPUBlendFactor = 3 // source color
-	GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR      GPUBlendFactor = 4 // 1 - source color
-	GPU_BLENDFACTOR_DST_COLOR                GPUBlendFactor = 5 // destination color
-	GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR      GPUBlendFactor = 6 // 1 - destination color
-	GPU_BLENDFACTOR_SRC_ALPHA                GPUBlendFactor = 7 // source alpha
-	GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA      GPUBlendFactor = 8 // 1 - source alpha
-	GPU_BLENDFACTOR_DST_ALPHA                GPUBlendFactor = 9 // destination alpha
+	GPU_BLENDFACTOR_ZERO                     GPUBlendFactor = 1  // 0
+	GPU_BLENDFACTOR_ONE                      GPUBlendFactor = 2  // 1
+	GPU_BLENDFACTOR_SRC_COLOR                GPUBlendFactor = 3  // source color
+	GPU_BLENDFACTOR_ONE_MINUS_SRC_COLOR      GPUBlendFactor = 4  // 1 - source color
+	GPU_BLENDFACTOR_DST_COLOR                GPUBlendFactor = 5  // destination color
+	GPU_BLENDFACTOR_ONE_MINUS_DST_COLOR      GPUBlendFactor = 6  // 1 - destination color
+	GPU_BLENDFACTOR_SRC_ALPHA                GPUBlendFactor = 7  // source alpha
+	GPU_BLENDFACTOR_ONE_MINUS_SRC_ALPHA      GPUBlendFactor = 8  // 1 - source alpha
+	GPU_BLENDFACTOR_DST_ALPHA                GPUBlendFactor = 9  // destination alpha
 	GPU_BLENDFACTOR_ONE_MINUS_DST_ALPHA      GPUBlendFactor = 10 // 1 - destination alpha
 	GPU_BLENDFACTOR_CONSTANT_COLOR           GPUBlendFactor = 11 // blend constant
 	GPU_BLENDFACTOR_ONE_MINUS_CONSTANT_COLOR GPUBlendFactor = 12 // 1 - blend constant
