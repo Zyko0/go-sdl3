@@ -8,11 +8,11 @@ type HintingFlags uint32
 
 const (
 	HINTING_INVALID        HintingFlags = 4294967295
-	HINTING_NORMAL         HintingFlags = 0
-	HINTING_LIGHT          HintingFlags = 1
-	HINTING_MONO           HintingFlags = 2
-	HINTING_NONE           HintingFlags = 3
-	HINTING_LIGHT_SUBPIXEL HintingFlags = 4
+	HINTING_NORMAL         HintingFlags = 0 // Hinting flags // Normal hinting applies standard grid-fitting.
+	HINTING_LIGHT          HintingFlags = 1 // Light hinting applies subtle adjustments to improve rendering.
+	HINTING_MONO           HintingFlags = 2 // Monochrome hinting adjusts the font for better rendering at lower resolutions.
+	HINTING_NONE           HintingFlags = 3 // No hinting, the font is rendered without any grid-fitting.
+	HINTING_LIGHT_SUBPIXEL HintingFlags = 4 // Light hinting with subpixel rendering for more precise font edges.
 )
 
 // TTF_HorizontalAlignment - The horizontal alignment used when rendering wrapped text.
@@ -32,10 +32,10 @@ type Direction uint32
 
 const (
 	DIRECTION_INVALID Direction = 0
-	DIRECTION_LTR     Direction = 4
-	DIRECTION_RTL     Direction = 5
-	DIRECTION_TTB     Direction = 6
-	DIRECTION_BTT     Direction = 7
+	DIRECTION_LTR     Direction = 4 // Left to Right
+	DIRECTION_RTL     Direction = 5 // Right to Left
+	DIRECTION_TTB     Direction = 6 // Top to Bottom
+	DIRECTION_BTT     Direction = 7 // Bottom to Top
 )
 
 // TTF_ImageType - The type of data in a glyph image
@@ -44,9 +44,9 @@ type ImageType uint32
 
 const (
 	IMAGE_INVALID ImageType = 0
-	IMAGE_ALPHA   ImageType = 1
-	IMAGE_COLOR   ImageType = 2
-	IMAGE_SDF     ImageType = 3
+	IMAGE_ALPHA   ImageType = 1 // The color channels are white
+	IMAGE_COLOR   ImageType = 2 // The color channels have image data
+	IMAGE_SDF     ImageType = 3 // The alpha channel has signed distance field information
 )
 
 // TTF_GPUTextEngineWinding - The winding order of the vertices returned by [TTF_GetGPUTextDrawData](TTF_GetGPUTextDrawData)
