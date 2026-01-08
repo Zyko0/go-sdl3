@@ -203,7 +203,8 @@ func NumEvents() (int32, error) {
 }
 
 // AppendEvents adds the messages from the event queue to the provided slice and returns it.
-// It is useful to avoid re-allocation, assuming events already has the required capacity.
+// It is useful to avoid re-allocation, assuming events already has the required capacity, but
+// you may also pass nil as an argument.
 // A good pattern would be to zero the same slice each update: events = events[:0] before
 // calling PumpEvents() and then AppendEvents().
 // This function calls SDL_PeepEvents with the action GETEVENT, which means that it will
