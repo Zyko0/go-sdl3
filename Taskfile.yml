@@ -56,16 +56,6 @@ tasks:
             - go run ./cmd/ffi2go --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json"
             - purego-gen --no-warnings --function-name "initialize" --input {{.INPUT}} --extra {{.EXTRA | join ","}}
             - '{{if regexMatch .LIBRARY "sdl|ttf"}}purego-gen --no-library-handle --no-warnings --function-name "initialize_ex" --input {{.DIR}}/{{.LIBRARY}}_functions_ex.go --extra {{.EXTRA | join ","}}{{end}}'
-
-    gen-methods:
-        desc: Generate methods for SDL3 library (first pass)
-        requires:
-          vars: [LIBRARY]
-        vars:
-            DIR: '{{.LIBRARY}}'
-        cmds:
-            # Generate SDL3 methods heuristically as a starting point
-            - go run ./cmd/methodgen --dir {{ .DIR }} --library {{ .LIBRARY }}
     
     gen-doc:
         deps: [extract-wiki]
