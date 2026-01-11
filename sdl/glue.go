@@ -46,8 +46,9 @@ func (v Version) String() string {
 	return fmt.Sprintf("%d.%d.%d", v.Major(), v.Minor(), v.Patch())
 }
 
-// https://github.com/libsdl-org/SDL/blob/release-3.2.2/include/SDL3/SDL_gamepad.h#L262
-// TODO: Union type
+// SDL_GamepadBinding - A mapping between one joystick input to a gamepad control.
+// (https://wiki.libsdl.org/SDL3/SDL_GamepadBinding)
+// Union type
 type GamepadBinding struct {
 	InputType  int32
 	InputData  [12]byte
@@ -151,14 +152,14 @@ type textEditingCandidatesEvent struct {
 // SDL_TextEditingCandidatesEvent - Keyboard IME candidates event structure (event.edit_candidates.*)
 // (https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent)
 type TextEditingCandidatesEvent struct {
-	Type              EventType
+	Type              EventType // SDL_EVENT_TEXT_EDITING_CANDIDATES
 	Reserved          uint32
-	Timestamp         uint64
-	WindowID          WindowID
-	Candidates        []string
-	NumCandidates     int32
-	SelectedCandidate int32
-	Horizontal        bool
+	Timestamp         uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID          WindowID // The window with keyboard focus, if any
+	Candidates        []string // The list of candidates, or NULL if there are no candidates available
+	NumCandidates     int32    // The number of strings in `candidates`
+	SelectedCandidate int32    // The index of the selected candidate, or -1 if no candidate is selected
+	Horizontal        bool     // true if the list is horizontal, false if it's vertical
 }
 
 func (e *Event) TextEditingCandidatesEvent() *TextEditingCandidatesEvent {
@@ -475,7 +476,9 @@ func (e *Event) UserEvent() *UserEvent {
 	return &evt
 }
 
-// TODO: union type
+// SDL_HapticEffect - The generic template for any haptic effect.
+// (https://wiki.libsdl.org/SDL3/SDL_HapticEffect)
+// Union type
 type HapticEffect struct {
 	Type       uint16
 	HapticData [66]byte // 68 is full size of SDL_HapticCondition
@@ -490,14 +493,14 @@ type va_list uintptr // TODO: not done yet
 // SDL_Surface - A collection of pixels used in software blitting.
 // (https://wiki.libsdl.org/SDL3/SDL_Surface)
 type Surface struct {
-	Flags    SurfaceFlags
-	Format   PixelFormat
-	W        int32
-	H        int32
-	Pitch    int32
+	Flags    SurfaceFlags // The flags of the surface, read-only
+	Format   PixelFormat  // The format of the surface, read-only
+	W        int32        // The width of the surface, read-only.
+	H        int32        // The height of the surface, read-only.
+	Pitch    int32        // The distance in bytes between rows of pixels, read-only
 	pixels   Pointer
-	Refcount int32
-	Reserved Pointer
+	Refcount int32   // Application reference count, used when freeing surface
+	reserved Pointer // Reserved for internal use
 }
 
 type messageBoxButtonData struct {
@@ -547,11 +550,11 @@ func (md *MessageBoxData) as() *messageBoxData {
 // (https://wiki.libsdl.org/SDL3/SDL_MessageBoxData)
 type MessageBoxData struct {
 	Flags       MessageBoxFlags
-	Window      *Window
-	Title       string
-	Message     string
+	Window      *Window // Parent window, can be NULL
+	Title       string  // UTF-8 title
+	Message     string  // UTF-8 message text
 	Buttons     []MessageBoxButtonData
-	ColorScheme *MessageBoxColorScheme
+	ColorScheme *MessageBoxColorScheme // SDL_MessageBoxColorScheme, can be NULL to use system settings
 }
 
 type gpuShaderCreateInfo struct {
@@ -590,13 +593,13 @@ func (info *GPUShaderCreateInfo) as() *gpuShaderCreateInfo {
 type GPUShaderCreateInfo struct {
 	Code               []byte
 	Entrypoint         string
-	Format             GPUShaderFormat
-	Stage              GPUShaderStage
-	NumSamplers        uint32
-	NumStorageTextures uint32
-	NumStorageBuffers  uint32
-	NumUniformBuffers  uint32
-	Props              PropertiesID
+	Format             GPUShaderFormat // The format of the shader code.
+	Stage              GPUShaderStage  // The stage the shader program corresponds to.
+	NumSamplers        uint32          // The number of samplers defined in the shader.
+	NumStorageTextures uint32          // The number of storage textures defined in the shader.
+	NumStorageBuffers  uint32          // The number of storage buffers defined in the shader.
+	NumUniformBuffers  uint32          // The number of uniform buffers defined in the shader.
+	Props              PropertiesID    // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 type gpuComputePipelineCreateInfo struct {
@@ -643,17 +646,17 @@ func (info *GPUComputePipelineCreateInfo) as() *gpuComputePipelineCreateInfo {
 type GPUComputePipelineCreateInfo struct {
 	Code                        []byte
 	Entrypoint                  string
-	Format                      GPUShaderFormat
-	NumSamplers                 uint32
-	NumReadonlyStorageTextures  uint32
-	NumReadonlyStorageBuffers   uint32
-	NumReadwriteStorageTextures uint32
-	NumReadwriteStorageBuffers  uint32
-	NumUniformBuffers           uint32
-	ThreadcountX                uint32
-	ThreadcountY                uint32
-	ThreadcountZ                uint32
-	Props                       PropertiesID
+	Format                      GPUShaderFormat // The format of the compute shader code.
+	NumSamplers                 uint32          // The number of samplers defined in the shader.
+	NumReadonlyStorageTextures  uint32          // The number of readonly storage textures defined in the shader.
+	NumReadonlyStorageBuffers   uint32          // The number of readonly storage buffers defined in the shader.
+	NumReadwriteStorageTextures uint32          // The number of read-write storage textures defined in the shader.
+	NumReadwriteStorageBuffers  uint32          // The number of read-write storage buffers defined in the shader.
+	NumUniformBuffers           uint32          // The number of uniform buffers defined in the shader.
+	ThreadcountX                uint32          // The number of threads in the X dimension. This should match the value in the shader.
+	ThreadcountY                uint32          // The number of threads in the Y dimension. This should match the value in the shader.
+	ThreadcountZ                uint32          // The number of threads in the Z dimension. This should match the value in the shader.
+	Props                       PropertiesID    // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 type gpuGraphicsPipelineTargetInfo struct {
@@ -741,15 +744,15 @@ func (info *GPUGraphicsPipelineCreateInfo) as() *gpuGraphicsPipelineCreateInfo {
 // SDL_GPUGraphicsPipelineCreateInfo - A structure specifying the parameters of a graphics pipeline state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo)
 type GPUGraphicsPipelineCreateInfo struct {
-	VertexShader      *GPUShader
-	FragmentShader    *GPUShader
-	VertexInputState  GPUVertexInputState
-	PrimitiveType     GPUPrimitiveType
-	RasterizerState   GPURasterizerState
-	MultisampleState  GPUMultisampleState
-	DepthStencilState GPUDepthStencilState
-	TargetInfo        GPUGraphicsPipelineTargetInfo
-	Props             PropertiesID
+	VertexShader      *GPUShader                    // The vertex shader used by the graphics pipeline.
+	FragmentShader    *GPUShader                    // The fragment shader used by the graphics pipeline.
+	VertexInputState  GPUVertexInputState           // The vertex layout of the graphics pipeline.
+	PrimitiveType     GPUPrimitiveType              // The primitive topology of the graphics pipeline.
+	RasterizerState   GPURasterizerState            // The rasterizer state of the graphics pipeline.
+	MultisampleState  GPUMultisampleState           // The multisample state of the graphics pipeline.
+	DepthStencilState GPUDepthStencilState          // The depth-stencil state of the graphics pipeline.
+	TargetInfo        GPUGraphicsPipelineTargetInfo // Formats and blend modes for the render targets of the graphics pipeline.
+	Props             PropertiesID                  // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_Palette - A set of indexed colors representing a palette.
@@ -757,8 +760,8 @@ type GPUGraphicsPipelineCreateInfo struct {
 type Palette struct {
 	ncolors  int32
 	colors   *Color
-	Version  uint32
-	Refcount int32
+	version  uint32
+	refcount int32
 }
 
 // Custom types
@@ -859,10 +862,6 @@ type TimerCallback uintptr
 // SDL_NSTimerCallback - Function prototype for the nanosecond timer callback function.
 // (https://wiki.libsdl.org/SDL3/SDL_NSTimerCallback)
 type NSTimerCallback uintptr
-
-// SDL_main_func - The prototype for the application's main() function
-// (https://wiki.libsdl.org/SDL3/SDL_main_func)
-type main_func uintptr
 
 // SDL_AppInit_func - Function pointer typedef for [SDL_AppInit](SDL_AppInit).
 // (https://wiki.libsdl.org/SDL3/SDL_AppInit_func)
