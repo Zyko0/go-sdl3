@@ -1,9 +1,6 @@
 package main
 
 import (
-	"bytes"
-	"encoding/csv"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -18,17 +15,11 @@ import (
 var (
 	regFunc = regexp.MustCompile(`i([A-Za-z][A-Za-z_0-9]+)\(`)
 
-	cfg assets.Config
+	cfg *assets.Config
 )
 
-type Entry struct {
-	ID          string
-	Description string
-	URL         string
-}
-
 var (
-	uniqueAPIIdentifiers = make(map[string]*Entry)
+	wikiEntries = make(map[string]*assets.WikiEntry)
 )
 
 func main() {
@@ -43,33 +34,17 @@ func main() {
 	flag.StringVar(&dir, "dir", "", "base directory to generate from/to")
 	flag.Parse()
 
-	// Parse config
-	b, err := os.ReadFile(configPath)
+	// Load config
+	var err error
+	cfg, err = assets.LoadConfig(configPath)
 	if err != nil {
-		log.Fatal("couldn't read config.json file: ", err)
-	}
-	err = json.Unmarshal(b, &cfg)
-	if err != nil {
-		log.Fatal("couldn't unmarshal config file: ", err)
+		log.Fatal("couldn't parse config file: ", err)
 	}
 
-	// Parse annotations
-	b, err = os.ReadFile(annotationsPath)
+	// Load wiki annotations
+	wikiEntries, err = assets.LoadWikiAnnotations(annotationsPath)
 	if err != nil {
-		log.Fatal("couldn't read annotations.csv file: ", err)
-	}
-	csvr := csv.NewReader(bytes.NewReader(b))
-	records, err := csvr.ReadAll()
-	if err != nil {
-		log.Fatal("couldn't read csv records: ", err)
-	}
-
-	for _, record := range records[1:] { // Skip header
-		uniqueAPIIdentifiers[record[0]] = &Entry{
-			ID:          record[0],
-			Description: strings.ReplaceAll(record[1], "\n", ""),
-			URL:         record[2],
-		}
+		log.Fatal("couldn't load wiki annotations file: ", err)
 	}
 
 	path, err := os.Getwd()
@@ -88,7 +63,8 @@ func main() {
 	var enumsAnnotations int
 
 	for _, e := range files {
-		if !strings.HasSuffix(e.Name(), ".go") {
+		// Skip non-go files and generated files (where doc is already handled)
+		if !strings.HasSuffix(e.Name(), ".go") || strings.Contains(e.Name(), ".gen") {
 			continue
 		}
 
@@ -114,7 +90,7 @@ func main() {
 				parts := strings.Split(l, " ")
 				if len(parts) > 2 {
 					typeName = parts[1]
-					entry, found := uniqueAPIIdentifiers[cfg.Prefix+typeName]
+					entry, found := wikiEntries[cfg.Prefix+typeName]
 					if found {
 						// Define regexp for enum values matching
 						regEnumDef = regexp.MustCompile(`([A-Za-z0-9_]*)\s+` + typeName + `\s=\s`)
@@ -122,7 +98,7 @@ func main() {
 						if i > 0 && strings.TrimSpace(lines[i-1]) == "" {
 							// Add comments on top of the type
 							outLines = append(outLines, fmt.Sprintf(
-								"// %s - %s", entry.ID, entry.Description,
+								"// %s - %s", entry.Name, entry.Description,
 							))
 							outLines = append(outLines, fmt.Sprintf(
 								"// (%s)", entry.URL,
@@ -140,7 +116,7 @@ func main() {
 				matches := regEnumDef.FindAllStringSubmatch(l, -1)
 				if len(matches) > 0 && len(matches[0]) == 2 {
 					enum := matches[0][1]
-					entry, found := uniqueAPIIdentifiers[cfg.Prefix+enum]
+					entry, found := wikiEntries[cfg.Prefix+enum]
 					if found {
 						// Don't comment twice
 						if !strings.Contains(l, " // ") {
@@ -162,10 +138,10 @@ func main() {
 						matches := regFunc.FindAll([]byte(l), -1)
 						for _, m := range matches {
 							name := string(m[1 : len(m)-1])
-							_, found := uniqueAPIIdentifiers[name]
+							_, found := wikiEntries[name]
 							if !found {
 								name = cfg.Prefix + name
-								_, found = uniqueAPIIdentifiers[name]
+								_, found = wikiEntries[name]
 							}
 							if found {
 								fnName = name
@@ -176,10 +152,10 @@ func main() {
 					inFunc = false
 					braces = 0
 					// Add comments + whole function
-					entry, found := uniqueAPIIdentifiers[fnName]
+					entry, found := wikiEntries[fnName]
 					if found {
 						outLines = append(outLines, fmt.Sprintf(
-							"// %s - %s", entry.ID, entry.Description,
+							"// %s - %s", entry.Name, entry.Description,
 						))
 						outLines = append(outLines, fmt.Sprintf(
 							"// (%s)", entry.URL,

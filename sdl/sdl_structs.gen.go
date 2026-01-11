@@ -9,14 +9,14 @@ type AsyncIO struct{}
 // SDL_AsyncIOOutcome - Information about a completed asynchronous I/O request.
 // (https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome)
 type AsyncIOOutcome struct {
-	Asyncio          *AsyncIO
-	Type             AsyncIOTaskType
-	Result           AsyncIOResult
-	Buffer           Pointer
-	Offset           uint64
-	BytesRequested   uint64
-	BytesTransferred uint64
-	Userdata         Pointer
+	Asyncio          *AsyncIO        // what generated this task. This pointer will be invalid if it was closed!
+	Type             AsyncIOTaskType // What sort of task was this? Read, write, etc?
+	Result           AsyncIOResult   // the result of the work (success, failure, cancellation).
+	Buffer           Pointer         // buffer where data was read/written.
+	Offset           uint64          // offset in the SDL_AsyncIO where data was read/written.
+	BytesRequested   uint64          // number of bytes the task was to read/write.
+	BytesTransferred uint64          // actual number of bytes that were read/written.
+	Userdata         Pointer         // pointer provided by the app when starting the task
 }
 
 // SDL_AsyncIOQueue - A queue of completed asynchronous I/O tasks.
@@ -82,9 +82,9 @@ type IOStream struct{}
 // SDL_AudioSpec - Format specifier for audio data.
 // (https://wiki.libsdl.org/SDL3/SDL_AudioSpec)
 type AudioSpec struct {
-	Format   AudioFormat
-	Channels int32
-	Freq     int32
+	Format   AudioFormat // Audio data format
+	Channels int32       // Number of channels: 1 mono, 2 stereo, etc
+	Freq     int32       // sample rate: sample frames per second
 }
 
 // SDL_AudioStream - The opaque handle that represents an audio stream.
@@ -169,12 +169,12 @@ type Camera struct{}
 // SDL_CameraSpec - The details of an output format for a camera device.
 // (https://wiki.libsdl.org/SDL3/SDL_CameraSpec)
 type CameraSpec struct {
-	Format               PixelFormat
-	Colorspace           Colorspace
-	Width                int32
-	Height               int32
-	FramerateNumerator   int32
-	FramerateDenominator int32
+	Format               PixelFormat // Frame format
+	Colorspace           Colorspace  // Frame colorspace
+	Width                int32       // Frame width
+	Height               int32       // Frame height
+	FramerateNumerator   int32       // Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds)
+	FramerateDenominator int32       // Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds)
 }
 
 // SDL_DisplayModeData - Internal display mode data.
@@ -184,15 +184,15 @@ type DisplayModeData struct{}
 // SDL_DisplayMode - The structure that defines a display mode.
 // (https://wiki.libsdl.org/SDL3/SDL_DisplayMode)
 type DisplayMode struct {
-	DisplayID              DisplayID
-	Format                 PixelFormat
-	W                      int32
-	H                      int32
-	PixelDensity           float32
-	RefreshRate            float32
-	RefreshRateNumerator   int32
-	RefreshRateDenominator int32
-	Internal               *DisplayModeData
+	DisplayID              DisplayID        // the display this mode is associated with
+	Format                 PixelFormat      // pixel format
+	W                      int32            // width
+	H                      int32            // height
+	PixelDensity           float32          // scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels)
+	RefreshRate            float32          // refresh rate (or 0.0f for unspecified)
+	RefreshRateNumerator   int32            // precise refresh rate numerator (or 0 for unspecified)
+	RefreshRateDenominator int32            // precise refresh rate denominator
+	Internal               *DisplayModeData // Private
 }
 
 // SDL_Window - The struct used as an opaque handle to a window.
@@ -219,46 +219,46 @@ type Joystick struct{}
 // SDL_VirtualJoystickTouchpadDesc - The structure that describes a virtual joystick touchpad.
 // (https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickTouchpadDesc)
 type VirtualJoystickTouchpadDesc struct {
-	Nfingers uint16
+	Nfingers uint16 // the number of simultaneous fingers on this touchpad
 	Padding  [3]uint16
 }
 
 // SDL_VirtualJoystickSensorDesc - The structure that describes a virtual joystick sensor.
 // (https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickSensorDesc)
 type VirtualJoystickSensorDesc struct {
-	Type SensorType
-	Rate float32
+	Type SensorType // the type of this sensor
+	Rate float32    // the update frequency of this sensor, may be 0.0f
 }
 
 // SDL_VirtualJoystickDesc - The structure that describes a virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc)
 type VirtualJoystickDesc struct {
-	Version           uint32
-	Type              uint16
-	Padding           uint16
-	VendorId          uint16
-	ProductId         uint16
-	Naxes             uint16
-	Nbuttons          uint16
-	Nballs            uint16
-	Nhats             uint16
-	Ntouchpads        uint16
-	Nsensors          uint16
-	Padding2          [2]uint16
-	ButtonMask        uint32
-	AxisMask          uint32
-	Name              string
-	Touchpads         *VirtualJoystickTouchpadDesc
-	Sensors           *VirtualJoystickSensorDesc
-	Userdata          Pointer
-	Update            Pointer
-	SetPlayerIndex    Pointer
-	Rumble            Pointer
-	RumbleTriggers    Pointer
-	SetLED            Pointer
-	SendEffect        Pointer
-	SetSensorsEnabled Pointer
-	Cleanup           Pointer
+	Version           uint32                       // the version of this interface
+	Type              uint16                       // `SDL_JoystickType`
+	Padding           uint16                       // unused
+	VendorId          uint16                       // the USB vendor ID of this joystick
+	ProductId         uint16                       // the USB product ID of this joystick
+	Naxes             uint16                       // the number of axes on this joystick
+	Nbuttons          uint16                       // the number of buttons on this joystick
+	Nballs            uint16                       // the number of balls on this joystick
+	Nhats             uint16                       // the number of hats on this joystick
+	Ntouchpads        uint16                       // the number of touchpads on this joystick, requires `touchpads` to point at valid descriptions
+	Nsensors          uint16                       // the number of sensors on this joystick, requires `sensors` to point at valid descriptions
+	Padding2          [2]uint16                    // unused
+	ButtonMask        uint32                       // A mask of which buttons are valid for this controller e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH)
+	AxisMask          uint32                       // A mask of which axes are valid for this controller e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX)
+	Name              string                       // the name of the joystick
+	Touchpads         *VirtualJoystickTouchpadDesc // A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0
+	Sensors           *VirtualJoystickSensorDesc   // A pointer to an array of sensor descriptions, required if `nsensors` is > 0
+	Userdata          Pointer                      // User data pointer passed to callbacks
+	Update            Pointer                      // Called when the joystick state should be updated
+	SetPlayerIndex    Pointer                      // Called when the player index is set
+	Rumble            Pointer                      // Implements SDL_RumbleJoystick()
+	RumbleTriggers    Pointer                      // Implements SDL_RumbleJoystickTriggers()
+	SetLED            Pointer                      // Implements SDL_SetJoystickLED()
+	SendEffect        Pointer                      // Implements SDL_SendJoystickEffect()
+	SetSensorsEnabled Pointer                      // Implements SDL_SetGamepadSensorEnabled()
+	Cleanup           Pointer                      // Cleans up the userdata when the joystick is detached
 }
 
 // SDL_Gamepad - The structure used to identify an SDL gamepad
@@ -272,192 +272,192 @@ type Cursor struct{}
 // SDL_CursorFrameInfo - Animated cursor frame info.
 // (https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo)
 type CursorFrameInfo struct {
-	Surface  *Surface
-	Duration uint32
+	Surface  *Surface // The surface data for this frame
+	Duration uint32   // The frame duration in milliseconds (a duration of 0 is infinite)
 }
 
 // SDL_Finger - Data about a single finger in a multitouch event.
 // (https://wiki.libsdl.org/SDL3/SDL_Finger)
 type Finger struct {
-	Id       FingerID
-	X        float32
-	Y        float32
-	Pressure float32
+	Id       FingerID // the finger ID
+	X        float32  // the x-axis location of the touch event, normalized (0...1)
+	Y        float32  // the y-axis location of the touch event, normalized (0...1)
+	Pressure float32  // the quantity of pressure applied, normalized (0...1)
 }
 
 // SDL_CommonEvent - Fields shared by every event
 // (https://wiki.libsdl.org/SDL3/SDL_CommonEvent)
 type CommonEvent struct {
-	Type      uint32
+	Type      uint32 // Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration
 	Reserved  uint32
-	Timestamp uint64
+	Timestamp uint64 // In nanoseconds, populated using SDL_GetTicksNS()
 }
 
 // SDL_DisplayEvent - Display state change event data (event.display.*)
 // (https://wiki.libsdl.org/SDL3/SDL_DisplayEvent)
 type DisplayEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_DISPLAY_*
 	Reserved  uint32
-	Timestamp uint64
-	DisplayID DisplayID
-	Data1     int32
-	Data2     int32
+	Timestamp uint64    // In nanoseconds, populated using SDL_GetTicksNS()
+	DisplayID DisplayID // The associated display
+	Data1     int32     // event dependent data
+	Data2     int32     // event dependent data
 }
 
 // SDL_WindowEvent - Window state change event data (event.window.*)
 // (https://wiki.libsdl.org/SDL3/SDL_WindowEvent)
 type WindowEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_WINDOW_*
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Data1     int32
-	Data2     int32
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The associated window
+	Data1     int32    // event dependent data
+	Data2     int32    // event dependent data
 }
 
 // SDL_KeyboardDeviceEvent - Keyboard device event structure (event.kdevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_KeyboardDeviceEvent)
 type KeyboardDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_KEYBOARD_ADDED or SDL_EVENT_KEYBOARD_REMOVED
 	Reserved  uint32
-	Timestamp uint64
-	Which     KeyboardID
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     KeyboardID // The keyboard instance id
 }
 
 // SDL_KeyboardEvent - Keyboard button event structure (event.key.*)
 // (https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent)
 type KeyboardEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_KEY_DOWN or SDL_EVENT_KEY_UP
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     KeyboardID
-	Scancode  Scancode
-	Key       Keycode
-	Mod       Keymod
-	Raw       uint16
-	Down      bool
-	Repeat    bool
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID   // The window with keyboard focus, if any
+	Which     KeyboardID // The keyboard instance id, or 0 if unknown or virtual
+	Scancode  Scancode   // SDL physical key code
+	Key       Keycode    // SDL virtual key code
+	Mod       Keymod     // current key modifiers
+	Raw       uint16     // The platform dependent scancode for this event
+	Down      bool       // true if the key is pressed
+	Repeat    bool       // true if this is a key repeat
 }
 
 // SDL_TextEditingEvent - Keyboard text editing event structure (event.edit.*)
 // (https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent)
 type TextEditingEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_TEXT_EDITING
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Text      string
-	Start     int32
-	Length    int32
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window with keyboard focus, if any
+	Text      string   // The editing text
+	Start     int32    // The start cursor of selected editing text, or -1 if not set
+	Length    int32    // The length of selected editing text, or -1 if not set
 }
 
 // SDL_TextInputEvent - Keyboard text input event structure (event.text.*)
 // (https://wiki.libsdl.org/SDL3/SDL_TextInputEvent)
 type TextInputEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_TEXT_INPUT
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Text      string
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window with keyboard focus, if any
+	Text      string   // The input text, UTF-8 encoded
 }
 
 // SDL_MouseDeviceEvent - Mouse device event structure (event.mdevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_MouseDeviceEvent)
 type MouseDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_MOUSE_ADDED or SDL_EVENT_MOUSE_REMOVED
 	Reserved  uint32
-	Timestamp uint64
-	Which     MouseID
+	Timestamp uint64  // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     MouseID // The mouse instance id
 }
 
 // SDL_MouseMotionEvent - Mouse motion event structure (event.motion.*)
 // (https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent)
 type MouseMotionEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_MOUSE_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     MouseID
-	State     MouseButtonFlags
-	X         float32
-	Y         float32
-	Xrel      float32
-	Yrel      float32
+	Timestamp uint64           // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID         // The window with mouse focus, if any
+	Which     MouseID          // The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0
+	State     MouseButtonFlags // The current button state
+	X         float32          // X coordinate, relative to window
+	Y         float32          // Y coordinate, relative to window
+	Xrel      float32          // The relative motion in the X direction
+	Yrel      float32          // The relative motion in the Y direction
 }
 
 // SDL_MouseButtonEvent - Mouse button event structure (event.button.*)
 // (https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent)
 type MouseButtonEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_MOUSE_BUTTON_DOWN or SDL_EVENT_MOUSE_BUTTON_UP
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     MouseID
-	Button    uint8
-	Down      bool
-	Clicks    uint8
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window with mouse focus, if any
+	Which     MouseID  // The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0
+	Button    uint8    // The mouse button index
+	Down      bool     // true if the button is pressed
+	Clicks    uint8    // 1 for single-click, 2 for double-click, etc.
 	Padding   uint8
-	X         float32
-	Y         float32
+	X         float32 // X coordinate, relative to window
+	Y         float32 // Y coordinate, relative to window
 }
 
 // SDL_MouseWheelEvent - Mouse wheel event structure (event.wheel.*)
 // (https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent)
 type MouseWheelEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_MOUSE_WHEEL
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     MouseID
-	X         float32
-	Y         float32
-	Direction MouseWheelDirection
-	MouseX    float32
-	MouseY    float32
-	IntegerX  int32
-	IntegerY  int32
+	Timestamp uint64              // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID            // The window with mouse focus, if any
+	Which     MouseID             // The mouse instance id in relative mode or 0
+	X         float32             // The amount scrolled horizontally, positive to the right and negative to the left
+	Y         float32             // The amount scrolled vertically, positive away from the user and negative toward the user
+	Direction MouseWheelDirection // Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back
+	MouseX    float32             // X coordinate, relative to window
+	MouseY    float32             // Y coordinate, relative to window
+	IntegerX  int32               // The amount scrolled horizontally, accumulated to whole scroll "ticks" (added in 3.2.12)
+	IntegerY  int32               // The amount scrolled vertically, accumulated to whole scroll "ticks" (added in 3.2.12)
 }
 
 // SDL_JoyAxisEvent - Joystick axis motion event structure (event.jaxis.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent)
 type JoyAxisEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_AXIS_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Axis      uint8
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Axis      uint8      // The joystick axis index
 	Padding1  uint8
 	Padding2  uint8
 	Padding3  uint8
-	Value     int16
+	Value     int16 // The axis value (range: -32768 to 32767)
 	Padding4  uint16
 }
 
 // SDL_JoyBallEvent - Joystick trackball motion event structure (event.jball.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent)
 type JoyBallEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_BALL_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Ball      uint8
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Ball      uint8      // The joystick trackball index
 	Padding1  uint8
 	Padding2  uint8
 	Padding3  uint8
-	Xrel      int16
-	Yrel      int16
+	Xrel      int16 // The relative motion in the X direction
+	Yrel      int16 // The relative motion in the Y direction
 }
 
 // SDL_JoyHatEvent - Joystick hat position change event structure (event.jhat.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent)
 type JoyHatEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_HAT_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Hat       uint8
-	Value     uint8
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Hat       uint8      // The joystick hat index
+	Value     uint8      // The hat position value. *   \sa SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP *   \sa SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT *   \sa SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN * *   Note that zero means the POV is centered.
 	Padding1  uint8
 	Padding2  uint8
 }
@@ -465,12 +465,12 @@ type JoyHatEvent struct {
 // SDL_JoyButtonEvent - Joystick button event structure (event.jbutton.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent)
 type JoyButtonEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_BUTTON_DOWN or SDL_EVENT_JOYSTICK_BUTTON_UP
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Button    uint8
-	Down      bool
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Button    uint8      // The joystick button index
+	Down      bool       // true if the button is pressed
 	Padding1  uint8
 	Padding2  uint8
 }
@@ -478,47 +478,47 @@ type JoyButtonEvent struct {
 // SDL_JoyDeviceEvent - Joystick device event structure (event.jdevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyDeviceEvent)
 type JoyDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_ADDED or SDL_EVENT_JOYSTICK_REMOVED or SDL_EVENT_JOYSTICK_UPDATE_COMPLETE
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
 }
 
 // SDL_JoyBatteryEvent - Joystick battery level change event structure (event.jbattery.*)
 // (https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent)
 type JoyBatteryEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_JOYSTICK_BATTERY_UPDATED
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	State     PowerState
-	Percent   int32
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	State     PowerState // The joystick battery state
+	Percent   int32      // The joystick battery percent charge remaining
 }
 
 // SDL_GamepadAxisEvent - Gamepad axis motion event structure (event.gaxis.*)
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent)
 type GamepadAxisEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_GAMEPAD_AXIS_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Axis      uint8
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Axis      uint8      // The gamepad axis (SDL_GamepadAxis)
 	Padding1  uint8
 	Padding2  uint8
 	Padding3  uint8
-	Value     int16
+	Value     int16 // The axis value (range: -32768 to 32767)
 	Padding4  uint16
 }
 
 // SDL_GamepadButtonEvent - Gamepad button event structure (event.gbutton.*)
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent)
 type GamepadButtonEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_GAMEPAD_BUTTON_DOWN or SDL_EVENT_GAMEPAD_BUTTON_UP
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Button    uint8
-	Down      bool
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Button    uint8      // The gamepad button (SDL_GamepadButton)
+	Down      bool       // true if the button is pressed
 	Padding1  uint8
 	Padding2  uint8
 }
@@ -526,46 +526,46 @@ type GamepadButtonEvent struct {
 // SDL_GamepadDeviceEvent - Gamepad device event structure (event.gdevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadDeviceEvent)
 type GamepadDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_GAMEPAD_ADDED, SDL_EVENT_GAMEPAD_REMOVED, or SDL_EVENT_GAMEPAD_REMAPPED, SDL_EVENT_GAMEPAD_UPDATE_COMPLETE or SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
 }
 
 // SDL_GamepadTouchpadEvent - Gamepad touchpad event structure (event.gtouchpad.*)
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent)
 type GamepadTouchpadEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN or SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION or SDL_EVENT_GAMEPAD_TOUCHPAD_UP
 	Reserved  uint32
-	Timestamp uint64
-	Which     JoystickID
-	Touchpad  int32
-	Finger    int32
-	X         float32
-	Y         float32
-	Pressure  float32
+	Timestamp uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     JoystickID // The joystick instance id
+	Touchpad  int32      // The index of the touchpad
+	Finger    int32      // The index of the finger on the touchpad
+	X         float32    // Normalized in the range 0...1 with 0 being on the left
+	Y         float32    // Normalized in the range 0...1 with 0 being at the top
+	Pressure  float32    // Normalized in the range 0...1
 }
 
 // SDL_GamepadSensorEvent - Gamepad sensor event structure (event.gsensor.*)
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent)
 type GamepadSensorEvent struct {
-	Type            EventType
+	Type            EventType // SDL_EVENT_GAMEPAD_SENSOR_UPDATE
 	Reserved        uint32
-	Timestamp       uint64
-	Which           JoystickID
-	Sensor          int32
-	Data            [3]float32
-	SensorTimestamp uint64
+	Timestamp       uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which           JoystickID // The joystick instance id
+	Sensor          int32      // The type of the sensor, one of the values of SDL_SensorType
+	Data            [3]float32 // Up to 3 values from the sensor, as defined in SDL_sensor.h
+	SensorTimestamp uint64     // The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
 }
 
 // SDL_AudioDeviceEvent - Audio device event structure (event.adevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent)
 type AudioDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_AUDIO_DEVICE_ADDED, or SDL_EVENT_AUDIO_DEVICE_REMOVED, or SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED
 	Reserved  uint32
-	Timestamp uint64
-	Which     AudioDeviceID
-	Recording bool
+	Timestamp uint64        // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     AudioDeviceID // SDL_AudioDeviceID for the device being added or removed or changing
+	Recording bool          // false if a playback device, true if a recording device.
 	Padding1  uint8
 	Padding2  uint8
 	Padding3  uint8
@@ -574,167 +574,167 @@ type AudioDeviceEvent struct {
 // SDL_CameraDeviceEvent - Camera device event structure (event.cdevice.*)
 // (https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent)
 type CameraDeviceEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_CAMERA_DEVICE_ADDED, SDL_EVENT_CAMERA_DEVICE_REMOVED, SDL_EVENT_CAMERA_DEVICE_APPROVED, SDL_EVENT_CAMERA_DEVICE_DENIED
 	Reserved  uint32
-	Timestamp uint64
-	Which     CameraID
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	Which     CameraID // SDL_CameraID for the device being added or removed or changing
 }
 
 // SDL_RenderEvent - Renderer event structure (event.render.*)
 // (https://wiki.libsdl.org/SDL3/SDL_RenderEvent)
 type RenderEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_RENDER_TARGETS_RESET, SDL_EVENT_RENDER_DEVICE_RESET, SDL_EVENT_RENDER_DEVICE_LOST
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window containing the renderer in question.
 }
 
 // SDL_TouchFingerEvent - Touch finger event structure (event.tfinger.*)
 // (https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent)
 type TouchFingerEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_MOTION, or SDL_EVENT_FINGER_CANCELED
 	Reserved  uint32
-	Timestamp uint64
-	TouchID   TouchID
+	Timestamp uint64  // In nanoseconds, populated using SDL_GetTicksNS()
+	TouchID   TouchID // The touch device id
 	FingerID  FingerID
-	X         float32
-	Y         float32
-	Dx        float32
-	Dy        float32
-	Pressure  float32
-	WindowID  WindowID
+	X         float32  // Normalized in the range 0...1
+	Y         float32  // Normalized in the range 0...1
+	Dx        float32  // Normalized in the range -1...1
+	Dy        float32  // Normalized in the range -1...1
+	Pressure  float32  // Normalized in the range 0...1
+	WindowID  WindowID // The window underneath the finger, if any
 }
 
 // SDL_PinchFingerEvent - Pinch event structure (event.pinch.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent)
 type PinchFingerEvent struct {
-	Type      EventType
+	Type      EventType // ::SDL_EVENT_PINCH_BEGIN or ::SDL_EVENT_PINCH_UPDATE or ::SDL_EVENT_PINCH_END
 	Reserved  uint32
-	Timestamp uint64
-	Scale     float32
-	WindowID  WindowID
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	Scale     float32  // The scale change since the last SDL_EVENT_PINCH_UPDATE. Scale < 1 is "zoom out". Scale > 1 is "zoom in".
+	WindowID  WindowID // The window underneath the finger, if any
 }
 
 // SDL_PenProximityEvent - Pressure-sensitive pen proximity event structure (event.pproximity.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent)
 type PenProximityEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OUT
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     PenID
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window with pen focus, if any
+	Which     PenID    // The pen instance id
 }
 
 // SDL_PenMotionEvent - Pressure-sensitive pen motion event structure (event.pmotion.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent)
 type PenMotionEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_PEN_MOTION
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     PenID
-	PenState  PenInputFlags
-	X         float32
-	Y         float32
+	Timestamp uint64        // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID      // The window with pen focus, if any
+	Which     PenID         // The pen instance id
+	PenState  PenInputFlags // Complete pen input state at time of event
+	X         float32       // X coordinate, relative to window
+	Y         float32       // Y coordinate, relative to window
 }
 
 // SDL_PenTouchEvent - Pressure-sensitive pen touched event structure (event.ptouch.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent)
 type PenTouchEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     PenID
-	PenState  PenInputFlags
-	X         float32
-	Y         float32
-	Eraser    bool
-	Down      bool
+	Timestamp uint64        // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID      // The window with pen focus, if any
+	Which     PenID         // The pen instance id
+	PenState  PenInputFlags // Complete pen input state at time of event
+	X         float32       // X coordinate, relative to window
+	Y         float32       // Y coordinate, relative to window
+	Eraser    bool          // true if eraser end is used (not all pens support this).
+	Down      bool          // true if the pen is touching or false if the pen is lifted off
 }
 
 // SDL_PenButtonEvent - Pressure-sensitive pen button event structure (event.pbutton.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent)
 type PenButtonEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     PenID
-	PenState  PenInputFlags
-	X         float32
-	Y         float32
-	Button    uint8
-	Down      bool
+	Timestamp uint64        // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID      // The window with mouse focus, if any
+	Which     PenID         // The pen instance id
+	PenState  PenInputFlags // Complete pen input state at time of event
+	X         float32       // X coordinate, relative to window
+	Y         float32       // Y coordinate, relative to window
+	Button    uint8         // The pen button index (first button is 1).
+	Down      bool          // true if the button is pressed
 }
 
 // SDL_PenAxisEvent - Pressure-sensitive pen pressure / angle event structure (event.paxis.*)
 // (https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent)
 type PenAxisEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_PEN_AXIS
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Which     PenID
-	PenState  PenInputFlags
-	X         float32
-	Y         float32
-	Axis      PenAxis
-	Value     float32
+	Timestamp uint64        // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID      // The window with pen focus, if any
+	Which     PenID         // The pen instance id
+	PenState  PenInputFlags // Complete pen input state at time of event
+	X         float32       // X coordinate, relative to window
+	Y         float32       // Y coordinate, relative to window
+	Axis      PenAxis       // Axis that has changed
+	Value     float32       // New value of axis
 }
 
 // SDL_DropEvent - An event used to drop text or request a file open by the system (event.drop.*)
 // (https://wiki.libsdl.org/SDL3/SDL_DropEvent)
 type DropEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	X         float32
-	Y         float32
-	Source    string
-	Data      string
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The window that was dropped on, if any
+	X         float32  // X coordinate, relative to window (not on begin)
+	Y         float32  // Y coordinate, relative to window (not on begin)
+	Source    string   // The source app that sent this drop event, or NULL if that isn't available
+	Data      string   // The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events
 }
 
 // SDL_SensorEvent - Sensor event structure (event.sensor.*)
 // (https://wiki.libsdl.org/SDL3/SDL_SensorEvent)
 type SensorEvent struct {
-	Type            EventType
+	Type            EventType // SDL_EVENT_SENSOR_UPDATE
 	Reserved        uint32
-	Timestamp       uint64
-	Which           SensorID
-	Data            [6]float32
-	SensorTimestamp uint64
+	Timestamp       uint64     // In nanoseconds, populated using SDL_GetTicksNS()
+	Which           SensorID   // The instance ID of the sensor
+	Data            [6]float32 // Up to 6 values from the sensor - additional values can be queried using SDL_GetSensorData()
+	SensorTimestamp uint64     // The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock
 }
 
 // SDL_QuitEvent - The "quit requested" event
 // (https://wiki.libsdl.org/SDL3/SDL_QuitEvent)
 type QuitEvent struct {
-	Type      EventType
+	Type      EventType // SDL_EVENT_QUIT
 	Reserved  uint32
-	Timestamp uint64
+	Timestamp uint64 // In nanoseconds, populated using SDL_GetTicksNS()
 }
 
 // SDL_UserEvent - A user-defined event type (event.user.*)
 // (https://wiki.libsdl.org/SDL3/SDL_UserEvent)
 type UserEvent struct {
-	Type      uint32
+	Type      uint32 // SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the SDL_EventType enumeration
 	Reserved  uint32
-	Timestamp uint64
-	WindowID  WindowID
-	Code      int32
-	Data1     Pointer
-	Data2     Pointer
+	Timestamp uint64   // In nanoseconds, populated using SDL_GetTicksNS()
+	WindowID  WindowID // The associated window if any
+	Code      int32    // User defined event code
+	Data1     Pointer  // User defined data pointer
+	Data2     Pointer  // User defined data pointer
 }
 
 // SDL_PathInfo - Information about a path on the filesystem.
 // (https://wiki.libsdl.org/SDL3/SDL_PathInfo)
 type PathInfo struct {
-	Type       PathType
-	Size       uint64
-	CreateTime Time
-	ModifyTime Time
-	AccessTime Time
+	Type       PathType // the path type
+	Size       uint64   // the file size in bytes
+	CreateTime Time     // the time when the path was created
+	ModifyTime Time     // the last time the path was modified
+	AccessTime Time     // the last time the path was read
 }
 
 // SDL_GPUDevice - An opaque handle representing the [SDL_GPU](SDL_GPU) context.
@@ -792,169 +792,169 @@ type GPUFence struct{}
 // SDL_GPUViewport - A structure specifying a viewport.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUViewport)
 type GPUViewport struct {
-	X        float32
-	Y        float32
-	W        float32
-	H        float32
-	MinDepth float32
-	MaxDepth float32
+	X        float32 // The left offset of the viewport.
+	Y        float32 // The top offset of the viewport.
+	W        float32 // The width of the viewport.
+	H        float32 // The height of the viewport.
+	MinDepth float32 // The minimum depth of the viewport.
+	MaxDepth float32 // The maximum depth of the viewport.
 }
 
 // SDL_GPUTextureTransferInfo - A structure specifying parameters related to transferring data to or from a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo)
 type GPUTextureTransferInfo struct {
-	TransferBuffer *GPUTransferBuffer
-	Offset         uint32
-	PixelsPerRow   uint32
-	RowsPerLayer   uint32
+	TransferBuffer *GPUTransferBuffer // The transfer buffer used in the transfer operation.
+	Offset         uint32             // The starting byte of the image data in the transfer buffer.
+	PixelsPerRow   uint32             // The number of pixels from one row to the next.
+	RowsPerLayer   uint32             // The number of rows from one layer/depth-slice to the next.
 }
 
 // SDL_GPUTransferBufferLocation - A structure specifying a location in a transfer buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferLocation)
 type GPUTransferBufferLocation struct {
-	TransferBuffer *GPUTransferBuffer
-	Offset         uint32
+	TransferBuffer *GPUTransferBuffer // The transfer buffer used in the transfer operation.
+	Offset         uint32             // The starting byte of the buffer data in the transfer buffer.
 }
 
 // SDL_GPUTextureLocation - A structure specifying a location in a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation)
 type GPUTextureLocation struct {
-	Texture  *GPUTexture
-	MipLevel uint32
-	Layer    uint32
-	X        uint32
-	Y        uint32
-	Z        uint32
+	Texture  *GPUTexture // The texture used in the copy operation.
+	MipLevel uint32      // The mip level index of the location.
+	Layer    uint32      // The layer index of the location.
+	X        uint32      // The left offset of the location.
+	Y        uint32      // The top offset of the location.
+	Z        uint32      // The front offset of the location.
 }
 
 // SDL_GPUTextureRegion - A structure specifying a region of a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion)
 type GPUTextureRegion struct {
-	Texture  *GPUTexture
-	MipLevel uint32
-	Layer    uint32
-	X        uint32
-	Y        uint32
-	Z        uint32
-	W        uint32
-	H        uint32
-	D        uint32
+	Texture  *GPUTexture // The texture used in the copy operation.
+	MipLevel uint32      // The mip level index to transfer.
+	Layer    uint32      // The layer index to transfer.
+	X        uint32      // The left offset of the region.
+	Y        uint32      // The top offset of the region.
+	Z        uint32      // The front offset of the region.
+	W        uint32      // The width of the region.
+	H        uint32      // The height of the region.
+	D        uint32      // The depth of the region.
 }
 
 // SDL_GPUBlitRegion - A structure specifying a region of a texture used in the blit operation.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion)
 type GPUBlitRegion struct {
-	Texture           *GPUTexture
-	MipLevel          uint32
-	LayerOrDepthPlane uint32
-	X                 uint32
-	Y                 uint32
-	W                 uint32
-	H                 uint32
+	Texture           *GPUTexture // The texture.
+	MipLevel          uint32      // The mip level index of the region.
+	LayerOrDepthPlane uint32      // The layer index or depth plane of the region. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
+	X                 uint32      // The left offset of the region.
+	Y                 uint32      // The top offset of the region.
+	W                 uint32      // The width of the region.
+	H                 uint32      // The height of the region.
 }
 
 // SDL_GPUBufferLocation - A structure specifying a location in a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBufferLocation)
 type GPUBufferLocation struct {
-	Buffer *GPUBuffer
-	Offset uint32
+	Buffer *GPUBuffer // The buffer.
+	Offset uint32     // The starting byte within the buffer.
 }
 
 // SDL_GPUBufferRegion - A structure specifying a region of a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBufferRegion)
 type GPUBufferRegion struct {
-	Buffer *GPUBuffer
-	Offset uint32
-	Size   uint32
+	Buffer *GPUBuffer // The buffer.
+	Offset uint32     // The starting byte within the buffer.
+	Size   uint32     // The size in bytes of the region.
 }
 
 // SDL_GPUIndirectDrawCommand - A structure specifying the parameters of an indirect draw command.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand)
 type GPUIndirectDrawCommand struct {
-	NumVertices   uint32
-	NumInstances  uint32
-	FirstVertex   uint32
-	FirstInstance uint32
+	NumVertices   uint32 // The number of vertices to draw.
+	NumInstances  uint32 // The number of instances to draw.
+	FirstVertex   uint32 // The index of the first vertex to draw.
+	FirstInstance uint32 // The ID of the first instance to draw.
 }
 
 // SDL_GPUIndexedIndirectDrawCommand - A structure specifying the parameters of an indexed indirect draw command.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand)
 type GPUIndexedIndirectDrawCommand struct {
-	NumIndices    uint32
-	NumInstances  uint32
-	FirstIndex    uint32
-	VertexOffset  int32
-	FirstInstance uint32
+	NumIndices    uint32 // The number of indices to draw per instance.
+	NumInstances  uint32 // The number of instances to draw.
+	FirstIndex    uint32 // The base index within the index buffer.
+	VertexOffset  int32  // The value added to the vertex index before indexing into the vertex buffer.
+	FirstInstance uint32 // The ID of the first instance to draw.
 }
 
 // SDL_GPUIndirectDispatchCommand - A structure specifying the parameters of an indexed dispatch command.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand)
 type GPUIndirectDispatchCommand struct {
-	GroupcountX uint32
-	GroupcountY uint32
-	GroupcountZ uint32
+	GroupcountX uint32 // The number of local workgroups to dispatch in the X dimension.
+	GroupcountY uint32 // The number of local workgroups to dispatch in the Y dimension.
+	GroupcountZ uint32 // The number of local workgroups to dispatch in the Z dimension.
 }
 
 // SDL_GPUSamplerCreateInfo - A structure specifying the parameters of a sampler.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo)
 type GPUSamplerCreateInfo struct {
-	MinFilter        GPUFilter
-	MagFilter        GPUFilter
-	MipmapMode       GPUSamplerMipmapMode
-	AddressModeU     GPUSamplerAddressMode
-	AddressModeV     GPUSamplerAddressMode
-	AddressModeW     GPUSamplerAddressMode
-	MipLodBias       float32
-	MaxAnisotropy    float32
-	CompareOp        GPUCompareOp
-	MinLod           float32
-	MaxLod           float32
-	EnableAnisotropy bool
-	EnableCompare    bool
+	MinFilter        GPUFilter             // The minification filter to apply to lookups.
+	MagFilter        GPUFilter             // The magnification filter to apply to lookups.
+	MipmapMode       GPUSamplerMipmapMode  // The mipmap filter to apply to lookups.
+	AddressModeU     GPUSamplerAddressMode // The addressing mode for U coordinates outside [0, 1).
+	AddressModeV     GPUSamplerAddressMode // The addressing mode for V coordinates outside [0, 1).
+	AddressModeW     GPUSamplerAddressMode // The addressing mode for W coordinates outside [0, 1).
+	MipLodBias       float32               // The bias to be added to mipmap LOD calculation.
+	MaxAnisotropy    float32               // The anisotropy value clamp used by the sampler. If enable_anisotropy is false, this is ignored.
+	CompareOp        GPUCompareOp          // The comparison operator to apply to fetched data before filtering.
+	MinLod           float32               // Clamps the minimum of the computed LOD value.
+	MaxLod           float32               // Clamps the maximum of the computed LOD value.
+	EnableAnisotropy bool                  // true to enable anisotropic filtering.
+	EnableCompare    bool                  // true to enable comparison against a reference value during lookups.
 	Padding1         uint8
 	Padding2         uint8
-	Props            PropertiesID
+	Props            PropertiesID // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_GPUVertexBufferDescription - A structure specifying the parameters of vertex buffers used in a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription)
 type GPUVertexBufferDescription struct {
-	Slot             uint32
-	Pitch            uint32
-	InputRate        GPUVertexInputRate
-	InstanceStepRate uint32
+	Slot             uint32             // The binding slot of the vertex buffer.
+	Pitch            uint32             // The size of a single element + the offset between elements.
+	InputRate        GPUVertexInputRate // Whether attribute addressing is a function of the vertex index or instance index.
+	InstanceStepRate uint32             // Reserved for future use. Must be set to 0.
 }
 
 // SDL_GPUVertexAttribute - A structure specifying a vertex attribute.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute)
 type GPUVertexAttribute struct {
-	Location   uint32
-	BufferSlot uint32
-	Format     GPUVertexElementFormat
-	Offset     uint32
+	Location   uint32                 // The shader input location index.
+	BufferSlot uint32                 // The binding slot of the associated vertex buffer.
+	Format     GPUVertexElementFormat // The size and type of the attribute data.
+	Offset     uint32                 // The byte offset of this attribute relative to the start of the vertex element.
 }
 
 // SDL_GPUStencilOpState - A structure specifying the stencil operation state of a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState)
 type GPUStencilOpState struct {
-	FailOp      GPUStencilOp
-	PassOp      GPUStencilOp
-	DepthFailOp GPUStencilOp
-	CompareOp   GPUCompareOp
+	FailOp      GPUStencilOp // The action performed on samples that fail the stencil test.
+	PassOp      GPUStencilOp // The action performed on samples that pass the depth and stencil tests.
+	DepthFailOp GPUStencilOp // The action performed on samples that pass the stencil test and fail the depth test.
+	CompareOp   GPUCompareOp // The comparison operator used in the stencil test.
 }
 
 // SDL_GPUColorTargetBlendState - A structure specifying the blend state of a color target.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState)
 type GPUColorTargetBlendState struct {
-	SrcColorBlendfactor  GPUBlendFactor
-	DstColorBlendfactor  GPUBlendFactor
-	ColorBlendOp         GPUBlendOp
-	SrcAlphaBlendfactor  GPUBlendFactor
-	DstAlphaBlendfactor  GPUBlendFactor
-	AlphaBlendOp         GPUBlendOp
-	ColorWriteMask       GPUColorComponentFlags
-	EnableBlend          bool
-	EnableColorWriteMask bool
+	SrcColorBlendfactor  GPUBlendFactor         // The value to be multiplied by the source RGB value.
+	DstColorBlendfactor  GPUBlendFactor         // The value to be multiplied by the destination RGB value.
+	ColorBlendOp         GPUBlendOp             // The blend operation for the RGB components.
+	SrcAlphaBlendfactor  GPUBlendFactor         // The value to be multiplied by the source alpha.
+	DstAlphaBlendfactor  GPUBlendFactor         // The value to be multiplied by the destination alpha.
+	AlphaBlendOp         GPUBlendOp             // The blend operation for the alpha component.
+	ColorWriteMask       GPUColorComponentFlags // A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is false.
+	EnableBlend          bool                   // Whether blending is enabled for the color target.
+	EnableColorWriteMask bool                   // Whether the color write mask is enabled.
 	Padding1             uint8
 	Padding2             uint8
 }
@@ -962,44 +962,44 @@ type GPUColorTargetBlendState struct {
 // SDL_GPUTextureCreateInfo - A structure specifying the parameters of a texture.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo)
 type GPUTextureCreateInfo struct {
-	Type              GPUTextureType
-	Format            GPUTextureFormat
-	Usage             GPUTextureUsageFlags
-	Width             uint32
-	Height            uint32
-	LayerCountOrDepth uint32
-	NumLevels         uint32
-	SampleCount       GPUSampleCount
-	Props             PropertiesID
+	Type              GPUTextureType       // The base dimensionality of the texture.
+	Format            GPUTextureFormat     // The pixel format of the texture.
+	Usage             GPUTextureUsageFlags // How the texture is intended to be used by the client.
+	Width             uint32               // The width of the texture.
+	Height            uint32               // The height of the texture.
+	LayerCountOrDepth uint32               // The layer count or depth of the texture. This value is treated as a layer count on 2D array textures, and as a depth value on 3D textures.
+	NumLevels         uint32               // The number of mip levels in the texture.
+	SampleCount       GPUSampleCount       // The number of samples per texel. Only applies if the texture is used as a render target.
+	Props             PropertiesID         // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_GPUBufferCreateInfo - A structure specifying the parameters of a buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBufferCreateInfo)
 type GPUBufferCreateInfo struct {
-	Usage GPUBufferUsageFlags
-	Size  uint32
-	Props PropertiesID
+	Usage GPUBufferUsageFlags // How the buffer is intended to be used by the client.
+	Size  uint32              // The size in bytes of the buffer.
+	Props PropertiesID        // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_GPUTransferBufferCreateInfo - A structure specifying the parameters of a transfer buffer.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferCreateInfo)
 type GPUTransferBufferCreateInfo struct {
-	Usage GPUTransferBufferUsage
-	Size  uint32
-	Props PropertiesID
+	Usage GPUTransferBufferUsage // How the transfer buffer is intended to be used by the client.
+	Size  uint32                 // The size in bytes of the transfer buffer.
+	Props PropertiesID           // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_GPURasterizerState - A structure specifying the parameters of the graphics pipeline rasterizer state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState)
 type GPURasterizerState struct {
-	FillMode                GPUFillMode
-	CullMode                GPUCullMode
-	FrontFace               GPUFrontFace
-	DepthBiasConstantFactor float32
-	DepthBiasClamp          float32
-	DepthBiasSlopeFactor    float32
-	EnableDepthBias         bool
-	EnableDepthClip         bool
+	FillMode                GPUFillMode  // Whether polygons will be filled in or drawn as lines.
+	CullMode                GPUCullMode  // The facing direction in which triangles will be culled.
+	FrontFace               GPUFrontFace // The vertex winding that will cause a triangle to be determined as front-facing.
+	DepthBiasConstantFactor float32      // A scalar factor controlling the depth value added to each fragment.
+	DepthBiasClamp          float32      // The maximum depth bias of a fragment.
+	DepthBiasSlopeFactor    float32      // A scalar factor applied to a fragment's slope in depth calculations.
+	EnableDepthBias         bool         // true to bias fragment depth values.
+	EnableDepthClip         bool         // true to enable depth clip, false to enable depth clamp.
 	Padding1                uint8
 	Padding2                uint8
 }
@@ -1007,10 +1007,10 @@ type GPURasterizerState struct {
 // SDL_GPUMultisampleState - A structure specifying the parameters of the graphics pipeline multisample state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState)
 type GPUMultisampleState struct {
-	SampleCount           GPUSampleCount
-	SampleMask            uint32
-	EnableMask            bool
-	EnableAlphaToCoverage bool
+	SampleCount           GPUSampleCount // The number of samples to be used in rasterization.
+	SampleMask            uint32         // Reserved for future use. Must be set to 0.
+	EnableMask            bool           // Reserved for future use. Must be set to false.
+	EnableAlphaToCoverage bool           // true enables the alpha-to-coverage feature.
 	Padding2              uint8
 	Padding3              uint8
 }
@@ -1018,14 +1018,14 @@ type GPUMultisampleState struct {
 // SDL_GPUDepthStencilState - A structure specifying the parameters of the graphics pipeline depth stencil state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState)
 type GPUDepthStencilState struct {
-	CompareOp         GPUCompareOp
-	BackStencilState  GPUStencilOpState
-	FrontStencilState GPUStencilOpState
-	CompareMask       uint8
-	WriteMask         uint8
-	EnableDepthTest   bool
-	EnableDepthWrite  bool
-	EnableStencilTest bool
+	CompareOp         GPUCompareOp      // The comparison operator used for depth testing.
+	BackStencilState  GPUStencilOpState // The stencil op state for back-facing triangles.
+	FrontStencilState GPUStencilOpState // The stencil op state for front-facing triangles.
+	CompareMask       uint8             // Selects the bits of the stencil values participating in the stencil test.
+	WriteMask         uint8             // Selects the bits of the stencil values updated by the stencil test.
+	EnableDepthTest   bool              // true enables the depth test.
+	EnableDepthWrite  bool              // true enables depth writes. Depth writes are always disabled when enable_depth_test is false.
+	EnableStencilTest bool              // true enables the stencil test.
 	Padding1          uint8
 	Padding2          uint8
 	Padding3          uint8
@@ -1034,24 +1034,24 @@ type GPUDepthStencilState struct {
 // SDL_GPUColorTargetDescription - A structure specifying the parameters of color targets used in a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetDescription)
 type GPUColorTargetDescription struct {
-	Format     GPUTextureFormat
-	BlendState GPUColorTargetBlendState
+	Format     GPUTextureFormat         // The pixel format of the texture to be used as a color target.
+	BlendState GPUColorTargetBlendState // The blend state to be used for the color target.
 }
 
 // SDL_GPUColorTargetInfo - A structure specifying the parameters of a color target used by a render pass.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo)
 type GPUColorTargetInfo struct {
-	Texture             *GPUTexture
-	MipLevel            uint32
-	LayerOrDepthPlane   uint32
-	ClearColor          FColor
-	LoadOp              GPULoadOp
-	StoreOp             GPUStoreOp
-	ResolveTexture      *GPUTexture
-	ResolveMipLevel     uint32
-	ResolveLayer        uint32
-	Cycle               bool
-	CycleResolveTexture bool
+	Texture             *GPUTexture // The texture that will be used as a color target by a render pass.
+	MipLevel            uint32      // The mip level to use as a color target.
+	LayerOrDepthPlane   uint32      // The layer index or depth plane to use as a color target. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.
+	ClearColor          FColor      // The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+	LoadOp              GPULoadOp   // What is done with the contents of the color target at the beginning of the render pass.
+	StoreOp             GPUStoreOp  // What is done with the results of the render pass.
+	ResolveTexture      *GPUTexture // The texture that will receive the results of a multisample resolve operation. Ignored if a RESOLVE* store_op is not used.
+	ResolveMipLevel     uint32      // The mip level of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
+	ResolveLayer        uint32      // The layer index of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.
+	Cycle               bool        // true cycles the texture if the texture is bound and load_op is not LOAD
+	CycleResolveTexture bool        // true cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.
 	Padding1            uint8
 	Padding2            uint8
 }
@@ -1059,27 +1059,27 @@ type GPUColorTargetInfo struct {
 // SDL_GPUDepthStencilTargetInfo - A structure specifying the parameters of a depth-stencil target used by a render pass.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo)
 type GPUDepthStencilTargetInfo struct {
-	Texture        *GPUTexture
-	ClearDepth     float32
-	LoadOp         GPULoadOp
-	StoreOp        GPUStoreOp
-	StencilLoadOp  GPULoadOp
-	StencilStoreOp GPUStoreOp
-	Cycle          bool
-	ClearStencil   uint8
-	MipLevel       uint8
-	Layer          uint8
+	Texture        *GPUTexture // The texture that will be used as the depth stencil target by the render pass.
+	ClearDepth     float32     // The value to clear the depth component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+	LoadOp         GPULoadOp   // What is done with the depth contents at the beginning of the render pass.
+	StoreOp        GPUStoreOp  // What is done with the depth results of the render pass.
+	StencilLoadOp  GPULoadOp   // What is done with the stencil contents at the beginning of the render pass.
+	StencilStoreOp GPUStoreOp  // What is done with the stencil results of the render pass.
+	Cycle          bool        // true cycles the texture if the texture is bound and any load ops are not LOAD
+	ClearStencil   uint8       // The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.
+	MipLevel       uint8       // The mip level to use as the depth stencil target.
+	Layer          uint8       // The layer index to use as the depth stencil target.
 }
 
 // SDL_GPUBlitInfo - A structure containing parameters for a blit command.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo)
 type GPUBlitInfo struct {
-	Source      GPUBlitRegion
-	Destination GPUBlitRegion
-	LoadOp      GPULoadOp
-	ClearColor  FColor
-	FlipMode    FlipMode
-	Filter      GPUFilter
+	Source      GPUBlitRegion // The destination region for the blit.
+	Destination GPUBlitRegion // What is done with the contents of the destination before the blit.
+	LoadOp      GPULoadOp     // The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR.
+	ClearColor  FColor        // The flip mode for the source region.
+	FlipMode    FlipMode      // The filter mode used when blitting.
+	Filter      GPUFilter     // true cycles the destination texture if it is already bound.
 	Cycle       bool
 	Padding1    uint8
 	Padding2    uint8
@@ -1089,22 +1089,22 @@ type GPUBlitInfo struct {
 // SDL_GPUBufferBinding - A structure specifying parameters in a buffer binding call.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUBufferBinding)
 type GPUBufferBinding struct {
-	Buffer *GPUBuffer
-	Offset uint32
+	Buffer *GPUBuffer // The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer.
+	Offset uint32     // The starting byte of the data to bind in the buffer.
 }
 
 // SDL_GPUTextureSamplerBinding - A structure specifying parameters in a sampler binding call.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUTextureSamplerBinding)
 type GPUTextureSamplerBinding struct {
-	Texture *GPUTexture
-	Sampler *GPUSampler
+	Texture *GPUTexture // The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.
+	Sampler *GPUSampler // The sampler to bind.
 }
 
 // SDL_GPUStorageBufferReadWriteBinding - A structure specifying parameters related to binding buffers in a compute pass.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUStorageBufferReadWriteBinding)
 type GPUStorageBufferReadWriteBinding struct {
-	Buffer   *GPUBuffer
-	Cycle    bool
+	Buffer   *GPUBuffer // The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE.
+	Cycle    bool       // true cycles the buffer if it is already bound.
 	Padding1 uint8
 	Padding2 uint8
 	Padding3 uint8
@@ -1113,10 +1113,10 @@ type GPUStorageBufferReadWriteBinding struct {
 // SDL_GPUStorageTextureReadWriteBinding - A structure specifying parameters related to binding textures in a compute pass.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding)
 type GPUStorageTextureReadWriteBinding struct {
-	Texture  *GPUTexture
-	MipLevel uint32
-	Layer    uint32
-	Cycle    bool
+	Texture  *GPUTexture // The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE.
+	MipLevel uint32      // The mip level index to bind.
+	Layer    uint32      // The layer index to bind.
+	Cycle    bool        // true cycles the texture if it is already bound.
 	Padding1 uint8
 	Padding2 uint8
 	Padding3 uint8
@@ -1129,105 +1129,105 @@ type Haptic struct{}
 // SDL_HapticDirection - Structure that represents a haptic direction.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticDirection)
 type HapticDirection struct {
-	Type HapticDirectionType
-	Dir  [3]int32
+	Type HapticDirectionType // The type of encoding.
+	Dir  [3]int32            // The encoded direction.
 }
 
 // SDL_HapticConstant - A structure containing a template for a Constant effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticConstant)
 type HapticConstant struct {
-	Type         HapticEffectType
-	Direction    HapticDirection
-	Length       uint32
-	Delay        uint16
-	Button       uint16
-	Interval     uint16
-	Level        int16
-	AttackLength uint16
-	AttackLevel  uint16
-	FadeLength   uint16
-	FadeLevel    uint16
+	Type         HapticEffectType // SDL_HAPTIC_CONSTANT
+	Direction    HapticDirection  // Direction of the effect.
+	Length       uint32           // Duration of the effect.
+	Delay        uint16           // Delay before starting the effect.
+	Button       uint16           // Button that triggers the effect.
+	Interval     uint16           // How soon it can be triggered again after button.
+	Level        int16            // Strength of the constant effect.
+	AttackLength uint16           // Duration of the attack.
+	AttackLevel  uint16           // Level at the start of the attack.
+	FadeLength   uint16           // Duration of the fade.
+	FadeLevel    uint16           // Level at the end of the fade.
 }
 
 // SDL_HapticPeriodic - A structure containing a template for a Periodic effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic)
 type HapticPeriodic struct {
-	Type         HapticEffectType
-	Direction    HapticDirection
-	Length       uint32
-	Delay        uint16
-	Button       uint16
-	Interval     uint16
-	Period       uint16
-	Magnitude    int16
-	Offset       int16
-	Phase        uint16
-	AttackLength uint16
-	AttackLevel  uint16
-	FadeLength   uint16
-	FadeLevel    uint16
+	Type         HapticEffectType // SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or SDL_HAPTIC_SAWTOOTHDOWN
+	Direction    HapticDirection  // Direction of the effect.
+	Length       uint32           // Duration of the effect.
+	Delay        uint16           // Delay before starting the effect.
+	Button       uint16           // Button that triggers the effect.
+	Interval     uint16           // How soon it can be triggered again after button.
+	Period       uint16           // Period of the wave.
+	Magnitude    int16            // Peak value; if negative, equivalent to 180 degrees extra phase shift.
+	Offset       int16            // Mean value of the wave.
+	Phase        uint16           // Positive phase shift given by hundredth of a degree.
+	AttackLength uint16           // Duration of the attack.
+	AttackLevel  uint16           // Level at the start of the attack.
+	FadeLength   uint16           // Duration of the fade.
+	FadeLevel    uint16           // Level at the end of the fade.
 }
 
 // SDL_HapticCondition - A structure containing a template for a Condition effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticCondition)
 type HapticCondition struct {
-	Type       HapticEffectType
-	Direction  HapticDirection
-	Length     uint32
-	Delay      uint16
-	Button     uint16
-	Interval   uint16
-	RightSat   [3]uint16
-	LeftSat    [3]uint16
-	RightCoeff [3]int16
-	LeftCoeff  [3]int16
-	Deadband   [3]uint16
-	Center     [3]int16
+	Type       HapticEffectType // SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER, SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION
+	Direction  HapticDirection  // Direction of the effect.
+	Length     uint32           // Duration of the effect.
+	Delay      uint16           // Delay before starting the effect.
+	Button     uint16           // Button that triggers the effect.
+	Interval   uint16           // How soon it can be triggered again after button.
+	RightSat   [3]uint16        // Level when joystick is to the positive side; max 0xFFFF.
+	LeftSat    [3]uint16        // Level when joystick is to the negative side; max 0xFFFF.
+	RightCoeff [3]int16         // How fast to increase the force towards the positive side.
+	LeftCoeff  [3]int16         // How fast to increase the force towards the negative side.
+	Deadband   [3]uint16        // Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.
+	Center     [3]int16         // Position of the dead zone.
 }
 
 // SDL_HapticRamp - A structure containing a template for a Ramp effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticRamp)
 type HapticRamp struct {
-	Type         HapticEffectType
-	Direction    HapticDirection
-	Length       uint32
-	Delay        uint16
-	Button       uint16
-	Interval     uint16
-	Start        int16
-	End          int16
-	AttackLength uint16
-	AttackLevel  uint16
-	FadeLength   uint16
-	FadeLevel    uint16
+	Type         HapticEffectType // SDL_HAPTIC_RAMP
+	Direction    HapticDirection  // Direction of the effect.
+	Length       uint32           // Duration of the effect.
+	Delay        uint16           // Delay before starting the effect.
+	Button       uint16           // Button that triggers the effect.
+	Interval     uint16           // How soon it can be triggered again after button.
+	Start        int16            // Beginning strength level.
+	End          int16            // Ending strength level.
+	AttackLength uint16           // Duration of the attack.
+	AttackLevel  uint16           // Level at the start of the attack.
+	FadeLength   uint16           // Duration of the fade.
+	FadeLevel    uint16           // Level at the end of the fade.
 }
 
 // SDL_HapticLeftRight - A structure containing a template for a Left/Right effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight)
 type HapticLeftRight struct {
-	Type           HapticEffectType
-	Length         uint32
-	LargeMagnitude uint16
-	SmallMagnitude uint16
+	Type           HapticEffectType // SDL_HAPTIC_LEFTRIGHT
+	Length         uint32           // Duration of the effect in milliseconds.
+	LargeMagnitude uint16           // Control of the large controller motor.
+	SmallMagnitude uint16           // Control of the small controller motor.
 }
 
 // SDL_HapticCustom - A structure containing a template for the [SDL_HAPTIC_CUSTOM](SDL_HAPTIC_CUSTOM) effect.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticCustom)
 type HapticCustom struct {
-	Type         HapticEffectType
-	Direction    HapticDirection
-	Length       uint32
-	Delay        uint16
-	Button       uint16
-	Interval     uint16
-	Channels     uint8
-	Period       uint16
-	Samples      uint16
-	Data         *uint16
-	AttackLength uint16
-	AttackLevel  uint16
-	FadeLength   uint16
-	FadeLevel    uint16
+	Type         HapticEffectType // SDL_HAPTIC_CUSTOM
+	Direction    HapticDirection  // Direction of the effect.
+	Length       uint32           // Duration of the effect.
+	Delay        uint16           // Delay before starting the effect.
+	Button       uint16           // Button that triggers the effect.
+	Interval     uint16           // How soon it can be triggered again after button.
+	Channels     uint8            // Axes to use, minimum of one.
+	Period       uint16           // Sample periods.
+	Samples      uint16           // Amount of samples.
+	Data         *uint16          // Should contain channels*samples items.
+	AttackLength uint16           // Duration of the attack.
+	AttackLevel  uint16           // Level at the start of the attack.
+	FadeLength   uint16           // Duration of the fade.
+	FadeLevel    uint16           // Level at the end of the fade.
 }
 
 // SDL_SharedObject - An opaque datatype that represents a loaded shared object.
@@ -1237,16 +1237,16 @@ type SharedObject struct{}
 // SDL_Locale - A struct to provide locale data.
 // (https://wiki.libsdl.org/SDL3/SDL_Locale)
 type Locale struct {
-	Language string
-	Country  string
+	Language string // A language name, like "en" for English.
+	Country  string // A country, like "US" for America. Can be NULL.
 }
 
 // SDL_MessageBoxButtonData - Individual button data.
 // (https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonData)
 type MessageBoxButtonData struct {
 	Flags    MessageBoxButtonFlags
-	ButtonID int32
-	Text     string
+	ButtonID int32  // User defined button id (value returned via SDL_ShowMessageBox)
+	Text     string // The UTF-8 button text
 }
 
 // SDL_MessageBoxColor - RGB value used in a message box color scheme
@@ -1270,9 +1270,9 @@ type Process struct{}
 // SDL_Vertex - Vertex structure.
 // (https://wiki.libsdl.org/SDL3/SDL_Vertex)
 type Vertex struct {
-	Position FPoint
-	Color    FColor
-	TexCoord FPoint
+	Position FPoint // Vertex position, in SDL_Renderer coordinates
+	Color    FColor // Vertex color
+	TexCoord FPoint // Normalized texture coordinates, if needed
 }
 
 // SDL_Renderer - A structure representing rendering state
@@ -1291,14 +1291,14 @@ type Texture struct {
 // SDL_GPURenderStateCreateInfo - A structure specifying the parameters of a GPU render state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo)
 type GPURenderStateCreateInfo struct {
-	FragmentShader     *GPUShader
-	NumSamplerBindings int32
-	SamplerBindings    *GPUTextureSamplerBinding
-	NumStorageTextures int32
-	StorageTextures    **GPUTexture
-	NumStorageBuffers  int32
-	StorageBuffers     **GPUBuffer
-	Props              PropertiesID
+	FragmentShader     *GPUShader                // The fragment shader to use when this render state is active
+	NumSamplerBindings int32                     // The number of additional fragment samplers to bind when this render state is active
+	SamplerBindings    *GPUTextureSamplerBinding // Additional fragment samplers to bind when this render state is active
+	NumStorageTextures int32                     // The number of storage textures to bind when this render state is active
+	StorageTextures    **GPUTexture              // Storage textures to bind when this render state is active
+	NumStorageBuffers  int32                     // The number of storage buffers to bind when this render state is active
+	StorageBuffers     **GPUBuffer               // Storage buffers to bind when this render state is active
+	Props              PropertiesID              // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 // SDL_GPURenderState - A custom GPU render state.
@@ -1329,15 +1329,15 @@ type Storage struct{}
 // SDL_DateTime - A structure holding a calendar date and time broken down into its components.
 // (https://wiki.libsdl.org/SDL3/SDL_DateTime)
 type DateTime struct {
-	Year       int32
-	Month      int32
-	Day        int32
-	Hour       int32
-	Minute     int32
-	Second     int32
-	Nanosecond int32
-	DayOfWeek  int32
-	UtcOffset  int32
+	Year       int32 // Year
+	Month      int32 // Month [01-12]
+	Day        int32 // Day of the month [01-31]
+	Hour       int32 // Hour [0-23]
+	Minute     int32 // Minute [0-59]
+	Second     int32 // Seconds [0-60]
+	Nanosecond int32 // Nanoseconds [0-999999999]
+	DayOfWeek  int32 // Day of the week [0-6] (0 being Sunday)
+	UtcOffset  int32 // Seconds east of UTC
 }
 
 // SDL_Tray - An opaque handle representing a toplevel system tray object.

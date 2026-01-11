@@ -1,22 +1,5 @@
 package assets
 
-type Config struct {
-	OutDir                  string   `json:"out_dir"`
-	LibraryName             string   `json:"library_name"`
-	URLLibrarySuffix        string   `json:"url_library_suffix"`
-	Prefix                  string   `json:"prefix"`
-	QuickAPIRefURL          string   `json:"quick_api_ref_url"`
-	AllowedInclude          string   `json:"allowed_include"`
-	IgnoredHeaders          []string `json:"ignored_headers"`
-	IgnoredTypes            []string `json:"ignored_types"`
-	IgnoredFunctions        []string `json:"ignored_functions"`
-	AllowlistedFunctions    []string `json:"allowlisted_functions"`
-	AllowlistedTypePrefixes []string `json:"allowlisted_type_prefixes"`
-	BaseTypes               []string `json:"base_types"`
-	SDLFreeFunctions        []string `json:"sdl_free_functions"`
-	NoAutoStringFunctions   []string `json:"no_auto_string_functions"`
-}
-
 type FFIEntry struct {
 	Name         string      `json:"name"`
 	Ns           int         `json:"ns"`
@@ -43,7 +26,7 @@ type FFIEntry struct {
 func (e FFIEntry) PrefixedName(prefix string) string {
 	if e.SymbolHasPrefix {
 		return prefix + e.Name
-	} else {
-		return e.Name
 	}
+
+	return e.Name
 }
