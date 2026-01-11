@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	cfg        assets.Config
+	cfg        *assets.Config
 	ffiEntries []*assets.FFIEntry
 	apiRefCode string
 )
@@ -45,7 +45,7 @@ var (
 		"unsigned-short": "uint16",
 		"unsigned-int":   "uint",
 		"unsigned-long":  "uint64",
-		"long-long":      "int64", // TODO: sure?
+		"long-long":      "int64",
 		"ulong":          "uint64",
 		"size_t":         "uintptr",
 		"wchar_t":        "byte",
@@ -261,36 +261,40 @@ func jenType(stmt *jen.Statement, typ string) *jen.Statement {
 func conditionalPrepend(head, tail string, cond bool) string {
 	if cond {
 		return head + tail
-	} else {
-		return tail
 	}
+
+	return tail
 }
 
 func main() {
-	var configPath, ffiPath string
+	var configPath, ffiPath, annotationsPath string
 
 	flag.StringVar(&configPath, "config", "", "path to config.json file")
 	flag.StringVar(&ffiPath, "ffi", "", "path to ffi.json file")
+	flag.StringVar(&annotationsPath, "annotations", "", "path to annotations.csv file")
 	flag.Parse()
 
-	// Parse config
-	b, err := os.ReadFile(configPath)
+	// Load config
+	var err error
+	cfg, err = assets.LoadConfig(configPath)
 	if err != nil {
-		log.Fatal("couldn't read config.json file: ", err)
-	}
-	err = json.Unmarshal(b, &cfg)
-	if err != nil {
-		log.Fatal("couldn't unmarshal config file: ", err)
+		log.Fatal("couldn't parse config file: ", err)
 	}
 
 	// Parse FFI
-	b, err = os.ReadFile(ffiPath)
+	b, err := os.ReadFile(ffiPath)
 	if err != nil {
 		log.Fatal("couldn't read ffi.json file: ", err)
 	}
 	err = json.Unmarshal(b, &ffiEntries)
 	if err != nil {
 		log.Fatal("couldn't unmarshal ffi file: ", err)
+	}
+
+	// Load wiki annotations
+	wikiEntries, err := assets.LoadWikiAnnotations(annotationsPath)
+	if err != nil {
+		log.Fatal("couldn't load wiki annotations file: ", err)
 	}
 
 	// Download API ref code
@@ -399,7 +403,7 @@ func main() {
 
 	found := 0
 	// Functions
-	apifunc := map[string]struct{}{}
+	apifuncs := map[string]struct{}{}
 	f := jen.NewFile(cfg.LibraryName)
 	f.Comment(genComment)
 	f.Var().DefsFunc(func(g *jen.Group) {
@@ -412,21 +416,15 @@ func main() {
 			}
 			if ref, ok := uniqueAPIFunctions[e.PrefixedName(cfg.Prefix)]; ok {
 				found++
-				apifunc[e.Name] = struct{}{}
+				apifuncs[e.Name] = struct{}{}
 				// Only add once
 				fn := jen.Id("i" + e.Name).Func()
 				fn.ParamsFunc(func(h *jen.Group) {
 					for _, ee := range e.Parameters {
 						typ, _ := extractType(ee.Type)
 						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
-							typ == "string" {
-							typ = "*byte"
-
-						}
-						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
-							typ == "*string" {
-							typ = "**byte"
-
+							strings.HasSuffix(typ, "string") {
+							typ = strings.ReplaceAll(typ, "string", "*byte")
 						}
 						h.Add(
 							jenType(jen.Id(sanitizeArgName(ee.Name)), typ),
@@ -439,14 +437,8 @@ func main() {
 					} else {
 						t, _ := extractType(e.ReturnType)
 						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
-							t == "string" {
-							t = "*byte"
-
-						}
-						if slices.Contains(cfg.NoAutoStringFunctions, e.PrefixedName(cfg.Prefix)) &&
-							t == "*string" {
-							t = "**byte"
-
+							strings.HasSuffix(t, "string") {
+							t = strings.ReplaceAll(t, "string", "*byte")
 						}
 						jenType(fn, t)
 					}
@@ -468,7 +460,6 @@ func main() {
 			}
 		}
 	})
-	fmt.Println("count api functions:", len(uniqueAPIFunctions), len(apifunc))
 	outputFileLocation := filepath.Join(dir, cfg.LibraryName+"_functions.gen.go")
 	err = os.WriteFile(outputFileLocation, []byte(f.GoString()), 0666)
 	if err != nil {
@@ -485,12 +476,24 @@ func main() {
 		if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 			continue
 		}
+		if wikiEntry, ok := wikiEntries[e.PrefixedName(cfg.Prefix)]; ok {
+			f.Comment(fmt.Sprintf(
+				"// %s - %s", wikiEntry.Name, wikiEntry.Description,
+			))
+			f.Comment(fmt.Sprintf(
+				"// (%s)", wikiEntry.URL,
+			))
+		}
 		f.Type().Id(e.Name).Uint32()
 		f.Const().DefsFunc(func(g *jen.Group) {
 			for _, ee := range e.Fields {
-				g.Add(
-					jen.Id(ee.Name).Id(e.Name).Op("=").Lit(ee.Value),
-				)
+				stmt := jen.Id(ee.Name).Id(e.Name).Op("=").Lit(ee.Value)
+				if wikiEntry, ok := wikiEntries[ee.PrefixedName(cfg.Prefix)]; ok {
+					stmt.Comment(fmt.Sprintf(
+						"// %s", wikiEntry.Description,
+					))
+				}
+				g.Add(stmt)
 			}
 		})
 	}
@@ -513,16 +516,28 @@ func main() {
 		if _, ok := uniqueTypes[e.PrefixedName(cfg.Prefix)]; !ok {
 			continue
 		}
+		if wikiEntry, ok := wikiEntries[e.PrefixedName(cfg.Prefix)]; ok {
+			f.Comment(fmt.Sprintf(
+				"// %s - %s", wikiEntry.Name, wikiEntry.Description,
+			))
+			f.Comment(fmt.Sprintf(
+				"// (%s)", wikiEntry.URL,
+			))
+		}
 		f.Type().Id(e.Name).StructFunc(func(g *jen.Group) {
-			for _, ee := range e.Fields {
+			for i, ee := range e.Fields {
 				typ, _ := extractType(ee.Type)
 				// Replacement for structs only to account for offset/alignment in wasm
 				if typ == "uintptr" {
 					typ = "Pointer"
 				}
-				g.Add(
-					jenType(jen.Id(sanitizeVarName(ee.Name)), typ),
-				)
+				stmt := jenType(jen.Id(sanitizeVarName(ee.Name)), typ)
+				if wikiEntry, ok := wikiEntries[fmt.Sprintf("%s.%d", e.PrefixedName(cfg.Prefix), i)]; ok {
+					stmt.Comment(fmt.Sprintf(
+						"// %s", wikiEntry.Description,
+					))
+				}
+				g.Add(stmt)
 			}
 		}).Line()
 	}
