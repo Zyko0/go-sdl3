@@ -573,6 +573,14 @@ func main() {
 			if e.Name == typ {
 				continue
 			}
+			if wikiEntry, ok := wikiEntries[e.PrefixedName(cfg.Prefix)]; ok {
+				stmt.Comment(fmt.Sprintf(
+					"// %s - %s", wikiEntry.Name, wikiEntry.Description,
+				)).Line()
+				stmt.Comment(fmt.Sprintf(
+					"// (%s)", wikiEntry.URL,
+				)).Line()
+			}
 			stmt.Add(
 				// Add an extra line to allow documentation comments
 				jenType(jen.Type().Id(e.Name), typ).Line().Line(),
