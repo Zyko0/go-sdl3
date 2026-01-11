@@ -124,6 +124,13 @@ SDL_ArrayOrder,"Array component order, low byte -> high byte.
 ",https://wiki.libsdl.org/SDL3/SDL_ArrayOrder
 SDL_AssertBreakpoint,"The macro used when an assertion triggers a breakpoint.
 ",https://wiki.libsdl.org/SDL3/SDL_AssertBreakpoint
+SDL_AssertData.0,true if app should always continue when assertion is triggered.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.1,Number of times this assertion has been triggered.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.2,A string of this assert's test code.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.3,The source file where this assert lives.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.4,The line in `filename` where this assert lives.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.5,The name of the function where this assert lives.,https://wiki.libsdl.org/SDL3/SDL_AssertData
+SDL_AssertData.6,next item in the linked list.,https://wiki.libsdl.org/SDL3/SDL_AssertData
 SDL_AssertData,"Information about an assertion failure.
 ",https://wiki.libsdl.org/SDL3/SDL_AssertData
 SDL_ASSERTION_RETRY,Retry the assert immediately.,https://wiki.libsdl.org/SDL3/SDL_AssertState
@@ -139,6 +146,14 @@ SDL_AsyncIO,"The asynchronous I/O operation structure.
 ",https://wiki.libsdl.org/SDL3/SDL_AsyncIO
 SDL_AsyncIOFromFile,"Use this function to create a new [SDL_AsyncIO](SDL_AsyncIO) object for reading from and/or writing to a named file.
 ",https://wiki.libsdl.org/SDL3/SDL_AsyncIOFromFile
+SDL_AsyncIOOutcome.0,what generated this task. This pointer will be invalid if it was closed!,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.1,"What sort of task was this? Read, write, etc?",https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.2,"the result of the work (success, failure, cancellation).",https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.3,buffer where data was read/written.,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.4,offset in the SDL_AsyncIO where data was read/written.,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.5,number of bytes the task was to read/write.,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.6,actual number of bytes that were read/written.,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
+SDL_AsyncIOOutcome.7,pointer provided by the app when starting the task,https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
 SDL_AsyncIOOutcome,"Information about a completed asynchronous I/O request.
 ",https://wiki.libsdl.org/SDL3/SDL_AsyncIOOutcome
 SDL_AsyncIOQueue,"A queue of completed asynchronous I/O tasks.
@@ -163,6 +178,10 @@ SDL_AtomicU32,"A type representing an atomic unsigned 32-bit value.
 ",https://wiki.libsdl.org/SDL3/SDL_AtomicU32
 SDL_AttachVirtualJoystick,"Attach a new virtual joystick.
 ",https://wiki.libsdl.org/SDL3/SDL_AttachVirtualJoystick
+SDL_AudioDeviceEvent.0,"SDL_EVENT_AUDIO_DEVICE_ADDED, or SDL_EVENT_AUDIO_DEVICE_REMOVED, or SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED",https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent
+SDL_AudioDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent
+SDL_AudioDeviceEvent.3,SDL_AudioDeviceID for the device being added or removed or changing,https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent
+SDL_AudioDeviceEvent.4,"false if a playback device, true if a recording device.",https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent
 SDL_AudioDeviceEvent,"Audio device event structure (event.adevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_AudioDeviceEvent
 SDL_AudioDeviceID,"SDL Audio Device instance IDs.
@@ -184,6 +203,9 @@ SDL_AudioIterationCallback,"A callback that fires around an audio device's proce
 ",https://wiki.libsdl.org/SDL3/SDL_AudioIterationCallback
 SDL_AudioPostmixCallback,"A callback that fires when data is about to be fed to an audio device.
 ",https://wiki.libsdl.org/SDL3/SDL_AudioPostmixCallback
+SDL_AudioSpec.0,Audio data format,https://wiki.libsdl.org/SDL3/SDL_AudioSpec
+SDL_AudioSpec.1,"Number of channels: 1 mono, 2 stereo, etc",https://wiki.libsdl.org/SDL3/SDL_AudioSpec
+SDL_AudioSpec.2,sample rate: sample frames per second,https://wiki.libsdl.org/SDL3/SDL_AudioSpec
 SDL_AudioSpec,"Format specifier for audio data.
 ",https://wiki.libsdl.org/SDL3/SDL_AudioSpec
 SDL_AudioStream,"The opaque handle that represents an audio stream.
@@ -303,6 +325,9 @@ SDL_CalculateGPUTextureFormatSize,"Calculate the size in bytes of a texture form
 ",https://wiki.libsdl.org/SDL3/SDL_CalculateGPUTextureFormatSize
 SDL_Camera,"The opaque structure used to identify an opened SDL camera.
 ",https://wiki.libsdl.org/SDL3/SDL_Camera
+SDL_CameraDeviceEvent.0,"SDL_EVENT_CAMERA_DEVICE_ADDED, SDL_EVENT_CAMERA_DEVICE_REMOVED, SDL_EVENT_CAMERA_DEVICE_APPROVED, SDL_EVENT_CAMERA_DEVICE_DENIED",https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent
+SDL_CameraDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent
+SDL_CameraDeviceEvent.3,SDL_CameraID for the device being added or removed or changing,https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent
 SDL_CameraDeviceEvent,"Camera device event structure (event.cdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_CameraDeviceEvent
 SDL_CameraID,"This is a unique ID for a camera device for the time it is connected to the system, and is never reused for the lifetime of the application.
@@ -311,6 +336,12 @@ SDL_CameraPermissionState,"The current state of a request for camera access.
 ",https://wiki.libsdl.org/SDL3/SDL_CameraPermissionState
 SDL_CameraPosition,"The position of camera in relation to system device.
 ",https://wiki.libsdl.org/SDL3/SDL_CameraPosition
+SDL_CameraSpec.0,Frame format,https://wiki.libsdl.org/SDL3/SDL_CameraSpec
+SDL_CameraSpec.1,Frame colorspace,https://wiki.libsdl.org/SDL3/SDL_CameraSpec
+SDL_CameraSpec.2,Frame width,https://wiki.libsdl.org/SDL3/SDL_CameraSpec
+SDL_CameraSpec.3,Frame height,https://wiki.libsdl.org/SDL3/SDL_CameraSpec
+SDL_CameraSpec.4,"Frame rate numerator ((num / denom) == FPS, (denom / num) == duration in seconds)",https://wiki.libsdl.org/SDL3/SDL_CameraSpec
+SDL_CameraSpec.5,"Frame rate denominator ((num / denom) == FPS, (denom / num) == duration in seconds)",https://wiki.libsdl.org/SDL3/SDL_CameraSpec
 SDL_CameraSpec,"The details of an output format for a camera device.
 ",https://wiki.libsdl.org/SDL3/SDL_CameraSpec
 SDL_CancelGPUCommandBuffer,"Cancels a command buffer.
@@ -353,6 +384,11 @@ SDL_ClipboardCleanupCallback,"Callback function that will be called when the cli
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardCleanupCallback
 SDL_ClipboardDataCallback,"Callback function that will be called when data for the specified mime-type is requested by the OS.
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardDataCallback
+SDL_ClipboardEvent.0,SDL_EVENT_CLIPBOARD_UPDATE,https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
+SDL_ClipboardEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
+SDL_ClipboardEvent.3,are we owning the clipboard (internal update),https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
+SDL_ClipboardEvent.4,number of mime types,https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
+SDL_ClipboardEvent.5,current mime types,https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
 SDL_ClipboardEvent,"An event triggered when the clipboard contents have changed (event.clipboard.*)
 ",https://wiki.libsdl.org/SDL3/SDL_ClipboardEvent
 SDL_CloseAsyncIO,"Close and free any allocated resources for an async I/O object.
@@ -408,6 +444,8 @@ SDL_COLORSPACE_RGB_DEFAULT,The default colorspace for RGB surfaces if no colorsp
 SDL_COLORSPACE_YUV_DEFAULT,The default colorspace for YUV surfaces if no colorspace is specified,https://wiki.libsdl.org/SDL3/SDL_Colorspace
 SDL_Colorspace,"Colorspace definitions.
 ",https://wiki.libsdl.org/SDL3/SDL_Colorspace
+SDL_CommonEvent.0,"Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration",https://wiki.libsdl.org/SDL3/SDL_CommonEvent
+SDL_CommonEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_CommonEvent
 SDL_CommonEvent,"Fields shared by every event
 ",https://wiki.libsdl.org/SDL3/SDL_CommonEvent
 SDL_CompareAndSwapAtomicInt,"Set an atomic variable to a new value if it is currently an old value.
@@ -544,6 +582,8 @@ SDL_CreateWindowWithProperties,"Create a window with the specified properties.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateWindowWithProperties
 SDL_Cursor,"The structure used to identify an SDL cursor.
 ",https://wiki.libsdl.org/SDL3/SDL_Cursor
+SDL_CursorFrameInfo.0,The surface data for this frame,https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo
+SDL_CursorFrameInfo.1,The frame duration in milliseconds (a duration of 0 is infinite),https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo
 SDL_CursorFrameInfo,"Animated cursor frame info.
 ",https://wiki.libsdl.org/SDL3/SDL_CursorFrameInfo
 SDL_CursorVisible,"Return whether the cursor is currently being shown.
@@ -567,6 +607,15 @@ SDL_DATE_FORMAT_DDMMYYYY,Day/Month/Year,https://wiki.libsdl.org/SDL3/SDL_DateFor
 SDL_DATE_FORMAT_MMDDYYYY,Month/Day/Year,https://wiki.libsdl.org/SDL3/SDL_DateFormat
 SDL_DateFormat,"The preferred date format of the current system locale.
 ",https://wiki.libsdl.org/SDL3/SDL_DateFormat
+SDL_DateTime.0,Year,https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.1,Month [01-12],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.2,Day of the month [01-31],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.3,Hour [0-23],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.4,Minute [0-59],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.5,Seconds [0-60],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.6,Nanoseconds [0-999999999],https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.7,Day of the week [0-6] (0 being Sunday),https://wiki.libsdl.org/SDL3/SDL_DateTime
+SDL_DateTime.8,Seconds east of UTC,https://wiki.libsdl.org/SDL3/SDL_DateTime
 SDL_DateTime,"A structure holding a calendar date and time broken down into its components.
 ",https://wiki.libsdl.org/SDL3/SDL_DateTime
 SDL_DateTimeToTime,"Converts a calendar time to an [SDL_Time](SDL_Time) in nanoseconds since the epoch.
@@ -631,10 +680,24 @@ SDL_DispatchGPUCompute,"Dispatches compute work.
 ",https://wiki.libsdl.org/SDL3/SDL_DispatchGPUCompute
 SDL_DispatchGPUComputeIndirect,"Dispatches compute work with parameters set from a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_DispatchGPUComputeIndirect
+SDL_DisplayEvent.0,SDL_EVENT_DISPLAY_*,https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
+SDL_DisplayEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
+SDL_DisplayEvent.3,The associated display,https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
+SDL_DisplayEvent.4,event dependent data,https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
+SDL_DisplayEvent.5,event dependent data,https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
 SDL_DisplayEvent,"Display state change event data (event.display.*)
 ",https://wiki.libsdl.org/SDL3/SDL_DisplayEvent
 SDL_DisplayID,"This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application.
 ",https://wiki.libsdl.org/SDL3/SDL_DisplayID
+SDL_DisplayMode.0,the display this mode is associated with,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.1,pixel format,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.2,width,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.3,height,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.4,scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels),https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.5,refresh rate (or 0.0f for unspecified),https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.6,precise refresh rate numerator (or 0 for unspecified),https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.7,precise refresh rate denominator,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
+SDL_DisplayMode.8,Private,https://wiki.libsdl.org/SDL3/SDL_DisplayMode
 SDL_DisplayMode,"The structure that defines a display mode.
 ",https://wiki.libsdl.org/SDL3/SDL_DisplayMode
 SDL_DisplayModeData,"Internal display mode data.
@@ -658,6 +721,13 @@ SDL_DrawGPUPrimitives,"Draws data using bound graphics state.
 ",https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitives
 SDL_DrawGPUPrimitivesIndirect,"Draws data using bound graphics state and with draw parameters set from a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_DrawGPUPrimitivesIndirect
+SDL_DropEvent.0,SDL_EVENT_DROP_BEGIN or SDL_EVENT_DROP_FILE or SDL_EVENT_DROP_TEXT or SDL_EVENT_DROP_COMPLETE or SDL_EVENT_DROP_POSITION,https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.3,"The window that was dropped on, if any",https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.4,"X coordinate, relative to window (not on begin)",https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.5,"Y coordinate, relative to window (not on begin)",https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.6,"The source app that sent this drop event, or NULL if that isn't available",https://wiki.libsdl.org/SDL3/SDL_DropEvent
+SDL_DropEvent.7,"The text for SDL_EVENT_DROP_TEXT and the file name for SDL_EVENT_DROP_FILE, NULL for other events",https://wiki.libsdl.org/SDL3/SDL_DropEvent
 SDL_DropEvent,"An event used to drop text or request a file open by the system (event.drop.*)
 ",https://wiki.libsdl.org/SDL3/SDL_DropEvent
 SDL_DuplicateSurface,"Creates a new surface identical to the existing surface.
@@ -873,6 +943,10 @@ SDL_FillSurfaceRects,"Perform a fast fill of a set of rectangles with a specific
 ",https://wiki.libsdl.org/SDL3/SDL_FillSurfaceRects
 SDL_FilterEvents,"Run a specific filter function on the current event queue, removing any events for which the filter returns false.
 ",https://wiki.libsdl.org/SDL3/SDL_FilterEvents
+SDL_Finger.0,the finger ID,https://wiki.libsdl.org/SDL3/SDL_Finger
+SDL_Finger.1,"the x-axis location of the touch event, normalized (0...1)",https://wiki.libsdl.org/SDL3/SDL_Finger
+SDL_Finger.2,"the y-axis location of the touch event, normalized (0...1)",https://wiki.libsdl.org/SDL3/SDL_Finger
+SDL_Finger.3,"the quantity of pressure applied, normalized (0...1)",https://wiki.libsdl.org/SDL3/SDL_Finger
 SDL_Finger,"Data about a single finger in a multitouch event.
 ",https://wiki.libsdl.org/SDL3/SDL_Finger
 SDL_FingerID,"A unique ID for a single finger on a touch device.
@@ -1013,28 +1087,73 @@ SDL_GPU_BLENDOP_MIN,"min(source, destination)",https://wiki.libsdl.org/SDL3/SDL_
 SDL_GPU_BLENDOP_MAX,"max(source, destination)",https://wiki.libsdl.org/SDL3/SDL_GPUBlendOp
 SDL_GPUBlendOp,"Specifies the operator to be used when pixels in a render target are blended with existing pixels in the texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBlendOp
+SDL_GPUBlitInfo.0,The destination region for the blit.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitInfo.1,What is done with the contents of the destination before the blit.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitInfo.2,The color to clear the destination region to before the blit. Ignored if load_op is not SDL_GPU_LOADOP_CLEAR.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitInfo.3,The flip mode for the source region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitInfo.4,The filter mode used when blitting.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitInfo.5,true cycles the destination texture if it is already bound.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
 SDL_GPUBlitInfo,"A structure containing parameters for a blit command.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBlitInfo
+SDL_GPUBlitRegion.0,The texture.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.1,The mip level index of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.2,"The layer index or depth plane of the region. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.",https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.3,The left offset of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.4,The top offset of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.5,The width of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
+SDL_GPUBlitRegion.6,The height of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
 SDL_GPUBlitRegion,"A structure specifying a region of a texture used in the blit operation.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBlitRegion
 SDL_GPUBuffer,"An opaque handle representing a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBuffer
+SDL_GPUBufferBinding.0,"The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_VERTEX for SDL_BindGPUVertexBuffers, or SDL_GPU_BUFFERUSAGE_INDEX for SDL_BindGPUIndexBuffer.",https://wiki.libsdl.org/SDL3/SDL_GPUBufferBinding
+SDL_GPUBufferBinding.1,The starting byte of the data to bind in the buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferBinding
 SDL_GPUBufferBinding,"A structure specifying parameters in a buffer binding call.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBufferBinding
+SDL_GPUBufferCreateInfo.0,How the buffer is intended to be used by the client.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferCreateInfo
+SDL_GPUBufferCreateInfo.1,The size in bytes of the buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferCreateInfo
+SDL_GPUBufferCreateInfo.2,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferCreateInfo
 SDL_GPUBufferCreateInfo,"A structure specifying the parameters of a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBufferCreateInfo
+SDL_GPUBufferLocation.0,The buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferLocation
+SDL_GPUBufferLocation.1,The starting byte within the buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferLocation
 SDL_GPUBufferLocation,"A structure specifying a location in a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBufferLocation
+SDL_GPUBufferRegion.0,The buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferRegion
+SDL_GPUBufferRegion.1,The starting byte within the buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferRegion
+SDL_GPUBufferRegion.2,The size in bytes of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUBufferRegion
 SDL_GPUBufferRegion,"A structure specifying a region of a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBufferRegion
 SDL_GPUBufferUsageFlags,"Specifies how a buffer is intended to be used by the client.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUBufferUsageFlags
 SDL_GPUColorComponentFlags,"Specifies which color components are written in a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUColorComponentFlags
+SDL_GPUColorTargetBlendState.0,The value to be multiplied by the source RGB value.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.1,The value to be multiplied by the destination RGB value.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.2,The blend operation for the RGB components.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.3,The value to be multiplied by the source alpha.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.4,The value to be multiplied by the destination alpha.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.5,The blend operation for the alpha component.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.6,A bitmask specifying which of the RGBA components are enabled for writing. Writes to all channels if enable_color_write_mask is false.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.7,Whether blending is enabled for the color target.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetBlendState.8,Whether the color write mask is enabled.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
 SDL_GPUColorTargetBlendState,"A structure specifying the blend state of a color target.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetBlendState
+SDL_GPUColorTargetDescription.0,The pixel format of the texture to be used as a color target.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetDescription
+SDL_GPUColorTargetDescription.1,The blend state to be used for the color target.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetDescription
 SDL_GPUColorTargetDescription,"A structure specifying the parameters of color targets used in a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetDescription
+SDL_GPUColorTargetInfo.0,The texture that will be used as a color target by a render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.1,The mip level to use as a color target.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.2,"The layer index or depth plane to use as a color target. This value is treated as a layer index on 2D array and cube textures, and as a depth plane on 3D textures.",https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.3,The color to clear the color target to at the start of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.4,What is done with the contents of the color target at the beginning of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.5,What is done with the results of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.6,The texture that will receive the results of a multisample resolve operation. Ignored if a RESOLVE* store_op is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.7,The mip level of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.8,The layer index of the resolve texture to use for the resolve operation. Ignored if a RESOLVE* store_op is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.9,true cycles the texture if the texture is bound and load_op is not LOAD,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
+SDL_GPUColorTargetInfo.10,true cycles the resolve texture if the resolve texture is bound. Ignored if a RESOLVE* store_op is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
 SDL_GPUColorTargetInfo,"A structure specifying the parameters of a color target used by a render pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUColorTargetInfo
 SDL_GPUCommandBuffer,"An opaque handle representing a command buffer.
@@ -1053,6 +1172,20 @@ SDL_GPUComputePass,"An opaque handle representing a compute pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUComputePass
 SDL_GPUComputePipeline,"An opaque handle representing a compute pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUComputePipeline
+SDL_GPUComputePipelineCreateInfo.0,The size in bytes of the compute shader code pointed to.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.1,A pointer to compute shader code.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.2,A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.3,The format of the compute shader code.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.4,The number of samplers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.5,The number of readonly storage textures defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.6,The number of readonly storage buffers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.7,The number of read-write storage textures defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.8,The number of read-write storage buffers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.9,The number of uniform buffers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.10,The number of threads in the X dimension. This should match the value in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.11,The number of threads in the Y dimension. This should match the value in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.12,The number of threads in the Z dimension. This should match the value in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
+SDL_GPUComputePipelineCreateInfo.13,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
 SDL_GPUComputePipelineCreateInfo,"A structure specifying the parameters of a compute pipeline state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUComputePipelineCreateInfo
 SDL_GPUCopyPass,"An opaque handle representing a copy pass.
@@ -1064,8 +1197,26 @@ SDL_GPU_CULLMODE_FRONT,Front-facing triangles are culled.,https://wiki.libsdl.or
 SDL_GPU_CULLMODE_BACK,Back-facing triangles are culled.,https://wiki.libsdl.org/SDL3/SDL_GPUCullMode
 SDL_GPUCullMode,"Specifies the facing direction in which triangle faces will be culled.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUCullMode
+SDL_GPUDepthStencilState.0,The comparison operator used for depth testing.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.1,The stencil op state for back-facing triangles.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.2,The stencil op state for front-facing triangles.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.3,Selects the bits of the stencil values participating in the stencil test.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.4,Selects the bits of the stencil values updated by the stencil test.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.5,true enables the depth test.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.6,true enables depth writes. Depth writes are always disabled when enable_depth_test is false.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilState.7,true enables the stencil test.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
 SDL_GPUDepthStencilState,"A structure specifying the parameters of the graphics pipeline depth stencil state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilState
+SDL_GPUDepthStencilTargetInfo.0,The texture that will be used as the depth stencil target by the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.1,The value to clear the depth component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.2,What is done with the depth contents at the beginning of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.3,What is done with the depth results of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.4,What is done with the stencil contents at the beginning of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.5,What is done with the stencil results of the render pass.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.6,true cycles the texture if the texture is bound and any load ops are not LOAD,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.7,The value to clear the stencil component to at the beginning of the render pass. Ignored if SDL_GPU_LOADOP_CLEAR is not used.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.8,The mip level to use as the depth stencil target.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
+SDL_GPUDepthStencilTargetInfo.9,The layer index to use as the depth stencil target.,https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
 SDL_GPUDepthStencilTargetInfo,"A structure specifying the parameters of a depth-stencil target used by a render pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUDepthStencilTargetInfo
 SDL_GPUDevice,"An opaque handle representing the [SDL_GPU](SDL_GPU) context.
@@ -1086,18 +1237,43 @@ SDL_GPUFrontFace,"Specifies the vertex winding that will cause a triangle to be 
 ",https://wiki.libsdl.org/SDL3/SDL_GPUFrontFace
 SDL_GPUGraphicsPipeline,"An opaque handle representing a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipeline
+SDL_GPUGraphicsPipelineCreateInfo.0,The vertex shader used by the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.1,The fragment shader used by the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.2,The vertex layout of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.3,The primitive topology of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.4,The rasterizer state of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.5,The multisample state of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.6,The depth-stencil state of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.7,Formats and blend modes for the render targets of the graphics pipeline.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineCreateInfo.8,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
 SDL_GPUGraphicsPipelineCreateInfo,"A structure specifying the parameters of a graphics pipeline state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo
+SDL_GPUGraphicsPipelineTargetInfo.0,A pointer to an array of color target descriptions.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo
+SDL_GPUGraphicsPipelineTargetInfo.1,The number of color target descriptions in the above array.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo
+SDL_GPUGraphicsPipelineTargetInfo.2,The pixel format of the depth-stencil target. Ignored if has_depth_stencil_target is false.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo
+SDL_GPUGraphicsPipelineTargetInfo.3,true specifies that the pipeline uses a depth-stencil target.,https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo
 SDL_GPUGraphicsPipelineTargetInfo,"A structure specifying the descriptions of render targets used in a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineTargetInfo
 SDL_GPU_INDEXELEMENTSIZE_16BIT,The index elements are 16-bit.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexElementSize
 SDL_GPU_INDEXELEMENTSIZE_32BIT,The index elements are 32-bit.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexElementSize
 SDL_GPUIndexElementSize,"Specifies the size of elements in an index buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUIndexElementSize
+SDL_GPUIndexedIndirectDrawCommand.0,The number of indices to draw per instance.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+SDL_GPUIndexedIndirectDrawCommand.1,The number of instances to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+SDL_GPUIndexedIndirectDrawCommand.2,The base index within the index buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+SDL_GPUIndexedIndirectDrawCommand.3,The value added to the vertex index before indexing into the vertex buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+SDL_GPUIndexedIndirectDrawCommand.4,The ID of the first instance to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
 SDL_GPUIndexedIndirectDrawCommand,"A structure specifying the parameters of an indexed indirect draw command.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUIndexedIndirectDrawCommand
+SDL_GPUIndirectDispatchCommand.0,The number of local workgroups to dispatch in the X dimension.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand
+SDL_GPUIndirectDispatchCommand.1,The number of local workgroups to dispatch in the Y dimension.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand
+SDL_GPUIndirectDispatchCommand.2,The number of local workgroups to dispatch in the Z dimension.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand
 SDL_GPUIndirectDispatchCommand,"A structure specifying the parameters of an indexed dispatch command.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDispatchCommand
+SDL_GPUIndirectDrawCommand.0,The number of vertices to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
+SDL_GPUIndirectDrawCommand.1,The number of instances to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
+SDL_GPUIndirectDrawCommand.2,The index of the first vertex to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
+SDL_GPUIndirectDrawCommand.3,The ID of the first instance to draw.,https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
 SDL_GPUIndirectDrawCommand,"A structure specifying the parameters of an indirect draw command.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUIndirectDrawCommand
 SDL_GPU_LOADOP_LOAD,The previous contents of the texture will be preserved.,https://wiki.libsdl.org/SDL3/SDL_GPULoadOp
@@ -1105,6 +1281,10 @@ SDL_GPU_LOADOP_CLEAR,The contents of the texture will be cleared to a color.,htt
 SDL_GPU_LOADOP_DONT_CARE,The previous contents of the texture need not be preserved. The contents will be undefined.,https://wiki.libsdl.org/SDL3/SDL_GPULoadOp
 SDL_GPULoadOp,"Specifies how the contents of a texture attached to a render pass are treated at the beginning of the render pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPULoadOp
+SDL_GPUMultisampleState.0,The number of samples to be used in rasterization.,https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState
+SDL_GPUMultisampleState.1,Reserved for future use. Must be set to 0.,https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState
+SDL_GPUMultisampleState.2,Reserved for future use. Must be set to false.,https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState
+SDL_GPUMultisampleState.3,true enables the alpha-to-coverage feature.,https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState
 SDL_GPUMultisampleState,"A structure specifying the parameters of the graphics pipeline multisample state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUMultisampleState
 SDL_GPUPresentMode,"Specifies the timing that will be used to present swapchain textures to the OS.
@@ -1116,14 +1296,38 @@ SDL_GPU_PRIMITIVETYPE_LINESTRIP,A series of connected lines.,https://wiki.libsdl
 SDL_GPU_PRIMITIVETYPE_POINTLIST,A series of separate points.,https://wiki.libsdl.org/SDL3/SDL_GPUPrimitiveType
 SDL_GPUPrimitiveType,"Specifies the primitive topology of a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUPrimitiveType
+SDL_GPURasterizerState.0,Whether polygons will be filled in or drawn as lines.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.1,The facing direction in which triangles will be culled.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.2,The vertex winding that will cause a triangle to be determined as front-facing.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.3,A scalar factor controlling the depth value added to each fragment.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.4,The maximum depth bias of a fragment.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.5,A scalar factor applied to a fragment's slope in depth calculations.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.6,true to bias fragment depth values.,https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
+SDL_GPURasterizerState.7,"true to enable depth clip, false to enable depth clamp.",https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
 SDL_GPURasterizerState,"A structure specifying the parameters of the graphics pipeline rasterizer state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURasterizerState
 SDL_GPURenderPass,"An opaque handle representing a render pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderPass
 SDL_GPURenderState,"A custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderState
+SDL_GPURenderStateCreateInfo.0,The fragment shader to use when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.1,The number of additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.2,Additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.3,The number of storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.4,Storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.5,The number of storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.6,Storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateCreateInfo.7,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
 SDL_GPURenderStateCreateInfo,"A structure specifying the parameters of a GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
+SDL_GPURenderStateDesc.0,the version of this interface,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.1,The fragment shader to use when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.2,The number of additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.3,Additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.4,The number of storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.5,Storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.6,The number of storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
+SDL_GPURenderStateDesc.7,Storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
 SDL_GPURenderStateDesc,"GPU render state description.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
 SDL_GPU_SAMPLECOUNT_1,No multisampling.,https://wiki.libsdl.org/SDL3/SDL_GPUSampleCount
@@ -1139,6 +1343,20 @@ SDL_GPU_SAMPLERADDRESSMODE_MIRRORED_REPEAT,Specifies that the coordinates will w
 SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE,Specifies that the coordinates will clamp to the 0-1 range.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerAddressMode
 SDL_GPUSamplerAddressMode,"Specifies behavior of texture sampling when the coordinates exceed the 0-1 range.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerAddressMode
+SDL_GPUSamplerCreateInfo.0,The minification filter to apply to lookups.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.1,The magnification filter to apply to lookups.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.2,The mipmap filter to apply to lookups.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.3,"The addressing mode for U coordinates outside [0, 1).",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.4,"The addressing mode for V coordinates outside [0, 1).",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.5,"The addressing mode for W coordinates outside [0, 1).",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.6,The bias to be added to mipmap LOD calculation.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.7,"The anisotropy value clamp used by the sampler. If enable_anisotropy is false, this is ignored.",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.8,The comparison operator to apply to fetched data before filtering.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.9,Clamps the minimum of the computed LOD value.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.10,Clamps the maximum of the computed LOD value.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.11,true to enable anisotropic filtering.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.12,true to enable comparison against a reference value during lookups.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
+SDL_GPUSamplerCreateInfo.15,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
 SDL_GPUSamplerCreateInfo,"A structure specifying the parameters of a sampler.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerCreateInfo
 SDL_GPU_SAMPLERMIPMAPMODE_NEAREST,Point filtering.,https://wiki.libsdl.org/SDL3/SDL_GPUSamplerMipmapMode
@@ -1147,6 +1365,16 @@ SDL_GPUSamplerMipmapMode,"Specifies a mipmap mode used by a sampler.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUSamplerMipmapMode
 SDL_GPUShader,"An opaque handle representing a compiled shader object.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUShader
+SDL_GPUShaderCreateInfo.0,The size in bytes of the code pointed to.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.1,A pointer to shader code.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.2,A pointer to a null-terminated UTF-8 string specifying the entry point function name for the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.3,The format of the shader code.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.4,The stage the shader program corresponds to.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.5,The number of samplers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.6,The number of storage textures defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.7,The number of storage buffers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.8,The number of uniform buffers defined in the shader.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
+SDL_GPUShaderCreateInfo.9,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
 SDL_GPUShaderCreateInfo,"A structure specifying code and metadata for creating a shader object.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUShaderCreateInfo
 SDL_GPUShaderFormat,"Specifies the format of shader code.
@@ -1163,10 +1391,20 @@ SDL_GPU_STENCILOP_INCREMENT_AND_WRAP,Increments the current value and wraps back
 SDL_GPU_STENCILOP_DECREMENT_AND_WRAP,Decrements the current value and wraps to the maximum value.,https://wiki.libsdl.org/SDL3/SDL_GPUStencilOp
 SDL_GPUStencilOp,"Specifies what happens to a stored stencil value if stencil tests fail or pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUStencilOp
+SDL_GPUStencilOpState.0,The action performed on samples that fail the stencil test.,https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState
+SDL_GPUStencilOpState.1,The action performed on samples that pass the depth and stencil tests.,https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState
+SDL_GPUStencilOpState.2,The action performed on samples that pass the stencil test and fail the depth test.,https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState
+SDL_GPUStencilOpState.3,The comparison operator used in the stencil test.,https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState
 SDL_GPUStencilOpState,"A structure specifying the stencil operation state of a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUStencilOpState
+SDL_GPUStorageBufferReadWriteBinding.0,The buffer to bind. Must have been created with SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageBufferReadWriteBinding
+SDL_GPUStorageBufferReadWriteBinding.1,true cycles the buffer if it is already bound.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageBufferReadWriteBinding
 SDL_GPUStorageBufferReadWriteBinding,"A structure specifying parameters related to binding buffers in a compute pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUStorageBufferReadWriteBinding
+SDL_GPUStorageTextureReadWriteBinding.0,The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE or SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
+SDL_GPUStorageTextureReadWriteBinding.1,The mip level index to bind.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
+SDL_GPUStorageTextureReadWriteBinding.2,The layer index to bind.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
+SDL_GPUStorageTextureReadWriteBinding.3,true cycles the texture if it is already bound.,https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
 SDL_GPUStorageTextureReadWriteBinding,"A structure specifying parameters related to binding textures in a compute pass.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUStorageTextureReadWriteBinding
 SDL_GPU_STOREOP_STORE,The contents generated during the render pass will be written to memory.,https://wiki.libsdl.org/SDL3/SDL_GPUStoreOp
@@ -1183,22 +1421,52 @@ SDL_GPUSwapchainComposition,"Specifies the texture format and colorspace of the 
 ",https://wiki.libsdl.org/SDL3/SDL_GPUSwapchainComposition
 SDL_GPUTexture,"An opaque handle representing a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTexture
+SDL_GPUTextureCreateInfo.0,The base dimensionality of the texture.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.1,The pixel format of the texture.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.2,How the texture is intended to be used by the client.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.3,The width of the texture.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.4,The height of the texture.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.5,"The layer count or depth of the texture. This value is treated as a layer count on 2D array textures, and as a depth value on 3D textures.",https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.6,The number of mip levels in the texture.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.7,The number of samples per texel. Only applies if the texture is used as a render target.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
+SDL_GPUTextureCreateInfo.8,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
 SDL_GPUTextureCreateInfo,"A structure specifying the parameters of a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureCreateInfo
 SDL_GPUTextureFormat,"Specifies the pixel format of a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureFormat
 SDL_GPUTextureFormatTexelBlockSize,"Obtains the texel block size for a texture format.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureFormatTexelBlockSize
+SDL_GPUTextureLocation.0,The texture used in the copy operation.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureLocation.1,The mip level index of the location.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureLocation.2,The layer index of the location.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureLocation.3,The left offset of the location.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureLocation.4,The top offset of the location.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureLocation.5,The front offset of the location.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
 SDL_GPUTextureLocation,"A structure specifying a location in a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureLocation
+SDL_GPUTextureRegion.0,The texture used in the copy operation.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.1,The mip level index to transfer.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.2,The layer index to transfer.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.3,The left offset of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.4,The top offset of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.5,The front offset of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.6,The width of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.7,The height of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureRegion.8,The depth of the region.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
 SDL_GPUTextureRegion,"A structure specifying a region of a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureRegion
+SDL_GPUTextureSamplerBinding.0,The texture to bind. Must have been created with SDL_GPU_TEXTUREUSAGE_SAMPLER.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureSamplerBinding
+SDL_GPUTextureSamplerBinding.1,The sampler to bind.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureSamplerBinding
 SDL_GPUTextureSamplerBinding,"A structure specifying parameters in a sampler binding call.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureSamplerBinding
 SDL_GPUTextureSupportsFormat,"Determines whether a texture format is supported for a given type and usage.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsFormat
 SDL_GPUTextureSupportsSampleCount,"Determines if a sample count for a texture format is supported.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureSupportsSampleCount
+SDL_GPUTextureTransferInfo.0,The transfer buffer used in the transfer operation.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo
+SDL_GPUTextureTransferInfo.1,The starting byte of the image data in the transfer buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo
+SDL_GPUTextureTransferInfo.2,The number of pixels from one row to the next.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo
+SDL_GPUTextureTransferInfo.3,The number of rows from one layer/depth-slice to the next.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo
 SDL_GPUTextureTransferInfo,"A structure specifying parameters related to transferring data to or from a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureTransferInfo
 SDL_GPU_TEXTURETYPE_2D,The texture is a 2-dimensional image.,https://wiki.libsdl.org/SDL3/SDL_GPUTextureType
@@ -1212,14 +1480,27 @@ SDL_GPUTextureUsageFlags,"Specifies how a texture is intended to be used by the 
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTextureUsageFlags
 SDL_GPUTransferBuffer,"An opaque handle representing a transfer buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTransferBuffer
+SDL_GPUTransferBufferCreateInfo.0,How the transfer buffer is intended to be used by the client.,https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferCreateInfo
+SDL_GPUTransferBufferCreateInfo.1,The size in bytes of the transfer buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferCreateInfo
+SDL_GPUTransferBufferCreateInfo.2,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferCreateInfo
 SDL_GPUTransferBufferCreateInfo,"A structure specifying the parameters of a transfer buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferCreateInfo
+SDL_GPUTransferBufferLocation.0,The transfer buffer used in the transfer operation.,https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferLocation
+SDL_GPUTransferBufferLocation.1,The starting byte of the buffer data in the transfer buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferLocation
 SDL_GPUTransferBufferLocation,"A structure specifying a location in a transfer buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferLocation
 SDL_GPUTransferBufferUsage,"Specifies how a transfer buffer is intended to be used by the client.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUTransferBufferUsage
+SDL_GPUVertexAttribute.0,The shader input location index.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute
+SDL_GPUVertexAttribute.1,The binding slot of the associated vertex buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute
+SDL_GPUVertexAttribute.2,The size and type of the attribute data.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute
+SDL_GPUVertexAttribute.3,The byte offset of this attribute relative to the start of the vertex element.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute
 SDL_GPUVertexAttribute,"A structure specifying a vertex attribute.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVertexAttribute
+SDL_GPUVertexBufferDescription.0,The binding slot of the vertex buffer.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription
+SDL_GPUVertexBufferDescription.1,The size of a single element + the offset between elements.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription
+SDL_GPUVertexBufferDescription.2,Whether attribute addressing is a function of the vertex index or instance index.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription
+SDL_GPUVertexBufferDescription.3,Reserved for future use. Must be set to 0.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription
 SDL_GPUVertexBufferDescription,"A structure specifying the parameters of vertex buffers used in a graphics pipeline.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVertexBufferDescription
 SDL_GPUVertexElementFormat,"Specifies the format of a vertex attribute.
@@ -1228,10 +1509,27 @@ SDL_GPU_VERTEXINPUTRATE_VERTEX,Attribute addressing is a function of the vertex 
 SDL_GPU_VERTEXINPUTRATE_INSTANCE,Attribute addressing is a function of the instance index.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputRate
 SDL_GPUVertexInputRate,"Specifies the rate at which vertex attributes are pulled from buffers.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputRate
+SDL_GPUVertexInputState.0,A pointer to an array of vertex buffer descriptions.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
+SDL_GPUVertexInputState.1,The number of vertex buffer descriptions in the above array.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
+SDL_GPUVertexInputState.2,A pointer to an array of vertex attribute descriptions.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
+SDL_GPUVertexInputState.3,The number of vertex attribute descriptions in the above array.,https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
 SDL_GPUVertexInputState,"A structure specifying the parameters of a graphics pipeline vertex input state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState
+SDL_GPUViewport.0,The left offset of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUViewport.1,The top offset of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUViewport.2,The width of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUViewport.3,The height of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUViewport.4,The minimum depth of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUViewport.5,The maximum depth of the viewport.,https://wiki.libsdl.org/SDL3/SDL_GPUViewport
 SDL_GPUViewport,"A structure specifying a viewport.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUViewport
+SDL_GPUVulkanOptions.0,The Vulkan API version to request for the instance. Use Vulkan's VK_MAKE_VERSION or VK_MAKE_API_VERSION.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.1,Pointer to the first element of a chain of Vulkan feature structs. (Requires API version 1.1 or higher.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.2,Pointer to a VkPhysicalDeviceFeatures struct to enable additional Vulkan 1.0 features.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.3,Number of additional device extensions to require.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.4,Pointer to a list of additional device extensions to require.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.5,Number of additional instance extensions to require.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
+SDL_GPUVulkanOptions.6,Pointer to a list of additional instance extensions to require.,https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
 SDL_GPUVulkanOptions,"A structure specifying additional options when using Vulkan.
 ",https://wiki.libsdl.org/SDL3/SDL_GPUVulkanOptions
 SDL_GPU_RENDERER,"The name of the GPU renderer.
@@ -1246,6 +1544,11 @@ SDL_Gamepad,"The structure used to identify an SDL gamepad
 ",https://wiki.libsdl.org/SDL3/SDL_Gamepad
 SDL_GamepadAxis,"The list of axes available on a gamepad
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadAxis
+SDL_GamepadAxisEvent.0,SDL_EVENT_GAMEPAD_AXIS_MOTION,https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
+SDL_GamepadAxisEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
+SDL_GamepadAxisEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
+SDL_GamepadAxisEvent.4,The gamepad axis (SDL_GamepadAxis),https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
+SDL_GamepadAxisEvent.8,The axis value (range: -32768 to 32767),https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
 SDL_GamepadAxisEvent,"Gamepad axis motion event structure (event.gaxis.*)
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadAxisEvent
 SDL_GamepadBinding,"A mapping between one joystick input to a gamepad control.
@@ -1269,12 +1572,20 @@ SDL_GAMEPAD_BUTTON_MISC5,Additional button,https://wiki.libsdl.org/SDL3/SDL_Game
 SDL_GAMEPAD_BUTTON_MISC6,Additional button,https://wiki.libsdl.org/SDL3/SDL_GamepadButton
 SDL_GamepadButton,"The list of buttons available on a gamepad
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadButton
+SDL_GamepadButtonEvent.0,SDL_EVENT_GAMEPAD_BUTTON_DOWN or SDL_EVENT_GAMEPAD_BUTTON_UP,https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
+SDL_GamepadButtonEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
+SDL_GamepadButtonEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
+SDL_GamepadButtonEvent.4,The gamepad button (SDL_GamepadButton),https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
+SDL_GamepadButtonEvent.5,true if the button is pressed,https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
 SDL_GamepadButtonEvent,"Gamepad button event structure (event.gbutton.*)
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadButtonEvent
 SDL_GamepadButtonLabel,"The set of gamepad button labels
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadButtonLabel
 SDL_GamepadConnected,"Check if a gamepad has been opened and is currently connected.
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadConnected
+SDL_GamepadDeviceEvent.0,"SDL_EVENT_GAMEPAD_ADDED, SDL_EVENT_GAMEPAD_REMOVED, or SDL_EVENT_GAMEPAD_REMAPPED, SDL_EVENT_GAMEPAD_UPDATE_COMPLETE or SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",https://wiki.libsdl.org/SDL3/SDL_GamepadDeviceEvent
+SDL_GamepadDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_GamepadDeviceEvent
+SDL_GamepadDeviceEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_GamepadDeviceEvent
 SDL_GamepadDeviceEvent,"Gamepad device event structure (event.gdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadDeviceEvent
 SDL_GamepadEventsEnabled,"Query the state of gamepad event processing.
@@ -1287,8 +1598,22 @@ SDL_GamepadHasSensor,"Return whether a gamepad has a particular sensor.
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadHasSensor
 SDL_GamepadSensorEnabled,"Query whether sensor data reporting is enabled for a gamepad.
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEnabled
+SDL_GamepadSensorEvent.0,SDL_EVENT_GAMEPAD_SENSOR_UPDATE,https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadSensorEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadSensorEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadSensorEvent.4,"The type of the sensor, one of the values of SDL_SensorType",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadSensorEvent.5,"Up to 3 values from the sensor, as defined in SDL_sensor.h",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadSensorEvent.6,"The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
 SDL_GamepadSensorEvent,"Gamepad sensor event structure (event.gsensor.*)
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadSensorEvent
+SDL_GamepadTouchpadEvent.0,SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN or SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION or SDL_EVENT_GAMEPAD_TOUCHPAD_UP,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.4,The index of the touchpad,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.5,The index of the finger on the touchpad,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.6,Normalized in the range 0...1 with 0 being on the left,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.7,Normalized in the range 0...1 with 0 being at the top,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
+SDL_GamepadTouchpadEvent.8,Normalized in the range 0...1,https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
 SDL_GamepadTouchpadEvent,"Gamepad touchpad event structure (event.gtouchpad.*)
 ",https://wiki.libsdl.org/SDL3/SDL_GamepadTouchpadEvent
 SDL_GamepadType,"Standard gamepad types.
@@ -2631,12 +2956,51 @@ SDL_HINT_XINPUT_ENABLED,"A variable controlling whether XInput should be used fo
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_XINPUT_ENABLED
 SDL_Haptic,"The haptic structure used to identify an SDL haptic.
 ",https://wiki.libsdl.org/SDL3/SDL_Haptic
+SDL_HapticCondition.0,"SDL_HAPTIC_SPRING, SDL_HAPTIC_DAMPER, SDL_HAPTIC_INERTIA or SDL_HAPTIC_FRICTION",https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.1,Direction of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.2,Duration of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.3,Delay before starting the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.4,Button that triggers the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.5,How soon it can be triggered again after button.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.6,Level when joystick is to the positive side; max 0xFFFF.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.7,Level when joystick is to the negative side; max 0xFFFF.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.8,How fast to increase the force towards the positive side.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.9,How fast to increase the force towards the negative side.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.10,Size of the dead zone; max 0xFFFF: whole axis-range when 0-centered.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticCondition.11,Position of the dead zone.,https://wiki.libsdl.org/SDL3/SDL_HapticCondition
 SDL_HapticCondition,"A structure containing a template for a Condition effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticCondition
+SDL_HapticConstant.0,SDL_HAPTIC_CONSTANT,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.1,Direction of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.2,Duration of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.3,Delay before starting the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.4,Button that triggers the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.5,How soon it can be triggered again after button.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.6,Strength of the constant effect.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.7,Duration of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.8,Level at the start of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.9,Duration of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticConstant.10,Level at the end of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticConstant
 SDL_HapticConstant,"A structure containing a template for a Constant effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticConstant
+SDL_HapticCustom.0,SDL_HAPTIC_CUSTOM,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.1,Direction of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.2,Duration of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.3,Delay before starting the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.4,Button that triggers the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.5,How soon it can be triggered again after button.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.6,"Axes to use, minimum of one.",https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.7,Sample periods.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.8,Amount of samples.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.9,Should contain channels*samples items.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.10,Duration of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.11,Level at the start of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.12,Duration of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticCustom.13,Level at the end of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticCustom
 SDL_HapticCustom,"A structure containing a template for the [SDL_HAPTIC_CUSTOM](SDL_HAPTIC_CUSTOM) effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticCustom
+SDL_HapticDirection.0,The type of encoding.,https://wiki.libsdl.org/SDL3/SDL_HapticDirection
+SDL_HapticDirection.1,The encoded direction.,https://wiki.libsdl.org/SDL3/SDL_HapticDirection
 SDL_HapticDirection,"Structure that represents a haptic direction.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticDirection
 SDL_HapticDirectionType,"Type of coordinates used for haptic direction.
@@ -2651,10 +3015,40 @@ SDL_HapticEffectType,"Type of haptic effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticEffectType
 SDL_HapticID,"This is a unique ID for a haptic device for the time it is connected to the system, and is never reused for the lifetime of the application.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticID
+SDL_HapticLeftRight.0,SDL_HAPTIC_LEFTRIGHT,https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight
+SDL_HapticLeftRight.1,Duration of the effect in milliseconds.,https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight
+SDL_HapticLeftRight.2,Control of the large controller motor.,https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight
+SDL_HapticLeftRight.3,Control of the small controller motor.,https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight
 SDL_HapticLeftRight,"A structure containing a template for a Left/Right effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticLeftRight
+SDL_HapticPeriodic.0,"SDL_HAPTIC_SINE, SDL_HAPTIC_SQUARE SDL_HAPTIC_TRIANGLE, SDL_HAPTIC_SAWTOOTHUP or SDL_HAPTIC_SAWTOOTHDOWN",https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.1,Direction of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.2,Duration of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.3,Delay before starting the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.4,Button that triggers the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.5,How soon it can be triggered again after button.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.6,Period of the wave.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.7,"Peak value; if negative, equivalent to 180 degrees extra phase shift.",https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.8,Mean value of the wave.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.9,Positive phase shift given by hundredth of a degree.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.10,Duration of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.11,Level at the start of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.12,Duration of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticPeriodic.13,Level at the end of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
 SDL_HapticPeriodic,"A structure containing a template for a Periodic effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticPeriodic
+SDL_HapticRamp.0,SDL_HAPTIC_RAMP,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.1,Direction of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.2,Duration of the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.3,Delay before starting the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.4,Button that triggers the effect.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.5,How soon it can be triggered again after button.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.6,Beginning strength level.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.7,Ending strength level.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.8,Duration of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.9,Level at the start of the attack.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.10,Duration of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
+SDL_HapticRamp.11,Level at the end of the fade.,https://wiki.libsdl.org/SDL3/SDL_HapticRamp
 SDL_HapticRamp,"A structure containing a template for a Ramp effect.
 ",https://wiki.libsdl.org/SDL3/SDL_HapticRamp
 SDL_HapticRumbleSupported,"Check whether rumble is supported on a haptic device.
@@ -2844,16 +3238,45 @@ SDL_JOYSTICK_AXIS_MAX,"The largest value an [SDL_Joystick](SDL_Joystick)'s axis 
 ",https://wiki.libsdl.org/SDL3/SDL_JOYSTICK_AXIS_MAX
 SDL_JOYSTICK_AXIS_MIN,"The smallest value an [SDL_Joystick](SDL_Joystick)'s axis can report.
 ",https://wiki.libsdl.org/SDL3/SDL_JOYSTICK_AXIS_MIN
+SDL_JoyAxisEvent.0,SDL_EVENT_JOYSTICK_AXIS_MOTION,https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
+SDL_JoyAxisEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
+SDL_JoyAxisEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
+SDL_JoyAxisEvent.4,The joystick axis index,https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
+SDL_JoyAxisEvent.8,The axis value (range: -32768 to 32767),https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
 SDL_JoyAxisEvent,"Joystick axis motion event structure (event.jaxis.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyAxisEvent
+SDL_JoyBallEvent.0,SDL_EVENT_JOYSTICK_BALL_MOTION,https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBallEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBallEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBallEvent.4,The joystick trackball index,https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBallEvent.8,The relative motion in the X direction,https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBallEvent.9,The relative motion in the Y direction,https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
 SDL_JoyBallEvent,"Joystick trackball motion event structure (event.jball.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyBallEvent
+SDL_JoyBatteryEvent.0,SDL_EVENT_JOYSTICK_BATTERY_UPDATED,https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
+SDL_JoyBatteryEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
+SDL_JoyBatteryEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
+SDL_JoyBatteryEvent.4,The joystick battery state,https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
+SDL_JoyBatteryEvent.5,The joystick battery percent charge remaining,https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
 SDL_JoyBatteryEvent,"Joystick battery level change event structure (event.jbattery.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyBatteryEvent
+SDL_JoyButtonEvent.0,SDL_EVENT_JOYSTICK_BUTTON_DOWN or SDL_EVENT_JOYSTICK_BUTTON_UP,https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
+SDL_JoyButtonEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
+SDL_JoyButtonEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
+SDL_JoyButtonEvent.4,The joystick button index,https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
+SDL_JoyButtonEvent.5,true if the button is pressed,https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
 SDL_JoyButtonEvent,"Joystick button event structure (event.jbutton.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyButtonEvent
+SDL_JoyDeviceEvent.0,SDL_EVENT_JOYSTICK_ADDED or SDL_EVENT_JOYSTICK_REMOVED or SDL_EVENT_JOYSTICK_UPDATE_COMPLETE,https://wiki.libsdl.org/SDL3/SDL_JoyDeviceEvent
+SDL_JoyDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyDeviceEvent
+SDL_JoyDeviceEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyDeviceEvent
 SDL_JoyDeviceEvent,"Joystick device event structure (event.jdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyDeviceEvent
+SDL_JoyHatEvent.0,SDL_EVENT_JOYSTICK_HAT_MOTION,https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
+SDL_JoyHatEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
+SDL_JoyHatEvent.3,The joystick instance id,https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
+SDL_JoyHatEvent.4,The joystick hat index,https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
+SDL_JoyHatEvent.5,The hat position value. *   \sa SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP *   \sa SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT *   \sa SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN * *   Note that zero means the POV is centered.,https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
 SDL_JoyHatEvent,"Joystick hat position change event structure (event.jhat.*)
 ",https://wiki.libsdl.org/SDL3/SDL_JoyHatEvent
 SDL_Joystick,"The joystick structure used to identify an SDL joystick.
@@ -2868,8 +3291,21 @@ SDL_JoystickID,"This is a unique ID for a joystick for the time it is connected 
 ",https://wiki.libsdl.org/SDL3/SDL_JoystickID
 SDL_JoystickType,"An enum of some common joystick types.
 ",https://wiki.libsdl.org/SDL3/SDL_JoystickType
+SDL_KeyboardDeviceEvent.0,SDL_EVENT_KEYBOARD_ADDED or SDL_EVENT_KEYBOARD_REMOVED,https://wiki.libsdl.org/SDL3/SDL_KeyboardDeviceEvent
+SDL_KeyboardDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_KeyboardDeviceEvent
+SDL_KeyboardDeviceEvent.3,The keyboard instance id,https://wiki.libsdl.org/SDL3/SDL_KeyboardDeviceEvent
 SDL_KeyboardDeviceEvent,"Keyboard device event structure (event.kdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_KeyboardDeviceEvent
+SDL_KeyboardEvent.0,SDL_EVENT_KEY_DOWN or SDL_EVENT_KEY_UP,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.3,"The window with keyboard focus, if any",https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.4,"The keyboard instance id, or 0 if unknown or virtual",https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.5,SDL physical key code,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.6,SDL virtual key code,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.7,current key modifiers,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.8,The platform dependent scancode for this event,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.9,true if the key is pressed,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
+SDL_KeyboardEvent.10,true if this is a key repeat,https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
 SDL_KeyboardEvent,"Keyboard button event structure (event.key.*)
 ",https://wiki.libsdl.org/SDL3/SDL_KeyboardEvent
 SDL_KeyboardID,"This is a unique ID for a keyboard for the time it is connected to the system, and is never reused for the lifetime of the application.
@@ -2914,6 +3350,8 @@ SDL_LoadWAV,"Loads a WAV from a file path.
 ",https://wiki.libsdl.org/SDL3/SDL_LoadWAV
 SDL_LoadWAV_IO,"Load the audio data of a WAVE file into memory.
 ",https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO
+SDL_Locale.0,"A language name, like ""en"" for English.",https://wiki.libsdl.org/SDL3/SDL_Locale
+SDL_Locale.1,"A country, like ""US"" for America. Can be NULL.",https://wiki.libsdl.org/SDL3/SDL_Locale
 SDL_Locale,"A struct to provide locale data.
 ",https://wiki.libsdl.org/SDL3/SDL_Locale
 SDL_LockAudioStream,"Lock an audio stream for serialized access.
@@ -3021,6 +3459,8 @@ SDL_MemoryBarrierRelease,"Insert a memory release barrier (macro version).
 ",https://wiki.libsdl.org/SDL3/SDL_MemoryBarrierRelease
 SDL_MemoryBarrierReleaseFunction,"Insert a memory release barrier (function version).
 ",https://wiki.libsdl.org/SDL3/SDL_MemoryBarrierReleaseFunction
+SDL_MessageBoxButtonData.1,User defined button id (value returned via SDL_ShowMessageBox),https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonData
+SDL_MessageBoxButtonData.2,The UTF-8 button text,https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonData
 SDL_MessageBoxButtonData,"Individual button data.
 ",https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonData
 SDL_MessageBoxButtonFlags,"[SDL_MessageBoxButtonData](SDL_MessageBoxButtonData) flags.
@@ -3032,6 +3472,10 @@ SDL_MessageBoxColorScheme,"A set of colors to use for message box dialogs
 SDL_MESSAGEBOX_COLOR_COUNT,Size of the colors array of SDL_MessageBoxColorScheme.,https://wiki.libsdl.org/SDL3/SDL_MessageBoxColorType
 SDL_MessageBoxColorType,"An enumeration of indices inside the colors array of [SDL_MessageBoxColorScheme](SDL_MessageBoxColorScheme).
 ",https://wiki.libsdl.org/SDL3/SDL_MessageBoxColorType
+SDL_MessageBoxData.1,"Parent window, can be NULL",https://wiki.libsdl.org/SDL3/SDL_MessageBoxData
+SDL_MessageBoxData.2,UTF-8 title,https://wiki.libsdl.org/SDL3/SDL_MessageBoxData
+SDL_MessageBoxData.3,UTF-8 message text,https://wiki.libsdl.org/SDL3/SDL_MessageBoxData
+SDL_MessageBoxData.6,"SDL_MessageBoxColorScheme, can be NULL to use system settings",https://wiki.libsdl.org/SDL3/SDL_MessageBoxData
 SDL_MessageBoxData,"MessageBox structure containing title, text, window, etc.
 ",https://wiki.libsdl.org/SDL3/SDL_MessageBoxData
 SDL_MessageBoxFlags,"Message box flags.
@@ -3050,14 +3494,35 @@ SDL_MixAudio,"Mix audio data in a specified format.
 ",https://wiki.libsdl.org/SDL3/SDL_MixAudio
 SDL_MostSignificantBitIndex32,"Get the index of the most significant (set) bit in a 32-bit number.
 ",https://wiki.libsdl.org/SDL3/SDL_MostSignificantBitIndex32
+SDL_MouseButtonEvent.0,SDL_EVENT_MOUSE_BUTTON_DOWN or SDL_EVENT_MOUSE_BUTTON_UP,https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.3,"The window with mouse focus, if any",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.4,"The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.5,The mouse button index,https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.6,true if the button is pressed,https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.7,"1 for single-click, 2 for double-click, etc.",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.9,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
+SDL_MouseButtonEvent.10,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
 SDL_MouseButtonEvent,"Mouse button event structure (event.button.*)
 ",https://wiki.libsdl.org/SDL3/SDL_MouseButtonEvent
 SDL_MouseButtonFlags,"A bitmask of pressed mouse buttons, as reported by [SDL_GetMouseState](SDL_GetMouseState), etc.
 ",https://wiki.libsdl.org/SDL3/SDL_MouseButtonFlags
+SDL_MouseDeviceEvent.0,SDL_EVENT_MOUSE_ADDED or SDL_EVENT_MOUSE_REMOVED,https://wiki.libsdl.org/SDL3/SDL_MouseDeviceEvent
+SDL_MouseDeviceEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_MouseDeviceEvent
+SDL_MouseDeviceEvent.3,The mouse instance id,https://wiki.libsdl.org/SDL3/SDL_MouseDeviceEvent
 SDL_MouseDeviceEvent,"Mouse device event structure (event.mdevice.*)
 ",https://wiki.libsdl.org/SDL3/SDL_MouseDeviceEvent
 SDL_MouseID,"This is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.
 ",https://wiki.libsdl.org/SDL3/SDL_MouseID
+SDL_MouseMotionEvent.0,SDL_EVENT_MOUSE_MOTION,https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.3,"The window with mouse focus, if any",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.4,"The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.5,The current button state,https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.6,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.7,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.8,The relative motion in the X direction,https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
+SDL_MouseMotionEvent.9,The relative motion in the Y direction,https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
 SDL_MouseMotionEvent,"Mouse motion event structure (event.motion.*)
 ",https://wiki.libsdl.org/SDL3/SDL_MouseMotionEvent
 SDL_MouseMotionTransformCallback,"A callback used to transform mouse motion delta from raw values.
@@ -3066,6 +3531,17 @@ SDL_MOUSEWHEEL_NORMAL,The scroll direction is normal,https://wiki.libsdl.org/SDL
 SDL_MOUSEWHEEL_FLIPPED,The scroll direction is flipped / natural,https://wiki.libsdl.org/SDL3/SDL_MouseWheelDirection
 SDL_MouseWheelDirection,"Scroll direction types for the Scroll event
 ",https://wiki.libsdl.org/SDL3/SDL_MouseWheelDirection
+SDL_MouseWheelEvent.0,SDL_EVENT_MOUSE_WHEEL,https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.3,"The window with mouse focus, if any",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.4,The mouse instance id in relative mode or 0,https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.5,"The amount scrolled horizontally, positive to the right and negative to the left",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.6,"The amount scrolled vertically, positive away from the user and negative toward the user",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.7,Set to one of the SDL_MOUSEWHEEL_* defines. When FLIPPED the values in X and Y will be opposite. Multiply by -1 to change them back,https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.8,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.9,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.10,"The amount scrolled horizontally, accumulated to whole scroll ""ticks"" (added in 3.2.12)",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
+SDL_MouseWheelEvent.11,"The amount scrolled vertically, accumulated to whole scroll ""ticks"" (added in 3.2.12)",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
 SDL_MouseWheelEvent,"Mouse wheel event structure (event.wheel.*)
 ",https://wiki.libsdl.org/SDL3/SDL_MouseWheelEvent
 SDL_Mutex,"A means to serialize access to a resource between threads.
@@ -3278,8 +3754,17 @@ SDL_PackedLayout,"Packed component layout.
 ",https://wiki.libsdl.org/SDL3/SDL_PackedLayout
 SDL_PackedOrder,"Packed component order, high bit -> low bit.
 ",https://wiki.libsdl.org/SDL3/SDL_PackedOrder
+SDL_Palette.0,number of elements in `colors`.,https://wiki.libsdl.org/SDL3/SDL_Palette
+SDL_Palette.1,"an array of colors, `ncolors` long.",https://wiki.libsdl.org/SDL3/SDL_Palette
+SDL_Palette.2,"internal use only, do not touch.",https://wiki.libsdl.org/SDL3/SDL_Palette
+SDL_Palette.3,"internal use only, do not touch.",https://wiki.libsdl.org/SDL3/SDL_Palette
 SDL_Palette,"A set of indexed colors representing a palette.
 ",https://wiki.libsdl.org/SDL3/SDL_Palette
+SDL_PathInfo.0,the path type,https://wiki.libsdl.org/SDL3/SDL_PathInfo
+SDL_PathInfo.1,the file size in bytes,https://wiki.libsdl.org/SDL3/SDL_PathInfo
+SDL_PathInfo.2,the time when the path was created,https://wiki.libsdl.org/SDL3/SDL_PathInfo
+SDL_PathInfo.3,the last time the path was modified,https://wiki.libsdl.org/SDL3/SDL_PathInfo
+SDL_PathInfo.4,the last time the path was read,https://wiki.libsdl.org/SDL3/SDL_PathInfo
 SDL_PathInfo,"Information about a path on the filesystem.
 ",https://wiki.libsdl.org/SDL3/SDL_PathInfo
 SDL_PATHTYPE_NONE,path does not exist,https://wiki.libsdl.org/SDL3/SDL_PathType
@@ -3306,8 +3791,26 @@ SDL_PEN_AXIS_TANGENTIAL_PRESSURE,"Pressure from squeezing the pen (""barrel pres
 SDL_PEN_AXIS_COUNT,Total known pen axis types in this version of SDL. This number may grow in future releases!,https://wiki.libsdl.org/SDL3/SDL_PenAxis
 SDL_PenAxis,"Pen axis indices.
 ",https://wiki.libsdl.org/SDL3/SDL_PenAxis
+SDL_PenAxisEvent.0,SDL_EVENT_PEN_AXIS,https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.3,"The window with pen focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.5,Complete pen input state at time of event,https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.6,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.7,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.8,Axis that has changed,https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenAxisEvent.9,New value of axis,https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
 SDL_PenAxisEvent,"Pressure-sensitive pen pressure / angle event structure (event.paxis.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenAxisEvent
+SDL_PenButtonEvent.0,SDL_EVENT_PEN_BUTTON_DOWN or SDL_EVENT_PEN_BUTTON_UP,https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.3,"The window with mouse focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.5,Complete pen input state at time of event,https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.6,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.7,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.8,The pen button index (first button is 1).,https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
+SDL_PenButtonEvent.9,true if the button is pressed,https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
 SDL_PenButtonEvent,"Pressure-sensitive pen button event structure (event.pbutton.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenButtonEvent
 SDL_PEN_DEVICE_TYPE_INVALID,Not a valid pen device.,https://wiki.libsdl.org/SDL3/SDL_PenDeviceType
@@ -3320,12 +3823,36 @@ SDL_PenID,"SDL pen instance IDs.
 ",https://wiki.libsdl.org/SDL3/SDL_PenID
 SDL_PenInputFlags,"Pen input flags, as reported by various pen events' `pen_state` field.
 ",https://wiki.libsdl.org/SDL3/SDL_PenInputFlags
+SDL_PenMotionEvent.0,SDL_EVENT_PEN_MOTION,https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.3,"The window with pen focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.5,Complete pen input state at time of event,https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.6,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenMotionEvent.7,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
 SDL_PenMotionEvent,"Pressure-sensitive pen motion event structure (event.pmotion.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenMotionEvent
+SDL_PenProximityEvent.0,SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OUT,https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
+SDL_PenProximityEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
+SDL_PenProximityEvent.3,"The window with pen focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
+SDL_PenProximityEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenProximityEvent,"Pressure-sensitive pen proximity event structure (event.pproximity.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
+SDL_PenTouchEvent.0,SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.3,"The window with pen focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.5,Complete pen input state at time of event,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.6,"X coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.7,"Y coordinate, relative to window",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.8,true if eraser end is used (not all pens support this).,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PenTouchEvent.9,true if the pen is touching or false if the pen is lifted off,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
 SDL_PenTouchEvent,"Pressure-sensitive pen touched event structure (event.ptouch.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent
+SDL_PinchFingerEvent.0,::SDL_EVENT_PINCH_BEGIN or ::SDL_EVENT_PINCH_UPDATE or ::SDL_EVENT_PINCH_END,https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
+SDL_PinchFingerEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
+SDL_PinchFingerEvent.3,"The scale change since the last SDL_EVENT_PINCH_UPDATE. Scale < 1 is ""zoom out"". Scale > 1 is ""zoom in"".",https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
+SDL_PinchFingerEvent.4,"The window underneath the finger, if any",https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
 SDL_PinchFingerEvent,"Pinch event structure (event.pinch.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PinchFingerEvent
 SDL_PIXELFORMAT_YV12,Planar mode: Y + V + U  (3 planes),https://wiki.libsdl.org/SDL3/SDL_PixelFormat
@@ -3410,6 +3937,8 @@ SDL_QueryGPUFence,"Checks the status of a fence.
 ",https://wiki.libsdl.org/SDL3/SDL_QueryGPUFence
 SDL_Quit,"Clean up all initialized subsystems.
 ",https://wiki.libsdl.org/SDL3/SDL_Quit
+SDL_QuitEvent.0,SDL_EVENT_QUIT,https://wiki.libsdl.org/SDL3/SDL_QuitEvent
+SDL_QuitEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_QuitEvent
 SDL_QuitEvent,"The ""quit requested"" event
 ",https://wiki.libsdl.org/SDL3/SDL_QuitEvent
 SDL_QuitSubSystem,"Shut down specific SDL subsystems.
@@ -3544,6 +4073,9 @@ SDL_RenderDebugText,"Draw debug text to an [SDL_Renderer](SDL_Renderer).
 ",https://wiki.libsdl.org/SDL3/SDL_RenderDebugText
 SDL_RenderDebugTextFormat,"Draw debug text to an [SDL_Renderer](SDL_Renderer).
 ",https://wiki.libsdl.org/SDL3/SDL_RenderDebugTextFormat
+SDL_RenderEvent.0,"SDL_EVENT_RENDER_TARGETS_RESET, SDL_EVENT_RENDER_DEVICE_RESET, SDL_EVENT_RENDER_DEVICE_LOST",https://wiki.libsdl.org/SDL3/SDL_RenderEvent
+SDL_RenderEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_RenderEvent
+SDL_RenderEvent.3,The window containing the renderer in question.,https://wiki.libsdl.org/SDL3/SDL_RenderEvent
 SDL_RenderEvent,"Renderer event structure (event.render.*)
 ",https://wiki.libsdl.org/SDL3/SDL_RenderEvent
 SDL_RenderFillRect,"Fill a rectangle on the current rendering target with the drawing color at subpixel precision.
@@ -3775,6 +4307,11 @@ SDL_SendJoystickVirtualSensorData,"Send a sensor update for an opened virtual jo
 ",https://wiki.libsdl.org/SDL3/SDL_SendJoystickVirtualSensorData
 SDL_Sensor,"The opaque structure used to identify an opened SDL sensor.
 ",https://wiki.libsdl.org/SDL3/SDL_Sensor
+SDL_SensorEvent.0,SDL_EVENT_SENSOR_UPDATE,https://wiki.libsdl.org/SDL3/SDL_SensorEvent
+SDL_SensorEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_SensorEvent
+SDL_SensorEvent.3,The instance ID of the sensor,https://wiki.libsdl.org/SDL3/SDL_SensorEvent
+SDL_SensorEvent.4,Up to 6 values from the sensor - additional values can be queried using SDL_GetSensorData(),https://wiki.libsdl.org/SDL3/SDL_SensorEvent
+SDL_SensorEvent.5,"The timestamp of the sensor reading in nanoseconds, not necessarily synchronized with the system clock",https://wiki.libsdl.org/SDL3/SDL_SensorEvent
 SDL_SensorEvent,"Sensor event structure (event.sensor.*)
 ",https://wiki.libsdl.org/SDL3/SDL_SensorEvent
 SDL_SensorID,"This is a unique ID for a sensor for the time it is connected to the system, and is never reused for the lifetime of the application.
@@ -4208,12 +4745,29 @@ SDL_TRY_ACQUIRE_SHARED,"Wrapper around Clang thread safety analysis annotations.
 ",https://wiki.libsdl.org/SDL3/SDL_TRY_ACQUIRE_SHARED
 SDL_TellIO,"Determine the current read/write offset in an [SDL_IOStream](SDL_IOStream) data stream.
 ",https://wiki.libsdl.org/SDL3/SDL_TellIO
+SDL_TextEditingCandidatesEvent.0,SDL_EVENT_TEXT_EDITING_CANDIDATES,https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.3,"The window with keyboard focus, if any",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.4,"The list of candidates, or NULL if there are no candidates available",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.5,The number of strings in `candidates`,https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.6,"The index of the selected candidate, or -1 if no candidate is selected",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingCandidatesEvent.7,"true if the list is horizontal, false if it's vertical",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
 SDL_TextEditingCandidatesEvent,"Keyboard IME candidates event structure (event.edit_candidates.*)
 ",https://wiki.libsdl.org/SDL3/SDL_TextEditingCandidatesEvent
+SDL_TextEditingEvent.0,SDL_EVENT_TEXT_EDITING,https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
+SDL_TextEditingEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
+SDL_TextEditingEvent.3,"The window with keyboard focus, if any",https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
+SDL_TextEditingEvent.4,The editing text,https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
+SDL_TextEditingEvent.5,"The start cursor of selected editing text, or -1 if not set",https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
+SDL_TextEditingEvent.6,"The length of selected editing text, or -1 if not set",https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
 SDL_TextEditingEvent,"Keyboard text editing event structure (event.edit.*)
 ",https://wiki.libsdl.org/SDL3/SDL_TextEditingEvent
 SDL_TextInputActive,"Check whether or not Unicode text input events are enabled for a window.
 ",https://wiki.libsdl.org/SDL3/SDL_TextInputActive
+SDL_TextInputEvent.0,SDL_EVENT_TEXT_INPUT,https://wiki.libsdl.org/SDL3/SDL_TextInputEvent
+SDL_TextInputEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_TextInputEvent
+SDL_TextInputEvent.3,"The window with keyboard focus, if any",https://wiki.libsdl.org/SDL3/SDL_TextInputEvent
+SDL_TextInputEvent.4,"The input text, UTF-8 encoded",https://wiki.libsdl.org/SDL3/SDL_TextInputEvent
 SDL_TextInputEvent,"Keyboard text input event structure (event.text.*)
 ",https://wiki.libsdl.org/SDL3/SDL_TextInputEvent
 SDL_TEXTINPUT_TYPE_TEXT,The input is text,https://wiki.libsdl.org/SDL3/SDL_TextInputType
@@ -4274,6 +4828,15 @@ SDL_TOUCH_DEVICE_INDIRECT_ABSOLUTE,trackpad with absolute device coordinates,htt
 SDL_TOUCH_DEVICE_INDIRECT_RELATIVE,trackpad with screen cursor-relative coordinates,https://wiki.libsdl.org/SDL3/SDL_TouchDeviceType
 SDL_TouchDeviceType,"An enum that describes the type of a touch device.
 ",https://wiki.libsdl.org/SDL3/SDL_TouchDeviceType
+SDL_TouchFingerEvent.0,"SDL_EVENT_FINGER_DOWN, SDL_EVENT_FINGER_UP, SDL_EVENT_FINGER_MOTION, or SDL_EVENT_FINGER_CANCELED",https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.3,The touch device id,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.5,Normalized in the range 0...1,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.6,Normalized in the range 0...1,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.7,Normalized in the range -1...1,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.8,Normalized in the range -1...1,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.9,Normalized in the range 0...1,https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
+SDL_TouchFingerEvent.10,"The window underneath the finger, if any",https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
 SDL_TouchFingerEvent,"Touch finger event structure (event.tfinger.*)
 ",https://wiki.libsdl.org/SDL3/SDL_TouchFingerEvent
 SDL_TouchID,"A unique ID for a touch device.
@@ -4377,6 +4940,12 @@ SDL_UploadToGPUBuffer,"Uploads data from a transfer buffer to a buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_UploadToGPUBuffer
 SDL_UploadToGPUTexture,"Uploads data from a transfer buffer to a texture.
 ",https://wiki.libsdl.org/SDL3/SDL_UploadToGPUTexture
+SDL_UserEvent.0,"SDL_EVENT_USER through SDL_EVENT_LAST, Uint32 because these are not in the SDL_EventType enumeration",https://wiki.libsdl.org/SDL3/SDL_UserEvent
+SDL_UserEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_UserEvent
+SDL_UserEvent.3,The associated window if any,https://wiki.libsdl.org/SDL3/SDL_UserEvent
+SDL_UserEvent.4,User defined event code,https://wiki.libsdl.org/SDL3/SDL_UserEvent
+SDL_UserEvent.5,User defined data pointer,https://wiki.libsdl.org/SDL3/SDL_UserEvent
+SDL_UserEvent.6,User defined data pointer,https://wiki.libsdl.org/SDL3/SDL_UserEvent
 SDL_UserEvent,"A user-defined event type (event.user.*)
 ",https://wiki.libsdl.org/SDL3/SDL_UserEvent
 SDL_VERSION,"This is the version number macro for the current SDL version.
@@ -4391,12 +4960,44 @@ SDL_VERSIONNUM_MINOR,"This macro extracts the minor version from a version numbe
 ",https://wiki.libsdl.org/SDL3/SDL_VERSIONNUM_MINOR
 SDL_VERSION_ATLEAST,"This macro will evaluate to true if compiled with SDL at least X.Y.Z.
 ",https://wiki.libsdl.org/SDL3/SDL_VERSION_ATLEAST
+SDL_Vertex.0,"Vertex position, in SDL_Renderer coordinates",https://wiki.libsdl.org/SDL3/SDL_Vertex
+SDL_Vertex.1,Vertex color,https://wiki.libsdl.org/SDL3/SDL_Vertex
+SDL_Vertex.2,"Normalized texture coordinates, if needed",https://wiki.libsdl.org/SDL3/SDL_Vertex
 SDL_Vertex,"Vertex structure.
 ",https://wiki.libsdl.org/SDL3/SDL_Vertex
+SDL_VirtualJoystickDesc.0,the version of this interface,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.1,`SDL_JoystickType`,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.2,unused,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.3,the USB vendor ID of this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.4,the USB product ID of this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.5,the number of axes on this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.6,the number of buttons on this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.7,the number of balls on this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.8,the number of hats on this joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.9,"the number of touchpads on this joystick, requires `touchpads` to point at valid descriptions",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.10,"the number of sensors on this joystick, requires `sensors` to point at valid descriptions",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.11,unused,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.12,A mask of which buttons are valid for this controller e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.13,A mask of which axes are valid for this controller e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.14,the name of the joystick,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.15,"A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.16,"A pointer to an array of sensor descriptions, required if `nsensors` is > 0",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.17,User data pointer passed to callbacks,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.18,Called when the joystick state should be updated,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.19,Called when the player index is set,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.20,Implements SDL_RumbleJoystick(),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.21,Implements SDL_RumbleJoystickTriggers(),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.22,Implements SDL_SetJoystickLED(),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.23,Implements SDL_SendJoystickEffect(),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.24,Implements SDL_SetGamepadSensorEnabled(),https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickDesc.25,Cleans up the userdata when the joystick is detached,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
 SDL_VirtualJoystickDesc,"The structure that describes a virtual joystick.
 ",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc
+SDL_VirtualJoystickSensorDesc.0,the type of this sensor,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickSensorDesc
+SDL_VirtualJoystickSensorDesc.1,"the update frequency of this sensor, may be 0.0f",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickSensorDesc
 SDL_VirtualJoystickSensorDesc,"The structure that describes a virtual joystick sensor.
 ",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickSensorDesc
+SDL_VirtualJoystickTouchpadDesc.0,the number of simultaneous fingers on this touchpad,https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickTouchpadDesc
 SDL_VirtualJoystickTouchpadDesc,"The structure that describes a virtual joystick touchpad.
 ",https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickTouchpadDesc
 SDL_Vulkan_CreateSurface,"Create a Vulkan rendering surface for a window.
@@ -4469,6 +5070,11 @@ SDL_WasInit,"Get a mask of the specified subsystems which are currently initiali
 ",https://wiki.libsdl.org/SDL3/SDL_WasInit
 SDL_Window,"The struct used as an opaque handle to a window.
 ",https://wiki.libsdl.org/SDL3/SDL_Window
+SDL_WindowEvent.0,SDL_EVENT_WINDOW_*,https://wiki.libsdl.org/SDL3/SDL_WindowEvent
+SDL_WindowEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_WindowEvent
+SDL_WindowEvent.3,The associated window,https://wiki.libsdl.org/SDL3/SDL_WindowEvent
+SDL_WindowEvent.4,event dependent data,https://wiki.libsdl.org/SDL3/SDL_WindowEvent
+SDL_WindowEvent.5,event dependent data,https://wiki.libsdl.org/SDL3/SDL_WindowEvent
 SDL_WindowEvent,"Window state change event data (event.window.*)
 ",https://wiki.libsdl.org/SDL3/SDL_WindowEvent
 SDL_WindowFlags,"The flags on a window.
@@ -4949,6 +5555,11 @@ IMG_AddAnimationEncoderFrame,"Add a frame to an animation encoder.
 ",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationEncoderFrame
 IMG_AddAnimationFrame,"Add a frame to a stream of images being saved.
 ",https://wiki.libsdl.org/SDL3_image/IMG_AddAnimationFrame
+IMG_Animation.0,The width of the frames,https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_Animation.1,The height of the frames,https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_Animation.2,The number of frames,https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_Animation.3,An array of frames,https://wiki.libsdl.org/SDL3_image/IMG_Animation
+IMG_Animation.4,"An array of frame delays, in milliseconds",https://wiki.libsdl.org/SDL3_image/IMG_Animation
 IMG_Animation,"Animated image support
 ",https://wiki.libsdl.org/SDL3_image/IMG_Animation
 IMG_AnimationDecoder,"An object representing animation decoder.
@@ -5293,6 +5904,9 @@ MIX_PlayTag,"Start (or restart) mixing all tracks with a specific tag for playba
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTag
 MIX_PlayTrack,"Start (or restart) mixing a track for playback.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_PlayTrack
+MIX_Point3D.0,"X coordinate (negative left, positive right).",https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D
+MIX_Point3D.1,"Y coordinate (negative down, positive up).",https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D
+MIX_Point3D.2,"Z coordinate (negative forward, positive back).",https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D
 MIX_Point3D,"3D coordinates for [MIX_SetTrack3DPosition](MIX_SetTrack3DPosition).
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D
 MIX_PostMixCallback,"A callback that fires when all mixing has completed.
@@ -5343,6 +5957,8 @@ MIX_SetTrackStereo,"Force a track to stereo output, with optionally left/right p
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStereo
 MIX_SetTrackStoppedCallback,"Set a callback that fires when a [MIX_Track](MIX_Track) is stopped.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_SetTrackStoppedCallback
+MIX_StereoGains.0,left channel gain,https://wiki.libsdl.org/SDL3_mixer/MIX_StereoGains
+MIX_StereoGains.1,right channel gain,https://wiki.libsdl.org/SDL3_mixer/MIX_StereoGains
 MIX_StereoGains,"A set of per-channel gains for tracks using [MIX_SetTrackStereo](MIX_SetTrackStereo)().
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_StereoGains
 MIX_StopAllTracks,"Halt all currently-playing tracks, possibly fading out over time.
@@ -5427,6 +6043,14 @@ TTF_FontIsScalable,"Query whether a font is scalable or not.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_FontIsScalable
 TTF_FontStyleFlags,"Font style flags for [TTF_Font](TTF_Font)
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_FontStyleFlags
+TTF_GPUAtlasDrawSequence.0,Texture atlas that stores the glyphs,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.1,An array of vertex positions,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.2,An array of normalized texture coordinates for each vertex,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.3,Number of vertices,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.4,An array of indices into the 'vertices' arrays,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.5,Number of indices,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.6,The image type of this draw sequence,https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
+TTF_GPUAtlasDrawSequence.7,The next sequence (will be NULL in case of the last sequence),https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
 TTF_GPUAtlasDrawSequence,"Draw sequence returned by [TTF_GetGPUTextDrawData](TTF_GetGPUTextDrawData)
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence
 TTF_GPUTextEngineWinding,"The winding order of the vertices returned by [TTF_GetGPUTextDrawData](TTF_GetGPUTextDrawData)
@@ -5637,12 +6261,22 @@ TTF_SetTextWrapWidth,"Set whether wrapping is enabled on a text object.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_SetTextWrapWidth
 TTF_StringToTag,"Convert from a 4 character string to a 32-bit tag.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_StringToTag
+TTF_SubString.0,The flags for this substring,https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
+TTF_SubString.1,The byte offset from the beginning of the text,https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
+TTF_SubString.2,The byte length starting at the offset,https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
+TTF_SubString.3,The index of the line that contains this substring,https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
+TTF_SubString.4,"The internal cluster index, used for quickly iterating",https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
+TTF_SubString.5,"The rectangle, relative to the top left of the text, containing the substring",https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
 TTF_SubString,"The representation of a substring within text.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_SubString
 TTF_SubStringFlags,"Flags for [TTF_SubString](TTF_SubString)
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_SubStringFlags
 TTF_TagToString,"Convert from a 32-bit tag to a 4 character string.
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_TagToString
+TTF_Text.0,"A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text. This is updated when the text object is modified and will be freed automatically when the object is destroyed.",https://wiki.libsdl.org/SDL3_ttf/TTF_Text
+TTF_Text.1,"The number of lines in the text, 0 if it's empty",https://wiki.libsdl.org/SDL3_ttf/TTF_Text
+TTF_Text.2,"Application reference count, used when freeing surface",https://wiki.libsdl.org/SDL3_ttf/TTF_Text
+TTF_Text.3,Private,https://wiki.libsdl.org/SDL3_ttf/TTF_Text
 TTF_Text,"Text created with [TTF_CreateText](TTF_CreateText)()
 ",https://wiki.libsdl.org/SDL3_ttf/TTF_Text
 TTF_TextData,"Internal data for [TTF_Text](TTF_Text)

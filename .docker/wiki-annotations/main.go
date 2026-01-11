@@ -75,6 +75,7 @@ func main() {
 			if description == "" {
 				continue
 			}
+
 			// Try to add enum comments if any
 			enumTypedef := "typedef enum " + id
 			for i = 0; i < len(lines); i++ {
@@ -128,6 +129,67 @@ func main() {
 							Description: strings.TrimSpace(comment),
 							URL:         fmt.Sprintf("https://wiki.libsdl.org/%s/%s", c.Library, id),
 						})
+					}
+					break
+				}
+			}
+
+			// Try to add struct comments if any
+			structTypedef := "typedef struct " + id
+			for i = 0; i < len(lines); i++ {
+				// Check if it's a multiline struct typedef and look for field comments
+				if strings.HasPrefix(lines[i], structTypedef) && !strings.Contains(lines[i], ";") {
+					i += 2 // Skip open brace
+					// List struct fields
+					fieldIdx := 0
+					for ; i < len(lines); i++ {
+						lines[i] = strings.Trim(lines[i], " \t")
+						if strings.HasPrefix(lines[i], "}") {
+							break
+						}
+						idx := strings.IndexAny(lines[i], ";")
+						if idx == -1 {
+							continue
+						}
+
+						// Comment parsing
+						idx = strings.Index(lines[i], "/**<")
+						if idx == -1 {
+							// Still increment field index as we met a ';'
+							fieldIdx++
+							continue
+						}
+						idx += 4
+						// Start building comment
+						var comment string
+						end := strings.Index(lines[i], "*/")
+						if end != -1 {
+							comment = lines[i][idx : end-1]
+						}
+						if end == -1 {
+							var found bool
+							for ; i < len(lines); i++ {
+								lines[i] = strings.TrimSpace(lines[i])
+								end = strings.Index(lines[i], "*/")
+								if end != -1 {
+									found = true
+									comment += " " + lines[i][:end]
+									break
+								}
+								comment += " " + lines[i][idx:]
+								idx = 0
+							}
+							if !found {
+								break
+							}
+						}
+						// Add entry
+						entries = append(entries, &Entry{
+							Id:          fmt.Sprintf("%s.%d", id, fieldIdx),
+							Description: strings.TrimSpace(comment),
+							URL:         fmt.Sprintf("https://wiki.libsdl.org/%s/%s", c.Library, id),
+						})
+						fieldIdx++
 					}
 					break
 				}
