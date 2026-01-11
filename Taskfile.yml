@@ -6,40 +6,40 @@ tasks:
         cmds:
             # Install purego-gen
             - go install github.com/Zyko0/purego-gen/cmd/purego-gen@latest
-    
+
     gen-ffi:
         desc: Generate ffi.json files for SDL3 libraries
         cmds:
             # Generate ffi.json files
             - docker build ./.docker/ffi/ -t sdl3ffi
-            - docker create --name tmp sdl3ffi
-            - docker cp tmp:/sdl_ffi.json ./cmd/internal/assets/ffi/sdl.json
-            - docker cp tmp:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
-            - docker cp tmp:/mixer_ffi.json ./cmd/internal/assets/ffi/mixer.json
-            - docker cp tmp:/image_ffi.json ./cmd/internal/assets/ffi/img.json
-            - docker rm -f tmp
+            - docker create --name ffi sdl3ffi
+            - docker cp ffi:/sdl_ffi.json ./cmd/internal/assets/ffi/sdl.json
+            - docker cp ffi:/ttf_ffi.json ./cmd/internal/assets/ffi/ttf.json
+            - docker cp ffi:/mixer_ffi.json ./cmd/internal/assets/ffi/mixer.json
+            - docker cp ffi:/image_ffi.json ./cmd/internal/assets/ffi/img.json
+            - docker rm -f ffi
     
     extract-wiki:
         desc: Extract documentation annotations from SDL3 wiki repository
         cmds:
             # Extract SDL3 wiki annotations
             - docker build ./.docker/wiki-annotations/ -t sdl3wiki
-            - docker create --name tmp sdl3wiki
-            - docker cp tmp:/go/annotations.csv ./cmd/internal/assets/wiki/annotations.csv
-            - docker rm -f tmp
+            - docker create --name wiki sdl3wiki
+            - docker cp wiki:/go/annotations.csv ./cmd/internal/assets/wiki/annotations.csv
+            - docker rm -f wiki
     
     build-wasm-lib:
         desc: Build SDL3 library as a wasm binary file
         cmds:
             # Generate emscripten wasm binary file
             - docker build ./.docker/emscripten-build/ -t sdl3wasm
-            - docker create --name tmp sdl3wasm
-            - docker cp tmp:/_out ./out_test
+            - docker create --name wasm sdl3wasm
+            - docker cp wasm:/_out ./out_test
             - docker rm -f tmp
     
     gen-bindings:
         desc: Generate Go bindings for a chosen SDL3 library
-        deps: [tools, gen-ffi]
+        deps: [tools, gen-ffi, extract-wiki]
         requires:
             vars: [LIBRARY]
         vars:
@@ -53,20 +53,33 @@ tasks:
                 - '{{.DIR}}/glue.go'
         cmds:
             # Generate SDL3 bindings 
-            - go run ./cmd/ffi2go --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json"
-            - purego-gen --no-warnings --function-name "initialize" --input {{.INPUT}} --extra {{.EXTRA | join ","}}
+            - |
+                go run ./cmd/ffi2go \
+                    --config "cmd/internal/assets/config/{{.LIBRARY}}.json" \
+                    --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json" \
+                    --annotations "cmd/internal/assets/wiki/annotations.csv"
+            - |
+                purego-gen \
+                    --no-warnings \
+                    --function-name "initialize" \
+                    --input {{.INPUT}} \
+                    --extra {{.EXTRA | join ","}}
             - '{{if regexMatch .LIBRARY "sdl|ttf"}}purego-gen --no-library-handle --no-warnings --function-name "initialize_ex" --input {{.DIR}}/{{.LIBRARY}}_functions_ex.go --extra {{.EXTRA | join ","}}{{end}}'
     
     gen-doc:
         deps: [extract-wiki]
-        desc: Generate documentation for functions and types of the chosen SDL3 library
+        desc: Generate documentation headers for exposed functions and custom types for the specified SDL3 library
         requires:
           vars: [LIBRARY]
         vars:
             DIR: '{{.LIBRARY}}'
         cmds:
             # Generate SDL3 documentation on top of functions and types
-            - go run ./cmd/docgen --config "cmd/internal/assets/config/{{.LIBRARY}}.json" --dir {{ .DIR }} --annotations "cmd/internal/assets/wiki/annotations.csv"
+            - |
+                go run ./cmd/docgen \
+                    --dir {{ .DIR }} \
+                    --config "cmd/internal/assets/config/{{.LIBRARY}}.json" \
+                    --annotations "cmd/internal/assets/wiki/annotations.csv"
 
     coverage:
         desc: Update the COVERAGE.md file with functions covered by the bindings for SDL3 libraries
@@ -75,7 +88,10 @@ tasks:
         cmds:
             - for:
                 var: LIBS
-              cmd: go run ./cmd/coverage --config "cmd/internal/assets/config/{{.ITEM}}.json" --dir {{.ITEM}}
+              cmd: |
+                go run ./cmd/coverage \
+                    --dir {{.ITEM}} \
+                    --config "cmd/internal/assets/config/{{.ITEM}}.json"
     
     fmt:
         desc: Format go code
