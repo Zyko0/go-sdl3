@@ -8,7 +8,7 @@ type HintingFlags uint32
 
 const (
 	HINTING_INVALID        HintingFlags = 4294967295
-	HINTING_NORMAL         HintingFlags = 0 // Hinting flags // Normal hinting applies standard grid-fitting.
+	HINTING_NORMAL         HintingFlags = 0 // Normal hinting applies standard grid-fitting.
 	HINTING_LIGHT          HintingFlags = 1 // Light hinting applies subtle adjustments to improve rendering.
 	HINTING_MONO           HintingFlags = 2 // Monochrome hinting adjusts the font for better rendering at lower resolutions.
 	HINTING_NONE           HintingFlags = 3 // No hinting, the font is rendered without any grid-fitting.

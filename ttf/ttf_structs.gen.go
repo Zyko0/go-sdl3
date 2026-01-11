@@ -11,34 +11,34 @@ type Font struct{}
 // TTF_Text - Text created with [TTF_CreateText](TTF_CreateText)()
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_Text)
 type Text struct {
-	Text     string
-	NumLines int32
-	Refcount int32
-	Internal *TextData
+	Text     string    // A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text. This is updated when the text object is modified and will be freed automatically when the object is destroyed.
+	NumLines int32     // The number of lines in the text, 0 if it's empty
+	Refcount int32     // Application reference count, used when freeing surface
+	Internal *TextData // Private
 }
 
 // TTF_GPUAtlasDrawSequence - Draw sequence returned by [TTF_GetGPUTextDrawData](TTF_GetGPUTextDrawData)
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence)
 type GPUAtlasDrawSequence struct {
-	AtlasTexture *sdl.GPUTexture
-	Xy           *sdl.FPoint
-	Uv           *sdl.FPoint
-	NumVertices  int32
-	Indices      *int32
-	NumIndices   int32
-	ImageType    ImageType
-	Next         *GPUAtlasDrawSequence
+	AtlasTexture *sdl.GPUTexture       // Texture atlas that stores the glyphs
+	Xy           *sdl.FPoint           // An array of vertex positions
+	Uv           *sdl.FPoint           // An array of normalized texture coordinates for each vertex
+	NumVertices  int32                 // Number of vertices
+	Indices      *int32                // An array of indices into the 'vertices' arrays
+	NumIndices   int32                 // Number of indices
+	ImageType    ImageType             // The image type of this draw sequence
+	Next         *GPUAtlasDrawSequence // The next sequence (will be NULL in case of the last sequence)
 }
 
 // TTF_SubString - The representation of a substring within text.
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_SubString)
 type SubString struct {
-	Flags        SubStringFlags
-	Offset       int32
-	Length       int32
-	LineIndex    int32
-	ClusterIndex int32
-	Rect         sdl.Rect
+	Flags        SubStringFlags // The flags for this substring
+	Offset       int32          // The byte offset from the beginning of the text
+	Length       int32          // The byte length starting at the offset
+	LineIndex    int32          // The index of the line that contains this substring
+	ClusterIndex int32          // The internal cluster index, used for quickly iterating
+	Rect         sdl.Rect       // The rectangle, relative to the top left of the text, containing the substring
 }
 
 type FillOperation struct {
