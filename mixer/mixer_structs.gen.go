@@ -21,16 +21,16 @@ type Group struct{}
 // MIX_StereoGains - A set of per-channel gains for tracks using [MIX_SetTrackStereo](MIX_SetTrackStereo)().
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_StereoGains)
 type StereoGains struct {
-	Left  float32
-	Right float32
+	Left  float32 // left channel gain
+	Right float32 // right channel gain
 }
 
 // MIX_Point3D - 3D coordinates for [MIX_SetTrack3DPosition](MIX_SetTrack3DPosition).
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_Point3D)
 type Point3D struct {
-	X float32
-	Y float32
-	Z float32
+	X float32 // X coordinate (negative left, positive right).
+	Y float32 // Y coordinate (negative down, positive up).
+	Z float32 // Z coordinate (negative forward, positive back).
 }
 
 // MIX_AudioDecoder - An opaque object that represents an audio decoder.
