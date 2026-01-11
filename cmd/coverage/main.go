@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"io"
@@ -20,7 +19,7 @@ var (
 	regJsFunc  = regexp.MustCompile(`.*\s=\sfunc`)
 	regJS      *regexp.Regexp
 
-	cfg        assets.Config
+	cfg        *assets.Config
 	apiRefCode string
 )
 
@@ -143,15 +142,13 @@ func main() {
 	flag.StringVar(&dir, "dir", "", "base directory to generate from/to")
 	flag.Parse()
 
-	// Parse config
-	b, err := os.ReadFile(configPath)
+	// Load config
+	var err error
+	cfg, err = assets.LoadConfig(configPath)
 	if err != nil {
-		log.Fatal("couldn't read config.json file: ", err)
+		log.Fatal("couldn't parse config file: ", err)
 	}
-	err = json.Unmarshal(b, &cfg)
-	if err != nil {
-		log.Fatal("couldn't unmarshal config file: ", err)
-	}
+
 	regJS, err = regexp.Compile(fmt.Sprintf(`"_%s([A-Z][A-Za-z_0-9]+)",`, cfg.Prefix))
 	if err != nil {
 		log.Fatal(err)
@@ -162,7 +159,7 @@ func main() {
 	if err != nil {
 		log.Fatal("couldn't download api ref: ", err)
 	}
-	b, err = io.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal("couldn't read http response body: ", err)
 	}
