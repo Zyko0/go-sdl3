@@ -22,4 +22,7 @@ var (
 
 	//puregogen:function symbol=SDL_ShowSaveFileDialog
 	iShowSaveFileDialog func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte)
+
+	//puregogen:function symbol=SDL_AttachVirtualJoystick
+	iAttachVirtualJoystick func(desc *virtualJoystickDesc) JoystickID
 )

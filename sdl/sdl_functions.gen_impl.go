@@ -470,7 +470,6 @@ var (
 	_addr_SDL_OpenJoystick                          uintptr
 	_addr_SDL_GetJoystickFromID                     uintptr
 	_addr_SDL_GetJoystickFromPlayerIndex            uintptr
-	_addr_SDL_AttachVirtualJoystick                 uintptr
 	_addr_SDL_DetachVirtualJoystick                 uintptr
 	_addr_SDL_IsJoystickVirtual                     uintptr
 	_addr_SDL_SetJoystickVirtualAxis                uintptr
@@ -2825,10 +2824,6 @@ func initialize() {
 	_addr_SDL_GetJoystickFromPlayerIndex, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetJoystickFromPlayerIndex")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetJoystickFromPlayerIndex")
-	}
-	_addr_SDL_AttachVirtualJoystick, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_AttachVirtualJoystick")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_AttachVirtualJoystick")
 	}
 	_addr_SDL_DetachVirtualJoystick, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_DetachVirtualJoystick")
 	if err != nil {
@@ -7651,12 +7646,6 @@ func initialize() {
 	iGetJoystickFromPlayerIndex = func(player_index int32) *Joystick {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_GetJoystickFromPlayerIndex, uintptr(player_index))
 		__r0 := (*Joystick)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		return __r0
-	}
-	iAttachVirtualJoystick = func(desc *VirtualJoystickDesc) JoystickID {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AttachVirtualJoystick, uintptr(unsafe.Pointer(desc)))
-		__r0 := JoystickID(_r0)
-		runtime.KeepAlive(desc)
 		return __r0
 	}
 	iDetachVirtualJoystick = func(instance_id JoystickID) bool {

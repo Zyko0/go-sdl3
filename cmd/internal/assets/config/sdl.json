@@ -27,6 +27,7 @@
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
         "Palette",
+        "VirtualJoystickDesc",
         "VkInstance",
         "VkPhysicalDevice",
         "VkSurfaceKHR",
@@ -46,7 +47,8 @@
         "SDL_SetTrayEntryCallback",
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
-        "SDL_ShowSaveFileDialog"
+        "SDL_ShowSaveFileDialog",
+        "SDL_AttachVirtualJoystick"
     ],
     "allowlisted_functions": [
         "SDL_free"

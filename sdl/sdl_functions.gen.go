@@ -2409,11 +2409,6 @@ var (
 	//puregogen:function symbol=SDL_GetJoystickFromPlayerIndex
 	iGetJoystickFromPlayerIndex func(player_index int32) *Joystick
 
-	// SDL_AttachVirtualJoystick => Attach a new virtual joystick.
-	//
-	//puregogen:function symbol=SDL_AttachVirtualJoystick
-	iAttachVirtualJoystick func(desc *VirtualJoystickDesc) JoystickID
-
 	// SDL_DetachVirtualJoystick => Detach a virtual joystick.
 	//
 	//puregogen:function symbol=SDL_DetachVirtualJoystick

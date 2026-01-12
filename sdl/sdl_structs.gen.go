@@ -230,37 +230,6 @@ type VirtualJoystickSensorDesc struct {
 	Rate float32    // the update frequency of this sensor, may be 0.0f
 }
 
-// SDL_VirtualJoystickDesc - The structure that describes a virtual joystick.
-// (https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc)
-type VirtualJoystickDesc struct {
-	Version           uint32                       // the version of this interface
-	Type              uint16                       // `SDL_JoystickType`
-	padding           uint16                       // unused
-	VendorId          uint16                       // the USB vendor ID of this joystick
-	ProductId         uint16                       // the USB product ID of this joystick
-	Naxes             uint16                       // the number of axes on this joystick
-	Nbuttons          uint16                       // the number of buttons on this joystick
-	Nballs            uint16                       // the number of balls on this joystick
-	Nhats             uint16                       // the number of hats on this joystick
-	Ntouchpads        uint16                       // the number of touchpads on this joystick, requires `touchpads` to point at valid descriptions
-	Nsensors          uint16                       // the number of sensors on this joystick, requires `sensors` to point at valid descriptions
-	padding2          [2]uint16                    // unused
-	ButtonMask        uint32                       // A mask of which buttons are valid for this controller e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH)
-	AxisMask          uint32                       // A mask of which axes are valid for this controller e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX)
-	Name              string                       // the name of the joystick
-	Touchpads         *VirtualJoystickTouchpadDesc // A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0
-	Sensors           *VirtualJoystickSensorDesc   // A pointer to an array of sensor descriptions, required if `nsensors` is > 0
-	Userdata          Pointer                      // User data pointer passed to callbacks
-	Update            Pointer                      // Called when the joystick state should be updated
-	SetPlayerIndex    Pointer                      // Called when the player index is set
-	Rumble            Pointer                      // Implements SDL_RumbleJoystick()
-	RumbleTriggers    Pointer                      // Implements SDL_RumbleJoystickTriggers()
-	SetLED            Pointer                      // Implements SDL_SetJoystickLED()
-	SendEffect        Pointer                      // Implements SDL_SendJoystickEffect()
-	SetSensorsEnabled Pointer                      // Implements SDL_SetGamepadSensorEnabled()
-	Cleanup           Pointer                      // Cleans up the userdata when the joystick is detached
-}
-
 // SDL_Gamepad - The structure used to identify an SDL gamepad
 // (https://wiki.libsdl.org/SDL3/SDL_Gamepad)
 type Gamepad struct{}
