@@ -3317,7 +3317,7 @@ func (renderer *Renderer) TextureAddressMode() (TextureAddressMode, TextureAddre
 // SDL_CreateGPURenderState - Create custom GPU render state.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateGPURenderState)
 func (renderer *Renderer) CreateGPURenderState(info *GPURenderStateCreateInfo) (*GPURenderState, error) {
-	state := iCreateGPURenderState(renderer, info)
+	state := iCreateGPURenderState(renderer, info.as())
 	if state == nil {
 		return nil, internal.LastErr()
 	}

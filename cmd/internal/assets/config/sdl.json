@@ -23,10 +23,12 @@
         "GPUComputePipelineCreateInfo",
         "GPUGraphicsPipelineCreateInfo",
         "GPUGraphicsPipelineTargetInfo",
+        "GPURenderStateCreateInfo",
         "GPUVertexInputState",
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
         "Palette",
+        "VirtualJoystickDesc",
         "VkInstance",
         "VkPhysicalDevice",
         "VkSurfaceKHR",
@@ -46,7 +48,9 @@
         "SDL_SetTrayEntryCallback",
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
-        "SDL_ShowSaveFileDialog"
+        "SDL_ShowSaveFileDialog",
+        "SDL_AttachVirtualJoystick",
+        "SDL_CreateGPURenderState"
     ],
     "allowlisted_functions": [
         "SDL_free"

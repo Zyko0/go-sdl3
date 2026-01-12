@@ -2409,11 +2409,6 @@ var (
 	//puregogen:function symbol=SDL_GetJoystickFromPlayerIndex
 	iGetJoystickFromPlayerIndex func(player_index int32) *Joystick
 
-	// SDL_AttachVirtualJoystick => Attach a new virtual joystick.
-	//
-	//puregogen:function symbol=SDL_AttachVirtualJoystick
-	iAttachVirtualJoystick func(desc *VirtualJoystickDesc) JoystickID
-
 	// SDL_DetachVirtualJoystick => Detach a virtual joystick.
 	//
 	//puregogen:function symbol=SDL_DetachVirtualJoystick
@@ -4788,11 +4783,6 @@ var (
 	//
 	//puregogen:function symbol=SDL_GetDefaultTextureScaleMode
 	iGetDefaultTextureScaleMode func(renderer *Renderer, scale_mode *ScaleMode) bool
-
-	// SDL_CreateGPURenderState => Create custom GPU render state.
-	//
-	//puregogen:function symbol=SDL_CreateGPURenderState
-	iCreateGPURenderState func(renderer *Renderer, createinfo *GPURenderStateCreateInfo) *GPURenderState
 
 	// SDL_SetGPURenderStateFragmentUniforms => Set fragment shader uniform variables in a custom GPU render state.
 	//

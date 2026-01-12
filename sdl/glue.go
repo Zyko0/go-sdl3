@@ -124,7 +124,7 @@ func (e *Event) TextEditingEvent() *TextEditingEvent {
 	}
 	return &TextEditingEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
@@ -196,7 +196,7 @@ func (e *Event) TextInputEvent() *TextInputEvent {
 	}
 	return &TextInputEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
@@ -407,7 +407,7 @@ func (e *Event) DropEvent() *DropEvent {
 	}
 	return &DropEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		X:         impl.X,
@@ -415,15 +415,6 @@ func (e *Event) DropEvent() *DropEvent {
 		Source:    internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Source))),
 		Data:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Data))),
 	}
-}
-
-type clipboardEvent struct {
-	Type         EventType
-	Reserved     uint32
-	Timestamp    uint64
-	Owner        bool
-	NumMimeTypes int32
-	MimeTypes    *string
 }
 
 // SDL_ClipboardEvent - An event triggered when the clipboard contents have changed (event.clipboard.*)
@@ -435,6 +426,15 @@ type ClipboardEvent struct {
 	Owner        bool
 	NumMimeTypes int32
 	MimeTypes    []string
+}
+
+type clipboardEvent struct {
+	Type         EventType
+	Reserved     uint32
+	Timestamp    uint64
+	Owner        bool
+	NumMimeTypes int32
+	MimeTypes    *string
 }
 
 func (e *Event) ClipboardEvent() *ClipboardEvent {
@@ -689,6 +689,13 @@ type GPUGraphicsPipelineTargetInfo struct {
 	HasDepthStencilTarget   bool
 }
 
+// SDL_GPUVertexInputState - A structure specifying the parameters of a graphics pipeline vertex input state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState)
+type GPUVertexInputState struct {
+	VertexBufferDescriptions []GPUVertexBufferDescription
+	VertexAttributes         []GPUVertexAttribute
+}
+
 type gpuVertexInputState struct {
 	VertexBufferDescriptions *GPUVertexBufferDescription
 	NumVertexBuffers         uint32
@@ -705,11 +712,18 @@ func (state *GPUVertexInputState) as() gpuVertexInputState {
 	}
 }
 
-// SDL_GPUVertexInputState - A structure specifying the parameters of a graphics pipeline vertex input state.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUVertexInputState)
-type GPUVertexInputState struct {
-	VertexBufferDescriptions []GPUVertexBufferDescription
-	VertexAttributes         []GPUVertexAttribute
+// SDL_GPUGraphicsPipelineCreateInfo - A structure specifying the parameters of a graphics pipeline state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo)
+type GPUGraphicsPipelineCreateInfo struct {
+	VertexShader      *GPUShader                    // The vertex shader used by the graphics pipeline.
+	FragmentShader    *GPUShader                    // The fragment shader used by the graphics pipeline.
+	VertexInputState  GPUVertexInputState           // The vertex layout of the graphics pipeline.
+	PrimitiveType     GPUPrimitiveType              // The primitive topology of the graphics pipeline.
+	RasterizerState   GPURasterizerState            // The rasterizer state of the graphics pipeline.
+	MultisampleState  GPUMultisampleState           // The multisample state of the graphics pipeline.
+	DepthStencilState GPUDepthStencilState          // The depth-stencil state of the graphics pipeline.
+	TargetInfo        GPUGraphicsPipelineTargetInfo // Formats and blend modes for the render targets of the graphics pipeline.
+	Props             PropertiesID                  // A properties ID for extensions. Should be 0 if no extensions are needed.
 }
 
 type gpuGraphicsPipelineCreateInfo struct {
@@ -741,20 +755,6 @@ func (info *GPUGraphicsPipelineCreateInfo) as() *gpuGraphicsPipelineCreateInfo {
 	}
 }
 
-// SDL_GPUGraphicsPipelineCreateInfo - A structure specifying the parameters of a graphics pipeline state.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUGraphicsPipelineCreateInfo)
-type GPUGraphicsPipelineCreateInfo struct {
-	VertexShader      *GPUShader                    // The vertex shader used by the graphics pipeline.
-	FragmentShader    *GPUShader                    // The fragment shader used by the graphics pipeline.
-	VertexInputState  GPUVertexInputState           // The vertex layout of the graphics pipeline.
-	PrimitiveType     GPUPrimitiveType              // The primitive topology of the graphics pipeline.
-	RasterizerState   GPURasterizerState            // The rasterizer state of the graphics pipeline.
-	MultisampleState  GPUMultisampleState           // The multisample state of the graphics pipeline.
-	DepthStencilState GPUDepthStencilState          // The depth-stencil state of the graphics pipeline.
-	TargetInfo        GPUGraphicsPipelineTargetInfo // Formats and blend modes for the render targets of the graphics pipeline.
-	Props             PropertiesID                  // A properties ID for extensions. Should be 0 if no extensions are needed.
-}
-
 // SDL_Palette - A set of indexed colors representing a palette.
 // (https://wiki.libsdl.org/SDL3/SDL_Palette)
 type Palette struct {
@@ -762,6 +762,153 @@ type Palette struct {
 	colors   *Color
 	version  uint32
 	refcount int32
+}
+
+// SDL_VirtualJoystickDesc - The structure that describes a virtual joystick.
+// (https://wiki.libsdl.org/SDL3/SDL_VirtualJoystickDesc)
+type VirtualJoystickDesc struct {
+	Version           uint32                        // the version of this interface
+	Type              JoystickType                  // `SDL_JoystickType`
+	VendorId          uint16                        // the USB vendor ID of this joystick
+	ProductId         uint16                        // the USB product ID of this joystick
+	Naxes             uint16                        // the number of axes on this joystick
+	Nbuttons          uint16                        // the number of buttons on this joystick
+	Nballs            uint16                        // the number of balls on this joystick
+	Nhats             uint16                        // the number of hats on this joystick
+	ButtonMask        uint32                        // A mask of which buttons are valid for this controller e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH)
+	AxisMask          uint32                        // A mask of which axes are valid for this controller e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX)
+	Name              string                        // the name of the joystick
+	Touchpads         []VirtualJoystickTouchpadDesc // A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0
+	Sensors           []VirtualJoystickSensorDesc   // A pointer to an array of sensor descriptions, required if `nsensors` is > 0
+	Update            Pointer                       // Called when the joystick state should be updated
+	SetPlayerIndex    Pointer                       // Called when the player index is set
+	Rumble            Pointer                       // Implements SDL_RumbleJoystick()
+	RumbleTriggers    Pointer                       // Implements SDL_RumbleJoystickTriggers()
+	SetLED            Pointer                       // Implements SDL_SetJoystickLED()
+	SendEffect        Pointer                       // Implements SDL_SendJoystickEffect()
+	SetSensorsEnabled Pointer                       // Implements SDL_SetGamepadSensorEnabled()
+}
+
+type virtualJoystickDesc struct {
+	Version           uint32                       // the version of this interface
+	Type              uint16                       // `SDL_JoystickType`
+	padding           uint16                       // unused
+	VendorId          uint16                       // the USB vendor ID of this joystick
+	ProductId         uint16                       // the USB product ID of this joystick
+	Naxes             uint16                       // the number of axes on this joystick
+	Nbuttons          uint16                       // the number of buttons on this joystick
+	Nballs            uint16                       // the number of balls on this joystick
+	Nhats             uint16                       // the number of hats on this joystick
+	Ntouchpads        uint16                       // the number of touchpads on this joystick, requires `touchpads` to point at valid descriptions
+	Nsensors          uint16                       // the number of sensors on this joystick, requires `sensors` to point at valid descriptions
+	padding2          [2]uint16                    // unused
+	ButtonMask        uint32                       // A mask of which buttons are valid for this controller e.g. (1 << SDL_GAMEPAD_BUTTON_SOUTH)
+	AxisMask          uint32                       // A mask of which axes are valid for this controller e.g. (1 << SDL_GAMEPAD_AXIS_LEFTX)
+	Name              *byte                        // the name of the joystick
+	Touchpads         *VirtualJoystickTouchpadDesc // A pointer to an array of touchpad descriptions, required if `ntouchpads` is > 0
+	Sensors           *VirtualJoystickSensorDesc   // A pointer to an array of sensor descriptions, required if `nsensors` is > 0
+	Userdata          Pointer                      // User data pointer passed to callbacks
+	Update            Pointer                      // Called when the joystick state should be updated
+	SetPlayerIndex    Pointer                      // Called when the player index is set
+	Rumble            Pointer                      // Implements SDL_RumbleJoystick()
+	RumbleTriggers    Pointer                      // Implements SDL_RumbleJoystickTriggers()
+	SetLED            Pointer                      // Implements SDL_SetJoystickLED()
+	SendEffect        Pointer                      // Implements SDL_SendJoystickEffect()
+	SetSensorsEnabled Pointer                      // Implements SDL_SetGamepadSensorEnabled()
+	Cleanup           Pointer                      // Cleans up the userdata when the joystick is detached
+}
+
+func (desc *VirtualJoystickDesc) as() *virtualJoystickDesc {
+	if desc == nil {
+		return nil
+	}
+
+	var touchpads *VirtualJoystickTouchpadDesc
+	var sensors *VirtualJoystickSensorDesc
+	var nilPointer internal.Pointer
+	if len(desc.Touchpads) > 0 {
+		touchpads = unsafe.SliceData(desc.Touchpads)
+	}
+	if len(desc.Sensors) > 0 {
+		sensors = unsafe.SliceData(desc.Sensors)
+	}
+	return &virtualJoystickDesc{
+		Version:           desc.Version,
+		Type:              uint16(desc.Type),
+		padding:           0,
+		VendorId:          desc.VendorId,
+		ProductId:         desc.ProductId,
+		Naxes:             desc.Naxes,
+		Nbuttons:          desc.Nbuttons,
+		Nballs:            desc.Nballs,
+		Nhats:             desc.Nhats,
+		Ntouchpads:        uint16(len(desc.Touchpads)),
+		Nsensors:          uint16(len(desc.Sensors)),
+		padding2:          [2]uint16{},
+		ButtonMask:        desc.ButtonMask,
+		AxisMask:          desc.AxisMask,
+		Name:              internal.StringToNullablePtr(desc.Name),
+		Touchpads:         touchpads,
+		Sensors:           sensors,
+		Userdata:          nilPointer,
+		Update:            desc.Update,
+		SetPlayerIndex:    desc.SetPlayerIndex,
+		Rumble:            desc.Rumble,
+		RumbleTriggers:    desc.RumbleTriggers,
+		SetLED:            desc.SetLED,
+		SendEffect:        desc.SendEffect,
+		SetSensorsEnabled: desc.SetSensorsEnabled,
+		Cleanup:           nilPointer,
+	}
+}
+
+// SDL_GPURenderStateCreateInfo - A structure specifying the parameters of a GPU render state.
+// (https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo)
+type GPURenderStateCreateInfo struct {
+	FragmentShader  *GPUShader                 // The fragment shader to use when this render state is active
+	SamplerBindings []GPUTextureSamplerBinding // Additional fragment samplers to bind when this render state is active
+	StorageTextures []*GPUTexture              // Storage textures to bind when this render state is active
+	StorageBuffers  []*GPUBuffer               // Storage buffers to bind when this render state is active
+	Props           PropertiesID               // A properties ID for extensions. Should be 0 if no extensions are needed.
+}
+
+type gpuRenderStateCreateInfo struct {
+	FragmentShader     *GPUShader                // The fragment shader to use when this render state is active
+	NumSamplerBindings int32                     // The number of additional fragment samplers to bind when this render state is active
+	SamplerBindings    *GPUTextureSamplerBinding // Additional fragment samplers to bind when this render state is active
+	NumStorageTextures int32                     // The number of storage textures to bind when this render state is active
+	StorageTextures    **GPUTexture              // Storage textures to bind when this render state is active
+	NumStorageBuffers  int32                     // The number of storage buffers to bind when this render state is active
+	StorageBuffers     **GPUBuffer               // Storage buffers to bind when this render state is active
+	Props              PropertiesID              // A properties ID for extensions. Should be 0 if no extensions are needed.
+}
+
+func (info *GPURenderStateCreateInfo) as() *gpuRenderStateCreateInfo {
+	if info == nil {
+		return nil
+	}
+	var samplerBindings *GPUTextureSamplerBinding
+	var storageTextures **GPUTexture
+	var storageBuffers **GPUBuffer
+	if len(info.SamplerBindings) > 0 {
+		samplerBindings = unsafe.SliceData(info.SamplerBindings)
+	}
+	if len(info.StorageTextures) > 0 {
+		storageTextures = unsafe.SliceData(info.StorageTextures)
+	}
+	if len(info.StorageBuffers) > 0 {
+		storageBuffers = unsafe.SliceData(info.StorageBuffers)
+	}
+	return &gpuRenderStateCreateInfo{
+		FragmentShader:     info.FragmentShader,
+		NumSamplerBindings: int32(len(info.SamplerBindings)),
+		SamplerBindings:    samplerBindings,
+		NumStorageTextures: int32(len(info.StorageTextures)),
+		StorageTextures:    storageTextures,
+		NumStorageBuffers:  int32(len(info.StorageBuffers)),
+		StorageBuffers:     storageBuffers,
+		Props:              info.Props,
+	}
 }
 
 // Custom types

@@ -531,7 +531,14 @@ func main() {
 				if typ == "uintptr" {
 					typ = "Pointer"
 				}
-				stmt := jenType(jen.Id(sanitizeVarName(ee.Name)), typ)
+
+				fieldName := sanitizeVarName(ee.Name)
+				// Don't expose "Padding" and "Reserved" fields
+				if strings.HasPrefix(fieldName, "Padding") || fieldName == "Reserved" {
+					fieldName = string(fieldName[0]+32) + fieldName[1:]
+				}
+				// Generate struct field with optional wiki documentation
+				stmt := jenType(jen.Id(fieldName), typ)
 				if wikiEntry, ok := wikiEntries[fmt.Sprintf("%s.%d", e.PrefixedName(cfg.Prefix), i)]; ok {
 					stmt.Comment(fmt.Sprintf(
 						"// %s", wikiEntry.Description,

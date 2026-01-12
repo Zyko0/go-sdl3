@@ -21,6 +21,8 @@ var (
 	_addr_SDL_SetClipboardData          uintptr
 	_addr_SDL_ShowOpenFileDialog        uintptr
 	_addr_SDL_ShowSaveFileDialog        uintptr
+	_addr_SDL_AttachVirtualJoystick     uintptr
+	_addr_SDL_CreateGPURenderState      uintptr
 )
 
 func initialize_ex() {
@@ -54,6 +56,14 @@ func initialize_ex() {
 	_addr_SDL_ShowSaveFileDialog, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ShowSaveFileDialog")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_ShowSaveFileDialog")
+	}
+	_addr_SDL_AttachVirtualJoystick, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_AttachVirtualJoystick")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_AttachVirtualJoystick")
+	}
+	_addr_SDL_CreateGPURenderState, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPURenderState")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_CreateGPURenderState")
 	}
 
 	iShowMessageBox = func(data *messageBoxData, buttonid *int32) bool {
@@ -101,5 +111,18 @@ func initialize_ex() {
 		runtime.KeepAlive(window)
 		runtime.KeepAlive(filters)
 		runtime.KeepAlive(default_location)
+	}
+	iAttachVirtualJoystick = func(desc *virtualJoystickDesc) JoystickID {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_AttachVirtualJoystick, uintptr(unsafe.Pointer(desc)))
+		__r0 := JoystickID(_r0)
+		runtime.KeepAlive(desc)
+		return __r0
+	}
+	iCreateGPURenderState = func(renderer *Renderer, info *gpuRenderStateCreateInfo) *GPURenderState {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPURenderState, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(info)))
+		__r0 := (*GPURenderState)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(renderer)
+		runtime.KeepAlive(info)
+		return __r0
 	}
 }

@@ -1697,8 +1697,15 @@ func GetJoystickFromPlayerIndex(playerIndex int) *Joystick {
 
 // SDL_AttachVirtualJoystick - Attach a new virtual joystick.
 // (https://wiki.libsdl.org/SDL3/SDL_AttachVirtualJoystick)
-func AttachVirtualJoystick(desc *VirtualJoystickDesc) JoystickID {
-	return iAttachVirtualJoystick(desc)
+func AttachVirtualJoystick(desc *VirtualJoystickDesc) (JoystickID, error) {
+	id := iAttachVirtualJoystick(desc.as())
+	if id == 0 {
+		return 0, internal.LastErr()
+	}
+
+	runtime.KeepAlive(desc)
+
+	return id, nil
 }
 
 // SDL_SetJoystickEventsEnabled - Set the state of joystick event processing.

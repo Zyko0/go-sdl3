@@ -470,7 +470,6 @@ var (
 	_addr_SDL_OpenJoystick                          uintptr
 	_addr_SDL_GetJoystickFromID                     uintptr
 	_addr_SDL_GetJoystickFromPlayerIndex            uintptr
-	_addr_SDL_AttachVirtualJoystick                 uintptr
 	_addr_SDL_DetachVirtualJoystick                 uintptr
 	_addr_SDL_IsJoystickVirtual                     uintptr
 	_addr_SDL_SetJoystickVirtualAxis                uintptr
@@ -923,7 +922,6 @@ var (
 	_addr_SDL_GetRenderVSync                        uintptr
 	_addr_SDL_SetDefaultTextureScaleMode            uintptr
 	_addr_SDL_GetDefaultTextureScaleMode            uintptr
-	_addr_SDL_CreateGPURenderState                  uintptr
 	_addr_SDL_SetGPURenderStateFragmentUniforms     uintptr
 	_addr_SDL_SetGPURenderState                     uintptr
 	_addr_SDL_DestroyGPURenderState                 uintptr
@@ -2826,10 +2824,6 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetJoystickFromPlayerIndex")
 	}
-	_addr_SDL_AttachVirtualJoystick, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_AttachVirtualJoystick")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_AttachVirtualJoystick")
-	}
 	_addr_SDL_DetachVirtualJoystick, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_DetachVirtualJoystick")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_DetachVirtualJoystick")
@@ -4637,10 +4631,6 @@ func initialize() {
 	_addr_SDL_GetDefaultTextureScaleMode, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetDefaultTextureScaleMode")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetDefaultTextureScaleMode")
-	}
-	_addr_SDL_CreateGPURenderState, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPURenderState")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_CreateGPURenderState")
 	}
 	_addr_SDL_SetGPURenderStateFragmentUniforms, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetGPURenderStateFragmentUniforms")
 	if err != nil {
@@ -7653,12 +7643,6 @@ func initialize() {
 		__r0 := (*Joystick)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		return __r0
 	}
-	iAttachVirtualJoystick = func(desc *VirtualJoystickDesc) JoystickID {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_AttachVirtualJoystick, uintptr(unsafe.Pointer(desc)))
-		__r0 := JoystickID(_r0)
-		runtime.KeepAlive(desc)
-		return __r0
-	}
 	iDetachVirtualJoystick = func(instance_id JoystickID) bool {
 		_r0, _, _ := purego.SyscallN(_addr_SDL_DetachVirtualJoystick, uintptr(instance_id))
 		__r0 := uint8(_r0) != 0
@@ -10299,13 +10283,6 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(renderer)
 		runtime.KeepAlive(scale_mode)
-		return __r0
-	}
-	iCreateGPURenderState = func(renderer *Renderer, createinfo *GPURenderStateCreateInfo) *GPURenderState {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPURenderState, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(createinfo)))
-		__r0 := (*GPURenderState)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		runtime.KeepAlive(renderer)
-		runtime.KeepAlive(createinfo)
 		return __r0
 	}
 	iSetGPURenderStateFragmentUniforms = func(state *GPURenderState, slot_index uint32, data uintptr, length uint32) bool {
