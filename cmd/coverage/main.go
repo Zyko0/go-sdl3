@@ -96,7 +96,7 @@ var (
 func AllFunctions() {
 	inComments := false
 	categoryIndex := -1
-	for _, l := range strings.Split(apiRefCode, "\n") {
+	for l := range strings.SplitSeq(apiRefCode, "\n") {
 		l = strings.TrimSpace(l)
 		l = strings.ReplaceAll(l, "const ", "")
 		l = strings.ReplaceAll(l, " * ", "* ")
@@ -335,6 +335,8 @@ The following emojis mean (they are clickable and should link to the code implem
 		}
 		if fn.JS.Filename != "" && fn.JS.Line != 0 {
 			urlJS = fmt.Sprintf("%s#L%d", fn.JS.Filename, fn.JS.Line)
+		} else {
+			js = ":question:"
 		}
 		sb.WriteString(fmt.Sprintf(
 			"| [%s](%s) | [%s](%s) | [%s](%s) |\n",
