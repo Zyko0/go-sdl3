@@ -124,7 +124,7 @@ func (e *Event) TextEditingEvent() *TextEditingEvent {
 	}
 	return &TextEditingEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
@@ -196,7 +196,7 @@ func (e *Event) TextInputEvent() *TextInputEvent {
 	}
 	return &TextInputEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		Text:      internal.ClonePtrString(uintptr(unsafe.Pointer(impl.Text))),
@@ -407,7 +407,7 @@ func (e *Event) DropEvent() *DropEvent {
 	}
 	return &DropEvent{
 		Type:      impl.Type,
-		Reserved:  impl.Reserved,
+		reserved:  impl.Reserved,
 		Timestamp: impl.Timestamp,
 		WindowID:  impl.WindowID,
 		X:         impl.X,
