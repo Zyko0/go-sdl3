@@ -434,6 +434,12 @@ func (tray *Tray) SetToolTip(tooltip string) {
 	iSetTrayTooltip(tray, internal.StringToNullablePtr(tooltip))
 }
 
+// SDL_GetTrayMenu - Gets a previously created tray menu.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayMenu)
+func (tray *Tray) Menu() *TrayMenu {
+	return iGetTrayMenu(tray)
+}
+
 // SDL_CreateTrayMenu - Create a menu for a system tray.
 // (https://wiki.libsdl.org/SDL3/SDL_CreateTrayMenu)
 func (tray *Tray) CreateMenu() *TrayMenu {
@@ -477,6 +483,12 @@ func (menu *TrayMenu) ParentTray() *Tray {
 }
 
 // TrayEntry
+
+// SDL_GetTraySubmenu - Gets a previously created tray entry submenu.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTraySubmenu)
+func (entry *TrayEntry) Menu() *TrayMenu {
+	return iGetTraySubmenu(entry)
+}
 
 // SDL_SetTrayEntryLabel - Sets the label of an entry.
 // (https://wiki.libsdl.org/SDL3/SDL_SetTrayEntryLabel)
