@@ -1038,6 +1038,10 @@ type AudioStreamDataCompleteCallback uintptr
 // (https://wiki.libsdl.org/SDL3/SDL_MouseMotionTransformCallback)
 type MouseMotionTransformCallback uintptr
 
+// SDL_TrayCallback - A callback that is invoked when a tray entry is selected.
+// (https://wiki.libsdl.org/SDL3/SDL_TrayCallback)
+type TrayCallback uintptr
+
 // Vulkan Types
 
 // VkInstance is a pointer to a Vulkan_Instance

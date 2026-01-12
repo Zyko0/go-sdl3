@@ -5033,7 +5033,7 @@ var (
 	// SDL_CreateTray => Create an icon to be placed in the operating system's tray, or equivalent.
 	//
 	//puregogen:function symbol=SDL_CreateTray
-	iCreateTray func(icon *Surface, tooltip string) *Tray
+	iCreateTray func(icon *Surface, tooltip *byte) *Tray
 
 	// SDL_SetTrayIcon => Updates the system tray icon's icon.
 	//
@@ -5043,7 +5043,7 @@ var (
 	// SDL_SetTrayTooltip => Updates the system tray icon's tooltip.
 	//
 	//puregogen:function symbol=SDL_SetTrayTooltip
-	iSetTrayTooltip func(tray *Tray, tooltip string)
+	iSetTrayTooltip func(tray *Tray, tooltip *byte)
 
 	// SDL_CreateTrayMenu => Create a menu for a system tray.
 	//
@@ -5078,12 +5078,12 @@ var (
 	// SDL_InsertTrayEntryAt => Insert a tray entry at a given position.
 	//
 	//puregogen:function symbol=SDL_InsertTrayEntryAt
-	iInsertTrayEntryAt func(menu *TrayMenu, pos int32, label string, flags TrayEntryFlags) *TrayEntry
+	iInsertTrayEntryAt func(menu *TrayMenu, pos int32, label *byte, flags TrayEntryFlags) *TrayEntry
 
 	// SDL_SetTrayEntryLabel => Sets the label of an entry.
 	//
 	//puregogen:function symbol=SDL_SetTrayEntryLabel
-	iSetTrayEntryLabel func(entry *TrayEntry, label string)
+	iSetTrayEntryLabel func(entry *TrayEntry, label *byte)
 
 	// SDL_GetTrayEntryLabel => Gets the label of an entry.
 	//
@@ -5109,6 +5109,11 @@ var (
 	//
 	//puregogen:function symbol=SDL_GetTrayEntryEnabled
 	iGetTrayEntryEnabled func(entry *TrayEntry) bool
+
+	// SDL_SetTrayEntryCallback => Sets a callback to be invoked when the entry is selected.
+	//
+	//puregogen:function symbol=SDL_SetTrayEntryCallback
+	iSetTrayEntryCallback func(entry *TrayEntry, callback TrayCallback, userdata uintptr)
 
 	// SDL_ClickTrayEntry => Simulate a click on a tray entry.
 	//

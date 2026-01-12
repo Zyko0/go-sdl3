@@ -45,7 +45,6 @@
         "SDL_CreateGPUShader",
         "SDL_CreateGPUComputePipeline",
         "SDL_CreateGPUGraphicsPipeline",
-        "SDL_SetTrayEntryCallback",
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
         "SDL_ShowSaveFileDialog",
@@ -112,6 +111,10 @@
         "SDL_ShowOpenFolderDialog",
         "SDL_GetEventDescription",
         "SDL_SetGamepadMapping",
-        "SDL_Vulkan_GetInstanceExtensions"
+        "SDL_Vulkan_GetInstanceExtensions",
+        "SDL_CreateTray",
+        "SDL_SetTrayTooltip",
+        "SDL_InsertTrayEntryAt",
+        "SDL_SetTrayEntryLabel"
     ]
 }

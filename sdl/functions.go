@@ -1155,6 +1155,32 @@ func EnumerateDirectory(path string, callback EnumerateDirectoryCallback) error 
 	return nil
 }
 
+// Tray
+
+// SDL_CreateTray - Create an icon to be placed in the operating system's tray, or equivalent.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateTray)
+func CreateTray(icon *Surface, tooltip string) *Tray {
+	return iCreateTray(icon, internal.StringToNullablePtr(tooltip))
+}
+
+// SDL_CreateTraySubmenu - Create a submenu for a system tray entry.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateTraySubmenu)
+func CreateTraySubmenu(entry *TrayEntry) *TrayMenu {
+	return iCreateTraySubmenu(entry)
+}
+
+// SDL_RemoveTrayEntry - Removes a tray entry.
+// (https://wiki.libsdl.org/SDL3/SDL_RemoveTrayEntry)
+func RemoveTrayEntry(entry *TrayEntry) {
+	iRemoveTrayEntry(entry)
+}
+
+// SDL_UpdateTrays - Update the trays.
+// (https://wiki.libsdl.org/SDL3/SDL_UpdateTrays)
+func UpdateTrays() {
+	iUpdateTrays()
+}
+
 // Message
 
 // SDL_ShowMessageBox - Create a modal message box.

@@ -987,6 +987,7 @@ var (
 	_addr_SDL_GetTrayEntryChecked                   uintptr
 	_addr_SDL_SetTrayEntryEnabled                   uintptr
 	_addr_SDL_GetTrayEntryEnabled                   uintptr
+	_addr_SDL_SetTrayEntryCallback                  uintptr
 	_addr_SDL_ClickTrayEntry                        uintptr
 	_addr_SDL_DestroyTray                           uintptr
 	_addr_SDL_GetTrayEntryParent                    uintptr
@@ -4891,6 +4892,10 @@ func initialize() {
 	_addr_SDL_GetTrayEntryEnabled, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetTrayEntryEnabled")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetTrayEntryEnabled")
+	}
+	_addr_SDL_SetTrayEntryCallback, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetTrayEntryCallback")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: SDL_SetTrayEntryCallback")
 	}
 	_addr_SDL_ClickTrayEntry, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_ClickTrayEntry")
 	if err != nil {
@@ -10552,8 +10557,8 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		return __r0
 	}
-	iCreateTray = func(icon *Surface, tooltip string) *Tray {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateTray, uintptr(unsafe.Pointer(icon)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(tooltip))))
+	iCreateTray = func(icon *Surface, tooltip *byte) *Tray {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateTray, uintptr(unsafe.Pointer(icon)), uintptr(unsafe.Pointer(tooltip)))
 		__r0 := (*Tray)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(icon)
 		runtime.KeepAlive(tooltip)
@@ -10564,8 +10569,8 @@ func initialize() {
 		runtime.KeepAlive(tray)
 		runtime.KeepAlive(icon)
 	}
-	iSetTrayTooltip = func(tray *Tray, tooltip string) {
-		purego.SyscallN(_addr_SDL_SetTrayTooltip, uintptr(unsafe.Pointer(tray)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(tooltip))))
+	iSetTrayTooltip = func(tray *Tray, tooltip *byte) {
+		purego.SyscallN(_addr_SDL_SetTrayTooltip, uintptr(unsafe.Pointer(tray)), uintptr(unsafe.Pointer(tooltip)))
 		runtime.KeepAlive(tray)
 		runtime.KeepAlive(tooltip)
 	}
@@ -10604,15 +10609,15 @@ func initialize() {
 		purego.SyscallN(_addr_SDL_RemoveTrayEntry, uintptr(unsafe.Pointer(entry)))
 		runtime.KeepAlive(entry)
 	}
-	iInsertTrayEntryAt = func(menu *TrayMenu, pos int32, label string, flags TrayEntryFlags) *TrayEntry {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_InsertTrayEntryAt, uintptr(unsafe.Pointer(menu)), uintptr(pos), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(label))), uintptr(flags))
+	iInsertTrayEntryAt = func(menu *TrayMenu, pos int32, label *byte, flags TrayEntryFlags) *TrayEntry {
+		_r0, _, _ := purego.SyscallN(_addr_SDL_InsertTrayEntryAt, uintptr(unsafe.Pointer(menu)), uintptr(pos), uintptr(unsafe.Pointer(label)), uintptr(flags))
 		__r0 := (*TrayEntry)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(menu)
 		runtime.KeepAlive(label)
 		return __r0
 	}
-	iSetTrayEntryLabel = func(entry *TrayEntry, label string) {
-		purego.SyscallN(_addr_SDL_SetTrayEntryLabel, uintptr(unsafe.Pointer(entry)), uintptr(unsafe.Pointer(puregogen.BytePtrFromString(label))))
+	iSetTrayEntryLabel = func(entry *TrayEntry, label *byte) {
+		purego.SyscallN(_addr_SDL_SetTrayEntryLabel, uintptr(unsafe.Pointer(entry)), uintptr(unsafe.Pointer(label)))
 		runtime.KeepAlive(entry)
 		runtime.KeepAlive(label)
 	}
@@ -10641,6 +10646,10 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(entry)
 		return __r0
+	}
+	iSetTrayEntryCallback = func(entry *TrayEntry, callback TrayCallback, userdata uintptr) {
+		purego.SyscallN(_addr_SDL_SetTrayEntryCallback, uintptr(unsafe.Pointer(entry)), uintptr(callback), uintptr(userdata))
+		runtime.KeepAlive(entry)
 	}
 	iClickTrayEntry = func(entry *TrayEntry) {
 		purego.SyscallN(_addr_SDL_ClickTrayEntry, uintptr(unsafe.Pointer(entry)))

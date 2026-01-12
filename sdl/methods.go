@@ -420,6 +420,118 @@ func (camera *Camera) Close() {
 	iCloseCamera(camera)
 }
 
+// Tray
+
+// SDL_SetTrayIcon - Updates the system tray icon's icon.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayIcon)
+func (tray *Tray) SetIcon(icon *Surface) {
+	iSetTrayIcon(tray, icon)
+}
+
+// SDL_SetTrayTooltip - Updates the system tray icon's tooltip.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayTooltip)
+func (tray *Tray) SetToolTip(tooltip string) {
+	iSetTrayTooltip(tray, internal.StringToNullablePtr(tooltip))
+}
+
+// SDL_CreateTrayMenu - Create a menu for a system tray.
+// (https://wiki.libsdl.org/SDL3/SDL_CreateTrayMenu)
+func (tray *Tray) CreateMenu() *TrayMenu {
+	return iCreateTrayMenu(tray)
+}
+
+// SDL_DestroyTray - Destroys a tray object.
+// (https://wiki.libsdl.org/SDL3/SDL_DestroyTray)
+func (tray *Tray) Destroy() {
+	iDestroyTray(tray)
+}
+
+// TrayMenu
+
+// SDL_GetTrayEntries - Returns a list of entries in the menu, in order.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayEntries)
+func (menu *TrayMenu) Entries() []*TrayEntry {
+	var count int32
+
+	ptr := iGetTrayEntries(menu, &count)
+
+	return internal.PtrToSlice[*TrayEntry](uintptr(unsafe.Pointer(ptr)), int(count))
+}
+
+// SDL_InsertTrayEntryAt - Insert a tray entry at a given position.
+// (https://wiki.libsdl.org/SDL3/SDL_InsertTrayEntryAt)
+func (menu *TrayMenu) InsertEntryAt(index int32, label string, flags TrayEntryFlags) *TrayEntry {
+	return iInsertTrayEntryAt(menu, index, internal.StringToNullablePtr(label), flags)
+}
+
+// SDL_GetTrayMenuParentEntry - Gets the entry for which the menu is a submenu, if the current menu is a submenu.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayMenuParentEntry)
+func (menu *TrayMenu) ParentEntry() *TrayEntry {
+	return iGetTrayMenuParentEntry(menu)
+}
+
+// SDL_GetTrayMenuParentTray - Gets the tray for which this menu is the first-level menu, if the current menu isn't a submenu.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayMenuParentTray)
+func (menu *TrayMenu) ParentTray() *Tray {
+	return iGetTrayMenuParentTray(menu)
+}
+
+// TrayEntry
+
+// SDL_SetTrayEntryLabel - Sets the label of an entry.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayEntryLabel)
+func (entry *TrayEntry) SetLabel(label string) {
+	iSetTrayEntryLabel(entry, internal.StringToNullablePtr(label))
+}
+
+// SDL_GetTrayEntryLabel - Gets the label of an entry.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayEntryLabel)
+func (entry *TrayEntry) Label() string {
+	return iGetTrayEntryLabel(entry)
+}
+
+// SDL_SetTrayEntryChecked - Sets whether or not an entry is checked.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayEntryChecked)
+func (entry *TrayEntry) SetChecked(checked bool) {
+	iSetTrayEntryChecked(entry, checked)
+}
+
+// SDL_GetTrayEntryChecked - Gets whether or not an entry is checked.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayEntryChecked)
+func (entry *TrayEntry) Checked() bool {
+	return iGetTrayEntryChecked(entry)
+}
+
+// SDL_SetTrayEntryEnabled - Sets whether or not an entry is enabled.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayEntryEnabled)
+func (entry *TrayEntry) SetEnabled(enabled bool) {
+	iSetTrayEntryEnabled(entry, enabled)
+}
+
+// SDL_GetTrayEntryEnabled - Gets whether or not an entry is enabled.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayEntryEnabled)
+func (entry *TrayEntry) Enabled() bool {
+	return iGetTrayEntryEnabled(entry)
+}
+
+// SDL_SetTrayEntryCallback - Sets a callback to be invoked when the entry is selected.
+// (https://wiki.libsdl.org/SDL3/SDL_SetTrayEntryCallback)
+func (entry *TrayEntry) SetCallback(callback TrayCallback) {
+	iSetTrayEntryCallback(entry, callback, 0)
+}
+
+// SDL_ClickTrayEntry - Simulate a click on a tray entry.
+// (https://wiki.libsdl.org/SDL3/SDL_ClickTrayEntry)
+func (entry *TrayEntry) Click() {
+	iClickTrayEntry(entry)
+}
+
+// SDL_GetTrayEntryParent - Gets the menu containing a certain tray entry.
+// (https://wiki.libsdl.org/SDL3/SDL_GetTrayEntryParent)
+func (entry *TrayEntry) Parent() *TrayMenu {
+	return iGetTrayEntryParent(entry)
+}
+
 // GamepadButton
 
 // SDL_GetGamepadStringForButton - Convert from an SDL_GamepadButton enum to a string.
