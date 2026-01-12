@@ -4784,11 +4784,6 @@ var (
 	//puregogen:function symbol=SDL_GetDefaultTextureScaleMode
 	iGetDefaultTextureScaleMode func(renderer *Renderer, scale_mode *ScaleMode) bool
 
-	// SDL_CreateGPURenderState => Create custom GPU render state.
-	//
-	//puregogen:function symbol=SDL_CreateGPURenderState
-	iCreateGPURenderState func(renderer *Renderer, createinfo *GPURenderStateCreateInfo) *GPURenderState
-
 	// SDL_SetGPURenderStateFragmentUniforms => Set fragment shader uniform variables in a custom GPU render state.
 	//
 	//puregogen:function symbol=SDL_SetGPURenderStateFragmentUniforms

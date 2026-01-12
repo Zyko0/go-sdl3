@@ -23,6 +23,7 @@
         "GPUComputePipelineCreateInfo",
         "GPUGraphicsPipelineCreateInfo",
         "GPUGraphicsPipelineTargetInfo",
+        "GPURenderStateCreateInfo",
         "GPUVertexInputState",
         "TextEditingCandidatesEvent",
         "ClipboardEvent",
@@ -48,7 +49,8 @@
         "SDL_SetClipboardData",
         "SDL_ShowOpenFileDialog",
         "SDL_ShowSaveFileDialog",
-        "SDL_AttachVirtualJoystick"
+        "SDL_AttachVirtualJoystick",
+        "SDL_CreateGPURenderState"
     ],
     "allowlisted_functions": [
         "SDL_free"

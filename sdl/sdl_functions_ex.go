@@ -25,4 +25,7 @@ var (
 
 	//puregogen:function symbol=SDL_AttachVirtualJoystick
 	iAttachVirtualJoystick func(desc *virtualJoystickDesc) JoystickID
+
+	//puregogen:function symbol=SDL_CreateGPURenderState
+	iCreateGPURenderState func(renderer *Renderer, info *gpuRenderStateCreateInfo) *GPURenderState
 )

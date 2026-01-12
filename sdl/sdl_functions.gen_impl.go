@@ -922,7 +922,6 @@ var (
 	_addr_SDL_GetRenderVSync                        uintptr
 	_addr_SDL_SetDefaultTextureScaleMode            uintptr
 	_addr_SDL_GetDefaultTextureScaleMode            uintptr
-	_addr_SDL_CreateGPURenderState                  uintptr
 	_addr_SDL_SetGPURenderStateFragmentUniforms     uintptr
 	_addr_SDL_SetGPURenderState                     uintptr
 	_addr_SDL_DestroyGPURenderState                 uintptr
@@ -4632,10 +4631,6 @@ func initialize() {
 	_addr_SDL_GetDefaultTextureScaleMode, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_GetDefaultTextureScaleMode")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: SDL_GetDefaultTextureScaleMode")
-	}
-	_addr_SDL_CreateGPURenderState, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_CreateGPURenderState")
-	if err != nil {
-		panic("cannot puregogen.OpenSymbol: SDL_CreateGPURenderState")
 	}
 	_addr_SDL_SetGPURenderStateFragmentUniforms, err = puregogen.OpenSymbol(_hnd_sdl, "SDL_SetGPURenderStateFragmentUniforms")
 	if err != nil {
@@ -10288,13 +10283,6 @@ func initialize() {
 		__r0 := uint8(_r0) != 0
 		runtime.KeepAlive(renderer)
 		runtime.KeepAlive(scale_mode)
-		return __r0
-	}
-	iCreateGPURenderState = func(renderer *Renderer, createinfo *GPURenderStateCreateInfo) *GPURenderState {
-		_r0, _, _ := purego.SyscallN(_addr_SDL_CreateGPURenderState, uintptr(unsafe.Pointer(renderer)), uintptr(unsafe.Pointer(createinfo)))
-		__r0 := (*GPURenderState)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
-		runtime.KeepAlive(renderer)
-		runtime.KeepAlive(createinfo)
 		return __r0
 	}
 	iSetGPURenderStateFragmentUniforms = func(state *GPURenderState, slot_index uint32, data uintptr, length uint32) bool {

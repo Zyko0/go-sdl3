@@ -1257,19 +1257,6 @@ type Texture struct {
 	Refcount int32
 }
 
-// SDL_GPURenderStateCreateInfo - A structure specifying the parameters of a GPU render state.
-// (https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo)
-type GPURenderStateCreateInfo struct {
-	FragmentShader     *GPUShader                // The fragment shader to use when this render state is active
-	NumSamplerBindings int32                     // The number of additional fragment samplers to bind when this render state is active
-	SamplerBindings    *GPUTextureSamplerBinding // Additional fragment samplers to bind when this render state is active
-	NumStorageTextures int32                     // The number of storage textures to bind when this render state is active
-	StorageTextures    **GPUTexture              // Storage textures to bind when this render state is active
-	NumStorageBuffers  int32                     // The number of storage buffers to bind when this render state is active
-	StorageBuffers     **GPUBuffer               // Storage buffers to bind when this render state is active
-	Props              PropertiesID              // A properties ID for extensions. Should be 0 if no extensions are needed.
-}
-
 // SDL_GPURenderState - A custom GPU render state.
 // (https://wiki.libsdl.org/SDL3/SDL_GPURenderState)
 type GPURenderState struct{}
