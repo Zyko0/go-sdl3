@@ -825,6 +825,7 @@ func (desc *VirtualJoystickDesc) as() *virtualJoystickDesc {
 
 	var touchpads *VirtualJoystickTouchpadDesc
 	var sensors *VirtualJoystickSensorDesc
+	var nilPointer internal.Pointer
 	if len(desc.Touchpads) > 0 {
 		touchpads = unsafe.SliceData(desc.Touchpads)
 	}
@@ -849,7 +850,7 @@ func (desc *VirtualJoystickDesc) as() *virtualJoystickDesc {
 		Name:              internal.StringToNullablePtr(desc.Name),
 		Touchpads:         touchpads,
 		Sensors:           sensors,
-		Userdata:          nil,
+		Userdata:          nilPointer,
 		Update:            desc.Update,
 		SetPlayerIndex:    desc.SetPlayerIndex,
 		Rumble:            desc.Rumble,
@@ -857,7 +858,7 @@ func (desc *VirtualJoystickDesc) as() *virtualJoystickDesc {
 		SetLED:            desc.SetLED,
 		SendEffect:        desc.SendEffect,
 		SetSensorsEnabled: desc.SetSensorsEnabled,
-		Cleanup:           nil,
+		Cleanup:           nilPointer,
 	}
 }
 

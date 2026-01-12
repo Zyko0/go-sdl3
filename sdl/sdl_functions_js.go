@@ -8231,7 +8231,7 @@ func initialize() {
 		return _obj
 	}
 
-	iAttachVirtualJoystick = func(desc *VirtualJoystickDesc) JoystickID {
+	iAttachVirtualJoystick = func(desc *virtualJoystickDesc) JoystickID {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
