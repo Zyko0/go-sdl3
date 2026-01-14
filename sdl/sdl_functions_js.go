@@ -16127,33 +16127,20 @@ func initialize() {
 	}
 
 	iRenderTextureAffine = func(renderer *Renderer, texture *Texture, srcrect *FRect, origin *FPoint, right *FPoint, down *FPoint) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_texture, ok := internal.GetJSPointer(texture)
 		if !ok {
-			_texture = internal.StackAlloc(int(unsafe.Sizeof(*texture)))
+			panic("nil texture")
 		}
-		_srcrect, ok := internal.GetJSPointer(srcrect)
-		if !ok {
-			_srcrect = internal.StackAlloc(int(unsafe.Sizeof(*srcrect)))
-		}
-		_origin, ok := internal.GetJSPointer(origin)
-		if !ok {
-			_origin = internal.StackAlloc(int(unsafe.Sizeof(*origin)))
-		}
-		_right, ok := internal.GetJSPointer(right)
-		if !ok {
-			_right = internal.StackAlloc(int(unsafe.Sizeof(*right)))
-		}
-		_down, ok := internal.GetJSPointer(down)
-		if !ok {
-			_down = internal.StackAlloc(int(unsafe.Sizeof(*down)))
-		}
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_origin := internal.CloneObjectToJSStack(origin)
+		_right := internal.CloneObjectToJSStack(right)
+		_down := internal.CloneObjectToJSStack(down)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTextureAffine",
 			_renderer,
