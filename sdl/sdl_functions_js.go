@@ -3386,13 +3386,9 @@ func initialize() {
 	}
 
 	iGetPixelFormatName = func(format PixelFormat) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_format := int32(format)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPixelFormatName",
-			_format,
+			int32(format),
 		)
 
 		return internal.UTF8JSToString(ret)
@@ -3437,21 +3433,13 @@ func initialize() {
 	}
 
 	iGetPixelFormatForMasks = func(bpp int32, Rmask uint32, Gmask uint32, Bmask uint32, Amask uint32) PixelFormat {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_bpp := int32(bpp)
-		_Rmask := int32(Rmask)
-		_Gmask := int32(Gmask)
-		_Bmask := int32(Bmask)
-		_Amask := int32(Amask)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPixelFormatForMasks",
-			_bpp,
-			_Rmask,
-			_Gmask,
-			_Bmask,
-			_Amask,
+			bpp,
+			int32(Rmask),
+			int32(Gmask),
+			int32(Bmask),
+			int32(Amask),
 		)
 
 		return PixelFormat(ret.Int())
@@ -3470,53 +3458,38 @@ func initialize() {
 	}
 
 	iCreatePalette = func(ncolors int32) *Palette {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_ncolors := int32(ncolors)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_CreatePalette",
-			_ncolors,
+			ncolors,
 		)
 
-		_obj := &Palette{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
-		return _obj
+		return internal.NewObject[Palette](ret)
 	}
 
 	iSetPaletteColors = func(palette *Palette, colors *Color, firstcolor int32, ncolors int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			panic("nil palette")
 		}
-		_colors, ok := internal.GetJSPointer(colors)
-		if !ok {
-			_colors = internal.StackAlloc(int(unsafe.Sizeof(*colors)))
-		}
-		_firstcolor := int32(firstcolor)
-		_ncolors := int32(ncolors)
+		_colors, freeColors := internal.ClonePtrArrayToJSHeap(colors, int(ncolors))
+		defer freeColors()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetPaletteColors",
 			_palette,
 			_colors,
-			_firstcolor,
-			_ncolors,
+			firstcolor,
+			ncolors,
 		)
 
 		return internal.GetBool(ret)
 	}
 
 	iDestroyPalette = func(palette *Palette) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			panic("nil palette")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_DestroyPalette",
@@ -3552,102 +3525,72 @@ func initialize() {
 	}
 
 	iMapRGBA = func(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8, a uint8) uint32 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_format, ok := internal.GetJSPointer(format)
-		if !ok {
-			_format = internal.StackAlloc(int(unsafe.Sizeof(*format)))
-		}
+		_format := internal.CloneObjectToJSStack(format)
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			_palette = js.Null()
 		}
-		_r := int32(r)
-		_g := int32(g)
-		_b := int32(b)
-		_a := int32(a)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_MapRGBA",
 			_format,
 			_palette,
-			_r,
-			_g,
-			_b,
-			_a,
+			int32(r),
+			int32(g),
+			int32(b),
+			int32(a),
 		)
 
 		return uint32(ret.Int())
 	}
 
 	iGetRGB = func(pixel uint32, format *PixelFormatDetails, palette *Palette, r *uint8, g *uint8, b *uint8) {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_pixel := int32(pixel)
-		_format, ok := internal.GetJSPointer(format)
-		if !ok {
-			_format = internal.StackAlloc(int(unsafe.Sizeof(*format)))
-		}
+		_format := internal.CloneObjectToJSStack(format)
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			_palette = js.Null()
 		}
-		_r, ok := internal.GetJSPointer(r)
-		if !ok {
-			_r = internal.StackAlloc(int(unsafe.Sizeof(*r)))
-		}
-		_g, ok := internal.GetJSPointer(g)
-		if !ok {
-			_g = internal.StackAlloc(int(unsafe.Sizeof(*g)))
-		}
-		_b, ok := internal.GetJSPointer(b)
-		if !ok {
-			_b = internal.StackAlloc(int(unsafe.Sizeof(*b)))
-		}
+		_r := internal.StackAlloc(4)
+		_g := internal.StackAlloc(4)
+		_b := internal.StackAlloc(4)
 		js.Global().Get("Module").Call(
 			"_SDL_GetRGB",
-			_pixel,
+			int32(pixel),
 			_format,
 			_palette,
 			_r,
 			_g,
 			_b,
 		)
+		if r != nil {
+			*r = uint8(internal.GetValue(_r, "i8").Int())
+		}
+		if g != nil {
+			*g = uint8(internal.GetValue(_g, "i8").Int())
+		}
+		if b != nil {
+			*b = uint8(internal.GetValue(_b, "i8").Int())
+		}
 	}
 
 	iGetRGBA = func(pixel uint32, format *PixelFormatDetails, palette *Palette, r *uint8, g *uint8, b *uint8, a *uint8) {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_pixel := int32(pixel)
-		_format, ok := internal.GetJSPointer(format)
-		if !ok {
-			_format = internal.StackAlloc(int(unsafe.Sizeof(*format)))
-		}
+		_format := internal.CloneObjectToJSStack(format)
 		_palette, ok := internal.GetJSPointer(palette)
 		if !ok {
-			_palette = internal.StackAlloc(int(unsafe.Sizeof(*palette)))
+			_palette = js.Null()
 		}
-		_r, ok := internal.GetJSPointer(r)
-		if !ok {
-			_r = internal.StackAlloc(int(unsafe.Sizeof(*r)))
-		}
-		_g, ok := internal.GetJSPointer(g)
-		if !ok {
-			_g = internal.StackAlloc(int(unsafe.Sizeof(*g)))
-		}
-		_b, ok := internal.GetJSPointer(b)
-		if !ok {
-			_b = internal.StackAlloc(int(unsafe.Sizeof(*b)))
-		}
-		_a, ok := internal.GetJSPointer(a)
-		if !ok {
-			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
-		}
+		_r := internal.StackAlloc(4)
+		_g := internal.StackAlloc(4)
+		_b := internal.StackAlloc(4)
+		_a := internal.StackAlloc(4)
 		js.Global().Get("Module").Call(
 			"_SDL_GetRGBA",
-			_pixel,
+			int32(pixel),
 			_format,
 			_palette,
 			_r,
@@ -3655,6 +3598,18 @@ func initialize() {
 			_b,
 			_a,
 		)
+		if r != nil {
+			*r = uint8(internal.GetValue(_r, "i8").Int())
+		}
+		if g != nil {
+			*g = uint8(internal.GetValue(_g, "i8").Int())
+		}
+		if b != nil {
+			*b = uint8(internal.GetValue(_b, "i8").Int())
+		}
+		if a != nil {
+			*a = uint8(internal.GetValue(_a, "i8").Int())
+		}
 	}
 
 	iHasRectIntersection = func(A *Rect, B *Rect) bool {
@@ -5253,7 +5208,6 @@ func initialize() {
 	}
 
 	iSetClipboardText = func(text string) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_text := internal.StringOnJSStack(text)
