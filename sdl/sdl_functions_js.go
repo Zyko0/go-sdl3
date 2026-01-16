@@ -5054,9 +5054,6 @@ func initialize() {
 	}
 
 	iGetNumCameraDrivers = func() int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetNumCameraDrivers",
 		)
@@ -5065,22 +5062,15 @@ func initialize() {
 	}
 
 	iGetCameraDriver = func(index int32) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_index := int32(index)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraDriver",
-			_index,
+			index,
 		)
 
 		return internal.UTF8JSToString(ret)
 	}
 
 	iGetCurrentCameraDriver = func() string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCurrentCameraDriver",
 		)
@@ -5136,46 +5126,32 @@ func initialize() {
 	}
 
 	iGetCameraPosition = func(instance_id CameraID) CameraPosition {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_instance_id := int32(instance_id)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraPosition",
-			_instance_id,
+			int32(instance_id),
 		)
 
 		return CameraPosition(ret.Int())
 	}
 
 	iOpenCamera = func(instance_id CameraID, spec *CameraSpec) *Camera {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_instance_id := int32(instance_id)
-		_spec, ok := internal.GetJSPointer(spec)
-		if !ok {
-			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
-		}
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_OpenCamera",
 			_instance_id,
 			_spec,
 		)
 
-		_obj := &Camera{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
-		return _obj
+		return internal.NewObject[Camera](ret)
 	}
 
 	iGetCameraPermissionState = func(camera *Camera) CameraPermissionState {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraPermissionState",
@@ -5186,12 +5162,9 @@ func initialize() {
 	}
 
 	iGetCameraID = func(camera *Camera) CameraID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraID",
@@ -5202,12 +5175,9 @@ func initialize() {
 	}
 
 	iGetCameraProperties = func(camera *Camera) PropertiesID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraProperties",
@@ -5218,61 +5188,51 @@ func initialize() {
 	}
 
 	iGetCameraFormat = func(camera *Camera, spec *CameraSpec) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
-		_spec, ok := internal.GetJSPointer(spec)
-		if !ok {
-			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
-		}
+		_spec := internal.StackAlloc(int(unsafe.Sizeof(*spec)))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCameraFormat",
 			_camera,
 			_spec,
 		)
+		internal.CopyJSToObject(spec, _spec)
 
 		return internal.GetBool(ret)
 	}
 
 	iAcquireCameraFrame = func(camera *Camera, timestampNS *uint64) *Surface {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
-		_timestampNS, ok := internal.GetJSPointer(timestampNS)
-		if !ok {
-			_timestampNS = internal.StackAlloc(int(unsafe.Sizeof(*timestampNS)))
-		}
+		_timestampNS := internal.StackAlloc(int(unsafe.Sizeof(*timestampNS)))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AcquireCameraFrame",
 			_camera,
 			_timestampNS,
 		)
+		if timestampNS != nil {
+			*timestampNS = uint64(internal.GetValue(_timestampNS, "i64").Int())
+		}
 
-		_obj := &Surface{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
-		return _obj
+		return internal.NewObject[Surface](ret)
 	}
 
 	iReleaseCameraFrame = func(camera *Camera, frame *Surface) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
 		_frame, ok := internal.GetJSPointer(frame)
 		if !ok {
-			_frame = internal.StackAlloc(int(unsafe.Sizeof(*frame)))
+			panic("nil frame")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_ReleaseCameraFrame",
@@ -5282,12 +5242,9 @@ func initialize() {
 	}
 
 	iCloseCamera = func(camera *Camera) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_camera, ok := internal.GetJSPointer(camera)
 		if !ok {
-			_camera = internal.StackAlloc(int(unsafe.Sizeof(*camera)))
+			panic("nil camera")
 		}
 		js.Global().Get("Module").Call(
 			"_SDL_CloseCamera",
