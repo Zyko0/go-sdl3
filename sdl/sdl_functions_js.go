@@ -1548,6 +1548,7 @@ func initialize() {
 			"_SDL_CloseIO",
 			_context,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(context)))
 
 		return internal.GetBool(ret)
 	}
@@ -3495,6 +3496,7 @@ func initialize() {
 			"_SDL_DestroyPalette",
 			_palette,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(palette)))
 	}
 
 	iMapRGB = func(format *PixelFormatDetails, palette *Palette, r uint8, g uint8, b uint8) uint32 {
@@ -5205,6 +5207,7 @@ func initialize() {
 			"_SDL_CloseCamera",
 			_camera,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(camera)))
 	}
 
 	iSetClipboardText = func(text string) bool {
@@ -9886,9 +9889,6 @@ func initialize() {
 	}
 
 	iHasKeyboard = func() bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasKeyboard",
 		)
@@ -9913,30 +9913,20 @@ func initialize() {
 	}
 
 	iGetKeyboardNameForID = func(instance_id KeyboardID) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_instance_id := int32(instance_id)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetKeyboardNameForID",
-			_instance_id,
+			int32(instance_id),
 		)
 
 		return internal.UTF8JSToString(ret)
 	}
 
 	iGetKeyboardFocus = func() *Window {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetKeyboardFocus",
 		)
 
-		_obj := &Window{}
-		//internal.StoreJSPointer(_obj, ret)
-		_ = ret
-		return _obj
+		return internal.NewObject[Window](ret)
 	}
 
 	/*iGetKeyboardState = func(numkeys *int32) *bool {
@@ -9958,18 +9948,12 @@ func initialize() {
 	}*/
 
 	iResetKeyboard = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
 			"_SDL_ResetKeyboard",
 		)
 	}
 
 	iGetModState = func() Keymod {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetModState",
 		)
@@ -9978,13 +9962,9 @@ func initialize() {
 	}
 
 	iSetModState = func(modstate Keymod) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_modstate := int32(modstate)
 		js.Global().Get("Module").Call(
 			"_SDL_SetModState",
-			_modstate,
+			int32(modstate),
 		)
 	}
 
@@ -10024,14 +10004,12 @@ func initialize() {
 	}
 
 	iSetScancodeName = func(scancode Scancode, name string) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_scancode := int32(scancode)
 		_name := internal.StringOnJSStack(name)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetScancodeName",
-			_scancode,
+			int32(scancode),
 			_name,
 		)
 
@@ -10039,20 +10017,15 @@ func initialize() {
 	}
 
 	iGetScancodeName = func(scancode Scancode) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_scancode := int32(scancode)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetScancodeName",
-			_scancode,
+			int32(scancode),
 		)
 
 		return internal.UTF8JSToString(ret)
 	}
 
 	iGetScancodeFromName = func(name string) Scancode {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_name := internal.StringOnJSStack(name)
@@ -10075,7 +10048,6 @@ func initialize() {
 	}
 
 	iGetKeyFromName = func(name string) Keycode {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_name := internal.StringOnJSStack(name)
@@ -10088,12 +10060,9 @@ func initialize() {
 	}
 
 	iStartTextInput = func(window *Window) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_StartTextInput",
@@ -10104,30 +10073,23 @@ func initialize() {
 	}
 
 	iStartTextInputWithProperties = func(window *Window, props PropertiesID) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
-		_props := int32(props)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_StartTextInputWithProperties",
 			_window,
-			_props,
+			int32(props),
 		)
 
 		return internal.GetBool(ret)
 	}
 
 	iTextInputActive = func(window *Window) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_TextInputActive",
@@ -10138,12 +10100,9 @@ func initialize() {
 	}
 
 	iStopTextInput = func(window *Window) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_StopTextInput",
@@ -10154,12 +10113,9 @@ func initialize() {
 	}
 
 	iClearComposition = func(window *Window) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ClearComposition",
@@ -10170,23 +10126,18 @@ func initialize() {
 	}
 
 	iSetTextInputArea = func(window *Window, rect *Rect, cursor int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
-		_rect, ok := internal.GetJSPointer(rect)
-		if !ok {
-			_rect = internal.StackAlloc(int(unsafe.Sizeof(*rect)))
-		}
-		_cursor := int32(cursor)
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetTextInputArea",
 			_window,
 			_rect,
-			_cursor,
+			cursor,
 		)
 
 		return internal.GetBool(ret)
@@ -10219,9 +10170,6 @@ func initialize() {
 	}
 
 	iHasScreenKeyboardSupport = func() bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasScreenKeyboardSupport",
 		)
@@ -10230,12 +10178,9 @@ func initialize() {
 	}
 
 	iScreenKeyboardShown = func(window *Window) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, ok := internal.GetJSPointer(window)
 		if !ok {
-			_window = internal.StackAlloc(int(unsafe.Sizeof(*window)))
+			panic("nil window")
 		}
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ScreenKeyboardShown",
