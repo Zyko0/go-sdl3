@@ -199,6 +199,14 @@ func NewObject[T any](ptr js.Value) *T {
 	obj.value = ptr
 	obj.ExtractSelf()
 	objPtr := unsafe.Pointer(&obj.data[0])
+	// If an object already exists for this js pointer, return it
+	// and do not add finalizer
+	if _, ok := jsPtrsByObject[uintptr(objPtr)]; ok {
+		pool.Put(obj)
+		return (*T)(objPtr)
+	}
+
+	// Add finalizer to the object and return the js pointer as a Go one
 	obj.finalizers = append(obj.finalizers, func() {
 		delete(jsPtrsByObject, uintptr(objPtr))
 		pool.Put(obj)
