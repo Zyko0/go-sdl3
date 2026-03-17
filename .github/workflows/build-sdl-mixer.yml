@@ -13,22 +13,30 @@ env:
   MIXER_BRANCH: main
 
 jobs:
-# Windows only has binaries to download for the SDL2 version it seems
-#  build-windows:
-#    name: Download Windows
-#    runs-on: ubuntu-latest
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#          arch: [x64, x86]
-#    steps:
-#      - name: Download release build
-#        run: wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-${{ env.MIXER_VERSION }}/SDL2_mixer-${{ env.MIXER_VERSION }}-win32-${{ matrix.arch }}.zip
-#      - name: Upload Build
-#        uses: actions/upload-artifact@v4
-#        with: 
-#            name: sdl-mixer-windows-${{ matrix.arch }}
-#            path: SDL2_mixer-${{ env.MIXER_VERSION }}-win32-${{ matrix.arch }}.zip
+  build-windows:
+    name: Download Windows
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+          arch: [x64, x86, arm64]
+    steps:
+      - name: Cache
+        uses: actions/cache@v4
+        id: cache-windows
+        with:
+          path: SDL3_mixer.dll
+          key: sdl-mixer-windows-${{ inputs.version }}-${{ matrix.arch }}
+      - name: Download release build
+        if: steps.cache-windows.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/libsdl-org/SDL_mixer/releases/download/release-${{ inputs.version }}/SDL3_mixer-${{ inputs.version }}-win32-${{ matrix.arch }}.zip
+          unzip SDL3_mixer-${{ inputs.version }}-win32-${{ matrix.arch }}.zip SDL3_mixer.dll
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with: 
+            name: sdl-mixer-windows-${{ matrix.arch }}
+            path: SDL3_mixer.dll
 
   build-linux:
     name: Build Linux
