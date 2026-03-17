@@ -56,6 +56,16 @@ var (
 	//puregogen:function symbol=MIX_GetMixerFormat
 	iGetMixerFormat func(mixer *Mixer, spec *sdl.AudioSpec) bool
 
+	// MIX_LockMixer => Lock a mixer by obtaining its internal mutex.
+	//
+	//puregogen:function symbol=MIX_LockMixer
+	iLockMixer func(mixer *Mixer)
+
+	// MIX_UnlockMixer => Unlock a mixer previously locked by a call to MIX_LockMixer().
+	//
+	//puregogen:function symbol=MIX_UnlockMixer
+	iUnlockMixer func(mixer *Mixer)
+
 	// MIX_LoadAudio_IO => Load audio for playback from an SDL_IOStream.
 	//
 	//puregogen:function symbol=MIX_LoadAudio_IO
@@ -65,6 +75,11 @@ var (
 	//
 	//puregogen:function symbol=MIX_LoadAudio
 	iLoadAudio func(mixer *Mixer, path string, predecode bool) *Audio
+
+	// MIX_LoadAudioNoCopy => Load audio for playback from a memory buffer without making a copy.
+	//
+	//puregogen:function symbol=MIX_LoadAudioNoCopy
+	iLoadAudioNoCopy func(mixer *Mixer, data uintptr, datalen uintptr, free_when_done bool) *Audio
 
 	// MIX_LoadAudioWithProperties => Load audio for playback through a collection of properties.
 	//
@@ -89,7 +104,7 @@ var (
 	// MIX_CreateSineWaveAudio => Create a MIX_Audio that generates a sinewave.
 	//
 	//puregogen:function symbol=MIX_CreateSineWaveAudio
-	iCreateSineWaveAudio func(mixer *Mixer, hz int32, amplitude float32) *Audio
+	iCreateSineWaveAudio func(mixer *Mixer, hz int32, amplitude float32, ms int64) *Audio
 
 	// MIX_GetAudioProperties => Get the properties associated with a MIX_Audio.
 	//
@@ -188,10 +203,10 @@ var (
 	//puregogen:function symbol=MIX_GetTrackFadeFrames
 	iGetTrackFadeFrames func(track *Track) int64
 
-	// MIX_TrackLooping => Query whether a given track is looping.
+	// MIX_GetTrackLoops => Query how many loops remain for a given track.
 	//
-	//puregogen:function symbol=MIX_TrackLooping
-	iTrackLooping func(track *Track) bool
+	//puregogen:function symbol=MIX_GetTrackLoops
+	iGetTrackLoops func(track *Track) int32
 
 	// MIX_SetTrackLoops => Change the number of times a currently-playing track will loop.
 	//
@@ -313,15 +328,15 @@ var (
 	//puregogen:function symbol=MIX_TrackPaused
 	iTrackPaused func(track *Track) bool
 
-	// MIX_SetMasterGain => Set a mixer's master gain control.
+	// MIX_SetMixerGain => Set a mixer's master gain control.
 	//
-	//puregogen:function symbol=MIX_SetMasterGain
-	iSetMasterGain func(mixer *Mixer, gain float32) bool
+	//puregogen:function symbol=MIX_SetMixerGain
+	iSetMixerGain func(mixer *Mixer, gain float32) bool
 
-	// MIX_GetMasterGain => Get a mixer's master gain control.
+	// MIX_GetMixerGain => Get a mixer's master gain control.
 	//
-	//puregogen:function symbol=MIX_GetMasterGain
-	iGetMasterGain func(mixer *Mixer) float32
+	//puregogen:function symbol=MIX_GetMixerGain
+	iGetMixerGain func(mixer *Mixer) float32
 
 	// MIX_SetTrackGain => Set a track's gain control.
 	//
@@ -337,6 +352,16 @@ var (
 	//
 	//puregogen:function symbol=MIX_SetTagGain
 	iSetTagGain func(mixer *Mixer, tag string, gain float32) bool
+
+	// MIX_SetMixerFrequencyRatio => Set a mixer's master frequency ratio.
+	//
+	//puregogen:function symbol=MIX_SetMixerFrequencyRatio
+	iSetMixerFrequencyRatio func(mixer *Mixer, ratio float32) bool
+
+	// MIX_GetMixerFrequencyRatio => Get a mixer's master frequency ratio.
+	//
+	//puregogen:function symbol=MIX_GetMixerFrequencyRatio
+	iGetMixerFrequencyRatio func(mixer *Mixer) float32
 
 	// MIX_SetTrackFrequencyRatio => Change the frequency ratio of a track.
 	//
@@ -421,7 +446,7 @@ var (
 	// MIX_Generate => Generate mixer output when not driving an audio device.
 	//
 	//puregogen:function symbol=MIX_Generate
-	iGenerate func(mixer *Mixer, buffer uintptr, buflen int32) bool
+	iGenerate func(mixer *Mixer, buffer uintptr, buflen int32) int32
 
 	// MIX_CreateAudioDecoder => Create a MIX_AudioDecoder from a path on the filesystem.
 	//
