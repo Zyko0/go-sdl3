@@ -199,8 +199,6 @@ SDL_AUDIO_F32LE,32-bit floating point samples,https://wiki.libsdl.org/SDL3/SDL_A
 SDL_AUDIO_F32BE,"As above, but big-endian byte order",https://wiki.libsdl.org/SDL3/SDL_AudioFormat
 SDL_AudioFormat,"Audio format.
 ",https://wiki.libsdl.org/SDL3/SDL_AudioFormat
-SDL_AudioIterationCallback,"A callback that fires around an audio device's processing work.
-",https://wiki.libsdl.org/SDL3/SDL_AudioIterationCallback
 SDL_AudioPostmixCallback,"A callback that fires when data is about to be fed to an audio device.
 ",https://wiki.libsdl.org/SDL3/SDL_AudioPostmixCallback
 SDL_AudioSpec.0,Audio data format,https://wiki.libsdl.org/SDL3/SDL_AudioSpec
@@ -524,6 +522,10 @@ SDL_CreateGPUTexture,"Creates a texture object to be used in graphics or compute
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPUTexture
 SDL_CreateGPUTransferBuffer,"Creates a transfer buffer to be used when uploading to or downloading from graphics resources.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateGPUTransferBuffer
+SDL_CreateGPUXRSession,"Creates an OpenXR session.
+",https://wiki.libsdl.org/SDL3/SDL_CreateGPUXRSession
+SDL_CreateGPUXRSwapchain,"Creates an OpenXR swapchain.
+",https://wiki.libsdl.org/SDL3/SDL_CreateGPUXRSwapchain
 SDL_CreateHapticEffect,"Create a new haptic effect on a specified device.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateHapticEffect
 SDL_CreateMutex,"Create a new mutex.
@@ -574,6 +576,8 @@ SDL_CreateTrayMenu,"Create a menu for a system tray.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateTrayMenu
 SDL_CreateTraySubmenu,"Create a submenu for a system tray entry.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateTraySubmenu
+SDL_CreateTrayWithProperties,"Create an icon to be placed in the operating system's tray, or equivalent.
+",https://wiki.libsdl.org/SDL3/SDL_CreateTrayWithProperties
 SDL_CreateWindow,"Create a window with the specified dimensions and flags.
 ",https://wiki.libsdl.org/SDL3/SDL_CreateWindow
 SDL_CreateWindowAndRenderer,"Create a window and default renderer.
@@ -640,6 +644,8 @@ SDL_DestroyGPUDevice,"Destroys a GPU context previously returned by [SDL_CreateG
 ",https://wiki.libsdl.org/SDL3/SDL_DestroyGPUDevice
 SDL_DestroyGPURenderState,"Destroy custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_DestroyGPURenderState
+SDL_DestroyGPUXRSwapchain,"Destroys and OpenXR swapchain previously returned by [SDL_CreateGPUXRSwapchain](SDL_CreateGPUXRSwapchain).
+",https://wiki.libsdl.org/SDL3/SDL_DestroyGPUXRSwapchain
 SDL_DestroyHapticEffect,"Destroy a haptic effect on the device.
 ",https://wiki.libsdl.org/SDL3/SDL_DestroyHapticEffect
 SDL_DestroyMutex,"Destroy a mutex created with [SDL_CreateMutex](SDL_CreateMutex)().
@@ -838,7 +844,7 @@ SDL_EVENT_WINDOW_FOCUS_GAINED,Window has gained keyboard focus,https://wiki.libs
 SDL_EVENT_WINDOW_FOCUS_LOST,Window has lost keyboard focus,https://wiki.libsdl.org/SDL3/SDL_EventType
 SDL_EVENT_WINDOW_CLOSE_REQUESTED,The window manager requests that the window be closed,https://wiki.libsdl.org/SDL3/SDL_EventType
 SDL_EVENT_WINDOW_HIT_TEST,Window had a hit test that wasn't SDL_HITTEST_NORMAL,https://wiki.libsdl.org/SDL3/SDL_EventType
-SDL_EVENT_WINDOW_ICCPROF_CHANGED,The ICC profile of the window's display has changed,https://wiki.libsdl.org/SDL3/SDL_EventType
+SDL_EVENT_WINDOW_ICCPROF_CHANGED,The window's ICC profile has changed,https://wiki.libsdl.org/SDL3/SDL_EventType
 SDL_EVENT_WINDOW_DISPLAY_CHANGED,Window has been moved to display data1,https://wiki.libsdl.org/SDL3/SDL_EventType
 SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED,Window display scale has been changed,https://wiki.libsdl.org/SDL3/SDL_EventType
 SDL_EVENT_WINDOW_SAFE_AREA_CHANGED,The window safe area has been changed,https://wiki.libsdl.org/SDL3/SDL_EventType
@@ -933,7 +939,7 @@ SDL_FPoint,"The structure that defines a point (using floating point values).
 ",https://wiki.libsdl.org/SDL3/SDL_FPoint
 SDL_FRect,"A rectangle stored using floating point values.
 ",https://wiki.libsdl.org/SDL3/SDL_FRect
-SDL_FUNCTION,"A macro that reports the current function being compiled.
+SDL_FUNCTION,"A constant that contains the current function being compiled.
 ",https://wiki.libsdl.org/SDL3/SDL_FUNCTION
 SDL_FileDialogType,"Various types of file dialogs.
 ",https://wiki.libsdl.org/SDL3/SDL_FileDialogType
@@ -992,12 +998,16 @@ SDL_Folder,"The type of the OS-provided default folder for a specific purpose.
 ",https://wiki.libsdl.org/SDL3/SDL_Folder
 SDL_FunctionPointer,"A generic function pointer.
 ",https://wiki.libsdl.org/SDL3/SDL_FunctionPointer
-SDL_GDKResumeGPU,"Call this to resume GPU operation on Xbox when you receive the [SDL_EVENT_WILL_ENTER_FOREGROUND](SDL_EVENT_WILL_ENTER_FOREGROUND) event.
+SDL_GDKResumeGPU,"Call this to resume GPU operation on Xbox after receiving the [SDL_EVENT_WILL_ENTER_FOREGROUND](SDL_EVENT_WILL_ENTER_FOREGROUND) event.
 ",https://wiki.libsdl.org/SDL3/SDL_GDKResumeGPU
+SDL_GDKResumeRenderer,"Call this to resume Render operations on Xbox after receiving the [SDL_EVENT_WILL_ENTER_FOREGROUND](SDL_EVENT_WILL_ENTER_FOREGROUND) event.
+",https://wiki.libsdl.org/SDL3/SDL_GDKResumeRenderer
 SDL_GDKSuspendComplete,"Callback from the application to let the suspend continue.
 ",https://wiki.libsdl.org/SDL3/SDL_GDKSuspendComplete
-SDL_GDKSuspendGPU,"Call this to suspend GPU operation on Xbox when you receive the [SDL_EVENT_DID_ENTER_BACKGROUND](SDL_EVENT_DID_ENTER_BACKGROUND) event.
+SDL_GDKSuspendGPU,"Call this to suspend GPU operation on Xbox after receiving the [SDL_EVENT_DID_ENTER_BACKGROUND](SDL_EVENT_DID_ENTER_BACKGROUND) event.
 ",https://wiki.libsdl.org/SDL3/SDL_GDKSuspendGPU
+SDL_GDKSuspendRenderer,"Call this to suspend Render operations on Xbox after receiving the [SDL_EVENT_DID_ENTER_BACKGROUND](SDL_EVENT_DID_ENTER_BACKGROUND) event.
+",https://wiki.libsdl.org/SDL3/SDL_GDKSuspendRenderer
 SDL_GL_RED_SIZE,the minimum number of bits for the red channel of the color buffer; defaults to 8.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_GREEN_SIZE,the minimum number of bits for the green channel of the color buffer; defaults to 8.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_BLUE_SIZE,the minimum number of bits for the blue channel of the color buffer; defaults to 8.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
@@ -1020,7 +1030,7 @@ SDL_GL_CONTEXT_MINOR_VERSION,OpenGL context minor version.,https://wiki.libsdl.o
 SDL_GL_CONTEXT_FLAGS,some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_CONTEXT_PROFILE_MASK,"type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.",https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_SHARE_WITH_CURRENT_CONTEXT,OpenGL context sharing; defaults to 0.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
-SDL_GL_FRAMEBUFFER_SRGB_CAPABLE,"requests sRGB-capable visual if 1. Defaults to -1 (""don't care""). This is a request; GL drivers might not comply!",https://wiki.libsdl.org/SDL3/SDL_GLAttr
+SDL_GL_FRAMEBUFFER_SRGB_CAPABLE,requests sRGB capable visual; defaults to 0.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_CONTEXT_RELEASE_BEHAVIOR,sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GL_CONTEXT_RESET_NOTIFICATION,set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.,https://wiki.libsdl.org/SDL3/SDL_GLAttr
 SDL_GLAttr,"An enumeration of OpenGL configuration attributes.
@@ -1320,16 +1330,6 @@ SDL_GPURenderStateCreateInfo.6,Storage buffers to bind when this render state is
 SDL_GPURenderStateCreateInfo.7,A properties ID for extensions. Should be 0 if no extensions are needed.,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
 SDL_GPURenderStateCreateInfo,"A structure specifying the parameters of a GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateCreateInfo
-SDL_GPURenderStateDesc.0,the version of this interface,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.1,The fragment shader to use when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.2,The number of additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.3,Additional fragment samplers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.4,The number of storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.5,Storage textures to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.6,The number of storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc.7,Storage buffers to bind when this render state is active,https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
-SDL_GPURenderStateDesc,"GPU render state description.
-",https://wiki.libsdl.org/SDL3/SDL_GPURenderStateDesc
 SDL_GPU_SAMPLECOUNT_1,No multisampling.,https://wiki.libsdl.org/SDL3/SDL_GPUSampleCount
 SDL_GPU_SAMPLECOUNT_2,MSAA 2x,https://wiki.libsdl.org/SDL3/SDL_GPUSampleCount
 SDL_GPU_SAMPLECOUNT_4,MSAA 4x,https://wiki.libsdl.org/SDL3/SDL_GPUSampleCount
@@ -1812,6 +1812,8 @@ SDL_GetGPUSwapchainTextureFormat,"Obtains the texture format of the swapchain fo
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUSwapchainTextureFormat
 SDL_GetGPUTextureFormatFromPixelFormat,"Get the GPU texture format corresponding to an SDL pixel format.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGPUTextureFormatFromPixelFormat
+SDL_GetGPUXRSwapchainFormats,"Queries the GPU device for supported XR swapchain image formats.
+",https://wiki.libsdl.org/SDL3/SDL_GetGPUXRSwapchainFormats
 SDL_GetGamepadAppleSFSymbolsNameForAxis,"Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
 ",https://wiki.libsdl.org/SDL3/SDL_GetGamepadAppleSFSymbolsNameForAxis
 SDL_GetGamepadAppleSFSymbolsNameForButton,"Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
@@ -2494,8 +2496,6 @@ SDL_HINT_CAMERA_DRIVER,"A variable that decides what camera backend to use.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_CAMERA_DRIVER
 SDL_HINT_CPU_FEATURE_MASK,"A variable that limits what CPU features are available.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_CPU_FEATURE_MASK
-SDL_HINT_DEBUG_LOGGING,"A variable controlling whether SDL logs some debug information.
-",https://wiki.libsdl.org/SDL3/SDL_HINT_DEBUG_LOGGING
 SDL_HINT_DISPLAY_USABLE_BOUNDS,"Override for [SDL_GetDisplayUsableBounds](SDL_GetDisplayUsableBounds)().
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_DISPLAY_USABLE_BOUNDS
 SDL_HINT_EGL_LIBRARY,"Specify the EGL library to load.
@@ -2504,8 +2504,6 @@ SDL_HINT_EMSCRIPTEN_ASYNCIFY,"Disable giving back control to the browser automat
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_ASYNCIFY
 SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR,"Specify the CSS selector used for the ""default"" window/canvas.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR
-SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT,"Dictate that windows on Emscripten will fill the whole browser window.
-",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_FILL_DOCUMENT
 SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT,"Override the binding element for keyboard inputs for Emscripten builds.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
 SDL_HINT_ENABLE_SCREEN_KEYBOARD,"A variable that controls whether the on-screen keyboard should be shown when text input is active.
@@ -2576,6 +2574,8 @@ SDL_HINT_JOYSTICK_DEVICE,"A variable containing a comma separated list of device
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_DEVICE
 SDL_HINT_JOYSTICK_DIRECTINPUT,"A variable controlling whether DirectInput should be used for controllers.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_DIRECTINPUT
+SDL_HINT_JOYSTICK_DRUM_DEVICES,"A variable containing a list of drum style controllers.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_DRUM_DEVICES
 SDL_HINT_JOYSTICK_ENHANCED_REPORTS,"A variable controlling whether enhanced reports should be used for controllers when using the HIDAPI driver.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_ENHANCED_REPORTS
 SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES,"A variable containing a list of flightstick style controllers.
@@ -2588,6 +2588,8 @@ SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED,"A variable containing a list of dev
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED
 SDL_HINT_JOYSTICK_GAMEINPUT,"A variable controlling whether GameInput should be used for controller handling on Windows.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_GAMEINPUT
+SDL_HINT_JOYSTICK_GUITAR_DEVICES,"A variable containing a list of guitar style controllers.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_GUITAR_DEVICES
 SDL_HINT_JOYSTICK_HAPTIC_AXES,"A variable containing a list of devices and their desired number of haptic (force feedback) enabled axis.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HAPTIC_AXES
 SDL_HINT_JOYSTICK_HIDAPI,"A variable controlling whether the HIDAPI joystick drivers should be used.
@@ -2602,6 +2604,8 @@ SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE,"A variable controlling whether the HIDAPI dri
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE
 SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE,"A variable controlling whether rumble is used to implement the GameCube controller's 3 rumble modes, Stop(0), Rumble(1), and StopHard(2).
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE
+SDL_HINT_JOYSTICK_HIDAPI_GAMESIR,"A variable controlling whether the HIDAPI driver for GameSir controllers should be used.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_GAMESIR
 SDL_HINT_JOYSTICK_HIDAPI_GIP,"A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP) controllers should be used.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_JOYSTICK_HIDAPI_GIP
 SDL_HINT_JOYSTICK_HIDAPI_GIP_RESET_FOR_METADATA,"A variable controlling whether the new HIDAPI driver for wired Xbox One (GIP) controllers should reset the controller if it can't get the metadata from the controller.
@@ -2712,8 +2716,6 @@ SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER,"A variable that controls whether SDL require
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER
 SDL_HINT_LOGGING,"A variable controlling the default SDL log levels.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_LOGGING
-SDL_HINT_LOG_BACKENDS,"A variable controlling whether SDL backend information is logged.
-",https://wiki.libsdl.org/SDL3/SDL_HINT_LOG_BACKENDS
 SDL_HINT_MAC_BACKGROUND_APP,"A variable controlling whether to force the application to become the foreground process when launched on macOS.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_MAC_BACKGROUND_APP
 SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK,"A variable that determines whether Ctrl+Click should generate a right-click event on macOS.
@@ -2762,10 +2764,16 @@ SDL_HINT_NO_SIGNAL_HANDLERS,"Tell SDL not to catch the SIGINT or SIGTERM signals
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_NO_SIGNAL_HANDLERS
 SDL_HINT_OPENGL_ES_DRIVER,"A variable controlling what driver to use for OpenGL ES contexts.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENGL_ES_DRIVER
+SDL_HINT_OPENGL_FORCE_SRGB_CAPABLE,"A variable controlling whether to force an sRGB-capable OpenGL context.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENGL_FORCE_SRGB_CAPABLE
+SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER,"A variable controlling whether to force an sRGB-capable OpenGL context.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENGL_FORCE_SRGB_FRAMEBUFFER
 SDL_HINT_OPENGL_LIBRARY,"Specify the OpenGL library to load.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENGL_LIBRARY
 SDL_HINT_OPENVR_LIBRARY,"Mechanism to specify openvr_api library location
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENVR_LIBRARY
+SDL_HINT_OPENXR_LIBRARY,"A variable that specifies the library name to use when loading the OpenXR loader.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_OPENXR_LIBRARY
 SDL_HINT_ORIENTATIONS,"A variable controlling which orientations are allowed on iOS/Android.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_ORIENTATIONS
 SDL_HINT_PEN_MOUSE_EVENTS,"A variable controlling whether pen events should generate synthetic mouse events.
@@ -2936,6 +2944,8 @@ SDL_HINT_WINDOWS_RAW_KEYBOARD,"A variable controlling whether raw keyboard event
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_RAW_KEYBOARD
 SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS,"A variable controlling whether or not the RIDEV_NOHOTKEYS flag is set when enabling Windows raw keyboard events.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_RAW_KEYBOARD_EXCLUDE_HOTKEYS
+SDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK,"A variable controlling whether the RIDEV_INPUTSINK flag is set when enabling Windows raw keyboard events.
+",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_RAW_KEYBOARD_INPUTSINK
 SDL_HINT_WINDOWS_USE_D3D9EX,"A variable controlling whether SDL uses the D3D9Ex API introduced in Windows Vista, instead of normal D3D9.
 ",https://wiki.libsdl.org/SDL3/SDL_HINT_WINDOWS_USE_D3D9EX
 SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED,"A variable controlling whether the window is activated when the [SDL_RaiseWindow](SDL_RaiseWindow) function is called.
@@ -3624,6 +3634,12 @@ SDL_OpenURL,"Open a URL/URI in the browser or other appropriate external applica
 ",https://wiki.libsdl.org/SDL3/SDL_OpenURL
 SDL_OpenUserStorage,"Opens up a container for a user's unique read/write filesystem.
 ",https://wiki.libsdl.org/SDL3/SDL_OpenUserStorage
+SDL_OpenXR_GetXrGetInstanceProcAddr,"Get the address of the `xrGetInstanceProcAddr` function.
+",https://wiki.libsdl.org/SDL3/SDL_OpenXR_GetXrGetInstanceProcAddr
+SDL_OpenXR_LoadLibrary,"Dynamically load the OpenXR loader.
+",https://wiki.libsdl.org/SDL3/SDL_OpenXR_LoadLibrary
+SDL_OpenXR_UnloadLibrary,"Unload the OpenXR loader previously loaded by [SDL_OpenXR_LoadLibrary](SDL_OpenXR_LoadLibrary).
+",https://wiki.libsdl.org/SDL3/SDL_OpenXR_UnloadLibrary
 SDL_OutOfMemory,"Set an error indicating that memory allocation failed.
 ",https://wiki.libsdl.org/SDL3/SDL_OutOfMemory
 SDL_PEN_MOUSEID,"The [SDL_MouseID](SDL_MouseID) for mouse events simulated with pen input.
@@ -4082,9 +4098,9 @@ SDL_RenderFillRect,"Fill a rectangle on the current rendering target with the dr
 ",https://wiki.libsdl.org/SDL3/SDL_RenderFillRect
 SDL_RenderFillRects,"Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.
 ",https://wiki.libsdl.org/SDL3/SDL_RenderFillRects
-SDL_RenderGeometry,"Render a list of triangles, optionally using a texture and indices into the vertex array Color and alpha modulation is done per vertex ([SDL_SetTextureColorMod](SDL_SetTextureColorMod) and [SDL_SetTextureAlphaMod](SDL_SetTextureAlphaMod) are ignored).
+SDL_RenderGeometry,"Render a list of triangles, optionally using a texture and indices into the vertex array.
 ",https://wiki.libsdl.org/SDL3/SDL_RenderGeometry
-SDL_RenderGeometryRaw,"Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and alpha modulation is done per vertex ([SDL_SetTextureColorMod](SDL_SetTextureColorMod) and [SDL_SetTextureAlphaMod](SDL_SetTextureAlphaMod) are ignored).
+SDL_RenderGeometryRaw,"Render a list of triangles, optionally using a texture and indices into the vertex arrays.
 ",https://wiki.libsdl.org/SDL3/SDL_RenderGeometryRaw
 SDL_RenderLine,"Draw a line on the current rendering target at subpixel precision.
 ",https://wiki.libsdl.org/SDL3/SDL_RenderLine
@@ -4217,7 +4233,7 @@ SDL_ScaleMode,"The scaling mode.
 SDL_ScaleSurface,"Creates a new surface identical to the existing surface, scaled to the desired size.
 ",https://wiki.libsdl.org/SDL3/SDL_ScaleSurface
 SDL_SCANCODE_BACKSLASH,"Located at the lower left of the return *   key on ISO keyboards and at the right end *   of the QWERTY row on ANSI keyboards. *   Produces REVERSE SOLIDUS (backslash) and *   VERTICAL LINE in a US layout, REVERSE *   SOLIDUS and VERTICAL LINE in a UK Mac *   layout, NUMBER SIGN and TILDE in a UK *   Windows layout, DOLLAR SIGN and POUND SIGN *   in a Swiss German layout, NUMBER SIGN and *   APOSTROPHE in a German layout, GRAVE *   ACCENT and POUND SIGN in a French Mac *   layout, and ASTERISK and MICRO SIGN in a *   French Windows layout.",https://wiki.libsdl.org/SDL3/SDL_Scancode
-SDL_SCANCODE_NONUSHASH,"ISO USB keyboards actually use this code *   instead of 49 for the same key, but all *   OSes I've seen treat the two codes *   identically. So, as an implementor, unless *   your keyboard generates both of those *   codes and your OS treats them differently, *   you should generate SDL_SCANCODE_BACKSLASH *   instead of this code. As a user, you *   should not rely on this code because SDL *   will never generate it with most (all?) *   keyboards.",https://wiki.libsdl.org/SDL3/SDL_Scancode
+SDL_SCANCODE_NONUSHASH,"ISO USB keyboards actually use this code *   instead of 49 for the same key, but all *   OSes I've seen treat the two codes *   identically. So, as an implementer, unless *   your keyboard generates both of those *   codes and your OS treats them differently, *   you should generate SDL_SCANCODE_BACKSLASH *   instead of this code. As a user, you *   should not rely on this code because SDL *   will never generate it with most (all?) *   keyboards.",https://wiki.libsdl.org/SDL3/SDL_Scancode
 SDL_SCANCODE_GRAVE,"Located in the top left corner (on both ANSI *   and ISO keyboards). Produces GRAVE ACCENT and *   TILDE in a US Windows layout and in US and UK *   Mac layouts on ANSI keyboards, GRAVE ACCENT *   and NOT SIGN in a UK Windows layout, SECTION *   SIGN and PLUS-MINUS SIGN in US and UK Mac *   layouts on ISO keyboards, SECTION SIGN and *   DEGREE SIGN in a Swiss German layout (Mac: *   only on ISO keyboards), CIRCUMFLEX ACCENT and *   DEGREE SIGN in a German layout (Mac: only on *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a *   French Windows layout, COMMERCIAL AT and *   NUMBER SIGN in a French Mac layout on ISO *   keyboards, and LESS-THAN SIGN and GREATER-THAN *   SIGN in a Swiss German, German, or French Mac *   layout on ANSI keyboards.",https://wiki.libsdl.org/SDL3/SDL_Scancode
 SDL_SCANCODE_INSERT,"insert on PC, help on some Mac keyboards (but does send code 73, not 117)",https://wiki.libsdl.org/SDL3/SDL_Scancode
 SDL_SCANCODE_NUMLOCKCLEAR,"num lock on PC, clear on Mac keyboards",https://wiki.libsdl.org/SDL3/SDL_Scancode
@@ -4340,8 +4356,6 @@ SDL_SetAtomicU32,"Set an atomic variable to a value.
 ",https://wiki.libsdl.org/SDL3/SDL_SetAtomicU32
 SDL_SetAudioDeviceGain,"Change the gain of an audio device.
 ",https://wiki.libsdl.org/SDL3/SDL_SetAudioDeviceGain
-SDL_SetAudioIterationCallbacks,"Set callbacks that fire around a new iteration of audio device processing.
-",https://wiki.libsdl.org/SDL3/SDL_SetAudioIterationCallbacks
 SDL_SetAudioPostmixCallback,"Set a callback that fires when data is about to be fed to an audio device.
 ",https://wiki.libsdl.org/SDL3/SDL_SetAudioPostmixCallback
 SDL_SetAudioStreamFormat,"Change the input and output formats of an audio stream.
@@ -4392,6 +4406,12 @@ SDL_SetGPURenderState,"Set custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderState
 SDL_SetGPURenderStateFragmentUniforms,"Set fragment shader uniform variables in a custom GPU render state.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateFragmentUniforms
+SDL_SetGPURenderStateSamplerBindings,"Set sampler bindings variables in a custom GPU render state.
+",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateSamplerBindings
+SDL_SetGPURenderStateStorageBuffers,"Set storage buffers variables in a custom GPU render state.
+",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateStorageBuffers
+SDL_SetGPURenderStateStorageTextures,"Set storage textures variables in a custom GPU render state.
+",https://wiki.libsdl.org/SDL3/SDL_SetGPURenderStateStorageTextures
 SDL_SetGPUScissor,"Sets the current scissor state on a command buffer.
 ",https://wiki.libsdl.org/SDL3/SDL_SetGPUScissor
 SDL_SetGPUStencilReference,"Sets the current stencil reference value on a command buffer.
@@ -4478,8 +4498,6 @@ SDL_SetRenderDrawColor,"Set the color used for drawing operations.
 ",https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColor
 SDL_SetRenderDrawColorFloat,"Set the color used for drawing operations (Rect, Line and Clear).
 ",https://wiki.libsdl.org/SDL3/SDL_SetRenderDrawColorFloat
-SDL_SetRenderGPUState,"Set custom GPU render state.
-",https://wiki.libsdl.org/SDL3/SDL_SetRenderGPUState
 SDL_SetRenderLogicalPresentation,"Set a device-independent resolution and presentation mode for rendering.
 ",https://wiki.libsdl.org/SDL3/SDL_SetRenderLogicalPresentation
 SDL_SetRenderScale,"Set the drawing scale for rendering on the current target.
@@ -4860,6 +4878,8 @@ SDL_Tray,"An opaque handle representing a toplevel system tray object.
 ",https://wiki.libsdl.org/SDL3/SDL_Tray
 SDL_TrayCallback,"A callback that is invoked when a tray entry is selected.
 ",https://wiki.libsdl.org/SDL3/SDL_TrayCallback
+SDL_TrayClickCallback,"A callback that is invoked when the tray icon is clicked.
+",https://wiki.libsdl.org/SDL3/SDL_TrayClickCallback
 SDL_TrayEntry,"An opaque handle representing an entry on a system tray object.
 ",https://wiki.libsdl.org/SDL3/SDL_TrayEntry
 SDL_TrayEntryFlags,"Flags that control the creation of system tray entries.
@@ -4868,6 +4888,8 @@ SDL_TrayMenu,"An opaque handle representing a menu/submenu on a system tray obje
 ",https://wiki.libsdl.org/SDL3/SDL_TrayMenu
 SDL_TriggerBreakpoint,"Attempt to tell an attached debugger to pause.
 ",https://wiki.libsdl.org/SDL3/SDL_TriggerBreakpoint
+SDL_TryLockJoysticks,"Locking for atomic access to the joystick API.
+",https://wiki.libsdl.org/SDL3/SDL_TryLockJoysticks
 SDL_TryLockMutex,"Try to lock a mutex without blocking.
 ",https://wiki.libsdl.org/SDL3/SDL_TryLockMutex
 SDL_TryLockRWLockForReading,"Try to lock a read/write lock _for reading_ without blocking.
@@ -5640,6 +5662,12 @@ IMG_LoadGIFAnimation_IO,"Load a GIF animation directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadGIFAnimation_IO
 IMG_LoadGIF_IO,"Load a GIF image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadGIF_IO
+IMG_LoadGPUTexture,"Load an image from a filesystem path into a GPU texture.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadGPUTexture
+IMG_LoadGPUTextureTyped_IO,"Load an image from an SDL data source into a GPU texture.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadGPUTextureTyped_IO
+IMG_LoadGPUTexture_IO,"Load an image from an SDL data source into a GPU texture.
+",https://wiki.libsdl.org/SDL3_image/IMG_LoadGPUTexture_IO
 IMG_LoadICO_IO,"Load a ICO image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadICO_IO
 IMG_LoadJPG_IO,"Load a JPG image directly.
@@ -5664,11 +5692,11 @@ IMG_LoadTGA_IO,"Load a TGA image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTGA_IO
 IMG_LoadTIF_IO,"Load a TIFF image directly.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTIF_IO
-IMG_LoadTexture,"Load an image from a filesystem path into a GPU texture.
+IMG_LoadTexture,"Load an image from a filesystem path into a texture.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTexture
-IMG_LoadTextureTyped_IO,"Load an image from an SDL data source into a GPU texture.
+IMG_LoadTextureTyped_IO,"Load an image from an SDL data source into a texture.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTextureTyped_IO
-IMG_LoadTexture_IO,"Load an image from an SDL data source into a GPU texture.
+IMG_LoadTexture_IO,"Load an image from an SDL data source into a texture.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTexture_IO
 IMG_LoadTyped_IO,"Load an image from an SDL data source into a software surface.
 ",https://wiki.libsdl.org/SDL3_image/IMG_LoadTyped_IO
@@ -5838,10 +5866,12 @@ MIX_GetGroupMixer,"Get the [MIX_Mixer](MIX_Mixer) that owns a [MIX_Group](MIX_Gr
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupMixer
 MIX_GetGroupProperties,"Get the properties associated with a group.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetGroupProperties
-MIX_GetMasterGain,"Get a mixer's master gain control.
-",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMasterGain
 MIX_GetMixerFormat,"Get the audio format a mixer is generating.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerFormat
+MIX_GetMixerFrequencyRatio,"Get a mixer's master frequency ratio.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerFrequencyRatio
+MIX_GetMixerGain,"Get a mixer's master gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerGain
 MIX_GetMixerProperties,"Get the properties associated with a mixer.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetMixerProperties
 MIX_GetNumAudioDecoders,"Report the number of audio decoders available for use.
@@ -5860,6 +5890,8 @@ MIX_GetTrackFrequencyRatio,"Query the frequency ratio of a track.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFrequencyRatio
 MIX_GetTrackGain,"Get a track's gain control.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackGain
+MIX_GetTrackLoops,"Query how many loops remain for a given track.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackLoops
 MIX_GetTrackMixer,"Get the [MIX_Mixer](MIX_Mixer) that owns a [MIX_Track](MIX_Track).
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackMixer
 MIX_GetTrackPlaybackPosition,"Get the current input position of a playing track.
@@ -5878,6 +5910,8 @@ MIX_Init,"Initialize the SDL_mixer library.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_Init
 MIX_LoadAudio,"Load audio for playback from a file.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio
+MIX_LoadAudioNoCopy,"Load audio for playback from a memory buffer without making a copy.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioNoCopy
 MIX_LoadAudioWithProperties,"Load audio for playback through a collection of properties.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudioWithProperties
 MIX_LoadAudio_IO,"Load audio for playback from an SDL_IOStream.
@@ -5888,6 +5922,8 @@ MIX_LoadRawAudioNoCopy,"Load raw PCM data from a memory buffer without making a 
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudioNoCopy
 MIX_LoadRawAudio_IO,"Load raw PCM data from an SDL_IOStream.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_LoadRawAudio_IO
+MIX_LockMixer,"Lock a mixer by obtaining its internal mutex.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_LockMixer
 MIX_MSToFrames,"Convert milliseconds to sample frames at a specific sample rate.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_MSToFrames
 MIX_Mixer,"An opaque object that represents a mixer.
@@ -5921,8 +5957,10 @@ MIX_ResumeTrack,"Resume a currently-paused track.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_ResumeTrack
 MIX_SetGroupPostMixCallback,"Set a callback that fires when a mixer group has completed mixing.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_SetGroupPostMixCallback
-MIX_SetMasterGain,"Set a mixer's master gain control.
-",https://wiki.libsdl.org/SDL3_mixer/MIX_SetMasterGain
+MIX_SetMixerFrequencyRatio,"Set a mixer's master frequency ratio.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetMixerFrequencyRatio
+MIX_SetMixerGain,"Set a mixer's master gain control.
+",https://wiki.libsdl.org/SDL3_mixer/MIX_SetMixerGain
 MIX_SetPostMixCallback,"Set a callback that fires when all mixing has completed.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_SetPostMixCallback
 MIX_SetTagGain,"Set the gain control of all tracks with a specific tag.
@@ -5973,8 +6011,6 @@ MIX_Track,"An opaque object that represents a source of sound output to be mixed
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_Track
 MIX_TrackFramesToMS,"Convert sample frames for a track's current format to milliseconds.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackFramesToMS
-MIX_TrackLooping,"Query whether a given track is looping.
-",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackLooping
 MIX_TrackMSToFrames,"Convert milliseconds to sample frames for a track's current format.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackMSToFrames
 MIX_TrackMixCallback,"A callback that fires when a [MIX_Track](MIX_Track) is mixing at various stages.
@@ -5985,6 +6021,8 @@ MIX_TrackPlaying,"Query if a track is currently playing.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackPlaying
 MIX_TrackStoppedCallback,"A callback that fires when a [MIX_Track](MIX_Track) is stopped.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_TrackStoppedCallback
+MIX_UnlockMixer,"Unlock a mixer previously locked by a call to [MIX_LockMixer](MIX_LockMixer)().
+",https://wiki.libsdl.org/SDL3_mixer/MIX_UnlockMixer
 MIX_UntagTrack,"Remove an arbitrary tag from a track.
 ",https://wiki.libsdl.org/SDL3_mixer/MIX_UntagTrack
 MIX_Version,"Get the version of SDL_mixer that is linked against your program.
