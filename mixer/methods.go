@@ -167,8 +167,8 @@ func (mixer *Mixer) LoadRawAudioNoCopy(data []byte, spec *sdl.AudioSpec) (*Audio
 
 // MIX_CreateSineWaveAudio - Create a [MIX_Audio](MIX_Audio) that generates a sinewave.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_CreateSineWaveAudio)
-func (mixer *Mixer) CreateSineWaveAudio(hz int32, amplitude float32) (*Audio, error) {
-	audio := iCreateSineWaveAudio(mixer, hz, amplitude)
+func (mixer *Mixer) CreateSineWaveAudio(hz int32, amplitude float32, ms int64) (*Audio, error) {
+	audio := iCreateSineWaveAudio(mixer, hz, amplitude, ms)
 	if audio == nil {
 		return nil, internal.LastErr()
 	}
@@ -267,22 +267,6 @@ func (mixer *Mixer) ResumeTag(tag string) error {
 	return nil
 }
 
-// MIX_SetMasterGain - Set a mixer's master gain control.
-// (https://wiki.libsdl.org/SDL3_mixer/MIX_SetMasterGain)
-func (mixer *Mixer) SetMasterGain(gain float32) error {
-	if !iSetMasterGain(mixer, gain) {
-		return internal.LastErr()
-	}
-
-	return nil
-}
-
-// MIX_GetMasterGain - Get a mixer's master gain control.
-// (https://wiki.libsdl.org/SDL3_mixer/MIX_GetMasterGain)
-func (mixer *Mixer) MasterGain() float32 {
-	return iGetMasterGain(mixer)
-}
-
 // MIX_SetTagGain - Set the gain control of all tracks with a specific tag.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_SetTagGain)
 func (mixer *Mixer) SetTagGain(tag string, gain float32) error {
@@ -316,13 +300,14 @@ func (mixer *Mixer) SetPostMixCallback(cb PostMixCallback) error {
 
 // MIX_Generate - Generate mixer output when not driving an audio device.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_Generate)
-func (mixer *Mixer) Generate(buffer []byte) error {
-	if !iGenerate(mixer, uintptr(unsafe.Pointer(unsafe.SliceData(buffer))), int32(len(buffer))) {
-		return internal.LastErr()
+func (mixer *Mixer) Generate(buffer []byte) (int32, error) {
+	count := iGenerate(mixer, uintptr(unsafe.Pointer(unsafe.SliceData(buffer))), int32(len(buffer)))
+	if count == -1 {
+		return -1, internal.LastErr()
 	}
 	runtime.KeepAlive(buffer)
 
-	return nil
+	return count, nil
 }
 
 // MIX_GetTaggedTracks - Get all tracks with a specific tag.
@@ -523,12 +508,6 @@ func (track *Track) PlaybackPosition() (int64, error) {
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_GetTrackFadeFrames)
 func (track *Track) FadeFrames() int64 {
 	return iGetTrackFadeFrames(track)
-}
-
-// MIX_TrackLooping - Query whether a given track is looping.
-// (https://wiki.libsdl.org/SDL3_mixer/MIX_TrackLooping)
-func (track *Track) Looping() bool {
-	return iTrackLooping(track)
 }
 
 // MIX_SetTrackLoops - Change the number of times a currently-playing track will loop.
