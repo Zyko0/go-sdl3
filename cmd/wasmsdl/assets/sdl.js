@@ -108,7 +108,7 @@ if (ENVIRONMENT_IS_NODE) {
 
   // These modules will usually be used on Node.js. Load them eagerly to avoid
   // the complexity of lazy-loading.
-  var fs = require('fs');
+  var fs = require('node:fs');
 
   scriptDirectory = __dirname + '/';
 
@@ -448,31 +448,6 @@ function unexportedRuntimeSymbol(sym) {
 
 // end include: runtime_debug.js
 // Memory management
-var
-/** @type {!Int8Array} */
-  HEAP8,
-/** @type {!Uint8Array} */
-  HEAPU8,
-/** @type {!Int16Array} */
-  HEAP16,
-/** @type {!Uint16Array} */
-  HEAPU16,
-/** @type {!Int32Array} */
-  HEAP32,
-/** @type {!Uint32Array} */
-  HEAPU32,
-/** @type {!Float32Array} */
-  HEAPF32,
-/** @type {!Float64Array} */
-  HEAPF64;
-
-// BigInt64Array type is not correctly defined in closure
-var
-/** not-@type {!BigInt64Array} */
-  HEAP64,
-/* BigUint64Array type is not correctly defined in closure
-/** not-@type {!BigUint64Array} */
-  HEAPU64;
 
 var runtimeInitialized = false;
 
@@ -750,6 +725,36 @@ async function createWasm() {
       }
     }
 
+  /** @type {!Int16Array} */
+  var HEAP16;
+
+  /** @type {!Int32Array} */
+  var HEAP32;
+
+  /** not-@type {!BigInt64Array} */
+  var HEAP64;
+
+  /** @type {!Int8Array} */
+  var HEAP8;
+
+  /** @type {!Float32Array} */
+  var HEAPF32;
+
+  /** @type {!Float64Array} */
+  var HEAPF64;
+
+  /** @type {!Uint16Array} */
+  var HEAPU16;
+
+  /** @type {!Uint32Array} */
+  var HEAPU32;
+
+  /** not-@type {!BigUint64Array} */
+  var HEAPU64;
+
+  /** @type {!Uint8Array} */
+  var HEAPU8;
+
   var wasmTableMirror = [];
   
   
@@ -984,9 +989,9 @@ async function createWasm() {
 
   
     /**
-     * @param {number} ptr
-     * @param {string} type
-     */
+   * @param {number} ptr
+   * @param {string} type
+   */
   function getValue(ptr, type = 'i8') {
     if (type.endsWith('*')) type = '*';
     switch (type) {
@@ -1004,20 +1009,20 @@ async function createWasm() {
 
   var noExitRuntime = true;
 
-  var ptrToString = (ptr) => {
+  function ptrToString(ptr) {
       assert(typeof ptr === 'number', `ptrToString expects a number, got ${typeof ptr}`);
       // Convert to 32-bit unsigned value
       ptr >>>= 0;
       return '0x' + ptr.toString(16).padStart(8, '0');
-    };
+    }
 
 
   
     /**
-     * @param {number} ptr
-     * @param {number} value
-     * @param {string} type
-     */
+   * @param {number} ptr
+   * @param {number} value
+   * @param {string} type
+   */
   function setValue(ptr, value, type = 'i8') {
     if (type.endsWith('*')) type = '*';
     switch (type) {
@@ -1117,105 +1122,105 @@ async function createWasm() {
         return root + dir;
       },
   basename:(path) => path && path.match(/([^\/]+|\/)\/*$/)[1],
-  join:(...paths) => PATH.normalize(paths.join('/')),
-  join2:(l, r) => PATH.normalize(l + '/' + r),
+join:(...paths) => PATH.normalize(paths.join('/')),
+join2:(l, r) => PATH.normalize(l + '/' + r),
+};
+
+var initRandomFill = () => {
+    // This block is not needed on v19+ since crypto.getRandomValues is builtin
+    if (ENVIRONMENT_IS_NODE) {
+      var nodeCrypto = require('node:crypto');
+      return (view) => nodeCrypto.randomFillSync(view);
+    }
+
+    return (view) => crypto.getRandomValues(view);
   };
-  
-  var initRandomFill = () => {
-      // This block is not needed on v19+ since crypto.getRandomValues is builtin
-      if (ENVIRONMENT_IS_NODE) {
-        var nodeCrypto = require('crypto');
-        return (view) => nodeCrypto.randomFillSync(view);
+var randomFill = (view) => {
+    // Lazily init on the first invocation.
+    (randomFill = initRandomFill())(view);
+  };
+
+
+
+var PATH_FS = {
+resolve:(...args) => {
+      var resolvedPath = '',
+        resolvedAbsolute = false;
+      for (var i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+        var path = (i >= 0) ? args[i] : FS.cwd();
+        // Skip empty and invalid entries
+        if (typeof path != 'string') {
+          throw new TypeError('Arguments to path.resolve must be strings');
+        } else if (!path) {
+          return ''; // an invalid portion invalidates the whole thing
+        }
+        resolvedPath = path + '/' + resolvedPath;
+        resolvedAbsolute = PATH.isAbs(path);
       }
-  
-      return (view) => crypto.getRandomValues(view);
-    };
-  var randomFill = (view) => {
-      // Lazily init on the first invocation.
-      (randomFill = initRandomFill())(view);
-    };
-  
-  
-  
-  var PATH_FS = {
-  resolve:(...args) => {
-        var resolvedPath = '',
-          resolvedAbsolute = false;
-        for (var i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-          var path = (i >= 0) ? args[i] : FS.cwd();
-          // Skip empty and invalid entries
-          if (typeof path != 'string') {
-            throw new TypeError('Arguments to path.resolve must be strings');
-          } else if (!path) {
-            return ''; // an invalid portion invalidates the whole thing
-          }
-          resolvedPath = path + '/' + resolvedPath;
-          resolvedAbsolute = PATH.isAbs(path);
+      // At this point the path should be resolved to a full absolute path, but
+      // handle relative paths to be safe (might happen when process.cwd() fails)
+      resolvedPath = PATH.normalizeArray(resolvedPath.split('/').filter((p) => !!p), !resolvedAbsolute).join('/');
+      return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+    },
+relative:(from, to) => {
+      from = PATH_FS.resolve(from).slice(1);
+      to = PATH_FS.resolve(to).slice(1);
+      function trim(arr) {
+        var start = 0;
+        for (; start < arr.length; start++) {
+          if (arr[start] !== '') break;
         }
-        // At this point the path should be resolved to a full absolute path, but
-        // handle relative paths to be safe (might happen when process.cwd() fails)
-        resolvedPath = PATH.normalizeArray(resolvedPath.split('/').filter((p) => !!p), !resolvedAbsolute).join('/');
-        return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-      },
-  relative:(from, to) => {
-        from = PATH_FS.resolve(from).slice(1);
-        to = PATH_FS.resolve(to).slice(1);
-        function trim(arr) {
-          var start = 0;
-          for (; start < arr.length; start++) {
-            if (arr[start] !== '') break;
-          }
-          var end = arr.length - 1;
-          for (; end >= 0; end--) {
-            if (arr[end] !== '') break;
-          }
-          if (start > end) return [];
-          return arr.slice(start, end - start + 1);
+        var end = arr.length - 1;
+        for (; end >= 0; end--) {
+          if (arr[end] !== '') break;
         }
-        var fromParts = trim(from.split('/'));
-        var toParts = trim(to.split('/'));
-        var length = Math.min(fromParts.length, toParts.length);
-        var samePartsLength = length;
-        for (var i = 0; i < length; i++) {
-          if (fromParts[i] !== toParts[i]) {
-            samePartsLength = i;
-            break;
-          }
+        if (start > end) return [];
+        return arr.slice(start, end - start + 1);
+      }
+      var fromParts = trim(from.split('/'));
+      var toParts = trim(to.split('/'));
+      var length = Math.min(fromParts.length, toParts.length);
+      var samePartsLength = length;
+      for (var i = 0; i < length; i++) {
+        if (fromParts[i] !== toParts[i]) {
+          samePartsLength = i;
+          break;
         }
-        var outputParts = [];
-        for (var i = samePartsLength; i < fromParts.length; i++) {
-          outputParts.push('..');
-        }
-        outputParts = outputParts.concat(toParts.slice(samePartsLength));
-        return outputParts.join('/');
-      },
+      }
+      var outputParts = [];
+      for (var i = samePartsLength; i < fromParts.length; i++) {
+        outputParts.push('..');
+      }
+      outputParts = outputParts.concat(toParts.slice(samePartsLength));
+      return outputParts.join('/');
+    },
+};
+
+
+var UTF8Decoder = globalThis.TextDecoder && new TextDecoder();
+
+var findStringEnd = (heapOrArray, idx, maxBytesToRead, ignoreNul) => {
+    var maxIdx = idx + maxBytesToRead;
+    if (ignoreNul) return maxIdx;
+    // TextDecoder needs to know the byte length in advance, it doesn't stop on
+    // null terminator by itself.
+    // As a tiny code save trick, compare idx against maxIdx using a negation,
+    // so that maxBytesToRead=undefined/NaN means Infinity.
+    while (heapOrArray[idx] && !(idx >= maxIdx)) ++idx;
+    return idx;
   };
-  
-  
-  var UTF8Decoder = globalThis.TextDecoder && new TextDecoder();
-  
-  var findStringEnd = (heapOrArray, idx, maxBytesToRead, ignoreNul) => {
-      var maxIdx = idx + maxBytesToRead;
-      if (ignoreNul) return maxIdx;
-      // TextDecoder needs to know the byte length in advance, it doesn't stop on
-      // null terminator by itself.
-      // As a tiny code save trick, compare idx against maxIdx using a negation,
-      // so that maxBytesToRead=undefined/NaN means Infinity.
-      while (heapOrArray[idx] && !(idx >= maxIdx)) ++idx;
-      return idx;
-    };
-  
-  
-    /**
-     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
-     * array that contains uint8 values, returns a copy of that string as a
-     * Javascript String object.
-     * heapOrArray is either a regular array, or a JavaScript typed array view.
-     * @param {number=} idx
-     * @param {number=} maxBytesToRead
-     * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
-     * @return {string}
-     */
+
+
+  /**
+   * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
+   * array that contains uint8 values, returns a copy of that string as a
+   * Javascript String object.
+   * heapOrArray is either a regular array, or a JavaScript typed array view.
+   * @param {number=} idx
+   * @param {number=} maxBytesToRead
+   * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
+   * @return {string}
+   */
   var UTF8ArrayToString = (heapOrArray, idx = 0, maxBytesToRead, ignoreNul) => {
   
       var endPtr = findStringEnd(heapOrArray, idx, maxBytesToRead, ignoreNul);
@@ -1591,11 +1596,14 @@ async function createWasm() {
         } else if (FS.isFile(node.mode)) {
           node.node_ops = MEMFS.ops_table.file.node;
           node.stream_ops = MEMFS.ops_table.file.stream;
-          node.usedBytes = 0; // The actual number of bytes used in the typed array, as opposed to contents.length which gives the whole capacity.
-          // When the byte data of the file is populated, this will point to either a typed array, or a normal JS array. Typed arrays are preferred
-          // for performance, and used by default. However, typed arrays are not resizable like normal JS arrays are, so there is a small disk size
-          // penalty involved for appending file writes that continuously grow a file similar to std::vector capacity vs used -scheme.
-          node.contents = null; 
+          // The actual number of bytes used in the typed array, as opposed to
+          // contents.length which gives the whole capacity.
+          node.usedBytes = 0;
+          // The byte data of the file is stored in a typed array.
+          // Note: typed arrays are not resizable like normal JS arrays are, so
+          // there is a small penalty involved for appending file writes that
+          // continuously grow a file similar to std::vector capacity vs used.
+          node.contents = MEMFS.emptyFileContents ??= new Uint8Array(0);
         } else if (FS.isLink(node.mode)) {
           node.node_ops = MEMFS.ops_table.link.node;
           node.stream_ops = MEMFS.ops_table.link.stream;
@@ -1612,36 +1620,30 @@ async function createWasm() {
         return node;
       },
   getFileDataAsTypedArray(node) {
-        if (!node.contents) return new Uint8Array(0);
-        if (node.contents.subarray) return node.contents.subarray(0, node.usedBytes); // Make sure to not return excess unused bytes.
-        return new Uint8Array(node.contents);
+        assert(FS.isFile(node.mode), 'getFileDataAsTypedArray called on non-file');
+        return node.contents.subarray(0, node.usedBytes); // Make sure to not return excess unused bytes.
       },
   expandFileStorage(node, newCapacity) {
-        var prevCapacity = node.contents ? node.contents.length : 0;
+        var prevCapacity = node.contents.length;
         if (prevCapacity >= newCapacity) return; // No need to expand, the storage was already large enough.
-        // Don't expand strictly to the given requested limit if it's only a very small increase, but instead geometrically grow capacity.
-        // For small filesizes (<1MB), perform size*2 geometric increase, but for large sizes, do a much more conservative size*1.125 increase to
-        // avoid overshooting the allocation cap by a very large margin.
+        // Don't expand strictly to the given requested limit if it's only a very
+        // small increase, but instead geometrically grow capacity.
+        // For small filesizes (<1MB), perform size*2 geometric increase, but for
+        // large sizes, do a much more conservative size*1.125 increase to avoid
+        // overshooting the allocation cap by a very large margin.
         var CAPACITY_DOUBLING_MAX = 1024 * 1024;
         newCapacity = Math.max(newCapacity, (prevCapacity * (prevCapacity < CAPACITY_DOUBLING_MAX ? 2.0 : 1.125)) >>> 0);
-        if (prevCapacity != 0) newCapacity = Math.max(newCapacity, 256); // At minimum allocate 256b for each file when expanding.
-        var oldContents = node.contents;
+        if (prevCapacity) newCapacity = Math.max(newCapacity, 256); // At minimum allocate 256b for each file when expanding.
+        var oldContents = MEMFS.getFileDataAsTypedArray(node);
         node.contents = new Uint8Array(newCapacity); // Allocate new storage.
-        if (node.usedBytes > 0) node.contents.set(oldContents.subarray(0, node.usedBytes), 0); // Copy old data over to the new storage.
+        node.contents.set(oldContents);
       },
   resizeFileStorage(node, newSize) {
         if (node.usedBytes == newSize) return;
-        if (newSize == 0) {
-          node.contents = null; // Fully decommit when requesting a resize to zero.
-          node.usedBytes = 0;
-        } else {
-          var oldContents = node.contents;
-          node.contents = new Uint8Array(newSize); // Allocate new storage.
-          if (oldContents) {
-            node.contents.set(oldContents.subarray(0, Math.min(newSize, node.usedBytes))); // Copy old data over to the new storage.
-          }
-          node.usedBytes = newSize;
-        }
+        var oldContents = node.contents;
+        node.contents = new Uint8Array(newSize); // Allocate new storage.
+        node.contents.set(oldContents.subarray(0, Math.min(newSize, node.usedBytes))); // Copy old data over to the new storage.
+        node.usedBytes = newSize;
       },
   node_ops:{
   getattr(node) {
@@ -1741,16 +1743,11 @@ async function createWasm() {
           if (position >= stream.node.usedBytes) return 0;
           var size = Math.min(stream.node.usedBytes - position, length);
           assert(size >= 0);
-          if (size > 8 && contents.subarray) { // non-trivial, and typed array
-            buffer.set(contents.subarray(position, position + size), offset);
-          } else {
-            for (var i = 0; i < size; i++) buffer[offset + i] = contents[position + i];
-          }
+          buffer.set(contents.subarray(position, position + size), offset);
           return size;
         },
   write(stream, buffer, offset, length, position, canOwn) {
-          // The data buffer should be a typed array view
-          assert(!(buffer instanceof ArrayBuffer));
+          assert(buffer.subarray, 'FS.write expects a TypedArray');
           // If the buffer is located in main memory (HEAP), and if
           // memory can grow, we can't hold on to references of the
           // memory buffer, as they may get invalidated. That means we
@@ -1763,33 +1760,19 @@ async function createWasm() {
           var node = stream.node;
           node.mtime = node.ctime = Date.now();
   
-          if (buffer.subarray && (!node.contents || node.contents.subarray)) { // This write is from a typed array to a typed array?
-            if (canOwn) {
-              assert(position === 0, 'canOwn must imply no weird position inside the file');
-              node.contents = buffer.subarray(offset, offset + length);
-              node.usedBytes = length;
-              return length;
-            } else if (node.usedBytes === 0 && position === 0) { // If this is a simple first write to an empty file, do a fast set since we don't need to care about old data.
-              node.contents = buffer.slice(offset, offset + length);
-              node.usedBytes = length;
-              return length;
-            } else if (position + length <= node.usedBytes) { // Writing to an already allocated and used subrange of the file?
-              node.contents.set(buffer.subarray(offset, offset + length), position);
-              return length;
-            }
-          }
-  
-          // Appending to an existing file and we need to reallocate, or source data did not come as a typed array.
-          MEMFS.expandFileStorage(node, position+length);
-          if (node.contents.subarray && buffer.subarray) {
+          if (canOwn) {
+            assert(position === 0, 'canOwn must imply no weird position inside the file');
+            node.contents = buffer.subarray(offset, offset + length);
+            node.usedBytes = length;
+          } else if (node.usedBytes === 0 && position === 0) { // If this is a simple first write to an empty file, do a fast set since we don't need to care about old data.
+            node.contents = buffer.slice(offset, offset + length);
+            node.usedBytes = length;
+          } else {
+            MEMFS.expandFileStorage(node, position+length);
             // Use typed array write which is available.
             node.contents.set(buffer.subarray(offset, offset + length), position);
-          } else {
-            for (var i = 0; i < length; i++) {
-             node.contents[position + i] = buffer[offset + i]; // Or fall back to manual write if not.
-            }
+            node.usedBytes = Math.max(node.usedBytes, position + length);
           }
-          node.usedBytes = Math.max(node.usedBytes, position + length);
           return length;
         },
   llseek(stream, offset, whence) {
@@ -1814,7 +1797,7 @@ async function createWasm() {
           var allocated;
           var contents = stream.node.contents;
           // Only make a new copy when MAP_PRIVATE is specified.
-          if (!(flags & 2) && contents && contents.buffer === HEAP8.buffer) {
+          if (!(flags & 2) && contents.buffer === HEAP8.buffer) {
             // We can't emulate MAP_SHARED when the file is not backed by the
             // buffer we're mapping to (e.g. the HEAP buffer).
             allocated = false;
@@ -1848,6 +1831,7 @@ async function createWasm() {
   };
   
   var FS_modeStringToFlags = (str) => {
+      if (typeof str != 'string') return str;
       var flagModes = {
         'r': 0,
         'r+': 2,
@@ -1863,6 +1847,16 @@ async function createWasm() {
       return flags;
     };
   
+  var FS_fileDataToTypedArray = (data) => {
+      if (typeof data == 'string') {
+        data = intArrayFromString(data, true);
+      }
+      if (!data.subarray) {
+        data = new Uint8Array(data);
+      }
+      return data;
+    };
+  
   var FS_getMode = (canRead, canWrite) => {
       var mode = 0;
       if (canRead) mode |= 292 | 73;
@@ -1874,18 +1868,18 @@ async function createWasm() {
   
   
     /**
-     * Given a pointer 'ptr' to a null-terminated UTF8-encoded string in the
-     * emscripten HEAP, returns a copy of that string as a Javascript String object.
-     *
-     * @param {number} ptr
-     * @param {number=} maxBytesToRead - An optional length that specifies the
-     *   maximum number of bytes to read. You can omit this parameter to scan the
-     *   string until the first 0 byte. If maxBytesToRead is passed, and the string
-     *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
-     *   string will cut short at that byte index.
-     * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
-     * @return {string}
-     */
+   * Given a pointer 'ptr' to a null-terminated UTF8-encoded string in the
+   * emscripten HEAP, returns a copy of that string as a Javascript String object.
+   *
+   * @param {number} ptr
+   * @param {number=} maxBytesToRead - An optional length that specifies the
+   *   maximum number of bytes to read. You can omit this parameter to scan the
+   *   string until the first 0 byte. If maxBytesToRead is passed, and the string
+   *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
+   *   string will cut short at that byte index.
+   * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
+   * @return {string}
+   */
   var UTF8ToString = (ptr, maxBytesToRead, ignoreNul) => {
       assert(typeof ptr == 'number', `UTF8ToString expects a number (got ${typeof ptr})`);
       return ptr ? UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead, ignoreNul) : '';
@@ -2089,8 +2083,6 @@ async function createWasm() {
   ignorePermissions:true,
   filesystems:null,
   syncFSRequests:0,
-  readFiles:{
-  },
   ErrnoError:class extends Error {
         name = 'ErrnoError';
         // We set the `name` property to be able to identify `FS.ErrnoError`
@@ -2364,9 +2356,11 @@ async function createWasm() {
         // return 0 if any user, group or owner bits are set.
         if (perms.includes('r') && !(node.mode & 292)) {
           return 2;
-        } else if (perms.includes('w') && !(node.mode & 146)) {
+        }
+        if (perms.includes('w') && !(node.mode & 146)) {
           return 2;
-        } else if (perms.includes('x') && !(node.mode & 73)) {
+        }
+        if (perms.includes('x') && !(node.mode & 73)) {
           return 2;
         }
         return 0;
@@ -2407,10 +2401,8 @@ async function createWasm() {
           if (FS.isRoot(node) || FS.getPath(node) === FS.cwd()) {
             return 10;
           }
-        } else {
-          if (FS.isDir(node.mode)) {
-            return 31;
-          }
+        } else if (FS.isDir(node.mode)) {
+          return 31;
         }
         return 0;
       },
@@ -2420,13 +2412,16 @@ async function createWasm() {
         }
         if (FS.isLink(node.mode)) {
           return 32;
-        } else if (FS.isDir(node.mode)) {
-          if (FS.flagsToPermissionString(flags) !== 'r' // opening for write
-              || (flags & (512 | 64))) { // TODO: check for O_SEARCH? (== search for dir only)
+        }
+        var mode = FS.flagsToPermissionString(flags);
+        if (FS.isDir(node.mode)) {
+          // opening for write
+          // TODO: check for O_SEARCH? (== search for dir only)
+          if (mode !== 'r' || (flags & (512 | 64))) {
             return 31;
           }
         }
-        return FS.nodePermissions(node, FS.flagsToPermissionString(flags));
+        return FS.nodePermissions(node, mode);
       },
   checkOpExists(op, err) {
         if (!op) {
@@ -3002,7 +2997,7 @@ async function createWasm() {
         if (path === "") {
           throw new FS.ErrnoError(44);
         }
-        flags = typeof flags == 'string' ? FS_modeStringToFlags(flags) : flags;
+        flags = FS_modeStringToFlags(flags);
         if ((flags & 64)) {
           mode = (mode & 4095) | 32768;
         } else {
@@ -3089,11 +3084,6 @@ async function createWasm() {
         if (created) {
           FS.chmod(node, mode & 0o777);
         }
-        if (Module['logReadFiles'] && !(flags & 1)) {
-          if (!(path in FS.readFiles)) {
-            FS.readFiles[path] = 1;
-          }
-        }
         return stream;
       },
   close(stream) {
@@ -3158,6 +3148,7 @@ async function createWasm() {
       },
   write(stream, buffer, offset, length, position, canOwn) {
         assert(offset >= 0);
+        assert(buffer.subarray, 'FS.write expects a TypedArray');
         if (length < 0 || position < 0) {
           throw new FS.ErrnoError(28);
         }
@@ -3243,14 +3234,8 @@ async function createWasm() {
   writeFile(path, data, opts = {}) {
         opts.flags = opts.flags || 577;
         var stream = FS.open(path, opts.flags, opts.mode);
-        if (typeof data == 'string') {
-          data = new Uint8Array(intArrayFromString(data, true));
-        }
-        if (ArrayBuffer.isView(data)) {
-          FS.write(stream, data, 0, data.byteLength, undefined, opts.canOwn);
-        } else {
-          abort('Unsupported data type');
-        }
+        data = FS_fileDataToTypedArray(data);
+        FS.write(stream, data, 0, data.byteLength, undefined, opts.canOwn);
         FS.close(stream);
       },
   cwd:() => FS.currentPath,
@@ -3475,11 +3460,7 @@ async function createWasm() {
         var mode = FS_getMode(canRead, canWrite);
         var node = FS.create(path, mode);
         if (data) {
-          if (typeof data == 'string') {
-            var arr = new Array(data.length);
-            for (var i = 0, len = data.length; i < len; ++i) arr[i] = data.charCodeAt(i);
-            data = arr;
-          }
+          data = FS_fileDataToTypedArray(data);
           // make sure we can write to the file
           FS.chmod(node, mode | 146);
           var stream = FS.open(node, 577);
@@ -3714,24 +3695,6 @@ async function createWasm() {
         node.stream_ops = stream_ops;
         return node;
       },
-  absolutePath() {
-        abort('FS.absolutePath has been removed; use PATH_FS.resolve instead');
-      },
-  createFolder() {
-        abort('FS.createFolder has been removed; use FS.mkdir instead');
-      },
-  createLink() {
-        abort('FS.createLink has been removed; use FS.symlink instead');
-      },
-  joinPath() {
-        abort('FS.joinPath has been removed; use PATH.join instead');
-      },
-  mmapAlloc() {
-        abort('FS.mmapAlloc has been replaced by the top level function mmapAlloc');
-      },
-  standardizePath() {
-        abort('FS.standardizePath has been removed; use PATH.normalize instead');
-      },
   };
   
   var SYSCALLS = {
@@ -3940,12 +3903,12 @@ async function createWasm() {
         var name = stream.getdents[idx];
         if (name === '.') {
           id = stream.node.id;
-          type = 4; // DT_DIR
+          type = 4;
         }
         else if (name === '..') {
           var lookup = FS.lookupPath(stream.path, { parent: true });
           id = lookup.node.id;
-          type = 4; // DT_DIR
+          type = 4;
         }
         else {
           var child;
@@ -3960,10 +3923,10 @@ async function createWasm() {
             throw e;
           }
           id = child.id;
-          type = FS.isChrdev(child.mode) ? 2 :  // DT_CHR, character device.
-                 FS.isDir(child.mode) ? 4 :     // DT_DIR, directory.
-                 FS.isLink(child.mode) ? 10 :   // DT_LNK, symbolic link.
-                 8;                             // DT_REG, regular file.
+          type = FS.isChrdev(child.mode) ? 2 : // character device.
+                 FS.isDir(child.mode) ? 4 :    // directory
+                 FS.isLink(child.mode) ? 10 :   // symbolic link.
+                 8;                            // regular file.
         }
         assert(id);
         HEAP64[((dirp + pos)>>3)] = BigInt(id);
@@ -4374,10 +4337,11 @@ async function createWasm() {
         return;
       }
       try {
-        func();
-        maybeExit();
+        return func();
       } catch (e) {
         handleException(e);
+      } finally {
+        maybeExit();
       }
     };
   
@@ -4559,13 +4523,12 @@ async function createWasm() {
           var timeUntilNextTick = Math.max(0, MainLoop.tickStartTime + value - _emscripten_get_now())|0;
           setTimeout(MainLoop.runner, timeUntilNextTick); // doing this each time means that on exception, we stop
         };
-        MainLoop.method = 'timeout';
       } else if (mode == 1) {
         MainLoop.scheduler = function MainLoop_scheduler_rAF() {
           MainLoop.requestAnimationFrame(MainLoop.runner);
         };
-        MainLoop.method = 'rAF';
-      } else if (mode == 2) {
+      } else {
+        assert(mode == 2);
         if (!MainLoop.setImmediate) {
           if (globalThis.setImmediate) {
             MainLoop.setImmediate = setImmediate;
@@ -4596,7 +4559,6 @@ async function createWasm() {
         MainLoop.scheduler = function MainLoop_scheduler_setImmediate() {
           MainLoop.setImmediate(MainLoop.runner);
         };
-        MainLoop.method = 'immediate';
       }
       return 0;
     };
@@ -4604,9 +4566,9 @@ async function createWasm() {
   
   
     /**
-     * @param {number=} arg
-     * @param {boolean=} noSetTiming
-     */
+   * @param {number=} arg
+   * @param {boolean=} noSetTiming
+   */
   var setMainLoop = (iterFunc, fps, simulateInfiniteLoop, arg, noSetTiming) => {
       assert(!MainLoop.func, 'emscripten_set_main_loop: there can only be one main loop function at once: call emscripten_cancel_main_loop to cancel the previous one before setting a new one with different parameters.');
       MainLoop.func = iterFunc;
@@ -4665,11 +4627,9 @@ async function createWasm() {
           return;
         } else if (MainLoop.timingMode == 0) {
           MainLoop.tickStartTime = _emscripten_get_now();
-        }
-  
-        if (MainLoop.method === 'timeout' && Module['ctx']) {
-          warnOnce('Looks like you are rendering without using requestAnimationFrame for the main loop. You should use 0 for the frame rate in emscripten_set_main_loop in order to use requestAnimationFrame, as that can greatly improve your frame rates!');
-          MainLoop.method = ''; // just warn once per call to set main loop
+          if (Module['ctx']) {
+            warnOnce('Looks like you are rendering without using requestAnimationFrame for the main loop. You should use 0 for the frame rate in emscripten_set_main_loop in order to use requestAnimationFrame, as that can greatly improve your frame rates!');
+          }
         }
   
         MainLoop.runIter(iterFunc);
@@ -4700,7 +4660,6 @@ async function createWasm() {
   var MainLoop = {
   running:false,
   scheduler:null,
-  method:"",
   currentlyRunningMainloop:0,
   func:null,
   arg:0,
@@ -5371,10 +5330,10 @@ async function createWasm() {
         // might create some side data structure for use later (like an Image element, etc.).
   
         var imagePlugin = {};
-        imagePlugin['canHandle'] = function imagePlugin_canHandle(name) {
+        imagePlugin['canHandle'] = (name) => {
           return !Module['noImageDecoding'] && /\.(jpg|jpeg|png|bmp|webp)$/i.test(name);
         };
-        imagePlugin['handle'] = async function imagePlugin_handle(byteArray, name) {
+        imagePlugin['handle'] = async (byteArray, name) => {
           var b = new Blob([byteArray], { type: Browser.getMimetype(name) });
           if (b.size !== byteArray.length) { // Safari bug #118630
             // Safari's Blob can only take an ArrayBuffer
@@ -5404,10 +5363,10 @@ async function createWasm() {
         preloadPlugins.push(imagePlugin);
   
         var audioPlugin = {};
-        audioPlugin['canHandle'] = function audioPlugin_canHandle(name) {
+        audioPlugin['canHandle'] = (name) => {
           return !Module['noAudioDecoding'] && name.slice(-4) in { '.ogg': 1, '.wav': 1, '.mp3': 1 };
         };
-        audioPlugin['handle'] = async function audioPlugin_handle(byteArray, name) {
+        audioPlugin['handle'] = async (byteArray, name) => {
           return new Promise((resolve, reject) => {
             var done = false;
             function finish(audio) {
@@ -5420,7 +5379,7 @@ async function createWasm() {
             var url = URL.createObjectURL(b); // XXX we never revoke this!
             var audio = new Audio();
             audio.addEventListener('canplaythrough', () => finish(audio), false); // use addEventListener due to chromium bug 124926
-            audio.onerror = function audio_onerror(event) {
+            audio.onerror = (event) => {
               if (done) return;
               err(`warning: browser could not fully decode audio ${name}, trying slower base64 approach`);
               function encode64(data) {
@@ -8796,6 +8755,16 @@ if (Module['wasmBinary']) wasmBinary = Module['wasmBinary'];
   // End runtime exports
   // Begin JS library exports
   Module['ExitStatus'] = ExitStatus;
+  Module['HEAP16'] = HEAP16;
+  Module['HEAP32'] = HEAP32;
+  Module['HEAP64'] = HEAP64;
+  Module['HEAP8'] = HEAP8;
+  Module['HEAPF32'] = HEAPF32;
+  Module['HEAPF64'] = HEAPF64;
+  Module['HEAPU16'] = HEAPU16;
+  Module['HEAPU32'] = HEAPU32;
+  Module['HEAPU64'] = HEAPU64;
+  Module['HEAPU8'] = HEAPU8;
   Module['addFunction'] = addFunction;
   Module['getFunctionAddress'] = getFunctionAddress;
   Module['updateTableMap'] = updateTableMap;
@@ -8851,6 +8820,7 @@ if (Module['wasmBinary']) wasmBinary = Module['wasmBinary'];
   Module['zeroMemory'] = zeroMemory;
   Module['alignMemory'] = alignMemory;
   Module['FS_modeStringToFlags'] = FS_modeStringToFlags;
+  Module['FS_fileDataToTypedArray'] = FS_fileDataToTypedArray;
   Module['FS_getMode'] = FS_getMode;
   Module['strError'] = strError;
   Module['UTF8ToString'] = UTF8ToString;
@@ -9249,76 +9219,82 @@ if (Module['wasmBinary']) wasmBinary = Module['wasmBinary'];
 
 function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
+  ignoredModuleProp('logReadFiles');
+  ignoredModuleProp('loadSplitModule');
+  ignoredModuleProp('onMalloc');
+  ignoredModuleProp('onRealloc');
+  ignoredModuleProp('onFree');
+  ignoredModuleProp('onSbrkGrow');
 }
 var ASM_CONSTS = {
-  638936: ($0) => { var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return reply.length === 1 ? reply.charCodeAt(0) : -1; },  
- 639151: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } Module['SDL3'].dummy_audio = {}; Module['SDL3'].dummy_audio.timers = []; Module['SDL3'].dummy_audio.timers[0] = undefined; Module['SDL3'].dummy_audio.timers[1] = undefined; },  
- 639397: ($0, $1, $2, $3, $4) => { var a = Module['SDL3'].dummy_audio; if (a.timers[$0] !== undefined) { clearInterval(a.timers[$0]); } a.timers[$0] = setInterval(function() { dynCall('vi', $3, [$4]); }, ($1 / $2) * 1000); },  
- 639589: ($0) => { var a = Module['SDL3'].dummy_audio; if (a.timers[$0] !== undefined) { clearInterval(a.timers[$0]); } a.timers[$0] = undefined; },  
- 639720: ($0) => { var parms = new URLSearchParams(window.location.search); for (const [key, value] of parms) { if (key.startsWith("SDL_")) { var ckey = stringToNewUTF8(key); var cvalue = stringToNewUTF8(value); if ((ckey != 0) && (cvalue != 0)) { dynCall('iiii', $0, [ckey, cvalue, 1]); } _force_free(ckey); _force_free(cvalue); } } },  
- 640039: ($0) => { window.open(UTF8ToString($0), "_blank") },  
- 640079: () => { if (typeof(AudioContext) !== 'undefined') { return true; } else if (typeof(webkitAudioContext) !== 'undefined') { return true; } return false; },  
- 640226: () => { if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return true; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return true; } return false; },  
- 640460: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; if (typeof(SDL3.audio_playback) === 'undefined') { SDL3.audio_playback = {}; } if (typeof(SDL3.audio_recording) === 'undefined') { SDL3.audio_recording = {}; } if (!SDL3.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL3.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL3.audioContext = new webkitAudioContext(); } if (SDL3.audioContext) { if ((typeof navigator.userActivation) === 'undefined') { autoResumeAudioContext(SDL3.audioContext); } } } return (SDL3.audioContext !== undefined); },  
- 641108: () => { return Module['SDL3'].audioContext.sampleRate; },  
- 641159: ($0, $1, $2, $3) => { var SDL3 = Module['SDL3']; var have_microphone = function(stream) { if (SDL3.audio_recording.silenceTimer !== undefined) { clearInterval(SDL3.audio_recording.silenceTimer); SDL3.audio_recording.silenceTimer = undefined; SDL3.audio_recording.silenceBuffer = undefined } SDL3.audio_recording.mediaStreamNode = SDL3.audioContext.createMediaStreamSource(stream); SDL3.audio_recording.scriptProcessorNode = SDL3.audioContext.createScriptProcessor($1, $0, 1); SDL3.audio_recording.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL3 === undefined) || (SDL3.audio_recording === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL3.audio_recording.currentRecordingBuffer = audioProcessingEvent.inputBuffer; dynCall('ip', $2, [$3]); }; SDL3.audio_recording.mediaStreamNode.connect(SDL3.audio_recording.scriptProcessorNode); SDL3.audio_recording.scriptProcessorNode.connect(SDL3.audioContext.destination); SDL3.audio_recording.stream = stream; }; var no_microphone = function(error) { }; SDL3.audio_recording.silenceBuffer = SDL3.audioContext.createBuffer($0, $1, SDL3.audioContext.sampleRate); SDL3.audio_recording.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL3.audio_recording.currentRecordingBuffer = SDL3.audio_recording.silenceBuffer; dynCall('ip', $2, [$3]); }; SDL3.audio_recording.silenceTimer = setInterval(silence_callback, ($1 / SDL3.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); } },  
- 643000: ($0, $1, $2, $3) => { var SDL3 = Module['SDL3']; SDL3.audio_playback.scriptProcessorNode = SDL3.audioContext['createScriptProcessor']($1, 0, $0); SDL3.audio_playback.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL3 === undefined) || (SDL3.audio_playback === undefined)) { return; } if (SDL3.audio_playback.silenceTimer !== undefined) { clearInterval(SDL3.audio_playback.silenceTimer); SDL3.audio_playback.silenceTimer = undefined; SDL3.audio_playback.silenceBuffer = undefined; } SDL3.audio_playback.currentPlaybackBuffer = e['outputBuffer']; dynCall('ip', $2, [$3]); }; SDL3.audio_playback.scriptProcessorNode['connect'](SDL3.audioContext['destination']); if (SDL3.audioContext.state === 'suspended') { SDL3.audio_playback.silenceBuffer = SDL3.audioContext.createBuffer($0, $1, SDL3.audioContext.sampleRate); SDL3.audio_playback.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { if ((typeof navigator.userActivation) !== 'undefined') { if (navigator.userActivation.hasBeenActive) { SDL3.audioContext.resume(); } } SDL3.audio_playback.currentPlaybackBuffer = SDL3.audio_playback.silenceBuffer; dynCall('ip', $2, [$3]); SDL3.audio_playback.currentPlaybackBuffer = undefined; }; SDL3.audio_playback.silenceTimer = setInterval(silence_callback, ($1 / SDL3.audioContext.sampleRate) * 1000); } },  
- 644316: ($0) => { var SDL3 = Module['SDL3']; if ($0) { if (SDL3.audio_recording.silenceTimer !== undefined) { clearInterval(SDL3.audio_recording.silenceTimer); } if (SDL3.audio_recording.stream !== undefined) { var tracks = SDL3.audio_recording.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL3.audio_recording.stream.removeTrack(tracks[i]); } } if (SDL3.audio_recording.scriptProcessorNode !== undefined) { SDL3.audio_recording.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL3.audio_recording.scriptProcessorNode.disconnect(); } if (SDL3.audio_recording.mediaStreamNode !== undefined) { SDL3.audio_recording.mediaStreamNode.disconnect(); } SDL3.audio_recording = undefined; } else { if (SDL3.audio_playback.scriptProcessorNode != undefined) { SDL3.audio_playback.scriptProcessorNode.disconnect(); } if (SDL3.audio_playback.silenceTimer !== undefined) { clearInterval(SDL3.audio_playback.silenceTimer); } SDL3.audio_playback = undefined; } if ((SDL3.audioContext !== undefined) && (SDL3.audio_playback === undefined) && (SDL3.audio_recording === undefined)) { SDL3.audioContext.close(); SDL3.audioContext = undefined; } },  
- 645472: ($0, $1) => { var buf = $0 >>> 2; var SDL3 = Module['SDL3']; var numChannels = SDL3.audio_playback.currentPlaybackBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL3.audio_playback.currentPlaybackBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio playback buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[buf + (j * numChannels + c)]; } } },  
- 645987: ($0, $1) => { var SDL3 = Module['SDL3']; var numChannels = SDL3.audio_recording.currentRecordingBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL3.audio_recording.currentRecordingBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio recording buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } } },  
- 646614: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } Module['SDL3'].camera = {}; },  
- 646715: () => { return (navigator.mediaDevices === undefined) ? 0 : 1; },  
- 646774: ($0, $1, $2, $3, $4) => { const device = $0; const w = $1; const h = $2; const framerate_numerator = $3; const framerate_denominator = $4; const outcome = Module._SDLEmscriptenCameraPermissionOutcome; const iterate = Module._SDLEmscriptenThreadIterate; const constraints = {}; if ((w <= 0) || (h <= 0)) { constraints.video = true; } else { constraints.video = {}; constraints.video.width = w; constraints.video.height = h; } if ((framerate_numerator > 0) && (framerate_denominator > 0)) { var fps = framerate_numerator / framerate_denominator; constraints.video.frameRate = { ideal: fps }; } function grabNextCameraFrame() { const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.stream) === 'undefined')) { return; } const nextframems = SDL3.camera.next_frame_time; const now = performance.now(); if (now >= nextframems) { iterate(device); while (SDL3.camera.next_frame_time < now) { SDL3.camera.next_frame_time += SDL3.camera.fpsincrms; } } requestAnimationFrame(grabNextCameraFrame); } navigator.mediaDevices.getUserMedia(constraints) .then((stream) => { const settings = stream.getVideoTracks()[0].getSettings(); const actualw = settings.width; const actualh = settings.height; const actualfps = settings.frameRate; console.log("Camera is opened! Actual spec: (" + actualw + "x" + actualh + "), fps=" + actualfps); if (outcome(device, 1, actualw, actualh, actualfps)) { const video = document.createElement("video"); video.width = actualw; video.height = actualh; video.style.display = 'none'; video.srcObject = stream; const canvas = document.createElement("canvas"); canvas.width = actualw; canvas.height = actualh; canvas.style.display = 'none'; const ctx2d = canvas.getContext('2d'); const SDL3 = Module['SDL3']; SDL3.camera.width = actualw; SDL3.camera.height = actualh; SDL3.camera.fps = actualfps; SDL3.camera.fpsincrms = 1000.0 / actualfps; SDL3.camera.stream = stream; SDL3.camera.video = video; SDL3.camera.canvas = canvas; SDL3.camera.ctx2d = ctx2d; SDL3.camera.next_frame_time = performance.now(); video.play(); video.addEventListener('loadedmetadata', () => { grabNextCameraFrame(); }); } }) .catch((err) => { console.error("Tried to open camera but it threw an error! " + err.name + ": " + err.message); outcome(device, 0, 0, 0, 0); }); },  
- 649080: () => { const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.stream) === 'undefined')) { return; } SDL3.camera.stream.getTracks().forEach(track => track.stop()); SDL3.camera = {}; },  
- 649331: ($0, $1, $2) => { const w = $0; const h = $1; const rgba = $2; const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.ctx2d) === 'undefined')) { return 0; } SDL3.camera.ctx2d.drawImage(SDL3.camera.video, 0, 0, w, h); const imgrgba = SDL3.camera.ctx2d.getImageData(0, 0, w, h).data; HEAPU8.set(imgrgba, rgba); return 1; },  
- 649709: () => { if (typeof(Module['SDL3']) !== 'undefined') { Module['SDL3'].camera = undefined; } },  
- 649796: ($0) => { let gamepads = navigator['getGamepads'](); if (!gamepads) { return 0; } let gamepad = gamepads[$0]; if (!gamepad || !gamepad['vibrationActuator']) { return 0; } return 1; },  
- 649971: ($0, $1, $2) => { let gamepads = navigator['getGamepads'](); if (!gamepads) { return 0; } let gamepad = gamepads[$0]; if (!gamepad || !gamepad['vibrationActuator']) { return 0; } gamepad['vibrationActuator']['playEffect']('dual-rumble', { 'startDelay': 0, 'duration': 3000, 'weakMagnitude': $2 / 0xFFFF, 'strongMagnitude': $1 / 0xFFFF, }); return 1; },  
- 650307: ($0, $1) => { var buf = $0; var buflen = $1; var list = undefined; if (navigator.languages && navigator.languages.length) { list = navigator.languages; } else { var oneOfThese = navigator.userLanguage || navigator.language || navigator.browserLanguage || navigator.systemLanguage; if (oneOfThese !== undefined) { list = [ oneOfThese ]; } } if (list === undefined) { return; } var str = ""; for (var i = 0; i < list.length; i++) { var item = list[i]; if ((str.length + item.length + 1) > buflen) { break; } if (str.length > 0) { str += ","; } str += item; } str = str.replace(/-/g, "_"); if (buflen > str.length) { buflen = str.length; } for (var i = 0; i < buflen; i++) { setValue(buf + i, str.charCodeAt(i), "i8"); } },  
- 651015: ($0) => { var data = $0; document.sdlEventHandlerLockKeysCheck = function(event) { if ((event.key != "CapsLock") && (event.key != "NumLock") && (event.key != "ScrollLock")) { _Emscripten_HandleLockKeysCheck(data, event.getModifierState("CapsLock"), event.getModifierState("NumLock"), event.getModifierState("ScrollLock")); } }; document.addEventListener("keydown", document.sdlEventHandlerLockKeysCheck); },  
- 651414: () => { document.removeEventListener("keydown", document.sdlEventHandlerLockKeysCheck); },  
- 651498: ($0) => { var target = document; if (target) { target.sdlEventHandlerMouseButtonUpGlobal = function(event) { var SDL3 = Module['SDL3']; var d = SDL3.makePointerEventCStruct(0, 0, event); if (d != 0) { _Emscripten_HandleMouseButtonUpGlobal($0, d); _SDL_free(d); } }; target.addEventListener("pointerup", target.sdlEventHandlerMouseButtonUpGlobal); } },  
- 651841: ($0) => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; if (SDL3.makePointerEventCStruct === undefined) { SDL3.makePointerEventCStruct = function(left, top, event) { var ptrtype = 0; if (event.pointerType == "mouse") { ptrtype = 1; } else if (event.pointerType == "touch") { ptrtype = 2; } else if (event.pointerType == "pen") { ptrtype = 3; } else { return 0; } var ptr = _SDL_malloc($0); if (ptr != 0) { var idx = ptr >> 2; HEAP32[idx++] = ptrtype; HEAP32[idx++] = event.pointerId; HEAP32[idx++] = (typeof(event.button) !== "undefined") ? event.button : -1; HEAP32[idx++] = event.buttons; HEAP32[idx++] = (event.type == "pointerdown") ? 1 : 0; HEAPF32[idx++] = event.movementX; HEAPF32[idx++] = event.movementY; HEAPF32[idx++] = event.clientX - left; HEAPF32[idx++] = event.clientY - top; if (ptrtype == 3) { HEAPF32[idx++] = event.pressure; HEAPF32[idx++] = event.tangentialPressure; HEAPF32[idx++] = event.tiltX; HEAPF32[idx++] = event.tiltY; HEAPF32[idx++] = event.twist; } } return ptr; }; } },  
- 652883: ($0) => { var id = UTF8ToString($0); try { var canvas = document.querySelector(id); if (canvas) { return canvas === document.activeElement; } } catch (e) { } return false; },  
- 653049: () => { return document.hasFocus(); },  
- 653081: () => { var target = document; if (target) { target.removeEventListener("pointerup", target.sdlEventHandlerMouseButtonUpGlobal); target.sdlEventHandlerMouseButtonUpGlobal = undefined; } },  
- 653263: () => { return document.body.clientWidth; },  
- 653301: () => { return document.body.clientHeight; },  
- 653340: () => { return window.innerWidth; },  
- 653370: () => { return window.innerHeight; },  
- 653401: () => { return window.outerWidth; },  
- 653431: () => { return window.outerHeight; },  
- 653462: () => { return window.pageXOffset; },  
- 653493: () => { return window.pageYOffset; },  
- 653524: ($0, $1) => { var target = document.querySelector(UTF8ToString($1)); if (target) { var SDL3 = Module['SDL3']; var data = $0; target.sdlEventHandlerPointerEnter = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerEnter(data, d); _SDL_free(d); } }; target.sdlEventHandlerPointerLeave = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerLeave(data, d); _SDL_free(d); } }; target.sdlEventHandlerPointerGeneric = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerGeneric(data, d); _SDL_free(d); } }; target.style.touchAction = "none"; target.addEventListener("pointerenter", target.sdlEventHandlerPointerEnter); target.addEventListener("pointerleave", target.sdlEventHandlerPointerLeave); target.addEventListener("pointercancel", target.sdlEventHandlerPointerLeave); target.addEventListener("pointerdown", target.sdlEventHandlerPointerGeneric); target.addEventListener("pointermove", target.sdlEventHandlerPointerGeneric); target.addEventListener("pointerup", target.sdlEventHandlerPointerGeneric); } },  
- 654858: ($0, $1, $2) => { var target = document.querySelector(UTF8ToString($1)); if (target) { var data = $0; if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; var makeDropEventCStruct = function(event) { var ptr = 0; ptr = _SDL_malloc($2); if (ptr != 0) { var idx = ptr >> 2; var rect = target.getBoundingClientRect(); HEAP32[idx++] = event.clientX - rect.left; HEAP32[idx++] = event.clientY - rect.top; } return ptr; }; SDL3.eventHandlerDropDragover = function(event) { event.preventDefault(); var d = makeDropEventCStruct(event); if (d != 0) { _Emscripten_SendDragEvent(data, d); _SDL_free(d); } }; target.addEventListener("dragover", SDL3.eventHandlerDropDragover); SDL3.drop_count = 0; FS.mkdir("/tmp/filedrop"); SDL3.eventHandlerDropDrop = function(event) { event.preventDefault(); if (event.dataTransfer.types.includes("text/plain")) { let plain_text = stringToNewUTF8(event.dataTransfer.getData("text/plain")); _Emscripten_SendDragTextEvent(data, plain_text); _free(plain_text); } else if (event.dataTransfer.types.includes("Files")) { let files_read = 0; const files_to_read = event.dataTransfer.files.length; for (let i = 0; i < files_to_read; i++) { const file = event.dataTransfer.files.item(i); const file_reader = new FileReader(); file_reader.readAsArrayBuffer(file); file_reader.onload = function(event) { const fs_dropdir = `/tmp/filedrop/${SDL3.drop_count}`; SDL3.drop_count += 1; const fs_filepath = `${fs_dropdir}/${file.name}`; const c_fs_filepath = stringToNewUTF8(fs_filepath); const contents_array8 = new Uint8Array(event.target.result); FS.mkdir(fs_dropdir); var stream = FS.open(fs_filepath, "w"); FS.write(stream, contents_array8, 0, contents_array8.length, 0); FS.close(stream); _Emscripten_SendDragFileEvent(data, c_fs_filepath); _free(c_fs_filepath); onFileRead(); }; file_reader.onerror = function(event) { onFileRead(); }; } function onFileRead() { ++files_read; if (files_read === files_to_read) { _Emscripten_SendDragCompleteEvent(data); } } } _Emscripten_SendDragCompleteEvent(data); }; target.addEventListener("drop", SDL3.eventHandlerDropDrop); SDL3.eventHandlerDropDragend = function(event) { event.preventDefault(); _Emscripten_SendDragCompleteEvent(data); }; target.addEventListener("dragend", SDL3.eventHandlerDropDragend); target.addEventListener("dragleave", SDL3.eventHandlerDropDragend); } },  
- 657217: ($0) => { var target = document.querySelector(UTF8ToString($0)); if (target) { var SDL3 = Module['SDL3']; target.removeEventListener("dragleave", SDL3.eventHandlerDropDragend); target.removeEventListener("dragend", SDL3.eventHandlerDropDragend); target.removeEventListener("drop", SDL3.eventHandlerDropDrop); SDL3.drop_count = undefined; function recursive_remove(dirpath) { FS.readdir(dirpath).forEach((filename) => { const p = `${dirpath}/${filename}`; const p_s = FS.stat(p); if (FS.isFile(p_s.mode)) { FS.unlink(p); } else if (FS.isDir(p)) { recursive_remove(p); } }); FS.rmdir(dirpath); }("/tmp/filedrop"); FS.rmdir("/tmp/filedrop"); target.removeEventListener("dragover", SDL3.eventHandlerDropDragover); SDL3.eventHandlerDropDragover = undefined; SDL3.eventHandlerDropDrop = undefined; SDL3.eventHandlerDropDragend = undefined; } },  
- 658047: ($0) => { var target = document.querySelector(UTF8ToString($0)); if (target) { target.removeEventListener("pointerenter", target.sdlEventHandlerPointerEnter); target.removeEventListener("pointerleave", target.sdlEventHandlerPointerLeave); target.removeEventListener("pointercancel", target.sdlEventHandlerPointerLeave); target.removeEventListener("pointerdown", target.sdlEventHandlerPointerGeneric); target.removeEventListener("pointermove", target.sdlEventHandlerPointerGeneric); target.removeEventListener("pointerup", target.sdlEventHandlerPointerGeneric); target.style.touchAction = ""; target.sdlEventHandlerPointerEnter = undefined; target.sdlEventHandlerPointerLeave = undefined; target.sdlEventHandlerPointerGeneric = undefined; } },  
- 658781: ($0, $1, $2, $3) => { var w = $0; var h = $1; var pixels = $2; var canvasId = UTF8ToString($3); var canvas = document.querySelector(canvasId); if (!Module['SDL3']) Module['SDL3'] = {}; var SDL3 = Module['SDL3']; if (SDL3.ctxCanvas !== canvas) { SDL3.ctx = Browser.createContext(canvas, false, true); if (!SDL3.ctx) { return false; } SDL3.ctxCanvas = canvas; } if (SDL3.w !== w || SDL3.h !== h || SDL3.imageCtx !== SDL3.ctx) { SDL3.image = SDL3.ctx.createImageData(w, h); SDL3.w = w; SDL3.h = h; SDL3.imageCtx = SDL3.ctx; } var data = SDL3.image.data; var src = pixels / 4; if (SDL3.data32Data !== data) { SDL3.data32 = new Int32Array(data.buffer); SDL3.data32Data = data; } var data32 = SDL3.data32; data32.set(HEAP32.subarray(src, src + data32.length)); SDL3.ctx.putImageData(SDL3.image, 0, 0); return true; },  
- 659572: () => { if (!Module['SDL3']) { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; SDL3['mouse_x'] = 0; SDL3['mouse_y'] = 0; SDL3['mouse_buttons'] = []; for (var i = 0; i < 5; ++i) { SDL3['mouse_buttons'][i] = false; } document.addEventListener('mousemove', function(e) { var SDL3 = Module['SDL3']; SDL3['mouse_x'] = e.clientX; SDL3['mouse_y'] = e.clientY; }); document.addEventListener('mousedown', function(e) { var SDL3 = Module['SDL3']; if (0 <= e.button && e.button < SDL3['mouse_buttons'].length) { SDL3['mouse_buttons'][e.button] = true; } }); document.addEventListener('mouseup', function(e) { var SDL3 = Module['SDL3']; if (0 <= e.button && e.button < SDL3['mouse_buttons'].length) { SDL3['mouse_buttons'][e.button] = false; } }); },  
- 660306: ($0, $1, $2, $3, $4) => { var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels / 4; var data32 = new Int32Array(data.buffer); data32.set(HEAP32.subarray(src, src + data32.length)); ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _SDL_malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf; },  
- 660964: ($0) => { if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } },  
- 661047: () => { if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; } },  
- 661116: () => { return Module['SDL3']['mouse_x']; },  
- 661154: () => { return Module['SDL3']['mouse_y']; },  
- 661192: ($0) => { return Module['SDL3']['mouse_buttons'][$0]; },  
- 661240: () => { if (!window.matchMedia) { return -1; } if (window.matchMedia('(prefers-color-scheme: light)').matches) { return 0; } if (window.matchMedia('(prefers-color-scheme: dark)').matches) { return 1; } return -1; },  
- 661449: () => { if (typeof(Module['SDL3']) !== 'undefined') { var SDL3 = Module['SDL3']; SDL3.themeChangedMatchMedia.removeEventListener('change', SDL3.eventHandlerThemeChanged); SDL3.themeChangedMatchMedia = undefined; SDL3.eventHandlerThemeChanged = undefined; } },  
- 661702: () => { return window.innerWidth; },  
- 661732: () => { return window.innerHeight; },  
- 661763: ($0) => { Module['requestFullscreen'] = function(lockPointer, resizeCanvas) { _requestFullscreenThroughSDL($0); }; },  
- 661872: ($0, $1) => { var pngData = HEAPU8.subarray($0, $0 + $1); if (pngData.buffer instanceof SharedArrayBuffer) { pngData = new Uint8Array(pngData); } var blob = new Blob([pngData], {type: 'image/png'}); var url = URL.createObjectURL(blob); var link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; link.type = 'image/png'; document.head.appendChild(link); } if (link.href && link.href.startsWith('blob:')) { URL.revokeObjectURL(link.href); } link.href = url; },  
- 662386: () => { Module['requestFullscreen'] = function(lockPointer, resizeCanvas) {}; },  
- 662460: () => { return window.innerWidth; },  
- 662490: () => { return window.innerHeight; },  
- 662521: ($0) => { var canvas = document.querySelector(UTF8ToString($0)); canvas.SDL3_original_position = canvas.style.position; canvas.SDL3_original_top = canvas.style.top; canvas.SDL3_original_left = canvas.style.left; var div = document.createElement('div'); div.id = 'SDL3_fill_document_background_elements'; div.SDL3_canvas = canvas; div.SDL3_canvas_parent = canvas.parentNode; div.SDL3_canvas_nextsib = canvas.nextSibling; var children = Array.from(document.body.children); for (var child of children) { div.appendChild(child); } document.body.appendChild(div); div.style.display = 'none'; document.body.appendChild(canvas); canvas.style.position = 'fixed'; canvas.style.top = '0'; canvas.style.left = '0'; },  
- 663219: () => { var div = document.getElementById('SDL3_fill_document_background_elements'); if (div) { if (div.SDL3_canvas_nextsib) { div.SDL3_canvas_parent.insertBefore(div.SDL3_canvas, div.SDL3_canvas_nextsib); } else { div.SDL3_canvas_parent.appendChild(div.SDL3_canvas); } while (div.firstChild) { document.body.insertBefore(div.firstChild, div); } div.SDL3_canvas.style.position = div.SDL3_canvas.SDL3_original_position; div.SDL3_canvas.style.top = div.SDL3_canvas.SDL3_original_top; div.SDL3_canvas.style.left = div.SDL3_canvas.SDL3_original_left; div.remove(); } },  
- 663778: () => { if (window.matchMedia) { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; SDL3.eventHandlerThemeChanged = function(event) { _Emscripten_SendSystemThemeChangedEvent(); }; SDL3.themeChangedMatchMedia = window.matchMedia('(prefers-color-scheme: dark)'); SDL3.themeChangedMatchMedia.addEventListener('change', SDL3.eventHandlerThemeChanged); } },  
- 664169: ($0, $1, $2, $3, $4) => { var title = UTF8ToString($0); var message = UTF8ToString($1); var background = UTF8ToString($2); var color = UTF8ToString($3); var id = UTF8ToString($4); var dialog = document.createElement("dialog"); dialog.classList.add("SDL3_messagebox"); dialog.id = id; dialog.style.color = color; dialog.style.backgroundColor = background; document.body.append(dialog); var h1 = document.createElement("h1"); h1.innerText = title; dialog.append(h1); var p = document.createElement("p"); p.innerText = message; dialog.append(p); dialog.showModal(); },  
- 664710: ($0, $1, $2, $3, $4, $5, $6, $7) => { var dialog_id = UTF8ToString($0); var text = UTF8ToString($1); var responseId = $2; var clickOnReturn = $3; var clickOnEscape = $4; var border = UTF8ToString($5); var background = UTF8ToString($6); var hovered = UTF8ToString($7); var dialog = document.getElementById(dialog_id); if (!dialog) { return false; } var button = document.createElement("button"); button.innerText = text; button.style.borderColor = border; button.style.backgroundColor = background; dialog.addEventListener('keydown', function(e) { if (clickOnReturn && e.key === "Enter") { e.preventDefault(); button.click(); } else if (clickOnEscape && e.key === "Escape") { e.preventDefault(); button.click(); } }); dialog.addEventListener('cancel', function(e){ e.preventDefault(); }); button.onmouseenter = function(e){ button.style.backgroundColor = hovered; }; button.onmouseleave = function(e){ button.style.backgroundColor = background; }; button.onclick = function(e) { dialog.close(responseId); }; dialog.append(button); return true; },  
- 665719: ($0) => { var dialog_id = UTF8ToString($0); var dialog = document.getElementById(dialog_id); if (!dialog) { return false; } return dialog.open; },  
- 665857: ($0) => { var dialog_id = UTF8ToString($0); var dialog = document.getElementById(dialog_id); if (!dialog) { return 0; } try { return parseInt(dialog.returnValue); } catch(e) { return 0; } },  
- 666039: ($0, $1) => { alert(UTF8ToString($0) + "\n\n" + UTF8ToString($1)); }
+  637736: ($0) => { var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return reply.length === 1 ? reply.charCodeAt(0) : -1; },  
+ 637951: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } Module['SDL3'].dummy_audio = {}; Module['SDL3'].dummy_audio.timers = []; Module['SDL3'].dummy_audio.timers[0] = undefined; Module['SDL3'].dummy_audio.timers[1] = undefined; },  
+ 638197: ($0, $1, $2, $3, $4) => { var a = Module['SDL3'].dummy_audio; if (a.timers[$0] !== undefined) { clearInterval(a.timers[$0]); } a.timers[$0] = setInterval(function() { dynCall('vi', $3, [$4]); }, ($1 / $2) * 1000); },  
+ 638389: ($0) => { var a = Module['SDL3'].dummy_audio; if (a.timers[$0] !== undefined) { clearInterval(a.timers[$0]); } a.timers[$0] = undefined; },  
+ 638520: ($0) => { var parms = new URLSearchParams(window.location.search); for (const [key, value] of parms) { if (key.startsWith("SDL_")) { var ckey = stringToNewUTF8(key); var cvalue = stringToNewUTF8(value); if ((ckey != 0) && (cvalue != 0)) { dynCall('iiii', $0, [ckey, cvalue, 1]); } _force_free(ckey); _force_free(cvalue); } } },  
+ 638839: ($0) => { window.open(UTF8ToString($0), "_blank") },  
+ 638879: () => { if (typeof(AudioContext) !== 'undefined') { return true; } else if (typeof(webkitAudioContext) !== 'undefined') { return true; } return false; },  
+ 639026: () => { if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return true; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return true; } return false; },  
+ 639260: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; if (typeof(SDL3.audio_playback) === 'undefined') { SDL3.audio_playback = {}; } if (typeof(SDL3.audio_recording) === 'undefined') { SDL3.audio_recording = {}; } if (!SDL3.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL3.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL3.audioContext = new webkitAudioContext(); } if (SDL3.audioContext) { if ((typeof navigator.userActivation) === 'undefined') { autoResumeAudioContext(SDL3.audioContext); } } } return (SDL3.audioContext !== undefined); },  
+ 639908: () => { return Module['SDL3'].audioContext.sampleRate; },  
+ 639959: ($0, $1, $2, $3) => { var SDL3 = Module['SDL3']; var have_microphone = function(stream) { if (SDL3.audio_recording.silenceTimer !== undefined) { clearInterval(SDL3.audio_recording.silenceTimer); SDL3.audio_recording.silenceTimer = undefined; SDL3.audio_recording.silenceBuffer = undefined } SDL3.audio_recording.mediaStreamNode = SDL3.audioContext.createMediaStreamSource(stream); SDL3.audio_recording.scriptProcessorNode = SDL3.audioContext.createScriptProcessor($1, $0, 1); SDL3.audio_recording.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL3 === undefined) || (SDL3.audio_recording === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL3.audio_recording.currentRecordingBuffer = audioProcessingEvent.inputBuffer; dynCall('ip', $2, [$3]); }; SDL3.audio_recording.mediaStreamNode.connect(SDL3.audio_recording.scriptProcessorNode); SDL3.audio_recording.scriptProcessorNode.connect(SDL3.audioContext.destination); SDL3.audio_recording.stream = stream; }; var no_microphone = function(error) { }; SDL3.audio_recording.silenceBuffer = SDL3.audioContext.createBuffer($0, $1, SDL3.audioContext.sampleRate); SDL3.audio_recording.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL3.audio_recording.currentRecordingBuffer = SDL3.audio_recording.silenceBuffer; dynCall('ip', $2, [$3]); }; SDL3.audio_recording.silenceTimer = setInterval(silence_callback, ($1 / SDL3.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); } },  
+ 641800: ($0, $1, $2, $3) => { var SDL3 = Module['SDL3']; SDL3.audio_playback.scriptProcessorNode = SDL3.audioContext['createScriptProcessor']($1, 0, $0); SDL3.audio_playback.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL3 === undefined) || (SDL3.audio_playback === undefined)) { return; } if (SDL3.audio_playback.silenceTimer !== undefined) { clearInterval(SDL3.audio_playback.silenceTimer); SDL3.audio_playback.silenceTimer = undefined; SDL3.audio_playback.silenceBuffer = undefined; } SDL3.audio_playback.currentPlaybackBuffer = e['outputBuffer']; dynCall('ip', $2, [$3]); }; SDL3.audio_playback.scriptProcessorNode['connect'](SDL3.audioContext['destination']); if (SDL3.audioContext.state === 'suspended') { SDL3.audio_playback.silenceBuffer = SDL3.audioContext.createBuffer($0, $1, SDL3.audioContext.sampleRate); SDL3.audio_playback.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { if ((typeof navigator.userActivation) !== 'undefined') { if (navigator.userActivation.hasBeenActive) { SDL3.audioContext.resume(); } } SDL3.audio_playback.currentPlaybackBuffer = SDL3.audio_playback.silenceBuffer; dynCall('ip', $2, [$3]); SDL3.audio_playback.currentPlaybackBuffer = undefined; }; SDL3.audio_playback.silenceTimer = setInterval(silence_callback, ($1 / SDL3.audioContext.sampleRate) * 1000); } },  
+ 643116: ($0) => { var SDL3 = Module['SDL3']; if ($0) { if (SDL3.audio_recording.silenceTimer !== undefined) { clearInterval(SDL3.audio_recording.silenceTimer); } if (SDL3.audio_recording.stream !== undefined) { var tracks = SDL3.audio_recording.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL3.audio_recording.stream.removeTrack(tracks[i]); } } if (SDL3.audio_recording.scriptProcessorNode !== undefined) { SDL3.audio_recording.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL3.audio_recording.scriptProcessorNode.disconnect(); } if (SDL3.audio_recording.mediaStreamNode !== undefined) { SDL3.audio_recording.mediaStreamNode.disconnect(); } SDL3.audio_recording = undefined; } else { if (SDL3.audio_playback.scriptProcessorNode != undefined) { SDL3.audio_playback.scriptProcessorNode.disconnect(); } if (SDL3.audio_playback.silenceTimer !== undefined) { clearInterval(SDL3.audio_playback.silenceTimer); } SDL3.audio_playback = undefined; } if ((SDL3.audioContext !== undefined) && (SDL3.audio_playback === undefined) && (SDL3.audio_recording === undefined)) { SDL3.audioContext.close(); SDL3.audioContext = undefined; } },  
+ 644272: ($0, $1) => { var buf = $0 >>> 2; var SDL3 = Module['SDL3']; var numChannels = SDL3.audio_playback.currentPlaybackBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL3.audio_playback.currentPlaybackBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio playback buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[buf + (j * numChannels + c)]; } } },  
+ 644787: ($0, $1) => { var SDL3 = Module['SDL3']; var numChannels = SDL3.audio_recording.currentRecordingBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL3.audio_recording.currentRecordingBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio recording buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } } },  
+ 645414: () => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } Module['SDL3'].camera = {}; },  
+ 645515: () => { return (navigator.mediaDevices === undefined) ? 0 : 1; },  
+ 645574: ($0, $1, $2, $3, $4) => { const device = $0; const w = $1; const h = $2; const framerate_numerator = $3; const framerate_denominator = $4; const outcome = Module._SDLEmscriptenCameraPermissionOutcome; const iterate = Module._SDLEmscriptenThreadIterate; const constraints = {}; if ((w <= 0) || (h <= 0)) { constraints.video = true; } else { constraints.video = {}; constraints.video.width = w; constraints.video.height = h; } if ((framerate_numerator > 0) && (framerate_denominator > 0)) { var fps = framerate_numerator / framerate_denominator; constraints.video.frameRate = { ideal: fps }; } function grabNextCameraFrame() { const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.stream) === 'undefined')) { return; } const nextframems = SDL3.camera.next_frame_time; const now = performance.now(); if (now >= nextframems) { iterate(device); while (SDL3.camera.next_frame_time < now) { SDL3.camera.next_frame_time += SDL3.camera.fpsincrms; } } requestAnimationFrame(grabNextCameraFrame); } navigator.mediaDevices.getUserMedia(constraints) .then((stream) => { const settings = stream.getVideoTracks()[0].getSettings(); const actualw = settings.width; const actualh = settings.height; const actualfps = settings.frameRate; console.log("Camera is opened! Actual spec: (" + actualw + "x" + actualh + "), fps=" + actualfps); if (outcome(device, 1, actualw, actualh, actualfps)) { const video = document.createElement("video"); video.width = actualw; video.height = actualh; video.style.display = 'none'; video.srcObject = stream; const canvas = document.createElement("canvas"); canvas.width = actualw; canvas.height = actualh; canvas.style.display = 'none'; const ctx2d = canvas.getContext('2d'); const SDL3 = Module['SDL3']; SDL3.camera.width = actualw; SDL3.camera.height = actualh; SDL3.camera.fps = actualfps; SDL3.camera.fpsincrms = 1000.0 / actualfps; SDL3.camera.stream = stream; SDL3.camera.video = video; SDL3.camera.canvas = canvas; SDL3.camera.ctx2d = ctx2d; SDL3.camera.next_frame_time = performance.now(); video.play(); video.addEventListener('loadedmetadata', () => { grabNextCameraFrame(); }); } }) .catch((err) => { console.error("Tried to open camera but it threw an error! " + err.name + ": " + err.message); outcome(device, 0, 0, 0, 0); }); },  
+ 647880: () => { const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.stream) === 'undefined')) { return; } SDL3.camera.stream.getTracks().forEach(track => track.stop()); SDL3.camera = {}; },  
+ 648131: ($0, $1, $2) => { const w = $0; const h = $1; const rgba = $2; const SDL3 = Module['SDL3']; if ((typeof(SDL3) === 'undefined') || (typeof(SDL3.camera) === 'undefined') || (typeof(SDL3.camera.ctx2d) === 'undefined')) { return 0; } SDL3.camera.ctx2d.drawImage(SDL3.camera.video, 0, 0, w, h); const imgrgba = SDL3.camera.ctx2d.getImageData(0, 0, w, h).data; HEAPU8.set(imgrgba, rgba); return 1; },  
+ 648509: () => { if (typeof(Module['SDL3']) !== 'undefined') { Module['SDL3'].camera = undefined; } },  
+ 648596: ($0) => { let gamepads = navigator['getGamepads'](); if (!gamepads) { return 0; } let gamepad = gamepads[$0]; if (!gamepad || !gamepad['vibrationActuator']) { return 0; } return 1; },  
+ 648771: ($0, $1, $2) => { let gamepads = navigator['getGamepads'](); if (!gamepads) { return 0; } let gamepad = gamepads[$0]; if (!gamepad || !gamepad['vibrationActuator']) { return 0; } gamepad['vibrationActuator']['playEffect']('dual-rumble', { 'startDelay': 0, 'duration': 3000, 'weakMagnitude': $2 / 0xFFFF, 'strongMagnitude': $1 / 0xFFFF, }); return 1; },  
+ 649107: ($0, $1) => { var buf = $0; var buflen = $1; var list = undefined; if (navigator.languages && navigator.languages.length) { list = navigator.languages; } else { var oneOfThese = navigator.userLanguage || navigator.language || navigator.browserLanguage || navigator.systemLanguage; if (oneOfThese !== undefined) { list = [ oneOfThese ]; } } if (list === undefined) { return; } var str = ""; for (var i = 0; i < list.length; i++) { var item = list[i]; if ((str.length + item.length + 1) > buflen) { break; } if (str.length > 0) { str += ","; } str += item; } str = str.replace(/-/g, "_"); if (buflen > str.length) { buflen = str.length; } for (var i = 0; i < buflen; i++) { setValue(buf + i, str.charCodeAt(i), "i8"); } },  
+ 649815: ($0) => { var data = $0; document.sdlEventHandlerLockKeysCheck = function(event) { if ((event.key != "CapsLock") && (event.key != "NumLock") && (event.key != "ScrollLock")) { _Emscripten_HandleLockKeysCheck(data, event.getModifierState("CapsLock"), event.getModifierState("NumLock"), event.getModifierState("ScrollLock")); } }; document.addEventListener("keydown", document.sdlEventHandlerLockKeysCheck); },  
+ 650214: () => { document.removeEventListener("keydown", document.sdlEventHandlerLockKeysCheck); },  
+ 650298: ($0) => { var target = document; if (target) { target.sdlEventHandlerMouseButtonUpGlobal = function(event) { var SDL3 = Module['SDL3']; var d = SDL3.makePointerEventCStruct(0, 0, event); if (d != 0) { _Emscripten_HandleMouseButtonUpGlobal($0, d); _SDL_free(d); } }; target.addEventListener("pointerup", target.sdlEventHandlerMouseButtonUpGlobal); } },  
+ 650641: ($0) => { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; if (SDL3.makePointerEventCStruct === undefined) { SDL3.makePointerEventCStruct = function(left, top, event) { var ptrtype = 0; if (event.pointerType == "mouse") { ptrtype = 1; } else if (event.pointerType == "touch") { ptrtype = 2; } else if (event.pointerType == "pen") { ptrtype = 3; } else { return 0; } var ptr = _SDL_malloc($0); if (ptr != 0) { var idx = ptr >> 2; HEAP32[idx++] = ptrtype; HEAP32[idx++] = event.pointerId; HEAP32[idx++] = (typeof(event.button) !== "undefined") ? event.button : -1; HEAP32[idx++] = event.buttons; HEAP32[idx++] = (event.type == "pointerdown") ? 1 : 0; HEAPF32[idx++] = event.movementX; HEAPF32[idx++] = event.movementY; HEAPF32[idx++] = event.clientX - left; HEAPF32[idx++] = event.clientY - top; if (ptrtype == 3) { HEAPF32[idx++] = event.pressure; HEAPF32[idx++] = event.tangentialPressure; HEAPF32[idx++] = event.tiltX; HEAPF32[idx++] = event.tiltY; HEAPF32[idx++] = event.twist; } } return ptr; }; } },  
+ 651683: ($0) => { var id = UTF8ToString($0); try { var canvas = document.querySelector(id); if (canvas) { return canvas === document.activeElement; } } catch (e) { } return false; },  
+ 651849: () => { return document.hasFocus(); },  
+ 651881: () => { var target = document; if (target) { target.removeEventListener("pointerup", target.sdlEventHandlerMouseButtonUpGlobal); target.sdlEventHandlerMouseButtonUpGlobal = undefined; } },  
+ 652063: () => { return document.body.clientWidth; },  
+ 652101: () => { return document.body.clientHeight; },  
+ 652140: () => { return window.innerWidth; },  
+ 652170: () => { return window.innerHeight; },  
+ 652201: () => { return window.outerWidth; },  
+ 652231: () => { return window.outerHeight; },  
+ 652262: () => { return window.pageXOffset; },  
+ 652293: () => { return window.pageYOffset; },  
+ 652324: ($0, $1) => { var target = document.querySelector(UTF8ToString($1)); if (target) { var SDL3 = Module['SDL3']; var data = $0; target.sdlEventHandlerPointerEnter = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerEnter(data, d); _SDL_free(d); } }; target.sdlEventHandlerPointerLeave = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerLeave(data, d); _SDL_free(d); } }; target.sdlEventHandlerPointerGeneric = function(event) { var rect = target.getBoundingClientRect(); var d = SDL3.makePointerEventCStruct(rect.left, rect.top, event); if (d != 0) { _Emscripten_HandlePointerGeneric(data, d); _SDL_free(d); } }; target.style.touchAction = "none"; target.addEventListener("pointerenter", target.sdlEventHandlerPointerEnter); target.addEventListener("pointerleave", target.sdlEventHandlerPointerLeave); target.addEventListener("pointercancel", target.sdlEventHandlerPointerLeave); target.addEventListener("pointerdown", target.sdlEventHandlerPointerGeneric); target.addEventListener("pointermove", target.sdlEventHandlerPointerGeneric); target.addEventListener("pointerup", target.sdlEventHandlerPointerGeneric); } },  
+ 653658: ($0, $1, $2) => { var target = document.querySelector(UTF8ToString($1)); if (target) { var data = $0; if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; var makeDropEventCStruct = function(event) { var ptr = 0; ptr = _SDL_malloc($2); if (ptr != 0) { var idx = ptr >> 2; var rect = target.getBoundingClientRect(); HEAP32[idx++] = event.clientX - rect.left; HEAP32[idx++] = event.clientY - rect.top; } return ptr; }; SDL3.eventHandlerDropDragover = function(event) { event.preventDefault(); var d = makeDropEventCStruct(event); if (d != 0) { _Emscripten_SendDragEvent(data, d); _SDL_free(d); } }; target.addEventListener("dragover", SDL3.eventHandlerDropDragover); SDL3.drop_count = 0; FS.mkdir("/tmp/filedrop"); SDL3.eventHandlerDropDrop = function(event) { event.preventDefault(); if (event.dataTransfer.types.includes("text/plain")) { let plain_text = stringToNewUTF8(event.dataTransfer.getData("text/plain")); _Emscripten_SendDragTextEvent(data, plain_text); _free(plain_text); } else if (event.dataTransfer.types.includes("Files")) { let files_read = 0; const files_to_read = event.dataTransfer.files.length; for (let i = 0; i < files_to_read; i++) { const file = event.dataTransfer.files.item(i); const file_reader = new FileReader(); file_reader.readAsArrayBuffer(file); file_reader.onload = function(event) { const fs_dropdir = `/tmp/filedrop/${SDL3.drop_count}`; SDL3.drop_count += 1; const fs_filepath = `${fs_dropdir}/${file.name}`; const c_fs_filepath = stringToNewUTF8(fs_filepath); const contents_array8 = new Uint8Array(event.target.result); FS.mkdir(fs_dropdir); var stream = FS.open(fs_filepath, "w"); FS.write(stream, contents_array8, 0, contents_array8.length, 0); FS.close(stream); _Emscripten_SendDragFileEvent(data, c_fs_filepath); _free(c_fs_filepath); onFileRead(); }; file_reader.onerror = function(event) { onFileRead(); }; } function onFileRead() { ++files_read; if (files_read === files_to_read) { _Emscripten_SendDragCompleteEvent(data); } } } _Emscripten_SendDragCompleteEvent(data); }; target.addEventListener("drop", SDL3.eventHandlerDropDrop); SDL3.eventHandlerDropDragend = function(event) { event.preventDefault(); _Emscripten_SendDragCompleteEvent(data); }; target.addEventListener("dragend", SDL3.eventHandlerDropDragend); target.addEventListener("dragleave", SDL3.eventHandlerDropDragend); } },  
+ 656017: ($0) => { var target = document.querySelector(UTF8ToString($0)); if (target) { var SDL3 = Module['SDL3']; target.removeEventListener("dragleave", SDL3.eventHandlerDropDragend); target.removeEventListener("dragend", SDL3.eventHandlerDropDragend); target.removeEventListener("drop", SDL3.eventHandlerDropDrop); SDL3.drop_count = undefined; function recursive_remove(dirpath) { FS.readdir(dirpath).forEach((filename) => { const p = `${dirpath}/${filename}`; const p_s = FS.stat(p); if (FS.isFile(p_s.mode)) { FS.unlink(p); } else if (FS.isDir(p)) { recursive_remove(p); } }); FS.rmdir(dirpath); }("/tmp/filedrop"); FS.rmdir("/tmp/filedrop"); target.removeEventListener("dragover", SDL3.eventHandlerDropDragover); SDL3.eventHandlerDropDragover = undefined; SDL3.eventHandlerDropDrop = undefined; SDL3.eventHandlerDropDragend = undefined; } },  
+ 656847: ($0) => { var target = document.querySelector(UTF8ToString($0)); if (target) { target.removeEventListener("pointerenter", target.sdlEventHandlerPointerEnter); target.removeEventListener("pointerleave", target.sdlEventHandlerPointerLeave); target.removeEventListener("pointercancel", target.sdlEventHandlerPointerLeave); target.removeEventListener("pointerdown", target.sdlEventHandlerPointerGeneric); target.removeEventListener("pointermove", target.sdlEventHandlerPointerGeneric); target.removeEventListener("pointerup", target.sdlEventHandlerPointerGeneric); target.style.touchAction = ""; target.sdlEventHandlerPointerEnter = undefined; target.sdlEventHandlerPointerLeave = undefined; target.sdlEventHandlerPointerGeneric = undefined; } },  
+ 657581: ($0, $1, $2, $3) => { var w = $0; var h = $1; var pixels = $2; var canvasId = UTF8ToString($3); var canvas = document.querySelector(canvasId); if (!Module['SDL3']) Module['SDL3'] = {}; var SDL3 = Module['SDL3']; if (SDL3.ctxCanvas !== canvas) { SDL3.ctx = Browser.createContext(canvas, false, true); if (!SDL3.ctx) { return false; } SDL3.ctxCanvas = canvas; } if (SDL3.w !== w || SDL3.h !== h || SDL3.imageCtx !== SDL3.ctx) { SDL3.image = SDL3.ctx.createImageData(w, h); SDL3.w = w; SDL3.h = h; SDL3.imageCtx = SDL3.ctx; } var data = SDL3.image.data; var src = pixels / 4; if (SDL3.data32Data !== data) { SDL3.data32 = new Int32Array(data.buffer); SDL3.data32Data = data; } var data32 = SDL3.data32; data32.set(HEAP32.subarray(src, src + data32.length)); SDL3.ctx.putImageData(SDL3.image, 0, 0); return true; },  
+ 658372: () => { if (!Module['SDL3']) { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; SDL3['mouse_x'] = 0; SDL3['mouse_y'] = 0; SDL3['mouse_buttons'] = []; for (var i = 0; i < 5; ++i) { SDL3['mouse_buttons'][i] = false; } document.addEventListener('mousemove', function(e) { var SDL3 = Module['SDL3']; SDL3['mouse_x'] = e.clientX; SDL3['mouse_y'] = e.clientY; }); document.addEventListener('mousedown', function(e) { var SDL3 = Module['SDL3']; if (0 <= e.button && e.button < SDL3['mouse_buttons'].length) { SDL3['mouse_buttons'][e.button] = true; } }); document.addEventListener('mouseup', function(e) { var SDL3 = Module['SDL3']; if (0 <= e.button && e.button < SDL3['mouse_buttons'].length) { SDL3['mouse_buttons'][e.button] = false; } }); },  
+ 659106: ($0, $1, $2, $3, $4) => { var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels / 4; var data32 = new Int32Array(data.buffer); data32.set(HEAP32.subarray(src, src + data32.length)); ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _SDL_malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf; },  
+ 659764: ($0) => { if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } },  
+ 659847: () => { if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; } },  
+ 659916: () => { return Module['SDL3']['mouse_x']; },  
+ 659954: () => { return Module['SDL3']['mouse_y']; },  
+ 659992: ($0) => { return Module['SDL3']['mouse_buttons'][$0]; },  
+ 660040: () => { if (!window.matchMedia) { return -1; } if (window.matchMedia('(prefers-color-scheme: light)').matches) { return 0; } if (window.matchMedia('(prefers-color-scheme: dark)').matches) { return 1; } return -1; },  
+ 660249: () => { if (typeof(Module['SDL3']) !== 'undefined') { var SDL3 = Module['SDL3']; SDL3.themeChangedMatchMedia.removeEventListener('change', SDL3.eventHandlerThemeChanged); SDL3.themeChangedMatchMedia = undefined; SDL3.eventHandlerThemeChanged = undefined; } },  
+ 660502: () => { return window.innerWidth; },  
+ 660532: () => { return window.innerHeight; },  
+ 660563: ($0) => { Module['requestFullscreen'] = function(lockPointer, resizeCanvas) { _requestFullscreenThroughSDL($0); }; },  
+ 660672: ($0, $1) => { var pngData = HEAPU8.subarray($0, $0 + $1); if (pngData.buffer instanceof SharedArrayBuffer) { pngData = new Uint8Array(pngData); } var blob = new Blob([pngData], {type: 'image/png'}); var url = URL.createObjectURL(blob); var link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; link.type = 'image/png'; document.head.appendChild(link); } if (link.href && link.href.startsWith('blob:')) { URL.revokeObjectURL(link.href); } link.href = url; },  
+ 661186: () => { Module['requestFullscreen'] = function(lockPointer, resizeCanvas) {}; },  
+ 661260: () => { return window.innerWidth; },  
+ 661290: () => { return window.innerHeight; },  
+ 661321: ($0) => { var canvas = document.querySelector(UTF8ToString($0)); canvas.SDL3_original_position = canvas.style.position; canvas.SDL3_original_top = canvas.style.top; canvas.SDL3_original_left = canvas.style.left; var div = document.createElement('div'); div.id = 'SDL3_fill_document_background_elements'; div.SDL3_canvas = canvas; div.SDL3_canvas_parent = canvas.parentNode; div.SDL3_canvas_nextsib = canvas.nextSibling; var children = Array.from(document.body.children); for (var child of children) { div.appendChild(child); } document.body.appendChild(div); div.style.display = 'none'; document.body.appendChild(canvas); canvas.style.position = 'fixed'; canvas.style.top = '0'; canvas.style.left = '0'; },  
+ 662019: () => { var div = document.getElementById('SDL3_fill_document_background_elements'); if (div) { if (div.SDL3_canvas_nextsib) { div.SDL3_canvas_parent.insertBefore(div.SDL3_canvas, div.SDL3_canvas_nextsib); } else { div.SDL3_canvas_parent.appendChild(div.SDL3_canvas); } while (div.firstChild) { document.body.insertBefore(div.firstChild, div); } div.SDL3_canvas.style.position = div.SDL3_canvas.SDL3_original_position; div.SDL3_canvas.style.top = div.SDL3_canvas.SDL3_original_top; div.SDL3_canvas.style.left = div.SDL3_canvas.SDL3_original_left; div.remove(); } },  
+ 662578: () => { if (window.matchMedia) { if (typeof(Module['SDL3']) === 'undefined') { Module['SDL3'] = {}; } var SDL3 = Module['SDL3']; SDL3.eventHandlerThemeChanged = function(event) { _Emscripten_SendSystemThemeChangedEvent(); }; SDL3.themeChangedMatchMedia = window.matchMedia('(prefers-color-scheme: dark)'); SDL3.themeChangedMatchMedia.addEventListener('change', SDL3.eventHandlerThemeChanged); } },  
+ 662969: ($0, $1, $2, $3, $4) => { var title = UTF8ToString($0); var message = UTF8ToString($1); var background = UTF8ToString($2); var color = UTF8ToString($3); var id = UTF8ToString($4); var dialog = document.createElement("dialog"); dialog.classList.add("SDL3_messagebox"); dialog.id = id; dialog.style.color = color; dialog.style.backgroundColor = background; document.body.append(dialog); var h1 = document.createElement("h1"); h1.innerText = title; dialog.append(h1); var p = document.createElement("p"); p.innerText = message; dialog.append(p); dialog.showModal(); },  
+ 663510: ($0, $1, $2, $3, $4, $5, $6, $7) => { var dialog_id = UTF8ToString($0); var text = UTF8ToString($1); var responseId = $2; var clickOnReturn = $3; var clickOnEscape = $4; var border = UTF8ToString($5); var background = UTF8ToString($6); var hovered = UTF8ToString($7); var dialog = document.getElementById(dialog_id); if (!dialog) { return false; } var button = document.createElement("button"); button.innerText = text; button.style.borderColor = border; button.style.backgroundColor = background; dialog.addEventListener('keydown', function(e) { if (clickOnReturn && e.key === "Enter") { e.preventDefault(); button.click(); } else if (clickOnEscape && e.key === "Escape") { e.preventDefault(); button.click(); } }); dialog.addEventListener('cancel', function(e){ e.preventDefault(); }); button.onmouseenter = function(e){ button.style.backgroundColor = hovered; }; button.onmouseleave = function(e){ button.style.backgroundColor = background; }; button.onclick = function(e) { dialog.close(responseId); }; dialog.append(button); return true; },  
+ 664519: ($0) => { var dialog_id = UTF8ToString($0); var dialog = document.getElementById(dialog_id); if (!dialog) { return false; } return dialog.open; },  
+ 664657: ($0) => { var dialog_id = UTF8ToString($0); var dialog = document.getElementById(dialog_id); if (!dialog) { return 0; } try { return parseInt(dialog.returnValue); } catch(e) { return 0; } },  
+ 664839: ($0, $1) => { alert(UTF8ToString($0) + "\n\n" + UTF8ToString($1)); }
 };
 function SDL_GetEmscriptenJoystickVendor(device_index) { let gamepad = navigator['getGamepads']()[device_index]; let vendor_str = 'Vendor: '; if (gamepad['id']['indexOf'](vendor_str) > 0) { let vendor_str_index = gamepad['id']['indexOf'](vendor_str) + vendor_str['length']; return parseInt(gamepad['id']['substr'](vendor_str_index, 4), 16); } let id_split = gamepad['id']['split']('-'); if (id_split['length'] > 1 && !isNaN(parseInt(id_split[0], 16))) { return parseInt(id_split[0], 16); } return 0; }
 function SDL_GetEmscriptenJoystickProduct(device_index) { let gamepad = navigator['getGamepads']()[device_index]; let product_str = 'Product: '; if (gamepad['id']['indexOf'](product_str) > 0) { let product_str_index = gamepad['id']['indexOf'](product_str) + product_str['length']; return parseInt(gamepad['id']['substr'](product_str_index, 4), 16); } let id_split = gamepad['id']['split']('-'); if (id_split['length'] > 1 && !isNaN(parseInt(id_split[1], 16))) { return parseInt(id_split[1], 16); } return 0; }
@@ -9841,6 +9817,7 @@ var _plutovg_surface_write_to_jpg_stream = Module['_plutovg_surface_write_to_jpg
 var _plutovg_convert_argb_to_rgba = Module['_plutovg_convert_argb_to_rgba'] = makeInvalidEarlyAccess('_plutovg_convert_argb_to_rgba');
 var _plutovg_convert_rgba_to_argb = Module['_plutovg_convert_rgba_to_argb'] = makeInvalidEarlyAccess('_plutovg_convert_rgba_to_argb');
 var _MIX_Generate = Module['_MIX_Generate'] = makeInvalidEarlyAccess('_MIX_Generate');
+var _SDL_GetAudioStreamFormat = Module['_SDL_GetAudioStreamFormat'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamFormat');
 var _SDL_GetAudioStreamData = Module['_SDL_GetAudioStreamData'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamData');
 var _MIX_Version = Module['_MIX_Version'] = makeInvalidEarlyAccess('_MIX_Version');
 var _MIX_Init = Module['_MIX_Init'] = makeInvalidEarlyAccess('_MIX_Init');
@@ -9849,7 +9826,6 @@ var _MIX_DestroyMixer = Module['_MIX_DestroyMixer'] = makeInvalidEarlyAccess('_M
 var _MIX_DestroyAudioDecoder = Module['_MIX_DestroyAudioDecoder'] = makeInvalidEarlyAccess('_MIX_DestroyAudioDecoder');
 var _SDL_DestroyAudioStream = Module['_SDL_DestroyAudioStream'] = makeInvalidEarlyAccess('_SDL_DestroyAudioStream');
 var _SDL_LockAudioStream = Module['_SDL_LockAudioStream'] = makeInvalidEarlyAccess('_SDL_LockAudioStream');
-var _SDL_GetAudioStreamFormat = Module['_SDL_GetAudioStreamFormat'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamFormat');
 var _SDL_UnlockAudioStream = Module['_SDL_UnlockAudioStream'] = makeInvalidEarlyAccess('_SDL_UnlockAudioStream');
 var _MIX_DestroyTrack = Module['_MIX_DestroyTrack'] = makeInvalidEarlyAccess('_MIX_DestroyTrack');
 var _MIX_DestroyGroup = Module['_MIX_DestroyGroup'] = makeInvalidEarlyAccess('_MIX_DestroyGroup');
@@ -9875,6 +9851,8 @@ var _SDL_EnumerateProperties = Module['_SDL_EnumerateProperties'] = makeInvalidE
 var _MIX_SetTrackGroup = Module['_MIX_SetTrackGroup'] = makeInvalidEarlyAccess('_MIX_SetTrackGroup');
 var _MIX_GetMixerProperties = Module['_MIX_GetMixerProperties'] = makeInvalidEarlyAccess('_MIX_GetMixerProperties');
 var _MIX_GetMixerFormat = Module['_MIX_GetMixerFormat'] = makeInvalidEarlyAccess('_MIX_GetMixerFormat');
+var _MIX_LockMixer = Module['_MIX_LockMixer'] = makeInvalidEarlyAccess('_MIX_LockMixer');
+var _MIX_UnlockMixer = Module['_MIX_UnlockMixer'] = makeInvalidEarlyAccess('_MIX_UnlockMixer');
 var _MIX_LoadAudioWithProperties = Module['_MIX_LoadAudioWithProperties'] = makeInvalidEarlyAccess('_MIX_LoadAudioWithProperties');
 var _SDL_CopyProperties = Module['_SDL_CopyProperties'] = makeInvalidEarlyAccess('_SDL_CopyProperties');
 var _SDL_ClearProperty = Module['_SDL_ClearProperty'] = makeInvalidEarlyAccess('_SDL_ClearProperty');
@@ -9883,9 +9861,10 @@ var _SDL_FlushAudioStream = Module['_SDL_FlushAudioStream'] = makeInvalidEarlyAc
 var _SDL_GetAudioStreamAvailable = Module['_SDL_GetAudioStreamAvailable'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamAvailable');
 var _MIX_LoadAudio_IO = Module['_MIX_LoadAudio_IO'] = makeInvalidEarlyAccess('_MIX_LoadAudio_IO');
 var _MIX_LoadAudio = Module['_MIX_LoadAudio'] = makeInvalidEarlyAccess('_MIX_LoadAudio');
+var _MIX_LoadAudioNoCopy = Module['_MIX_LoadAudioNoCopy'] = makeInvalidEarlyAccess('_MIX_LoadAudioNoCopy');
+var _SDL_IOFromConstMem = Module['_SDL_IOFromConstMem'] = makeInvalidEarlyAccess('_SDL_IOFromConstMem');
 var _MIX_LoadRawAudio_IO = Module['_MIX_LoadRawAudio_IO'] = makeInvalidEarlyAccess('_MIX_LoadRawAudio_IO');
 var _MIX_LoadRawAudio = Module['_MIX_LoadRawAudio'] = makeInvalidEarlyAccess('_MIX_LoadRawAudio');
-var _SDL_IOFromConstMem = Module['_SDL_IOFromConstMem'] = makeInvalidEarlyAccess('_SDL_IOFromConstMem');
 var _MIX_LoadRawAudioNoCopy = Module['_MIX_LoadRawAudioNoCopy'] = makeInvalidEarlyAccess('_MIX_LoadRawAudioNoCopy');
 var _MIX_CreateSineWaveAudio = Module['_MIX_CreateSineWaveAudio'] = makeInvalidEarlyAccess('_MIX_CreateSineWaveAudio');
 var _MIX_GetAudioProperties = Module['_MIX_GetAudioProperties'] = makeInvalidEarlyAccess('_MIX_GetAudioProperties');
@@ -9912,7 +9891,7 @@ var _MIX_SetTrackPlaybackPosition = Module['_MIX_SetTrackPlaybackPosition'] = ma
 var _MIX_GetTrackPlaybackPosition = Module['_MIX_GetTrackPlaybackPosition'] = makeInvalidEarlyAccess('_MIX_GetTrackPlaybackPosition');
 var _MIX_GetTrackRemaining = Module['_MIX_GetTrackRemaining'] = makeInvalidEarlyAccess('_MIX_GetTrackRemaining');
 var _MIX_GetTrackFadeFrames = Module['_MIX_GetTrackFadeFrames'] = makeInvalidEarlyAccess('_MIX_GetTrackFadeFrames');
-var _MIX_TrackLooping = Module['_MIX_TrackLooping'] = makeInvalidEarlyAccess('_MIX_TrackLooping');
+var _MIX_GetTrackLoops = Module['_MIX_GetTrackLoops'] = makeInvalidEarlyAccess('_MIX_GetTrackLoops');
 var _MIX_SetTrackLoops = Module['_MIX_SetTrackLoops'] = makeInvalidEarlyAccess('_MIX_SetTrackLoops');
 var _MIX_GetTrackAudio = Module['_MIX_GetTrackAudio'] = makeInvalidEarlyAccess('_MIX_GetTrackAudio');
 var _MIX_GetTrackAudioStream = Module['_MIX_GetTrackAudioStream'] = makeInvalidEarlyAccess('_MIX_GetTrackAudioStream');
@@ -9936,17 +9915,19 @@ var _MIX_ResumeTag = Module['_MIX_ResumeTag'] = makeInvalidEarlyAccess('_MIX_Res
 var _MIX_TrackPlaying = Module['_MIX_TrackPlaying'] = makeInvalidEarlyAccess('_MIX_TrackPlaying');
 var _MIX_TrackPaused = Module['_MIX_TrackPaused'] = makeInvalidEarlyAccess('_MIX_TrackPaused');
 var _MIX_SetTrackStoppedCallback = Module['_MIX_SetTrackStoppedCallback'] = makeInvalidEarlyAccess('_MIX_SetTrackStoppedCallback');
-var _MIX_SetMasterGain = Module['_MIX_SetMasterGain'] = makeInvalidEarlyAccess('_MIX_SetMasterGain');
-var _MIX_GetMasterGain = Module['_MIX_GetMasterGain'] = makeInvalidEarlyAccess('_MIX_GetMasterGain');
+var _MIX_SetMixerGain = Module['_MIX_SetMixerGain'] = makeInvalidEarlyAccess('_MIX_SetMixerGain');
+var _MIX_GetMixerGain = Module['_MIX_GetMixerGain'] = makeInvalidEarlyAccess('_MIX_GetMixerGain');
 var _MIX_SetTrackGain = Module['_MIX_SetTrackGain'] = makeInvalidEarlyAccess('_MIX_SetTrackGain');
 var _SDL_SetAudioStreamGain = Module['_SDL_SetAudioStreamGain'] = makeInvalidEarlyAccess('_SDL_SetAudioStreamGain');
 var _MIX_GetTrackGain = Module['_MIX_GetTrackGain'] = makeInvalidEarlyAccess('_MIX_GetTrackGain');
 var _SDL_GetAudioStreamGain = Module['_SDL_GetAudioStreamGain'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamGain');
 var _MIX_SetTagGain = Module['_MIX_SetTagGain'] = makeInvalidEarlyAccess('_MIX_SetTagGain');
-var _MIX_SetTrackFrequencyRatio = Module['_MIX_SetTrackFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_SetTrackFrequencyRatio');
+var _MIX_SetMixerFrequencyRatio = Module['_MIX_SetMixerFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_SetMixerFrequencyRatio');
 var _SDL_SetAudioStreamFrequencyRatio = Module['_SDL_SetAudioStreamFrequencyRatio'] = makeInvalidEarlyAccess('_SDL_SetAudioStreamFrequencyRatio');
-var _MIX_GetTrackFrequencyRatio = Module['_MIX_GetTrackFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_GetTrackFrequencyRatio');
+var _MIX_GetMixerFrequencyRatio = Module['_MIX_GetMixerFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_GetMixerFrequencyRatio');
 var _SDL_GetAudioStreamFrequencyRatio = Module['_SDL_GetAudioStreamFrequencyRatio'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamFrequencyRatio');
+var _MIX_SetTrackFrequencyRatio = Module['_MIX_SetTrackFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_SetTrackFrequencyRatio');
+var _MIX_GetTrackFrequencyRatio = Module['_MIX_GetTrackFrequencyRatio'] = makeInvalidEarlyAccess('_MIX_GetTrackFrequencyRatio');
 var _MIX_SetTrackOutputChannelMap = Module['_MIX_SetTrackOutputChannelMap'] = makeInvalidEarlyAccess('_MIX_SetTrackOutputChannelMap');
 var _SDL_SetAudioStreamOutputChannelMap = Module['_SDL_SetAudioStreamOutputChannelMap'] = makeInvalidEarlyAccess('_SDL_SetAudioStreamOutputChannelMap');
 var _MIX_SetTrackStereo = Module['_MIX_SetTrackStereo'] = makeInvalidEarlyAccess('_MIX_SetTrackStereo');
@@ -9981,6 +9962,7 @@ var _SDL_floor = Module['_SDL_floor'] = makeInvalidEarlyAccess('_SDL_floor');
 var _SDL_cos = Module['_SDL_cos'] = makeInvalidEarlyAccess('_SDL_cos');
 var _SDL_sin = Module['_SDL_sin'] = makeInvalidEarlyAccess('_SDL_sin');
 var _SDL_getenv = Module['_SDL_getenv'] = makeInvalidEarlyAccess('_SDL_getenv');
+var _SDL_SetAudioStreamInputChannelMap = Module['_SDL_SetAudioStreamInputChannelMap'] = makeInvalidEarlyAccess('_SDL_SetAudioStreamInputChannelMap');
 var _SDL_ReadS16BE = Module['_SDL_ReadS16BE'] = makeInvalidEarlyAccess('_SDL_ReadS16BE');
 var _SDL_strtok_r = Module['_SDL_strtok_r'] = makeInvalidEarlyAccess('_SDL_strtok_r');
 var _SDL_SetAppMetadata = Module['_SDL_SetAppMetadata'] = makeInvalidEarlyAccess('_SDL_SetAppMetadata');
@@ -10096,7 +10078,6 @@ var _SDL_EventEnabled = Module['_SDL_EventEnabled'] = makeInvalidEarlyAccess('_S
 var _SDL_PushEvent = Module['_SDL_PushEvent'] = makeInvalidEarlyAccess('_SDL_PushEvent');
 var _SDL_CreateCondition = Module['_SDL_CreateCondition'] = makeInvalidEarlyAccess('_SDL_CreateCondition');
 var _SDL_SetCurrentThreadPriority = Module['_SDL_SetCurrentThreadPriority'] = makeInvalidEarlyAccess('_SDL_SetCurrentThreadPriority');
-var _SDL_SetAudioStreamInputChannelMap = Module['_SDL_SetAudioStreamInputChannelMap'] = makeInvalidEarlyAccess('_SDL_SetAudioStreamInputChannelMap');
 var _SDL_GetAudioStreamInputChannelMap = Module['_SDL_GetAudioStreamInputChannelMap'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamInputChannelMap');
 var _SDL_GetAudioStreamOutputChannelMap = Module['_SDL_GetAudioStreamOutputChannelMap'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamOutputChannelMap');
 var _SDL_GetAudioStreamQueued = Module['_SDL_GetAudioStreamQueued'] = makeInvalidEarlyAccess('_SDL_GetAudioStreamQueued');
@@ -11225,7 +11206,6 @@ var __ZTISt9exception = Module['__ZTISt9exception'] = makeInvalidEarlyAccess('__
 var __ZTISt11logic_error = Module['__ZTISt11logic_error'] = makeInvalidEarlyAccess('__ZTISt11logic_error');
 var __ZTVN10__cxxabiv121__vmi_class_type_infoE = Module['__ZTVN10__cxxabiv121__vmi_class_type_infoE'] = makeInvalidEarlyAccess('__ZTVN10__cxxabiv121__vmi_class_type_infoE');
 var __ZTVSt11logic_error = Module['__ZTVSt11logic_error'] = makeInvalidEarlyAccess('__ZTVSt11logic_error');
-var __ZTVSt9exception = Module['__ZTVSt9exception'] = makeInvalidEarlyAccess('__ZTVSt9exception');
 var __ZTVSt13runtime_error = Module['__ZTVSt13runtime_error'] = makeInvalidEarlyAccess('__ZTVSt13runtime_error');
 var ___cxa_unexpected_handler = Module['___cxa_unexpected_handler'] = makeInvalidEarlyAccess('___cxa_unexpected_handler');
 var ___cxa_terminate_handler = Module['___cxa_terminate_handler'] = makeInvalidEarlyAccess('___cxa_terminate_handler');
@@ -11233,9 +11213,9 @@ var ___cxa_new_handler = Module['___cxa_new_handler'] = makeInvalidEarlyAccess('
 var __ZTIN10__cxxabiv116__shim_type_infoE = Module['__ZTIN10__cxxabiv116__shim_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv116__shim_type_infoE');
 var __ZTIN10__cxxabiv117__class_type_infoE = Module['__ZTIN10__cxxabiv117__class_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv117__class_type_infoE');
 var __ZTIN10__cxxabiv117__pbase_type_infoE = Module['__ZTIN10__cxxabiv117__pbase_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv117__pbase_type_infoE');
-var __ZTIDn = Module['__ZTIDn'] = makeInvalidEarlyAccess('__ZTIDn');
+var __ZTSDn = Module['__ZTSDn'] = makeInvalidEarlyAccess('__ZTSDn');
 var __ZTIN10__cxxabiv119__pointer_type_infoE = Module['__ZTIN10__cxxabiv119__pointer_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv119__pointer_type_infoE');
-var __ZTIv = Module['__ZTIv'] = makeInvalidEarlyAccess('__ZTIv');
+var __ZTSv = Module['__ZTSv'] = makeInvalidEarlyAccess('__ZTSv');
 var __ZTIN10__cxxabiv120__function_type_infoE = Module['__ZTIN10__cxxabiv120__function_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv120__function_type_infoE');
 var __ZTIN10__cxxabiv129__pointer_to_member_type_infoE = Module['__ZTIN10__cxxabiv129__pointer_to_member_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv129__pointer_to_member_type_infoE');
 var __ZTISt9type_info = Module['__ZTISt9type_info'] = makeInvalidEarlyAccess('__ZTISt9type_info');
@@ -11249,13 +11229,13 @@ var __ZTVN10__cxxabiv116__shim_type_infoE = Module['__ZTVN10__cxxabiv116__shim_t
 var __ZTVN10__cxxabiv123__fundamental_type_infoE = Module['__ZTVN10__cxxabiv123__fundamental_type_infoE'] = makeInvalidEarlyAccess('__ZTVN10__cxxabiv123__fundamental_type_infoE');
 var __ZTIN10__cxxabiv123__fundamental_type_infoE = Module['__ZTIN10__cxxabiv123__fundamental_type_infoE'] = makeInvalidEarlyAccess('__ZTIN10__cxxabiv123__fundamental_type_infoE');
 var __ZTSN10__cxxabiv123__fundamental_type_infoE = Module['__ZTSN10__cxxabiv123__fundamental_type_infoE'] = makeInvalidEarlyAccess('__ZTSN10__cxxabiv123__fundamental_type_infoE');
-var __ZTSv = Module['__ZTSv'] = makeInvalidEarlyAccess('__ZTSv');
+var __ZTIv = Module['__ZTIv'] = makeInvalidEarlyAccess('__ZTIv');
 var __ZTIPv = Module['__ZTIPv'] = makeInvalidEarlyAccess('__ZTIPv');
 var __ZTVN10__cxxabiv119__pointer_type_infoE = Module['__ZTVN10__cxxabiv119__pointer_type_infoE'] = makeInvalidEarlyAccess('__ZTVN10__cxxabiv119__pointer_type_infoE');
 var __ZTSPv = Module['__ZTSPv'] = makeInvalidEarlyAccess('__ZTSPv');
 var __ZTIPKv = Module['__ZTIPKv'] = makeInvalidEarlyAccess('__ZTIPKv');
 var __ZTSPKv = Module['__ZTSPKv'] = makeInvalidEarlyAccess('__ZTSPKv');
-var __ZTSDn = Module['__ZTSDn'] = makeInvalidEarlyAccess('__ZTSDn');
+var __ZTIDn = Module['__ZTIDn'] = makeInvalidEarlyAccess('__ZTIDn');
 var __ZTIPDn = Module['__ZTIPDn'] = makeInvalidEarlyAccess('__ZTIPDn');
 var __ZTSPDn = Module['__ZTSPDn'] = makeInvalidEarlyAccess('__ZTSPDn');
 var __ZTIPKDn = Module['__ZTIPKDn'] = makeInvalidEarlyAccess('__ZTIPKDn');
@@ -11415,6 +11395,7 @@ var __ZTVSt9bad_alloc = Module['__ZTVSt9bad_alloc'] = makeInvalidEarlyAccess('__
 var __ZTVSt20bad_array_new_length = Module['__ZTVSt20bad_array_new_length'] = makeInvalidEarlyAccess('__ZTVSt20bad_array_new_length');
 var __ZTISt9bad_alloc = Module['__ZTISt9bad_alloc'] = makeInvalidEarlyAccess('__ZTISt9bad_alloc');
 var __ZTISt20bad_array_new_length = Module['__ZTISt20bad_array_new_length'] = makeInvalidEarlyAccess('__ZTISt20bad_array_new_length');
+var __ZTVSt9exception = Module['__ZTVSt9exception'] = makeInvalidEarlyAccess('__ZTVSt9exception');
 var __ZTSSt9exception = Module['__ZTSSt9exception'] = makeInvalidEarlyAccess('__ZTSSt9exception');
 var __ZTVSt13bad_exception = Module['__ZTVSt13bad_exception'] = makeInvalidEarlyAccess('__ZTVSt13bad_exception');
 var __ZTISt13bad_exception = Module['__ZTISt13bad_exception'] = makeInvalidEarlyAccess('__ZTISt13bad_exception');
@@ -11971,6 +11952,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['plutovg_convert_argb_to_rgba'] != 'undefined', 'missing Wasm export: plutovg_convert_argb_to_rgba');
   assert(typeof wasmExports['plutovg_convert_rgba_to_argb'] != 'undefined', 'missing Wasm export: plutovg_convert_rgba_to_argb');
   assert(typeof wasmExports['MIX_Generate'] != 'undefined', 'missing Wasm export: MIX_Generate');
+  assert(typeof wasmExports['SDL_GetAudioStreamFormat'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamFormat');
   assert(typeof wasmExports['SDL_GetAudioStreamData'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamData');
   assert(typeof wasmExports['MIX_Version'] != 'undefined', 'missing Wasm export: MIX_Version');
   assert(typeof wasmExports['MIX_Init'] != 'undefined', 'missing Wasm export: MIX_Init');
@@ -11979,7 +11961,6 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['MIX_DestroyAudioDecoder'] != 'undefined', 'missing Wasm export: MIX_DestroyAudioDecoder');
   assert(typeof wasmExports['SDL_DestroyAudioStream'] != 'undefined', 'missing Wasm export: SDL_DestroyAudioStream');
   assert(typeof wasmExports['SDL_LockAudioStream'] != 'undefined', 'missing Wasm export: SDL_LockAudioStream');
-  assert(typeof wasmExports['SDL_GetAudioStreamFormat'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamFormat');
   assert(typeof wasmExports['SDL_UnlockAudioStream'] != 'undefined', 'missing Wasm export: SDL_UnlockAudioStream');
   assert(typeof wasmExports['MIX_DestroyTrack'] != 'undefined', 'missing Wasm export: MIX_DestroyTrack');
   assert(typeof wasmExports['MIX_DestroyGroup'] != 'undefined', 'missing Wasm export: MIX_DestroyGroup');
@@ -12005,6 +11986,8 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['MIX_SetTrackGroup'] != 'undefined', 'missing Wasm export: MIX_SetTrackGroup');
   assert(typeof wasmExports['MIX_GetMixerProperties'] != 'undefined', 'missing Wasm export: MIX_GetMixerProperties');
   assert(typeof wasmExports['MIX_GetMixerFormat'] != 'undefined', 'missing Wasm export: MIX_GetMixerFormat');
+  assert(typeof wasmExports['MIX_LockMixer'] != 'undefined', 'missing Wasm export: MIX_LockMixer');
+  assert(typeof wasmExports['MIX_UnlockMixer'] != 'undefined', 'missing Wasm export: MIX_UnlockMixer');
   assert(typeof wasmExports['MIX_LoadAudioWithProperties'] != 'undefined', 'missing Wasm export: MIX_LoadAudioWithProperties');
   assert(typeof wasmExports['SDL_CopyProperties'] != 'undefined', 'missing Wasm export: SDL_CopyProperties');
   assert(typeof wasmExports['SDL_ClearProperty'] != 'undefined', 'missing Wasm export: SDL_ClearProperty');
@@ -12013,9 +11996,10 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['SDL_GetAudioStreamAvailable'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamAvailable');
   assert(typeof wasmExports['MIX_LoadAudio_IO'] != 'undefined', 'missing Wasm export: MIX_LoadAudio_IO');
   assert(typeof wasmExports['MIX_LoadAudio'] != 'undefined', 'missing Wasm export: MIX_LoadAudio');
+  assert(typeof wasmExports['MIX_LoadAudioNoCopy'] != 'undefined', 'missing Wasm export: MIX_LoadAudioNoCopy');
+  assert(typeof wasmExports['SDL_IOFromConstMem'] != 'undefined', 'missing Wasm export: SDL_IOFromConstMem');
   assert(typeof wasmExports['MIX_LoadRawAudio_IO'] != 'undefined', 'missing Wasm export: MIX_LoadRawAudio_IO');
   assert(typeof wasmExports['MIX_LoadRawAudio'] != 'undefined', 'missing Wasm export: MIX_LoadRawAudio');
-  assert(typeof wasmExports['SDL_IOFromConstMem'] != 'undefined', 'missing Wasm export: SDL_IOFromConstMem');
   assert(typeof wasmExports['MIX_LoadRawAudioNoCopy'] != 'undefined', 'missing Wasm export: MIX_LoadRawAudioNoCopy');
   assert(typeof wasmExports['MIX_CreateSineWaveAudio'] != 'undefined', 'missing Wasm export: MIX_CreateSineWaveAudio');
   assert(typeof wasmExports['MIX_GetAudioProperties'] != 'undefined', 'missing Wasm export: MIX_GetAudioProperties');
@@ -12042,7 +12026,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['MIX_GetTrackPlaybackPosition'] != 'undefined', 'missing Wasm export: MIX_GetTrackPlaybackPosition');
   assert(typeof wasmExports['MIX_GetTrackRemaining'] != 'undefined', 'missing Wasm export: MIX_GetTrackRemaining');
   assert(typeof wasmExports['MIX_GetTrackFadeFrames'] != 'undefined', 'missing Wasm export: MIX_GetTrackFadeFrames');
-  assert(typeof wasmExports['MIX_TrackLooping'] != 'undefined', 'missing Wasm export: MIX_TrackLooping');
+  assert(typeof wasmExports['MIX_GetTrackLoops'] != 'undefined', 'missing Wasm export: MIX_GetTrackLoops');
   assert(typeof wasmExports['MIX_SetTrackLoops'] != 'undefined', 'missing Wasm export: MIX_SetTrackLoops');
   assert(typeof wasmExports['MIX_GetTrackAudio'] != 'undefined', 'missing Wasm export: MIX_GetTrackAudio');
   assert(typeof wasmExports['MIX_GetTrackAudioStream'] != 'undefined', 'missing Wasm export: MIX_GetTrackAudioStream');
@@ -12066,17 +12050,19 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['MIX_TrackPlaying'] != 'undefined', 'missing Wasm export: MIX_TrackPlaying');
   assert(typeof wasmExports['MIX_TrackPaused'] != 'undefined', 'missing Wasm export: MIX_TrackPaused');
   assert(typeof wasmExports['MIX_SetTrackStoppedCallback'] != 'undefined', 'missing Wasm export: MIX_SetTrackStoppedCallback');
-  assert(typeof wasmExports['MIX_SetMasterGain'] != 'undefined', 'missing Wasm export: MIX_SetMasterGain');
-  assert(typeof wasmExports['MIX_GetMasterGain'] != 'undefined', 'missing Wasm export: MIX_GetMasterGain');
+  assert(typeof wasmExports['MIX_SetMixerGain'] != 'undefined', 'missing Wasm export: MIX_SetMixerGain');
+  assert(typeof wasmExports['MIX_GetMixerGain'] != 'undefined', 'missing Wasm export: MIX_GetMixerGain');
   assert(typeof wasmExports['MIX_SetTrackGain'] != 'undefined', 'missing Wasm export: MIX_SetTrackGain');
   assert(typeof wasmExports['SDL_SetAudioStreamGain'] != 'undefined', 'missing Wasm export: SDL_SetAudioStreamGain');
   assert(typeof wasmExports['MIX_GetTrackGain'] != 'undefined', 'missing Wasm export: MIX_GetTrackGain');
   assert(typeof wasmExports['SDL_GetAudioStreamGain'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamGain');
   assert(typeof wasmExports['MIX_SetTagGain'] != 'undefined', 'missing Wasm export: MIX_SetTagGain');
-  assert(typeof wasmExports['MIX_SetTrackFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_SetTrackFrequencyRatio');
+  assert(typeof wasmExports['MIX_SetMixerFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_SetMixerFrequencyRatio');
   assert(typeof wasmExports['SDL_SetAudioStreamFrequencyRatio'] != 'undefined', 'missing Wasm export: SDL_SetAudioStreamFrequencyRatio');
-  assert(typeof wasmExports['MIX_GetTrackFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_GetTrackFrequencyRatio');
+  assert(typeof wasmExports['MIX_GetMixerFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_GetMixerFrequencyRatio');
   assert(typeof wasmExports['SDL_GetAudioStreamFrequencyRatio'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamFrequencyRatio');
+  assert(typeof wasmExports['MIX_SetTrackFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_SetTrackFrequencyRatio');
+  assert(typeof wasmExports['MIX_GetTrackFrequencyRatio'] != 'undefined', 'missing Wasm export: MIX_GetTrackFrequencyRatio');
   assert(typeof wasmExports['MIX_SetTrackOutputChannelMap'] != 'undefined', 'missing Wasm export: MIX_SetTrackOutputChannelMap');
   assert(typeof wasmExports['SDL_SetAudioStreamOutputChannelMap'] != 'undefined', 'missing Wasm export: SDL_SetAudioStreamOutputChannelMap');
   assert(typeof wasmExports['MIX_SetTrackStereo'] != 'undefined', 'missing Wasm export: MIX_SetTrackStereo');
@@ -12111,6 +12097,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['SDL_cos'] != 'undefined', 'missing Wasm export: SDL_cos');
   assert(typeof wasmExports['SDL_sin'] != 'undefined', 'missing Wasm export: SDL_sin');
   assert(typeof wasmExports['SDL_getenv'] != 'undefined', 'missing Wasm export: SDL_getenv');
+  assert(typeof wasmExports['SDL_SetAudioStreamInputChannelMap'] != 'undefined', 'missing Wasm export: SDL_SetAudioStreamInputChannelMap');
   assert(typeof wasmExports['SDL_ReadS16BE'] != 'undefined', 'missing Wasm export: SDL_ReadS16BE');
   assert(typeof wasmExports['SDL_strtok_r'] != 'undefined', 'missing Wasm export: SDL_strtok_r');
   assert(typeof wasmExports['SDL_SetAppMetadata'] != 'undefined', 'missing Wasm export: SDL_SetAppMetadata');
@@ -12226,7 +12213,6 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['SDL_PushEvent'] != 'undefined', 'missing Wasm export: SDL_PushEvent');
   assert(typeof wasmExports['SDL_CreateCondition'] != 'undefined', 'missing Wasm export: SDL_CreateCondition');
   assert(typeof wasmExports['SDL_SetCurrentThreadPriority'] != 'undefined', 'missing Wasm export: SDL_SetCurrentThreadPriority');
-  assert(typeof wasmExports['SDL_SetAudioStreamInputChannelMap'] != 'undefined', 'missing Wasm export: SDL_SetAudioStreamInputChannelMap');
   assert(typeof wasmExports['SDL_GetAudioStreamInputChannelMap'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamInputChannelMap');
   assert(typeof wasmExports['SDL_GetAudioStreamOutputChannelMap'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamOutputChannelMap');
   assert(typeof wasmExports['SDL_GetAudioStreamQueued'] != 'undefined', 'missing Wasm export: SDL_GetAudioStreamQueued');
@@ -13355,7 +13341,6 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['_ZTISt11logic_error'] != 'undefined', 'missing Wasm export: _ZTISt11logic_error');
   assert(typeof wasmExports['_ZTVN10__cxxabiv121__vmi_class_type_infoE'] != 'undefined', 'missing Wasm export: _ZTVN10__cxxabiv121__vmi_class_type_infoE');
   assert(typeof wasmExports['_ZTVSt11logic_error'] != 'undefined', 'missing Wasm export: _ZTVSt11logic_error');
-  assert(typeof wasmExports['_ZTVSt9exception'] != 'undefined', 'missing Wasm export: _ZTVSt9exception');
   assert(typeof wasmExports['_ZTVSt13runtime_error'] != 'undefined', 'missing Wasm export: _ZTVSt13runtime_error');
   assert(typeof wasmExports['__cxa_unexpected_handler'] != 'undefined', 'missing Wasm export: __cxa_unexpected_handler');
   assert(typeof wasmExports['__cxa_terminate_handler'] != 'undefined', 'missing Wasm export: __cxa_terminate_handler');
@@ -13363,9 +13348,9 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['_ZTIN10__cxxabiv116__shim_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv116__shim_type_infoE');
   assert(typeof wasmExports['_ZTIN10__cxxabiv117__class_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv117__class_type_infoE');
   assert(typeof wasmExports['_ZTIN10__cxxabiv117__pbase_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv117__pbase_type_infoE');
-  assert(typeof wasmExports['_ZTIDn'] != 'undefined', 'missing Wasm export: _ZTIDn');
+  assert(typeof wasmExports['_ZTSDn'] != 'undefined', 'missing Wasm export: _ZTSDn');
   assert(typeof wasmExports['_ZTIN10__cxxabiv119__pointer_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv119__pointer_type_infoE');
-  assert(typeof wasmExports['_ZTIv'] != 'undefined', 'missing Wasm export: _ZTIv');
+  assert(typeof wasmExports['_ZTSv'] != 'undefined', 'missing Wasm export: _ZTSv');
   assert(typeof wasmExports['_ZTIN10__cxxabiv120__function_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv120__function_type_infoE');
   assert(typeof wasmExports['_ZTIN10__cxxabiv129__pointer_to_member_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv129__pointer_to_member_type_infoE');
   assert(typeof wasmExports['_ZTISt9type_info'] != 'undefined', 'missing Wasm export: _ZTISt9type_info');
@@ -13379,13 +13364,13 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['_ZTVN10__cxxabiv123__fundamental_type_infoE'] != 'undefined', 'missing Wasm export: _ZTVN10__cxxabiv123__fundamental_type_infoE');
   assert(typeof wasmExports['_ZTIN10__cxxabiv123__fundamental_type_infoE'] != 'undefined', 'missing Wasm export: _ZTIN10__cxxabiv123__fundamental_type_infoE');
   assert(typeof wasmExports['_ZTSN10__cxxabiv123__fundamental_type_infoE'] != 'undefined', 'missing Wasm export: _ZTSN10__cxxabiv123__fundamental_type_infoE');
-  assert(typeof wasmExports['_ZTSv'] != 'undefined', 'missing Wasm export: _ZTSv');
+  assert(typeof wasmExports['_ZTIv'] != 'undefined', 'missing Wasm export: _ZTIv');
   assert(typeof wasmExports['_ZTIPv'] != 'undefined', 'missing Wasm export: _ZTIPv');
   assert(typeof wasmExports['_ZTVN10__cxxabiv119__pointer_type_infoE'] != 'undefined', 'missing Wasm export: _ZTVN10__cxxabiv119__pointer_type_infoE');
   assert(typeof wasmExports['_ZTSPv'] != 'undefined', 'missing Wasm export: _ZTSPv');
   assert(typeof wasmExports['_ZTIPKv'] != 'undefined', 'missing Wasm export: _ZTIPKv');
   assert(typeof wasmExports['_ZTSPKv'] != 'undefined', 'missing Wasm export: _ZTSPKv');
-  assert(typeof wasmExports['_ZTSDn'] != 'undefined', 'missing Wasm export: _ZTSDn');
+  assert(typeof wasmExports['_ZTIDn'] != 'undefined', 'missing Wasm export: _ZTIDn');
   assert(typeof wasmExports['_ZTIPDn'] != 'undefined', 'missing Wasm export: _ZTIPDn');
   assert(typeof wasmExports['_ZTSPDn'] != 'undefined', 'missing Wasm export: _ZTSPDn');
   assert(typeof wasmExports['_ZTIPKDn'] != 'undefined', 'missing Wasm export: _ZTIPKDn');
@@ -13545,6 +13530,7 @@ function assignWasmExports(wasmExports) {
   assert(typeof wasmExports['_ZTVSt20bad_array_new_length'] != 'undefined', 'missing Wasm export: _ZTVSt20bad_array_new_length');
   assert(typeof wasmExports['_ZTISt9bad_alloc'] != 'undefined', 'missing Wasm export: _ZTISt9bad_alloc');
   assert(typeof wasmExports['_ZTISt20bad_array_new_length'] != 'undefined', 'missing Wasm export: _ZTISt20bad_array_new_length');
+  assert(typeof wasmExports['_ZTVSt9exception'] != 'undefined', 'missing Wasm export: _ZTVSt9exception');
   assert(typeof wasmExports['_ZTSSt9exception'] != 'undefined', 'missing Wasm export: _ZTSSt9exception');
   assert(typeof wasmExports['_ZTVSt13bad_exception'] != 'undefined', 'missing Wasm export: _ZTVSt13bad_exception');
   assert(typeof wasmExports['_ZTISt13bad_exception'] != 'undefined', 'missing Wasm export: _ZTISt13bad_exception');
@@ -14097,6 +14083,7 @@ function assignWasmExports(wasmExports) {
   _plutovg_convert_argb_to_rgba = Module['_plutovg_convert_argb_to_rgba'] = createExportWrapper('plutovg_convert_argb_to_rgba', 5);
   _plutovg_convert_rgba_to_argb = Module['_plutovg_convert_rgba_to_argb'] = createExportWrapper('plutovg_convert_rgba_to_argb', 5);
   _MIX_Generate = Module['_MIX_Generate'] = createExportWrapper('MIX_Generate', 3);
+  _SDL_GetAudioStreamFormat = Module['_SDL_GetAudioStreamFormat'] = createExportWrapper('SDL_GetAudioStreamFormat', 3);
   _SDL_GetAudioStreamData = Module['_SDL_GetAudioStreamData'] = createExportWrapper('SDL_GetAudioStreamData', 3);
   _MIX_Version = Module['_MIX_Version'] = createExportWrapper('MIX_Version', 0);
   _MIX_Init = Module['_MIX_Init'] = createExportWrapper('MIX_Init', 0);
@@ -14105,7 +14092,6 @@ function assignWasmExports(wasmExports) {
   _MIX_DestroyAudioDecoder = Module['_MIX_DestroyAudioDecoder'] = createExportWrapper('MIX_DestroyAudioDecoder', 1);
   _SDL_DestroyAudioStream = Module['_SDL_DestroyAudioStream'] = createExportWrapper('SDL_DestroyAudioStream', 1);
   _SDL_LockAudioStream = Module['_SDL_LockAudioStream'] = createExportWrapper('SDL_LockAudioStream', 1);
-  _SDL_GetAudioStreamFormat = Module['_SDL_GetAudioStreamFormat'] = createExportWrapper('SDL_GetAudioStreamFormat', 3);
   _SDL_UnlockAudioStream = Module['_SDL_UnlockAudioStream'] = createExportWrapper('SDL_UnlockAudioStream', 1);
   _MIX_DestroyTrack = Module['_MIX_DestroyTrack'] = createExportWrapper('MIX_DestroyTrack', 1);
   _MIX_DestroyGroup = Module['_MIX_DestroyGroup'] = createExportWrapper('MIX_DestroyGroup', 1);
@@ -14131,6 +14117,8 @@ function assignWasmExports(wasmExports) {
   _MIX_SetTrackGroup = Module['_MIX_SetTrackGroup'] = createExportWrapper('MIX_SetTrackGroup', 2);
   _MIX_GetMixerProperties = Module['_MIX_GetMixerProperties'] = createExportWrapper('MIX_GetMixerProperties', 1);
   _MIX_GetMixerFormat = Module['_MIX_GetMixerFormat'] = createExportWrapper('MIX_GetMixerFormat', 2);
+  _MIX_LockMixer = Module['_MIX_LockMixer'] = createExportWrapper('MIX_LockMixer', 1);
+  _MIX_UnlockMixer = Module['_MIX_UnlockMixer'] = createExportWrapper('MIX_UnlockMixer', 1);
   _MIX_LoadAudioWithProperties = Module['_MIX_LoadAudioWithProperties'] = createExportWrapper('MIX_LoadAudioWithProperties', 1);
   _SDL_CopyProperties = Module['_SDL_CopyProperties'] = createExportWrapper('SDL_CopyProperties', 2);
   _SDL_ClearProperty = Module['_SDL_ClearProperty'] = createExportWrapper('SDL_ClearProperty', 2);
@@ -14139,11 +14127,12 @@ function assignWasmExports(wasmExports) {
   _SDL_GetAudioStreamAvailable = Module['_SDL_GetAudioStreamAvailable'] = createExportWrapper('SDL_GetAudioStreamAvailable', 1);
   _MIX_LoadAudio_IO = Module['_MIX_LoadAudio_IO'] = createExportWrapper('MIX_LoadAudio_IO', 4);
   _MIX_LoadAudio = Module['_MIX_LoadAudio'] = createExportWrapper('MIX_LoadAudio', 3);
+  _MIX_LoadAudioNoCopy = Module['_MIX_LoadAudioNoCopy'] = createExportWrapper('MIX_LoadAudioNoCopy', 4);
+  _SDL_IOFromConstMem = Module['_SDL_IOFromConstMem'] = createExportWrapper('SDL_IOFromConstMem', 2);
   _MIX_LoadRawAudio_IO = Module['_MIX_LoadRawAudio_IO'] = createExportWrapper('MIX_LoadRawAudio_IO', 4);
   _MIX_LoadRawAudio = Module['_MIX_LoadRawAudio'] = createExportWrapper('MIX_LoadRawAudio', 4);
-  _SDL_IOFromConstMem = Module['_SDL_IOFromConstMem'] = createExportWrapper('SDL_IOFromConstMem', 2);
   _MIX_LoadRawAudioNoCopy = Module['_MIX_LoadRawAudioNoCopy'] = createExportWrapper('MIX_LoadRawAudioNoCopy', 5);
-  _MIX_CreateSineWaveAudio = Module['_MIX_CreateSineWaveAudio'] = createExportWrapper('MIX_CreateSineWaveAudio', 3);
+  _MIX_CreateSineWaveAudio = Module['_MIX_CreateSineWaveAudio'] = createExportWrapper('MIX_CreateSineWaveAudio', 4);
   _MIX_GetAudioProperties = Module['_MIX_GetAudioProperties'] = createExportWrapper('MIX_GetAudioProperties', 1);
   _MIX_GetAudioFormat = Module['_MIX_GetAudioFormat'] = createExportWrapper('MIX_GetAudioFormat', 2);
   _MIX_GetAudioDuration = Module['_MIX_GetAudioDuration'] = createExportWrapper('MIX_GetAudioDuration', 1);
@@ -14168,7 +14157,7 @@ function assignWasmExports(wasmExports) {
   _MIX_GetTrackPlaybackPosition = Module['_MIX_GetTrackPlaybackPosition'] = createExportWrapper('MIX_GetTrackPlaybackPosition', 1);
   _MIX_GetTrackRemaining = Module['_MIX_GetTrackRemaining'] = createExportWrapper('MIX_GetTrackRemaining', 1);
   _MIX_GetTrackFadeFrames = Module['_MIX_GetTrackFadeFrames'] = createExportWrapper('MIX_GetTrackFadeFrames', 1);
-  _MIX_TrackLooping = Module['_MIX_TrackLooping'] = createExportWrapper('MIX_TrackLooping', 1);
+  _MIX_GetTrackLoops = Module['_MIX_GetTrackLoops'] = createExportWrapper('MIX_GetTrackLoops', 1);
   _MIX_SetTrackLoops = Module['_MIX_SetTrackLoops'] = createExportWrapper('MIX_SetTrackLoops', 2);
   _MIX_GetTrackAudio = Module['_MIX_GetTrackAudio'] = createExportWrapper('MIX_GetTrackAudio', 1);
   _MIX_GetTrackAudioStream = Module['_MIX_GetTrackAudioStream'] = createExportWrapper('MIX_GetTrackAudioStream', 1);
@@ -14192,17 +14181,19 @@ function assignWasmExports(wasmExports) {
   _MIX_TrackPlaying = Module['_MIX_TrackPlaying'] = createExportWrapper('MIX_TrackPlaying', 1);
   _MIX_TrackPaused = Module['_MIX_TrackPaused'] = createExportWrapper('MIX_TrackPaused', 1);
   _MIX_SetTrackStoppedCallback = Module['_MIX_SetTrackStoppedCallback'] = createExportWrapper('MIX_SetTrackStoppedCallback', 3);
-  _MIX_SetMasterGain = Module['_MIX_SetMasterGain'] = createExportWrapper('MIX_SetMasterGain', 2);
-  _MIX_GetMasterGain = Module['_MIX_GetMasterGain'] = createExportWrapper('MIX_GetMasterGain', 1);
+  _MIX_SetMixerGain = Module['_MIX_SetMixerGain'] = createExportWrapper('MIX_SetMixerGain', 2);
+  _MIX_GetMixerGain = Module['_MIX_GetMixerGain'] = createExportWrapper('MIX_GetMixerGain', 1);
   _MIX_SetTrackGain = Module['_MIX_SetTrackGain'] = createExportWrapper('MIX_SetTrackGain', 2);
   _SDL_SetAudioStreamGain = Module['_SDL_SetAudioStreamGain'] = createExportWrapper('SDL_SetAudioStreamGain', 2);
   _MIX_GetTrackGain = Module['_MIX_GetTrackGain'] = createExportWrapper('MIX_GetTrackGain', 1);
   _SDL_GetAudioStreamGain = Module['_SDL_GetAudioStreamGain'] = createExportWrapper('SDL_GetAudioStreamGain', 1);
   _MIX_SetTagGain = Module['_MIX_SetTagGain'] = createExportWrapper('MIX_SetTagGain', 3);
-  _MIX_SetTrackFrequencyRatio = Module['_MIX_SetTrackFrequencyRatio'] = createExportWrapper('MIX_SetTrackFrequencyRatio', 2);
+  _MIX_SetMixerFrequencyRatio = Module['_MIX_SetMixerFrequencyRatio'] = createExportWrapper('MIX_SetMixerFrequencyRatio', 2);
   _SDL_SetAudioStreamFrequencyRatio = Module['_SDL_SetAudioStreamFrequencyRatio'] = createExportWrapper('SDL_SetAudioStreamFrequencyRatio', 2);
-  _MIX_GetTrackFrequencyRatio = Module['_MIX_GetTrackFrequencyRatio'] = createExportWrapper('MIX_GetTrackFrequencyRatio', 1);
+  _MIX_GetMixerFrequencyRatio = Module['_MIX_GetMixerFrequencyRatio'] = createExportWrapper('MIX_GetMixerFrequencyRatio', 1);
   _SDL_GetAudioStreamFrequencyRatio = Module['_SDL_GetAudioStreamFrequencyRatio'] = createExportWrapper('SDL_GetAudioStreamFrequencyRatio', 1);
+  _MIX_SetTrackFrequencyRatio = Module['_MIX_SetTrackFrequencyRatio'] = createExportWrapper('MIX_SetTrackFrequencyRatio', 2);
+  _MIX_GetTrackFrequencyRatio = Module['_MIX_GetTrackFrequencyRatio'] = createExportWrapper('MIX_GetTrackFrequencyRatio', 1);
   _MIX_SetTrackOutputChannelMap = Module['_MIX_SetTrackOutputChannelMap'] = createExportWrapper('MIX_SetTrackOutputChannelMap', 3);
   _SDL_SetAudioStreamOutputChannelMap = Module['_SDL_SetAudioStreamOutputChannelMap'] = createExportWrapper('SDL_SetAudioStreamOutputChannelMap', 3);
   _MIX_SetTrackStereo = Module['_MIX_SetTrackStereo'] = createExportWrapper('MIX_SetTrackStereo', 2);
@@ -14237,6 +14228,7 @@ function assignWasmExports(wasmExports) {
   _SDL_cos = Module['_SDL_cos'] = createExportWrapper('SDL_cos', 1);
   _SDL_sin = Module['_SDL_sin'] = createExportWrapper('SDL_sin', 1);
   _SDL_getenv = Module['_SDL_getenv'] = createExportWrapper('SDL_getenv', 1);
+  _SDL_SetAudioStreamInputChannelMap = Module['_SDL_SetAudioStreamInputChannelMap'] = createExportWrapper('SDL_SetAudioStreamInputChannelMap', 3);
   _SDL_ReadS16BE = Module['_SDL_ReadS16BE'] = createExportWrapper('SDL_ReadS16BE', 2);
   _SDL_strtok_r = Module['_SDL_strtok_r'] = createExportWrapper('SDL_strtok_r', 3);
   _SDL_SetAppMetadata = Module['_SDL_SetAppMetadata'] = createExportWrapper('SDL_SetAppMetadata', 3);
@@ -14352,7 +14344,6 @@ function assignWasmExports(wasmExports) {
   _SDL_PushEvent = Module['_SDL_PushEvent'] = createExportWrapper('SDL_PushEvent', 1);
   _SDL_CreateCondition = Module['_SDL_CreateCondition'] = createExportWrapper('SDL_CreateCondition', 0);
   _SDL_SetCurrentThreadPriority = Module['_SDL_SetCurrentThreadPriority'] = createExportWrapper('SDL_SetCurrentThreadPriority', 1);
-  _SDL_SetAudioStreamInputChannelMap = Module['_SDL_SetAudioStreamInputChannelMap'] = createExportWrapper('SDL_SetAudioStreamInputChannelMap', 3);
   _SDL_GetAudioStreamInputChannelMap = Module['_SDL_GetAudioStreamInputChannelMap'] = createExportWrapper('SDL_GetAudioStreamInputChannelMap', 2);
   _SDL_GetAudioStreamOutputChannelMap = Module['_SDL_GetAudioStreamOutputChannelMap'] = createExportWrapper('SDL_GetAudioStreamOutputChannelMap', 2);
   _SDL_GetAudioStreamQueued = Module['_SDL_GetAudioStreamQueued'] = createExportWrapper('SDL_GetAudioStreamQueued', 1);
@@ -15481,7 +15472,6 @@ function assignWasmExports(wasmExports) {
   __ZTISt11logic_error = Module['__ZTISt11logic_error'] = wasmExports['_ZTISt11logic_error'].value;
   __ZTVN10__cxxabiv121__vmi_class_type_infoE = Module['__ZTVN10__cxxabiv121__vmi_class_type_infoE'] = wasmExports['_ZTVN10__cxxabiv121__vmi_class_type_infoE'].value;
   __ZTVSt11logic_error = Module['__ZTVSt11logic_error'] = wasmExports['_ZTVSt11logic_error'].value;
-  __ZTVSt9exception = Module['__ZTVSt9exception'] = wasmExports['_ZTVSt9exception'].value;
   __ZTVSt13runtime_error = Module['__ZTVSt13runtime_error'] = wasmExports['_ZTVSt13runtime_error'].value;
   ___cxa_unexpected_handler = Module['___cxa_unexpected_handler'] = wasmExports['__cxa_unexpected_handler'].value;
   ___cxa_terminate_handler = Module['___cxa_terminate_handler'] = wasmExports['__cxa_terminate_handler'].value;
@@ -15489,9 +15479,9 @@ function assignWasmExports(wasmExports) {
   __ZTIN10__cxxabiv116__shim_type_infoE = Module['__ZTIN10__cxxabiv116__shim_type_infoE'] = wasmExports['_ZTIN10__cxxabiv116__shim_type_infoE'].value;
   __ZTIN10__cxxabiv117__class_type_infoE = Module['__ZTIN10__cxxabiv117__class_type_infoE'] = wasmExports['_ZTIN10__cxxabiv117__class_type_infoE'].value;
   __ZTIN10__cxxabiv117__pbase_type_infoE = Module['__ZTIN10__cxxabiv117__pbase_type_infoE'] = wasmExports['_ZTIN10__cxxabiv117__pbase_type_infoE'].value;
-  __ZTIDn = Module['__ZTIDn'] = wasmExports['_ZTIDn'].value;
+  __ZTSDn = Module['__ZTSDn'] = wasmExports['_ZTSDn'].value;
   __ZTIN10__cxxabiv119__pointer_type_infoE = Module['__ZTIN10__cxxabiv119__pointer_type_infoE'] = wasmExports['_ZTIN10__cxxabiv119__pointer_type_infoE'].value;
-  __ZTIv = Module['__ZTIv'] = wasmExports['_ZTIv'].value;
+  __ZTSv = Module['__ZTSv'] = wasmExports['_ZTSv'].value;
   __ZTIN10__cxxabiv120__function_type_infoE = Module['__ZTIN10__cxxabiv120__function_type_infoE'] = wasmExports['_ZTIN10__cxxabiv120__function_type_infoE'].value;
   __ZTIN10__cxxabiv129__pointer_to_member_type_infoE = Module['__ZTIN10__cxxabiv129__pointer_to_member_type_infoE'] = wasmExports['_ZTIN10__cxxabiv129__pointer_to_member_type_infoE'].value;
   __ZTISt9type_info = Module['__ZTISt9type_info'] = wasmExports['_ZTISt9type_info'].value;
@@ -15505,13 +15495,13 @@ function assignWasmExports(wasmExports) {
   __ZTVN10__cxxabiv123__fundamental_type_infoE = Module['__ZTVN10__cxxabiv123__fundamental_type_infoE'] = wasmExports['_ZTVN10__cxxabiv123__fundamental_type_infoE'].value;
   __ZTIN10__cxxabiv123__fundamental_type_infoE = Module['__ZTIN10__cxxabiv123__fundamental_type_infoE'] = wasmExports['_ZTIN10__cxxabiv123__fundamental_type_infoE'].value;
   __ZTSN10__cxxabiv123__fundamental_type_infoE = Module['__ZTSN10__cxxabiv123__fundamental_type_infoE'] = wasmExports['_ZTSN10__cxxabiv123__fundamental_type_infoE'].value;
-  __ZTSv = Module['__ZTSv'] = wasmExports['_ZTSv'].value;
+  __ZTIv = Module['__ZTIv'] = wasmExports['_ZTIv'].value;
   __ZTIPv = Module['__ZTIPv'] = wasmExports['_ZTIPv'].value;
   __ZTVN10__cxxabiv119__pointer_type_infoE = Module['__ZTVN10__cxxabiv119__pointer_type_infoE'] = wasmExports['_ZTVN10__cxxabiv119__pointer_type_infoE'].value;
   __ZTSPv = Module['__ZTSPv'] = wasmExports['_ZTSPv'].value;
   __ZTIPKv = Module['__ZTIPKv'] = wasmExports['_ZTIPKv'].value;
   __ZTSPKv = Module['__ZTSPKv'] = wasmExports['_ZTSPKv'].value;
-  __ZTSDn = Module['__ZTSDn'] = wasmExports['_ZTSDn'].value;
+  __ZTIDn = Module['__ZTIDn'] = wasmExports['_ZTIDn'].value;
   __ZTIPDn = Module['__ZTIPDn'] = wasmExports['_ZTIPDn'].value;
   __ZTSPDn = Module['__ZTSPDn'] = wasmExports['_ZTSPDn'].value;
   __ZTIPKDn = Module['__ZTIPKDn'] = wasmExports['_ZTIPKDn'].value;
@@ -15671,6 +15661,7 @@ function assignWasmExports(wasmExports) {
   __ZTVSt20bad_array_new_length = Module['__ZTVSt20bad_array_new_length'] = wasmExports['_ZTVSt20bad_array_new_length'].value;
   __ZTISt9bad_alloc = Module['__ZTISt9bad_alloc'] = wasmExports['_ZTISt9bad_alloc'].value;
   __ZTISt20bad_array_new_length = Module['__ZTISt20bad_array_new_length'] = wasmExports['_ZTISt20bad_array_new_length'].value;
+  __ZTVSt9exception = Module['__ZTVSt9exception'] = wasmExports['_ZTVSt9exception'].value;
   __ZTSSt9exception = Module['__ZTSSt9exception'] = wasmExports['_ZTSSt9exception'].value;
   __ZTVSt13bad_exception = Module['__ZTVSt13bad_exception'] = wasmExports['_ZTVSt13bad_exception'].value;
   __ZTISt13bad_exception = Module['__ZTISt13bad_exception'] = wasmExports['_ZTISt13bad_exception'].value;

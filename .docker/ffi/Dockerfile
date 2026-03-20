@@ -1,9 +1,9 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG SDL_VERSION=3.4.0
 ARG TTF_VERSION=3.2.2
-ARG MIXER_VERSION=main
+ARG MIXER_VERSION=3.2.0
 ARG IMAGE_VERSION=3.2.6
 
 RUN apt update -y
@@ -15,15 +15,16 @@ RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | tee /etc/apt/trusted.
 # Install add-apt-repository
 RUN apt-get install -y software-properties-common
 # Add llvm 18 repository with sources
-RUN add-apt-repository -s -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-18 main"
-RUN echo apt-get update && apt-get install -y llvm-18 clang-18 libclang-18-dev libclang-cpp18-dev python3-pip
-# Easiest way to get sufficiently new cmake appears to be using pip - Ubuntu 20.10 version is too old
-RUN pip3 install --upgrade cmake
+RUN add-apt-repository -s -y "deb http://apt.llvm.org/noble/ llvm-toolchain-noble-21 main"
+RUN echo apt-get update && apt-get install -y llvm-21 clang-21 libclang-21-dev libclang-cpp21-dev python3-pip
+# Install cmake and upgrade it
+RUN apt install -y cmake
+RUN apt install -y --only-upgrade cmake
 
 # Clone c2ffi repository
 RUN apt-get install -y git
 RUN git clone https://github.com/rpav/c2ffi.git --depth 1
-RUN cd c2ffi && git checkout llvm-18.1.0
+RUN cd c2ffi && git checkout llvm-21.1.0
 
 # Build c2ffi
 RUN cd c2ffi && mkdir -p build && cd build && \

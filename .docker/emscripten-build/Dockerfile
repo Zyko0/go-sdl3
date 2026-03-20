@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 ARG SDL_VERSION=3.4.0
 ARG TTF_VERSION=3.2.2
-ARG MIXER_VERSION=main
+ARG MIXER_VERSION=3.2.0
 ARG IMAGE_VERSION=3.2.6
 
 # Install dependencies

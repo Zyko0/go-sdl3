@@ -297,7 +297,7 @@ func initialize() {
 		return _obj
 	}
 
-	iCreateSineWaveAudio = func(mixer *Mixer, hz int32, amplitude float32) *Audio {
+	iCreateSineWaveAudio = func(mixer *Mixer, hz int32, amplitude float32, ms int64) *Audio {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -307,11 +307,13 @@ func initialize() {
 		}
 		_hz := int32(hz)
 		_amplitude := int32(amplitude)
+		_ms := internal.NewBigInt(ms)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_CreateSineWaveAudio",
 			_mixer,
 			_hz,
 			_amplitude,
+			_ms,
 		)
 
 		_obj := internal.NewObject[Audio](ret)
@@ -580,22 +582,6 @@ func initialize() {
 		)
 
 		return int64(internal.GetInt64(ret))
-	}
-
-	iTrackLooping = func(track *Track) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_track, ok := internal.GetJSPointer(track)
-		if !ok {
-			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_MIX_TrackLooping",
-			_track,
-		)
-
-		return internal.GetBool(ret)
 	}
 
 	iGetTrackAudio = func(track *Track) *Audio {
@@ -997,40 +983,6 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	iSetMasterGain = func(mixer *Mixer, gain float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mixer, ok := internal.GetJSPointer(mixer)
-		if !ok {
-			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
-		}
-		_gain := int32(gain)
-		ret := js.Global().Get("Module").Call(
-			"_MIX_SetMasterGain",
-			_mixer,
-			_gain,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iGetMasterGain = func(mixer *Mixer) float32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mixer, ok := internal.GetJSPointer(mixer)
-		if !ok {
-			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
-		}
-		ret := js.Global().Get("Module").Call(
-			"_MIX_GetMasterGain",
-			_mixer,
-		)
-
-		return float32(ret.Int())
-	}
-
 	iSetTrackGain = func(track *Track, gain float32) bool {
 		panic("not implemented on js")
 		internal.StackSave()
@@ -1385,26 +1337,6 @@ func initialize() {
 			_mixer,
 			_cb,
 			_userdata,
-		)
-
-		return internal.GetBool(ret)
-	}
-
-	iGenerate = func(mixer *Mixer, buffer uintptr, buflen int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_mixer, ok := internal.GetJSPointer(mixer)
-		if !ok {
-			_mixer = internal.StackAlloc(int(unsafe.Sizeof(*mixer)))
-		}
-		_buffer := internal.NewBigInt(buffer)
-		_buflen := int32(buflen)
-		ret := js.Global().Get("Module").Call(
-			"_MIX_Generate",
-			_mixer,
-			_buffer,
-			_buflen,
 		)
 
 		return internal.GetBool(ret)

@@ -27,8 +27,11 @@ var (
 	_addr_MIX_DestroyMixer              uintptr
 	_addr_MIX_GetMixerProperties        uintptr
 	_addr_MIX_GetMixerFormat            uintptr
+	_addr_MIX_LockMixer                 uintptr
+	_addr_MIX_UnlockMixer               uintptr
 	_addr_MIX_LoadAudio_IO              uintptr
 	_addr_MIX_LoadAudio                 uintptr
+	_addr_MIX_LoadAudioNoCopy           uintptr
 	_addr_MIX_LoadAudioWithProperties   uintptr
 	_addr_MIX_LoadRawAudio_IO           uintptr
 	_addr_MIX_LoadRawAudio              uintptr
@@ -52,7 +55,7 @@ var (
 	_addr_MIX_SetTrackPlaybackPosition  uintptr
 	_addr_MIX_GetTrackPlaybackPosition  uintptr
 	_addr_MIX_GetTrackFadeFrames        uintptr
-	_addr_MIX_TrackLooping              uintptr
+	_addr_MIX_GetTrackLoops             uintptr
 	_addr_MIX_SetTrackLoops             uintptr
 	_addr_MIX_GetTrackAudio             uintptr
 	_addr_MIX_GetTrackAudioStream       uintptr
@@ -144,6 +147,14 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: MIX_GetMixerFormat")
 	}
+	_addr_MIX_LockMixer, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_LockMixer")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: MIX_LockMixer")
+	}
+	_addr_MIX_UnlockMixer, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_UnlockMixer")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: MIX_UnlockMixer")
+	}
 	_addr_MIX_LoadAudio_IO, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_LoadAudio_IO")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: MIX_LoadAudio_IO")
@@ -151,6 +162,10 @@ func initialize() {
 	_addr_MIX_LoadAudio, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_LoadAudio")
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: MIX_LoadAudio")
+	}
+	_addr_MIX_LoadAudioNoCopy, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_LoadAudioNoCopy")
+	if err != nil {
+		panic("cannot puregogen.OpenSymbol: MIX_LoadAudioNoCopy")
 	}
 	_addr_MIX_LoadAudioWithProperties, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_LoadAudioWithProperties")
 	if err != nil {
@@ -244,9 +259,9 @@ func initialize() {
 	if err != nil {
 		panic("cannot puregogen.OpenSymbol: MIX_GetTrackFadeFrames")
 	}
-	_addr_MIX_TrackLooping, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_TrackLooping")
+	_addr_MIX_GetTrackLoops, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_GetTrackLoops")
 	if err != nil {
-		panic("cannot puregogen.OpenSymbol: MIX_TrackLooping")
+		panic("cannot puregogen.OpenSymbol: MIX_GetTrackLoops")
 	}
 	_addr_MIX_SetTrackLoops, err = puregogen.OpenSymbol(_hnd_mixer, "MIX_SetTrackLoops")
 	if err != nil {
@@ -481,6 +496,14 @@ func initialize() {
 		runtime.KeepAlive(spec)
 		return __r0
 	}
+	iLockMixer = func(mixer *Mixer) {
+		purego.SyscallN(_addr_MIX_LockMixer, uintptr(unsafe.Pointer(mixer)))
+		runtime.KeepAlive(mixer)
+	}
+	iUnlockMixer = func(mixer *Mixer) {
+		purego.SyscallN(_addr_MIX_UnlockMixer, uintptr(unsafe.Pointer(mixer)))
+		runtime.KeepAlive(mixer)
+	}
 	iLoadAudio_IO = func(mixer *Mixer, io *sdl.IOStream, predecode bool, closeio bool) *Audio {
 		_r0, _, _ := purego.SyscallN(_addr_MIX_LoadAudio_IO, uintptr(unsafe.Pointer(mixer)), uintptr(unsafe.Pointer(io)), puregogen.BoolToUintptr(predecode), puregogen.BoolToUintptr(closeio))
 		__r0 := (*Audio)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
@@ -493,6 +516,12 @@ func initialize() {
 		__r0 := (*Audio)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
 		runtime.KeepAlive(mixer)
 		runtime.KeepAlive(path)
+		return __r0
+	}
+	iLoadAudioNoCopy = func(mixer *Mixer, data uintptr, datalen uintptr, free_when_done bool) *Audio {
+		_r0, _, _ := purego.SyscallN(_addr_MIX_LoadAudioNoCopy, uintptr(unsafe.Pointer(mixer)), uintptr(data), uintptr(datalen), puregogen.BoolToUintptr(free_when_done))
+		__r0 := (*Audio)(*(*unsafe.Pointer)(unsafe.Pointer(&_r0)))
+		runtime.KeepAlive(mixer)
 		return __r0
 	}
 	iLoadAudioWithProperties = func(props sdl.PropertiesID) *Audio {
@@ -642,9 +671,9 @@ func initialize() {
 		runtime.KeepAlive(track)
 		return __r0
 	}
-	iTrackLooping = func(track *Track) bool {
-		_r0, _, _ := purego.SyscallN(_addr_MIX_TrackLooping, uintptr(unsafe.Pointer(track)))
-		__r0 := uint8(_r0) != 0
+	iGetTrackLoops = func(track *Track) int32 {
+		_r0, _, _ := purego.SyscallN(_addr_MIX_GetTrackLoops, uintptr(unsafe.Pointer(track)))
+		__r0 := int32(_r0)
 		runtime.KeepAlive(track)
 		return __r0
 	}
@@ -795,11 +824,13 @@ func initialize() {
 		runtime.KeepAlive(track)
 		return __r0
 	}
-	purego.RegisterLibFunc(&iSetMasterGain, _hnd_mixer, "MIX_SetMasterGain")
-	purego.RegisterLibFunc(&iGetMasterGain, _hnd_mixer, "MIX_GetMasterGain")
+	purego.RegisterLibFunc(&iSetMixerGain, _hnd_mixer, "MIX_SetMixerGain")
+	purego.RegisterLibFunc(&iGetMixerGain, _hnd_mixer, "MIX_GetMixerGain")
 	purego.RegisterLibFunc(&iSetTrackGain, _hnd_mixer, "MIX_SetTrackGain")
 	purego.RegisterLibFunc(&iGetTrackGain, _hnd_mixer, "MIX_GetTrackGain")
 	purego.RegisterLibFunc(&iSetTagGain, _hnd_mixer, "MIX_SetTagGain")
+	purego.RegisterLibFunc(&iSetMixerFrequencyRatio, _hnd_mixer, "MIX_SetMixerFrequencyRatio")
+	purego.RegisterLibFunc(&iGetMixerFrequencyRatio, _hnd_mixer, "MIX_GetMixerFrequencyRatio")
 	purego.RegisterLibFunc(&iSetTrackFrequencyRatio, _hnd_mixer, "MIX_SetTrackFrequencyRatio")
 	purego.RegisterLibFunc(&iGetTrackFrequencyRatio, _hnd_mixer, "MIX_GetTrackFrequencyRatio")
 	iSetTrackOutputChannelMap = func(track *Track, chmap *int32, count int32) bool {
@@ -889,9 +920,9 @@ func initialize() {
 		runtime.KeepAlive(mixer)
 		return __r0
 	}
-	iGenerate = func(mixer *Mixer, buffer uintptr, buflen int32) bool {
+	iGenerate = func(mixer *Mixer, buffer uintptr, buflen int32) int32 {
 		_r0, _, _ := purego.SyscallN(_addr_MIX_Generate, uintptr(unsafe.Pointer(mixer)), uintptr(buffer), uintptr(buflen))
-		__r0 := uint8(_r0) != 0
+		__r0 := int32(_r0)
 		runtime.KeepAlive(mixer)
 		return __r0
 	}
