@@ -25,7 +25,7 @@ Libraries:
 - SDL3 (v3.4.0)
 - SDL3_ttf (v3.2.2)
 - SDL3_image (v3.2.6)
-- SDL3_mixer (TBD: v3 is not released yet, see https://github.com/Zyko0/go-sdl3/issues/26)
+- SDL3_mixer (v3.2.0)
 - [SDL3_shadercross](shadercross/README.md)
 
 Platforms:
