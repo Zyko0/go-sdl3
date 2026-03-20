@@ -108,6 +108,18 @@ func (mixer *Mixer) Format(spec *sdl.AudioSpec) error {
 	return nil
 }
 
+// MIX_LockMixer - Lock a mixer by obtaining its internal mutex.
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_LockMixer)
+func (mixer *Mixer) Lock() {
+	iLockMixer(mixer)
+}
+
+// MIX_UnlockMixer - Unlock a mixer previously locked by a call to [MIX_LockMixer](MIX_LockMixer)().
+// (https://wiki.libsdl.org/SDL3_mixer/MIX_UnlockMixer)
+func (mixer *Mixer) Unlock() {
+	iUnlockMixer(mixer)
+}
+
 // MIX_LoadAudio_IO - Load audio for playback from an SDL_IOStream.
 // (https://wiki.libsdl.org/SDL3_mixer/MIX_LoadAudio_IO)
 func (mixer *Mixer) LoadAudio_IO(stream *sdl.IOStream, predecode, closeio bool) (*Audio, error) {
