@@ -1,4 +1,4 @@
-//go:build unix || windows
+//go:build windows || unix
 
 package sdl
 

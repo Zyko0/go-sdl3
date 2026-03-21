@@ -26,17 +26,17 @@ var (
 	//puregogen:function symbol=IMG_Load_IO
 	iLoad_IO func(src *sdl.IOStream, closeio bool) *sdl.Surface
 
-	// IMG_LoadTexture => Load an image from a filesystem path into a GPU texture.
+	// IMG_LoadTexture => Load an image from a filesystem path into a texture.
 	//
 	//puregogen:function symbol=IMG_LoadTexture
 	iLoadTexture func(renderer *sdl.Renderer, file string) *sdl.Texture
 
-	// IMG_LoadTexture_IO => Load an image from an SDL data source into a GPU texture.
+	// IMG_LoadTexture_IO => Load an image from an SDL data source into a texture.
 	//
 	//puregogen:function symbol=IMG_LoadTexture_IO
 	iLoadTexture_IO func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) *sdl.Texture
 
-	// IMG_LoadTextureTyped_IO => Load an image from an SDL data source into a GPU texture.
+	// IMG_LoadTextureTyped_IO => Load an image from an SDL data source into a texture.
 	//
 	//puregogen:function symbol=IMG_LoadTextureTyped_IO
 	iLoadTextureTyped_IO func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) *sdl.Texture
