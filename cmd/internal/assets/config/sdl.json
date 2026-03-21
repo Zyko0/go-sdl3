@@ -35,7 +35,19 @@
         "VkInstance_T",
         "VkPhysicalDevice_T",
         "VkSurfaceKHR_T",
-        "VkAllocationCallbacks"
+        "VkAllocationCallbacks",
+
+        "BlendMode",
+        "MouseButtonFlags",
+        "InitFlags",
+        "WindowFlags",
+        "MessageBoxFlags",
+        "MessageBoxButtonFlags",
+        "GPUTextureUsageFlags",
+        "GPUBufferUsageFlags",
+        "GPUShaderFormat",
+        "Keycode",
+        "Keymod"
     ],
     "ignored_functions": [
         "SDL_SetLinuxThreadPriority",

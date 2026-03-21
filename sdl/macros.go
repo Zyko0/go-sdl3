@@ -7,6 +7,8 @@ const (
 	ALPHA_TRANSPARENT_FLOAT = 0.
 )
 
+type BlendMode uint32
+
 const (
 	BLENDMODE_NONE                BlendMode = 0x00000000
 	BLENDMODE_BLEND               BlendMode = 0x00000001
@@ -17,6 +19,8 @@ const (
 	BLENDMODE_MUL                 BlendMode = 0x00000008
 	BLENDMODE_INVALID             BlendMode = 0x7FFFFFFF
 )
+
+type MouseButtonFlags uint32
 
 const (
 	BUTTON_LEFT   MouseButtonFlags = 1
@@ -34,6 +38,8 @@ const (
 	DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
 )
 
+type InitFlags uint32
+
 const (
 	INIT_AUDIO    InitFlags = 0x00000010
 	INIT_VIDEO    InitFlags = 0x00000020
@@ -44,6 +50,8 @@ const (
 	INIT_SENSOR   InitFlags = 0x00008000
 	INIT_CAMERA   InitFlags = 0x00010000
 )
+
+type WindowFlags uint64
 
 const (
 	WINDOW_FULLSCREEN          WindowFlags = 0x0000000000000001
@@ -370,6 +378,8 @@ const (
 	HINT_PEN_TOUCH_EVENTS                        = "SDL_PEN_TOUCH_EVENTS"
 )
 
+type MessageBoxFlags uint32
+
 const (
 	MESSAGEBOX_ERROR                 MessageBoxFlags = 0x00000010
 	MESSAGEBOX_WARNING               MessageBoxFlags = 0x00000020
@@ -378,10 +388,14 @@ const (
 	MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT MessageBoxFlags = 0x00000100
 )
 
+type MessageBoxButtonFlags uint32
+
 const (
 	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT MessageBoxButtonFlags = 0x00000001
 	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT MessageBoxButtonFlags = 0x00000002
 )
+
+type GPUTextureUsageFlags uint32
 
 const (
 	GPU_TEXTUREUSAGE_SAMPLER                                 GPUTextureUsageFlags = 1 << 0 /**< Texture supports sampling. */
@@ -393,6 +407,8 @@ const (
 	GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE GPUTextureUsageFlags = 1 << 6 /**< Texture supports reads and writes in the same compute shader. This is NOT equivalent to READ | WRITE. */
 )
 
+type GPUBufferUsageFlags uint32
+
 const (
 	GPU_BUFFERUSAGE_VERTEX                GPUBufferUsageFlags = 1 << 0 /**< Buffer is a vertex buffer. */
 	GPU_BUFFERUSAGE_INDEX                 GPUBufferUsageFlags = 1 << 1 /**< Buffer is an index buffer. */
@@ -401,6 +417,8 @@ const (
 	GPU_BUFFERUSAGE_COMPUTE_STORAGE_READ  GPUBufferUsageFlags = 1 << 4 /**< Buffer supports storage reads in the compute stage. */
 	GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE GPUBufferUsageFlags = 1 << 5 /**< Buffer supports storage writes in the compute stage. */
 )
+
+type GPUShaderFormat uint32
 
 const (
 	GPU_SHADERFORMAT_INVALID  GPUShaderFormat = 0
@@ -423,24 +441,15 @@ const (
 	PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN        = "SDL.gpu.device.create.shaders.msl"
 	PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN   = "SDL.gpu.device.create.shaders.metallib"
 	PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING = "SDL.gpu.device.create.d3d12.semantic"
-)
-const (
+
 	PROP_GPU_COMPUTEPIPELINE_CREATE_NAME_STRING = "SDL.gpu.computepipeline.create.name"
-)
 
-const (
 	PROP_GPU_GRAPHICSPIPELINE_CREATE_NAME_STRING = "SDL.gpu.graphicspipeline.create.name"
-)
 
-const (
 	PROP_GPU_SAMPLER_CREATE_NAME_STRING = "SDL.gpu.sampler.create.name"
-)
 
-const (
 	PROP_GPU_SHADER_CREATE_NAME_STRING = "SDL.gpu.shader.create.name"
-)
 
-const (
 	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_R_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.r"
 	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_G_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.g"
 	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_B_FLOAT        = "SDL.gpu.texture.create.d3d12.clear.b"
@@ -448,15 +457,13 @@ const (
 	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_DEPTH_FLOAT    = "SDL.gpu.texture.create.d3d12.clear.depth"
 	PROP_GPU_TEXTURE_CREATE_D3D12_CLEAR_STENCIL_NUMBER = "SDL.gpu.texture.create.d3d12.clear.stencil"
 	PROP_GPU_TEXTURE_CREATE_NAME_STRING                = "SDL.gpu.texture.create.name"
-)
 
-const (
 	PROP_GPU_BUFFER_CREATE_NAME_STRING = "SDL.gpu.buffer.create.name"
-)
 
-const (
 	PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name"
 )
+
+type Keycode uint32
 
 const (
 	K_EXTENDED_MASK = (1 << 29)
@@ -719,6 +726,8 @@ const (
 	K_LHYPER               Keycode = 0x20000006 /**< Extended key Left Hyper */
 	K_RHYPER               Keycode = 0x20000007 /**< Extended key Right Hyper */
 )
+
+type Keymod uint16
 
 const (
 	KMOD_NONE   Keymod = 0x0000                      /**< no modifier is applicable. */

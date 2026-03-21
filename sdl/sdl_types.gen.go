@@ -22,10 +22,6 @@ type TLSID AtomicInt
 // (https://wiki.libsdl.org/SDL3/SDL_AudioDeviceID)
 type AudioDeviceID uint32
 
-// SDL_BlendMode - A set of blend modes used in drawing operations.
-// (https://wiki.libsdl.org/SDL3/SDL_BlendMode)
-type BlendMode uint32
-
 // SDL_SurfaceFlags - The flags on an [SDL_Surface](SDL_Surface).
 // (https://wiki.libsdl.org/SDL3/SDL_SurfaceFlags)
 type SurfaceFlags uint32
@@ -41,10 +37,6 @@ type DisplayID uint32
 // SDL_WindowID - This is a unique ID for a window.
 // (https://wiki.libsdl.org/SDL3/SDL_WindowID)
 type WindowID uint32
-
-// SDL_WindowFlags - The flags on a window.
-// (https://wiki.libsdl.org/SDL3/SDL_WindowFlags)
-type WindowFlags uint64
 
 // SDL_GLContext - An opaque handle to an OpenGL context.
 // (https://wiki.libsdl.org/SDL3/SDL_GLContext)
@@ -70,14 +62,6 @@ type SensorID uint32
 // (https://wiki.libsdl.org/SDL3/SDL_JoystickID)
 type JoystickID uint32
 
-// SDL_Keycode - The SDL virtual key representation.
-// (https://wiki.libsdl.org/SDL3/SDL_Keycode)
-type Keycode uint32
-
-// SDL_Keymod - Valid key modifiers (possibly OR'd together).
-// (https://wiki.libsdl.org/SDL3/SDL_Keymod)
-type Keymod uint16
-
 // SDL_KeyboardID - This is a unique ID for a keyboard for the time it is connected to the system, and is never reused for the lifetime of the application.
 // (https://wiki.libsdl.org/SDL3/SDL_KeyboardID)
 type KeyboardID uint32
@@ -85,10 +69,6 @@ type KeyboardID uint32
 // SDL_MouseID - This is a unique ID for a mouse for the time it is connected to the system, and is never reused for the lifetime of the application.
 // (https://wiki.libsdl.org/SDL3/SDL_MouseID)
 type MouseID uint32
-
-// SDL_MouseButtonFlags - A bitmask of pressed mouse buttons, as reported by [SDL_GetMouseState](SDL_GetMouseState), etc.
-// (https://wiki.libsdl.org/SDL3/SDL_MouseButtonFlags)
-type MouseButtonFlags uint32
 
 // SDL_TouchID - A unique ID for a touch device.
 // (https://wiki.libsdl.org/SDL3/SDL_TouchID)
@@ -110,18 +90,6 @@ type PenInputFlags uint32
 // (https://wiki.libsdl.org/SDL3/SDL_GlobFlags)
 type GlobFlags uint32
 
-// SDL_GPUTextureUsageFlags - Specifies how a texture is intended to be used by the client.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUTextureUsageFlags)
-type GPUTextureUsageFlags uint32
-
-// SDL_GPUBufferUsageFlags - Specifies how a buffer is intended to be used by the client.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUBufferUsageFlags)
-type GPUBufferUsageFlags uint32
-
-// SDL_GPUShaderFormat - Specifies the format of shader code.
-// (https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat)
-type GPUShaderFormat uint32
-
 // SDL_GPUColorComponentFlags - Specifies which color components are written in a graphics pipeline.
 // (https://wiki.libsdl.org/SDL3/SDL_GPUColorComponentFlags)
 type GPUColorComponentFlags uint8
@@ -141,18 +109,6 @@ type HapticEffectID int32
 // SDL_HapticID - This is a unique ID for a haptic device for the time it is connected to the system, and is never reused for the lifetime of the application.
 // (https://wiki.libsdl.org/SDL3/SDL_HapticID)
 type HapticID uint32
-
-// SDL_InitFlags - Initialization flags for [SDL_Init](SDL_Init) and/or [SDL_InitSubSystem](SDL_InitSubSystem)
-// (https://wiki.libsdl.org/SDL3/SDL_InitFlags)
-type InitFlags uint32
-
-// SDL_MessageBoxFlags - Message box flags.
-// (https://wiki.libsdl.org/SDL3/SDL_MessageBoxFlags)
-type MessageBoxFlags uint32
-
-// SDL_MessageBoxButtonFlags - [SDL_MessageBoxButtonData](SDL_MessageBoxButtonData) flags.
-// (https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonFlags)
-type MessageBoxButtonFlags uint32
 
 // SDL_MetalView - A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
 // (https://wiki.libsdl.org/SDL3/SDL_MetalView)

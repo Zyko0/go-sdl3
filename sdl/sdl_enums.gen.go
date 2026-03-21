@@ -342,7 +342,7 @@ const (
 	GL_CONTEXT_FLAGS              GLAttr = 19 // some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0.
 	GL_CONTEXT_PROFILE_MASK       GLAttr = 20 // type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.
 	GL_SHARE_WITH_CURRENT_CONTEXT GLAttr = 21 // OpenGL context sharing; defaults to 0.
-	GL_FRAMEBUFFER_SRGB_CAPABLE   GLAttr = 22 // requests sRGB-capable visual if 1. Defaults to -1 ("don't care"). This is a request; GL drivers might not comply!
+	GL_FRAMEBUFFER_SRGB_CAPABLE   GLAttr = 22 // requests sRGB capable visual; defaults to 0.
 	GL_CONTEXT_RELEASE_BEHAVIOR   GLAttr = 23 // sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.
 	GL_CONTEXT_RESET_NOTIFICATION GLAttr = 24 // set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.
 	GL_CONTEXT_NO_ERROR           GLAttr = 25
@@ -567,7 +567,7 @@ const (
 	SCANCODE_LEFTBRACKET          Scancode = 47
 	SCANCODE_RIGHTBRACKET         Scancode = 48
 	SCANCODE_BACKSLASH            Scancode = 49 // Located at the lower left of the return *   key on ISO keyboards and at the right end *   of the QWERTY row on ANSI keyboards. *   Produces REVERSE SOLIDUS (backslash) and *   VERTICAL LINE in a US layout, REVERSE *   SOLIDUS and VERTICAL LINE in a UK Mac *   layout, NUMBER SIGN and TILDE in a UK *   Windows layout, DOLLAR SIGN and POUND SIGN *   in a Swiss German layout, NUMBER SIGN and *   APOSTROPHE in a German layout, GRAVE *   ACCENT and POUND SIGN in a French Mac *   layout, and ASTERISK and MICRO SIGN in a *   French Windows layout.
-	SCANCODE_NONUSHASH            Scancode = 50 // ISO USB keyboards actually use this code *   instead of 49 for the same key, but all *   OSes I've seen treat the two codes *   identically. So, as an implementor, unless *   your keyboard generates both of those *   codes and your OS treats them differently, *   you should generate SDL_SCANCODE_BACKSLASH *   instead of this code. As a user, you *   should not rely on this code because SDL *   will never generate it with most (all?) *   keyboards.
+	SCANCODE_NONUSHASH            Scancode = 50 // ISO USB keyboards actually use this code *   instead of 49 for the same key, but all *   OSes I've seen treat the two codes *   identically. So, as an implementer, unless *   your keyboard generates both of those *   codes and your OS treats them differently, *   you should generate SDL_SCANCODE_BACKSLASH *   instead of this code. As a user, you *   should not rely on this code because SDL *   will never generate it with most (all?) *   keyboards.
 	SCANCODE_SEMICOLON            Scancode = 51
 	SCANCODE_APOSTROPHE           Scancode = 52
 	SCANCODE_GRAVE                Scancode = 53 // Located in the top left corner (on both ANSI *   and ISO keyboards). Produces GRAVE ACCENT and *   TILDE in a US Windows layout and in US and UK *   Mac layouts on ANSI keyboards, GRAVE ACCENT *   and NOT SIGN in a UK Windows layout, SECTION *   SIGN and PLUS-MINUS SIGN in US and UK Mac *   layouts on ISO keyboards, SECTION SIGN and *   DEGREE SIGN in a Swiss German layout (Mac: *   only on ISO keyboards), CIRCUMFLEX ACCENT and *   DEGREE SIGN in a German layout (Mac: only on *   ISO keyboards), SUPERSCRIPT TWO and TILDE in a *   French Windows layout, COMMERCIAL AT and *   NUMBER SIGN in a French Mac layout on ISO *   keyboards, and LESS-THAN SIGN and GREATER-THAN *   SIGN in a Swiss German, German, or French Mac *   layout on ANSI keyboards.
@@ -875,7 +875,7 @@ const (
 	EVENT_WINDOW_FOCUS_LOST             EventType = 527 // Window has lost keyboard focus
 	EVENT_WINDOW_CLOSE_REQUESTED        EventType = 528 // The window manager requests that the window be closed
 	EVENT_WINDOW_HIT_TEST               EventType = 529 // Window had a hit test that wasn't SDL_HITTEST_NORMAL
-	EVENT_WINDOW_ICCPROF_CHANGED        EventType = 530 // The ICC profile of the window's display has changed
+	EVENT_WINDOW_ICCPROF_CHANGED        EventType = 530 // The window's ICC profile has changed
 	EVENT_WINDOW_DISPLAY_CHANGED        EventType = 531 // Window has been moved to display data1
 	EVENT_WINDOW_DISPLAY_SCALE_CHANGED  EventType = 532 // Window display scale has been changed
 	EVENT_WINDOW_SAFE_AREA_CHANGED      EventType = 533 // The window safe area has been changed

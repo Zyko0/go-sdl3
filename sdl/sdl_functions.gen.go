@@ -4694,12 +4694,12 @@ var (
 	//puregogen:function symbol=SDL_RenderTexture9GridTiled
 	iRenderTexture9GridTiled func(renderer *Renderer, texture *Texture, srcrect *FRect, left_width float32, right_width float32, top_height float32, bottom_height float32, scale float32, dstrect *FRect, tileScale float32) bool
 
-	// SDL_RenderGeometry => Render a list of triangles, optionally using a texture and indices into the vertex array Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
+	// SDL_RenderGeometry => Render a list of triangles, optionally using a texture and indices into the vertex array.
 	//
 	//puregogen:function symbol=SDL_RenderGeometry
 	iRenderGeometry func(renderer *Renderer, texture *Texture, vertices *Vertex, num_vertices int32, indices *int32, num_indices int32) bool
 
-	// SDL_RenderGeometryRaw => Render a list of triangles, optionally using a texture and indices into the vertex arrays Color and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).
+	// SDL_RenderGeometryRaw => Render a list of triangles, optionally using a texture and indices into the vertex arrays.
 	//
 	//puregogen:function symbol=SDL_RenderGeometryRaw
 	iRenderGeometryRaw func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices uintptr, num_indices int32, size_indices int32) bool
