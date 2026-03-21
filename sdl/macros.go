@@ -7,19 +7,23 @@ const (
 	ALPHA_TRANSPARENT_FLOAT = 0.
 )
 
+// SDL_BlendMode - A set of blend modes used in drawing operations.
+// (https://wiki.libsdl.org/SDL3/SDL_BlendMode)
 type BlendMode uint32
 
 const (
-	BLENDMODE_NONE                BlendMode = 0x00000000
-	BLENDMODE_BLEND               BlendMode = 0x00000001
-	BLENDMODE_BLEND_PREMULTIPLIED BlendMode = 0x00000010
-	BLENDMODE_ADD                 BlendMode = 0x00000002
-	BLENDMODE_ADD_PREMULTIPLIED   BlendMode = 0x00000020
-	BLENDMODE_MOD                 BlendMode = 0x00000004
-	BLENDMODE_MUL                 BlendMode = 0x00000008
+	BLENDMODE_NONE                BlendMode = 0x00000000 /**< no blending: dstRGBA = srcRGBA */
+	BLENDMODE_BLEND               BlendMode = 0x00000001 /**< alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) */
+	BLENDMODE_BLEND_PREMULTIPLIED BlendMode = 0x00000010 /**< pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA)) */
+	BLENDMODE_ADD                 BlendMode = 0x00000002 /**< additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA */
+	BLENDMODE_ADD_PREMULTIPLIED   BlendMode = 0x00000020 /**< pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA */
+	BLENDMODE_MOD                 BlendMode = 0x00000004 /**< color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA */
+	BLENDMODE_MUL                 BlendMode = 0x00000008 /**< color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA */
 	BLENDMODE_INVALID             BlendMode = 0x7FFFFFFF
 )
 
+// SDL_MouseButtonFlags - A bitmask of pressed mouse buttons, as reported by [SDL_GetMouseState](SDL_GetMouseState), etc.
+// (https://wiki.libsdl.org/SDL3/SDL_MouseButtonFlags)
 type MouseButtonFlags uint32
 
 const (
@@ -38,47 +42,52 @@ const (
 	DEBUG_TEXT_FONT_CHARACTER_SIZE = 8
 )
 
+// SDL_InitFlags - Initialization flags for [SDL_Init](SDL_Init) and/or [SDL_InitSubSystem](SDL_InitSubSystem)
+// (https://wiki.libsdl.org/SDL3/SDL_InitFlags)
 type InitFlags uint32
 
 const (
-	INIT_AUDIO    InitFlags = 0x00000010
-	INIT_VIDEO    InitFlags = 0x00000020
-	INIT_JOYSTICK InitFlags = 0x00000200
+	INIT_AUDIO    InitFlags = 0x00000010 /**< `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS` */
+	INIT_VIDEO    InitFlags = 0x00000020 /**< `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main thread */
+	INIT_JOYSTICK InitFlags = 0x00000200 /**< `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS` */
 	INIT_HAPTIC   InitFlags = 0x00001000
-	INIT_GAMEPAD  InitFlags = 0x00002000
+	INIT_GAMEPAD  InitFlags = 0x00002000 /**< `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK` */
 	INIT_EVENTS   InitFlags = 0x00004000
-	INIT_SENSOR   InitFlags = 0x00008000
-	INIT_CAMERA   InitFlags = 0x00010000
+	INIT_SENSOR   InitFlags = 0x00008000 /**< `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS` */
+	INIT_CAMERA   InitFlags = 0x00010000 /**< `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS` */
 )
 
+// SDL_WindowFlags - The flags on a window.
+// (https://wiki.libsdl.org/SDL3/SDL_WindowFlags)
 type WindowFlags uint64
 
 const (
-	WINDOW_FULLSCREEN          WindowFlags = 0x0000000000000001
-	WINDOW_OPENGL              WindowFlags = 0x0000000000000002
-	WINDOW_OCCLUDED            WindowFlags = 0x0000000000000004
-	WINDOW_HIDDEN              WindowFlags = 0x0000000000000008
-	WINDOW_BORDERLESS          WindowFlags = 0x0000000000000010
-	WINDOW_RESIZABLE           WindowFlags = 0x0000000000000020
-	WINDOW_MINIMIZED           WindowFlags = 0x0000000000000040
-	WINDOW_MAXIMIZED           WindowFlags = 0x0000000000000080
-	WINDOW_MOUSE_GRABBED       WindowFlags = 0x0000000000000100
-	WINDOW_INPUT_FOCUS         WindowFlags = 0x0000000000000200
-	WINDOW_MOUSE_FOCUS         WindowFlags = 0x0000000000000400
-	WINDOW_EXTERNAL            WindowFlags = 0x0000000000000800
-	WINDOW_MODAL               WindowFlags = 0x0000000000001000
-	WINDOW_HIGH_PIXEL_DENSITY  WindowFlags = 0x0000000000002000
-	WINDOW_MOUSE_CAPTURE       WindowFlags = 0x0000000000004000
-	WINDOW_MOUSE_RELATIVE_MODE WindowFlags = 0x0000000000008000
-	WINDOW_ALWAYS_ON_TOP       WindowFlags = 0x0000000000010000
-	WINDOW_UTILITY             WindowFlags = 0x0000000000020000
-	WINDOW_TOOLTIP             WindowFlags = 0x0000000000040000
-	WINDOW_POPUP_MENU          WindowFlags = 0x0000000000080000
-	WINDOW_KEYBOARD_GRABBED    WindowFlags = 0x0000000000100000
-	WINDOW_VULKAN              WindowFlags = 0x0000000010000000
-	WINDOW_METAL               WindowFlags = 0x0000000020000000
-	WINDOW_TRANSPARENT         WindowFlags = 0x0000000040000000
-	WINDOW_NOT_FOCUSABLE       WindowFlags = 0x0000000080000000
+	WINDOW_FULLSCREEN          WindowFlags = 0x0000000000000001 /**< window is in fullscreen mode */
+	WINDOW_OPENGL              WindowFlags = 0x0000000000000002 /**< window usable with OpenGL context */
+	WINDOW_OCCLUDED            WindowFlags = 0x0000000000000004 /**< window is occluded */
+	WINDOW_HIDDEN              WindowFlags = 0x0000000000000008 /**< window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; SDL_ShowWindow() is required for it to become visible */
+	WINDOW_BORDERLESS          WindowFlags = 0x0000000000000010 /**< no window decoration */
+	WINDOW_RESIZABLE           WindowFlags = 0x0000000000000020 /**< window can be resized */
+	WINDOW_MINIMIZED           WindowFlags = 0x0000000000000040 /**< window is minimized */
+	WINDOW_MAXIMIZED           WindowFlags = 0x0000000000000080 /**< window is maximized */
+	WINDOW_MOUSE_GRABBED       WindowFlags = 0x0000000000000100 /**< window has grabbed mouse input */
+	WINDOW_INPUT_FOCUS         WindowFlags = 0x0000000000000200 /**< window has input focus */
+	WINDOW_MOUSE_FOCUS         WindowFlags = 0x0000000000000400 /**< window has mouse focus */
+	WINDOW_EXTERNAL            WindowFlags = 0x0000000000000800 /**< window not created by SDL */
+	WINDOW_MODAL               WindowFlags = 0x0000000000001000 /**< window is modal */
+	WINDOW_HIGH_PIXEL_DENSITY  WindowFlags = 0x0000000000002000 /**< window uses high pixel density back buffer if possible */
+	WINDOW_MOUSE_CAPTURE       WindowFlags = 0x0000000000004000 /**< window has mouse captured (unrelated to MOUSE_GRABBED) */
+	WINDOW_MOUSE_RELATIVE_MODE WindowFlags = 0x0000000000008000 /**< window has relative mode enabled */
+	WINDOW_ALWAYS_ON_TOP       WindowFlags = 0x0000000000010000 /**< window should always be above others */
+	WINDOW_UTILITY             WindowFlags = 0x0000000000020000 /**< window should be treated as a utility window, not showing in the task bar and window list */
+	WINDOW_TOOLTIP             WindowFlags = 0x0000000000040000 /**< window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window */
+	WINDOW_POPUP_MENU          WindowFlags = 0x0000000000080000 /**< window should be treated as a popup menu, requires a parent window */
+	WINDOW_KEYBOARD_GRABBED    WindowFlags = 0x0000000000100000 /**< window has grabbed keyboard input */
+	WINDOW_FILL_DOCUMENT       WindowFlags = 0x0000000000200000 /**< window is in fill-document mode (Emscripten only), since SDL 3.4.0 */
+	WINDOW_VULKAN              WindowFlags = 0x0000000010000000 /**< window usable for Vulkan surface */
+	WINDOW_METAL               WindowFlags = 0x0000000020000000 /**< window usable for Metal view */
+	WINDOW_TRANSPARENT         WindowFlags = 0x0000000040000000 /**< window with transparent buffer */
+	WINDOW_NOT_FOCUSABLE       WindowFlags = 0x0000000080000000 /**< window should not be focusable */
 )
 
 // SDL_WINDOWPOS_UNDEFINED_MASK - A magic value used with SDL_WINDOWPOS_UNDEFINED.
@@ -378,6 +387,8 @@ const (
 	HINT_PEN_TOUCH_EVENTS                        = "SDL_PEN_TOUCH_EVENTS"
 )
 
+// SDL_MessageBoxFlags - Message box flags.
+// (https://wiki.libsdl.org/SDL3/SDL_MessageBoxFlags)
 type MessageBoxFlags uint32
 
 const (
@@ -388,6 +399,8 @@ const (
 	MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT MessageBoxFlags = 0x00000100
 )
 
+// SDL_MessageBoxButtonFlags - [SDL_MessageBoxButtonData](SDL_MessageBoxButtonData) flags.
+// (https://wiki.libsdl.org/SDL3/SDL_MessageBoxButtonFlags)
 type MessageBoxButtonFlags uint32
 
 const (
@@ -395,6 +408,8 @@ const (
 	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT MessageBoxButtonFlags = 0x00000002
 )
 
+// SDL_GPUTextureUsageFlags - Specifies how a texture is intended to be used by the client.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUTextureUsageFlags)
 type GPUTextureUsageFlags uint32
 
 const (
@@ -407,6 +422,8 @@ const (
 	GPU_TEXTUREUSAGE_COMPUTE_STORAGE_SIMULTANEOUS_READ_WRITE GPUTextureUsageFlags = 1 << 6 /**< Texture supports reads and writes in the same compute shader. This is NOT equivalent to READ | WRITE. */
 )
 
+// SDL_GPUBufferUsageFlags - Specifies how a buffer is intended to be used by the client.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUBufferUsageFlags)
 type GPUBufferUsageFlags uint32
 
 const (
@@ -418,6 +435,8 @@ const (
 	GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE GPUBufferUsageFlags = 1 << 5 /**< Buffer supports storage writes in the compute stage. */
 )
 
+// SDL_GPUShaderFormat - Specifies the format of shader code.
+// (https://wiki.libsdl.org/SDL3/SDL_GPUShaderFormat)
 type GPUShaderFormat uint32
 
 const (
@@ -463,6 +482,8 @@ const (
 	PROP_GPU_TRANSFERBUFFER_CREATE_NAME_STRING = "SDL.gpu.transferbuffer.create.name"
 )
 
+// SDL_Keycode - The SDL virtual key representation.
+// (https://wiki.libsdl.org/SDL3/SDL_Keycode)
 type Keycode uint32
 
 const (
@@ -727,6 +748,8 @@ const (
 	K_RHYPER               Keycode = 0x20000007 /**< Extended key Right Hyper */
 )
 
+// SDL_Keymod - Valid key modifiers (possibly OR'd together).
+// (https://wiki.libsdl.org/SDL3/SDL_Keymod)
 type Keymod uint16
 
 const (
