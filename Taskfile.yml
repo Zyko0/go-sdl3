@@ -50,6 +50,7 @@ tasks:
                 - '{{.DIR}}/{{.LIBRARY}}_structs.gen.go'
                 - '{{.DIR}}/{{.LIBRARY}}_types.gen.go'
                 - '{{.DIR}}/{{.LIBRARY}}_enums.gen.go'
+                - '{{.DIR}}/macros.go'
                 - '{{.DIR}}/glue.go'
         cmds:
             # Generate SDL3 bindings 
