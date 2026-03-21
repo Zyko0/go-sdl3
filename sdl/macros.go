@@ -392,11 +392,11 @@ const (
 type MessageBoxFlags uint32
 
 const (
-	MESSAGEBOX_ERROR                 MessageBoxFlags = 0x00000010
-	MESSAGEBOX_WARNING               MessageBoxFlags = 0x00000020
-	MESSAGEBOX_INFORMATION           MessageBoxFlags = 0x00000040
-	MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT MessageBoxFlags = 0x00000080
-	MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT MessageBoxFlags = 0x00000100
+	MESSAGEBOX_ERROR                 MessageBoxFlags = 0x00000010 /**< error dialog */
+	MESSAGEBOX_WARNING               MessageBoxFlags = 0x00000020 /**< warning dialog */
+	MESSAGEBOX_INFORMATION           MessageBoxFlags = 0x00000040 /**< informational dialog */
+	MESSAGEBOX_BUTTONS_LEFT_TO_RIGHT MessageBoxFlags = 0x00000080 /**< buttons placed left to right */
+	MESSAGEBOX_BUTTONS_RIGHT_TO_LEFT MessageBoxFlags = 0x00000100 /**< buttons placed right to left */
 )
 
 // SDL_MessageBoxButtonFlags - [SDL_MessageBoxButtonData](SDL_MessageBoxButtonData) flags.
@@ -404,8 +404,8 @@ const (
 type MessageBoxButtonFlags uint32
 
 const (
-	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT MessageBoxButtonFlags = 0x00000001
-	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT MessageBoxButtonFlags = 0x00000002
+	MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT MessageBoxButtonFlags = 0x00000001 /**< Marks the default button when return is hit */
+	MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT MessageBoxButtonFlags = 0x00000002 /**< Marks the default button when escape is hit */
 )
 
 // SDL_GPUTextureUsageFlags - Specifies how a texture is intended to be used by the client.
