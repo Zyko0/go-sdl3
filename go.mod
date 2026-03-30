@@ -1,8 +1,6 @@
 module github.com/Zyko0/go-sdl3
 
-go 1.24.0
-
-toolchain go1.24.11
+go 1.25.0
 
 require (
 	github.com/Zyko0/purego-gen v0.0.0-20250727121216-3bcd331a1e0c
