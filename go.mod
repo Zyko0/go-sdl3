@@ -1,8 +1,6 @@
 module github.com/Zyko0/go-sdl3
 
-go 1.24.0
-
-toolchain go1.24.11
+go 1.25.0
 
 require (
 	github.com/Zyko0/purego-gen v0.0.0-20250727121216-3bcd331a1e0c
@@ -10,7 +8,7 @@ require (
 	github.com/ebitengine/purego v0.10.0
 	github.com/go-gl/mathgl v1.2.0
 	github.com/mdouchement/hdr v0.2.4
-	golang.org/x/image v0.34.0
+	golang.org/x/image v0.38.0
 )
 
 require (
