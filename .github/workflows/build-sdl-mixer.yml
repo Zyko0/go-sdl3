@@ -86,7 +86,7 @@ jobs:
       - name: Configure
         run: >
           cmake -G Ninja
-          -DMPG123_FIXED_POINT=$([[ "${{ matrix.arch }}" == "arm64" ]] && echo OFF || echo ON) \
+          -DREAL_IS_FIXED=$([[ "${{ matrix.arch }}" == "arm64" ]] && echo OFF || echo ON) \
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
           -DCMAKE_BUILD_TYPE=Release \
           -DSDLMIXER_FLAC=ON \
