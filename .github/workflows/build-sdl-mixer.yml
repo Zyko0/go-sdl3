@@ -52,15 +52,13 @@ jobs:
       run:
         working-directory: SDL_mixer
     steps:
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        uses: libsdl-org/setup-sdl@main
-        id: sdl
-        with:
-          cmake-generator: Ninja
-          version: 3-head
-          shell: sh
       - name: Set up Linux dependencies
         working-directory: .
         run: |
@@ -105,6 +103,7 @@ jobs:
           -DSDLMIXER_SAMPLES=OFF
           -DSDLMIXER_INSTALL=OFF
           -DSDLMIXER_VENDORED=ON
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
