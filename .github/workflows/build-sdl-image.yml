@@ -76,6 +76,8 @@ jobs:
       - name: Clone SDL_image
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+      - name: Download submodules
+        run: ./external/download.sh
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -117,20 +119,13 @@ jobs:
       run:
         working-directory: SDL_image
     steps:
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.platform.arch }}
+          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        id: sdl
-        uses: libsdl-org/setup-sdl@main
-        with:
-          cmake-generator: Ninja
-          cmake-arguments: |
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}" \
-            -DSDL_DISABLE_INSTALL_DOCS=ON \
-            -DSDL_INSTALL_TESTS=OFF \
-            ${{ matrix.platform.flags }}
-          version: 3-head
-          shell: sh
       - name: Setup MacOS dependencies
         working-directory: .
         run: |
@@ -144,6 +139,8 @@ jobs:
       - name: Clone SDL_image
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+      - name: Download submodules
+        run: ./external/download.sh
       - name: Configure
         run: >
           cmake -G Ninja
@@ -157,6 +154,7 @@ jobs:
           -DSDLIMAGE_SAMPLES=OFF
           -DSDLIMAGE_INSTALL_MAN=OFF
           -DSDLIMAGE_VENDORED=ON
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
           ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build

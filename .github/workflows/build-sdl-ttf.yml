@@ -74,6 +74,8 @@ jobs:
       - name: Clone SDL_ttf
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+      - name: Download submodules
+        run: ./external/download.sh
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -113,19 +115,13 @@ jobs:
       run:
         working-directory: SDL_ttf
     steps:
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.arch }}
+          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        id: sdl
-        uses: libsdl-org/setup-sdl@main
-        with:
-          cmake-generator: Ninja
-          cmake-arguments: |
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
-            -DSDL_DISABLE_INSTALL_DOCS=ON \
-            -DSDL_INSTALL_TESTS=OFF
-          version: 3-head
-          shell: sh
       - name: Setup MacOS dependencies
         working-directory: .
         run: |
@@ -136,6 +132,8 @@ jobs:
       - name: Clone SDL_ttf
         working-directory: .
         run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+      - name: Download submodules
+        run: ./external/download.sh
       - name: Configure
         run: >
           cmake -G Ninja
@@ -154,6 +152,7 @@ jobs:
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
           -DCMAKE_INSTALL_PREFIX=prefix_cmake
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
