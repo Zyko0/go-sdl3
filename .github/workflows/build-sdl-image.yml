@@ -150,7 +150,7 @@ jobs:
           -DSDLIMAGE_SAMPLES=OFF
           -DSDLIMAGE_INSTALL_MAN=OFF
           -DSDLIMAGE_VENDORED=ON
-          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
           ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build

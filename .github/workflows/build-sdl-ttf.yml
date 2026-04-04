@@ -148,7 +148,7 @@ jobs:
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
           -DCMAKE_INSTALL_PREFIX=prefix_cmake
-          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
           -S . -B build
       - name: Build
         run: cmake --build build --config Release

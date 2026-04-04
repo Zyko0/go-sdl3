@@ -86,6 +86,7 @@ jobs:
       - name: Configure
         run: >
           cmake -G Ninja
+          -DMPG123_FIXED_POINT=$([[ "${{ matrix.arch }}" == "arm64" ]] && echo OFF || echo ON) \
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
           -DCMAKE_BUILD_TYPE=Release \
           -DSDLMIXER_FLAC=ON \
@@ -171,7 +172,7 @@ jobs:
           -DSDLMIXER_SAMPLES=OFF
           -DSDLMIXER_INSTALL=OFF
           -DSDLMIXER_VENDORED=ON
-          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
           ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build
