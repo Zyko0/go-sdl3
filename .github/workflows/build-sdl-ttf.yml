@@ -35,9 +35,19 @@ jobs:
             path: SDL3_ttf.dll
 
   build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     defaults:
       run:
         working-directory: SDL_ttf
@@ -90,7 +100,7 @@ jobs:
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-linux
+            name: sdl-ttf-linux-${{ matrix.arch }}
             path: SDL_ttf/build/*.so.0
 
   build-macos:

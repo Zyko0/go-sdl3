@@ -4,13 +4,9 @@ on:
   workflow_call:
     inputs:
       version:
-        # TODO: ignored atm
         description: "SDL_mixer version"
         required: true
         type: string
-
-env:
-  MIXER_BRANCH: main
 
 jobs:
   build-windows:
@@ -39,9 +35,19 @@ jobs:
             path: SDL3_mixer.dll
 
   build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+    
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     defaults:
       run:
         working-directory: SDL_mixer
@@ -75,7 +81,7 @@ jobs:
           ${NULL+}
       - name: Clone SDL_mixer
         working-directory: .
-        run: git clone --recurse-submodules --branch ${{ env.MIXER_BRANCH }} https://github.com/libsdl-org/SDL_mixer.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -105,7 +111,7 @@ jobs:
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-mixer-linux
+            name: sdl-mixer-linux-${{ matrix.arch }}
             path: SDL_mixer/build/*.so.0
 
   build-macos:
@@ -151,7 +157,7 @@ jobs:
           ${NULL+}
       - name: Clone SDL_mixer
         working-directory: .
-        run: git clone --recurse-submodules --branch ${{ env.MIXER_BRANCH }} https://github.com/libsdl-org/SDL_mixer.git
+        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
       - name: Configure
         run: >
           cmake -G Ninja

@@ -95,10 +95,14 @@ jobs:
         mv ./artifacts/sdl-mixer-windows-arm64/SDL3_mixer.dll ./bin/binmix/assets/mix_arm64.dll
     - name: Extract Linux binaries
       run: |
-        mv ./artifacts/sdl-linux/libSDL3.so.0 ./bin/binsdl/assets/sdl.so
-        mv ./artifacts/sdl-ttf-linux/libSDL3_ttf.so.0 ./bin/binttf/assets/ttf.so
-        mv ./artifacts/sdl-image-linux/libSDL3_image.so.0 ./bin/binimg/assets/img.so
-        mv ./artifacts/sdl-mixer-linux/libSDL3_mixer.so.0 ./bin/binmix/assets/mix.so
+        mv ./artifacts/sdl-linux-x64/libSDL3.so.0 ./bin/binsdl/assets/sdl_amd64.so
+        mv ./artifacts/sdl-linux-arm64/libSDL3.so.0 ./bin/binsdl/assets/sdl_arm64.so
+        mv ./artifacts/sdl-ttf-linux-x64/libSDL3_ttf.so.0 ./bin/binttf/assets/ttf_amd64.so
+        mv ./artifacts/sdl-ttf-linux-arm64/libSDL3_ttf.so.0 ./bin/binttf/assets/ttf_arm64.so
+        mv ./artifacts/sdl-image-linux-x64/libSDL3_image.so.0 ./bin/binimg/assets/img_amd64.so
+        mv ./artifacts/sdl-image-linux-arm64/libSDL3_image.so.0 ./bin/binimg/assets/img_arm64.so
+        mv ./artifacts/sdl-mixer-linux-x64/libSDL3_mixer.so.0 ./bin/binmix/assets/mix_amd64.so
+        mv ./artifacts/sdl-mixer-linux-arm64/libSDL3_mixer.so.0 ./bin/binmix/assets/mix_arm64.so
     - name: Extract MacOS binaries
       run: |
         mv ./artifacts/sdl-apple-macOS-x86_64/libSDL3.0.dylib ./bin/binsdl/assets/sdl_amd64.dylib
