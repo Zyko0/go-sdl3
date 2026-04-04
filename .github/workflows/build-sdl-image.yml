@@ -75,7 +75,7 @@ jobs:
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -85,10 +85,7 @@ jobs:
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDLIMAGE_TESTS=OFF
           -DSDLIMAGE_TESTS_INSTALL=OFF
           -DSDLIMAGE_SAMPLES=OFF
@@ -136,15 +133,13 @@ jobs:
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
       - name: Configure
         run: >
           cmake -G Ninja
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}"
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDLIMAGE_TESTS=OFF
           -DSDLIMAGE_TESTS_INSTALL=OFF
           -DSDLIMAGE_SAMPLES=OFF

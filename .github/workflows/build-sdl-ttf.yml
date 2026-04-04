@@ -73,7 +73,7 @@ jobs:
             ${NULL+}
       - name: Clone SDL_ttf
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -82,14 +82,11 @@ jobs:
           cmake -G Ninja
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
-          -DSDLTTF_HARFBUZZ=ON
+          -DSDLTTF_HARFBUZZ=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
+          -DSDLTTF_PLUTOSVG=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
           -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
@@ -129,7 +126,7 @@ jobs:
               ${NULL+}
       - name: Clone SDL_ttf
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
       - name: Configure
         run: >
           cmake -G Ninja
@@ -140,11 +137,7 @@ jobs:
           -DSDLTTF_HARFBUZZ=ON
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
           -DCMAKE_INSTALL_PREFIX=prefix_cmake

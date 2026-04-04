@@ -79,29 +79,25 @@ jobs:
           ${NULL+}
       - name: Clone SDL_mixer
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
       - name: Configure
+        # -DSDLMIXER_MP3_MPG123=OFF is required as it fails on arm64
         run: >
           cmake -G Ninja
-          -DREAL_IS_FIXED=$([[ "${{ matrix.arch }}" == "arm64" ]] && echo OFF || echo ON) \
-          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DSDLMIXER_FLAC=ON \
-          -DSDLMIXER_FLAC_LIBFLAC=ON \
-          -DSDLMIXER_GME=ON \
-          -DSDLMIXER_MOD_XMP=ON \
-          -DSDLMIXER_MP3_MPG123=ON \
-          -DSDLMIXER_OPUS=ON \
-          -DSDLMIXER_VORBIS=VORBISFILE \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DSDLMIXER_FLAC=ON
+          -DSDLMIXER_FLAC_LIBFLAC=ON
+          -DSDLMIXER_GME=ON
+          -DSDLMIXER_MOD_XMP=ON
+          -DSDLMIXER_MP3_MPG123=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
+          -DSDLMIXER_OPUS=ON
+          -DSDLMIXER_VORBIS=VORBISFILE
           -DBUILD_SHARED_LIBS=ON
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDLMIXER_SAMPLES=OFF
           -DSDLMIXER_INSTALL=OFF
           -DSDLMIXER_VENDORED=ON
           -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
@@ -150,26 +146,22 @@ jobs:
           ${NULL+}
       - name: Clone SDL_mixer
         working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
+        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
       - name: Configure
         run: >
           cmake -G Ninja
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}"
-          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DSDLMIXER_FLAC=ON \
-          -DSDLMIXER_FLAC_LIBFLAC=ON \
-          -DSDLMIXER_GME=ON \
-          -DSDLMIXER_MOD_XMP=ON \
-          -DSDLMIXER_MP3_MPG123=ON \
-          -DSDLMIXER_OPUS=ON \
-          -DSDLMIXER_VORBIS=VORBISFILE \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DSDLMIXER_FLAC=ON
+          -DSDLMIXER_FLAC_LIBFLAC=ON
+          -DSDLMIXER_GME=ON
+          -DSDLMIXER_MOD_XMP=ON
+          -DSDLMIXER_MP3_MPG123=ON
+          -DSDLMIXER_OPUS=ON
+          -DSDLMIXER_VORBIS=VORBISFILE
           -DBUILD_SHARED_LIBS=ON
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDLMIXER_SAMPLES=OFF
           -DSDLMIXER_INSTALL=OFF
           -DSDLMIXER_VENDORED=ON
           -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
