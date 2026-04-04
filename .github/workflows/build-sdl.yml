@@ -106,8 +106,13 @@ jobs:
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Install
+        run: cmake --install build --prefix install
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-apple-macOS-${{ matrix.arch }}
-            path: SDL/build/*.dylib
+            path: |
+              SDL/build/*.dylib
+              SDL/install
+
