@@ -38,18 +38,21 @@ jobs:
     
   build-ttf:
     name: SDL_ttf
+    needs: build-sdl
     uses: ./.github/workflows/build-sdl-ttf.yml
     with:
       version: ${{ inputs.ttf-version }}
   
   build-mixer:
     name: SDL_mixer
+    needs: build-sdl
     uses: ./.github/workflows/build-sdl-mixer.yml
     with:
       version: ${{ inputs.mixer-version }}
   
   build-image:
     name: SDL_image
+    needs: build-sdl
     uses: ./.github/workflows/build-sdl-image.yml
     with:
       version: ${{ inputs.image-version }}
