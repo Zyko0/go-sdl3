@@ -35,24 +35,22 @@ jobs:
             path: SDL3_ttf.dll
 
   build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
-    defaults:
-      run:
-        working-directory: SDL_ttf
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        uses: libsdl-org/setup-sdl@main
-        id: sdl
-        with:
-          cmake-generator: Ninja
-          version: 3-head
-          shell: sh
       - name: Set up Linux dependencies
-        working-directory: .
         run: |
           sudo apt-get update
           sudo apt-get -y install \
@@ -64,34 +62,44 @@ jobs:
             pkg-config \
             ${NULL+}
       - name: Clone SDL_ttf
-        working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_ttf
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
       - name: Configure
+        # TODO: PLUTOSVG, HARFBUZZ need a more recent freetype version
         run: >
           cmake -G Ninja
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
-          -DSDLTTF_HARFBUZZ=ON
+          -DSDLTTF_HARFBUZZ=OFF
+          -DSDLTTF_PLUTOSVG=OFF
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Strip binaries
+        run: strip $(echo build/*.so.0)
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-ttf-linux
-            path: SDL_ttf/build/*.so.0
+            name: sdl-ttf-linux-${{ matrix.arch }}
+            path: build/*.so.0
 
   build-macos:
     name: Build MacOS (${{ matrix.arch }})
@@ -100,33 +108,27 @@ jobs:
       fail-fast: false
       matrix:
           arch: [arm64, x86_64]
-    defaults:
-      run:
-        working-directory: SDL_ttf
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        id: sdl
-        uses: libsdl-org/setup-sdl@main
-        with:
-          cmake-generator: Ninja
-          cmake-arguments: |
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}" \
-            -DSDL_DISABLE_INSTALL_DOCS=ON \
-            -DSDL_INSTALL_TESTS=OFF
-          version: 3-head
-          shell: sh
       - name: Setup MacOS dependencies
-        working-directory: .
         run: |
             brew install \
               freetype \
               harfbuzz \
               ${NULL+}
       - name: Clone SDL_ttf
-        working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_ttf.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_ttf
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.arch }}
+          path: sdl
       - name: Configure
         run: >
           cmake -G Ninja
@@ -137,14 +139,10 @@ jobs:
           -DSDLTTF_HARFBUZZ=ON
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
-          -DSDL_INSTALL_TESTS=OFF
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
-          -DCMAKE_INSTALL_PREFIX=prefix_cmake
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/install"
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
@@ -152,4 +150,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-ttf-apple-macOS-${{ matrix.arch }}
-            path: SDL_ttf/build/*.dylib
+            path: build/*.dylib

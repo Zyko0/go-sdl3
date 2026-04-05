@@ -1,4 +1,4 @@
-//go:build linux
+//go:build linux && amd64
 
 package binsdl
 
@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/sdl.so.gz
+	//go:embed assets/sdl_amd64.so.gz
 	sdlBlob    []byte
 	sdlLibName = "libSDL3.so.0"
 )

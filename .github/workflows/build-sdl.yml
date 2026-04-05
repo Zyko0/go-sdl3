@@ -36,16 +36,26 @@ jobs:
             path: SDL3.dll
 
   build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
-    defaults:
-      run:
-        working-directory: SDL
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     steps:
-      - name: Clone SDL3
-        working-directory: .
-        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Configure
         run: >
           cmake -G Ninja
@@ -59,11 +69,13 @@ jobs:
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Strip binaries
+        run: strip $(echo build/*.so.0)
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-linux
-            path: SDL/build/*.so.0
+            name: sdl-linux-${{ matrix.arch }}
+            path: build/*.so.0
 
   build-macos:
     name: Build MacOS (${{ matrix.arch }})
@@ -72,15 +84,16 @@ jobs:
       fail-fast: false
       matrix:
           arch: [arm64, x86_64]
-    defaults:
-      run:
-        working-directory: SDL
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Clone SDL3
-        working-directory: .
-        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Configure
         run: >
           cmake -G "Ninja"
@@ -88,7 +101,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
-          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL=OFF
           -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDL_INSTALL_TESTS=OFF
           -DSDL_TESTS=false
@@ -96,8 +109,13 @@ jobs:
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Install
+        run: cmake --install build --prefix install
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-apple-macOS-${{ matrix.arch }}
-            path: SDL/build/*.dylib
+            path: |
+              build/*.dylib
+              install/
+

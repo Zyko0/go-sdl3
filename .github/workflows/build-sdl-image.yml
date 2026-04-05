@@ -35,24 +35,22 @@ jobs:
             path: SDL3_image.dll
 
   build-linux:
-    name: Build Linux
-    runs-on: ubuntu-latest
-    container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
-    defaults:
-      run:
-        working-directory: SDL_image
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        uses: libsdl-org/setup-sdl@main
-        id: sdl
-        with:
-          cmake-generator: Ninja
-          version: 3-head
-          shell: sh
       - name: Set up Linux dependencies
-        working-directory: .
         run: |
           sudo apt-get update
           sudo apt-get -y install \
@@ -66,8 +64,17 @@ jobs:
       - name: Set up NASM
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
-        working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_image
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -77,23 +84,23 @@ jobs:
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDL_DISABLE_INSTALL=ON
-          -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDLIMAGE_TESTS=OFF
           -DSDLIMAGE_TESTS_INSTALL=OFF
           -DSDLIMAGE_SAMPLES=OFF
           -DSDLIMAGE_INSTALL_MAN=OFF
           -DSDLIMAGE_VENDORED=ON
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
           -S . -B build
       - name: Build
         run: cmake --build build --config Release
+      - name: Strip binaries
+        run: strip $(echo build/*.so.0)
       - name: Upload Build
         uses: actions/upload-artifact@v4
         with: 
-            name: sdl-image-linux
-            path: SDL_image/build/*.so.0
+            name: sdl-image-linux-${{ matrix.arch }}
+            path: build/*.so.0
 
   build-macos:
     name: Build MacOS (${{ matrix.platform.arch }})
@@ -104,26 +111,10 @@ jobs:
           platform:
           - {arch: 'arm64', flags: '-DSDL_CPU_ARM64=ON'}
           - {arch: 'x86_64', flags: '-DSDL_CPU_X64=ON'}
-    defaults:
-      run:
-        working-directory: SDL_image
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Set up SDL
-        id: sdl
-        uses: libsdl-org/setup-sdl@main
-        with:
-          cmake-generator: Ninja
-          cmake-arguments: |
-            -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}" \
-            -DSDL_DISABLE_INSTALL_DOCS=ON \
-            -DSDL_INSTALL_TESTS=OFF \
-            ${{ matrix.platform.flags }}
-          version: 3-head
-          shell: sh
       - name: Setup MacOS dependencies
-        working-directory: .
         run: |
           brew install \
           jpeg-xl \
@@ -133,21 +124,29 @@ jobs:
       - name: Set up NASM
         uses: ilammy/setup-nasm@v1
       - name: Clone SDL_image
-        working-directory: .
-        run: git clone --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_image.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_image
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.platform.arch }}
+          path: sdl
       - name: Configure
         run: >
           cmake -G Ninja
           -DBUILD_SHARED_LIBS=ON
           -DCMAKE_OSX_ARCHITECTURES="${{ matrix.platform.arch }}"
           -DCMAKE_BUILD_TYPE=Release
-          -DSDL_SHARED=ON
-          -DSDL_STATIC=OFF
           -DSDLIMAGE_TESTS=OFF
           -DSDLIMAGE_TESTS_INSTALL=OFF
           -DSDLIMAGE_SAMPLES=OFF
           -DSDLIMAGE_INSTALL_MAN=OFF
           -DSDLIMAGE_VENDORED=ON
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/install"
           ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build
@@ -156,4 +155,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-image-apple-macOS-${{ matrix.platform.arch }}
-            path: SDL_image/build/*.dylib
+            path: build/*.dylib
