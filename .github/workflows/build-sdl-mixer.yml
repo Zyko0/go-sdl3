@@ -44,13 +44,9 @@ jobs:
           - arch: arm64
             runs-on: ubuntu-24.04-arm
             container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
-    
     name: Build Linux (${{ matrix.arch }})
     runs-on: ${{ matrix.runs-on }}
     container: ${{ matrix.container }}
-    defaults:
-      run:
-        working-directory: SDL_mixer
     steps:
       - name: Download SDL
         uses: actions/download-artifact@v4
@@ -60,7 +56,6 @@ jobs:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Set up Linux dependencies
-        working-directory: .
         run: |
           sudo apt-get update
           sudo apt-get -y install \
@@ -112,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-mixer-linux-${{ matrix.arch }}
-            path: SDL_mixer/build/*.so.0
+            path: build/*.so.0
 
   build-macos:
     name: Build MacOS (${{ matrix.platform.arch }})
@@ -123,9 +118,6 @@ jobs:
           platform:
           - {arch: 'arm64', flags: '-DSDL_CPU_ARM64=ON'}
           - {arch: 'x86_64', flags: '-DSDL_CPU_X64=ON'}
-    defaults:
-      run:
-        working-directory: SDL_mixer
     steps:
       - name: Download SDL
         uses: actions/download-artifact@v4
@@ -135,7 +127,6 @@ jobs:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Setup MacOS dependencies
-        working-directory: .
         run: |
           brew install \
           libtool \
@@ -181,4 +172,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with: 
             name: sdl-mixer-apple-macOS-${{ matrix.platform.arch }}
-            path: SDL_mixer/build/*.dylib
+            path: build/*.dylib
