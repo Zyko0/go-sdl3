@@ -78,8 +78,12 @@ jobs:
           pkg-config \
           ${NULL+}
       - name: Clone SDL_mixer
-        working-directory: .
-        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_mixer
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -145,8 +149,12 @@ jobs:
           wavpack \
           ${NULL+}
       - name: Clone SDL_mixer
-        working-directory: .
-        run: git clone --depth 1 --recurse-submodules --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL_mixer.git
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_mixer
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Configure
         run: >
           cmake -G Ninja

@@ -53,9 +53,13 @@ jobs:
       run:
         working-directory: SDL
     steps:
-      - name: Clone SDL3
-        working-directory: .
-        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Configure
         run: >
           cmake -G Ninja
@@ -88,9 +92,13 @@ jobs:
     steps:
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
-      - name: Clone SDL3
-        working-directory: .
-        run: git clone --depth 1 --branch release-${{ inputs.version }} https://github.com/libsdl-org/SDL.git
+      - name: Clone SDL
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL
+          ref: release-${{ inputs.version }}
+          submodules: recursive
+          fetch-depth: 1
       - name: Configure
         run: >
           cmake -G "Ninja"
