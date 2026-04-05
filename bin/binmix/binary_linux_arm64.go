@@ -1,4 +1,4 @@
-//go:build linux
+//go:build linux && arm64
 
 package binmix
 
@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//go:embed assets/mix.so.gz
+	//go:embed assets/mix_arm64.so.gz
 	mixBlob    []byte
 	mixLibName = "libSDL3_mixer.so.0"
 )

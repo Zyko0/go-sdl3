@@ -7,9 +7,11 @@ import (
 	"testing"
 
 	"github.com/Zyko0/go-sdl3/bin/binimg"
+	"github.com/Zyko0/go-sdl3/bin/binmix"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 	"github.com/Zyko0/go-sdl3/bin/binttf"
 	"github.com/Zyko0/go-sdl3/img"
+	"github.com/Zyko0/go-sdl3/mixer"
 	"github.com/Zyko0/go-sdl3/sdl"
 	"github.com/Zyko0/go-sdl3/ttf"
 )
@@ -26,33 +28,17 @@ func Test_EmbeddedBinaries(t *testing.T) {
 
 	t.Run("SDL_ttf", func(t *testing.T) {
 		t.Run("Version", func(t *testing.T) {
-
 			v := ttf.GetVersion()
 			t.Log("SDL_ttf version:", v.String())
 		})
 	})
 
-	// TODO: mixer
-	/*t.Run("SDL_mixer", func(t *testing.T) {
+	t.Run("SDL_mixer", func(t *testing.T) {
 		t.Run("Init", func(t *testing.T) {
-			defer binsdl.Load().Unload()
-			defer binmix.Load().Unload()
-			defer sdl.Quit()
-
-			err := sdl.Init(0)
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
-			err = mixer.Init()
-			if err != nil {
-				t.Log(err)
-				t.FailNow()
-			}
-			v := mix.GetVersion()
+			v := mixer.GetVersion()
 			t.Log("SDL_mixer version:", v.String())
 		})
-	})*/
+	})
 
 	t.Run("SDL_image", func(t *testing.T) {
 		t.Run("Version", func(t *testing.T) {
@@ -72,7 +58,7 @@ func TestMain(m *testing.M) {
 
 	defer binsdl.Load().Unload()
 	defer binttf.Load().Unload()
-	// binmix.Load() // TODO:
+	defer binmix.Load().Unload()
 	defer binimg.Load().Unload()
 
 	defer ttf.Quit()
@@ -87,6 +73,8 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		panic(err)
 	}
+
+	mixer.Init()
 
 	os.Exit(m.Run())
 }
