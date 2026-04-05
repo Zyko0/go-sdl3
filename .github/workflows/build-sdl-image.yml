@@ -48,11 +48,6 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     container: ${{ matrix.container }}
     steps:
-      - name: Download SDL
-        uses: actions/download-artifact@v4
-        with:
-          name: sdl-linux-${{ matrix.arch }}
-          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Set up Linux dependencies
@@ -75,6 +70,11 @@ jobs:
           ref: release-${{ inputs.version }}
           submodules: recursive
           fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
@@ -110,11 +110,6 @@ jobs:
           - {arch: 'arm64', flags: '-DSDL_CPU_ARM64=ON'}
           - {arch: 'x86_64', flags: '-DSDL_CPU_X64=ON'}
     steps:
-      - name: Download SDL
-        uses: actions/download-artifact@v4
-        with:
-          name: sdl-apple-macOS-${{ matrix.platform.arch }}
-          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Setup MacOS dependencies
@@ -133,6 +128,11 @@ jobs:
           ref: release-${{ inputs.version }}
           submodules: recursive
           fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.platform.arch }}
+          path: sdl
       - name: Configure
         run: >
           cmake -G Ninja
@@ -144,7 +144,7 @@ jobs:
           -DSDLIMAGE_SAMPLES=OFF
           -DSDLIMAGE_INSTALL_MAN=OFF
           -DSDLIMAGE_VENDORED=ON
-          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/install"
           ${{ matrix.platform.flags }}
           -S . -B build
       - name: Build

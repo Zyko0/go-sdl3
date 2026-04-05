@@ -48,11 +48,6 @@ jobs:
     runs-on: ${{ matrix.runs-on }}
     container: ${{ matrix.container }}
     steps:
-      - name: Download SDL
-        uses: actions/download-artifact@v4
-        with:
-          name: sdl-linux-${{ matrix.arch }}
-          path: sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Set up Linux dependencies
@@ -76,6 +71,11 @@ jobs:
       - name: Check that versioning is consistent
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
       - name: Configure
         # TODO: PLUTOSVG, HARFBUZZ need a more recent freetype version
         run: >
@@ -107,17 +107,6 @@ jobs:
       matrix:
           arch: [arm64, x86_64]
     steps:
-      - name: Download SDL
-        uses: actions/download-artifact@v4
-        with:
-          name: sdl-apple-macOS-${{ matrix.arch }}
-          path: sdl
-      - name: Debug SDL artifact
-        run: |
-          echo "Workspace: $GITHUB_WORKSPACE/sdl"
-          ls -R $GITHUB_WORKSPACE/sdl
-          echo "Workspace: $GITHUB_WORKSPACE"
-          ls -R $GITHUB_WORKSPACE/sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Setup MacOS dependencies
@@ -133,6 +122,11 @@ jobs:
           ref: release-${{ inputs.version }}
           submodules: recursive
           fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.arch }}
+          path: sdl
       - name: Configure
         run: >
           cmake -G Ninja
@@ -146,8 +140,7 @@ jobs:
           -DSDL_DISABLE_INSTALL=ON
           -DSDLTTF_INSTALL_MAN=OFF
           -DSDLTTF_VENDORED=ON
-          -DCMAKE_INSTALL_PREFIX=prefix_cmake
-          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl/install
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/install"
           -S . -B build
       - name: Build
         run: cmake --build build --config Release

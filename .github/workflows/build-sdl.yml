@@ -99,7 +99,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_SHARED=ON
           -DSDL_STATIC=OFF
-          -DSDL_DISABLE_INSTALL=ON
+          -DSDL_DISABLE_INSTALL=OFF
           -DSDL_DISABLE_INSTALL_DOCS=ON
           -DSDL_INSTALL_TESTS=OFF
           -DSDL_TESTS=false
@@ -115,5 +115,5 @@ jobs:
             name: sdl-apple-macOS-${{ matrix.arch }}
             path: |
               build/*.dylib
-              install
+              install/
 
