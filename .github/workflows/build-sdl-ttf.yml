@@ -78,12 +78,13 @@ jobs:
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
       - name: Configure
+        # PLUTOSVG needs a too recent freetype version, so it's turned off
         run: >
           cmake -G Ninja
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
           -DSDLTTF_HARFBUZZ=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
-          -DSDLTTF_PLUTOSVG=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
+          -DSDLTTF_PLUTOSVG=OFF
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
           -DSDL_DISABLE_INSTALL=ON
