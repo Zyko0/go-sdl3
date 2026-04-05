@@ -77,12 +77,12 @@ jobs:
         # We only need to run this once: arbitrarily use the Linux build
         run: ./build-scripts/test-versioning.sh
       - name: Configure
-        # PLUTOSVG needs a too recent freetype version, so it's turned off
+        # TODO: PLUTOSVG, HARFBUZZ need a more recent freetype version
         run: >
           cmake -G Ninja
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON
           -DBUILD_SHARED_LIBS=ON
-          -DSDLTTF_HARFBUZZ=${{ matrix.arch == 'arm64' && 'OFF' || 'ON' }}
+          -DSDLTTF_HARFBUZZ=OFF
           -DSDLTTF_PLUTOSVG=OFF
           -DSDLTTF_WERROR=ON
           -DCMAKE_BUILD_TYPE=Release
@@ -112,6 +112,12 @@ jobs:
         with:
           name: sdl-apple-macOS-${{ matrix.arch }}
           path: sdl
+      - name: Debug SDL artifact
+        run: |
+          echo "Workspace: $GITHUB_WORKSPACE/sdl"
+          ls -R $GITHUB_WORKSPACE/sdl
+          echo "Workspace: $GITHUB_WORKSPACE"
+          ls -R $GITHUB_WORKSPACE/sdl
       - name: Set up Ninja
         uses: aseprite/get-ninja@main
       - name: Setup MacOS dependencies
