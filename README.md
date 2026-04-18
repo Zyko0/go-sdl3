@@ -30,7 +30,7 @@ Libraries:
 
 Platforms:
 - Windows (amd64, arm64)
-- Linux (amd64)
+- Linux (amd64, arm64)
 - MacOS (amd64, arm64)
 - WebAssembly (experimental)
 
