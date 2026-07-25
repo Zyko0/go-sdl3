@@ -23,7 +23,6 @@ func initialize() {
 	}
 
 	iInit = func() bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
@@ -34,7 +33,6 @@ func initialize() {
 	}
 
 	iQuit = func() {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
@@ -67,14 +65,15 @@ func initialize() {
 	}
 
 	iCreateMixerDevice = func(devid sdl.AudioDeviceID, spec *sdl.AudioSpec) *Mixer {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_devid := int32(devid)
-		_spec, ok := internal.GetJSPointer(spec)
-		if !ok {
-			_spec = internal.StackAlloc(int(unsafe.Sizeof(*spec)))
-		}
+		// A nil spec must reach MIX as NULL, so it uses the device's default
+		// format. The generated code stack-allocated a zeroed AudioSpec instead
+		// and passed a pointer to it; format=0 is invalid, so the call failed with
+		// "Parameter 'src_spec->format' is invalid". CloneObjectToJSStack returns
+		// js.Null() (NULL) for a nil pointer and copies the struct otherwise.
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_CreateMixerDevice",
 			_devid,
@@ -103,7 +102,6 @@ func initialize() {
 	}
 
 	iDestroyMixer = func(mixer *Mixer) {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, ok := internal.GetJSPointer(mixer)
@@ -154,7 +152,6 @@ func initialize() {
 	}
 
 	iLoadAudio_IO = func(mixer *Mixer, io *sdl.IOStream, predecode bool, closeio bool) *Audio {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, ok := internal.GetJSPointer(mixer)
@@ -374,7 +371,6 @@ func initialize() {
 	}
 
 	iDestroyAudio = func(audio *Audio) {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_audio, ok := internal.GetJSPointer(audio)
@@ -388,7 +384,6 @@ func initialize() {
 	}
 
 	iCreateTrack = func(mixer *Mixer) *Track {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, ok := internal.GetJSPointer(mixer)
@@ -405,7 +400,6 @@ func initialize() {
 	}
 
 	iDestroyTrack = func(track *Track) {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -452,7 +446,6 @@ func initialize() {
 	}
 
 	iSetTrackAudio = func(track *Track, audio *Audio) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -569,7 +562,6 @@ func initialize() {
 	}
 
 	iGetTrackPlaybackPosition = func(track *Track) int64 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -737,7 +729,6 @@ func initialize() {
 	}
 
 	iPlayTrack = func(track *Track, options sdl.PropertiesID) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -775,7 +766,6 @@ func initialize() {
 	}
 
 	iPlayAudio = func(mixer *Mixer, audio *Audio) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, ok := internal.GetJSPointer(mixer)
@@ -796,7 +786,6 @@ func initialize() {
 	}
 
 	iStopTrack = func(track *Track, fade_out_frames int64) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -952,7 +941,6 @@ func initialize() {
 	}
 
 	iTrackPlaying = func(track *Track) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
@@ -984,18 +972,35 @@ func initialize() {
 	}
 
 	iSetTrackGain = func(track *Track, gain float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, ok := internal.GetJSPointer(track)
 		if !ok {
 			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
 		}
-		_gain := int32(gain)
+		// gain is a float; pass it through as-is (js.ValueOf handles float32).
+		// The generator emitted int32(gain), truncating e.g. 0.3 to 0 and
+		// silencing every non-unity gain.
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackGain",
 			_track,
-			_gain,
+			gain,
+		)
+
+		return internal.GetBool(ret)
+	}
+
+	iSetTrackLoops = func(track *Track, num_loops int32) bool {
+		internal.StackSave()
+		defer internal.StackRestore()
+		_track, ok := internal.GetJSPointer(track)
+		if !ok {
+			_track = internal.StackAlloc(int(unsafe.Sizeof(*track)))
+		}
+		ret := js.Global().Get("Module").Call(
+			"_MIX_SetTrackLoops",
+			_track,
+			num_loops,
 		)
 
 		return internal.GetBool(ret)

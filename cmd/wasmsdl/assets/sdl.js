@@ -4422,11 +4422,15 @@ var findStringEnd = (heapOrArray, idx, maxBytesToRead, ignoreNul) => {
     };
 
   
-  var _emscripten_date_now = () => Date.now();
+  var _emscripten_date_now = () => performance.timeOrigin + performance.now() /* Patched for SDL: Emscripten's libc implements gettimeofday() with emscripten_date_now, and SDL3's SDL_GetPerformanceCounter falls back to gettimeofday in the browser (its CLOCK_MONOTONIC_RAW probe is rejected by the C-side WASI clock-id check). Date.now() would quantize every SDL timestamp to 1 ms; timeOrigin + performance.now() is the same epoch time at full timer resolution (~0.1 ms; ~5 us cross-origin isolated) and, unlike Date.now, monotonic within the page. */;
   
   var nowIsMonotonic = 1;
   
-  var checkWasiClock = (clock_id) => clock_id >= 0 && clock_id <= 3;
+  // Patched for SDL: accept CLOCK_MONOTONIC_RAW (4), which musl maps straight
+  // through to this WASI shim. SDL3 prefers it for SDL_GetPerformanceCounter;
+  // rejecting it made clock_gettime fail and SDL fall back to gettimeofday
+  // (Date.now), quantizing all timestamps to 1 ms. Id 4 is monotonic below.
+  var checkWasiClock = (clock_id) => clock_id >= 0 && clock_id <= 4;
   
   function _clock_time_get(clk_id, ignored_precision, ptime) {
     ignored_precision = bigintToI53Checked(ignored_precision);
@@ -4438,7 +4442,14 @@ var findStringEnd = (heapOrArray, idx, maxBytesToRead, ignoreNul) => {
       var now;
       // all wasi clocks but realtime are monotonic
       if (clk_id === 0) {
-        now = _emscripten_date_now();
+        // Patched for SDL: Date.now() has 1 ms resolution, and SDL3's
+        // SDL_GetPerformanceCounter reaches this branch via gettimeofday ->
+        // clock_gettime(CLOCK_REALTIME) (its CLOCK_MONOTONIC_RAW probe is
+        // rejected by the C-side WASI clock-id check), quantizing every SDL
+        // timestamp to 1 ms. performance.timeOrigin + performance.now() is
+        // epoch time at the browser's full timer resolution (~0.1 ms, ~5 us
+        // when cross-origin isolated) and monotonic within the page.
+        now = performance.timeOrigin + _emscripten_get_now();
       } else if (nowIsMonotonic) {
         now = _emscripten_get_now();
       } else {

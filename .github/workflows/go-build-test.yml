@@ -33,8 +33,13 @@ jobs:
             go build -o gpu ./examples/gpu/examples
             go build ./examples/helloworld
             go build ./examples/renderer/09-scaling-textures
-            
+
+            # WebAssembly: the whole module is built above; build the browser
+            # examples explicitly so a break is attributed to a named example.
             env GOOS=js GOARCH=wasm go build ./examples/helloworld
+            env GOOS=js GOARCH=wasm go build ./examples/wasmcheck
+            env GOOS=js GOARCH=wasm go build ./examples/imgttf
+            env GOOS=js GOARCH=wasm go build ./examples/audio
         
         - name: go test
           run : |

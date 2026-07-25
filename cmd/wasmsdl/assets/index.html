@@ -1,70 +1,56 @@
 <!doctype html>
 <html lang="en-us">
-  <body>
+  <head>
+    <meta charset="utf-8" />
     <style>
-    html, body, div, canvas {
-      margin: 0;
-      display: flex; 
-      align-items: center; 
-      justify-content: center;
-    }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: #1a1a1a;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* The canvas receives its CSS size from the Go side at window creation
+         (sdl.CreateWindow / CreateWindowAndRenderer). SDL's web backend uses the
+         canvas CSS layout size as the window size, so it must not collapse to 0. */
+      #canvas {
+        display: block;
+      }
     </style>
-    <canvas id="canvas" style="display: block;" oncontextmenu="event.preventDefault()"></canvas>
-    <script type='text/javascript'>
-      // As a default initial behavior, pop up an alert when webgl context is lost. To make your
-      // application robust, you may want to override this behavior before shipping!
-      // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+  </head>
+  <body>
+    <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    <script type="text/javascript">
+      // As a default initial behavior, pop up an alert when the webgl context is
+      // lost. Override this before shipping a real application.
       var canvasElement = document.getElementById('canvas');
       canvasElement.addEventListener('webglcontextlost', (e) => {
         alert('WebGL context lost. You will need to reload the page.');
         e.preventDefault();
       }, false);
-
       var Module = {
-        print(...args) {
-          console.log(...args);
-        },
+        print(...args) { console.log(...args); },
+        printErr(...args) { console.error(...args); },
         canvas: canvasElement,
-        setStatus(text) {
-          Module.setStatus.last ??= { time: Date.now(), text: '' };
-          if (text === Module.setStatus.last.text) return;
-          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-          var now = Date.now();
-          // if this is a progress update, skip it if too soon
-          if (m && now - Module.setStatus.last.time < 30) return;
-          Module.setStatus.last.time = now;
-          Module.setStatus.last.text = text;
-        },
-        totalDependencies: 0,
-        monitorRunDependencies(left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-        }
-      };
-      Module.setStatus('Downloading...');
-      window.onerror = (event) => {
-        // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
-        Module.setStatus('Exception thrown, see JavaScript console');
-        Module.setStatus = (text) => {
-          if (text) console.error('[post-exception status] ' + text);
-        };
       };
     </script>
     <script type="text/javascript" src="sdl.js"></script>
     <script type="text/javascript" src="wasm_exec.js"></script>
     <script>
-    // Polyfill
-    if (!WebAssembly.instantiateStreaming) {
-      WebAssembly.instantiateStreaming = async (resp, importObject) => {
-        const source = await (await resp).arrayBuffer();
-        return await WebAssembly.instantiate(source, importObject);
-      };
-    }
-
-    const go = new Go();
-    WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(result => {
-      go.run(result.instance);
-    });
+      // Polyfill
+      if (!WebAssembly.instantiateStreaming) {
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+        go.run(result.instance);
+      });
     </script>
   </body>
 </html>

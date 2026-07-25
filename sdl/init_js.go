@@ -41,23 +41,36 @@ func CloseLibrary() error {
 	return nil
 }
 
+// RunLoop drives updateFunc at requestAnimationFrame pace, executing it on
+// the goroutine that called RunLoop (normally the main goroutine).
+//
+// It deliberately does NOT use emscripten_set_main_loop: that invokes the
+// callback through js.FuncOf, i.e. on a fresh event-handler goroutine, and
+// when updateFunc blocks there (experiment-style code sleeps in input-wait
+// loops across many frames) the Go scheduler never pauses back to the
+// browser event loop — the tab's main thread wedges inside findRunnable.
+// Blocking on the main goroutine pauses cleanly, so the RAF callback only
+// signals a channel and all user code runs here.
 func RunLoop(updateFunc func() error) error {
-	ch := make(chan error)
-	fn := js.FuncOf(func(this js.Value, args []js.Value) any {
-		if err := updateFunc(); err != nil {
-			js.Global().Call("_emscripten_cancel_main_loop")
-			ch <- err
+	frame := make(chan struct{}, 1)
+	cb := js.FuncOf(func(this js.Value, args []js.Value) any {
+		select {
+		case frame <- struct{}{}:
+		default:
 		}
-
 		return nil
 	})
-	fnAddr := js.Global().Get("Module").Call("addFunction", fn, "v")
-	js.Global().Call("_emscripten_set_main_loop", fnAddr, -1, 0)
+	defer cb.Release()
+	raf := js.Global().Get("requestAnimationFrame")
 
-	err := <-ch
-
-	if errors.Is(err, EndLoop) {
-		return nil
+	for {
+		raf.Invoke(cb)
+		<-frame
+		if err := updateFunc(); err != nil {
+			if errors.Is(err, EndLoop) {
+				return nil
+			}
+			return err
+		}
 	}
-	return err
 }

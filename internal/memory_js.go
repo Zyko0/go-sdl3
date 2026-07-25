@@ -16,8 +16,6 @@ import (
 type Pointer = int32
 
 var (
-	heapU8 js.Value
-
 	stackAlloc   js.Value
 	stackString  js.Value
 	utf8String   js.Value
@@ -47,8 +45,6 @@ func init() {
 		time.Sleep(1 * time.Millisecond)
 	}
 
-	heapU8 = js.Global().Get("HEAPU8")
-
 	stackAlloc = js.Global().Get("stackAlloc")
 	stackString = js.Global().Get("stringToUTF8OnStack")
 	utf8String = js.Global().Get("UTF8ToString")
@@ -59,6 +55,15 @@ func init() {
 
 	bigInt = js.Global().Get("BigInt")
 	boolean = js.Global().Get("Boolean")
+}
+
+// heap returns the current HEAPU8 view. It must be fetched fresh on every use:
+// when Emscripten grows the wasm memory it allocates a new buffer and rebinds
+// the global HEAPU8 (see updateMemoryViews in the JS glue), detaching the old
+// typed array. Caching the view would leave later calls operating on a detached
+// ArrayBuffer once any allocation triggers growth.
+func heap() js.Value {
+	return js.Global().Get("HEAPU8")
 }
 
 type object struct {
@@ -77,7 +82,7 @@ func (o *object) Map(size uintptr) {
 }
 
 func (o *object) ExtractSelf() {
-	arr := heapU8.Call("slice", o.value.Int(), o.value.Int()+len(o.data))
+	arr := heap().Call("slice", o.value.Int(), o.value.Int()+len(o.data))
 	js.CopyBytesToGo(o.data, arr)
 }
 
@@ -110,7 +115,7 @@ func CloneObjectToJSStack[T any](obj *T) js.Value {
 	}
 	size := unsafe.Sizeof(*obj)
 	ptr := stackAlloc.Invoke(int32(size))
-	arr := heapU8.Call("subarray", ptr.Int(), ptr.Int()+int(size))
+	arr := heap().Call("subarray", ptr.Int(), ptr.Int()+int(size))
 	js.CopyBytesToJS(arr, unsafe.Slice((*byte)(unsafe.Pointer(obj)), size))
 
 	return ptr
@@ -118,13 +123,13 @@ func CloneObjectToJSStack[T any](obj *T) js.Value {
 
 func CopyJSToObject[T any](obj *T, ptr js.Value) {
 	size := unsafe.Sizeof(*obj)
-	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+int(size))
+	arr := heap().Call("slice", ptr.Int(), ptr.Int()+int(size))
 	js.CopyBytesToGo(unsafe.Slice((*byte)(unsafe.Pointer(obj)), size), arr)
 }
 
 func CloneByteSliceToJSHeap(s []byte) js.Value {
 	ptr := js.Global().Call("_malloc", len(s))
-	arr := heapU8.Call("subarray", ptr.Int(), ptr.Int()+len(s))
+	arr := heap().Call("subarray", ptr.Int(), ptr.Int()+len(s))
 	js.CopyBytesToJS(arr, s)
 
 	return ptr
@@ -192,6 +197,14 @@ func GetJSPointer[T any](obj *T) (js.Value, bool) {
 }
 
 func NewObject[T any](ptr js.Value) *T {
+	// A NULL C pointer must map to a nil Go pointer, matching the native purego
+	// bindings. SDL/MIX return NULL on failure; without this the null was wrapped
+	// as a non-nil *T, so the `if x == nil` error checks in the Go methods never
+	// fired and a failed call read as success.
+	if ptr.IsNull() || ptr.IsUndefined() || (ptr.Type() == js.TypeNumber && ptr.Int() == 0) {
+		return nil
+	}
+
 	var t T
 
 	obj := pool.Get().(*object)
@@ -260,7 +273,7 @@ func GetInt64(v js.Value) int64 {
 
 func GetByteSliceFromJSPtr(ptr js.Value, count int) []byte {
 	s := make([]byte, count)
-	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+count)
+	arr := heap().Call("slice", ptr.Int(), ptr.Int()+count)
 	js.CopyBytesToGo(s, arr)
 
 	return s
@@ -273,7 +286,7 @@ type Numeric interface {
 func GetNumericSliceFromJSPtr[T Numeric](ptr js.Value, count int) []T {
 	s := make([]T, count)
 	bytesCount := count * int(unsafe.Sizeof(T(0)))
-	arr := heapU8.Call("slice", ptr.Int(), ptr.Int()+bytesCount)
+	arr := heap().Call("slice", ptr.Int(), ptr.Int()+bytesCount)
 	js.CopyBytesToGo(unsafe.Slice((*byte)(unsafe.Pointer(unsafe.SliceData(s))), bytesCount), arr)
 
 	return s

@@ -58,12 +58,9 @@ func initialize() {
 	}
 
 	iLoad_IO = func(src *sdl.IOStream, closeio bool) *sdl.Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_src, ok := internal.GetJSPointer(src)
 		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
+			panic("nil stream")
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
@@ -72,8 +69,10 @@ func initialize() {
 			_closeio,
 		)
 
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
+		if ret.Int() == 0 {
+			return nil
+		}
+		return internal.NewObject[sdl.Surface](ret)
 	}
 
 	iLoadTexture = func(renderer *sdl.Renderer, file string) *sdl.Texture {
@@ -96,16 +95,13 @@ func initialize() {
 	}
 
 	iLoadTexture_IO = func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool) *sdl.Texture {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, ok := internal.GetJSPointer(renderer)
 		if !ok {
-			_renderer = internal.StackAlloc(int(unsafe.Sizeof(*renderer)))
+			panic("nil renderer")
 		}
 		_src, ok := internal.GetJSPointer(src)
 		if !ok {
-			_src = internal.StackAlloc(int(unsafe.Sizeof(*src)))
+			panic("nil stream")
 		}
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
@@ -115,8 +111,10 @@ func initialize() {
 			_closeio,
 		)
 
-		_obj := internal.NewObject[sdl.Texture](ret)
-		return _obj
+		if ret.Int() == 0 {
+			return nil
+		}
+		return internal.NewObject[sdl.Texture](ret)
 	}
 
 	iLoadTextureTyped_IO = func(renderer *sdl.Renderer, src *sdl.IOStream, closeio bool, typ string) *sdl.Texture {

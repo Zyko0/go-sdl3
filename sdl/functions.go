@@ -985,33 +985,9 @@ func CreateAudioStream(srcSpec *AudioSpec, dstSpec *AudioSpec) (*AudioStream, er
 	return stream, nil
 }
 
-// SDL_LoadWAV_IO - Load the audio data of a WAVE file into memory.
-// (https://wiki.libsdl.org/SDL3/SDL_LoadWAV_IO)
-func LoadWAV_IO(src *IOStream, closeIO bool, spec *AudioSpec) ([]byte, error) {
-	var count uint32
-	var ptr *byte
-
-	if !iLoadWAV_IO(src, closeIO, spec, &ptr, &count) {
-		return nil, internal.LastErr()
-	}
-	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
-
-	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
-}
-
-// SDL_LoadWAV - Loads a WAV from a file path.
-// (https://wiki.libsdl.org/SDL3/SDL_LoadWAV)
-func LoadWAV(path string, spec *AudioSpec) ([]byte, error) {
-	var count uint32
-	var ptr *byte
-
-	if !iLoadWAV(path, spec, &ptr, &count) {
-		return nil, internal.LastErr()
-	}
-	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
-
-	return internal.ClonePtrSlice[byte](uintptr(unsafe.Pointer(ptr)), int(count)), nil
-}
+// LoadWAV_IO and LoadWAV are platform-split: the js/wasm build must copy the
+// SDL-allocated audio buffer out of the Emscripten heap rather than read Go
+// memory. See loadwav_notjs.go and loadwav_js.go.
 
 // SDL_MixAudio - Mix audio data in a specified format.
 // (https://wiki.libsdl.org/SDL3/SDL_MixAudio)
@@ -1332,15 +1308,10 @@ func GetKeyboardFocus() *Window {
 	return iGetKeyboardFocus()
 }
 
-// SDL_GetKeyboardState - Get a snapshot of the current state of the keyboard.
-// (https://wiki.libsdl.org/SDL3/SDL_GetKeyboardState)
-func GetKeyboardState() []bool {
-	var count int32
-
-	ptr := iGetKeyboardState(&count)
-
-	return internal.PtrToSlice[bool](uintptr(unsafe.Pointer(ptr)), int(count))
-}
+// GetKeyboardState is platform-split (keyboardstate_notjs.go /
+// keyboardstate_js.go): SDL returns a pointer to its internal state array,
+// which native code can view directly but the js path must copy out of the
+// Emscripten heap.
 
 // SDL_ResetKeyboard - Clear the state of the keyboard.
 // (https://wiki.libsdl.org/SDL3/SDL_ResetKeyboard)

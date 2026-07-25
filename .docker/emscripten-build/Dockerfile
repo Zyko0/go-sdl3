@@ -54,6 +54,18 @@ RUN source emsdk/emsdk_env.sh && \
 RUN source emsdk/emsdk_env.sh && \
         emcc --no-entry -s LINKABLE=1 -s EXPORTED_RUNTIME_METHODS="['addFunction', 'allocateUTF8','UTF8ToString', 'stringToUTF8', 'getValue', 'setValue']" -s ALLOW_MEMORY_GROWTH=1 -s ALLOW_TABLE_GROWTH=1 -s EXPORT_ALL -s DEFAULT_LIBRARY_FUNCS_TO_INCLUDE='$addFunction' build_image/libSDL3_image.a build_ttf/libSDL3_ttf.a build_mixer/libSDL3_mixer.a build_sdl/libSDL3.a -o sdl.html
 
+# High-resolution timestamps. SDL3's SDL_GetPerformanceCounter probes
+# CLOCK_MONOTONIC_RAW (musl defines it), but Emscripten's C-side WASI shim
+# rejects clock ids > 3, so SDL silently falls back to gettimeofday -- which
+# Emscripten's libc implements with emscripten_date_now (Date.now), quantizing
+# every SDL timestamp (ticks AND input-event timestamps) to 1 ms. Substitute
+# performance.timeOrigin + performance.now(): same epoch, full browser timer
+# resolution (~100 us; ~5 us cross-origin isolated), monotonic within the page.
+# (The committed cmd/wasmsdl/assets/sdl.js carries this patch by hand; keep
+# this step so a rebuild does not silently regress to 1 ms timestamps.)
+RUN sed -i 's|_emscripten_date_now = () => Date.now()|_emscripten_date_now = () => performance.timeOrigin + performance.now()|' sdl.js && \
+        grep -q "performance.timeOrigin" sdl.js
+
 RUN mkdir _out && \
         mv /build_sdl _out/build_sdl && \
         mv /build_ttf _out/build_ttf && \

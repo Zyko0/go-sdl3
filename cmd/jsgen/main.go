@@ -211,6 +211,12 @@ func main() {
 										Qual(internalQual, "StringOnJSStack").
 										Call(jen.Id(arg.Name)),
 								)
+							case "float32", "float64":
+								// Floats must be passed through unchanged;
+								// casting to int32 silently truncates them.
+								h.Add(
+									jen.Id("_" + arg.Name).Op(":=").Id(arg.Name),
+								)
 							default:
 								h.Add(
 									jen.Id("_" + arg.Name).Op(":=").Int32().Parens(
@@ -247,6 +253,10 @@ func main() {
 							"uint", "uint8", "uint16", "uint32":
 							h.Return(jen.Id(fn.Return.Type).Parens(
 								jen.Id("ret").Op(".").Id("Int").Call()),
+							)
+						case "float32", "float64":
+							h.Return(jen.Id(fn.Return.Type).Parens(
+								jen.Id("ret").Op(".").Id("Float").Call()),
 							)
 						case "int64", "uint64", "uintptr":
 							h.Return(jen.Id(fn.Return.Type).Parens(jen.Qual(internalQual, "GetInt64").

@@ -3,10 +3,28 @@
 package sdl
 
 import (
+	"strconv"
 	"syscall/js"
 
 	"github.com/Zyko0/go-sdl3/internal"
 )
+
+// sizeCanvas sets the CSS pixel size of the Emscripten canvas. SDL's web
+// backend derives the window size from the canvas CSS layout size, so this must
+// run before SDL_CreateWindow* for the requested dimensions to take effect.
+// Without it the canvas can collapse to 0x0 and nothing is rendered.
+func sizeCanvas(w, h int32) {
+	canvas := js.Global().Get("Module").Get("canvas")
+	if !canvas.Truthy() {
+		return
+	}
+	style := canvas.Get("style")
+	if !style.Truthy() {
+		return
+	}
+	style.Set("width", strconv.Itoa(int(w))+"px")
+	style.Set("height", strconv.Itoa(int(h))+"px")
+}
 
 func (s *Surface) Pixels() []byte {
 	return internal.GetByteSliceFromJSPtr(js.ValueOf(s.pixels), int(s.H*s.Pitch))
