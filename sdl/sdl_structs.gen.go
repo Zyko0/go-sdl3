@@ -254,7 +254,7 @@ type Finger struct {
 	Pressure float32  // the quantity of pressure applied, normalized (0...1)
 }
 
-// SDL_CommonEvent - Fields shared by every event
+// SDL_CommonEvent - Fields shared by every event (event.common.*)
 // (https://wiki.libsdl.org/SDL3/SDL_CommonEvent)
 type CommonEvent struct {
 	Type      uint32 // Event type, shared with all events, Uint32 to cover user events which are not in the SDL_EventType enumeration
@@ -347,7 +347,7 @@ type MouseMotionEvent struct {
 	reserved  uint32
 	Timestamp uint64           // In nanoseconds, populated using SDL_GetTicksNS()
 	WindowID  WindowID         // The window with mouse focus, if any
-	Which     MouseID          // The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, or 0
+	Which     MouseID          // The mouse instance id in relative mode, SDL_TOUCH_MOUSEID for touch events, SDL_PEN_MOUSEID for pen events, or 0
 	State     MouseButtonFlags // The current button state
 	X         float32          // X coordinate, relative to window
 	Y         float32          // Y coordinate, relative to window

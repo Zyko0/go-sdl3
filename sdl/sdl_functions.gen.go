@@ -1187,12 +1187,12 @@ var (
 	//puregogen:function symbol=SDL_UnlockSurface
 	iUnlockSurface func(surface *Surface)
 
-	// SDL_LoadSurface_IO => Load a BMP or PNG image from a seekable SDL data stream.
+	// SDL_LoadSurface_IO => Load a BMP, PNG or JPEG image from a seekable SDL data stream.
 	//
 	//puregogen:function symbol=SDL_LoadSurface_IO
 	iLoadSurface_IO func(src *IOStream, closeio bool) *Surface
 
-	// SDL_LoadSurface => Load a BMP or PNG image from a file.
+	// SDL_LoadSurface => Load a BMP, PNG or JPEG image from a file.
 	//
 	//puregogen:function symbol=SDL_LoadSurface
 	iLoadSurface func(file string) *Surface
@@ -1417,12 +1417,12 @@ var (
 	//puregogen:function symbol=SDL_MapSurfaceRGBA
 	iMapSurfaceRGBA func(surface *Surface, r uint8, g uint8, b uint8, a uint8) uint32
 
-	// SDL_ReadSurfacePixel => Retrieves a single pixel from a surface.
+	// SDL_ReadSurfacePixel => Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.
 	//
 	//puregogen:function symbol=SDL_ReadSurfacePixel
 	iReadSurfacePixel func(surface *Surface, x int32, y int32, r *uint8, g *uint8, b *uint8, a *uint8) bool
 
-	// SDL_ReadSurfacePixelFloat => Retrieves a single pixel from a surface.
+	// SDL_ReadSurfacePixelFloat => Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.
 	//
 	//puregogen:function symbol=SDL_ReadSurfacePixelFloat
 	iReadSurfacePixelFloat func(surface *Surface, x int32, y int32, r *float32, g *float32, b *float32, a *float32) bool
@@ -3792,7 +3792,7 @@ var (
 	//puregogen:function symbol=SDL_AcquireGPUSwapchainTexture
 	iAcquireGPUSwapchainTexture func(command_buffer *GPUCommandBuffer, window *Window, swapchain_texture **GPUTexture, swapchain_texture_width *uint32, swapchain_texture_height *uint32) bool
 
-	// SDL_WaitForGPUSwapchain => Blocks the thread until a swapchain texture is available to be acquired.
+	// SDL_WaitForGPUSwapchain => Blocks the thread until all presenting command buffers are finished executing.
 	//
 	//puregogen:function symbol=SDL_WaitForGPUSwapchain
 	iWaitForGPUSwapchain func(device *GPUDevice, window *Window) bool
@@ -4609,7 +4609,7 @@ var (
 	//puregogen:function symbol=SDL_GetRenderColorScale
 	iGetRenderColorScale func(renderer *Renderer, scale *float32) bool
 
-	// SDL_SetRenderDrawBlendMode => Set the blend mode used for drawing operations (Fill and Line).
+	// SDL_SetRenderDrawBlendMode => Set the blend mode used for drawing operations.
 	//
 	//puregogen:function symbol=SDL_SetRenderDrawBlendMode
 	iSetRenderDrawBlendMode func(renderer *Renderer, blendMode BlendMode) bool

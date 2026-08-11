@@ -20,9 +20,9 @@ type Text struct {
 // TTF_GPUAtlasDrawSequence - Draw sequence returned by [TTF_GetGPUTextDrawData](TTF_GetGPUTextDrawData)
 // (https://wiki.libsdl.org/SDL3_ttf/TTF_GPUAtlasDrawSequence)
 type GPUAtlasDrawSequence struct {
-	AtlasTexture *sdl.GPUTexture       // Texture atlas that stores the glyphs
+	AtlasTexture *sdl.GPUTexture       // Texture atlas that stores the glyphs, or NULL for solid fill
 	Xy           *sdl.FPoint           // An array of vertex positions
-	Uv           *sdl.FPoint           // An array of normalized texture coordinates for each vertex
+	Uv           *sdl.FPoint           // An array of normalized texture coordinates for each vertex, or NULL for solid fill
 	NumVertices  int32                 // Number of vertices
 	Indices      *int32                // An array of indices into the 'vertices' arrays
 	NumIndices   int32                 // Number of indices
