@@ -1,0 +1,103 @@
+name,return_type,parameters,types,description
+IMG_AddAnimationEncoderFrame,bool,"IMG_AnimationEncoder *encoder, SDL_Surface *surface, Uint64 duration",IMG_AnimationEncoder SDL_Surface Uint64 bool,Add a frame to an animation encoder.
+IMG_CloseAnimationDecoder,bool,IMG_AnimationDecoder *decoder,IMG_AnimationDecoder bool,"Close an animation decoder, finishing any decoding."
+IMG_CloseAnimationEncoder,bool,IMG_AnimationEncoder *encoder,IMG_AnimationEncoder bool,"Close an animation encoder, finishing any encoding."
+IMG_CreateAnimatedCursor,SDL_Cursor*,"IMG_Animation *anim, int hot_x, int hot_y",IMG_Animation int SDL_Cursor,Create an animated cursor from an animation.
+IMG_CreateAnimationDecoder,IMG_AnimationDecoder*,const char *file,char IMG_AnimationDecoder,Create a decoder to read a series of images from a file.
+IMG_CreateAnimationDecoderWithProperties,IMG_AnimationDecoder*,SDL_PropertiesID props,SDL_PropertiesID IMG_AnimationDecoder,Create an animation decoder with the specified properties.
+IMG_CreateAnimationDecoder_IO,IMG_AnimationDecoder*,"SDL_IOStream *src, bool closeio, const char *type",SDL_IOStream bool char IMG_AnimationDecoder,Create a decoder to read a series of images from an IOStream.
+IMG_CreateAnimationEncoder,IMG_AnimationEncoder*,const char *file,char IMG_AnimationEncoder,Create an encoder to save a series of images to a file.
+IMG_CreateAnimationEncoderWithProperties,IMG_AnimationEncoder*,SDL_PropertiesID props,SDL_PropertiesID IMG_AnimationEncoder,Create an animation encoder with the specified properties.
+IMG_CreateAnimationEncoder_IO,IMG_AnimationEncoder*,"SDL_IOStream *dst, bool closeio, const char *type",SDL_IOStream bool char IMG_AnimationEncoder,Create an encoder to save a series of images to an IOStream.
+IMG_FreeAnimation,void,IMG_Animation *anim,IMG_Animation,Dispose of an IMG_Animation and free its resources.
+IMG_GetAnimationDecoderFrame,bool,"IMG_AnimationDecoder *decoder, SDL_Surface **frame, Uint64 *duration",IMG_AnimationDecoder SDL_Surface Uint64 bool,Get the next frame in an animation decoder.
+IMG_GetAnimationDecoderProperties,SDL_PropertiesID,IMG_AnimationDecoder *decoder,IMG_AnimationDecoder SDL_PropertiesID,Get the properties of an animation decoder.
+IMG_GetAnimationDecoderStatus,IMG_AnimationDecoderStatus,IMG_AnimationDecoder *decoder,IMG_AnimationDecoder IMG_AnimationDecoderStatus,Get the decoder status indicating the current state of the decoder.
+IMG_GetClipboardImage,SDL_Surface*,,SDL_Surface,Get the image currently in the clipboard.
+IMG_Load,SDL_Surface*,const char *file,char SDL_Surface,Load an image from a filesystem path into a software surface.
+IMG_LoadANIAnimation_IO,IMG_Animation*,SDL_IOStream *src,SDL_IOStream IMG_Animation,Load an ANI animation directly from an SDL_IOStream.
+IMG_LoadAPNGAnimation_IO,IMG_Animation*,SDL_IOStream *src,SDL_IOStream IMG_Animation,Load an APNG animation directly from an SDL_IOStream.
+IMG_LoadAVIFAnimation_IO,IMG_Animation*,SDL_IOStream *src,SDL_IOStream IMG_Animation,Load an AVIF animation directly from an SDL_IOStream.
+IMG_LoadAVIF_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a AVIF image directly.
+IMG_LoadAnimation,IMG_Animation*,const char *file,char IMG_Animation,Load an animation from a file.
+IMG_LoadAnimationTyped_IO,IMG_Animation*,"SDL_IOStream *src, bool closeio, const char *type",SDL_IOStream bool char IMG_Animation,Load an animation from an SDL_IOStream.
+IMG_LoadAnimation_IO,IMG_Animation*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool IMG_Animation,Load an animation from an SDL_IOStream.
+IMG_LoadBMP_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a BMP image directly.
+IMG_LoadCUR_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a CUR image directly.
+IMG_LoadGIFAnimation_IO,IMG_Animation*,SDL_IOStream *src,SDL_IOStream IMG_Animation,Load a GIF animation directly.
+IMG_LoadGIF_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a GIF image directly.
+IMG_LoadGPUTexture,SDL_GPUTexture*,"SDL_GPUDevice *device, SDL_GPUCopyPass *copy_pass, const char *file, int *width, int *height",SDL_GPUDevice SDL_GPUCopyPass char int SDL_GPUTexture,Load an image from a filesystem path into a GPU texture.
+IMG_LoadGPUTextureTyped_IO,SDL_GPUTexture*,"SDL_GPUDevice *device, SDL_GPUCopyPass *copy_pass, SDL_IOStream *src, bool closeio, const char *type, int *width, int *height",SDL_GPUDevice SDL_GPUCopyPass SDL_IOStream bool char int SDL_GPUTexture,Load an image from an SDL data source into a GPU texture.
+IMG_LoadGPUTexture_IO,SDL_GPUTexture*,"SDL_GPUDevice *device, SDL_GPUCopyPass *copy_pass, SDL_IOStream *src, bool closeio, int *width, int *height",SDL_GPUDevice SDL_GPUCopyPass SDL_IOStream bool int SDL_GPUTexture,Load an image from an SDL data source into a GPU texture.
+IMG_LoadICO_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a ICO image directly.
+IMG_LoadJPG_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a JPG image directly.
+IMG_LoadJXL_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a JXL image directly.
+IMG_LoadLBM_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a LBM image directly.
+IMG_LoadPCX_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a PCX image directly.
+IMG_LoadPNG_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a PNG image directly.
+IMG_LoadPNM_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a PNM image directly.
+IMG_LoadQOI_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a QOI image directly.
+IMG_LoadSVG_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a SVG image directly.
+IMG_LoadSizedSVG_IO,SDL_Surface*,"SDL_IOStream *src, int width, int height",SDL_IOStream int SDL_Surface,"Load an SVG image, scaled to a specific size."
+IMG_LoadTGA_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a TGA image directly.
+IMG_LoadTIF_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a TIFF image directly.
+IMG_LoadTexture,SDL_Texture*,"SDL_Renderer *renderer, const char *file",SDL_Renderer char SDL_Texture,Load an image from a filesystem path into a texture.
+IMG_LoadTextureTyped_IO,SDL_Texture*,"SDL_Renderer *renderer, SDL_IOStream *src, bool closeio, const char *type",SDL_Renderer SDL_IOStream bool char SDL_Texture,Load an image from an SDL data source into a texture.
+IMG_LoadTexture_IO,SDL_Texture*,"SDL_Renderer *renderer, SDL_IOStream *src, bool closeio",SDL_Renderer SDL_IOStream bool SDL_Texture,Load an image from an SDL data source into a texture.
+IMG_LoadTyped_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio, const char *type",SDL_IOStream bool char SDL_Surface,Load an image from an SDL data source into a software surface.
+IMG_LoadWEBPAnimation_IO,IMG_Animation*,SDL_IOStream *src,SDL_IOStream IMG_Animation,Load a WEBP animation directly.
+IMG_LoadWEBP_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a WEBP image directly.
+IMG_LoadXCF_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a XCF image directly.
+IMG_LoadXPM_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a XPM image directly.
+IMG_LoadXV_IO,SDL_Surface*,SDL_IOStream *src,SDL_IOStream SDL_Surface,Load a XV image directly.
+IMG_Load_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool SDL_Surface,Load an image from an SDL data source into a software surface.
+IMG_ReadXPMFromArray,SDL_Surface*,char **xpm,char SDL_Surface,Load an XPM image from a memory array.
+IMG_ReadXPMFromArrayToRGB888,SDL_Surface*,char **xpm,char SDL_Surface,Load an XPM image from a memory array.
+IMG_ResetAnimationDecoder,bool,IMG_AnimationDecoder *decoder,IMG_AnimationDecoder bool,Reset an animation decoder.
+IMG_Save,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into an image file.
+IMG_SaveANIAnimation_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio",IMG_Animation SDL_IOStream bool,Save an animation in ANI format to an SDL_IOStream.
+IMG_SaveAPNGAnimation_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio",IMG_Animation SDL_IOStream bool,Save an animation in APNG format to an SDL_IOStream.
+IMG_SaveAVIF,bool,"SDL_Surface *surface, const char *file, int quality",SDL_Surface char int bool,Save an SDL_Surface into a AVIF image file.
+IMG_SaveAVIFAnimation_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio, int quality",IMG_Animation SDL_IOStream bool int,Save an animation in AVIF format to an SDL_IOStream.
+IMG_SaveAVIF_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio, int quality",SDL_Surface SDL_IOStream bool int,"Save an SDL_Surface into AVIF image data, via an SDL_IOStream."
+IMG_SaveAnimation,bool,"IMG_Animation *anim, const char *file",IMG_Animation char bool,Save an animation to a file.
+IMG_SaveAnimationTyped_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio, const char *type",IMG_Animation SDL_IOStream bool char,Save an animation to an SDL_IOStream.
+IMG_SaveBMP,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a BMP image file.
+IMG_SaveBMP_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into BMP image data, via an SDL_IOStream."
+IMG_SaveCUR,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a CUR image file.
+IMG_SaveCUR_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into CUR image data, via an SDL_IOStream."
+IMG_SaveGIF,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a GIF image file.
+IMG_SaveGIFAnimation_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio",IMG_Animation SDL_IOStream bool,Save an animation in GIF format to an SDL_IOStream.
+IMG_SaveGIF_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into GIF image data, via an SDL_IOStream."
+IMG_SaveICO,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a ICO image file.
+IMG_SaveICO_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into ICO image data, via an SDL_IOStream."
+IMG_SaveJPG,bool,"SDL_Surface *surface, const char *file, int quality",SDL_Surface char int bool,Save an SDL_Surface into a JPEG image file.
+IMG_SaveJPG_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio, int quality",SDL_Surface SDL_IOStream bool int,"Save an SDL_Surface into JPEG image data, via an SDL_IOStream."
+IMG_SavePNG,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a PNG image file.
+IMG_SavePNG_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into PNG image data, via an SDL_IOStream."
+IMG_SaveTGA,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save an SDL_Surface into a TGA image file.
+IMG_SaveTGA_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,"Save an SDL_Surface into TGA image data, via an SDL_IOStream."
+IMG_SaveTyped_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio, const char *type",SDL_Surface SDL_IOStream bool char,"Save an SDL_Surface into formatted image data, via an SDL_IOStream."
+IMG_SaveWEBP,bool,"SDL_Surface *surface, const char *file, float quality",SDL_Surface char float bool,Save an SDL_Surface into a WEBP image file.
+IMG_SaveWEBPAnimation_IO,bool,"IMG_Animation *anim, SDL_IOStream *dst, bool closeio, int quality",IMG_Animation SDL_IOStream bool int,Save an animation in WEBP format to an SDL_IOStream.
+IMG_SaveWEBP_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio, float quality",SDL_Surface SDL_IOStream bool float,"Save an SDL_Surface into WEBP image data, via an SDL_IOStream."
+IMG_Version,int,,int,This function gets the version of the dynamically linked SDL_image library.
+IMG_isANI,bool,SDL_IOStream *src,SDL_IOStream bool,Detect ANI animated cursor data on a readable/seekable SDL_IOStream.
+IMG_isAVIF,bool,SDL_IOStream *src,SDL_IOStream bool,Detect AVIF image data on a readable/seekable SDL_IOStream.
+IMG_isBMP,bool,SDL_IOStream *src,SDL_IOStream bool,Detect BMP image data on a readable/seekable SDL_IOStream.
+IMG_isCUR,bool,SDL_IOStream *src,SDL_IOStream bool,Detect CUR image data on a readable/seekable SDL_IOStream.
+IMG_isGIF,bool,SDL_IOStream *src,SDL_IOStream bool,Detect GIF image data on a readable/seekable SDL_IOStream.
+IMG_isICO,bool,SDL_IOStream *src,SDL_IOStream bool,Detect ICO image data on a readable/seekable SDL_IOStream.
+IMG_isJPG,bool,SDL_IOStream *src,SDL_IOStream bool,Detect JPG image data on a readable/seekable SDL_IOStream.
+IMG_isJXL,bool,SDL_IOStream *src,SDL_IOStream bool,Detect JXL image data on a readable/seekable SDL_IOStream.
+IMG_isLBM,bool,SDL_IOStream *src,SDL_IOStream bool,Detect LBM image data on a readable/seekable SDL_IOStream.
+IMG_isPCX,bool,SDL_IOStream *src,SDL_IOStream bool,Detect PCX image data on a readable/seekable SDL_IOStream.
+IMG_isPNG,bool,SDL_IOStream *src,SDL_IOStream bool,Detect PNG image data on a readable/seekable SDL_IOStream.
+IMG_isPNM,bool,SDL_IOStream *src,SDL_IOStream bool,Detect PNM image data on a readable/seekable SDL_IOStream.
+IMG_isQOI,bool,SDL_IOStream *src,SDL_IOStream bool,Detect QOI image data on a readable/seekable SDL_IOStream.
+IMG_isSVG,bool,SDL_IOStream *src,SDL_IOStream bool,Detect SVG image data on a readable/seekable SDL_IOStream.
+IMG_isTIF,bool,SDL_IOStream *src,SDL_IOStream bool,Detect TIFF image data on a readable/seekable SDL_IOStream.
+IMG_isWEBP,bool,SDL_IOStream *src,SDL_IOStream bool,Detect WEBP image data on a readable/seekable SDL_IOStream.
+IMG_isXCF,bool,SDL_IOStream *src,SDL_IOStream bool,Detect XCF image data on a readable/seekable SDL_IOStream.
+IMG_isXPM,bool,SDL_IOStream *src,SDL_IOStream bool,Detect XPM image data on a readable/seekable SDL_IOStream.
+IMG_isXV,bool,SDL_IOStream *src,SDL_IOStream bool,Detect XV image data on a readable/seekable SDL_IOStream.

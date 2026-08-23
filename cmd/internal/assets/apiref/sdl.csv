@@ -1,0 +1,1280 @@
+name,return_type,parameters,types,description
+SDL_AcquireCameraFrame,SDL_Surface*,"SDL_Camera *camera, Uint64 *timestampNS",SDL_Camera Uint64 SDL_Surface,Acquire a frame.
+SDL_AcquireGPUCommandBuffer,SDL_GPUCommandBuffer*,SDL_GPUDevice *device,SDL_GPUDevice SDL_GPUCommandBuffer,Acquire a command buffer.
+SDL_AcquireGPUSwapchainTexture,bool,"SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height",SDL_GPUCommandBuffer SDL_Window SDL_GPUTexture Uint32 bool,Acquire a texture to use in presentation.
+SDL_AddAtomicInt,int,"SDL_AtomicInt *a, int v",SDL_AtomicInt int,Add to an atomic variable.
+SDL_AddAtomicU32,Uint32,"SDL_AtomicU32 *a, int v",SDL_AtomicU32 int Uint32,Add to an atomic variable.
+SDL_AddEventWatch,bool,"SDL_EventFilter filter, void *userdata",SDL_EventFilter bool,Add a callback to be triggered when an event is added to the event queue.
+SDL_AddGamepadMapping,int,const char *mapping,char int,Add support for gamepads that SDL is unaware of or change the binding of an existing gamepad.
+SDL_AddGamepadMappingsFromFile,int,const char *file,char int,Load a set of gamepad mappings from a file.
+SDL_AddGamepadMappingsFromIO,int,"SDL_IOStream *src, bool closeio",SDL_IOStream bool int,Load a set of gamepad mappings from an SDL_IOStream.
+SDL_AddHintCallback,bool,"const char *name, SDL_HintCallback callback, void *userdata",char SDL_HintCallback bool,Add a function to watch a particular hint.
+SDL_AddSurfaceAlternateImage,bool,"SDL_Surface *surface, SDL_Surface *image",SDL_Surface bool,Add an alternate version of a surface.
+SDL_AddTimer,SDL_TimerID,"Uint32 interval, SDL_TimerCallback callback, void *userdata",Uint32 SDL_TimerCallback SDL_TimerID,Call a callback function at a future time.
+SDL_AddTimerNS,SDL_TimerID,"Uint64 interval, SDL_NSTimerCallback callback, void *userdata",Uint64 SDL_NSTimerCallback SDL_TimerID,Call a callback function at a future time.
+SDL_AddVulkanRenderSemaphores,bool,"SDL_Renderer *renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore",SDL_Renderer Uint32 Sint64 bool,Add a set of synchronization semaphores for the current frame.
+SDL_AsyncIOFromFile,SDL_AsyncIO*,"const char *file, const char *mode",char SDL_AsyncIO,Use this function to create a new SDL_AsyncIO object for reading from and/or writing to a named file.
+SDL_AttachVirtualJoystick,SDL_JoystickID,const SDL_VirtualJoystickDesc *desc,SDL_VirtualJoystickDesc SDL_JoystickID,Attach a new virtual joystick.
+SDL_AudioDevicePaused,bool,SDL_AudioDeviceID devid,SDL_AudioDeviceID bool,Use this function to query if an audio device is paused.
+SDL_AudioStreamDevicePaused,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Use this function to query if an audio device associated with a stream is paused.
+SDL_BeginGPUComputePass,SDL_GPUComputePass*,"SDL_GPUCommandBuffer *command_buffer, const SDL_GPUStorageTextureReadWriteBinding *storage_texture_bindings, Uint32 num_storage_texture_bindings, const SDL_GPUStorageBufferReadWriteBinding *storage_buffer_bindings, Uint32 num_storage_buffer_bindings",SDL_GPUCommandBuffer SDL_GPUStorageTextureReadWriteBinding Uint32 SDL_GPUStorageBufferReadWriteBinding SDL_GPUComputePass,Begins a compute pass on a command buffer.
+SDL_BeginGPUCopyPass,SDL_GPUCopyPass*,SDL_GPUCommandBuffer *command_buffer,SDL_GPUCommandBuffer SDL_GPUCopyPass,Begins a copy pass on a command buffer.
+SDL_BeginGPURenderPass,SDL_GPURenderPass*,"SDL_GPUCommandBuffer *command_buffer, const SDL_GPUColorTargetInfo *color_target_infos, Uint32 num_color_targets, const SDL_GPUDepthStencilTargetInfo *depth_stencil_target_info",SDL_GPUCommandBuffer SDL_GPUColorTargetInfo Uint32 SDL_GPUDepthStencilTargetInfo SDL_GPURenderPass,Begins a render pass on a command buffer.
+SDL_BindAudioStream,bool,"SDL_AudioDeviceID devid, SDL_AudioStream *stream",SDL_AudioDeviceID SDL_AudioStream bool,Bind a single audio stream to an audio device.
+SDL_BindAudioStreams,bool,"SDL_AudioDeviceID devid, SDL_AudioStream * const *streams, int num_streams",SDL_AudioDeviceID SDL_AudioStream int bool,Bind a list of audio streams to an audio device.
+SDL_BindGPUComputePipeline,void,"SDL_GPUComputePass *compute_pass, SDL_GPUComputePipeline *compute_pipeline",SDL_GPUComputePass SDL_GPUComputePipeline,Binds a compute pipeline on a command buffer for use in compute dispatch.
+SDL_BindGPUComputeSamplers,void,"SDL_GPUComputePass *compute_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings",SDL_GPUComputePass Uint32 SDL_GPUTextureSamplerBinding,Binds texture-sampler pairs for use on the compute shader.
+SDL_BindGPUComputeStorageBuffers,void,"SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings",SDL_GPUComputePass Uint32 SDL_GPUBuffer,Binds storage buffers as readonly for use on the compute pipeline.
+SDL_BindGPUComputeStorageTextures,void,"SDL_GPUComputePass *compute_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings",SDL_GPUComputePass Uint32 SDL_GPUTexture,Binds storage textures as readonly for use on the compute pipeline.
+SDL_BindGPUFragmentSamplers,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUTextureSamplerBinding,Binds texture-sampler pairs for use on the fragment shader.
+SDL_BindGPUFragmentStorageBuffers,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUBuffer,Binds storage buffers for use on the fragment shader.
+SDL_BindGPUFragmentStorageTextures,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUTexture,Binds storage textures for use on the fragment shader.
+SDL_BindGPUGraphicsPipeline,void,"SDL_GPURenderPass *render_pass, SDL_GPUGraphicsPipeline *graphics_pipeline",SDL_GPURenderPass SDL_GPUGraphicsPipeline,Binds a graphics pipeline on a render pass to be used in rendering.
+SDL_BindGPUIndexBuffer,void,"SDL_GPURenderPass *render_pass, const SDL_GPUBufferBinding *binding, SDL_GPUIndexElementSize index_element_size",SDL_GPURenderPass SDL_GPUBufferBinding SDL_GPUIndexElementSize,Binds an index buffer on a command buffer for use with subsequent draw calls.
+SDL_BindGPUVertexBuffers,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUBufferBinding *bindings, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUBufferBinding,Binds vertex buffers on a command buffer for use with subsequent draw calls.
+SDL_BindGPUVertexSamplers,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, const SDL_GPUTextureSamplerBinding *texture_sampler_bindings, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUTextureSamplerBinding,Binds texture-sampler pairs for use on the vertex shader.
+SDL_BindGPUVertexStorageBuffers,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUBuffer *const *storage_buffers, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUBuffer,Binds storage buffers for use on the vertex shader.
+SDL_BindGPUVertexStorageTextures,void,"SDL_GPURenderPass *render_pass, Uint32 first_slot, SDL_GPUTexture *const *storage_textures, Uint32 num_bindings",SDL_GPURenderPass Uint32 SDL_GPUTexture,Binds storage textures for use on the vertex shader.
+SDL_BlitGPUTexture,void,"SDL_GPUCommandBuffer *command_buffer, const SDL_GPUBlitInfo *info",SDL_GPUCommandBuffer SDL_GPUBlitInfo,Blits from a source texture region to a destination texture region.
+SDL_BlitSurface,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect",SDL_Surface SDL_Rect bool,Performs a fast blit from the source surface to the destination surface with clipping.
+SDL_BlitSurface9Grid,bool,"SDL_Surface *src, const SDL_Rect *srcrect, int left_width, int right_width, int top_height, int bottom_height, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect",SDL_Surface SDL_Rect int float SDL_ScaleMode bool,"Perform a scaled blit using the 9-grid algorithm to a destination surface, which may be of a different format."
+SDL_BlitSurfaceScaled,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode",SDL_Surface SDL_Rect SDL_ScaleMode bool,"Perform a scaled blit to a destination surface, which may be of a different format."
+SDL_BlitSurfaceTiled,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect",SDL_Surface SDL_Rect bool,"Perform a tiled blit to a destination surface, which may be of a different format."
+SDL_BlitSurfaceTiledWithScale,bool,"SDL_Surface *src, const SDL_Rect *srcrect, float scale, SDL_ScaleMode scaleMode, SDL_Surface *dst, const SDL_Rect *dstrect",SDL_Surface SDL_Rect float SDL_ScaleMode bool,"Perform a scaled and tiled blit to a destination surface, which may be of a different format."
+SDL_BlitSurfaceUnchecked,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect",SDL_Surface SDL_Rect bool,Perform low-level surface blitting only.
+SDL_BlitSurfaceUncheckedScaled,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode",SDL_Surface SDL_Rect SDL_ScaleMode bool,Perform low-level surface scaled blitting only.
+SDL_BroadcastCondition,void,SDL_Condition *cond,SDL_Condition,Restart all threads that are waiting on the condition variable.
+SDL_CalculateGPUTextureFormatSize,Uint32,"SDL_GPUTextureFormat format, Uint32 width, Uint32 height, Uint32 depth_or_layer_count",SDL_GPUTextureFormat Uint32,Calculate the size in bytes of a texture format with dimensions.
+SDL_CancelGPUCommandBuffer,bool,SDL_GPUCommandBuffer *command_buffer,SDL_GPUCommandBuffer bool,Cancels a command buffer.
+SDL_CaptureMouse,bool,bool enabled,bool,Capture the mouse and to track input outside an SDL window.
+SDL_ClaimWindowForGPUDevice,bool,"SDL_GPUDevice *device, SDL_Window *window",SDL_GPUDevice SDL_Window bool,"Claims a window, creating a swapchain structure for it."
+SDL_CleanupTLS,void,,,Cleanup all TLS data for this thread.
+SDL_ClearAudioStream,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Clear any pending data in the stream.
+SDL_ClearClipboardData,bool,,bool,Clear the clipboard data.
+SDL_ClearComposition,bool,SDL_Window *window,SDL_Window bool,Dismiss the composition window/IME without disabling the subsystem.
+SDL_ClearError,bool,,bool,Clear any previous error message for this thread.
+SDL_ClearProperty,bool,"SDL_PropertiesID props, const char *name",SDL_PropertiesID char bool,Clear a property from a group of properties.
+SDL_ClearSurface,bool,"SDL_Surface *surface, float r, float g, float b, float a",SDL_Surface float bool,"Clear a surface with a specific color, with floating point precision."
+SDL_ClickTrayEntry,void,SDL_TrayEntry *entry,SDL_TrayEntry,Simulate a click on a tray entry.
+SDL_CloseAsyncIO,bool,"SDL_AsyncIO *asyncio, bool flush, SDL_AsyncIOQueue *queue, void *userdata",SDL_AsyncIO bool SDL_AsyncIOQueue,Close and free any allocated resources for an async I/O object.
+SDL_CloseAudioDevice,void,SDL_AudioDeviceID devid,SDL_AudioDeviceID,Close a previously-opened audio device.
+SDL_CloseCamera,void,SDL_Camera *camera,SDL_Camera,Use this function to shut down camera processing and close the camera device.
+SDL_CloseGamepad,void,SDL_Gamepad *gamepad,SDL_Gamepad,Close a gamepad previously opened with SDL_OpenGamepad().
+SDL_CloseHaptic,void,SDL_Haptic *haptic,SDL_Haptic,Close a haptic device previously opened with SDL_OpenHaptic().
+SDL_CloseIO,bool,SDL_IOStream *context,SDL_IOStream bool,Close and free an allocated SDL_IOStream structure.
+SDL_CloseJoystick,void,SDL_Joystick *joystick,SDL_Joystick,Close a joystick previously opened with SDL_OpenJoystick().
+SDL_CloseSensor,void,SDL_Sensor *sensor,SDL_Sensor,Close a sensor previously opened with SDL_OpenSensor().
+SDL_CloseStorage,bool,SDL_Storage *storage,SDL_Storage bool,Closes and frees a storage container.
+SDL_CompareAndSwapAtomicInt,bool,"SDL_AtomicInt *a, int oldval, int newval",SDL_AtomicInt int bool,Set an atomic variable to a new value if it is currently an old value.
+SDL_CompareAndSwapAtomicPointer,bool,"void **a, void *oldval, void *newval",bool,Set a pointer to a new value if it is currently an old value.
+SDL_CompareAndSwapAtomicU32,bool,"SDL_AtomicU32 *a, Uint32 oldval, Uint32 newval",SDL_AtomicU32 Uint32 bool,Set an atomic variable to a new value if it is currently an old value.
+SDL_ComposeCustomBlendMode,SDL_BlendMode,"SDL_BlendFactor srcColorFactor, SDL_BlendFactor dstColorFactor, SDL_BlendOperation colorOperation, SDL_BlendFactor srcAlphaFactor, SDL_BlendFactor dstAlphaFactor, SDL_BlendOperation alphaOperation",SDL_BlendFactor SDL_BlendOperation SDL_BlendMode,Compose a custom blend mode for renderers.
+SDL_ConvertAudioSamples,bool,"const SDL_AudioSpec *src_spec, const Uint8 *src_data, int src_len, const SDL_AudioSpec *dst_spec, Uint8 **dst_data, int *dst_len",SDL_AudioSpec Uint8 int bool,Convert some audio data of one format to another format.
+SDL_ConvertEventToRenderCoordinates,bool,"SDL_Renderer *renderer, SDL_Event *event",SDL_Renderer SDL_Event bool,Convert the coordinates in an event to render coordinates.
+SDL_ConvertPixels,bool,"int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch",int SDL_PixelFormat bool,Copy a block of pixels of one format to another format.
+SDL_ConvertPixelsAndColorspace,bool,"int width, int height, SDL_PixelFormat src_format, SDL_Colorspace src_colorspace, SDL_PropertiesID src_properties, const void *src, int src_pitch, SDL_PixelFormat dst_format, SDL_Colorspace dst_colorspace, SDL_PropertiesID dst_properties, void *dst, int dst_pitch",int SDL_PixelFormat SDL_Colorspace SDL_PropertiesID bool,Copy a block of pixels of one format and colorspace to another format and colorspace.
+SDL_ConvertSurface,SDL_Surface*,"SDL_Surface *surface, SDL_PixelFormat format",SDL_Surface SDL_PixelFormat,Copy an existing surface to a new surface of the specified format.
+SDL_ConvertSurfaceAndColorspace,SDL_Surface*,"SDL_Surface *surface, SDL_PixelFormat format, SDL_Palette *palette, SDL_Colorspace colorspace, SDL_PropertiesID props",SDL_Surface SDL_PixelFormat SDL_Palette SDL_Colorspace SDL_PropertiesID,Copy an existing surface to a new surface of the specified format and colorspace.
+SDL_CopyFile,bool,"const char *oldpath, const char *newpath",char bool,Copy a file.
+SDL_CopyGPUBufferToBuffer,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferLocation *source, const SDL_GPUBufferLocation *destination, Uint32 size, bool cycle",SDL_GPUCopyPass SDL_GPUBufferLocation Uint32 bool,Performs a buffer-to-buffer copy.
+SDL_CopyGPUTextureToTexture,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureLocation *source, const SDL_GPUTextureLocation *destination, Uint32 w, Uint32 h, Uint32 d, bool cycle",SDL_GPUCopyPass SDL_GPUTextureLocation Uint32 bool,Performs a texture-to-texture copy.
+SDL_CopyProperties,bool,"SDL_PropertiesID src, SDL_PropertiesID dst",SDL_PropertiesID bool,Copy a group of properties.
+SDL_CopyStorageFile,bool,"SDL_Storage *storage, const char *oldpath, const char *newpath",SDL_Storage char bool,Copy a file in a writable storage container.
+SDL_CreateAnimatedCursor,SDL_Cursor*,"SDL_CursorFrameInfo *frames, int frame_count, int hot_x, int hot_y",SDL_CursorFrameInfo int SDL_Cursor,Create an animated color cursor.
+SDL_CreateAsyncIOQueue,SDL_AsyncIOQueue*,,SDL_AsyncIOQueue,Create a task queue for tracking multiple I/O operations.
+SDL_CreateAudioStream,SDL_AudioStream*,"const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec",SDL_AudioSpec SDL_AudioStream,Create a new audio stream.
+SDL_CreateColorCursor,SDL_Cursor*,"SDL_Surface *surface, int hot_x, int hot_y",SDL_Surface int SDL_Cursor,Create a color cursor.
+SDL_CreateCondition,SDL_Condition*,,SDL_Condition,Create a condition variable.
+SDL_CreateCursor,SDL_Cursor*,"const Uint8 *data, const Uint8 *mask, int w, int h, int hot_x, int hot_y",Uint8 int SDL_Cursor,Create a cursor using the specified bitmap data and mask (in MSB format).
+SDL_CreateDirectory,bool,const char *path,char bool,"Create a directory, and any missing parent directories."
+SDL_CreateEnvironment,SDL_Environment*,bool populated,bool SDL_Environment,Create a set of environment variables
+SDL_CreateGPUBuffer,SDL_GPUBuffer*,"SDL_GPUDevice *device, const SDL_GPUBufferCreateInfo *createinfo",SDL_GPUDevice SDL_GPUBufferCreateInfo SDL_GPUBuffer,Creates a buffer object to be used in graphics or compute workflows.
+SDL_CreateGPUComputePipeline,SDL_GPUComputePipeline*,"SDL_GPUDevice *device, const SDL_GPUComputePipelineCreateInfo *createinfo",SDL_GPUDevice SDL_GPUComputePipelineCreateInfo SDL_GPUComputePipeline,Creates a pipeline object to be used in a compute workflow.
+SDL_CreateGPUDevice,SDL_GPUDevice*,"SDL_GPUShaderFormat format_flags, bool debug_mode, const char *name",SDL_GPUShaderFormat bool char SDL_GPUDevice,Creates a GPU context.
+SDL_CreateGPUDeviceWithProperties,SDL_GPUDevice*,SDL_PropertiesID props,SDL_PropertiesID SDL_GPUDevice,Creates a GPU context.
+SDL_CreateGPUGraphicsPipeline,SDL_GPUGraphicsPipeline*,"SDL_GPUDevice *device, const SDL_GPUGraphicsPipelineCreateInfo *createinfo",SDL_GPUDevice SDL_GPUGraphicsPipelineCreateInfo SDL_GPUGraphicsPipeline,Creates a pipeline object to be used in a graphics workflow.
+SDL_CreateGPURenderState,SDL_GPURenderState*,"SDL_Renderer *renderer, const SDL_GPURenderStateCreateInfo *createinfo",SDL_Renderer SDL_GPURenderStateCreateInfo SDL_GPURenderState,Create custom GPU render state.
+SDL_CreateGPURenderer,SDL_Renderer*,"SDL_GPUDevice *device, SDL_Window *window",SDL_GPUDevice SDL_Window SDL_Renderer,Create a 2D GPU rendering context.
+SDL_CreateGPUSampler,SDL_GPUSampler*,"SDL_GPUDevice *device, const SDL_GPUSamplerCreateInfo *createinfo",SDL_GPUDevice SDL_GPUSamplerCreateInfo SDL_GPUSampler,Creates a sampler object to be used when binding textures in a graphics workflow.
+SDL_CreateGPUShader,SDL_GPUShader*,"SDL_GPUDevice *device, const SDL_GPUShaderCreateInfo *createinfo",SDL_GPUDevice SDL_GPUShaderCreateInfo SDL_GPUShader,Creates a shader to be used when creating a graphics pipeline.
+SDL_CreateGPUTexture,SDL_GPUTexture*,"SDL_GPUDevice *device, const SDL_GPUTextureCreateInfo *createinfo",SDL_GPUDevice SDL_GPUTextureCreateInfo SDL_GPUTexture,Creates a texture object to be used in graphics or compute workflows.
+SDL_CreateGPUTransferBuffer,SDL_GPUTransferBuffer*,"SDL_GPUDevice *device, const SDL_GPUTransferBufferCreateInfo *createinfo",SDL_GPUDevice SDL_GPUTransferBufferCreateInfo SDL_GPUTransferBuffer,Creates a transfer buffer to be used when uploading to or downloading from graphics resources.
+SDL_CreateHapticEffect,SDL_HapticEffectID,"SDL_Haptic *haptic, const SDL_HapticEffect *effect",SDL_Haptic SDL_HapticEffect SDL_HapticEffectID,Create a new haptic effect on a specified device.
+SDL_CreateMutex,SDL_Mutex*,,SDL_Mutex,Create a new mutex.
+SDL_CreatePalette,SDL_Palette*,int ncolors,int SDL_Palette,Create a palette structure with the specified number of color entries.
+SDL_CreatePopupWindow,SDL_Window*,"SDL_Window *parent, int offset_x, int offset_y, int w, int h, SDL_WindowFlags flags",SDL_Window int SDL_WindowFlags,Create a child popup window of the specified parent window.
+SDL_CreateProcess,SDL_Process*,"const char * const *args, bool pipe_stdio",char bool SDL_Process,Create a new process.
+SDL_CreateProcessWithProperties,SDL_Process*,SDL_PropertiesID props,SDL_PropertiesID SDL_Process,Create a new process with the specified properties.
+SDL_CreateProperties,SDL_PropertiesID,,SDL_PropertiesID,Create a group of properties.
+SDL_CreateRWLock,SDL_RWLock*,,SDL_RWLock,Create a new read/write lock.
+SDL_CreateRenderer,SDL_Renderer*,"SDL_Window *window, const char *name",SDL_Window char SDL_Renderer,Create a 2D rendering context for a window.
+SDL_CreateRendererWithProperties,SDL_Renderer*,SDL_PropertiesID props,SDL_PropertiesID SDL_Renderer,"Create a 2D rendering context for a window, with the specified properties."
+SDL_CreateSemaphore,SDL_Semaphore*,Uint32 initial_value,Uint32 SDL_Semaphore,Create a semaphore.
+SDL_CreateSoftwareRenderer,SDL_Renderer*,SDL_Surface *surface,SDL_Surface SDL_Renderer,Create a 2D software rendering context for a surface.
+SDL_CreateStorageDirectory,bool,"SDL_Storage *storage, const char *path",SDL_Storage char bool,Create a directory in a writable storage container.
+SDL_CreateSurface,SDL_Surface*,"int width, int height, SDL_PixelFormat format",int SDL_PixelFormat SDL_Surface,Allocate a new surface with a specific pixel format.
+SDL_CreateSurfaceFrom,SDL_Surface*,"int width, int height, SDL_PixelFormat format, void *pixels, int pitch",int SDL_PixelFormat SDL_Surface,Allocate a new surface with a specific pixel format and existing pixel data.
+SDL_CreateSurfacePalette,SDL_Palette*,SDL_Surface *surface,SDL_Surface SDL_Palette,Create a palette and associate it with a surface.
+SDL_CreateSystemCursor,SDL_Cursor*,SDL_SystemCursor id,SDL_SystemCursor SDL_Cursor,Create a system cursor.
+SDL_CreateTexture,SDL_Texture*,"SDL_Renderer *renderer, SDL_PixelFormat format, SDL_TextureAccess access, int w, int h",SDL_Renderer SDL_PixelFormat SDL_TextureAccess int SDL_Texture,Create a texture for a rendering context.
+SDL_CreateTextureFromSurface,SDL_Texture*,"SDL_Renderer *renderer, SDL_Surface *surface",SDL_Renderer SDL_Surface SDL_Texture,Create a texture from an existing surface.
+SDL_CreateTextureWithProperties,SDL_Texture*,"SDL_Renderer *renderer, SDL_PropertiesID props",SDL_Renderer SDL_PropertiesID SDL_Texture,Create a texture for a rendering context with the specified properties.
+SDL_CreateThread,SDL_Thread*,"SDL_ThreadFunction fn, const char *name, void *data",SDL_ThreadFunction char SDL_Thread,Create a new thread with a default stack size.
+SDL_CreateThreadWithProperties,SDL_Thread*,SDL_PropertiesID props,SDL_PropertiesID SDL_Thread,Create a new thread with with the specified properties.
+SDL_CreateTray,SDL_Tray*,"SDL_Surface *icon, const char *tooltip",SDL_Surface char SDL_Tray,"Create an icon to be placed in the operating system's tray, or equivalent."
+SDL_CreateTrayMenu,SDL_TrayMenu*,SDL_Tray *tray,SDL_Tray SDL_TrayMenu,Create a menu for a system tray.
+SDL_CreateTraySubmenu,SDL_TrayMenu*,SDL_TrayEntry *entry,SDL_TrayEntry SDL_TrayMenu,Create a submenu for a system tray entry.
+SDL_CreateTrayWithProperties,SDL_Tray*,SDL_PropertiesID props,SDL_PropertiesID SDL_Tray,"Create an icon to be placed in the operating system's tray, or equivalent."
+SDL_CreateWindow,SDL_Window*,"const char *title, int w, int h, SDL_WindowFlags flags",char int SDL_WindowFlags SDL_Window,Create a window with the specified dimensions and flags.
+SDL_CreateWindowAndRenderer,bool,"const char *title, int width, int height, SDL_WindowFlags window_flags, SDL_Window **window, SDL_Renderer **renderer",char int SDL_WindowFlags SDL_Window SDL_Renderer bool,Create a window and default renderer.
+SDL_CreateWindowWithProperties,SDL_Window*,SDL_PropertiesID props,SDL_PropertiesID SDL_Window,Create a window with the specified properties.
+SDL_CursorVisible,bool,,bool,Return whether the cursor is currently being shown.
+SDL_DateTimeToTime,bool,"const SDL_DateTime *dt, SDL_Time *ticks",SDL_DateTime SDL_Time bool,Converts a calendar time to an SDL_Time in nanoseconds since the epoch.
+SDL_Delay,void,Uint32 ms,Uint32,Wait a specified number of milliseconds before returning.
+SDL_DelayNS,void,Uint64 ns,Uint64,Wait a specified number of nanoseconds before returning.
+SDL_DelayPrecise,void,Uint64 ns,Uint64,Wait a specified number of nanoseconds before returning.
+SDL_DestroyAsyncIOQueue,void,SDL_AsyncIOQueue *queue,SDL_AsyncIOQueue,Destroy a previously-created async I/O task queue.
+SDL_DestroyAudioStream,void,SDL_AudioStream *stream,SDL_AudioStream,Free an audio stream.
+SDL_DestroyCondition,void,SDL_Condition *cond,SDL_Condition,Destroy a condition variable.
+SDL_DestroyCursor,void,SDL_Cursor *cursor,SDL_Cursor,Free a previously-created cursor.
+SDL_DestroyEnvironment,void,SDL_Environment *env,SDL_Environment,Destroy a set of environment variables.
+SDL_DestroyGPUDevice,void,SDL_GPUDevice *device,SDL_GPUDevice,Destroys a GPU context previously returned by SDL_CreateGPUDevice.
+SDL_DestroyGPURenderState,void,SDL_GPURenderState *state,SDL_GPURenderState,Destroy custom GPU render state.
+SDL_DestroyHapticEffect,void,"SDL_Haptic *haptic, SDL_HapticEffectID effect",SDL_Haptic SDL_HapticEffectID,Destroy a haptic effect on the device.
+SDL_DestroyMutex,void,SDL_Mutex *mutex,SDL_Mutex,Destroy a mutex created with SDL_CreateMutex().
+SDL_DestroyPalette,void,SDL_Palette *palette,SDL_Palette,Free a palette created with SDL_CreatePalette().
+SDL_DestroyProcess,void,SDL_Process *process,SDL_Process,Destroy a previously created process object.
+SDL_DestroyProperties,void,SDL_PropertiesID props,SDL_PropertiesID,Destroy a group of properties.
+SDL_DestroyRWLock,void,SDL_RWLock *rwlock,SDL_RWLock,Destroy a read/write lock created with SDL_CreateRWLock().
+SDL_DestroyRenderer,void,SDL_Renderer *renderer,SDL_Renderer,Destroy the rendering context for a window and free all associated textures.
+SDL_DestroySemaphore,void,SDL_Semaphore *sem,SDL_Semaphore,Destroy a semaphore.
+SDL_DestroySurface,void,SDL_Surface *surface,SDL_Surface,Free a surface.
+SDL_DestroyTexture,void,SDL_Texture *texture,SDL_Texture,Destroy the specified texture.
+SDL_DestroyTray,void,SDL_Tray *tray,SDL_Tray,Destroys a tray object.
+SDL_DestroyWindow,void,SDL_Window *window,SDL_Window,Destroy a window.
+SDL_DestroyWindowSurface,bool,SDL_Window *window,SDL_Window bool,Destroy the surface associated with the window.
+SDL_DetachThread,void,SDL_Thread *thread,SDL_Thread,Let a thread clean up on exit without intervention.
+SDL_DetachVirtualJoystick,bool,SDL_JoystickID instance_id,SDL_JoystickID bool,Detach a virtual joystick.
+SDL_DisableScreenSaver,bool,,bool,Prevent the screen from being blanked by a screen saver.
+SDL_DispatchGPUCompute,void,"SDL_GPUComputePass *compute_pass, Uint32 groupcount_x, Uint32 groupcount_y, Uint32 groupcount_z",SDL_GPUComputePass Uint32,Dispatches compute work.
+SDL_DispatchGPUComputeIndirect,void,"SDL_GPUComputePass *compute_pass, SDL_GPUBuffer *buffer, Uint32 offset",SDL_GPUComputePass SDL_GPUBuffer Uint32,Dispatches compute work with parameters set from a buffer.
+SDL_DownloadFromGPUBuffer,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUBufferRegion *source, const SDL_GPUTransferBufferLocation *destination",SDL_GPUCopyPass SDL_GPUBufferRegion SDL_GPUTransferBufferLocation,Copies data from a buffer to a transfer buffer on the GPU timeline.
+SDL_DownloadFromGPUTexture,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureRegion *source, const SDL_GPUTextureTransferInfo *destination",SDL_GPUCopyPass SDL_GPUTextureRegion SDL_GPUTextureTransferInfo,Copies data from a texture to a transfer buffer on the GPU timeline.
+SDL_DrawGPUIndexedPrimitives,void,"SDL_GPURenderPass *render_pass, Uint32 num_indices, Uint32 num_instances, Uint32 first_index, Sint32 vertex_offset, Uint32 first_instance",SDL_GPURenderPass Uint32 Sint32,Draws data using bound graphics state with an index buffer and instancing enabled.
+SDL_DrawGPUIndexedPrimitivesIndirect,void,"SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count",SDL_GPURenderPass SDL_GPUBuffer Uint32,Draws data using bound graphics state with an index buffer enabled and with draw parameters set from a buffer.
+SDL_DrawGPUPrimitives,void,"SDL_GPURenderPass *render_pass, Uint32 num_vertices, Uint32 num_instances, Uint32 first_vertex, Uint32 first_instance",SDL_GPURenderPass Uint32,Draws data using bound graphics state.
+SDL_DrawGPUPrimitivesIndirect,void,"SDL_GPURenderPass *render_pass, SDL_GPUBuffer *buffer, Uint32 offset, Uint32 draw_count",SDL_GPURenderPass SDL_GPUBuffer Uint32,Draws data using bound graphics state and with draw parameters set from a buffer.
+SDL_DuplicateSurface,SDL_Surface*,SDL_Surface *surface,SDL_Surface,Creates a new surface identical to the existing surface.
+SDL_EGL_GetCurrentConfig,SDL_EGLConfig,,SDL_EGLConfig,Get the currently active EGL config.
+SDL_EGL_GetCurrentDisplay,SDL_EGLDisplay,,SDL_EGLDisplay,Get the currently active EGL display.
+SDL_EGL_GetProcAddress,SDL_FunctionPointer,const char *proc,char SDL_FunctionPointer,Get an EGL library function by name.
+SDL_EGL_GetWindowSurface,SDL_EGLSurface,SDL_Window *window,SDL_Window SDL_EGLSurface,Get the EGL surface associated with the window.
+SDL_EGL_SetAttributeCallbacks,void,"SDL_EGLAttribArrayCallback platformAttribCallback, SDL_EGLIntArrayCallback surfaceAttribCallback, SDL_EGLIntArrayCallback contextAttribCallback, void *userdata",SDL_EGLAttribArrayCallback SDL_EGLIntArrayCallback,Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.
+SDL_EnableScreenSaver,bool,,bool,Allow the screen to be blanked by a screen saver.
+SDL_EndGPUComputePass,void,SDL_GPUComputePass *compute_pass,SDL_GPUComputePass,Ends the current compute pass.
+SDL_EndGPUCopyPass,void,SDL_GPUCopyPass *copy_pass,SDL_GPUCopyPass,Ends the current copy pass.
+SDL_EndGPURenderPass,void,SDL_GPURenderPass *render_pass,SDL_GPURenderPass,Ends the given render pass.
+SDL_EnumerateDirectory,bool,"const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata",char SDL_EnumerateDirectoryCallback bool,Enumerate a directory through a callback function.
+SDL_EnumerateProperties,bool,"SDL_PropertiesID props, SDL_EnumeratePropertiesCallback callback, void *userdata",SDL_PropertiesID SDL_EnumeratePropertiesCallback bool,Enumerate the properties contained in a group of properties.
+SDL_EnumerateStorageDirectory,bool,"SDL_Storage *storage, const char *path, SDL_EnumerateDirectoryCallback callback, void *userdata",SDL_Storage char SDL_EnumerateDirectoryCallback bool,Enumerate a directory in a storage container through a callback function.
+SDL_EventEnabled,bool,Uint32 type,Uint32 bool,Query the state of processing events by type.
+SDL_FillSurfaceRect,bool,"SDL_Surface *dst, const SDL_Rect *rect, Uint32 color",SDL_Surface SDL_Rect Uint32 bool,Perform a fast fill of a rectangle with a specific color.
+SDL_FillSurfaceRects,bool,"SDL_Surface *dst, const SDL_Rect *rects, int count, Uint32 color",SDL_Surface SDL_Rect int Uint32 bool,Perform a fast fill of a set of rectangles with a specific color.
+SDL_FilterEvents,void,"SDL_EventFilter filter, void *userdata",SDL_EventFilter,"Run a specific filter function on the current event queue, removing any events for which the filter returns false."
+SDL_FlashWindow,bool,"SDL_Window *window, SDL_FlashOperation operation",SDL_Window SDL_FlashOperation bool,Request a window to demand attention from the user.
+SDL_FlipSurface,bool,"SDL_Surface *surface, SDL_FlipMode flip",SDL_Surface SDL_FlipMode bool,Flip a surface vertically or horizontally.
+SDL_FlushAudioStream,bool,SDL_AudioStream *stream,SDL_AudioStream bool,"Tell the stream that you're done sending data, and anything being buffered should be converted/resampled and made available immediately."
+SDL_FlushEvent,void,Uint32 type,Uint32,Clear events of a specific type from the event queue.
+SDL_FlushEvents,void,"Uint32 minType, Uint32 maxType",Uint32,Clear events of a range of types from the event queue.
+SDL_FlushIO,bool,SDL_IOStream *context,SDL_IOStream bool,Flush any buffered data in the stream.
+SDL_FlushRenderer,bool,SDL_Renderer *renderer,SDL_Renderer bool,Force the rendering context to flush any pending commands and state.
+SDL_GDKResumeGPU,void,SDL_GPUDevice *device,SDL_GPUDevice,Call this to resume GPU operation on Xbox after receiving the SDL_EVENT_WILL_ENTER_FOREGROUND event.
+SDL_GDKResumeRenderer,void,SDL_Renderer *renderer,SDL_Renderer,Call this to resume Render operations on Xbox after receiving the SDL_EVENT_WILL_ENTER_FOREGROUND event.
+SDL_GDKSuspendGPU,void,SDL_GPUDevice *device,SDL_GPUDevice,Call this to suspend GPU operation on Xbox after receiving the SDL_EVENT_DID_ENTER_BACKGROUND event.
+SDL_GDKSuspendRenderer,void,SDL_Renderer *renderer,SDL_Renderer,Call this to suspend Render operations on Xbox after receiving the SDL_EVENT_DID_ENTER_BACKGROUND event.
+SDL_GL_CreateContext,SDL_GLContext,SDL_Window *window,SDL_Window SDL_GLContext,"Create an OpenGL context for an OpenGL window, and make it current."
+SDL_GL_DestroyContext,bool,SDL_GLContext context,SDL_GLContext bool,Delete an OpenGL context.
+SDL_GL_ExtensionSupported,bool,const char *extension,char bool,Check if an OpenGL extension is supported for the current context.
+SDL_GL_GetAttribute,bool,"SDL_GLAttr attr, int *value",SDL_GLAttr int bool,Get the actual value for an attribute from the current context.
+SDL_GL_GetCurrentContext,SDL_GLContext,,SDL_GLContext,Get the currently active OpenGL context.
+SDL_GL_GetCurrentWindow,SDL_Window*,,SDL_Window,Get the currently active OpenGL window.
+SDL_GL_GetProcAddress,SDL_FunctionPointer,const char *proc,char SDL_FunctionPointer,Get an OpenGL function by name.
+SDL_GL_GetSwapInterval,bool,int *interval,int bool,Get the swap interval for the current OpenGL context.
+SDL_GL_LoadLibrary,bool,const char *path,char bool,Dynamically load an OpenGL library.
+SDL_GL_MakeCurrent,bool,"SDL_Window *window, SDL_GLContext context",SDL_Window SDL_GLContext bool,Set up an OpenGL context for rendering into an OpenGL window.
+SDL_GL_ResetAttributes,void,,,Reset all previously set OpenGL context attributes to their default values.
+SDL_GL_SetAttribute,bool,"SDL_GLAttr attr, int value",SDL_GLAttr int bool,Set an OpenGL window attribute before window creation.
+SDL_GL_SetSwapInterval,bool,int interval,int bool,Set the swap interval for the current OpenGL context.
+SDL_GL_SwapWindow,bool,SDL_Window *window,SDL_Window bool,Update a window with OpenGL rendering.
+SDL_GL_UnloadLibrary,void,,,Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().
+SDL_GPUSupportsProperties,bool,SDL_PropertiesID props,SDL_PropertiesID bool,Checks for GPU runtime support.
+SDL_GPUSupportsShaderFormats,bool,"SDL_GPUShaderFormat format_flags, const char *name",SDL_GPUShaderFormat char bool,Checks for GPU runtime support.
+SDL_GPUTextureFormatTexelBlockSize,Uint32,SDL_GPUTextureFormat format,SDL_GPUTextureFormat Uint32,Obtains the texel block size for a texture format.
+SDL_GPUTextureSupportsFormat,bool,"SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUTextureType type, SDL_GPUTextureUsageFlags usage",SDL_GPUDevice SDL_GPUTextureFormat SDL_GPUTextureType SDL_GPUTextureUsageFlags bool,Determines whether a texture format is supported for a given type and usage.
+SDL_GPUTextureSupportsSampleCount,bool,"SDL_GPUDevice *device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count",SDL_GPUDevice SDL_GPUTextureFormat SDL_GPUSampleCount bool,Determines if a sample count for a texture format is supported.
+SDL_GUIDToString,void,"SDL_GUID guid, char *pszGUID, int cbGUID",SDL_GUID char int,Get an ASCII string representation for a given SDL_GUID.
+SDL_GamepadConnected,bool,SDL_Gamepad *gamepad,SDL_Gamepad bool,Check if a gamepad has been opened and is currently connected.
+SDL_GamepadEventsEnabled,bool,,bool,Query the state of gamepad event processing.
+SDL_GamepadHasAxis,bool,"SDL_Gamepad *gamepad, SDL_GamepadAxis axis",SDL_Gamepad SDL_GamepadAxis bool,Query whether a gamepad has a given axis.
+SDL_GamepadHasButton,bool,"SDL_Gamepad *gamepad, SDL_GamepadButton button",SDL_Gamepad SDL_GamepadButton bool,Query whether a gamepad has a given button.
+SDL_GamepadHasCapSense,bool,"SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type",SDL_Gamepad SDL_GamepadCapSenseType bool,Return whether a gamepad has a particular capsense.
+SDL_GamepadHasSensor,bool,"SDL_Gamepad *gamepad, SDL_SensorType type",SDL_Gamepad SDL_SensorType bool,Return whether a gamepad has a particular sensor.
+SDL_GamepadSensorEnabled,bool,"SDL_Gamepad *gamepad, SDL_SensorType type",SDL_Gamepad SDL_SensorType bool,Query whether sensor data reporting is enabled for a gamepad.
+SDL_GenerateMipmapsForGPUTexture,void,"SDL_GPUCommandBuffer *command_buffer, SDL_GPUTexture *texture",SDL_GPUCommandBuffer SDL_GPUTexture,Generates mipmaps for the given texture.
+SDL_GetAndroidActivity,void*,,,Retrieve the Java instance of the Android activity class.
+SDL_GetAndroidCachePath,char*,,char,Get the path used for caching data for this Android application.
+SDL_GetAndroidExternalStoragePath,char*,,char,Get the path used for external storage for this Android application.
+SDL_GetAndroidExternalStorageState,Uint32,,Uint32,Get the current state of external storage for this Android application.
+SDL_GetAndroidInternalStoragePath,char*,,char,Get the path used for internal storage for this Android application.
+SDL_GetAndroidJNIEnv,void*,,,Get the Android Java Native Interface Environment of the current thread.
+SDL_GetAndroidSDKVersion,int,,int,Query Android API level of the current device.
+SDL_GetAppMetadataProperty,char*,const char *name,char,Get metadata about your app.
+SDL_GetAssertionHandler,SDL_AssertionHandler,void **puserdata,SDL_AssertionHandler,Get the current assertion handler.
+SDL_GetAssertionReport,SDL_AssertData*,,SDL_AssertData,Get a list of all assertion failures.
+SDL_GetAsyncIOResult,bool,"SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome",SDL_AsyncIOQueue SDL_AsyncIOOutcome bool,Query an async I/O task queue for completed tasks.
+SDL_GetAsyncIOSize,Sint64,SDL_AsyncIO *asyncio,SDL_AsyncIO Sint64,Use this function to get the size of the data stream in an SDL_AsyncIO.
+SDL_GetAtomicInt,int,SDL_AtomicInt *a,SDL_AtomicInt int,Get the value of an atomic variable.
+SDL_GetAtomicPointer,void*,void **a,,Get the value of a pointer atomically.
+SDL_GetAtomicU32,Uint32,SDL_AtomicU32 *a,SDL_AtomicU32 Uint32,Get the value of an atomic variable.
+SDL_GetAudioDeviceChannelMap,int*,"SDL_AudioDeviceID devid, int *count",SDL_AudioDeviceID int,Get the current channel map of an audio device.
+SDL_GetAudioDeviceFormat,bool,"SDL_AudioDeviceID devid, SDL_AudioSpec *spec, int *sample_frames",SDL_AudioDeviceID SDL_AudioSpec int bool,Get the current audio format of a specific audio device.
+SDL_GetAudioDeviceGain,float,SDL_AudioDeviceID devid,SDL_AudioDeviceID float,Get the gain of an audio device.
+SDL_GetAudioDeviceName,char*,SDL_AudioDeviceID devid,SDL_AudioDeviceID char,Get the human-readable name of a specific audio device.
+SDL_GetAudioDriver,char*,int index,int char,Use this function to get the name of a built in audio driver.
+SDL_GetAudioFormatName,char*,SDL_AudioFormat format,SDL_AudioFormat char,Get the human readable name of an audio format.
+SDL_GetAudioPlaybackDevices,SDL_AudioDeviceID*,int *count,int SDL_AudioDeviceID,Get a list of currently-connected audio playback devices.
+SDL_GetAudioRecordingDevices,SDL_AudioDeviceID*,int *count,int SDL_AudioDeviceID,Get a list of currently-connected audio recording devices.
+SDL_GetAudioStreamAvailable,int,SDL_AudioStream *stream,SDL_AudioStream int,Get the number of converted/resampled bytes available.
+SDL_GetAudioStreamData,int,"SDL_AudioStream *stream, void *buf, int len",SDL_AudioStream int,Get converted/resampled data from the stream.
+SDL_GetAudioStreamDevice,SDL_AudioDeviceID,SDL_AudioStream *stream,SDL_AudioStream SDL_AudioDeviceID,Query an audio stream for its currently-bound device.
+SDL_GetAudioStreamFormat,bool,"SDL_AudioStream *stream, SDL_AudioSpec *src_spec, SDL_AudioSpec *dst_spec",SDL_AudioStream SDL_AudioSpec bool,Query the current format of an audio stream.
+SDL_GetAudioStreamFrequencyRatio,float,SDL_AudioStream *stream,SDL_AudioStream float,Get the frequency ratio of an audio stream.
+SDL_GetAudioStreamGain,float,SDL_AudioStream *stream,SDL_AudioStream float,Get the gain of an audio stream.
+SDL_GetAudioStreamInputChannelMap,int*,"SDL_AudioStream *stream, int *count",SDL_AudioStream int,Get the current input channel map of an audio stream.
+SDL_GetAudioStreamOutputChannelMap,int*,"SDL_AudioStream *stream, int *count",SDL_AudioStream int,Get the current output channel map of an audio stream.
+SDL_GetAudioStreamProperties,SDL_PropertiesID,SDL_AudioStream *stream,SDL_AudioStream SDL_PropertiesID,Get the properties associated with an audio stream.
+SDL_GetAudioStreamQueued,int,SDL_AudioStream *stream,SDL_AudioStream int,Get the number of bytes currently queued.
+SDL_GetBasePath,char*,,char,Get the directory where the application was run from.
+SDL_GetBooleanProperty,bool,"SDL_PropertiesID props, const char *name, bool default_value",SDL_PropertiesID char bool,Get a boolean property from a group of properties.
+SDL_GetCPUCacheLineSize,int,,int,Determine the L1 cache line size of the CPU.
+SDL_GetCameraDriver,char*,int index,int char,Use this function to get the name of a built in camera driver.
+SDL_GetCameraFormat,bool,"SDL_Camera *camera, SDL_CameraSpec *spec",SDL_Camera SDL_CameraSpec bool,Get the spec that a camera is using when generating images.
+SDL_GetCameraID,SDL_CameraID,SDL_Camera *camera,SDL_Camera SDL_CameraID,Get the instance ID of an opened camera.
+SDL_GetCameraName,char*,SDL_CameraID instance_id,SDL_CameraID char,Get the human-readable device name for a camera.
+SDL_GetCameraPermissionState,SDL_CameraPermissionState,SDL_Camera *camera,SDL_Camera SDL_CameraPermissionState,Query if camera access has been approved by the user.
+SDL_GetCameraPosition,SDL_CameraPosition,SDL_CameraID instance_id,SDL_CameraID SDL_CameraPosition,Get the position of the camera in relation to the system.
+SDL_GetCameraProperties,SDL_PropertiesID,SDL_Camera *camera,SDL_Camera SDL_PropertiesID,Get the properties associated with an opened camera.
+SDL_GetCameraSupportedFormats,SDL_CameraSpec**,"SDL_CameraID instance_id, int *count",SDL_CameraID int SDL_CameraSpec,Get the list of native formats/sizes a camera supports.
+SDL_GetCameras,SDL_CameraID*,int *count,int SDL_CameraID,Get a list of currently connected camera devices.
+SDL_GetClipboardData,void*,"const char *mime_type, size_t *size",char size_t,Get the data from the clipboard for a given mime type.
+SDL_GetClipboardMimeTypes,char**,size_t *num_mime_types,size_t char,Retrieve the list of mime types available in the clipboard.
+SDL_GetClipboardText,char*,,char,Get UTF-8 text from the clipboard.
+SDL_GetClosestFullscreenDisplayMode,bool,"SDL_DisplayID displayID, int w, int h, float refresh_rate, bool include_high_density_modes, SDL_DisplayMode *closest",SDL_DisplayID int float bool SDL_DisplayMode,Get the closest match to the requested display mode.
+SDL_GetCurrentAudioDriver,char*,,char,Get the name of the current audio driver.
+SDL_GetCurrentCameraDriver,char*,,char,Get the name of the current camera driver.
+SDL_GetCurrentDirectory,char*,,char,"Get what the system believes is the ""current working directory."""
+SDL_GetCurrentDisplayMode,SDL_DisplayMode*,SDL_DisplayID displayID,SDL_DisplayID SDL_DisplayMode,Get information about the current display mode.
+SDL_GetCurrentDisplayOrientation,SDL_DisplayOrientation,SDL_DisplayID displayID,SDL_DisplayID SDL_DisplayOrientation,Get the orientation of a display.
+SDL_GetCurrentRenderOutputSize,bool,"SDL_Renderer *renderer, int *w, int *h",SDL_Renderer int bool,Get the current output size in pixels of a rendering context.
+SDL_GetCurrentThreadID,SDL_ThreadID,,SDL_ThreadID,Get the thread identifier for the current thread.
+SDL_GetCurrentTime,bool,SDL_Time *ticks,SDL_Time bool,"Gets the current value of the system realtime clock in nanoseconds since Jan 1, 1970 in Universal Coordinated Time (UTC)."
+SDL_GetCurrentVideoDriver,char*,,char,Get the name of the currently initialized video driver.
+SDL_GetCursor,SDL_Cursor*,,SDL_Cursor,Get the active cursor.
+SDL_GetDXGIOutputInfo,bool,"SDL_DisplayID displayID, int *adapterIndex, int *outputIndex",SDL_DisplayID int bool,Get the DXGI Adapter and Output indices for the specified display.
+SDL_GetDateTimeLocalePreferences,bool,"SDL_DateFormat *dateFormat, SDL_TimeFormat *timeFormat",SDL_DateFormat SDL_TimeFormat bool,Gets the current preferred date and time format for the system locale.
+SDL_GetDayOfWeek,int,"int year, int month, int day",int,Get the day of week for a calendar date.
+SDL_GetDayOfYear,int,"int year, int month, int day",int,Get the day of year for a calendar date.
+SDL_GetDaysInMonth,int,"int year, int month",int,Get the number of days in a month for a given year.
+SDL_GetDefaultAssertionHandler,SDL_AssertionHandler,,SDL_AssertionHandler,Get the default assertion handler.
+SDL_GetDefaultCursor,SDL_Cursor*,,SDL_Cursor,Get the default cursor.
+SDL_GetDefaultLogOutputFunction,SDL_LogOutputFunction,,SDL_LogOutputFunction,Get the default log output function.
+SDL_GetDefaultTextureScaleMode,bool,"SDL_Renderer *renderer, SDL_ScaleMode *scale_mode",SDL_Renderer SDL_ScaleMode bool,Get default texture scale mode of the given renderer.
+SDL_GetDesktopDisplayMode,SDL_DisplayMode*,SDL_DisplayID displayID,SDL_DisplayID SDL_DisplayMode,Get information about the desktop's display mode.
+SDL_GetDeviceFormFactor,SDL_FormFactor,,SDL_FormFactor,Get the form factor of the current device.
+SDL_GetDeviceFormFactorName,char*,SDL_FormFactor form_factor,SDL_FormFactor char,Get a short name for the current device.
+SDL_GetDirect3D9AdapterIndex,int,SDL_DisplayID displayID,SDL_DisplayID int,Get the D3D9 adapter index that matches the specified display.
+SDL_GetDisplayBounds,bool,"SDL_DisplayID displayID, SDL_Rect *rect",SDL_DisplayID SDL_Rect bool,Get the desktop area represented by a display.
+SDL_GetDisplayContentScale,float,SDL_DisplayID displayID,SDL_DisplayID float,Get the content scale of a display.
+SDL_GetDisplayForPoint,SDL_DisplayID,const SDL_Point *point,SDL_Point SDL_DisplayID,Get the display containing a point.
+SDL_GetDisplayForRect,SDL_DisplayID,const SDL_Rect *rect,SDL_Rect SDL_DisplayID,Get the display primarily containing a rect.
+SDL_GetDisplayForWindow,SDL_DisplayID,SDL_Window *window,SDL_Window SDL_DisplayID,Get the display associated with a window.
+SDL_GetDisplayName,char*,SDL_DisplayID displayID,SDL_DisplayID char,Get the name of a display in UTF-8 encoding.
+SDL_GetDisplayProperties,SDL_PropertiesID,SDL_DisplayID displayID,SDL_DisplayID SDL_PropertiesID,Get the properties associated with a display.
+SDL_GetDisplayUsableBounds,bool,"SDL_DisplayID displayID, SDL_Rect *rect",SDL_DisplayID SDL_Rect bool,"Get the usable desktop area represented by a display, in screen coordinates."
+SDL_GetDisplays,SDL_DisplayID*,int *count,int SDL_DisplayID,Get a list of currently connected displays.
+SDL_GetEnvironment,SDL_Environment*,,SDL_Environment,Get the process environment.
+SDL_GetEnvironmentVariable,char*,"SDL_Environment *env, const char *name",SDL_Environment char,Get the value of a variable in the environment.
+SDL_GetEnvironmentVariables,char**,SDL_Environment *env,SDL_Environment char,Get all variables in the environment.
+SDL_GetError,char*,,char,Retrieve a message about the last error that occurred on the current thread.
+SDL_GetEventDescription,int,"const SDL_Event *event, char *buf, int buflen",SDL_Event char int,Generate an English description of an event.
+SDL_GetEventFilter,bool,"SDL_EventFilter *filter, void **userdata",SDL_EventFilter bool,Query the current event filter.
+SDL_GetFloatProperty,float,"SDL_PropertiesID props, const char *name, float default_value",SDL_PropertiesID char float,Get a floating point property from a group of properties.
+SDL_GetFullscreenDisplayModes,SDL_DisplayMode**,"SDL_DisplayID displayID, int *count",SDL_DisplayID int SDL_DisplayMode,Get a list of fullscreen display modes available on a display.
+SDL_GetGDKDefaultUser,bool,XUserHandle *outUserHandle,XUserHandle bool,Gets a reference to the default user handle for GDK.
+SDL_GetGDKTaskQueue,bool,XTaskQueueHandle *outTaskQueue,XTaskQueueHandle bool,"Gets a reference to the global async task queue handle for GDK, initializing if needed."
+SDL_GetGPUDeviceDriver,char*,SDL_GPUDevice *device,SDL_GPUDevice char,Returns the name of the backend used to create this GPU context.
+SDL_GetGPUDeviceProperties,SDL_PropertiesID,SDL_GPUDevice *device,SDL_GPUDevice SDL_PropertiesID,Get the properties associated with a GPU device.
+SDL_GetGPUDriver,char*,int index,int char,Get the name of a built in GPU driver.
+SDL_GetGPURendererDevice,SDL_GPUDevice*,SDL_Renderer *renderer,SDL_Renderer SDL_GPUDevice,Return the GPU device used by a renderer.
+SDL_GetGPUShaderFormats,SDL_GPUShaderFormat,SDL_GPUDevice *device,SDL_GPUDevice SDL_GPUShaderFormat,Returns the supported shader formats for this GPU context.
+SDL_GetGPUSwapchainTextureFormat,SDL_GPUTextureFormat,"SDL_GPUDevice *device, SDL_Window *window",SDL_GPUDevice SDL_Window SDL_GPUTextureFormat,Obtains the texture format of the swapchain for the given window.
+SDL_GetGPUTextureFormatFromPixelFormat,SDL_GPUTextureFormat,SDL_PixelFormat format,SDL_PixelFormat SDL_GPUTextureFormat,Get the GPU texture format corresponding to an SDL pixel format.
+SDL_GetGamepadAppleSFSymbolsNameForAxis,char*,"SDL_Gamepad *gamepad, SDL_GamepadAxis axis",SDL_Gamepad SDL_GamepadAxis char,Return the sfSymbolsName for a given axis on a gamepad on Apple platforms.
+SDL_GetGamepadAppleSFSymbolsNameForButton,char*,"SDL_Gamepad *gamepad, SDL_GamepadButton button",SDL_Gamepad SDL_GamepadButton char,Return the sfSymbolsName for a given button on a gamepad on Apple platforms.
+SDL_GetGamepadAxis,Sint16,"SDL_Gamepad *gamepad, SDL_GamepadAxis axis",SDL_Gamepad SDL_GamepadAxis Sint16,Get the current state of an axis control on a gamepad.
+SDL_GetGamepadAxisFromString,SDL_GamepadAxis,const char *str,char SDL_GamepadAxis,Convert a string into SDL_GamepadAxis enum.
+SDL_GetGamepadBindings,SDL_GamepadBinding**,"SDL_Gamepad *gamepad, int *count",SDL_Gamepad int SDL_GamepadBinding,Get the SDL joystick layer bindings for a gamepad.
+SDL_GetGamepadButton,bool,"SDL_Gamepad *gamepad, SDL_GamepadButton button",SDL_Gamepad SDL_GamepadButton bool,Get the current state of a button on a gamepad.
+SDL_GetGamepadButtonFromString,SDL_GamepadButton,const char *str,char SDL_GamepadButton,Convert a string into an SDL_GamepadButton enum.
+SDL_GetGamepadButtonLabel,SDL_GamepadButtonLabel,"SDL_Gamepad *gamepad, SDL_GamepadButton button",SDL_Gamepad SDL_GamepadButton SDL_GamepadButtonLabel,Get the label of a button on a gamepad.
+SDL_GetGamepadButtonLabelForType,SDL_GamepadButtonLabel,"SDL_GamepadType type, SDL_GamepadButton button",SDL_GamepadType SDL_GamepadButton SDL_GamepadButtonLabel,Get the label of a button on a gamepad.
+SDL_GetGamepadCapSense,bool,"SDL_Gamepad *gamepad, SDL_GamepadCapSenseType type",SDL_Gamepad SDL_GamepadCapSenseType bool,Get the current state of a capsense on a gamepad.
+SDL_GetGamepadConnectionState,SDL_JoystickConnectionState,SDL_Gamepad *gamepad,SDL_Gamepad SDL_JoystickConnectionState,Get the connection state of a gamepad.
+SDL_GetGamepadFirmwareVersion,Uint16,SDL_Gamepad *gamepad,SDL_Gamepad Uint16,"Get the firmware version of an opened gamepad, if available."
+SDL_GetGamepadFromID,SDL_Gamepad*,SDL_JoystickID instance_id,SDL_JoystickID SDL_Gamepad,"Get the SDL_Gamepad associated with a joystick instance ID, if it has been opened."
+SDL_GetGamepadFromPlayerIndex,SDL_Gamepad*,int player_index,int SDL_Gamepad,Get the SDL_Gamepad associated with a player index.
+SDL_GetGamepadGUIDForID,SDL_GUID,SDL_JoystickID instance_id,SDL_JoystickID SDL_GUID,Get the implementation-dependent GUID of a gamepad.
+SDL_GetGamepadID,SDL_JoystickID,SDL_Gamepad *gamepad,SDL_Gamepad SDL_JoystickID,Get the instance ID of an opened gamepad.
+SDL_GetGamepadJoystick,SDL_Joystick*,SDL_Gamepad *gamepad,SDL_Gamepad SDL_Joystick,Get the underlying joystick from a gamepad.
+SDL_GetGamepadMapping,char*,SDL_Gamepad *gamepad,SDL_Gamepad char,Get the current mapping of a gamepad.
+SDL_GetGamepadMappingForGUID,char*,SDL_GUID guid,SDL_GUID char,Get the gamepad mapping string for a given GUID.
+SDL_GetGamepadMappingForID,char*,SDL_JoystickID instance_id,SDL_JoystickID char,Get the mapping of a gamepad.
+SDL_GetGamepadMappings,char**,int *count,int char,Get the current gamepad mappings.
+SDL_GetGamepadName,char*,SDL_Gamepad *gamepad,SDL_Gamepad char,Get the implementation-dependent name for an opened gamepad.
+SDL_GetGamepadNameForID,char*,SDL_JoystickID instance_id,SDL_JoystickID char,Get the implementation dependent name of a gamepad.
+SDL_GetGamepadPath,char*,SDL_Gamepad *gamepad,SDL_Gamepad char,Get the implementation-dependent path for an opened gamepad.
+SDL_GetGamepadPathForID,char*,SDL_JoystickID instance_id,SDL_JoystickID char,Get the implementation dependent path of a gamepad.
+SDL_GetGamepadPlayerIndex,int,SDL_Gamepad *gamepad,SDL_Gamepad int,Get the player index of an opened gamepad.
+SDL_GetGamepadPlayerIndexForID,int,SDL_JoystickID instance_id,SDL_JoystickID int,Get the player index of a gamepad.
+SDL_GetGamepadPowerInfo,SDL_PowerState,"SDL_Gamepad *gamepad, int *percent",SDL_Gamepad int SDL_PowerState,Get the battery state of a gamepad.
+SDL_GetGamepadProduct,Uint16,SDL_Gamepad *gamepad,SDL_Gamepad Uint16,"Get the USB product ID of an opened gamepad, if available."
+SDL_GetGamepadProductForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the USB product ID of a gamepad, if available."
+SDL_GetGamepadProductVersion,Uint16,SDL_Gamepad *gamepad,SDL_Gamepad Uint16,"Get the product version of an opened gamepad, if available."
+SDL_GetGamepadProductVersionForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the product version of a gamepad, if available."
+SDL_GetGamepadProperties,SDL_PropertiesID,SDL_Gamepad *gamepad,SDL_Gamepad SDL_PropertiesID,Get the properties associated with an opened gamepad.
+SDL_GetGamepadSensorData,bool,"SDL_Gamepad *gamepad, SDL_SensorType type, float *data, int num_values",SDL_Gamepad SDL_SensorType float int bool,Get the current state of a gamepad sensor.
+SDL_GetGamepadSensorDataRate,float,"SDL_Gamepad *gamepad, SDL_SensorType type",SDL_Gamepad SDL_SensorType float,Get the data rate (number of events per second) of a gamepad sensor.
+SDL_GetGamepadSerial,char*,SDL_Gamepad *gamepad,SDL_Gamepad char,"Get the serial number of an opened gamepad, if available."
+SDL_GetGamepadSteamHandle,Uint64,SDL_Gamepad *gamepad,SDL_Gamepad Uint64,"Get the Steam Input handle of an opened gamepad, if available."
+SDL_GetGamepadStringForAxis,char*,SDL_GamepadAxis axis,SDL_GamepadAxis char,Convert from an SDL_GamepadAxis enum to a string.
+SDL_GetGamepadStringForButton,char*,SDL_GamepadButton button,SDL_GamepadButton char,Convert from an SDL_GamepadButton enum to a string.
+SDL_GetGamepadStringForType,char*,SDL_GamepadType type,SDL_GamepadType char,Convert from an SDL_GamepadType enum to a string.
+SDL_GetGamepadTouchpadFinger,bool,"SDL_Gamepad *gamepad, int touchpad, int finger, bool *down, float *x, float *y, float *pressure",SDL_Gamepad int bool float,Get the current state of a finger on a touchpad on a gamepad.
+SDL_GetGamepadType,SDL_GamepadType,SDL_Gamepad *gamepad,SDL_Gamepad SDL_GamepadType,Get the type of an opened gamepad.
+SDL_GetGamepadTypeForID,SDL_GamepadType,SDL_JoystickID instance_id,SDL_JoystickID SDL_GamepadType,Get the type of a gamepad.
+SDL_GetGamepadTypeFromString,SDL_GamepadType,const char *str,char SDL_GamepadType,Convert a string into SDL_GamepadType enum.
+SDL_GetGamepadVendor,Uint16,SDL_Gamepad *gamepad,SDL_Gamepad Uint16,"Get the USB vendor ID of an opened gamepad, if available."
+SDL_GetGamepadVendorForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the USB vendor ID of a gamepad, if available."
+SDL_GetGamepads,SDL_JoystickID*,int *count,int SDL_JoystickID,Get a list of currently connected gamepads.
+SDL_GetGlobalMouseState,SDL_MouseButtonFlags,"float *x, float *y",float SDL_MouseButtonFlags,Query the platform for the asynchronous mouse button state and the desktop-relative platform-cursor position.
+SDL_GetGlobalProperties,SDL_PropertiesID,,SDL_PropertiesID,Get the global SDL properties.
+SDL_GetGrabbedWindow,SDL_Window*,,SDL_Window,Get the window that currently has an input grab enabled.
+SDL_GetHapticEffectStatus,bool,"SDL_Haptic *haptic, SDL_HapticEffectID effect",SDL_Haptic SDL_HapticEffectID bool,Get the status of the current effect on the specified haptic device.
+SDL_GetHapticFeatures,Uint32,SDL_Haptic *haptic,SDL_Haptic Uint32,Get the haptic device's supported features in bitwise manner.
+SDL_GetHapticFromID,SDL_Haptic*,SDL_HapticID instance_id,SDL_HapticID SDL_Haptic,"Get the SDL_Haptic associated with an instance ID, if it has been opened."
+SDL_GetHapticID,SDL_HapticID,SDL_Haptic *haptic,SDL_Haptic SDL_HapticID,Get the instance ID of an opened haptic device.
+SDL_GetHapticName,char*,SDL_Haptic *haptic,SDL_Haptic char,Get the implementation dependent name of a haptic device.
+SDL_GetHapticNameForID,char*,SDL_HapticID instance_id,SDL_HapticID char,Get the implementation dependent name of a haptic device.
+SDL_GetHaptics,SDL_HapticID*,int *count,int SDL_HapticID,Get a list of currently connected haptic devices.
+SDL_GetHint,char*,const char *name,char,Get the value of a hint.
+SDL_GetHintBoolean,bool,"const char *name, bool default_value",char bool,Get the boolean value of a hint variable.
+SDL_GetIOProperties,SDL_PropertiesID,SDL_IOStream *context,SDL_IOStream SDL_PropertiesID,Get the properties associated with an SDL_IOStream.
+SDL_GetIOSize,Sint64,SDL_IOStream *context,SDL_IOStream Sint64,Use this function to get the size of the data stream in an SDL_IOStream.
+SDL_GetIOStatus,SDL_IOStatus,SDL_IOStream *context,SDL_IOStream SDL_IOStatus,Query the stream status of an SDL_IOStream.
+SDL_GetJoystickAxis,Sint16,"SDL_Joystick *joystick, int axis",SDL_Joystick int Sint16,Get the current state of an axis control on a joystick.
+SDL_GetJoystickAxisInitialState,bool,"SDL_Joystick *joystick, int axis, Sint16 *state",SDL_Joystick int Sint16 bool,Get the initial state of an axis control on a joystick.
+SDL_GetJoystickBall,bool,"SDL_Joystick *joystick, int ball, int *dx, int *dy",SDL_Joystick int bool,Get the ball axis change since the last poll.
+SDL_GetJoystickButton,bool,"SDL_Joystick *joystick, int button",SDL_Joystick int bool,Get the current state of a button on a joystick.
+SDL_GetJoystickConnectionState,SDL_JoystickConnectionState,SDL_Joystick *joystick,SDL_Joystick SDL_JoystickConnectionState,Get the connection state of a joystick.
+SDL_GetJoystickFirmwareVersion,Uint16,SDL_Joystick *joystick,SDL_Joystick Uint16,"Get the firmware version of an opened joystick, if available."
+SDL_GetJoystickFromID,SDL_Joystick*,SDL_JoystickID instance_id,SDL_JoystickID SDL_Joystick,"Get the SDL_Joystick associated with an instance ID, if it has been opened."
+SDL_GetJoystickFromPlayerIndex,SDL_Joystick*,int player_index,int SDL_Joystick,Get the SDL_Joystick associated with a player index.
+SDL_GetJoystickGUID,SDL_GUID,SDL_Joystick *joystick,SDL_Joystick SDL_GUID,Get the implementation-dependent GUID for the joystick.
+SDL_GetJoystickGUIDForID,SDL_GUID,SDL_JoystickID instance_id,SDL_JoystickID SDL_GUID,Get the implementation-dependent GUID of a joystick.
+SDL_GetJoystickGUIDInfo,void,"SDL_GUID guid, Uint16 *vendor, Uint16 *product, Uint16 *version, Uint16 *crc16",SDL_GUID Uint16,Get the device information encoded in a SDL_GUID structure.
+SDL_GetJoystickHat,Uint8,"SDL_Joystick *joystick, int hat",SDL_Joystick int Uint8,Get the current state of a POV hat on a joystick.
+SDL_GetJoystickID,SDL_JoystickID,SDL_Joystick *joystick,SDL_Joystick SDL_JoystickID,Get the instance ID of an opened joystick.
+SDL_GetJoystickName,char*,SDL_Joystick *joystick,SDL_Joystick char,Get the implementation dependent name of a joystick.
+SDL_GetJoystickNameForID,char*,SDL_JoystickID instance_id,SDL_JoystickID char,Get the implementation dependent name of a joystick.
+SDL_GetJoystickPath,char*,SDL_Joystick *joystick,SDL_Joystick char,Get the implementation dependent path of a joystick.
+SDL_GetJoystickPathForID,char*,SDL_JoystickID instance_id,SDL_JoystickID char,Get the implementation dependent path of a joystick.
+SDL_GetJoystickPlayerIndex,int,SDL_Joystick *joystick,SDL_Joystick int,Get the player index of an opened joystick.
+SDL_GetJoystickPlayerIndexForID,int,SDL_JoystickID instance_id,SDL_JoystickID int,Get the player index of a joystick.
+SDL_GetJoystickPowerInfo,SDL_PowerState,"SDL_Joystick *joystick, int *percent",SDL_Joystick int SDL_PowerState,Get the battery state of a joystick.
+SDL_GetJoystickProduct,Uint16,SDL_Joystick *joystick,SDL_Joystick Uint16,"Get the USB product ID of an opened joystick, if available."
+SDL_GetJoystickProductForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the USB product ID of a joystick, if available."
+SDL_GetJoystickProductVersion,Uint16,SDL_Joystick *joystick,SDL_Joystick Uint16,"Get the product version of an opened joystick, if available."
+SDL_GetJoystickProductVersionForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the product version of a joystick, if available."
+SDL_GetJoystickProperties,SDL_PropertiesID,SDL_Joystick *joystick,SDL_Joystick SDL_PropertiesID,Get the properties associated with a joystick.
+SDL_GetJoystickSerial,char*,SDL_Joystick *joystick,SDL_Joystick char,"Get the serial number of an opened joystick, if available."
+SDL_GetJoystickType,SDL_JoystickType,SDL_Joystick *joystick,SDL_Joystick SDL_JoystickType,Get the type of an opened joystick.
+SDL_GetJoystickTypeForID,SDL_JoystickType,SDL_JoystickID instance_id,SDL_JoystickID SDL_JoystickType,"Get the type of a joystick, if available."
+SDL_GetJoystickVendor,Uint16,SDL_Joystick *joystick,SDL_Joystick Uint16,"Get the USB vendor ID of an opened joystick, if available."
+SDL_GetJoystickVendorForID,Uint16,SDL_JoystickID instance_id,SDL_JoystickID Uint16,"Get the USB vendor ID of a joystick, if available."
+SDL_GetJoysticks,SDL_JoystickID*,int *count,int SDL_JoystickID,Get a list of currently connected joysticks.
+SDL_GetKeyFromName,SDL_Keycode,const char *name,char SDL_Keycode,Get a key code from a human-readable name.
+SDL_GetKeyFromScancode,SDL_Keycode,"SDL_Scancode scancode, SDL_Keymod modstate, bool key_event",SDL_Scancode SDL_Keymod bool SDL_Keycode,Get the key code corresponding to the given scancode according to the current keyboard layout.
+SDL_GetKeyName,char*,SDL_Keycode key,SDL_Keycode char,Get a human-readable name for a key.
+SDL_GetKeyboardFocus,SDL_Window*,,SDL_Window,Query the window which currently has keyboard focus.
+SDL_GetKeyboardNameForID,char*,SDL_KeyboardID instance_id,SDL_KeyboardID char,Get the name of a keyboard.
+SDL_GetKeyboardState,bool*,int *numkeys,int bool,Get a snapshot of the current state of the keyboard.
+SDL_GetKeyboards,SDL_KeyboardID*,int *count,int SDL_KeyboardID,Get a list of currently connected keyboards.
+SDL_GetLogOutputFunction,void,"SDL_LogOutputFunction *callback, void **userdata",SDL_LogOutputFunction,Get the current log output function.
+SDL_GetLogPriority,SDL_LogPriority,int category,int SDL_LogPriority,Get the priority of a particular log category.
+SDL_GetMasksForPixelFormat,bool,"SDL_PixelFormat format, int *bpp, Uint32 *Rmask, Uint32 *Gmask, Uint32 *Bmask, Uint32 *Amask",SDL_PixelFormat int Uint32 bool,Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
+SDL_GetMaxHapticEffects,int,SDL_Haptic *haptic,SDL_Haptic int,Get the number of effects a haptic device can store.
+SDL_GetMaxHapticEffectsPlaying,int,SDL_Haptic *haptic,SDL_Haptic int,Get the number of effects a haptic device can play at the same time.
+SDL_GetMemoryFunctions,void,"SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func",SDL_malloc_func SDL_calloc_func SDL_realloc_func SDL_free_func,Get the current set of SDL memory functions.
+SDL_GetMice,SDL_MouseID*,int *count,int SDL_MouseID,Get a list of currently connected mice.
+SDL_GetModState,SDL_Keymod,,SDL_Keymod,Get the current key modifier state for the keyboard.
+SDL_GetMouseFocus,SDL_Window*,,SDL_Window,Get the window which currently has mouse focus.
+SDL_GetMouseNameForID,char*,SDL_MouseID instance_id,SDL_MouseID char,Get the name of a mouse.
+SDL_GetMouseState,SDL_MouseButtonFlags,"float *x, float *y",float SDL_MouseButtonFlags,Query SDL's cache for the synchronous mouse button state and the window-relative SDL-cursor position.
+SDL_GetNaturalDisplayOrientation,SDL_DisplayOrientation,SDL_DisplayID displayID,SDL_DisplayID SDL_DisplayOrientation,Get the orientation of a display when it is unrotated.
+SDL_GetNumAllocations,int,,int,Get the number of outstanding (unfreed) allocations.
+SDL_GetNumAudioDrivers,int,,int,Use this function to get the number of built-in audio drivers.
+SDL_GetNumCameraDrivers,int,,int,Use this function to get the number of built-in camera drivers.
+SDL_GetNumGPUDrivers,int,,int,Get the number of GPU drivers compiled into SDL.
+SDL_GetNumGamepadTouchpadFingers,int,"SDL_Gamepad *gamepad, int touchpad",SDL_Gamepad int,Get the number of supported simultaneous fingers on a touchpad on a game gamepad.
+SDL_GetNumGamepadTouchpads,int,SDL_Gamepad *gamepad,SDL_Gamepad int,Get the number of touchpads on a gamepad.
+SDL_GetNumHapticAxes,int,SDL_Haptic *haptic,SDL_Haptic int,Get the number of haptic axes the device has.
+SDL_GetNumJoystickAxes,int,SDL_Joystick *joystick,SDL_Joystick int,Get the number of general axis controls on a joystick.
+SDL_GetNumJoystickBalls,int,SDL_Joystick *joystick,SDL_Joystick int,Get the number of trackballs on a joystick.
+SDL_GetNumJoystickButtons,int,SDL_Joystick *joystick,SDL_Joystick int,Get the number of buttons on a joystick.
+SDL_GetNumJoystickHats,int,SDL_Joystick *joystick,SDL_Joystick int,Get the number of POV hats on a joystick.
+SDL_GetNumLogicalCPUCores,int,,int,Get the number of logical CPU cores available.
+SDL_GetNumProperties,int,SDL_PropertiesID props,SDL_PropertiesID int,Get the current number of items in a group of properties.
+SDL_GetNumRenderDrivers,int,,int,Get the number of 2D rendering drivers available for the current display.
+SDL_GetNumVideoDrivers,int,,int,Get the number of video drivers compiled into SDL.
+SDL_GetNumberProperty,Sint64,"SDL_PropertiesID props, const char *name, Sint64 default_value",SDL_PropertiesID char Sint64,Get a number property from a group of properties.
+SDL_GetOriginalMemoryFunctions,void,"SDL_malloc_func *malloc_func, SDL_calloc_func *calloc_func, SDL_realloc_func *realloc_func, SDL_free_func *free_func",SDL_malloc_func SDL_calloc_func SDL_realloc_func SDL_free_func,Get the original set of SDL memory functions.
+SDL_GetPathInfo,bool,"const char *path, SDL_PathInfo *info",char SDL_PathInfo bool,Get information about a filesystem path.
+SDL_GetPerformanceCounter,Uint64,,Uint64,Get the current value of the high resolution counter.
+SDL_GetPerformanceFrequency,Uint64,,Uint64,Get the count per second of the high resolution counter.
+SDL_GetPixelFormatDetails,SDL_PixelFormatDetails*,SDL_PixelFormat format,SDL_PixelFormat SDL_PixelFormatDetails,Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
+SDL_GetPixelFormatForMasks,SDL_PixelFormat,"int bpp, Uint32 Rmask, Uint32 Gmask, Uint32 Bmask, Uint32 Amask",int Uint32 SDL_PixelFormat,Convert a bpp value and RGBA masks to an enumerated pixel format.
+SDL_GetPixelFormatFromGPUTextureFormat,SDL_PixelFormat,SDL_GPUTextureFormat format,SDL_GPUTextureFormat SDL_PixelFormat,Get the SDL pixel format corresponding to a GPU texture format.
+SDL_GetPixelFormatName,char*,SDL_PixelFormat format,SDL_PixelFormat char,Get the human readable name of a pixel format.
+SDL_GetPointerProperty,void*,"SDL_PropertiesID props, const char *name, void *default_value",SDL_PropertiesID char,Get a pointer property from a group of properties.
+SDL_GetPowerInfo,SDL_PowerState,"int *seconds, int *percent",int SDL_PowerState,Get the current power supply details.
+SDL_GetPrefPath,char*,"const char *org, const char *app",char,Get the user-and-app-specific path where files can be written.
+SDL_GetPreferredLocales,SDL_Locale**,int *count,int SDL_Locale,Report the user's preferred locale.
+SDL_GetPrimaryDisplay,SDL_DisplayID,,SDL_DisplayID,Return the primary display.
+SDL_GetPrimarySelectionText,char*,,char,Get UTF-8 text from the primary selection.
+SDL_GetProcessInput,SDL_IOStream*,SDL_Process *process,SDL_Process SDL_IOStream,Get the SDL_IOStream associated with process standard input.
+SDL_GetProcessOutput,SDL_IOStream*,SDL_Process *process,SDL_Process SDL_IOStream,Get the SDL_IOStream associated with process standard output.
+SDL_GetProcessProperties,SDL_PropertiesID,SDL_Process *process,SDL_Process SDL_PropertiesID,Get the properties associated with a process.
+SDL_GetPropertyType,SDL_PropertyType,"SDL_PropertiesID props, const char *name",SDL_PropertiesID char SDL_PropertyType,Get the type of a property in a group of properties.
+SDL_GetRGB,void,"Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b",Uint32 SDL_PixelFormatDetails SDL_Palette Uint8,Get RGB values from a pixel in the specified format.
+SDL_GetRGBA,void,"Uint32 pixelvalue, const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a",Uint32 SDL_PixelFormatDetails SDL_Palette Uint8,Get RGBA values from a pixel in the specified format.
+SDL_GetRealGamepadType,SDL_GamepadType,SDL_Gamepad *gamepad,SDL_Gamepad SDL_GamepadType,"Get the type of an opened gamepad, ignoring any mapping override."
+SDL_GetRealGamepadTypeForID,SDL_GamepadType,SDL_JoystickID instance_id,SDL_JoystickID SDL_GamepadType,"Get the type of a gamepad, ignoring any mapping override."
+SDL_GetRectAndLineIntersection,bool,"const SDL_Rect *rect, int *X1, int *Y1, int *X2, int *Y2",SDL_Rect int bool,Calculate the intersection of a rectangle and line segment.
+SDL_GetRectAndLineIntersectionFloat,bool,"const SDL_FRect *rect, float *X1, float *Y1, float *X2, float *Y2",SDL_FRect float bool,Calculate the intersection of a rectangle and line segment with float precision.
+SDL_GetRectEnclosingPoints,bool,"const SDL_Point *points, int count, const SDL_Rect *clip, SDL_Rect *result",SDL_Point int SDL_Rect bool,Calculate a minimal rectangle enclosing a set of points.
+SDL_GetRectEnclosingPointsFloat,bool,"const SDL_FPoint *points, int count, const SDL_FRect *clip, SDL_FRect *result",SDL_FPoint int SDL_FRect bool,Calculate a minimal rectangle enclosing a set of points with float precision.
+SDL_GetRectIntersection,bool,"const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result",SDL_Rect bool,Calculate the intersection of two rectangles.
+SDL_GetRectIntersectionFloat,bool,"const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result",SDL_FRect bool,Calculate the intersection of two rectangles with float precision.
+SDL_GetRectUnion,bool,"const SDL_Rect *A, const SDL_Rect *B, SDL_Rect *result",SDL_Rect bool,Calculate the union of two rectangles.
+SDL_GetRectUnionFloat,bool,"const SDL_FRect *A, const SDL_FRect *B, SDL_FRect *result",SDL_FRect bool,Calculate the union of two rectangles with float precision.
+SDL_GetRelativeMouseState,SDL_MouseButtonFlags,"float *x, float *y",float SDL_MouseButtonFlags,Query SDL's cache for the synchronous mouse button state and accumulated mouse delta since last call.
+SDL_GetRenderClipRect,bool,"SDL_Renderer *renderer, SDL_Rect *rect",SDL_Renderer SDL_Rect bool,Get the clip rectangle for the current target.
+SDL_GetRenderColorScale,bool,"SDL_Renderer *renderer, float *scale",SDL_Renderer float bool,Get the color scale used for render operations.
+SDL_GetRenderDrawBlendMode,bool,"SDL_Renderer *renderer, SDL_BlendMode *blendMode",SDL_Renderer SDL_BlendMode bool,Get the blend mode used for drawing operations.
+SDL_GetRenderDrawColor,bool,"SDL_Renderer *renderer, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a",SDL_Renderer Uint8 bool,"Get the color used for drawing operations (Rect, Line and Clear)."
+SDL_GetRenderDrawColorFloat,bool,"SDL_Renderer *renderer, float *r, float *g, float *b, float *a",SDL_Renderer float bool,"Get the color used for drawing operations (Rect, Line and Clear)."
+SDL_GetRenderDriver,char*,int index,int char,Use this function to get the name of a built in 2D rendering driver.
+SDL_GetRenderLogicalPresentation,bool,"SDL_Renderer *renderer, int *w, int *h, SDL_RendererLogicalPresentation *mode",SDL_Renderer int SDL_RendererLogicalPresentation bool,Get device independent resolution and presentation mode for rendering.
+SDL_GetRenderLogicalPresentationRect,bool,"SDL_Renderer *renderer, SDL_FRect *rect",SDL_Renderer SDL_FRect bool,Get the final presentation rectangle for rendering.
+SDL_GetRenderMetalCommandEncoder,void*,SDL_Renderer *renderer,SDL_Renderer,Get the Metal command encoder for the current frame.
+SDL_GetRenderMetalLayer,void*,SDL_Renderer *renderer,SDL_Renderer,Get the CAMetalLayer associated with the given Metal renderer.
+SDL_GetRenderOutputSize,bool,"SDL_Renderer *renderer, int *w, int *h",SDL_Renderer int bool,Get the output size in pixels of a rendering context.
+SDL_GetRenderSafeArea,bool,"SDL_Renderer *renderer, SDL_Rect *rect",SDL_Renderer SDL_Rect bool,Get the safe area for rendering within the current viewport.
+SDL_GetRenderScale,bool,"SDL_Renderer *renderer, float *scaleX, float *scaleY",SDL_Renderer float bool,Get the drawing scale for the current target.
+SDL_GetRenderTarget,SDL_Texture*,SDL_Renderer *renderer,SDL_Renderer SDL_Texture,Get the current render target.
+SDL_GetRenderTextureAddressMode,bool,"SDL_Renderer *renderer, SDL_TextureAddressMode *u_mode, SDL_TextureAddressMode *v_mode",SDL_Renderer SDL_TextureAddressMode bool,Get the texture addressing mode used in SDL_RenderGeometry().
+SDL_GetRenderVSync,bool,"SDL_Renderer *renderer, int *vsync",SDL_Renderer int bool,Get VSync of the given renderer.
+SDL_GetRenderViewport,bool,"SDL_Renderer *renderer, SDL_Rect *rect",SDL_Renderer SDL_Rect bool,Get the drawing area for the current target.
+SDL_GetRenderWindow,SDL_Window*,SDL_Renderer *renderer,SDL_Renderer SDL_Window,Get the window associated with a renderer.
+SDL_GetRenderer,SDL_Renderer*,SDL_Window *window,SDL_Window SDL_Renderer,Get the renderer associated with a window.
+SDL_GetRendererFromTexture,SDL_Renderer*,SDL_Texture *texture,SDL_Texture SDL_Renderer,Get the renderer that created an SDL_Texture.
+SDL_GetRendererName,char*,SDL_Renderer *renderer,SDL_Renderer char,Get the name of a renderer.
+SDL_GetRendererProperties,SDL_PropertiesID,SDL_Renderer *renderer,SDL_Renderer SDL_PropertiesID,Get the properties associated with a renderer.
+SDL_GetRevision,char*,,char,Get the code revision of the SDL library that is linked against your program.
+SDL_GetSIMDAlignment,size_t,,size_t,Report the alignment this system needs for SIMD allocations.
+SDL_GetSandbox,SDL_Sandbox,,SDL_Sandbox,"Get the application sandbox environment, if any."
+SDL_GetScancodeFromKey,SDL_Scancode,"SDL_Keycode key, SDL_Keymod *modstate",SDL_Keycode SDL_Keymod SDL_Scancode,Get the scancode corresponding to the given key code according to the current keyboard layout.
+SDL_GetScancodeFromName,SDL_Scancode,const char *name,char SDL_Scancode,Get a scancode from a human-readable name.
+SDL_GetScancodeName,char*,SDL_Scancode scancode,SDL_Scancode char,Get a human-readable name for a scancode.
+SDL_GetSemaphoreValue,Uint32,SDL_Semaphore *sem,SDL_Semaphore Uint32,Get the current value of a semaphore.
+SDL_GetSensorData,bool,"SDL_Sensor *sensor, float *data, int num_values",SDL_Sensor float int bool,Get the current state of an opened sensor.
+SDL_GetSensorFromID,SDL_Sensor*,SDL_SensorID instance_id,SDL_SensorID SDL_Sensor,Return the SDL_Sensor associated with an instance ID.
+SDL_GetSensorID,SDL_SensorID,SDL_Sensor *sensor,SDL_Sensor SDL_SensorID,Get the instance ID of a sensor.
+SDL_GetSensorName,char*,SDL_Sensor *sensor,SDL_Sensor char,Get the implementation dependent name of a sensor.
+SDL_GetSensorNameForID,char*,SDL_SensorID instance_id,SDL_SensorID char,Get the implementation dependent name of a sensor.
+SDL_GetSensorNonPortableType,int,SDL_Sensor *sensor,SDL_Sensor int,Get the platform dependent type of a sensor.
+SDL_GetSensorNonPortableTypeForID,int,SDL_SensorID instance_id,SDL_SensorID int,Get the platform dependent type of a sensor.
+SDL_GetSensorProperties,SDL_PropertiesID,SDL_Sensor *sensor,SDL_Sensor SDL_PropertiesID,Get the properties associated with a sensor.
+SDL_GetSensorType,SDL_SensorType,SDL_Sensor *sensor,SDL_Sensor SDL_SensorType,Get the type of a sensor.
+SDL_GetSensorTypeForID,SDL_SensorType,SDL_SensorID instance_id,SDL_SensorID SDL_SensorType,Get the type of a sensor.
+SDL_GetSensors,SDL_SensorID*,int *count,int SDL_SensorID,Get a list of currently connected sensors.
+SDL_GetSilenceValueForFormat,int,SDL_AudioFormat format,SDL_AudioFormat int,Get the appropriate memset value for silencing an audio format.
+SDL_GetStorageFileSize,bool,"SDL_Storage *storage, const char *path, Uint64 *length",SDL_Storage char Uint64 bool,Query the size of a file within a storage container.
+SDL_GetStoragePathInfo,bool,"SDL_Storage *storage, const char *path, SDL_PathInfo *info",SDL_Storage char SDL_PathInfo bool,Get information about a filesystem path in a storage container.
+SDL_GetStorageSpaceRemaining,Uint64,SDL_Storage *storage,SDL_Storage Uint64,Queries the remaining space in a storage container.
+SDL_GetStringProperty,char*,"SDL_PropertiesID props, const char *name, const char *default_value",SDL_PropertiesID char,Get a string property from a group of properties.
+SDL_GetSurfaceAlphaMod,bool,"SDL_Surface *surface, Uint8 *alpha",SDL_Surface Uint8 bool,Get the additional alpha value used in blit operations.
+SDL_GetSurfaceBlendMode,bool,"SDL_Surface *surface, SDL_BlendMode *blendMode",SDL_Surface SDL_BlendMode bool,Get the blend mode used for blit operations.
+SDL_GetSurfaceClipRect,bool,"SDL_Surface *surface, SDL_Rect *rect",SDL_Surface SDL_Rect bool,Get the clipping rectangle for a surface.
+SDL_GetSurfaceColorKey,bool,"SDL_Surface *surface, Uint32 *key",SDL_Surface Uint32 bool,Get the color key (transparent pixel) for a surface.
+SDL_GetSurfaceColorMod,bool,"SDL_Surface *surface, Uint8 *r, Uint8 *g, Uint8 *b",SDL_Surface Uint8 bool,Get the additional color value multiplied into blit operations.
+SDL_GetSurfaceColorspace,SDL_Colorspace,SDL_Surface *surface,SDL_Surface SDL_Colorspace,Get the colorspace used by a surface.
+SDL_GetSurfaceImages,SDL_Surface**,"SDL_Surface *surface, int *count",SDL_Surface int,Get an array including all versions of a surface.
+SDL_GetSurfacePalette,SDL_Palette*,SDL_Surface *surface,SDL_Surface SDL_Palette,Get the palette used by a surface.
+SDL_GetSurfaceProperties,SDL_PropertiesID,SDL_Surface *surface,SDL_Surface SDL_PropertiesID,Get the properties associated with a surface.
+SDL_GetSystemPageSize,int,,int,Report the size of a page of memory.
+SDL_GetSystemRAM,int,,int,Get the amount of RAM configured in the system.
+SDL_GetSystemTheme,SDL_SystemTheme,,SDL_SystemTheme,Get the current system theme.
+SDL_GetTLS,void*,SDL_TLSID *id,SDL_TLSID,Get the current thread's value associated with a thread local storage ID.
+SDL_GetTextInputArea,bool,"SDL_Window *window, SDL_Rect *rect, int *cursor",SDL_Window SDL_Rect int bool,Get the area used to type Unicode text input.
+SDL_GetTextureAlphaMod,bool,"SDL_Texture *texture, Uint8 *alpha",SDL_Texture Uint8 bool,Get the additional alpha value multiplied into render copy operations.
+SDL_GetTextureAlphaModFloat,bool,"SDL_Texture *texture, float *alpha",SDL_Texture float bool,Get the additional alpha value multiplied into render copy operations.
+SDL_GetTextureBlendMode,bool,"SDL_Texture *texture, SDL_BlendMode *blendMode",SDL_Texture SDL_BlendMode bool,Get the blend mode used for texture copy operations.
+SDL_GetTextureColorMod,bool,"SDL_Texture *texture, Uint8 *r, Uint8 *g, Uint8 *b",SDL_Texture Uint8 bool,Get the additional color value multiplied into render copy operations.
+SDL_GetTextureColorModFloat,bool,"SDL_Texture *texture, float *r, float *g, float *b",SDL_Texture float bool,Get the additional color value multiplied into render copy operations.
+SDL_GetTexturePalette,SDL_Palette*,SDL_Texture *texture,SDL_Texture SDL_Palette,Get the palette used by a texture.
+SDL_GetTextureProperties,SDL_PropertiesID,SDL_Texture *texture,SDL_Texture SDL_PropertiesID,Get the properties associated with a texture.
+SDL_GetTextureScaleMode,bool,"SDL_Texture *texture, SDL_ScaleMode *scaleMode",SDL_Texture SDL_ScaleMode bool,Get the scale mode used for texture scale operations.
+SDL_GetTextureSize,bool,"SDL_Texture *texture, float *w, float *h",SDL_Texture float bool,"Get the size of a texture, as floating point values."
+SDL_GetThreadID,SDL_ThreadID,SDL_Thread *thread,SDL_Thread SDL_ThreadID,Get the thread identifier for the specified thread.
+SDL_GetThreadName,char*,SDL_Thread *thread,SDL_Thread char,Get the thread name as it was specified in SDL_CreateThread().
+SDL_GetThreadState,SDL_ThreadState,SDL_Thread *thread,SDL_Thread SDL_ThreadState,Get the current state of a thread.
+SDL_GetTicks,Uint64,,Uint64,Get the number of milliseconds that have elapsed since the SDL library initialization.
+SDL_GetTicksNS,Uint64,,Uint64,Get the number of nanoseconds since SDL library initialization.
+SDL_GetTouchDeviceName,char*,SDL_TouchID touchID,SDL_TouchID char,Get the touch device name as reported from the driver.
+SDL_GetTouchDeviceType,SDL_TouchDeviceType,SDL_TouchID touchID,SDL_TouchID SDL_TouchDeviceType,Get the type of the given touch device.
+SDL_GetTouchDevices,SDL_TouchID*,int *count,int SDL_TouchID,Get a list of registered touch devices.
+SDL_GetTouchFingers,SDL_Finger**,"SDL_TouchID touchID, int *count",SDL_TouchID int SDL_Finger,Get a list of active fingers for a given touch device.
+SDL_GetTrayEntries,SDL_TrayEntry**,"SDL_TrayMenu *menu, int *count",SDL_TrayMenu int SDL_TrayEntry,"Returns a list of entries in the menu, in order."
+SDL_GetTrayEntryChecked,bool,SDL_TrayEntry *entry,SDL_TrayEntry bool,Gets whether or not an entry is checked.
+SDL_GetTrayEntryEnabled,bool,SDL_TrayEntry *entry,SDL_TrayEntry bool,Gets whether or not an entry is enabled.
+SDL_GetTrayEntryLabel,char*,SDL_TrayEntry *entry,SDL_TrayEntry char,Gets the label of an entry.
+SDL_GetTrayEntryParent,SDL_TrayMenu*,SDL_TrayEntry *entry,SDL_TrayEntry SDL_TrayMenu,Gets the menu containing a certain tray entry.
+SDL_GetTrayMenu,SDL_TrayMenu*,SDL_Tray *tray,SDL_Tray SDL_TrayMenu,Gets a previously created tray menu.
+SDL_GetTrayMenuParentEntry,SDL_TrayEntry*,SDL_TrayMenu *menu,SDL_TrayMenu SDL_TrayEntry,"Gets the entry for which the menu is a submenu, if the current menu is a submenu."
+SDL_GetTrayMenuParentTray,SDL_Tray*,SDL_TrayMenu *menu,SDL_TrayMenu SDL_Tray,"Gets the tray for which this menu is the first-level menu, if the current menu isn't a submenu."
+SDL_GetTraySubmenu,SDL_TrayMenu*,SDL_TrayEntry *entry,SDL_TrayEntry SDL_TrayMenu,Gets a previously created tray entry submenu.
+SDL_GetUserFolder,char*,SDL_Folder folder,SDL_Folder char,Finds the most suitable user folder for a specific purpose.
+SDL_GetVersion,int,,int,Get the version of SDL that is linked against your program.
+SDL_GetVideoDriver,char*,int index,int char,Get the name of a built in video driver.
+SDL_GetWindowAspectRatio,bool,"SDL_Window *window, float *min_aspect, float *max_aspect",SDL_Window float bool,Get the aspect ratio of a window's client area.
+SDL_GetWindowBordersSize,bool,"SDL_Window *window, int *top, int *left, int *bottom, int *right",SDL_Window int bool,Get the size of a window's borders (decorations) around the client area.
+SDL_GetWindowDisplayScale,float,SDL_Window *window,SDL_Window float,Get the content display scale relative to a window's pixel size.
+SDL_GetWindowFlags,SDL_WindowFlags,SDL_Window *window,SDL_Window SDL_WindowFlags,Get the window flags.
+SDL_GetWindowFromEvent,SDL_Window*,const SDL_Event *event,SDL_Event SDL_Window,Get window associated with an event.
+SDL_GetWindowFromID,SDL_Window*,SDL_WindowID id,SDL_WindowID SDL_Window,Get a window from a stored ID.
+SDL_GetWindowFullscreenMode,SDL_DisplayMode*,SDL_Window *window,SDL_Window SDL_DisplayMode,Query the display mode to use when a window is visible at fullscreen.
+SDL_GetWindowICCProfile,void*,"SDL_Window *window, size_t *size",SDL_Window size_t,Get the raw ICC profile data for the screen the window is currently on.
+SDL_GetWindowID,SDL_WindowID,SDL_Window *window,SDL_Window SDL_WindowID,Get the numeric ID of a window.
+SDL_GetWindowKeyboardGrab,bool,SDL_Window *window,SDL_Window bool,Get a window's keyboard grab mode.
+SDL_GetWindowMaximumSize,bool,"SDL_Window *window, int *w, int *h",SDL_Window int bool,Get the maximum size of a window's client area.
+SDL_GetWindowMinimumSize,bool,"SDL_Window *window, int *w, int *h",SDL_Window int bool,Get the minimum size of a window's client area.
+SDL_GetWindowMouseGrab,bool,SDL_Window *window,SDL_Window bool,Get a window's mouse grab mode.
+SDL_GetWindowMouseRect,SDL_Rect*,SDL_Window *window,SDL_Window SDL_Rect,Get the mouse confinement rectangle of a window.
+SDL_GetWindowOpacity,float,SDL_Window *window,SDL_Window float,Get the opacity of a window.
+SDL_GetWindowParent,SDL_Window*,SDL_Window *window,SDL_Window,Get parent of a window.
+SDL_GetWindowPixelDensity,float,SDL_Window *window,SDL_Window float,Get the pixel density of a window.
+SDL_GetWindowPixelFormat,SDL_PixelFormat,SDL_Window *window,SDL_Window SDL_PixelFormat,Get the pixel format associated with the window.
+SDL_GetWindowPosition,bool,"SDL_Window *window, int *x, int *y",SDL_Window int bool,Get the position of a window.
+SDL_GetWindowProgressState,SDL_ProgressState,SDL_Window *window,SDL_Window SDL_ProgressState,Get the state of the progress bar for the given windowâs taskbar icon.
+SDL_GetWindowProgressValue,float,SDL_Window *window,SDL_Window float,Get the value of the progress bar for the given windowâs taskbar icon.
+SDL_GetWindowProperties,SDL_PropertiesID,SDL_Window *window,SDL_Window SDL_PropertiesID,Get the properties associated with a window.
+SDL_GetWindowRelativeMouseMode,bool,SDL_Window *window,SDL_Window bool,Query whether relative mouse mode is enabled for a window.
+SDL_GetWindowSafeArea,bool,"SDL_Window *window, SDL_Rect *rect",SDL_Window SDL_Rect bool,Get the safe area for this window.
+SDL_GetWindowSize,bool,"SDL_Window *window, int *w, int *h",SDL_Window int bool,Get the size of a window's client area.
+SDL_GetWindowSizeInPixels,bool,"SDL_Window *window, int *w, int *h",SDL_Window int bool,"Get the size of a window's client area, in pixels."
+SDL_GetWindowSurface,SDL_Surface*,SDL_Window *window,SDL_Window SDL_Surface,Get the SDL surface associated with the window.
+SDL_GetWindowSurfaceVSync,bool,"SDL_Window *window, int *vsync",SDL_Window int bool,Get VSync for the window surface.
+SDL_GetWindowTitle,char*,SDL_Window *window,SDL_Window char,Get the title of a window.
+SDL_GetWindows,SDL_Window**,int *count,int SDL_Window,Get a list of valid windows.
+SDL_GlobDirectory,char**,"const char *path, const char *pattern, SDL_GlobFlags flags, int *count",char SDL_GlobFlags int,"Enumerate a directory tree, filtered by pattern, and return a list."
+SDL_GlobStorageDirectory,char**,"SDL_Storage *storage, const char *path, const char *pattern, SDL_GlobFlags flags, int *count",SDL_Storage char SDL_GlobFlags int,"Enumerate a directory tree, filtered by pattern, and return a list."
+SDL_HapticEffectSupported,bool,"SDL_Haptic *haptic, const SDL_HapticEffect *effect",SDL_Haptic SDL_HapticEffect bool,Check to see if an effect is supported by a haptic device.
+SDL_HapticRumbleSupported,bool,SDL_Haptic *haptic,SDL_Haptic bool,Check whether rumble is supported on a haptic device.
+SDL_HasARMSIMD,bool,,bool,Determine whether the CPU has ARM SIMD (ARMv6) features.
+SDL_HasAVX,bool,,bool,Determine whether the CPU has AVX features.
+SDL_HasAVX2,bool,,bool,Determine whether the CPU has AVX2 features.
+SDL_HasAVX512F,bool,,bool,Determine whether the CPU has AVX-512F (foundation) features.
+SDL_HasAltiVec,bool,,bool,Determine whether the CPU has AltiVec features.
+SDL_HasClipboardData,bool,const char *mime_type,char bool,Query whether there is data in the clipboard for the provided mime type.
+SDL_HasClipboardText,bool,,bool,Query whether the clipboard exists and contains a non-empty text string.
+SDL_HasEvent,bool,Uint32 type,Uint32 bool,Check for the existence of a certain event type in the event queue.
+SDL_HasEvents,bool,"Uint32 minType, Uint32 maxType",Uint32 bool,Check for the existence of certain event types in the event queue.
+SDL_HasExactlyOneBitSet32,bool,Uint32 x,Uint32 bool,Determine if a unsigned 32-bit value has exactly one bit set.
+SDL_HasGamepad,bool,,bool,Return whether a gamepad is currently connected.
+SDL_HasJoystick,bool,,bool,Return whether a joystick is currently connected.
+SDL_HasKeyboard,bool,,bool,Return whether a keyboard is currently connected.
+SDL_HasLASX,bool,,bool,Determine whether the CPU has LASX (LOONGARCH SIMD) features.
+SDL_HasLSX,bool,,bool,Determine whether the CPU has LSX (LOONGARCH SIMD) features.
+SDL_HasMMX,bool,,bool,Determine whether the CPU has MMX features.
+SDL_HasMouse,bool,,bool,Return whether a mouse is currently connected.
+SDL_HasNEON,bool,,bool,Determine whether the CPU has NEON (ARM SIMD) features.
+SDL_HasPrimarySelectionText,bool,,bool,Query whether the primary selection exists and contains a non-empty text string.
+SDL_HasProperty,bool,"SDL_PropertiesID props, const char *name",SDL_PropertiesID char bool,Return whether a property exists in a group of properties.
+SDL_HasRectIntersection,bool,"const SDL_Rect *A, const SDL_Rect *B",SDL_Rect bool,Determine whether two rectangles intersect.
+SDL_HasRectIntersectionFloat,bool,"const SDL_FRect *A, const SDL_FRect *B",SDL_FRect bool,Determine whether two rectangles intersect with float precision.
+SDL_HasSSE,bool,,bool,Determine whether the CPU has SSE features.
+SDL_HasSSE2,bool,,bool,Determine whether the CPU has SSE2 features.
+SDL_HasSSE3,bool,,bool,Determine whether the CPU has SSE3 features.
+SDL_HasSSE41,bool,,bool,Determine whether the CPU has SSE4.1 features.
+SDL_HasSSE42,bool,,bool,Determine whether the CPU has SSE4.2 features.
+SDL_HasSVE2,bool,,bool,Determine whether the CPU has SVE2 (Scalable Vector Extension 2).
+SDL_HasScreenKeyboardSupport,bool,,bool,Check whether the platform has screen keyboard support.
+SDL_HideCursor,bool,,bool,Hide the cursor.
+SDL_HideWindow,bool,SDL_Window *window,SDL_Window bool,Hide a window.
+SDL_IOFromConstMem,SDL_IOStream*,"const void *mem, size_t size",size_t SDL_IOStream,Use this function to prepare a read-only memory buffer for use with SDL_IOStream.
+SDL_IOFromDynamicMem,SDL_IOStream*,,SDL_IOStream,Use this function to create an SDL_IOStream that is backed by dynamically allocated memory.
+SDL_IOFromFile,SDL_IOStream*,"const char *file, const char *mode",char SDL_IOStream,Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named file.
+SDL_IOFromMem,SDL_IOStream*,"void *mem, size_t size",size_t SDL_IOStream,Use this function to prepare a read-write memory buffer for use with SDL_IOStream.
+SDL_IOprintf,size_t,"SDL_IOStream *context, const char *fmt, ... ...",SDL_IOStream char size_t,Print to an SDL_IOStream data stream.
+SDL_IOvprintf,size_t,"SDL_IOStream *context, const char *fmt, va_list ap",SDL_IOStream char va_list size_t,Print to an SDL_IOStream data stream.
+SDL_Init,bool,SDL_InitFlags flags,SDL_InitFlags bool,Initialize the SDL library.
+SDL_InitHapticRumble,bool,SDL_Haptic *haptic,SDL_Haptic bool,Initialize a haptic device for simple rumble playback.
+SDL_InitSubSystem,bool,SDL_InitFlags flags,SDL_InitFlags bool,Compatibility function to initialize the SDL library.
+SDL_InsertGPUDebugLabel,void,"SDL_GPUCommandBuffer *command_buffer, const char *text",SDL_GPUCommandBuffer char,Inserts an arbitrary string label into the command buffer callstream.
+SDL_InsertTrayEntryAt,SDL_TrayEntry*,"SDL_TrayMenu *menu, int pos, const char *label, SDL_TrayEntryFlags flags",SDL_TrayMenu int char SDL_TrayEntryFlags SDL_TrayEntry,Insert a tray entry at a given position.
+SDL_IsAudioDevicePhysical,bool,SDL_AudioDeviceID devid,SDL_AudioDeviceID bool,Determine if an audio device is physical (instead of logical).
+SDL_IsAudioDevicePlayback,bool,SDL_AudioDeviceID devid,SDL_AudioDeviceID bool,Determine if an audio device is a playback device (instead of recording).
+SDL_IsChromebook,bool,,bool,Query if the application is running on a Chromebook.
+SDL_IsDeXMode,bool,,bool,Query if the application is running on a Samsung DeX docking station.
+SDL_IsGamepad,bool,SDL_JoystickID instance_id,SDL_JoystickID bool,Check if the given joystick is supported by the gamepad interface.
+SDL_IsJoystickHaptic,bool,SDL_Joystick *joystick,SDL_Joystick bool,Query if a joystick has haptic features.
+SDL_IsJoystickVirtual,bool,SDL_JoystickID instance_id,SDL_JoystickID bool,Query whether or not a joystick is virtual.
+SDL_IsMainThread,bool,,bool,Return whether this is the main thread.
+SDL_IsMouseHaptic,bool,,bool,Query whether or not the current mouse has haptic capabilities.
+SDL_IsPhone,bool,,bool,Query if the current device is a phone.
+SDL_IsTV,bool,,bool,Query if the current device is a TV.
+SDL_IsTablet,bool,,bool,Query if the current device is a tablet.
+SDL_IsUbuntuTouch,bool,,bool,Detect whether the current platform is Ubuntu Touch.
+SDL_JoystickConnected,bool,SDL_Joystick *joystick,SDL_Joystick bool,Get the status of a specified joystick.
+SDL_JoystickEventsEnabled,bool,,bool,Query the state of joystick event processing.
+SDL_KillProcess,bool,"SDL_Process *process, bool force",SDL_Process bool,Stop a process.
+SDL_LoadBMP,SDL_Surface*,const char *file,char SDL_Surface,Load a BMP image from a file.
+SDL_LoadBMP_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool SDL_Surface,Load a BMP image from a seekable SDL data stream.
+SDL_LoadFile,void*,"const char *file, size_t *datasize",char size_t,Load all the data from a file path.
+SDL_LoadFileAsync,bool,"const char *file, SDL_AsyncIOQueue *queue, void *userdata",char SDL_AsyncIOQueue bool,"Load all the data from a file path, asynchronously."
+SDL_LoadFile_IO,void*,"SDL_IOStream *src, size_t *datasize, bool closeio",SDL_IOStream size_t bool,Load all the data from an SDL data stream.
+SDL_LoadFunction,SDL_FunctionPointer,"SDL_SharedObject *handle, const char *name",SDL_SharedObject char SDL_FunctionPointer,Look up the address of the named function in a shared object.
+SDL_LoadJPG,SDL_Surface*,const char *file,char SDL_Surface,Load a JPEG image from a file.
+SDL_LoadJPG_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool SDL_Surface,Load a JPEG image from a seekable SDL data stream.
+SDL_LoadObject,SDL_SharedObject*,const char *sofile,char SDL_SharedObject,Dynamically load a shared object.
+SDL_LoadPNG,SDL_Surface*,const char *file,char SDL_Surface,Load a PNG image from a file.
+SDL_LoadPNG_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool SDL_Surface,Load a PNG image from a seekable SDL data stream.
+SDL_LoadSurface,SDL_Surface*,const char *file,char SDL_Surface,"Load a BMP, PNG or JPEG image from a file."
+SDL_LoadSurface_IO,SDL_Surface*,"SDL_IOStream *src, bool closeio",SDL_IOStream bool SDL_Surface,"Load a BMP, PNG or JPEG image from a seekable SDL data stream."
+SDL_LoadWAV,bool,"const char *path, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len",char SDL_AudioSpec Uint8 Uint32 bool,Loads a WAV from a file path.
+SDL_LoadWAV_IO,bool,"SDL_IOStream *src, bool closeio, SDL_AudioSpec *spec, Uint8 **audio_buf, Uint32 *audio_len",SDL_IOStream bool SDL_AudioSpec Uint8 Uint32,Load the audio data of a WAVE file into memory.
+SDL_LockAudioStream,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Lock an audio stream for serialized access.
+SDL_LockJoysticks,void,,,Locking for atomic access to the joystick API.
+SDL_LockMutex,void,SDL_Mutex *mutex,SDL_Mutex,Lock the mutex.
+SDL_LockProperties,bool,SDL_PropertiesID props,SDL_PropertiesID bool,Lock a group of properties.
+SDL_LockRWLockForReading,void,SDL_RWLock *rwlock,SDL_RWLock,Lock the read/write lock for _read only_ operations.
+SDL_LockRWLockForWriting,void,SDL_RWLock *rwlock,SDL_RWLock,Lock the read/write lock for _write_ operations.
+SDL_LockSpinlock,void,SDL_SpinLock *lock,SDL_SpinLock,Lock a spin lock by setting it to a non-zero value.
+SDL_LockSurface,bool,SDL_Surface *surface,SDL_Surface bool,Set up a surface for directly accessing the pixels.
+SDL_LockTexture,bool,"SDL_Texture *texture, const SDL_Rect *rect, void **pixels, int *pitch",SDL_Texture SDL_Rect int bool,Lock a portion of the texture for **write-only** pixel access.
+SDL_LockTextureToSurface,bool,"SDL_Texture *texture, const SDL_Rect *rect, SDL_Surface **surface",SDL_Texture SDL_Rect SDL_Surface bool,"Lock a portion of the texture for **write-only** pixel access, and expose it as a SDL surface."
+SDL_Log,void,"const char *fmt, ... ...",char,Log a message with SDL_LOG_CATEGORY_APPLICATION and SDL_LOG_PRIORITY_INFO.
+SDL_LogCritical,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_CRITICAL.
+SDL_LogDebug,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_DEBUG.
+SDL_LogError,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_ERROR.
+SDL_LogInfo,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_INFO.
+SDL_LogMessage,void,"int category, SDL_LogPriority priority, const char *fmt, ... ...",int SDL_LogPriority char,Log a message with the specified category and priority.
+SDL_LogMessageV,void,"int category, SDL_LogPriority priority, const char *fmt, va_list ap",int SDL_LogPriority char va_list,Log a message with the specified category and priority.
+SDL_LogTrace,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_TRACE.
+SDL_LogVerbose,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_VERBOSE.
+SDL_LogWarn,void,"int category, const char *fmt, ... ...",int char,Log a message with SDL_LOG_PRIORITY_WARN.
+SDL_MapGPUTransferBuffer,void*,"SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer, bool cycle",SDL_GPUDevice SDL_GPUTransferBuffer bool,Maps a transfer buffer into application address space.
+SDL_MapRGB,Uint32,"const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b",SDL_PixelFormatDetails SDL_Palette Uint8 Uint32,Map an RGB triple to an opaque pixel value for a given pixel format.
+SDL_MapRGBA,Uint32,"const SDL_PixelFormatDetails *format, const SDL_Palette *palette, Uint8 r, Uint8 g, Uint8 b, Uint8 a",SDL_PixelFormatDetails SDL_Palette Uint8 Uint32,Map an RGBA quadruple to a pixel value for a given pixel format.
+SDL_MapSurfaceRGB,Uint32,"SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b",SDL_Surface Uint8 Uint32,Map an RGB triple to an opaque pixel value for a surface.
+SDL_MapSurfaceRGBA,Uint32,"SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b, Uint8 a",SDL_Surface Uint8 Uint32,Map an RGBA quadruple to a pixel value for a surface.
+SDL_MaximizeWindow,bool,SDL_Window *window,SDL_Window bool,Request that the window be made as large as possible.
+SDL_MemoryBarrierAcquireFunction,void,,,Insert a memory acquire barrier (function version).
+SDL_MemoryBarrierReleaseFunction,void,,,Insert a memory release barrier (function version).
+SDL_Metal_CreateView,SDL_MetalView,SDL_Window *window,SDL_Window SDL_MetalView,Create a CAMetalLayer-backed NSView/UIView and attach it to the specified window.
+SDL_Metal_DestroyView,void,SDL_MetalView view,SDL_MetalView,Destroy an existing SDL_MetalView object.
+SDL_Metal_GetLayer,void*,SDL_MetalView view,SDL_MetalView,Get a pointer to the backing CAMetalLayer for the given view.
+SDL_MinimizeWindow,bool,SDL_Window *window,SDL_Window bool,Request that the window be minimized to an iconic representation.
+SDL_MixAudio,bool,"Uint8 *dst, const Uint8 *src, SDL_AudioFormat format, Uint32 len, float volume",Uint8 SDL_AudioFormat Uint32 float bool,Mix audio data in a specified format.
+SDL_MostSignificantBitIndex32,int,Uint32 x,Uint32 int,Get the index of the most significant (set) bit in a 32-bit number.
+SDL_OnApplicationDidChangeStatusBarOrientation,void,,,Let iOS apps with external event handling report onApplicationDidChangeStatusBarOrientation.
+SDL_OnApplicationDidEnterBackground,void,,,Let iOS apps with external event handling report onApplicationDidEnterBackground.
+SDL_OnApplicationDidEnterForeground,void,,,Let iOS apps with external event handling report onApplicationDidBecomeActive.
+SDL_OnApplicationDidReceiveMemoryWarning,void,,,Let iOS apps with external event handling report onApplicationDidReceiveMemoryWarning.
+SDL_OnApplicationWillEnterBackground,void,,,Let iOS apps with external event handling report onApplicationWillResignActive.
+SDL_OnApplicationWillEnterForeground,void,,,Let iOS apps with external event handling report onApplicationWillEnterForeground.
+SDL_OnApplicationWillTerminate,void,,,Let iOS apps with external event handling report onApplicationWillTerminate.
+SDL_OpenAudioDevice,SDL_AudioDeviceID,"SDL_AudioDeviceID devid, const SDL_AudioSpec *spec",SDL_AudioDeviceID SDL_AudioSpec,Open a specific audio device.
+SDL_OpenAudioDeviceStream,SDL_AudioStream*,"SDL_AudioDeviceID devid, const SDL_AudioSpec *spec, SDL_AudioStreamCallback callback, void *userdata",SDL_AudioDeviceID SDL_AudioSpec SDL_AudioStreamCallback SDL_AudioStream,Convenience function for straightforward audio init for the common case.
+SDL_OpenCamera,SDL_Camera*,"SDL_CameraID instance_id, const SDL_CameraSpec *spec",SDL_CameraID SDL_CameraSpec SDL_Camera,"Open a video recording device (a ""camera"")."
+SDL_OpenFileStorage,SDL_Storage*,const char *path,char SDL_Storage,Opens up a container for local filesystem storage.
+SDL_OpenGamepad,SDL_Gamepad*,SDL_JoystickID instance_id,SDL_JoystickID SDL_Gamepad,Open a gamepad for use.
+SDL_OpenHaptic,SDL_Haptic*,SDL_HapticID instance_id,SDL_HapticID SDL_Haptic,Open a haptic device for use.
+SDL_OpenHapticFromJoystick,SDL_Haptic*,SDL_Joystick *joystick,SDL_Joystick SDL_Haptic,Open a haptic device for use from a joystick device.
+SDL_OpenHapticFromMouse,SDL_Haptic*,,SDL_Haptic,Try to open a haptic device from the current mouse.
+SDL_OpenIO,SDL_IOStream*,"const SDL_IOStreamInterface *iface, void *userdata",SDL_IOStreamInterface SDL_IOStream,Create a custom SDL_IOStream.
+SDL_OpenJoystick,SDL_Joystick*,SDL_JoystickID instance_id,SDL_JoystickID SDL_Joystick,Open a joystick for use.
+SDL_OpenSensor,SDL_Sensor*,SDL_SensorID instance_id,SDL_SensorID SDL_Sensor,Open a sensor for use.
+SDL_OpenStorage,SDL_Storage*,"const SDL_StorageInterface *iface, void *userdata",SDL_StorageInterface SDL_Storage,Opens up a container using a client-provided storage interface.
+SDL_OpenTitleStorage,SDL_Storage*,"const char *override, SDL_PropertiesID props",char SDL_PropertiesID SDL_Storage,Opens up a read-only container for the application's filesystem.
+SDL_OpenURL,bool,const char *url,char bool,Open a URL/URI in the browser or other appropriate external application.
+SDL_OpenUserStorage,SDL_Storage*,"const char *org, const char *app, SDL_PropertiesID props",char SDL_PropertiesID SDL_Storage,Opens up a container for a user's unique read/write filesystem.
+SDL_OutOfMemory,bool,,bool,Set an error indicating that memory allocation failed.
+SDL_PauseAudioDevice,bool,SDL_AudioDeviceID devid,SDL_AudioDeviceID bool,Use this function to pause audio playback on a specified device.
+SDL_PauseAudioStreamDevice,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Use this function to pause audio playback on the audio device associated with an audio stream.
+SDL_PauseHaptic,bool,SDL_Haptic *haptic,SDL_Haptic bool,Pause a haptic device.
+SDL_PeepEvents,int,"SDL_Event *events, int numevents, SDL_EventAction action, Uint32 minType, Uint32 maxType",SDL_Event int SDL_EventAction Uint32,Check the event queue for messages and optionally return them.
+SDL_PlayHapticRumble,bool,"SDL_Haptic *haptic, float strength, Uint32 length",SDL_Haptic float Uint32 bool,Run a simple rumble effect on a haptic device.
+SDL_PointInRect,bool,"const SDL_Point *p, const SDL_Rect *r",SDL_Point SDL_Rect bool,Determine whether a point resides inside a rectangle.
+SDL_PointInRectFloat,bool,"const SDL_FPoint *p, const SDL_FRect *r",SDL_FPoint SDL_FRect bool,Determine whether a point resides inside a floating point rectangle.
+SDL_PollEvent,bool,SDL_Event *event,SDL_Event bool,Poll for currently pending events.
+SDL_PopGPUDebugGroup,void,SDL_GPUCommandBuffer *command_buffer,SDL_GPUCommandBuffer,Ends the most-recently pushed debug group.
+SDL_PremultiplyAlpha,bool,"int width, int height, SDL_PixelFormat src_format, const void *src, int src_pitch, SDL_PixelFormat dst_format, void *dst, int dst_pitch, bool linear",int SDL_PixelFormat bool,Premultiply the alpha on a block of pixels.
+SDL_PremultiplySurfaceAlpha,bool,"SDL_Surface *surface, bool linear",SDL_Surface bool,Premultiply the alpha in a surface.
+SDL_PumpEvents,void,,,"Pump the event loop, gathering events from the input devices."
+SDL_PushEvent,bool,SDL_Event *event,SDL_Event bool,Add an event to the event queue.
+SDL_PushGPUComputeUniformData,void,"SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length",SDL_GPUCommandBuffer Uint32,Pushes data to a uniform slot on the command buffer.
+SDL_PushGPUDebugGroup,void,"SDL_GPUCommandBuffer *command_buffer, const char *name",SDL_GPUCommandBuffer char,Begins a debug group with an arbitrary name.
+SDL_PushGPUFragmentUniformData,void,"SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length",SDL_GPUCommandBuffer Uint32,Pushes data to a fragment uniform slot on the command buffer.
+SDL_PushGPUVertexUniformData,void,"SDL_GPUCommandBuffer *command_buffer, Uint32 slot_index, const void *data, Uint32 length",SDL_GPUCommandBuffer Uint32,Pushes data to a vertex uniform slot on the command buffer.
+SDL_PutAudioStreamData,bool,"SDL_AudioStream *stream, const void *buf, int len",SDL_AudioStream int bool,Add data to the stream.
+SDL_PutAudioStreamDataNoCopy,bool,"SDL_AudioStream *stream, const void *buf, int len, SDL_AudioStreamDataCompleteCallback callback, void *userdata",SDL_AudioStream int SDL_AudioStreamDataCompleteCallback bool,Add external data to an audio stream without copying it.
+SDL_PutAudioStreamPlanarData,bool,"SDL_AudioStream *stream, const void * const *channel_buffers, int num_channels, int num_samples",SDL_AudioStream int bool,Add data to the stream with each channel in a separate array.
+SDL_QueryGPUFence,bool,"SDL_GPUDevice *device, SDL_GPUFence *fence",SDL_GPUDevice SDL_GPUFence bool,Checks the status of a fence.
+SDL_Quit,void,,,Clean up all initialized subsystems.
+SDL_QuitSubSystem,void,SDL_InitFlags flags,SDL_InitFlags,Shut down specific SDL subsystems.
+SDL_RaiseWindow,bool,SDL_Window *window,SDL_Window bool,Request that a window be raised above other windows and gain the input focus.
+SDL_ReadAsyncIO,bool,"SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata",SDL_AsyncIO Uint64 SDL_AsyncIOQueue bool,Start an async read.
+SDL_ReadIO,size_t,"SDL_IOStream *context, void *ptr, size_t size",SDL_IOStream size_t,Read from a data source.
+SDL_ReadProcess,void*,"SDL_Process *process, size_t *datasize, int *exitcode",SDL_Process size_t int,Read all the output from a process.
+SDL_ReadS16BE,bool,"SDL_IOStream *src, Sint16 *value",SDL_IOStream Sint16 bool,Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS16LE,bool,"SDL_IOStream *src, Sint16 *value",SDL_IOStream Sint16 bool,Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS32BE,bool,"SDL_IOStream *src, Sint32 *value",SDL_IOStream Sint32 bool,Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS32LE,bool,"SDL_IOStream *src, Sint32 *value",SDL_IOStream Sint32 bool,Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS64BE,bool,"SDL_IOStream *src, Sint64 *value",SDL_IOStream Sint64 bool,Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS64LE,bool,"SDL_IOStream *src, Sint64 *value",SDL_IOStream Sint64 bool,Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadS8,bool,"SDL_IOStream *src, Sint8 *value",SDL_IOStream Sint8 bool,Use this function to read a signed byte from an SDL_IOStream.
+SDL_ReadStorageFile,bool,"SDL_Storage *storage, const char *path, void *destination, Uint64 length",SDL_Storage char Uint64 bool,Synchronously read a file from a storage container into a client-provided buffer.
+SDL_ReadSurfacePixel,bool,"SDL_Surface *surface, int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a",SDL_Surface int Uint8 bool,Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.
+SDL_ReadSurfacePixelFloat,bool,"SDL_Surface *surface, int x, int y, float *r, float *g, float *b, float *a",SDL_Surface int float bool,Retrieves a single pixel from a surface as RGBA in the sRGB colorspace.
+SDL_ReadU16BE,bool,"SDL_IOStream *src, Uint16 *value",SDL_IOStream Uint16 bool,Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU16LE,bool,"SDL_IOStream *src, Uint16 *value",SDL_IOStream Uint16 bool,Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU32BE,bool,"SDL_IOStream *src, Uint32 *value",SDL_IOStream Uint32 bool,Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU32LE,bool,"SDL_IOStream *src, Uint32 *value",SDL_IOStream Uint32 bool,Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU64BE,bool,"SDL_IOStream *src, Uint64 *value",SDL_IOStream Uint64 bool,Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU64LE,bool,"SDL_IOStream *src, Uint64 *value",SDL_IOStream Uint64 bool,Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format.
+SDL_ReadU8,bool,"SDL_IOStream *src, Uint8 *value",SDL_IOStream Uint8 bool,Use this function to read a byte from an SDL_IOStream.
+SDL_RectEmpty,bool,const SDL_Rect *r,SDL_Rect bool,Determine whether a rectangle has no area.
+SDL_RectEmptyFloat,bool,const SDL_FRect *r,SDL_FRect bool,Determine whether a floating point rectangle takes no space.
+SDL_RectToFRect,void,"const SDL_Rect *rect, SDL_FRect *frect",SDL_Rect SDL_FRect,Convert an SDL_Rect to SDL_FRect
+SDL_RectsEqual,bool,"const SDL_Rect *a, const SDL_Rect *b",SDL_Rect bool,Determine whether two rectangles are equal.
+SDL_RectsEqualEpsilon,bool,"const SDL_FRect *a, const SDL_FRect *b, float epsilon",SDL_FRect float bool,"Determine whether two floating point rectangles are equal, within some given epsilon."
+SDL_RectsEqualFloat,bool,"const SDL_FRect *a, const SDL_FRect *b",SDL_FRect bool,"Determine whether two floating point rectangles are equal, within a default epsilon."
+SDL_RegisterEvents,Uint32,int numevents,int Uint32,"Allocate a set of user-defined events, and return the beginning event number for that set of events."
+SDL_ReleaseCameraFrame,void,"SDL_Camera *camera, SDL_Surface *frame",SDL_Camera SDL_Surface,Release a frame of video acquired from a camera.
+SDL_ReleaseGPUBuffer,void,"SDL_GPUDevice *device, SDL_GPUBuffer *buffer",SDL_GPUDevice SDL_GPUBuffer,Frees the given buffer as soon as it is safe to do so.
+SDL_ReleaseGPUComputePipeline,void,"SDL_GPUDevice *device, SDL_GPUComputePipeline *compute_pipeline",SDL_GPUDevice SDL_GPUComputePipeline,Frees the given compute pipeline as soon as it is safe to do so.
+SDL_ReleaseGPUFence,void,"SDL_GPUDevice *device, SDL_GPUFence *fence",SDL_GPUDevice SDL_GPUFence,Releases a fence obtained from SDL_SubmitGPUCommandBufferAndAcquireFence.
+SDL_ReleaseGPUGraphicsPipeline,void,"SDL_GPUDevice *device, SDL_GPUGraphicsPipeline *graphics_pipeline",SDL_GPUDevice SDL_GPUGraphicsPipeline,Frees the given graphics pipeline as soon as it is safe to do so.
+SDL_ReleaseGPUSampler,void,"SDL_GPUDevice *device, SDL_GPUSampler *sampler",SDL_GPUDevice SDL_GPUSampler,Frees the given sampler as soon as it is safe to do so.
+SDL_ReleaseGPUShader,void,"SDL_GPUDevice *device, SDL_GPUShader *shader",SDL_GPUDevice SDL_GPUShader,Frees the given shader as soon as it is safe to do so.
+SDL_ReleaseGPUTexture,void,"SDL_GPUDevice *device, SDL_GPUTexture *texture",SDL_GPUDevice SDL_GPUTexture,Frees the given texture as soon as it is safe to do so.
+SDL_ReleaseGPUTransferBuffer,void,"SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer",SDL_GPUDevice SDL_GPUTransferBuffer,Frees the given transfer buffer as soon as it is safe to do so.
+SDL_ReleaseWindowFromGPUDevice,void,"SDL_GPUDevice *device, SDL_Window *window",SDL_GPUDevice SDL_Window,"Unclaims a window, destroying its swapchain structure."
+SDL_ReloadGamepadMappings,bool,,bool,Reinitialize the SDL mapping database to its initial state.
+SDL_RemoveEventWatch,void,"SDL_EventFilter filter, void *userdata",SDL_EventFilter,Remove an event watch callback added with SDL_AddEventWatch().
+SDL_RemoveHintCallback,void,"const char *name, SDL_HintCallback callback, void *userdata",char SDL_HintCallback,Remove a function watching a particular hint.
+SDL_RemoveNotification,bool,SDL_NotificationID notification,SDL_NotificationID bool,Remove a notification.
+SDL_RemovePath,bool,const char *path,char bool,Remove a file or an empty directory.
+SDL_RemoveStoragePath,bool,"SDL_Storage *storage, const char *path",SDL_Storage char bool,Remove a file or an empty directory in a writable storage container.
+SDL_RemoveSurfaceAlternateImages,void,SDL_Surface *surface,SDL_Surface,Remove all alternate versions of a surface.
+SDL_RemoveTimer,bool,SDL_TimerID id,SDL_TimerID bool,Remove a timer created with SDL_AddTimer().
+SDL_RemoveTrayEntry,void,SDL_TrayEntry *entry,SDL_TrayEntry,Removes a tray entry.
+SDL_RenamePath,bool,"const char *oldpath, const char *newpath",char bool,Rename a file or directory.
+SDL_RenameStoragePath,bool,"SDL_Storage *storage, const char *oldpath, const char *newpath",SDL_Storage char bool,Rename a file or directory in a writable storage container.
+SDL_RenderClear,bool,SDL_Renderer *renderer,SDL_Renderer bool,Clear the current rendering target with the drawing color.
+SDL_RenderClipEnabled,bool,SDL_Renderer *renderer,SDL_Renderer bool,Get whether clipping is enabled on the given render target.
+SDL_RenderCoordinatesFromWindow,bool,"SDL_Renderer *renderer, float window_x, float window_y, float *x, float *y",SDL_Renderer float bool,Get a point in render coordinates when given a point in window coordinates.
+SDL_RenderCoordinatesToWindow,bool,"SDL_Renderer *renderer, float x, float y, float *window_x, float *window_y",SDL_Renderer float bool,Get a point in window coordinates when given a point in render coordinates.
+SDL_RenderDebugText,bool,"SDL_Renderer *renderer, float x, float y, const char *str",SDL_Renderer float char bool,Draw debug text to an SDL_Renderer.
+SDL_RenderDebugTextFormat,bool,"SDL_Renderer *renderer, float x, float y, const char *fmt, ... ...",SDL_Renderer float char bool,Draw debug text to an SDL_Renderer.
+SDL_RenderFillRect,bool,"SDL_Renderer *renderer, const SDL_FRect *rect",SDL_Renderer SDL_FRect bool,Fill a rectangle on the current rendering target with the drawing color at subpixel precision.
+SDL_RenderFillRects,bool,"SDL_Renderer *renderer, const SDL_FRect *rects, int count",SDL_Renderer SDL_FRect int bool,Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision.
+SDL_RenderGeometry,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_Vertex *vertices, int num_vertices, const int *indices, int num_indices",SDL_Renderer SDL_Texture SDL_Vertex int bool,"Render a list of triangles, optionally using a texture and indices into the vertex array."
+SDL_RenderGeometryRaw,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const float *xy, int xy_stride, const SDL_FColor *color, int color_stride, const float *uv, int uv_stride, int num_vertices, const void *indices, int num_indices, int size_indices",SDL_Renderer SDL_Texture float int SDL_FColor bool,"Render a list of triangles, optionally using a texture and indices into the vertex arrays."
+SDL_RenderLine,bool,"SDL_Renderer *renderer, float x1, float y1, float x2, float y2",SDL_Renderer float bool,Draw a line on the current rendering target at subpixel precision.
+SDL_RenderLines,bool,"SDL_Renderer *renderer, const SDL_FPoint *points, int count",SDL_Renderer SDL_FPoint int bool,Draw a series of connected lines on the current rendering target at subpixel precision.
+SDL_RenderPoint,bool,"SDL_Renderer *renderer, float x, float y",SDL_Renderer float bool,Draw a point on the current rendering target at subpixel precision.
+SDL_RenderPoints,bool,"SDL_Renderer *renderer, const SDL_FPoint *points, int count",SDL_Renderer SDL_FPoint int bool,Draw multiple points on the current rendering target at subpixel precision.
+SDL_RenderPresent,bool,SDL_Renderer *renderer,SDL_Renderer bool,Update the screen with any rendering performed since the previous call.
+SDL_RenderReadPixels,SDL_Surface*,"SDL_Renderer *renderer, const SDL_Rect *rect",SDL_Renderer SDL_Rect SDL_Surface,Read pixels from the current rendering target.
+SDL_RenderRect,bool,"SDL_Renderer *renderer, const SDL_FRect *rect",SDL_Renderer SDL_FRect bool,Draw a rectangle on the current rendering target at subpixel precision.
+SDL_RenderRects,bool,"SDL_Renderer *renderer, const SDL_FRect *rects, int count",SDL_Renderer SDL_FRect int bool,Draw some number of rectangles on the current rendering target at subpixel precision.
+SDL_RenderTexture,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect",SDL_Renderer SDL_Texture SDL_FRect bool,Copy a portion of the texture to the current rendering target at subpixel precision.
+SDL_RenderTexture9Grid,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect",SDL_Renderer SDL_Texture SDL_FRect float bool,Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
+SDL_RenderTexture9GridTiled,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float left_width, float right_width, float top_height, float bottom_height, float scale, const SDL_FRect *dstrect, float tileScale",SDL_Renderer SDL_Texture SDL_FRect float bool,Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision.
+SDL_RenderTextureAffine,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FPoint *origin, const SDL_FPoint *right, const SDL_FPoint *down",SDL_Renderer SDL_Texture SDL_FRect SDL_FPoint bool,"Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision."
+SDL_RenderTextureRotated,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, const SDL_FRect *dstrect, double angle, const SDL_FPoint *center, SDL_FlipMode flip",SDL_Renderer SDL_Texture SDL_FRect double SDL_FPoint SDL_FlipMode bool,"Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision."
+SDL_RenderTextureTiled,bool,"SDL_Renderer *renderer, SDL_Texture *texture, const SDL_FRect *srcrect, float scale, const SDL_FRect *dstrect",SDL_Renderer SDL_Texture SDL_FRect float bool,Tile a portion of the texture to the current rendering target at subpixel precision.
+SDL_RenderViewportSet,bool,SDL_Renderer *renderer,SDL_Renderer bool,Return whether an explicit rectangle was set as the viewport.
+SDL_ReportAssertion,SDL_AssertState,"SDL_AssertData *data, const char *func, const char *file, int line",SDL_AssertData char int SDL_AssertState,Never call this directly.
+SDL_RequestAndroidPermission,bool,"const char *permission, SDL_RequestAndroidPermissionCallback cb, void *userdata",char SDL_RequestAndroidPermissionCallback bool,"Request permissions at runtime, asynchronously."
+SDL_RequestNotificationPermission,bool,,bool,Requests permission from the system to display notifications.
+SDL_ResetAssertionReport,void,,,Clear the list of all assertion failures.
+SDL_ResetHint,bool,const char *name,char bool,Reset a hint to the default value.
+SDL_ResetHints,void,,,Reset all hints to the default values.
+SDL_ResetKeyboard,void,,,Clear the state of the keyboard.
+SDL_ResetLogPriorities,void,,,Reset all priorities to default.
+SDL_RestoreWindow,bool,SDL_Window *window,SDL_Window bool,Request that the size and position of a minimized or maximized window be restored.
+SDL_ResumeAudioDevice,bool,SDL_AudioDeviceID devid,SDL_AudioDeviceID bool,Use this function to unpause audio playback on a specified device.
+SDL_ResumeAudioStreamDevice,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Use this function to unpause audio playback on the audio device associated with an audio stream.
+SDL_ResumeHaptic,bool,SDL_Haptic *haptic,SDL_Haptic bool,Resume a haptic device.
+SDL_RotateSurface,SDL_Surface*,"SDL_Surface *surface, float angle",SDL_Surface float,Return a copy of a surface rotated clockwise a number of degrees.
+SDL_RumbleGamepad,bool,"SDL_Gamepad *gamepad, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms",SDL_Gamepad Uint16 Uint32 bool,Start a rumble effect on a gamepad.
+SDL_RumbleGamepadTriggers,bool,"SDL_Gamepad *gamepad, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms",SDL_Gamepad Uint16 Uint32 bool,Start a rumble effect in the gamepad's triggers.
+SDL_RumbleJoystick,bool,"SDL_Joystick *joystick, Uint16 low_frequency_rumble, Uint16 high_frequency_rumble, Uint32 duration_ms",SDL_Joystick Uint16 Uint32 bool,Start a rumble effect.
+SDL_RumbleJoystickTriggers,bool,"SDL_Joystick *joystick, Uint16 left_rumble, Uint16 right_rumble, Uint32 duration_ms",SDL_Joystick Uint16 Uint32 bool,Start a rumble effect in the joystick's triggers.
+SDL_RunHapticEffect,bool,"SDL_Haptic *haptic, SDL_HapticEffectID effect, Uint32 iterations",SDL_Haptic SDL_HapticEffectID Uint32 bool,Run the haptic effect on its associated haptic device.
+SDL_RunOnMainThread,bool,"SDL_MainThreadCallback callback, void *userdata, bool wait_complete",SDL_MainThreadCallback bool,Call a function on the main thread during event processing.
+SDL_SaveBMP,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save a surface to a file in BMP format.
+SDL_SaveBMP_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,Save a surface to a seekable SDL data stream in BMP format.
+SDL_SaveFile,bool,"const char *file, const void *data, size_t datasize",char size_t bool,Save all the data into a file path.
+SDL_SaveFile_IO,bool,"SDL_IOStream *src, const void *data, size_t datasize, bool closeio",SDL_IOStream size_t bool,Save all the data into an SDL data stream.
+SDL_SavePNG,bool,"SDL_Surface *surface, const char *file",SDL_Surface char bool,Save a surface to a file in PNG format.
+SDL_SavePNG_IO,bool,"SDL_Surface *surface, SDL_IOStream *dst, bool closeio",SDL_Surface SDL_IOStream bool,Save a surface to a seekable SDL data stream in PNG format.
+SDL_ScaleSurface,SDL_Surface*,"SDL_Surface *surface, int width, int height, SDL_ScaleMode scaleMode",SDL_Surface int SDL_ScaleMode,"Creates a new surface identical to the existing surface, scaled to the desired size."
+SDL_ScreenKeyboardShown,bool,SDL_Window *window,SDL_Window bool,Check whether the screen keyboard is shown for given window.
+SDL_ScreenSaverEnabled,bool,,bool,Check whether the screensaver is currently enabled.
+SDL_SeekIO,Sint64,"SDL_IOStream *context, Sint64 offset, SDL_IOWhence whence",SDL_IOStream Sint64 SDL_IOWhence,Seek within an SDL_IOStream data stream.
+SDL_SendAndroidBackButton,void,,,Trigger the Android system back button behavior.
+SDL_SendAndroidMessage,bool,"Uint32 command, int param",Uint32 int bool,Send a user command to SDLActivity.
+SDL_SendGamepadEffect,bool,"SDL_Gamepad *gamepad, const void *data, int size",SDL_Gamepad int bool,Send a gamepad specific effect packet.
+SDL_SendJoystickEffect,bool,"SDL_Joystick *joystick, const void *data, int size",SDL_Joystick int bool,Send a joystick specific effect packet.
+SDL_SendJoystickVirtualSensorData,bool,"SDL_Joystick *joystick, SDL_SensorType type, Uint64 sensor_timestamp, const float *data, int num_values",SDL_Joystick SDL_SensorType Uint64 float int bool,Send a sensor update for an opened virtual joystick.
+SDL_SetAppMetadata,bool,"const char *appname, const char *appversion, const char *appidentifier",char bool,Specify basic metadata about your app.
+SDL_SetAppMetadataProperty,bool,"const char *name, const char *value",char bool,Specify metadata about your app through a set of properties.
+SDL_SetAssertionHandler,void,"SDL_AssertionHandler handler, void *userdata",SDL_AssertionHandler,Set an application-defined assertion handler.
+SDL_SetAtomicInt,int,"SDL_AtomicInt *a, int v",SDL_AtomicInt int,Set an atomic variable to a value.
+SDL_SetAtomicPointer,void*,"void **a, void *v",,Set a pointer to a value atomically.
+SDL_SetAtomicU32,Uint32,"SDL_AtomicU32 *a, Uint32 v",SDL_AtomicU32 Uint32,Set an atomic variable to a value.
+SDL_SetAudioDeviceGain,bool,"SDL_AudioDeviceID devid, float gain",SDL_AudioDeviceID float bool,Change the gain of an audio device.
+SDL_SetAudioPostmixCallback,bool,"SDL_AudioDeviceID devid, SDL_AudioPostmixCallback callback, void *userdata",SDL_AudioDeviceID SDL_AudioPostmixCallback bool,Set a callback that fires when data is about to be fed to an audio device.
+SDL_SetAudioStreamFormat,bool,"SDL_AudioStream *stream, const SDL_AudioSpec *src_spec, const SDL_AudioSpec *dst_spec",SDL_AudioStream SDL_AudioSpec bool,Change the input and output formats of an audio stream.
+SDL_SetAudioStreamFrequencyRatio,bool,"SDL_AudioStream *stream, float ratio",SDL_AudioStream float bool,Change the frequency ratio of an audio stream.
+SDL_SetAudioStreamGain,bool,"SDL_AudioStream *stream, float gain",SDL_AudioStream float bool,Change the gain of an audio stream.
+SDL_SetAudioStreamGetCallback,bool,"SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata",SDL_AudioStream SDL_AudioStreamCallback bool,Set a callback that runs when data is requested from an audio stream.
+SDL_SetAudioStreamInputChannelMap,bool,"SDL_AudioStream *stream, const int *chmap, int count",SDL_AudioStream int bool,Set the current input channel map of an audio stream.
+SDL_SetAudioStreamOutputChannelMap,bool,"SDL_AudioStream *stream, const int *chmap, int count",SDL_AudioStream int bool,Set the current output channel map of an audio stream.
+SDL_SetAudioStreamPutCallback,bool,"SDL_AudioStream *stream, SDL_AudioStreamCallback callback, void *userdata",SDL_AudioStream SDL_AudioStreamCallback bool,Set a callback that runs when data is added to an audio stream.
+SDL_SetBooleanProperty,bool,"SDL_PropertiesID props, const char *name, bool value",SDL_PropertiesID char bool,Set a boolean property in a group of properties.
+SDL_SetClipboardData,bool,"SDL_ClipboardDataCallback callback, SDL_ClipboardCleanupCallback cleanup, void *userdata, const char *const *mime_types, size_t num_mime_types",SDL_ClipboardDataCallback SDL_ClipboardCleanupCallback char size_t bool,Offer clipboard data to the OS.
+SDL_SetClipboardText,bool,const char *text,char bool,Put UTF-8 text into the clipboard.
+SDL_SetCurrentThreadPriority,bool,SDL_ThreadPriority priority,SDL_ThreadPriority bool,Set the priority for the current thread.
+SDL_SetCursor,bool,SDL_Cursor *cursor,SDL_Cursor bool,Set the active cursor.
+SDL_SetDefaultTextureScaleMode,bool,"SDL_Renderer *renderer, SDL_ScaleMode scale_mode",SDL_Renderer SDL_ScaleMode bool,Set default scale mode for new textures for given renderer.
+SDL_SetEnvironmentVariable,bool,"SDL_Environment *env, const char *name, const char *value, bool overwrite",SDL_Environment char bool,Set the value of a variable in the environment.
+SDL_SetError,bool,"const char *fmt, ... ...",char bool,Set the SDL error message for the current thread.
+SDL_SetErrorV,bool,"const char *fmt, va_list ap",char va_list bool,Set the SDL error message for the current thread.
+SDL_SetEventEnabled,void,"Uint32 type, bool enabled",Uint32 bool,Set the state of processing events by type.
+SDL_SetEventFilter,void,"SDL_EventFilter filter, void *userdata",SDL_EventFilter,Set up a filter to process all events before they are added to the internal event queue.
+SDL_SetFloatProperty,bool,"SDL_PropertiesID props, const char *name, float value",SDL_PropertiesID char float bool,Set a floating point property in a group of properties.
+SDL_SetGPUAllowedFramesInFlight,bool,"SDL_GPUDevice *device, Uint32 allowed_frames_in_flight",SDL_GPUDevice Uint32 bool,Configures the maximum allowed number of frames in flight.
+SDL_SetGPUBlendConstants,void,"SDL_GPURenderPass *render_pass, SDL_FColor blend_constants",SDL_GPURenderPass SDL_FColor,Sets the current blend constants on a command buffer.
+SDL_SetGPUBufferName,void,"SDL_GPUDevice *device, SDL_GPUBuffer *buffer, const char *text",SDL_GPUDevice SDL_GPUBuffer char,Sets an arbitrary string constant to label a buffer.
+SDL_SetGPURenderState,bool,"SDL_Renderer *renderer, SDL_GPURenderState *state",SDL_Renderer SDL_GPURenderState bool,Set custom GPU render state.
+SDL_SetGPURenderStateFragmentUniforms,bool,"SDL_GPURenderState *state, Uint32 slot_index, const void *data, Uint32 length",SDL_GPURenderState Uint32 bool,Set fragment shader uniform variables in a custom GPU render state.
+SDL_SetGPURenderStateSamplerBindings,bool,"SDL_GPURenderState *state, int num_sampler_bindings, const SDL_GPUTextureSamplerBinding *sampler_bindings",SDL_GPURenderState int SDL_GPUTextureSamplerBinding bool,Set sampler bindings variables in a custom GPU render state.
+SDL_SetGPURenderStateStorageBuffers,bool,"SDL_GPURenderState *state, int num_storage_buffers, SDL_GPUBuffer *const *storage_buffers",SDL_GPURenderState int SDL_GPUBuffer bool,Set storage buffers variables in a custom GPU render state.
+SDL_SetGPURenderStateStorageTextures,bool,"SDL_GPURenderState *state, int num_storage_textures, SDL_GPUTexture *const *storage_textures",SDL_GPURenderState int SDL_GPUTexture bool,Set storage textures variables in a custom GPU render state.
+SDL_SetGPUScissor,void,"SDL_GPURenderPass *render_pass, const SDL_Rect *scissor",SDL_GPURenderPass SDL_Rect,Sets the current scissor state on a command buffer.
+SDL_SetGPUStencilReference,void,"SDL_GPURenderPass *render_pass, Uint8 reference",SDL_GPURenderPass Uint8,Sets the current stencil reference value on a command buffer.
+SDL_SetGPUSwapchainParameters,bool,"SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition, SDL_GPUPresentMode present_mode",SDL_GPUDevice SDL_Window SDL_GPUSwapchainComposition SDL_GPUPresentMode bool,Changes the swapchain parameters for the given claimed window.
+SDL_SetGPUTextureName,void,"SDL_GPUDevice *device, SDL_GPUTexture *texture, const char *text",SDL_GPUDevice SDL_GPUTexture char,Sets an arbitrary string constant to label a texture.
+SDL_SetGPUViewport,void,"SDL_GPURenderPass *render_pass, const SDL_GPUViewport *viewport",SDL_GPURenderPass SDL_GPUViewport,Sets the current viewport state on a command buffer.
+SDL_SetGamepadEventsEnabled,void,bool enabled,bool,Set the state of gamepad event processing.
+SDL_SetGamepadLED,bool,"SDL_Gamepad *gamepad, Uint8 red, Uint8 green, Uint8 blue",SDL_Gamepad Uint8 bool,Update a gamepad's LED color.
+SDL_SetGamepadMapping,bool,"SDL_JoystickID instance_id, const char *mapping",SDL_JoystickID char bool,Set the current mapping of a joystick or gamepad.
+SDL_SetGamepadPlayerIndex,bool,"SDL_Gamepad *gamepad, int player_index",SDL_Gamepad int bool,Set the player index of an opened gamepad.
+SDL_SetGamepadSensorEnabled,bool,"SDL_Gamepad *gamepad, SDL_SensorType type, bool enabled",SDL_Gamepad SDL_SensorType bool,Set whether data reporting for a gamepad sensor is enabled.
+SDL_SetHapticAutocenter,bool,"SDL_Haptic *haptic, int autocenter",SDL_Haptic int bool,Set the global autocenter of the device.
+SDL_SetHapticGain,bool,"SDL_Haptic *haptic, int gain",SDL_Haptic int bool,Set the global gain of the specified haptic device.
+SDL_SetHint,bool,"const char *name, const char *value",char bool,Set a hint with normal priority.
+SDL_SetHintWithPriority,bool,"const char *name, const char *value, SDL_HintPriority priority",char SDL_HintPriority bool,Set a hint with a specific priority.
+SDL_SetInitialized,void,"SDL_InitState *state, bool initialized",SDL_InitState bool,Finish an initialization state transition.
+SDL_SetJoystickEventsEnabled,void,bool enabled,bool,Set the state of joystick event processing.
+SDL_SetJoystickLED,bool,"SDL_Joystick *joystick, Uint8 red, Uint8 green, Uint8 blue",SDL_Joystick Uint8 bool,Update a joystick's LED color.
+SDL_SetJoystickPlayerIndex,bool,"SDL_Joystick *joystick, int player_index",SDL_Joystick int bool,Set the player index of an opened joystick.
+SDL_SetJoystickVirtualAxis,bool,"SDL_Joystick *joystick, int axis, Sint16 value",SDL_Joystick int Sint16 bool,Set the state of an axis on an opened virtual joystick.
+SDL_SetJoystickVirtualBall,bool,"SDL_Joystick *joystick, int ball, Sint16 xrel, Sint16 yrel",SDL_Joystick int Sint16 bool,Generate ball motion on an opened virtual joystick.
+SDL_SetJoystickVirtualButton,bool,"SDL_Joystick *joystick, int button, bool down",SDL_Joystick int bool,Set the state of a button on an opened virtual joystick.
+SDL_SetJoystickVirtualHat,bool,"SDL_Joystick *joystick, int hat, Uint8 value",SDL_Joystick int Uint8 bool,Set the state of a hat on an opened virtual joystick.
+SDL_SetJoystickVirtualTouchpad,bool,"SDL_Joystick *joystick, int touchpad, int finger, bool down, float x, float y, float pressure",SDL_Joystick int bool float,Set touchpad finger state on an opened virtual joystick.
+SDL_SetLinuxThreadPriority,bool,"Sint64 threadID, int priority",Sint64 int bool,Sets the UNIX nice value for a thread.
+SDL_SetLinuxThreadPriorityAndPolicy,bool,"Sint64 threadID, int sdlPriority, int schedPolicy",Sint64 int bool,Sets the priority (not nice level) and scheduling policy for a thread.
+SDL_SetLogOutputFunction,void,"SDL_LogOutputFunction callback, void *userdata",SDL_LogOutputFunction,Replace the default log output function with one of your own.
+SDL_SetLogPriorities,void,SDL_LogPriority priority,SDL_LogPriority,Set the priority of all log categories.
+SDL_SetLogPriority,void,"int category, SDL_LogPriority priority",int SDL_LogPriority,Set the priority of a particular log category.
+SDL_SetLogPriorityPrefix,bool,"SDL_LogPriority priority, const char *prefix",SDL_LogPriority char bool,Set the text prepended to log messages of a given priority.
+SDL_SetMemoryFunctions,bool,"SDL_malloc_func malloc_func, SDL_calloc_func calloc_func, SDL_realloc_func realloc_func, SDL_free_func free_func",SDL_malloc_func SDL_calloc_func SDL_realloc_func SDL_free_func bool,Replace SDL's memory allocation functions with a custom set.
+SDL_SetModState,void,SDL_Keymod modstate,SDL_Keymod,Set the current key modifier state for the keyboard.
+SDL_SetNumberProperty,bool,"SDL_PropertiesID props, const char *name, Sint64 value",SDL_PropertiesID char Sint64 bool,Set an integer property in a group of properties.
+SDL_SetPaletteColors,bool,"SDL_Palette *palette, const SDL_Color *colors, int firstcolor, int ncolors",SDL_Palette SDL_Color int bool,Set a range of colors in a palette.
+SDL_SetPointerProperty,bool,"SDL_PropertiesID props, const char *name, void *value",SDL_PropertiesID char bool,Set a pointer property in a group of properties.
+SDL_SetPointerPropertyWithCleanup,bool,"SDL_PropertiesID props, const char *name, void *value, SDL_CleanupPropertyCallback cleanup, void *userdata",SDL_PropertiesID char SDL_CleanupPropertyCallback bool,Set a pointer property in a group of properties with a cleanup function that is called when the property is deleted.
+SDL_SetPrimarySelectionText,bool,const char *text,char bool,Put UTF-8 text into the primary selection.
+SDL_SetRelativeMouseTransform,bool,"SDL_MouseMotionTransformCallback callback, void *userdata",SDL_MouseMotionTransformCallback bool,Set a user-defined function by which to transform relative mouse inputs.
+SDL_SetRenderClipRect,bool,"SDL_Renderer *renderer, const SDL_Rect *rect",SDL_Renderer SDL_Rect bool,Set the clip rectangle for rendering on the specified target.
+SDL_SetRenderColorScale,bool,"SDL_Renderer *renderer, float scale",SDL_Renderer float bool,Set the color scale used for render operations.
+SDL_SetRenderDrawBlendMode,bool,"SDL_Renderer *renderer, SDL_BlendMode blendMode",SDL_Renderer SDL_BlendMode bool,Set the blend mode used for drawing operations.
+SDL_SetRenderDrawColor,bool,"SDL_Renderer *renderer, Uint8 r, Uint8 g, Uint8 b, Uint8 a",SDL_Renderer Uint8 bool,Set the color used for drawing operations.
+SDL_SetRenderDrawColorFloat,bool,"SDL_Renderer *renderer, float r, float g, float b, float a",SDL_Renderer float bool,"Set the color used for drawing operations (Rect, Line and Clear)."
+SDL_SetRenderLogicalPresentation,bool,"SDL_Renderer *renderer, int w, int h, SDL_RendererLogicalPresentation mode",SDL_Renderer int SDL_RendererLogicalPresentation bool,Set a device-independent resolution and presentation mode for rendering.
+SDL_SetRenderScale,bool,"SDL_Renderer *renderer, float scaleX, float scaleY",SDL_Renderer float bool,Set the drawing scale for rendering on the current target.
+SDL_SetRenderTarget,bool,"SDL_Renderer *renderer, SDL_Texture *texture",SDL_Renderer SDL_Texture bool,Set a texture as the current rendering target.
+SDL_SetRenderTextureAddressMode,bool,"SDL_Renderer *renderer, SDL_TextureAddressMode u_mode, SDL_TextureAddressMode v_mode",SDL_Renderer SDL_TextureAddressMode bool,Set the texture addressing mode used in SDL_RenderGeometry().
+SDL_SetRenderVSync,bool,"SDL_Renderer *renderer, int vsync",SDL_Renderer int bool,Toggle VSync of the given renderer.
+SDL_SetRenderViewport,bool,"SDL_Renderer *renderer, const SDL_Rect *rect",SDL_Renderer SDL_Rect bool,Set the drawing area for rendering on the current target.
+SDL_SetScancodeName,bool,"SDL_Scancode scancode, const char *name",SDL_Scancode char bool,Set a human-readable name for a scancode.
+SDL_SetStringProperty,bool,"SDL_PropertiesID props, const char *name, const char *value",SDL_PropertiesID char bool,Set a string property in a group of properties.
+SDL_SetSurfaceAlphaMod,bool,"SDL_Surface *surface, Uint8 alpha",SDL_Surface Uint8 bool,Set an additional alpha value used in blit operations.
+SDL_SetSurfaceBlendMode,bool,"SDL_Surface *surface, SDL_BlendMode blendMode",SDL_Surface SDL_BlendMode bool,Set the blend mode used for blit operations.
+SDL_SetSurfaceClipRect,bool,"SDL_Surface *surface, const SDL_Rect *rect",SDL_Surface SDL_Rect bool,Set the clipping rectangle for a surface.
+SDL_SetSurfaceColorKey,bool,"SDL_Surface *surface, bool enabled, Uint32 key",SDL_Surface bool Uint32,Set the color key (transparent pixel) in a surface.
+SDL_SetSurfaceColorMod,bool,"SDL_Surface *surface, Uint8 r, Uint8 g, Uint8 b",SDL_Surface Uint8 bool,Set an additional color value multiplied into blit operations.
+SDL_SetSurfaceColorspace,bool,"SDL_Surface *surface, SDL_Colorspace colorspace",SDL_Surface SDL_Colorspace bool,Set the colorspace used by a surface.
+SDL_SetSurfacePalette,bool,"SDL_Surface *surface, SDL_Palette *palette",SDL_Surface SDL_Palette bool,Set the palette used by a surface.
+SDL_SetSurfaceRLE,bool,"SDL_Surface *surface, bool enabled",SDL_Surface bool,Set the RLE acceleration hint for a surface.
+SDL_SetTLS,bool,"SDL_TLSID *id, const void *value, SDL_TLSDestructorCallback destructor",SDL_TLSID SDL_TLSDestructorCallback bool,Set the current thread's value associated with a thread local storage ID.
+SDL_SetTextInputArea,bool,"SDL_Window *window, const SDL_Rect *rect, int cursor",SDL_Window SDL_Rect int bool,Set the area used to type Unicode text input.
+SDL_SetTextureAlphaMod,bool,"SDL_Texture *texture, Uint8 alpha",SDL_Texture Uint8 bool,Set an additional alpha value multiplied into render copy operations.
+SDL_SetTextureAlphaModFloat,bool,"SDL_Texture *texture, float alpha",SDL_Texture float bool,Set an additional alpha value multiplied into render copy operations.
+SDL_SetTextureBlendMode,bool,"SDL_Texture *texture, SDL_BlendMode blendMode",SDL_Texture SDL_BlendMode bool,"Set the blend mode for a texture, used by SDL_RenderTexture()."
+SDL_SetTextureColorMod,bool,"SDL_Texture *texture, Uint8 r, Uint8 g, Uint8 b",SDL_Texture Uint8 bool,Set an additional color value multiplied into render copy operations.
+SDL_SetTextureColorModFloat,bool,"SDL_Texture *texture, float r, float g, float b",SDL_Texture float bool,Set an additional color value multiplied into render copy operations.
+SDL_SetTexturePalette,bool,"SDL_Texture *texture, SDL_Palette *palette",SDL_Texture SDL_Palette bool,Set the palette used by a texture.
+SDL_SetTextureScaleMode,bool,"SDL_Texture *texture, SDL_ScaleMode scaleMode",SDL_Texture SDL_ScaleMode bool,Set the scale mode used for texture scale operations.
+SDL_SetTrayEntryCallback,void,"SDL_TrayEntry *entry, SDL_TrayCallback callback, void *userdata",SDL_TrayEntry SDL_TrayCallback,Sets a callback to be invoked when the entry is selected.
+SDL_SetTrayEntryChecked,void,"SDL_TrayEntry *entry, bool checked",SDL_TrayEntry bool,Sets whether or not an entry is checked.
+SDL_SetTrayEntryEnabled,void,"SDL_TrayEntry *entry, bool enabled",SDL_TrayEntry bool,Sets whether or not an entry is enabled.
+SDL_SetTrayEntryLabel,void,"SDL_TrayEntry *entry, const char *label",SDL_TrayEntry char,Sets the label of an entry.
+SDL_SetTrayIcon,void,"SDL_Tray *tray, SDL_Surface *icon",SDL_Tray SDL_Surface,Updates the system tray icon's icon.
+SDL_SetTrayTooltip,void,"SDL_Tray *tray, const char *tooltip",SDL_Tray char,Updates the system tray icon's tooltip.
+SDL_SetWindowAlwaysOnTop,bool,"SDL_Window *window, bool on_top",SDL_Window bool,Set the window to always be above the others.
+SDL_SetWindowAspectRatio,bool,"SDL_Window *window, float min_aspect, float max_aspect",SDL_Window float bool,Request that the aspect ratio of a window's client area be set.
+SDL_SetWindowBordered,bool,"SDL_Window *window, bool bordered",SDL_Window bool,Set the border state of a window.
+SDL_SetWindowFillDocument,bool,"SDL_Window *window, bool fill",SDL_Window bool,Set the window to fill the current document space (Emscripten only).
+SDL_SetWindowFocusable,bool,"SDL_Window *window, bool focusable",SDL_Window bool,Set whether the window may have input focus.
+SDL_SetWindowFullscreen,bool,"SDL_Window *window, bool fullscreen",SDL_Window bool,Request that the window's fullscreen state be changed.
+SDL_SetWindowFullscreenMode,bool,"SDL_Window *window, const SDL_DisplayMode *mode",SDL_Window SDL_DisplayMode bool,Set the display mode to use when a window is visible and fullscreen.
+SDL_SetWindowHitTest,bool,"SDL_Window *window, SDL_HitTest callback, void *callback_data",SDL_Window SDL_HitTest bool,Provide a callback that decides if a window region has special properties.
+SDL_SetWindowIcon,bool,"SDL_Window *window, SDL_Surface *icon",SDL_Window SDL_Surface bool,Set the icon for a window.
+SDL_SetWindowKeyboardGrab,bool,"SDL_Window *window, bool grabbed",SDL_Window bool,Set a window's keyboard grab mode.
+SDL_SetWindowMaximumSize,bool,"SDL_Window *window, int max_w, int max_h",SDL_Window int bool,Set the maximum size of a window's client area.
+SDL_SetWindowMinimumSize,bool,"SDL_Window *window, int min_w, int min_h",SDL_Window int bool,Set the minimum size of a window's client area.
+SDL_SetWindowModal,bool,"SDL_Window *window, bool modal",SDL_Window bool,Toggle the state of the window as modal.
+SDL_SetWindowMouseGrab,bool,"SDL_Window *window, bool grabbed",SDL_Window bool,Set a window's mouse grab mode.
+SDL_SetWindowMouseRect,bool,"SDL_Window *window, const SDL_Rect *rect",SDL_Window SDL_Rect bool,Confines the cursor to the specified area of a window.
+SDL_SetWindowOpacity,bool,"SDL_Window *window, float opacity",SDL_Window float bool,Set the opacity for a window.
+SDL_SetWindowParent,bool,"SDL_Window *window, SDL_Window *parent",SDL_Window bool,Set the window as a child of a parent window.
+SDL_SetWindowPosition,bool,"SDL_Window *window, int x, int y",SDL_Window int bool,Request that the window's position be set.
+SDL_SetWindowProgressState,bool,"SDL_Window *window, SDL_ProgressState state",SDL_Window SDL_ProgressState bool,Sets the state of the progress bar for the given windowâs taskbar icon.
+SDL_SetWindowProgressValue,bool,"SDL_Window *window, float value",SDL_Window float bool,Sets the value of the progress bar for the given windowâs taskbar icon.
+SDL_SetWindowRelativeMouseMode,bool,"SDL_Window *window, bool enabled",SDL_Window bool,Set relative mouse mode for a window.
+SDL_SetWindowResizable,bool,"SDL_Window *window, bool resizable",SDL_Window bool,Set the user-resizable state of a window.
+SDL_SetWindowShape,bool,"SDL_Window *window, SDL_Surface *shape",SDL_Window SDL_Surface bool,Set the shape of a transparent window.
+SDL_SetWindowSize,bool,"SDL_Window *window, int w, int h",SDL_Window int bool,Request that the size of a window's client area be set.
+SDL_SetWindowSurfaceVSync,bool,"SDL_Window *window, int vsync",SDL_Window int bool,Toggle VSync for the window surface.
+SDL_SetWindowTitle,bool,"SDL_Window *window, const char *title",SDL_Window char bool,Set the title of a window.
+SDL_SetWindowsMessageHook,void,"SDL_WindowsMessageHook callback, void *userdata",SDL_WindowsMessageHook,"Set a callback for every Windows message, run before TranslateMessage()."
+SDL_SetX11EventHook,void,"SDL_X11EventHook callback, void *userdata",SDL_X11EventHook,Set a callback for every X11 event.
+SDL_SetiOSAnimationCallback,bool,"SDL_Window *window, int interval, SDL_iOSAnimationCallback callback, void *callbackParam",SDL_Window int SDL_iOSAnimationCallback bool,Use this function to set the animation callback on Apple iOS.
+SDL_SetiOSEventPump,void,bool enabled,bool,Use this function to enable or disable the SDL event pump on Apple iOS.
+SDL_ShouldInit,bool,SDL_InitState *state,SDL_InitState bool,Return whether initialization should be done.
+SDL_ShouldQuit,bool,SDL_InitState *state,SDL_InitState bool,Return whether cleanup should be done.
+SDL_ShowAndroidToast,bool,"const char *message, int duration, int gravity, int xoffset, int yoffset",char int bool,Shows an Android toast notification.
+SDL_ShowCursor,bool,,bool,Show the cursor.
+SDL_ShowFileDialogWithProperties,void,"SDL_FileDialogType type, SDL_DialogFileCallback callback, void *userdata, SDL_PropertiesID props",SDL_FileDialogType SDL_DialogFileCallback SDL_PropertiesID,Create and launch a file dialog with the specified properties.
+SDL_ShowMessageBox,bool,"const SDL_MessageBoxData *messageboxdata, int *buttonid",SDL_MessageBoxData int bool,Create a modal message box.
+SDL_ShowNotification,SDL_NotificationID,"const char *title, const char *message, SDL_Surface *image, SDL_NotificationAction *actions, int num_actions",char SDL_Surface SDL_NotificationAction int SDL_NotificationID,Show a system notification with normal priority.
+SDL_ShowNotificationWithProperties,SDL_NotificationID,SDL_PropertiesID props,SDL_PropertiesID SDL_NotificationID,Show a system notification.
+SDL_ShowOpenFileDialog,void,"SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location, bool allow_many",SDL_DialogFileCallback SDL_Window SDL_DialogFileFilter int char bool,Displays a dialog that lets the user select a file on their filesystem.
+SDL_ShowOpenFolderDialog,void,"SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const char *default_location, bool allow_many",SDL_DialogFileCallback SDL_Window char bool,Displays a dialog that lets the user select a folder on their filesystem.
+SDL_ShowSaveFileDialog,void,"SDL_DialogFileCallback callback, void *userdata, SDL_Window *window, const SDL_DialogFileFilter *filters, int nfilters, const char *default_location",SDL_DialogFileCallback SDL_Window SDL_DialogFileFilter int char,Displays a dialog that lets the user choose a new or existing file on their filesystem.
+SDL_ShowSimpleMessageBox,bool,"SDL_MessageBoxFlags flags, const char *title, const char *message, SDL_Window *window",SDL_MessageBoxFlags char SDL_Window bool,Display a simple modal message box.
+SDL_ShowWindow,bool,SDL_Window *window,SDL_Window bool,Show a window.
+SDL_ShowWindowSystemMenu,bool,"SDL_Window *window, int x, int y",SDL_Window int bool,Display the system-level window menu.
+SDL_SignalAsyncIOQueue,void,SDL_AsyncIOQueue *queue,SDL_AsyncIOQueue,Wake up any threads that are blocking in SDL_WaitAsyncIOResult().
+SDL_SignalCondition,void,SDL_Condition *cond,SDL_Condition,Restart one of the threads that are waiting on the condition variable.
+SDL_SignalSemaphore,void,SDL_Semaphore *sem,SDL_Semaphore,Atomically increment a semaphore's value and wake waiting threads.
+SDL_StartTextInput,bool,SDL_Window *window,SDL_Window bool,Start accepting Unicode text input events in a window.
+SDL_StartTextInputWithProperties,bool,"SDL_Window *window, SDL_PropertiesID props",SDL_Window SDL_PropertiesID bool,"Start accepting Unicode text input events in a window, with properties describing the input."
+SDL_StepBackUTF8,Uint32,"const char *start, const char **pstr",char Uint32,"Decode a UTF-8 string in reverse, one Unicode codepoint at a time."
+SDL_StepUTF8,Uint32,"const char **pstr, size_t *pslen",char size_t Uint32,"Decode a UTF-8 string, one Unicode codepoint at a time."
+SDL_StopHapticEffect,bool,"SDL_Haptic *haptic, SDL_HapticEffectID effect",SDL_Haptic SDL_HapticEffectID bool,Stop the haptic effect on its associated haptic device.
+SDL_StopHapticEffects,bool,SDL_Haptic *haptic,SDL_Haptic bool,Stop all the currently playing effects on a haptic device.
+SDL_StopHapticRumble,bool,SDL_Haptic *haptic,SDL_Haptic bool,Stop the simple rumble on a haptic device.
+SDL_StopTextInput,bool,SDL_Window *window,SDL_Window bool,Stop receiving any text input events in a window.
+SDL_StorageReady,bool,SDL_Storage *storage,SDL_Storage bool,Checks if the storage container is ready to use.
+SDL_StretchSurface,bool,"SDL_Surface *src, const SDL_Rect *srcrect, SDL_Surface *dst, const SDL_Rect *dstrect, SDL_ScaleMode scaleMode",SDL_Surface SDL_Rect SDL_ScaleMode bool,Perform a stretched pixel copy from one surface to another.
+SDL_StringToGUID,SDL_GUID,const char *pchGUID,char SDL_GUID,Convert a GUID string into a SDL_GUID structure.
+SDL_SubmitGPUCommandBuffer,bool,SDL_GPUCommandBuffer *command_buffer,SDL_GPUCommandBuffer bool,Submits a command buffer so its commands can be processed on the GPU.
+SDL_SubmitGPUCommandBufferAndAcquireFence,SDL_GPUFence*,SDL_GPUCommandBuffer *command_buffer,SDL_GPUCommandBuffer SDL_GPUFence,"Submits a command buffer so its commands can be processed on the GPU, and acquires a fence associated with the command buffer."
+SDL_SurfaceHasAlternateImages,bool,SDL_Surface *surface,SDL_Surface bool,Return whether a surface has alternate versions available.
+SDL_SurfaceHasColorKey,bool,SDL_Surface *surface,SDL_Surface bool,Returns whether the surface has a color key.
+SDL_SurfaceHasRLE,bool,SDL_Surface *surface,SDL_Surface bool,Returns whether the surface is RLE enabled.
+SDL_Swap16,Uint16,Uint16 x,Uint16,Byte-swap an unsigned 16-bit number.
+SDL_Swap32,Uint32,Uint32 x,Uint32,Byte-swap an unsigned 32-bit number.
+SDL_Swap64,Uint64,Uint64 x,Uint64,Byte-swap an unsigned 64-bit number.
+SDL_SwapFloat,float,float x,float,Byte-swap a floating point number.
+SDL_SyncWindow,bool,SDL_Window *window,SDL_Window bool,Block until any pending window state is finalized.
+SDL_TellIO,Sint64,SDL_IOStream *context,SDL_IOStream Sint64,Determine the current read/write offset in an SDL_IOStream data stream.
+SDL_TextInputActive,bool,SDL_Window *window,SDL_Window bool,Check whether or not Unicode text input events are enabled for a window.
+SDL_TimeFromWindows,SDL_Time,"Uint32 dwLowDateTime, Uint32 dwHighDateTime",Uint32 SDL_Time,"Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an SDL time."
+SDL_TimeToDateTime,bool,"SDL_Time ticks, SDL_DateTime *dt, bool localTime",SDL_Time SDL_DateTime bool,Converts an SDL_Time in nanoseconds since the epoch to a calendar time in the SDL_DateTime format.
+SDL_TimeToWindows,void,"SDL_Time ticks, Uint32 *dwLowDateTime, Uint32 *dwHighDateTime",SDL_Time Uint32,"Converts an SDL time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601)."
+SDL_TryLockJoysticks,bool,,bool,Locking for atomic access to the joystick API.
+SDL_TryLockMutex,bool,SDL_Mutex *mutex,SDL_Mutex bool,Try to lock a mutex without blocking.
+SDL_TryLockRWLockForReading,bool,SDL_RWLock *rwlock,SDL_RWLock bool,Try to lock a read/write lock _for reading_ without blocking.
+SDL_TryLockRWLockForWriting,bool,SDL_RWLock *rwlock,SDL_RWLock bool,Try to lock a read/write lock _for writing_ without blocking.
+SDL_TryLockSpinlock,bool,SDL_SpinLock *lock,SDL_SpinLock bool,Try to lock a spin lock by setting it to a non-zero value.
+SDL_TryWaitSemaphore,bool,SDL_Semaphore *sem,SDL_Semaphore bool,See if a semaphore has a positive value and decrement it if it does.
+SDL_UCS4ToUTF8,char*,"Uint32 codepoint, char *dst",Uint32 char,Convert a single Unicode codepoint to UTF-8.
+SDL_UnbindAudioStream,void,SDL_AudioStream *stream,SDL_AudioStream,Unbind a single audio stream from its audio device.
+SDL_UnbindAudioStreams,void,"SDL_AudioStream * const *streams, int num_streams",SDL_AudioStream int,Unbind a list of audio streams from their audio devices.
+SDL_UnloadObject,void,SDL_SharedObject *handle,SDL_SharedObject,Unload a shared object from memory.
+SDL_UnlockAudioStream,bool,SDL_AudioStream *stream,SDL_AudioStream bool,Unlock an audio stream for serialized access.
+SDL_UnlockJoysticks,void,,,Unlocking for atomic access to the joystick API.
+SDL_UnlockMutex,void,SDL_Mutex *mutex,SDL_Mutex,Unlock the mutex.
+SDL_UnlockProperties,void,SDL_PropertiesID props,SDL_PropertiesID,Unlock a group of properties.
+SDL_UnlockRWLock,void,SDL_RWLock *rwlock,SDL_RWLock,Unlock the read/write lock.
+SDL_UnlockSpinlock,void,SDL_SpinLock *lock,SDL_SpinLock,Unlock a spin lock by setting it to 0.
+SDL_UnlockSurface,void,SDL_Surface *surface,SDL_Surface,Release a surface after directly accessing the pixels.
+SDL_UnlockTexture,void,SDL_Texture *texture,SDL_Texture,"Unlock a texture, uploading the changes to video memory, if needed."
+SDL_UnmapGPUTransferBuffer,void,"SDL_GPUDevice *device, SDL_GPUTransferBuffer *transfer_buffer",SDL_GPUDevice SDL_GPUTransferBuffer,Unmaps a previously mapped transfer buffer.
+SDL_UnsetEnvironmentVariable,bool,"SDL_Environment *env, const char *name",SDL_Environment char bool,Clear a variable from the environment.
+SDL_UpdateGamepads,void,,,Manually pump gamepad updates if not using the loop.
+SDL_UpdateHapticEffect,bool,"SDL_Haptic *haptic, SDL_HapticEffectID effect, const SDL_HapticEffect *data",SDL_Haptic SDL_HapticEffectID SDL_HapticEffect bool,Update the properties of an effect.
+SDL_UpdateJoysticks,void,,,Update the current state of the open joysticks.
+SDL_UpdateNVTexture,bool,"SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *UVplane, int UVpitch",SDL_Texture SDL_Rect Uint8 int bool,Update a rectangle within a planar NV12 or NV21 texture with new pixels.
+SDL_UpdateSensors,void,,,Update the current state of the open sensors.
+SDL_UpdateTexture,bool,"SDL_Texture *texture, const SDL_Rect *rect, const void *pixels, int pitch",SDL_Texture SDL_Rect int bool,Update the given texture rectangle with new pixel data.
+SDL_UpdateTrays,void,,,Update the trays.
+SDL_UpdateWindowSurface,bool,SDL_Window *window,SDL_Window bool,Copy the window surface to the screen.
+SDL_UpdateWindowSurfaceRects,bool,"SDL_Window *window, const SDL_Rect *rects, int numrects",SDL_Window SDL_Rect int bool,Copy areas of the window surface to the screen.
+SDL_UpdateYUVTexture,bool,"SDL_Texture *texture, const SDL_Rect *rect, const Uint8 *Yplane, int Ypitch, const Uint8 *Uplane, int Upitch, const Uint8 *Vplane, int Vpitch",SDL_Texture SDL_Rect Uint8 int bool,Update a rectangle within a planar YV12 or IYUV texture with new pixel data.
+SDL_UploadToGPUBuffer,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUTransferBufferLocation *source, const SDL_GPUBufferRegion *destination, bool cycle",SDL_GPUCopyPass SDL_GPUTransferBufferLocation SDL_GPUBufferRegion bool,Uploads data from a transfer buffer to a buffer.
+SDL_UploadToGPUTexture,void,"SDL_GPUCopyPass *copy_pass, const SDL_GPUTextureTransferInfo *source, const SDL_GPUTextureRegion *destination, bool cycle",SDL_GPUCopyPass SDL_GPUTextureTransferInfo SDL_GPUTextureRegion bool,Uploads data from a transfer buffer to a texture.
+SDL_Vulkan_CreateSurface,bool,"SDL_Window *window, VkInstance instance, const struct VkAllocationCallbacks *allocator, VkSurfaceKHR *surface",SDL_Window VkInstance VkAllocationCallbacks VkSurfaceKHR bool,Create a Vulkan rendering surface for a window.
+SDL_Vulkan_DestroySurface,void,"VkInstance instance, VkSurfaceKHR surface, const struct VkAllocationCallbacks *allocator",VkInstance VkSurfaceKHR VkAllocationCallbacks,Destroy the Vulkan rendering surface of a window.
+SDL_Vulkan_GetInstanceExtensions,char**,Uint32 *count,Uint32 char,Get the Vulkan instance extensions needed for vkCreateInstance.
+SDL_Vulkan_GetPresentationSupport,bool,"VkInstance instance, VkPhysicalDevice physicalDevice, Uint32 queueFamilyIndex",VkInstance VkPhysicalDevice Uint32 bool,Query support for presentation via a given physical device and queue family.
+SDL_Vulkan_GetVkGetInstanceProcAddr,SDL_FunctionPointer,,SDL_FunctionPointer,Get the address of the `vkGetInstanceProcAddr` function.
+SDL_Vulkan_LoadLibrary,bool,const char *path,char bool,Dynamically load the Vulkan loader library.
+SDL_Vulkan_UnloadLibrary,void,,,Unload the Vulkan library previously loaded by SDL_Vulkan_LoadLibrary().
+SDL_WaitAndAcquireGPUSwapchainTexture,bool,"SDL_GPUCommandBuffer *command_buffer, SDL_Window *window, SDL_GPUTexture **swapchain_texture, Uint32 *swapchain_texture_width, Uint32 *swapchain_texture_height",SDL_GPUCommandBuffer SDL_Window SDL_GPUTexture Uint32 bool,"Blocks the thread until a swapchain texture is available to be acquired, and then acquires it."
+SDL_WaitAsyncIOResult,bool,"SDL_AsyncIOQueue *queue, SDL_AsyncIOOutcome *outcome, Sint32 timeoutMS",SDL_AsyncIOQueue SDL_AsyncIOOutcome Sint32 bool,Block until an async I/O task queue has a completed task.
+SDL_WaitCondition,void,"SDL_Condition *cond, SDL_Mutex *mutex",SDL_Condition SDL_Mutex,Wait until a condition variable is signaled.
+SDL_WaitConditionTimeout,bool,"SDL_Condition *cond, SDL_Mutex *mutex, Sint32 timeoutMS",SDL_Condition SDL_Mutex Sint32 bool,Wait until a condition variable is signaled or a certain time has passed.
+SDL_WaitEvent,bool,SDL_Event *event,SDL_Event bool,Wait indefinitely for the next available event.
+SDL_WaitEventTimeout,bool,"SDL_Event *event, Sint32 timeoutMS",SDL_Event Sint32 bool,Wait until the specified timeout (in milliseconds) for the next available event.
+SDL_WaitForGPUFences,bool,"SDL_GPUDevice *device, bool wait_all, SDL_GPUFence *const *fences, Uint32 num_fences",SDL_GPUDevice bool SDL_GPUFence Uint32,Blocks the thread until the given fences are signaled.
+SDL_WaitForGPUIdle,bool,SDL_GPUDevice *device,SDL_GPUDevice bool,Blocks the thread until the GPU is completely idle.
+SDL_WaitForGPUSwapchain,bool,"SDL_GPUDevice *device, SDL_Window *window",SDL_GPUDevice SDL_Window bool,Blocks the thread until all presenting command buffers are finished executing.
+SDL_WaitProcess,bool,"SDL_Process *process, bool block, int *exitcode",SDL_Process bool int,Wait for a process to finish.
+SDL_WaitSemaphore,void,SDL_Semaphore *sem,SDL_Semaphore,Wait until a semaphore has a positive value and then decrements it.
+SDL_WaitSemaphoreTimeout,bool,"SDL_Semaphore *sem, Sint32 timeoutMS",SDL_Semaphore Sint32 bool,Wait until a semaphore has a positive value and then decrements it.
+SDL_WaitThread,void,"SDL_Thread *thread, int *status",SDL_Thread int,Wait for a thread to finish.
+SDL_WarpMouseGlobal,bool,"float x, float y",float bool,Move the mouse to the given position in global screen space.
+SDL_WarpMouseInWindow,void,"SDL_Window *window, float x, float y",SDL_Window float,Move the mouse cursor to the given position within the window.
+SDL_WasInit,SDL_InitFlags,SDL_InitFlags flags,SDL_InitFlags,Get a mask of the specified subsystems which are currently initialized.
+SDL_WindowHasSurface,bool,SDL_Window *window,SDL_Window bool,Return whether the window has a surface associated with it.
+SDL_WindowSupportsGPUPresentMode,bool,"SDL_GPUDevice *device, SDL_Window *window, SDL_GPUPresentMode present_mode",SDL_GPUDevice SDL_Window SDL_GPUPresentMode bool,Determines whether a presentation mode is supported by the window.
+SDL_WindowSupportsGPUSwapchainComposition,bool,"SDL_GPUDevice *device, SDL_Window *window, SDL_GPUSwapchainComposition swapchain_composition",SDL_GPUDevice SDL_Window SDL_GPUSwapchainComposition bool,Determines whether a swapchain composition is supported by the window.
+SDL_WriteAsyncIO,bool,"SDL_AsyncIO *asyncio, void *ptr, Uint64 offset, Uint64 size, SDL_AsyncIOQueue *queue, void *userdata",SDL_AsyncIO Uint64 SDL_AsyncIOQueue bool,Start an async write.
+SDL_WriteIO,size_t,"SDL_IOStream *context, const void *ptr, size_t size",SDL_IOStream size_t,Write to an SDL_IOStream data stream.
+SDL_WriteS16BE,bool,"SDL_IOStream *dst, Sint16 value",SDL_IOStream Sint16 bool,Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteS16LE,bool,"SDL_IOStream *dst, Sint16 value",SDL_IOStream Sint16 bool,Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteS32BE,bool,"SDL_IOStream *dst, Sint32 value",SDL_IOStream Sint32 bool,Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteS32LE,bool,"SDL_IOStream *dst, Sint32 value",SDL_IOStream Sint32 bool,Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteS64BE,bool,"SDL_IOStream *dst, Sint64 value",SDL_IOStream Sint64 bool,Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteS64LE,bool,"SDL_IOStream *dst, Sint64 value",SDL_IOStream Sint64 bool,Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteS8,bool,"SDL_IOStream *dst, Sint8 value",SDL_IOStream Sint8 bool,Use this function to write a signed byte to an SDL_IOStream.
+SDL_WriteStorageFile,bool,"SDL_Storage *storage, const char *path, const void *source, Uint64 length",SDL_Storage char Uint64 bool,Synchronously write a file from client memory into a storage container.
+SDL_WriteSurfacePixel,bool,"SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a",SDL_Surface int Uint8 bool,Writes a single pixel to a surface.
+SDL_WriteSurfacePixelFloat,bool,"SDL_Surface *surface, int x, int y, float r, float g, float b, float a",SDL_Surface int float bool,Writes a single pixel to a surface.
+SDL_WriteU16BE,bool,"SDL_IOStream *dst, Uint16 value",SDL_IOStream Uint16 bool,Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteU16LE,bool,"SDL_IOStream *dst, Uint16 value",SDL_IOStream Uint16 bool,Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteU32BE,bool,"SDL_IOStream *dst, Uint32 value",SDL_IOStream Uint32 bool,Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteU32LE,bool,"SDL_IOStream *dst, Uint32 value",SDL_IOStream Uint32 bool,Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteU64BE,bool,"SDL_IOStream *dst, Uint64 value",SDL_IOStream Uint64 bool,Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data.
+SDL_WriteU64LE,bool,"SDL_IOStream *dst, Uint64 value",SDL_IOStream Uint64 bool,Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data.
+SDL_WriteU8,bool,"SDL_IOStream *dst, Uint8 value",SDL_IOStream Uint8 bool,Use this function to write a byte to an SDL_IOStream.
+SDL_abs,int,int x,int,Compute the absolute value of `x`.
+SDL_acos,double,double x,double,Compute the arc cosine of `x`.
+SDL_acosf,float,float x,float,Compute the arc cosine of `x`.
+SDL_aligned_alloc,void*,"size_t alignment, size_t size",size_t,Allocate memory aligned to a specific alignment.
+SDL_aligned_alloc_zero,void*,"size_t alignment, size_t size",size_t,Allocate zero-initialized memory aligned to a specific alignment.
+SDL_aligned_free,void,void *mem,,Free memory allocated by SDL_aligned_alloc().
+SDL_asin,double,double x,double,Compute the arc sine of `x`.
+SDL_asinf,float,float x,float,Compute the arc sine of `x`.
+SDL_asprintf,int,"char **strp, const char *fmt, ... ...",char int,This works exactly like asprintf() but doesn't require access to a C runtime.
+SDL_atan,double,double x,double,Compute the arc tangent of `x`.
+SDL_atan2,double,"double y, double x",double,"Compute the arc tangent of `y / x`, using the signs of x and y to adjust the result's quadrant."
+SDL_atan2f,float,"float y, float x",float,"Compute the arc tangent of `y / x`, using the signs of x and y to adjust the result's quadrant."
+SDL_atanf,float,float x,float,Compute the arc tangent of `x`.
+SDL_atof,double,const char *str,char double,Parse a `double` from a string.
+SDL_atoi,int,const char *str,char int,Parse an `int` from a string.
+SDL_bsearch,void*,"const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback compare",size_t SDL_CompareCallback,Perform a binary search on a previously sorted array.
+SDL_bsearch_r,void*,"const void *key, const void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata",size_t SDL_CompareCallback_r,"Perform a binary search on a previously sorted array, passing a userdata pointer to the compare function."
+SDL_calloc,void*,"size_t nmemb, size_t size",size_t,Allocate a zero-initialized array.
+SDL_ceil,double,double x,double,Compute the ceiling of `x`.
+SDL_ceilf,float,float x,float,Compute the ceiling of `x`.
+SDL_copysign,double,"double x, double y",double,Copy the sign of one floating-point value to another.
+SDL_copysignf,float,"float x, float y",float,Copy the sign of one floating-point value to another.
+SDL_cos,double,double x,double,Compute the cosine of `x`.
+SDL_cosf,float,float x,float,Compute the cosine of `x`.
+SDL_crc16,Uint16,"Uint16 crc, const void *data, size_t len",Uint16 size_t,Calculate a CRC-16 value.
+SDL_crc32,Uint32,"Uint32 crc, const void *data, size_t len",Uint32 size_t,Calculate a CRC-32 value.
+SDL_exp,double,double x,double,Compute the exponential of `x`.
+SDL_expf,float,float x,float,Compute the exponential of `x`.
+SDL_fabs,double,double x,double,Compute the absolute value of `x`
+SDL_fabsf,float,float x,float,Compute the absolute value of `x`
+SDL_floor,double,double x,double,Compute the floor of `x`.
+SDL_floorf,float,float x,float,Compute the floor of `x`.
+SDL_fmod,double,"double x, double y",double,Return the floating-point remainder of `x / y`
+SDL_fmodf,float,"float x, float y",float,Return the floating-point remainder of `x / y`
+SDL_free,void,void *mem,,Free allocated memory.
+SDL_getenv,char*,const char *name,char,Get the value of a variable in the environment.
+SDL_getenv_unsafe,char*,const char *name,char,Get the value of a variable in the environment.
+SDL_iconv,size_t,"SDL_iconv_t cd, const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft",SDL_iconv_t char size_t,"This function converts text between encodings, reading from and writing to a buffer."
+SDL_iconv_close,int,SDL_iconv_t cd,SDL_iconv_t int,This function frees a context used for character set conversion.
+SDL_iconv_open,SDL_iconv_t,"const char *tocode, const char *fromcode",char SDL_iconv_t,This function allocates a context for the specified character set conversion.
+SDL_iconv_string,char*,"const char *tocode, const char *fromcode, const char *inbuf, size_t inbytesleft",char size_t,Helper function to convert a string's encoding in one call.
+SDL_isalnum,int,int x,int,Query if a character is alphabetic (a letter) or a number.
+SDL_isalpha,int,int x,int,Query if a character is alphabetic (a letter).
+SDL_isblank,int,int x,int,Report if a character is blank (a space or tab).
+SDL_iscntrl,int,int x,int,Report if a character is a control character.
+SDL_isdigit,int,int x,int,Report if a character is a numeric digit.
+SDL_isgraph,int,int x,int,"Report if a character is any ""printable"" except space."
+SDL_isinf,int,double x,double int,Return whether the value is infinity.
+SDL_isinff,int,float x,float int,Return whether the value is infinity.
+SDL_islower,int,int x,int,Report if a character is lower case.
+SDL_isnan,int,double x,double int,Return whether the value is NaN.
+SDL_isnanf,int,float x,float int,Return whether the value is NaN.
+SDL_isprint,int,int x,int,"Report if a character is ""printable""."
+SDL_ispunct,int,int x,int,Report if a character is a punctuation mark.
+SDL_isspace,int,int x,int,Report if a character is whitespace.
+SDL_isupper,int,int x,int,Report if a character is upper case.
+SDL_isxdigit,int,int x,int,Report if a character is a hexadecimal digit.
+SDL_itoa,char*,"int value, char *str, int radix",int char,Convert an integer into a string.
+SDL_lltoa,char*,"long long value, char *str, int radix",char int,Convert a long long integer into a string.
+SDL_log,double,double x,double,Compute the natural logarithm of `x`.
+SDL_log10,double,double x,double,Compute the base-10 logarithm of `x`.
+SDL_log10f,float,float x,float,Compute the base-10 logarithm of `x`.
+SDL_logf,float,float x,float,Compute the natural logarithm of `x`.
+SDL_lround,long,double x,double long,Round `x` to the nearest integer representable as a long
+SDL_lroundf,long,float x,float long,Round `x` to the nearest integer representable as a long
+SDL_ltoa,char*,"long value, char *str, int radix",long char int,Convert a long integer into a string.
+SDL_malloc,void*,size_t size,size_t,Allocate uninitialized memory.
+SDL_memcmp,int,"const void *s1, const void *s2, size_t len",size_t int,Compare two buffers of memory.
+SDL_memcpy,void*,"void *dst, const void *src, size_t len",size_t,Copy non-overlapping memory.
+SDL_memmove,void*,"void *dst, const void *src, size_t len",size_t,Copy memory ranges that might overlap.
+SDL_memset,void*,"void *dst, int c, size_t len",int size_t,Initialize all bytes of buffer of memory to a specific value.
+SDL_memset4,void*,"void *dst, Uint32 val, size_t dwords",Uint32 size_t,Initialize all 32-bit words of buffer of memory to a specific value.
+SDL_modf,double,"double x, double *y",double,Split `x` into integer and fractional parts
+SDL_modff,float,"float x, float *y",float,Split `x` into integer and fractional parts
+SDL_murmur3_32,Uint32,"const void *data, size_t len, Uint32 seed",size_t Uint32,Calculate a 32-bit MurmurHash3 value for a block of data.
+SDL_pow,double,"double x, double y",double,Raise `x` to the power `y`
+SDL_powf,float,"float x, float y",float,Raise `x` to the power `y`
+SDL_qsort,void,"void *base, size_t nmemb, size_t size, SDL_CompareCallback compare",size_t SDL_CompareCallback,Sort an array.
+SDL_qsort_r,void,"void *base, size_t nmemb, size_t size, SDL_CompareCallback_r compare, void *userdata",size_t SDL_CompareCallback_r,"Sort an array, passing a userdata pointer to the compare function."
+SDL_rand,Sint32,Sint32 n,Sint32,Generate a pseudo-random number less than n for positive n
+SDL_rand_bits,Uint32,,Uint32,Generate 32 pseudo-random bits.
+SDL_rand_bits_r,Uint32,Uint64 *state,Uint64 Uint32,Generate 32 pseudo-random bits.
+SDL_rand_r,Sint32,"Uint64 *state, Sint32 n",Uint64 Sint32,Generate a pseudo-random number less than n for positive n
+SDL_randf,float,,float,Generate a uniform pseudo-random floating point number less than 1.0
+SDL_randf_r,float,Uint64 *state,Uint64 float,Generate a uniform pseudo-random floating point number less than 1.0
+SDL_realloc,void*,"void *mem, size_t size",size_t,Change the size of allocated memory.
+SDL_round,double,double x,double,Round `x` to the nearest integer.
+SDL_roundf,float,float x,float,Round `x` to the nearest integer.
+SDL_scalbn,double,"double x, int n",double int,Scale `x` by an integer power of two.
+SDL_scalbnf,float,"float x, int n",float int,Scale `x` by an integer power of two.
+SDL_setenv_unsafe,int,"const char *name, const char *value, int overwrite",char int,Set the value of a variable in the environment.
+SDL_sin,double,double x,double,Compute the sine of `x`.
+SDL_sinf,float,float x,float,Compute the sine of `x`.
+SDL_size_add_check_overflow,bool,"size_t a, size_t b, size_t *ret",size_t bool,"Add two integers, checking for overflow."
+SDL_size_mul_check_overflow,bool,"size_t a, size_t b, size_t *ret",size_t bool,"Multiply two integers, checking for overflow."
+SDL_snprintf,int,"char *text, size_t maxlen, const char *fmt, ... ...",char size_t int,This works exactly like snprintf() but doesn't require access to a C runtime.
+SDL_sqrt,double,double x,double,Compute the square root of `x`.
+SDL_sqrtf,float,float x,float,Compute the square root of `x`.
+SDL_srand,void,Uint64 seed,Uint64,Seeds the pseudo-random number generator.
+SDL_sscanf,int,"const char *text, const char *fmt, ... ...",char int,This works exactly like sscanf() but doesn't require access to a C runtime.
+SDL_strcasecmp,int,"const char *str1, const char *str2",char int,"Compare two null-terminated UTF-8 strings, case-insensitively."
+SDL_strcasestr,char*,"const char *haystack, const char *needle",char,"Search a UTF-8 string for the first instance of a specific substring, case-insensitively."
+SDL_strchr,char*,"const char *str, int c",char int,Search a string for the first instance of a specific byte.
+SDL_strcmp,int,"const char *str1, const char *str2",char int,Compare two null-terminated UTF-8 strings.
+SDL_strdup,char*,const char *str,char,Allocate a copy of a string.
+SDL_strlcat,size_t,"char *dst, const char *src, size_t maxlen",char size_t,Concatenate strings.
+SDL_strlcpy,size_t,"char *dst, const char *src, size_t maxlen",char size_t,Copy a string.
+SDL_strlen,size_t,const char *str,char size_t,This works exactly like strlen() but doesn't require access to a C runtime.
+SDL_strlwr,char*,char *str,char,Convert a string to lowercase.
+SDL_strncasecmp,int,"const char *str1, const char *str2, size_t maxlen",char size_t int,"Compare two UTF-8 strings, case-insensitively, up to a number of bytes."
+SDL_strncmp,int,"const char *str1, const char *str2, size_t maxlen",char size_t int,Compare two UTF-8 strings up to a number of bytes.
+SDL_strndup,char*,"const char *str, size_t maxlen",char size_t,"Allocate a copy of a string, up to n characters."
+SDL_strnlen,size_t,"const char *str, size_t maxlen",char size_t,This works exactly like strnlen() but doesn't require access to a C runtime.
+SDL_strnstr,char*,"const char *haystack, const char *needle, size_t maxlen",char size_t,"Search a string, up to n bytes, for the first instance of a specific substring."
+SDL_strpbrk,char*,"const char *str, const char *breakset",char,"Searches a string for the first occurrence of any character contained in a breakset, and returns a pointer from the string to that character."
+SDL_strrchr,char*,"const char *str, int c",char int,Search a string for the last instance of a specific byte.
+SDL_strrev,char*,char *str,char,Reverse a string's contents.
+SDL_strstr,char*,"const char *haystack, const char *needle",char,Search a string for the first instance of a specific substring.
+SDL_strtod,double,"const char *str, char **endp",char double,Parse a `double` from a string.
+SDL_strtok_r,char*,"char *str, const char *delim, char **saveptr",char,This works exactly like strtok_r() but doesn't require access to a C runtime.
+SDL_strtol,long,"const char *str, char **endp, int base",char int long,Parse a `long` from a string.
+SDL_strtoll,long long,"const char *str, char **endp, int base",char int,Parse a `long long` from a string.
+SDL_strtoul,unsigned long,"const char *str, char **endp, int base",char int,Parse an `unsigned long` from a string.
+SDL_strtoull,unsigned long long,"const char *str, char **endp, int base",char int,Parse an `unsigned long long` from a string.
+SDL_strupr,char*,char *str,char,Convert a string to uppercase.
+SDL_swprintf,int,"wchar_t *text, size_t maxlen, const wchar_t *fmt, ... ...",wchar_t size_t int,This works exactly like swprintf() but doesn't require access to a C runtime.
+SDL_tan,double,double x,double,Compute the tangent of `x`.
+SDL_tanf,float,float x,float,Compute the tangent of `x`.
+SDL_tolower,int,int x,int,Convert low-ASCII English letters to lowercase.
+SDL_toupper,int,int x,int,Convert low-ASCII English letters to uppercase.
+SDL_trunc,double,double x,double,Truncate `x` to an integer.
+SDL_truncf,float,float x,float,Truncate `x` to an integer.
+SDL_uitoa,char*,"unsigned int value, char *str, int radix",char int,Convert an unsigned integer into a string.
+SDL_ulltoa,char*,"unsigned long long value, char *str, int radix",char int,Convert an unsigned long long integer into a string.
+SDL_ultoa,char*,"unsigned long value, char *str, int radix",char int,Convert an unsigned long integer into a string.
+SDL_unsetenv_unsafe,int,const char *name,char int,Clear a variable from the environment.
+SDL_utf8strlcpy,size_t,"char *dst, const char *src, size_t dst_bytes",char size_t,Copy an UTF-8 string.
+SDL_utf8strlen,size_t,const char *str,char size_t,Count the number of codepoints in a UTF-8 string.
+SDL_utf8strnlen,size_t,"const char *str, size_t bytes",char size_t,"Count the number of codepoints in a UTF-8 string, up to n bytes."
+SDL_vasprintf,int,"char **strp, const char *fmt, va_list ap",char va_list int,This works exactly like vasprintf() but doesn't require access to a C runtime.
+SDL_vsnprintf,int,"char *text, size_t maxlen, const char *fmt, va_list ap",char size_t va_list int,This works exactly like vsnprintf() but doesn't require access to a C runtime.
+SDL_vsscanf,int,"const char *text, const char *fmt, va_list ap",char va_list int,This works exactly like vsscanf() but doesn't require access to a C runtime.
+SDL_vswprintf,int,"wchar_t *text, size_t maxlen, const wchar_t *fmt, va_list ap",wchar_t size_t va_list int,This works exactly like vswprintf() but doesn't require access to a C runtime.
+SDL_wcscasecmp,int,"const wchar_t *str1, const wchar_t *str2",wchar_t int,"Compare two null-terminated wide strings, case-insensitively."
+SDL_wcscmp,int,"const wchar_t *str1, const wchar_t *str2",wchar_t int,Compare two null-terminated wide strings.
+SDL_wcsdup,wchar_t*,const wchar_t *wstr,wchar_t,Allocate a copy of a wide string.
+SDL_wcslcat,size_t,"wchar_t *dst, const wchar_t *src, size_t maxlen",wchar_t size_t,Concatenate wide strings.
+SDL_wcslcpy,size_t,"wchar_t *dst, const wchar_t *src, size_t maxlen",wchar_t size_t,Copy a wide string.
+SDL_wcslen,size_t,const wchar_t *wstr,wchar_t size_t,This works exactly like wcslen() but doesn't require access to a C runtime.
+SDL_wcsncasecmp,int,"const wchar_t *str1, const wchar_t *str2, size_t maxlen",wchar_t size_t int,"Compare two wide strings, case-insensitively, up to a number of wchar_t."
+SDL_wcsncmp,int,"const wchar_t *str1, const wchar_t *str2, size_t maxlen",wchar_t size_t int,Compare two wide strings up to a number of wchar_t values.
+SDL_wcsnlen,size_t,"const wchar_t *wstr, size_t maxlen",wchar_t size_t,This works exactly like wcsnlen() but doesn't require access to a C runtime.
+SDL_wcsnstr,wchar_t*,"const wchar_t *haystack, const wchar_t *needle, size_t maxlen",wchar_t size_t,"Search a wide string, up to n wide chars, for the first instance of a specific substring."
+SDL_wcsstr,wchar_t*,"const wchar_t *haystack, const wchar_t *needle",wchar_t,Search a wide string for the first instance of a specific substring.
+SDL_wcstol,long,"const wchar_t *str, wchar_t **endp, int base",wchar_t int long,Parse a `long` from a wide string.
+SDL_wcstoll,long long,"const wchar_t *str, wchar_t **endp, int base",wchar_t int,Parse a `long long` from a wide string.
+SDL_wcstoul,unsigned long,"const wchar_t *str, wchar_t **endp, int base",wchar_t int,Parse an `unsigned long` from a wide string.
+SDL_wcstoull,unsigned long long,"const wchar_t *str, wchar_t **endp, int base",wchar_t int,Parse an `unsigned long long` from a wide string.

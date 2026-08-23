@@ -28,6 +28,18 @@ tasks:
             - docker cp wiki:/go/annotations.csv ./cmd/internal/assets/wiki/annotations.csv
             - docker rm -f wiki
     
+    extract-apiref:
+        desc: Extract the public API surface of each SDL3 library from its quick reference page
+        vars:
+            LIBS: [sdl, ttf, img, mixer]
+        cmds:
+            - for:
+                var: LIBS
+              cmd: |
+                go run ./cmd/apirefgen \
+                    --config "cmd/internal/assets/config/{{.ITEM}}.json" \
+                    --out "cmd/internal/assets/apiref/{{.ITEM}}.csv"
+
     build-wasm-lib:
         desc: Build SDL3 library as a wasm binary file
         cmds:
