@@ -2,13 +2,13 @@
 //
 // Unlike the other examples this one cannot run in CI, or unattended at all:
 // headless Linux runners expose no ALSA sequencer and there is no device to
-// play to. It also needs SDL_native_midi built and installed by hand, since
-// go-sdl3 embeds no binary for it yet.
+// play to.
 package main
 
 import (
 	"encoding/binary"
 
+	"github.com/Zyko0/go-sdl3/bin/binmidi"
 	"github.com/Zyko0/go-sdl3/bin/binsdl"
 	"github.com/Zyko0/go-sdl3/midi"
 	"github.com/Zyko0/go-sdl3/sdl"
@@ -46,14 +46,8 @@ func song(notes []byte) []byte {
 }
 
 func main() {
-	defer binsdl.Load().Unload() // sdl.LoadLibrary(sdl.Path())
-
-	// There is no embedded binary for SDL_native_midi yet, so the shared
-	// library has to be installed and reachable by name.
-	if err := midi.LoadLibrary(midi.Path()); err != nil {
-		panic(err)
-	}
-	defer midi.CloseLibrary()
+	defer binsdl.Load().Unload()  // sdl.LoadLibrary(sdl.Path())
+	defer binmidi.Load().Unload() // midi.LoadLibrary(midi.Path())
 
 	// midi drives the OS sequencer itself, so no SDL subsystem is needed.
 	if err := midi.Init(); err != nil {
