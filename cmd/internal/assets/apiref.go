@@ -11,8 +11,6 @@ import (
 // which is the source of truth for what belongs to its public API.
 type APIRefEntry struct {
 	Name        string
-	ReturnType  string
-	Parameters  string
 	Types       []string
 	Description string
 }
@@ -32,10 +30,8 @@ func LoadAPIRef(path string) (map[string]*APIRefEntry, error) {
 	for _, record := range records[1:] { // Skip header
 		entries[record[0]] = &APIRefEntry{
 			Name:        record[0],
-			ReturnType:  record[1],
-			Parameters:  record[2],
-			Types:       strings.Fields(record[3]),
-			Description: record[4],
+			Types:       strings.Fields(record[1]),
+			Description: record[2],
 		}
 	}
 

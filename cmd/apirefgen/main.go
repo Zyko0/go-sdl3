@@ -19,8 +19,6 @@ var identifier = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*$`)
 
 type entry struct {
 	Name        string
-	ReturnType  string
-	Parameters  string
 	Types       []string
 	Description string
 }
@@ -90,35 +88,26 @@ func parse(prefix, src string) []entry {
 
 		proto, description, _ := strings.Cut(l, "//")
 		description = strings.TrimSpace(description)
-		// The raw prototype keeps qualifiers the reader expects to see in a
-		// diff; the normalized one is what types are read from.
-		raw := strings.TrimSuffix(strings.TrimSpace(proto), ";")
-		norm := normalize(raw)
+		proto = normalize(strings.TrimSuffix(strings.TrimSpace(proto), ";"))
 
-		open, close := strings.Index(norm, "("), strings.LastIndex(norm, ")")
-		rawOpen, rawClose := strings.Index(raw, "("), strings.LastIndex(raw, ")")
+		open, close := strings.Index(proto, "("), strings.LastIndex(proto, ")")
 		if open == -1 || close < open {
 			log.Fatal("couldn't parse prototype: ", l)
 		}
 		// Search past the first character so a return type carrying the same
 		// prefix (e.g. "SDL_Window* SDL_CreateWindow") is skipped.
-		nameIdx := strings.Index(norm[1:], prefix)
+		nameIdx := strings.Index(proto[1:], prefix)
 		if nameIdx == -1 {
 			log.Fatal("couldn't find the library prefix in prototype: ", l)
 		}
 		nameIdx++
 
 		e := entry{
-			Name:        strings.TrimSpace(norm[nameIdx:open]),
-			ReturnType:  strings.TrimSpace(norm[:nameIdx]),
-			Parameters:  strings.TrimSpace(raw[rawOpen+1 : rawClose]),
-			Types:       paramTypes(norm[open+1 : close]),
+			Name:        strings.TrimSpace(proto[nameIdx:open]),
+			Types:       paramTypes(proto[open+1 : close]),
 			Description: description,
 		}
-		if e.Parameters == "void" {
-			e.Parameters = ""
-		}
-		if t := typeOf(e.ReturnType); t != "" && !slices.Contains(e.Types, t) {
+		if t := typeOf(proto[:nameIdx]); t != "" && !slices.Contains(e.Types, t) {
 			e.Types = append(e.Types, t)
 		}
 
@@ -177,15 +166,13 @@ func write(path string, entries []entry) {
 	w := csv.NewWriter(f)
 	defer w.Flush()
 
-	err = w.Write([]string{"name", "return_type", "parameters", "types", "description"})
+	err = w.Write([]string{"name", "types", "description"})
 	if err != nil {
 		log.Fatal("couldn't write csv header: ", err)
 	}
 	for _, e := range entries {
 		err = w.Write([]string{
 			e.Name,
-			e.ReturnType,
-			e.Parameters,
 			strings.Join(e.Types, " "),
 			e.Description,
 		})
