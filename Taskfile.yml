@@ -31,7 +31,7 @@ tasks:
     extract-apiref:
         desc: Extract the public API surface of each SDL3 library from its quick reference page
         vars:
-            LIBS: [sdl, ttf, img, mixer]
+            LIBS: [sdl, ttf, img, mixer, midi]
         cmds:
             - for:
                 var: LIBS

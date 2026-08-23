@@ -212,11 +212,16 @@ func main() {
 	if err != nil {
 		log.Fatal("couldn't parse config file: ", err)
 	}
-	if cfg.QuickAPIRefURL == "" {
-		log.Fatal("config has no quick_api_ref_url")
+	// midi has no reference to download, so it carries its own.
+	src := midiAPIRef()
+	if cfg.LibraryName != "midi" {
+		if cfg.QuickAPIRefURL == "" {
+			log.Fatal("config has no quick_api_ref_url")
+		}
+		src = download(cfg.QuickAPIRefURL)
 	}
 
-	entries := parse(cfg.Prefix, download(cfg.QuickAPIRefURL))
+	entries := parse(cfg.Prefix, src)
 	if len(entries) == 0 {
 		log.Fatal("no function found in the api ref")
 	}

@@ -1,0 +1,12 @@
+name,group,order,types,description
+NativeMidi_Active,0,9,bool,Query whether a song is currently playing.
+NativeMidi_DestroySong,0,4,NativeMidi_Song,Free a song and the resources it holds.
+NativeMidi_Init,0,0,bool,Initialize the native MIDI subsystem.
+NativeMidi_LoadSong,0,2,char NativeMidi_Song,Load a MIDI song from a file path.
+NativeMidi_LoadSong_IO,0,3,SDL_IOStream bool NativeMidi_Song,Load a MIDI song from an SDL_IOStream.
+NativeMidi_Pause,0,6,,Pause playback of the current song.
+NativeMidi_Quit,0,1,,Shut down the native MIDI subsystem.
+NativeMidi_Resume,0,7,,Resume playback of a paused song.
+NativeMidi_SetVolume,0,10,float,Set the volume applied to MIDI playback.
+NativeMidi_Start,0,5,NativeMidi_Song int,"Start playing a song, replacing the one currently playing."
+NativeMidi_Stop,0,8,,Stop playback of the current song.

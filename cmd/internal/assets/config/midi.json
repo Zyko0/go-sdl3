@@ -1,0 +1,18 @@
+{
+    "out_dir": "midi",
+    "library_name": "midi",
+    "url_library_suffix": "_native_midi",
+    "prefix": "NativeMidi_",
+    "quick_api_ref_url": "",
+    "allowed_include": "/usr/include/SDL3_native_midi/",
+    "ignored_headers": [],
+    "ignored_types": [],
+    "ignored_functions": [],
+    "allowlisted_functions": [],
+    "allowlisted_type_prefixes": [
+        "NativeMidi_"
+    ],
+    "base_types": [],
+    "sdl_free_functions": [],
+    "no_auto_string_functions": []
+}
