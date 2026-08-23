@@ -65,3 +65,17 @@ RUN git clone https://github.com/libsdl-org/SDL_image.git && \
 # Generate SDL_image ffi
 RUN echo "#include <SDL3_image/SDL_image.h>\n" > image.c
 RUN /c2ffi/build/bin/c2ffi image.c > image_ffi.json
+
+# SDL_native_midi has no releases and no tags, so it is pinned by commit.
+# Declared here rather than with the versions above so bumping it does not
+# invalidate the cached llvm and c2ffi layers.
+ARG NATIVE_MIDI_COMMIT=64236646bc50ba7a196c2cc05dad86f0bde3f55f
+
+# Clone SDL_native_midi repository
+RUN git clone https://github.com/libsdl-org/SDL_native_midi.git && \
+        cd SDL_native_midi && git checkout ${NATIVE_MIDI_COMMIT} && \
+        cp -r include/SDL3_native_midi/ /usr/include/SDL3_native_midi/
+
+# Generate SDL_native_midi ffi
+RUN echo "#include <SDL3_native_midi/SDL_native_midi.h>\n" > native_midi.c
+RUN /c2ffi/build/bin/c2ffi native_midi.c > native_midi_ffi.json

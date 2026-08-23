@@ -15,8 +15,8 @@ func midiAPIRef() string {
 // SDL_native_midi.h
 bool NativeMidi_Init(void);  // Initialize the native MIDI subsystem.
 void NativeMidi_Quit(void);  // Shut down the native MIDI subsystem.
-NativeMidi_Song * NativeMidi_LoadSong(const char *path);  // Load a MIDI song from a file path.
 NativeMidi_Song * NativeMidi_LoadSong_IO(SDL_IOStream *src, bool closeio);  // Load a MIDI song from an SDL_IOStream.
+NativeMidi_Song * NativeMidi_LoadSong(const char *path);  // Load a MIDI song from a file path.
 void NativeMidi_DestroySong(NativeMidi_Song *song);  // Free a song and the resources it holds.
 void NativeMidi_Start(NativeMidi_Song *song, int loops);  // Start playing a song, replacing the one currently playing.
 void NativeMidi_Pause(void);  // Pause playback of the current song.
