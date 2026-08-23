@@ -24,6 +24,10 @@ on:
           description: "SDL_image version"
           required: true
           type: string
+        midi-commit:
+          description: "SDL_native_midi commit SHA (upstream has no releases)"
+          required: true
+          type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -57,8 +61,16 @@ jobs:
     with:
       version: ${{ inputs.image-version }}
   
+  build-midi:
+    name: SDL_native_midi
+    needs: build-sdl
+    uses: ./.github/workflows/build-sdl-native-midi.yml
+    with:
+      commit: ${{ inputs.midi-commit }}
+      sdl-version: ${{ inputs.sdl-version }}
+
   push-binaries:
-    needs: [build-sdl, build-ttf, build-mixer, build-image]
+    needs: [build-sdl, build-ttf, build-mixer, build-image, build-midi]
     runs-on: ubuntu-latest
     permissions:
         contents: write
@@ -81,10 +93,13 @@ jobs:
       run: |
         git fetch
         (git checkout binaries-update && git pull) || git checkout -b binaries-update
-        rm ./bin/binsdl/assets/*
-        rm ./bin/binttf/assets/*
-        rm ./bin/binimg/assets/*
-        rm ./bin/binmix/assets/*
+        # binmidi/assets does not exist until this workflow first populates it.
+        mkdir -p ./bin/binmidi/assets
+        rm -f ./bin/binsdl/assets/*
+        rm -f ./bin/binttf/assets/*
+        rm -f ./bin/binimg/assets/*
+        rm -f ./bin/binmix/assets/*
+        rm -f ./bin/binmidi/assets/*
 
     - name: Extract Windows binaries
       run: |
@@ -96,6 +111,8 @@ jobs:
         mv ./artifacts/sdl-image-windows-arm64/SDL3_image.dll ./bin/binimg/assets/img_arm64.dll
         mv ./artifacts/sdl-mixer-windows-x64/SDL3_mixer.dll ./bin/binmix/assets/mix_amd64.dll
         mv ./artifacts/sdl-mixer-windows-arm64/SDL3_mixer.dll ./bin/binmix/assets/mix_arm64.dll
+        mv ./artifacts/sdl-midi-windows-x64/SDL_native_midi.dll ./bin/binmidi/assets/midi_amd64.dll
+        mv ./artifacts/sdl-midi-windows-arm64/SDL_native_midi.dll ./bin/binmidi/assets/midi_arm64.dll
     - name: Extract Linux binaries
       run: |
         mv ./artifacts/sdl-linux-x64/libSDL3.so.0 ./bin/binsdl/assets/sdl_amd64.so
@@ -106,6 +123,8 @@ jobs:
         mv ./artifacts/sdl-image-linux-arm64/libSDL3_image.so.0 ./bin/binimg/assets/img_arm64.so
         mv ./artifacts/sdl-mixer-linux-x64/libSDL3_mixer.so.0 ./bin/binmix/assets/mix_amd64.so
         mv ./artifacts/sdl-mixer-linux-arm64/libSDL3_mixer.so.0 ./bin/binmix/assets/mix_arm64.so
+        mv ./artifacts/sdl-midi-linux-x64/libSDL_native_midi.so ./bin/binmidi/assets/midi_amd64.so
+        mv ./artifacts/sdl-midi-linux-arm64/libSDL_native_midi.so ./bin/binmidi/assets/midi_arm64.so
     - name: Extract MacOS binaries
       run: |
         mv ./artifacts/sdl-apple-macOS-x86_64/build/libSDL3.0.dylib ./bin/binsdl/assets/sdl_amd64.dylib
@@ -116,13 +135,16 @@ jobs:
         mv ./artifacts/sdl-image-apple-macOS-arm64/libSDL3_image.dylib ./bin/binimg/assets/img_arm64.dylib
         mv ./artifacts/sdl-mixer-apple-macOS-x86_64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_amd64.dylib
         mv ./artifacts/sdl-mixer-apple-macOS-arm64/libSDL3_mixer.dylib ./bin/binmix/assets/mix_arm64.dylib
-    
+        mv ./artifacts/sdl-midi-apple-macOS-x86_64/libSDL_native_midi.dylib ./bin/binmidi/assets/midi_amd64.dylib
+        mv ./artifacts/sdl-midi-apple-macOS-arm64/libSDL_native_midi.dylib ./bin/binmidi/assets/midi_arm64.dylib
+
     - name: Compress binaries
       run: |
         gzip -f $(echo ./bin/binsdl/assets/*)
         gzip -f $(echo ./bin/binttf/assets/*)
         gzip -f $(echo ./bin/binimg/assets/*)
         gzip -f $(echo ./bin/binmix/assets/*)
+        gzip -f $(echo ./bin/binmidi/assets/*)
     
     - name: Push changes & PR
       env:
@@ -134,4 +156,4 @@ jobs:
         git add ./bin
         git commit -m "bin: Update embedded libraries" 
         git push -u origin binaries-update
-        gh pr create -B ${{ inputs.target-branch }} -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n'
+        gh pr create -B ${{ inputs.target-branch }} -H binaries-update --title 'bin: Update embedded libraries' --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n- SDL_native_midi commit: ${{ inputs.midi-commit }}\n' || gh pr edit binaries-update --body $'- SDL version: ${{ inputs.sdl-version }}\n- SDL_ttf version: ${{ inputs.ttf-version }}\n- SDL_mixer version: ${{ inputs.mixer-version }}\n- SDL_image version: ${{ inputs.image-version }}\n- SDL_native_midi commit: ${{ inputs.midi-commit }}\n'

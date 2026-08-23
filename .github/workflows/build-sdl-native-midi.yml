@@ -1,0 +1,157 @@
+name: Build SDL_native_midi
+
+on:
+  workflow_call:
+    inputs:
+      commit:
+        description: "SDL_native_midi commit SHA"
+        required: true
+        type: string
+      sdl-version:
+        description: "SDL version to build against"
+        required: true
+        type: string
+
+jobs:
+  # Unlike every other library here, SDL_native_midi publishes no releases,
+  # so there is nothing to download and Windows has to be built from source.
+  build-windows:
+    name: Build Windows (${{ matrix.arch }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            platform: x64
+          - arch: arm64
+            platform: ARM64
+    steps:
+      - name: Clone SDL_native_midi
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_native_midi
+          ref: ${{ inputs.commit }}
+          fetch-depth: 1
+      - name: Cache SDL development libraries
+        uses: actions/cache@v4
+        id: cache-sdl-devel
+        with:
+          path: sdl
+          key: sdl-devel-VC-${{ inputs.sdl-version }}
+      - name: Download SDL development libraries
+        # The devel zip is what gives us SDL3.lib and SDL3Config.cmake; the
+        # artifact from build-sdl.yml is a bare DLL and cannot be linked to.
+        if: steps.cache-sdl-devel.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          curl -fsSLO https://github.com/libsdl-org/SDL/releases/download/release-${{ inputs.sdl-version }}/SDL3-devel-${{ inputs.sdl-version }}-VC.zip
+          unzip -q SDL3-devel-${{ inputs.sdl-version }}-VC.zip
+          mv SDL3-${{ inputs.sdl-version }} sdl
+      - name: Configure
+        run: >
+          cmake -A ${{ matrix.platform }}
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/cmake"
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdl-midi-windows-${{ matrix.arch }}
+          path: build/Release/SDL_native_midi.dll
+
+  build-linux:
+    strategy:
+      matrix:
+        include:
+          - arch: x64
+            runs-on: ubuntu-latest
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk:latest
+          - arch: arm64
+            runs-on: ubuntu-24.04-arm
+            container: registry.gitlab.steamos.cloud/steamrt/sniper/sdk/arm64:latest
+    name: Build Linux (${{ matrix.arch }})
+    runs-on: ${{ matrix.runs-on }}
+    container: ${{ matrix.container }}
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Set up Linux dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+          cmake \
+          libasound2-dev \
+          ninja-build \
+          pkg-config \
+          ${NULL+}
+      - name: Clone SDL_native_midi
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_native_midi
+          ref: ${{ inputs.commit }}
+          fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-linux-${{ matrix.arch }}
+          path: sdl
+      - name: Configure
+        # find_package(SDL3) resolves against the SDL3 the sniper SDK ships,
+        # as it does for the ttf/mixer/image workflows.
+        # Upstream includes <alsa/asoundlib.h> but never links asound, which
+        # would leave the shared object with unresolved symbols at dlopen.
+        run: >
+          cmake -G Ninja
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_SHARED_LINKER_FLAGS="-lasound"
+          -DCMAKE_PREFIX_PATH=$GITHUB_WORKSPACE/sdl
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Strip binaries
+        run: strip build/libSDL_native_midi.so
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdl-midi-linux-${{ matrix.arch }}
+          path: build/libSDL_native_midi.so
+
+  build-macos:
+    name: Build MacOS (${{ matrix.arch }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [arm64, x86_64]
+    steps:
+      - name: Set up Ninja
+        uses: aseprite/get-ninja@main
+      - name: Clone SDL_native_midi
+        uses: actions/checkout@v4
+        with:
+          repository: libsdl-org/SDL_native_midi
+          ref: ${{ inputs.commit }}
+          fetch-depth: 1
+      - name: Download SDL
+        uses: actions/download-artifact@v4
+        with:
+          name: sdl-apple-macOS-${{ matrix.arch }}
+          path: sdl
+      - name: Configure
+        run: >
+          cmake -G Ninja
+          -DCMAKE_OSX_ARCHITECTURES="${{ matrix.arch }}"
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/sdl/install"
+          -S . -B build
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdl-midi-apple-macOS-${{ matrix.arch }}
+          path: build/libSDL_native_midi.dylib
