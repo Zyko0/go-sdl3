@@ -75,21 +75,23 @@ var (
 		"img":   {"SDL_image.h"},
 		"ttf":   {"SDL_ttf.h", "SDL_textengine.h"},
 		"mixer": {"SDL_mixer.h"},
+		"midi":  {"SDL_native_midi.h"},
 	}
 	// Headers whose section title is not just the title-cased header stem.
 	categoryLabels = map[string]string{
-		"SDL_loadso.h":     "SharedObject",
-		"SDL_iostream.h":   "IOStream",
-		"SDL_asyncio.h":    "AsyncIO",
-		"SDL_blendmode.h":  "BlendMode",
-		"SDL_messagebox.h": "MessageBox",
-		"SDL_gpu.h":        "GPU",
-		"SDL_cpuinfo.h":    "CPUInfo",
-		"SDL_guid.h":       "GUID",
-		"SDL_image.h":      "Image",
-		"SDL_ttf.h":        "TTF",
-		"SDL_textengine.h": "TTF",
-		"SDL_mixer.h":      "Mixer",
+		"SDL_loadso.h":      "SharedObject",
+		"SDL_iostream.h":    "IOStream",
+		"SDL_asyncio.h":     "AsyncIO",
+		"SDL_blendmode.h":   "BlendMode",
+		"SDL_messagebox.h":  "MessageBox",
+		"SDL_gpu.h":         "GPU",
+		"SDL_cpuinfo.h":     "CPUInfo",
+		"SDL_guid.h":        "GUID",
+		"SDL_image.h":       "Image",
+		"SDL_ttf.h":         "TTF",
+		"SDL_textengine.h":  "TTF",
+		"SDL_mixer.h":       "Mixer",
+		"SDL_native_midi.h": "NativeMIDI",
 	}
 	collapsedCategories = map[string]struct{}{
 		"Error":        {},
@@ -401,7 +403,11 @@ The following emojis mean (they are clickable and should link to the code implem
 			sb.WriteString("|:--|:--:|:--:|\n")
 		}
 
-		fn.URL = fmt.Sprintf("https://wiki.libsdl.org/SDL3%s/%s", cfg.URLLibrarySuffix, fn.Name)
+		// A library with no quick reference page has no wiki at all, so there
+		// is nothing to link its functions to.
+		if cfg.QuickAPIRefURL != "" {
+			fn.URL = fmt.Sprintf("https://wiki.libsdl.org/SDL3%s/%s", cfg.URLLibrarySuffix, fn.Name)
+		}
 
 		desktop := ":question:"
 		js := ":question:"
@@ -428,9 +434,13 @@ The following emojis mean (they are clickable and should link to the code implem
 		} else {
 			js = ":question:"
 		}
+		name := fn.Name
+		if fn.URL != "" {
+			name = fmt.Sprintf("[%s](%s)", fn.Name, fn.URL)
+		}
 		sb.WriteString(fmt.Sprintf(
-			"| [%s](%s) | [%s](%s) | [%s](%s) |\n",
-			fn.Name, fn.URL,
+			"| %s | [%s](%s) | [%s](%s) |\n",
+			name,
 			desktop, urlDesktop,
 			js, urlJS,
 		))

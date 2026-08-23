@@ -1942,3 +1942,23 @@ The following emojis mean (they are clickable and should link to the code implem
 | [MIX_DecodeAudio](https://wiki.libsdl.org/SDL3_mixer/MIX_DecodeAudio) | [:heavy_check_mark:](mixer/methods.go#L76) | [:x:](mixer/mixer_functions_js.go#L1432) |
 </details>
 </details>
+<details open>
+<summary><h2>MIDI</h2></summary>
+<details open>
+<summary><h3>NativeMIDI</h3></summary>
+
+|Function|Desktop|WASM/js|
+|:--|:--:|:--:|
+| NativeMidi_Init | [:heavy_check_mark:](midi/functions.go#L29) | [:question:]() |
+| NativeMidi_Quit | [:heavy_check_mark:](midi/functions.go#L38) | [:question:]() |
+| NativeMidi_LoadSong_IO | [:heavy_check_mark:](midi/functions.go#L53) | [:question:]() |
+| NativeMidi_LoadSong | [:heavy_check_mark:](midi/functions.go#L43) | [:question:]() |
+| NativeMidi_DestroySong | [:heavy_check_mark:](midi/methods.go#L3) | [:question:]() |
+| NativeMidi_Start | [:heavy_check_mark:](midi/methods.go#L11) | [:question:]() |
+| NativeMidi_Pause | [:heavy_check_mark:](midi/functions.go#L63) | [:question:]() |
+| NativeMidi_Resume | [:heavy_check_mark:](midi/functions.go#L68) | [:question:]() |
+| NativeMidi_Stop | [:heavy_check_mark:](midi/functions.go#L73) | [:question:]() |
+| NativeMidi_Active | [:heavy_check_mark:](midi/functions.go#L78) | [:question:]() |
+| NativeMidi_SetVolume | [:heavy_check_mark:](midi/functions.go#L83) | [:question:]() |
+</details>
+</details>

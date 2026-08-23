@@ -3939,6 +3939,7 @@ SDL_PenProximityEvent.0,SDL_EVENT_PEN_PROXIMITY_IN or SDL_EVENT_PEN_PROXIMITY_OU
 SDL_PenProximityEvent.2,"In nanoseconds, populated using SDL_GetTicksNS()",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenProximityEvent.3,"The window with pen focus, if any",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenProximityEvent.4,The pen instance id,https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
+SDL_PenProximityEvent.5,Complete pen input state at time of event (added in 3.4.16).,https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenProximityEvent,"Pressure-sensitive pen proximity event structure (event.pproximity.*)
 ",https://wiki.libsdl.org/SDL3/SDL_PenProximityEvent
 SDL_PenTouchEvent.0,SDL_EVENT_PEN_DOWN or SDL_EVENT_PEN_UP,https://wiki.libsdl.org/SDL3/SDL_PenTouchEvent

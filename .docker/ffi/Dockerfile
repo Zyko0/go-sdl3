@@ -77,5 +77,5 @@ RUN git clone https://github.com/libsdl-org/SDL_native_midi.git && \
         cp -r include/SDL3_native_midi/ /usr/include/SDL3_native_midi/
 
 # Generate SDL_native_midi ffi
-RUN echo "#include <SDL3_native_midi/SDL_native_midi.h>\n" > native_midi.c
-RUN /c2ffi/build/bin/c2ffi native_midi.c > native_midi_ffi.json
+RUN echo "#include <SDL3_native_midi/SDL_native_midi.h>\n" > midi.c
+RUN /c2ffi/build/bin/c2ffi midi.c > midi_ffi.json
