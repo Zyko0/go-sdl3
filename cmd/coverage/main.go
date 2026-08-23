@@ -1,14 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/Zyko0/go-sdl3/cmd/internal/assets"
@@ -19,8 +20,7 @@ var (
 	regJsFunc  = regexp.MustCompile(`.*\s=\sfunc`)
 	regJS      *regexp.Regexp
 
-	cfg        *assets.Config
-	apiRefCode string
+	cfg *assets.Config
 )
 
 func True() *bool {
@@ -40,30 +40,56 @@ type coverage struct {
 }
 
 type refFunc struct {
-	CategoryIndex int
-	Name          string
-	URL           string
+	Category string
+	Name     string
+	URL      string
+
+	// Position of the declaration in its header, so functions keep the order
+	// their author gave them rather than an alphabetical one.
+	Header string
+	Line   int
 
 	Desktop coverage
 	JS      coverage
 }
 
 var (
-	categories = map[string][]string{
+	// Display order of the sections. A header absent from this list is
+	// reported rather than silently dropped.
+	categoryOrder = map[string][]string{
 		"sdl": {
-			"Init", "Hints", "Error", "Version", "Properties", "Log", "Video",
-			"Events", "Keyboard", "Mouse", "Touch", "Gamepad", "Joystick",
-			"Haptic", "Audio", "Time", "Timer", "Render", "SharedObject",
-			"Thread", "Mutex", "Atomic", "Filesystem", "IOStream", "AsyncIO",
-			"Storage", "Pixels", "Surface", "BlendMode", "Rect", "Camera",
-			"MessageBox", "Clipboard", "Dialog", "Tray", "Notification", "GPU",
-			"Vulkan", "Metal" /*"Platform",*/, "Power", "Sensor", "Process", "Bits",
-			"Endian", "Assert", "CPUInfo" /*"Intrinsics",*/, "Locale", "System", "Misc",
-			"GUID", "Stdinc",
+			"SDL_init.h", "SDL_hints.h", "SDL_error.h", "SDL_version.h",
+			"SDL_properties.h", "SDL_log.h", "SDL_video.h", "SDL_events.h",
+			"SDL_keyboard.h", "SDL_mouse.h", "SDL_touch.h", "SDL_gamepad.h",
+			"SDL_joystick.h", "SDL_haptic.h", "SDL_audio.h", "SDL_time.h",
+			"SDL_timer.h", "SDL_render.h", "SDL_loadso.h", "SDL_thread.h",
+			"SDL_mutex.h", "SDL_atomic.h", "SDL_filesystem.h", "SDL_iostream.h",
+			"SDL_asyncio.h", "SDL_storage.h", "SDL_pixels.h", "SDL_surface.h",
+			"SDL_blendmode.h", "SDL_rect.h", "SDL_camera.h", "SDL_messagebox.h",
+			"SDL_clipboard.h", "SDL_dialog.h", "SDL_tray.h", "SDL_notification.h",
+			"SDL_gpu.h", "SDL_vulkan.h", "SDL_metal.h", "SDL_power.h",
+			"SDL_sensor.h", "SDL_process.h", "SDL_bits.h", "SDL_endian.h",
+			"SDL_assert.h", "SDL_cpuinfo.h", "SDL_locale.h", "SDL_system.h",
+			"SDL_misc.h", "SDL_guid.h", "SDL_stdinc.h",
 		},
-		"img":   {"Image"},
-		"ttf":   {"TTF"},
-		"mixer": {"Mixer"},
+		"img":   {"SDL_image.h"},
+		"ttf":   {"SDL_ttf.h", "SDL_textengine.h"},
+		"mixer": {"SDL_mixer.h"},
+	}
+	// Headers whose section title is not just the title-cased header stem.
+	categoryLabels = map[string]string{
+		"SDL_loadso.h":     "SharedObject",
+		"SDL_iostream.h":   "IOStream",
+		"SDL_asyncio.h":    "AsyncIO",
+		"SDL_blendmode.h":  "BlendMode",
+		"SDL_messagebox.h": "MessageBox",
+		"SDL_gpu.h":        "GPU",
+		"SDL_cpuinfo.h":    "CPUInfo",
+		"SDL_guid.h":       "GUID",
+		"SDL_image.h":      "Image",
+		"SDL_ttf.h":        "TTF",
+		"SDL_textengine.h": "TTF",
+		"SDL_mixer.h":      "Mixer",
 	}
 	collapsedCategories = map[string]struct{}{
 		"Error":        {},
@@ -93,52 +119,68 @@ var (
 	functions          []*refFunc
 )
 
-func AllFunctions() {
-	inComments := false
-	categoryIndex := -1
-	for l := range strings.SplitSeq(apiRefCode, "\n") {
-		l = strings.TrimSpace(l)
-		l = strings.ReplaceAll(l, "const ", "")
-		l = strings.ReplaceAll(l, " * ", "* ")
-		l = strings.ReplaceAll(l, " ** ", "** ")
-		l = strings.ReplaceAll(l, "* * ", "** ")
-		switch {
-		case strings.HasPrefix(l, "//"):
-			if !inComments {
-				categoryIndex++
-				inComments = true
-			}
-			continue
-		case strings.HasPrefix(l, "#"):
-			continue
-		case l == "":
-			continue
-		default:
-			inComments = false
-			idx := strings.Index(l, "//")
-			if idx != -1 {
-				l = l[:idx]
-			}
-			// Parse function name
-			nameIdx := strings.Index(l[1:], cfg.Prefix)
-			name := l[nameIdx+1 : strings.Index(l, "(")]
-			fn := &refFunc{
-				CategoryIndex: categoryIndex,
-				Name:          name,
-			}
-			uniqueAPIFunctions[name] = fn
-			functions = append(functions, fn)
-		}
+func label(header string) string {
+	if l, ok := categoryLabels[header]; ok {
+		return l
 	}
+
+	stem := strings.TrimSuffix(strings.TrimPrefix(header, "SDL_"), ".h")
+
+	return strings.ToUpper(stem[:1]) + stem[1:]
+}
+
+// AllFunctions pairs the documented public API with the headers it is declared
+// in. The reference says what is public, the ffi entries say where it lives.
+func AllFunctions(apiref map[string]*assets.APIRefEntry, ffiEntries []*assets.FFIEntry) {
+	order := categoryOrder[cfg.LibraryName]
+
+	for _, e := range ffiEntries {
+		if e.Tag != "function" || !strings.HasPrefix(e.Location, cfg.AllowedInclude) {
+			continue
+		}
+		if _, ok := apiref[e.Name]; !ok {
+			continue
+		}
+		parts := strings.Split(filepath.Base(e.Location), ":")
+		if len(parts) < 2 {
+			continue
+		}
+		if !slices.Contains(order, parts[0]) {
+			log.Printf("%s: %s is declared in unlisted header %s", cfg.LibraryName, e.Name, parts[0])
+			continue
+		}
+		line, _ := strconv.Atoi(parts[1])
+
+		fn := &refFunc{
+			Category: label(parts[0]),
+			Name:     e.Name,
+			Header:   parts[0],
+			Line:     line,
+		}
+		uniqueAPIFunctions[e.Name] = fn
+		functions = append(functions, fn)
+	}
+
+	slices.SortFunc(functions, func(a, b *refFunc) int {
+		if a.Header != b.Header {
+			return slices.Index(order, a.Header) - slices.Index(order, b.Header)
+		}
+
+		return a.Line - b.Line
+	})
 }
 
 func main() {
 	var (
 		configPath string
+		ffiPath    string
+		apirefPath string
 		dir        string
 	)
 
 	flag.StringVar(&configPath, "config", "", "path to config.json file")
+	flag.StringVar(&ffiPath, "ffi", "", "path to ffi.json file")
+	flag.StringVar(&apirefPath, "apiref", "", "path to apiref csv file")
 	flag.StringVar(&dir, "dir", "", "base directory to generate from/to")
 	flag.Parse()
 
@@ -154,18 +196,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Download API ref code
-	resp, err := http.Get(cfg.QuickAPIRefURL)
+	// Load the public API surface
+	apiref, err := assets.LoadAPIRef(apirefPath)
 	if err != nil {
-		log.Fatal("couldn't download api ref: ", err)
+		log.Fatal("couldn't load apiref file: ", err)
 	}
-	b, err := io.ReadAll(resp.Body)
+
+	// Parse FFI
+	var ffiEntries []*assets.FFIEntry
+	b, err := os.ReadFile(ffiPath)
 	if err != nil {
-		log.Fatal("couldn't read http response body: ", err)
+		log.Fatal("couldn't read ffi.json file: ", err)
 	}
-	apiRefCode = string(b)
-	_, apiRefCode, _ = strings.Cut(apiRefCode, "```c")
-	apiRefCode, _, _ = strings.Cut(apiRefCode, "```")
+	err = json.Unmarshal(b, &ffiEntries)
+	if err != nil {
+		log.Fatal("couldn't unmarshal ffi file: ", err)
+	}
 
 	path, err := os.Getwd()
 	if err != nil {
@@ -173,7 +219,7 @@ func main() {
 	}
 	path = filepath.Join(path, dir)
 
-	AllFunctions()
+	AllFunctions(apiref, ffiEntries)
 
 	entries, err := os.ReadDir(path)
 	if err != nil {
@@ -276,7 +322,7 @@ func main() {
 	}
 	// Output coverage
 	var sb strings.Builder
-	categoryIndex := -1
+	var category string
 
 	if cfg.LibraryName == "sdl" {
 		sb.WriteString("# API Coverage\n\n")
@@ -293,19 +339,19 @@ The following emojis mean (they are clickable and should link to the code implem
 	sb.WriteString("<h2>" + strings.ToUpper(cfg.LibraryName) + "</h2>")
 	sb.WriteString("</summary>\n")
 	for _, fn := range functions {
-		if fn.CategoryIndex != categoryIndex {
-			if categoryIndex != -1 {
+		if fn.Category != category {
+			if category != "" {
 				// Close the previous details category
 				sb.WriteString("</details>\n")
 			}
-			categoryIndex = fn.CategoryIndex
-			if _, ok := collapsedCategories[categories[cfg.LibraryName][fn.CategoryIndex]]; ok {
+			category = fn.Category
+			if _, ok := collapsedCategories[fn.Category]; ok {
 				sb.WriteString("<details>\n")
 			} else {
 				sb.WriteString("<details open>\n")
 			}
 			sb.WriteString("<summary>")
-			sb.WriteString("<h3>" + categories[cfg.LibraryName][fn.CategoryIndex] + "</h3>")
+			sb.WriteString("<h3>" + fn.Category + "</h3>")
 			sb.WriteString("</summary>\n\n")
 			sb.WriteString("|Function|Desktop|WASM/js|\n")
 			sb.WriteString("|:--|:--:|:--:|\n")

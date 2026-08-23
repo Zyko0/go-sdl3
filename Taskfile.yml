@@ -70,7 +70,8 @@ tasks:
                 go run ./cmd/ffi2go \
                     --config "cmd/internal/assets/config/{{.LIBRARY}}.json" \
                     --ffi "cmd/internal/assets/ffi/{{.LIBRARY}}.json" \
-                    --annotations "cmd/internal/assets/wiki/annotations.csv"
+                    --annotations "cmd/internal/assets/wiki/annotations.csv" \
+                    --apiref "cmd/internal/assets/apiref/{{.LIBRARY}}.csv"
             - |
                 purego-gen \
                     --no-warnings \
@@ -104,7 +105,9 @@ tasks:
               cmd: |
                 go run ./cmd/coverage \
                     --dir {{.ITEM}} \
-                    --config "cmd/internal/assets/config/{{.ITEM}}.json"
+                    --config "cmd/internal/assets/config/{{.ITEM}}.json" \
+                    --ffi "cmd/internal/assets/ffi/{{.ITEM}}.json" \
+                    --apiref "cmd/internal/assets/apiref/{{.ITEM}}.csv"
     
     fmt:
         desc: Format go code
