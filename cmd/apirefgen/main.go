@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/Zyko0/go-sdl3/cmd/internal/assets"
@@ -19,6 +20,8 @@ var identifier = regexp.MustCompile(`^[A-Za-z_][A-Za-z0-9_]*$`)
 
 type entry struct {
 	Name        string
+	Group       int
+	Order       int
 	Types       []string
 	Description string
 }
@@ -75,16 +78,28 @@ func paramTypes(params string) []string {
 func parse(prefix, src string) []entry {
 	var entries []entry
 
+	// Section banners are ASCII art, so they carry no readable name. Their
+	// boundaries are still what groups the reference, so each run of comments
+	// between two prototypes opens a new group and consumers resolve the name
+	// from the headers the group's functions are declared in.
+	inComments := false
+	group := -1
+
 	for l := range strings.SplitSeq(src, "\n") {
 		l = strings.TrimSpace(l)
 		switch {
 		case l == "":
 			continue
-		case strings.HasPrefix(l, "//"): // section banners are ASCII art, nothing to read
+		case strings.HasPrefix(l, "//"):
+			if !inComments {
+				group++
+				inComments = true
+			}
 			continue
 		case strings.HasPrefix(l, "#"): // macro definitions are not part of the callable API
 			continue
 		}
+		inComments = false
 
 		proto, description, _ := strings.Cut(l, "//")
 		description = strings.TrimSpace(description)
@@ -104,6 +119,8 @@ func parse(prefix, src string) []entry {
 
 		e := entry{
 			Name:        strings.TrimSpace(proto[nameIdx:open]),
+			Group:       group,
+			Order:       len(entries),
 			Types:       paramTypes(proto[open+1 : close]),
 			Description: description,
 		}
@@ -166,13 +183,15 @@ func write(path string, entries []entry) {
 	w := csv.NewWriter(f)
 	defer w.Flush()
 
-	err = w.Write([]string{"name", "types", "description"})
+	err = w.Write([]string{"name", "group", "order", "types", "description"})
 	if err != nil {
 		log.Fatal("couldn't write csv header: ", err)
 	}
 	for _, e := range entries {
 		err = w.Write([]string{
 			e.Name,
+			strconv.Itoa(e.Group),
+			strconv.Itoa(e.Order),
 			strings.Join(e.Types, " "),
 			e.Description,
 		})

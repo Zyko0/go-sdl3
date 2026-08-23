@@ -1,95 +1,95 @@
-name,types,description
-MIX_AudioFramesToMS,MIX_Audio Sint64,Convert sample frames for a MIX_Audio's format to milliseconds.
-MIX_AudioMSToFrames,MIX_Audio Sint64,Convert milliseconds to sample frames for a MIX_Audio's format.
-MIX_CreateAudioDecoder,char SDL_PropertiesID MIX_AudioDecoder,Create a MIX_AudioDecoder from a path on the filesystem.
-MIX_CreateAudioDecoder_IO,SDL_IOStream bool SDL_PropertiesID MIX_AudioDecoder,Create a MIX_AudioDecoder from an SDL_IOStream.
-MIX_CreateGroup,MIX_Mixer MIX_Group,Create a mixing group.
-MIX_CreateMixer,SDL_AudioSpec MIX_Mixer,Create a mixer that generates audio to a memory buffer.
-MIX_CreateMixerDevice,SDL_AudioDeviceID SDL_AudioSpec MIX_Mixer,Create a mixer that plays sound directly to an audio device.
-MIX_CreateSineWaveAudio,MIX_Mixer int float Sint64 MIX_Audio,Create a MIX_Audio that generates a sinewave.
-MIX_CreateTrack,MIX_Mixer MIX_Track,Create a new track on a mixer.
-MIX_DecodeAudio,MIX_AudioDecoder int SDL_AudioSpec,Decode more audio from a MIX_AudioDecoder.
-MIX_DestroyAudio,MIX_Audio,Destroy the specified audio.
-MIX_DestroyAudioDecoder,MIX_AudioDecoder,Destroy the specified audio decoder.
-MIX_DestroyGroup,MIX_Group,Destroy a mixing group.
-MIX_DestroyMixer,MIX_Mixer,Free a mixer.
-MIX_DestroyTrack,MIX_Track,Destroy the specified track.
-MIX_FramesToMS,int Sint64,"Convert sample frames, at a specific sample rate, to milliseconds."
-MIX_Generate,MIX_Mixer int,Generate mixer output when not driving an audio device.
-MIX_GetAudioDecoder,int char,Report the name of a specific audio decoders.
-MIX_GetAudioDecoderFormat,MIX_AudioDecoder SDL_AudioSpec bool,Query the initial audio format of a MIX_AudioDecoder.
-MIX_GetAudioDecoderProperties,MIX_AudioDecoder SDL_PropertiesID,Get the properties associated with a MIX_AudioDecoder.
-MIX_GetAudioDuration,MIX_Audio Sint64,Get the length of a MIX_Audio's playback in sample frames.
-MIX_GetAudioFormat,MIX_Audio SDL_AudioSpec bool,Query the initial audio format of a MIX_Audio.
-MIX_GetAudioProperties,MIX_Audio SDL_PropertiesID,Get the properties associated with a MIX_Audio.
-MIX_GetGroupMixer,MIX_Group MIX_Mixer,Get the MIX_Mixer that owns a MIX_Group.
-MIX_GetGroupProperties,MIX_Group SDL_PropertiesID,Get the properties associated with a group.
-MIX_GetMixerFormat,MIX_Mixer SDL_AudioSpec bool,Get the audio format a mixer is generating.
-MIX_GetMixerFrequencyRatio,MIX_Mixer float,Get a mixer's master frequency ratio.
-MIX_GetMixerGain,MIX_Mixer float,Get a mixer's master gain control.
-MIX_GetMixerProperties,MIX_Mixer SDL_PropertiesID,Get the properties associated with a mixer.
-MIX_GetNumAudioDecoders,int,Report the number of audio decoders available for use.
-MIX_GetTaggedTracks,MIX_Mixer char int MIX_Track,Get all tracks with a specific tag.
-MIX_GetTrack3DPosition,MIX_Track MIX_Point3D bool,Get a track's current position in 3D space.
-MIX_GetTrackAudio,MIX_Track MIX_Audio,Query the MIX_Audio assigned to a track.
-MIX_GetTrackAudioStream,MIX_Track SDL_AudioStream,Query the SDL_AudioStream assigned to a track.
-MIX_GetTrackFadeFrames,MIX_Track Sint64,Query whether a given track is fading.
-MIX_GetTrackFrequencyRatio,MIX_Track float,Query the frequency ratio of a track.
-MIX_GetTrackGain,MIX_Track float,Get a track's gain control.
-MIX_GetTrackLoops,MIX_Track int,Query how many loops remain for a given track.
-MIX_GetTrackMixer,MIX_Track MIX_Mixer,Get the MIX_Mixer that owns a MIX_Track.
-MIX_GetTrackPlaybackPosition,MIX_Track Sint64,Get the current input position of a playing track.
-MIX_GetTrackProperties,MIX_Track SDL_PropertiesID,Get the properties associated with a track.
-MIX_GetTrackRemaining,MIX_Track Sint64,Return the number of sample frames remaining to be mixed in a track.
-MIX_GetTrackTags,MIX_Track int char,Get the tags currently associated with a track.
-MIX_Init,bool,Initialize the SDL_mixer library.
-MIX_LoadAudio,MIX_Mixer char bool MIX_Audio,Load audio for playback from a file.
-MIX_LoadAudioNoCopy,MIX_Mixer size_t bool MIX_Audio,Load audio for playback from a memory buffer without making a copy.
-MIX_LoadAudioWithProperties,SDL_PropertiesID MIX_Audio,Load audio for playback through a collection of properties.
-MIX_LoadAudio_IO,MIX_Mixer SDL_IOStream bool MIX_Audio,Load audio for playback from an SDL_IOStream.
-MIX_LoadRawAudio,MIX_Mixer size_t SDL_AudioSpec MIX_Audio,Load raw PCM data from a memory buffer.
-MIX_LoadRawAudioNoCopy,MIX_Mixer size_t SDL_AudioSpec bool MIX_Audio,Load raw PCM data from a memory buffer without making a copy.
-MIX_LoadRawAudio_IO,MIX_Mixer SDL_IOStream SDL_AudioSpec bool MIX_Audio,Load raw PCM data from an SDL_IOStream.
-MIX_LockMixer,MIX_Mixer,Lock a mixer by obtaining its internal mutex.
-MIX_MSToFrames,int Sint64,Convert milliseconds to sample frames at a specific sample rate.
-MIX_PauseAllTracks,MIX_Mixer bool,Pause all currently-playing tracks.
-MIX_PauseTag,MIX_Mixer char bool,Pause all tracks with a specific tag.
-MIX_PauseTrack,MIX_Track bool,Pause a currently-playing track.
-MIX_PlayAudio,MIX_Mixer MIX_Audio bool,Play a MIX_Audio from start to finish without any management.
-MIX_PlayTag,MIX_Mixer char SDL_PropertiesID bool,Start (or restart) mixing all tracks with a specific tag for playback.
-MIX_PlayTrack,MIX_Track SDL_PropertiesID bool,Start (or restart) mixing a track for playback.
-MIX_Quit,,Deinitialize the SDL_mixer library.
-MIX_ResumeAllTracks,MIX_Mixer bool,Resume all currently-paused tracks.
-MIX_ResumeTag,MIX_Mixer char bool,Resume all tracks with a specific tag.
-MIX_ResumeTrack,MIX_Track bool,Resume a currently-paused track.
-MIX_SetGroupPostMixCallback,MIX_Group MIX_GroupMixCallback bool,Set a callback that fires when a mixer group has completed mixing.
-MIX_SetMixerFrequencyRatio,MIX_Mixer float bool,Set a mixer's master frequency ratio.
-MIX_SetMixerGain,MIX_Mixer float bool,Set a mixer's master gain control.
-MIX_SetPostMixCallback,MIX_Mixer MIX_PostMixCallback bool,Set a callback that fires when all mixing has completed.
-MIX_SetTagGain,MIX_Mixer char float bool,Set the gain control of all tracks with a specific tag.
-MIX_SetTrack3DPosition,MIX_Track MIX_Point3D bool,Set a track's position in 3D space.
-MIX_SetTrackAudio,MIX_Track MIX_Audio bool,Set a MIX_Track's input to a MIX_Audio.
-MIX_SetTrackAudioStream,MIX_Track SDL_AudioStream bool,Set a MIX_Track's input to an SDL_AudioStream.
-MIX_SetTrackCookedCallback,MIX_Track MIX_TrackMixCallback bool,Set a callback that fires when the mixer has transformed a track's audio.
-MIX_SetTrackFrequencyRatio,MIX_Track float bool,Change the frequency ratio of a track.
-MIX_SetTrackGain,MIX_Track float bool,Set a track's gain control.
-MIX_SetTrackGroup,MIX_Track MIX_Group bool,Assign a track to a mixing group.
-MIX_SetTrackIOStream,MIX_Track SDL_IOStream bool,Set a MIX_Track's input to an SDL_IOStream.
-MIX_SetTrackLoops,MIX_Track int bool,Change the number of times a currently-playing track will loop.
-MIX_SetTrackOutputChannelMap,MIX_Track int bool,Set the current output channel map of a track.
-MIX_SetTrackPlaybackPosition,MIX_Track Sint64 bool,Seek a playing track to a new position in its input.
-MIX_SetTrackRawCallback,MIX_Track MIX_TrackMixCallback bool,Set a callback that fires when a MIX_Track has initial decoded audio.
-MIX_SetTrackRawIOStream,MIX_Track SDL_IOStream SDL_AudioSpec bool,Set a MIX_Track's input to an SDL_IOStream providing raw PCM data.
-MIX_SetTrackStereo,MIX_Track MIX_StereoGains bool,"Force a track to stereo output, with optionally left/right panning."
-MIX_SetTrackStoppedCallback,MIX_Track MIX_TrackStoppedCallback bool,Set a callback that fires when a MIX_Track is stopped.
-MIX_StopAllTracks,MIX_Mixer Sint64 bool,"Halt all currently-playing tracks, possibly fading out over time."
-MIX_StopTag,MIX_Mixer char Sint64 bool,"Halt all tracks with a specific tag, possibly fading out over time."
-MIX_StopTrack,MIX_Track Sint64 bool,"Halt a currently-playing track, possibly fading out over time."
-MIX_TagTrack,MIX_Track char bool,Assign an arbitrary tag to a track.
-MIX_TrackFramesToMS,MIX_Track Sint64,Convert sample frames for a track's current format to milliseconds.
-MIX_TrackMSToFrames,MIX_Track Sint64,Convert milliseconds to sample frames for a track's current format.
-MIX_TrackPaused,MIX_Track bool,Query if a track is currently paused.
-MIX_TrackPlaying,MIX_Track bool,Query if a track is currently playing.
-MIX_UnlockMixer,MIX_Mixer,Unlock a mixer previously locked by a call to MIX_LockMixer().
-MIX_UntagTrack,MIX_Track char,Remove an arbitrary tag from a track.
-MIX_Version,int,Get the version of SDL_mixer that is linked against your program.
+name,group,order,types,description
+MIX_AudioFramesToMS,0,47,MIX_Audio Sint64,Convert sample frames for a MIX_Audio's format to milliseconds.
+MIX_AudioMSToFrames,0,46,MIX_Audio Sint64,Convert milliseconds to sample frames for a MIX_Audio's format.
+MIX_CreateAudioDecoder,0,88,char SDL_PropertiesID MIX_AudioDecoder,Create a MIX_AudioDecoder from a path on the filesystem.
+MIX_CreateAudioDecoder_IO,0,89,SDL_IOStream bool SDL_PropertiesID MIX_AudioDecoder,Create a MIX_AudioDecoder from an SDL_IOStream.
+MIX_CreateGroup,0,77,MIX_Mixer MIX_Group,Create a mixing group.
+MIX_CreateMixer,0,6,SDL_AudioSpec MIX_Mixer,Create a mixer that generates audio to a memory buffer.
+MIX_CreateMixerDevice,0,5,SDL_AudioDeviceID SDL_AudioSpec MIX_Mixer,Create a mixer that plays sound directly to an audio device.
+MIX_CreateSineWaveAudio,0,19,MIX_Mixer int float Sint64 MIX_Audio,Create a MIX_Audio that generates a sinewave.
+MIX_CreateTrack,0,24,MIX_Mixer MIX_Track,Create a new track on a mixer.
+MIX_DecodeAudio,0,93,MIX_AudioDecoder int SDL_AudioSpec,Decode more audio from a MIX_AudioDecoder.
+MIX_DestroyAudio,0,23,MIX_Audio,Destroy the specified audio.
+MIX_DestroyAudioDecoder,0,90,MIX_AudioDecoder,Destroy the specified audio decoder.
+MIX_DestroyGroup,0,78,MIX_Group,Destroy a mixing group.
+MIX_DestroyMixer,0,7,MIX_Mixer,Free a mixer.
+MIX_DestroyTrack,0,25,MIX_Track,Destroy the specified track.
+MIX_FramesToMS,0,49,int Sint64,"Convert sample frames, at a specific sample rate, to milliseconds."
+MIX_Generate,0,87,MIX_Mixer int,Generate mixer output when not driving an audio device.
+MIX_GetAudioDecoder,0,4,int char,Report the name of a specific audio decoders.
+MIX_GetAudioDecoderFormat,0,92,MIX_AudioDecoder SDL_AudioSpec bool,Query the initial audio format of a MIX_AudioDecoder.
+MIX_GetAudioDecoderProperties,0,91,MIX_AudioDecoder SDL_PropertiesID,Get the properties associated with a MIX_AudioDecoder.
+MIX_GetAudioDuration,0,21,MIX_Audio Sint64,Get the length of a MIX_Audio's playback in sample frames.
+MIX_GetAudioFormat,0,22,MIX_Audio SDL_AudioSpec bool,Query the initial audio format of a MIX_Audio.
+MIX_GetAudioProperties,0,20,MIX_Audio SDL_PropertiesID,Get the properties associated with a MIX_Audio.
+MIX_GetGroupMixer,0,80,MIX_Group MIX_Mixer,Get the MIX_Mixer that owns a MIX_Group.
+MIX_GetGroupProperties,0,79,MIX_Group SDL_PropertiesID,Get the properties associated with a group.
+MIX_GetMixerFormat,0,9,MIX_Mixer SDL_AudioSpec bool,Get the audio format a mixer is generating.
+MIX_GetMixerFrequencyRatio,0,70,MIX_Mixer float,Get a mixer's master frequency ratio.
+MIX_GetMixerGain,0,65,MIX_Mixer float,Get a mixer's master gain control.
+MIX_GetMixerProperties,0,8,MIX_Mixer SDL_PropertiesID,Get the properties associated with a mixer.
+MIX_GetNumAudioDecoders,0,3,int,Report the number of audio decoders available for use.
+MIX_GetTaggedTracks,0,35,MIX_Mixer char int MIX_Track,Get all tracks with a specific tag.
+MIX_GetTrack3DPosition,0,76,MIX_Track MIX_Point3D bool,Get a track's current position in 3D space.
+MIX_GetTrackAudio,0,41,MIX_Track MIX_Audio,Query the MIX_Audio assigned to a track.
+MIX_GetTrackAudioStream,0,42,MIX_Track SDL_AudioStream,Query the SDL_AudioStream assigned to a track.
+MIX_GetTrackFadeFrames,0,38,MIX_Track Sint64,Query whether a given track is fading.
+MIX_GetTrackFrequencyRatio,0,72,MIX_Track float,Query the frequency ratio of a track.
+MIX_GetTrackGain,0,67,MIX_Track float,Get a track's gain control.
+MIX_GetTrackLoops,0,39,MIX_Track int,Query how many loops remain for a given track.
+MIX_GetTrackMixer,0,27,MIX_Track MIX_Mixer,Get the MIX_Mixer that owns a MIX_Track.
+MIX_GetTrackPlaybackPosition,0,37,MIX_Track Sint64,Get the current input position of a playing track.
+MIX_GetTrackProperties,0,26,MIX_Track SDL_PropertiesID,Get the properties associated with a track.
+MIX_GetTrackRemaining,0,43,MIX_Track Sint64,Return the number of sample frames remaining to be mixed in a track.
+MIX_GetTrackTags,0,34,MIX_Track int char,Get the tags currently associated with a track.
+MIX_Init,0,1,bool,Initialize the SDL_mixer library.
+MIX_LoadAudio,0,13,MIX_Mixer char bool MIX_Audio,Load audio for playback from a file.
+MIX_LoadAudioNoCopy,0,14,MIX_Mixer size_t bool MIX_Audio,Load audio for playback from a memory buffer without making a copy.
+MIX_LoadAudioWithProperties,0,15,SDL_PropertiesID MIX_Audio,Load audio for playback through a collection of properties.
+MIX_LoadAudio_IO,0,12,MIX_Mixer SDL_IOStream bool MIX_Audio,Load audio for playback from an SDL_IOStream.
+MIX_LoadRawAudio,0,17,MIX_Mixer size_t SDL_AudioSpec MIX_Audio,Load raw PCM data from a memory buffer.
+MIX_LoadRawAudioNoCopy,0,18,MIX_Mixer size_t SDL_AudioSpec bool MIX_Audio,Load raw PCM data from a memory buffer without making a copy.
+MIX_LoadRawAudio_IO,0,16,MIX_Mixer SDL_IOStream SDL_AudioSpec bool MIX_Audio,Load raw PCM data from an SDL_IOStream.
+MIX_LockMixer,0,10,MIX_Mixer,Lock a mixer by obtaining its internal mutex.
+MIX_MSToFrames,0,48,int Sint64,Convert milliseconds to sample frames at a specific sample rate.
+MIX_PauseAllTracks,0,57,MIX_Mixer bool,Pause all currently-playing tracks.
+MIX_PauseTag,0,58,MIX_Mixer char bool,Pause all tracks with a specific tag.
+MIX_PauseTrack,0,56,MIX_Track bool,Pause a currently-playing track.
+MIX_PlayAudio,0,52,MIX_Mixer MIX_Audio bool,Play a MIX_Audio from start to finish without any management.
+MIX_PlayTag,0,51,MIX_Mixer char SDL_PropertiesID bool,Start (or restart) mixing all tracks with a specific tag for playback.
+MIX_PlayTrack,0,50,MIX_Track SDL_PropertiesID bool,Start (or restart) mixing a track for playback.
+MIX_Quit,0,2,,Deinitialize the SDL_mixer library.
+MIX_ResumeAllTracks,0,60,MIX_Mixer bool,Resume all currently-paused tracks.
+MIX_ResumeTag,0,61,MIX_Mixer char bool,Resume all tracks with a specific tag.
+MIX_ResumeTrack,0,59,MIX_Track bool,Resume a currently-paused track.
+MIX_SetGroupPostMixCallback,0,85,MIX_Group MIX_GroupMixCallback bool,Set a callback that fires when a mixer group has completed mixing.
+MIX_SetMixerFrequencyRatio,0,69,MIX_Mixer float bool,Set a mixer's master frequency ratio.
+MIX_SetMixerGain,0,64,MIX_Mixer float bool,Set a mixer's master gain control.
+MIX_SetPostMixCallback,0,86,MIX_Mixer MIX_PostMixCallback bool,Set a callback that fires when all mixing has completed.
+MIX_SetTagGain,0,68,MIX_Mixer char float bool,Set the gain control of all tracks with a specific tag.
+MIX_SetTrack3DPosition,0,75,MIX_Track MIX_Point3D bool,Set a track's position in 3D space.
+MIX_SetTrackAudio,0,28,MIX_Track MIX_Audio bool,Set a MIX_Track's input to a MIX_Audio.
+MIX_SetTrackAudioStream,0,29,MIX_Track SDL_AudioStream bool,Set a MIX_Track's input to an SDL_AudioStream.
+MIX_SetTrackCookedCallback,0,84,MIX_Track MIX_TrackMixCallback bool,Set a callback that fires when the mixer has transformed a track's audio.
+MIX_SetTrackFrequencyRatio,0,71,MIX_Track float bool,Change the frequency ratio of a track.
+MIX_SetTrackGain,0,66,MIX_Track float bool,Set a track's gain control.
+MIX_SetTrackGroup,0,81,MIX_Track MIX_Group bool,Assign a track to a mixing group.
+MIX_SetTrackIOStream,0,30,MIX_Track SDL_IOStream bool,Set a MIX_Track's input to an SDL_IOStream.
+MIX_SetTrackLoops,0,40,MIX_Track int bool,Change the number of times a currently-playing track will loop.
+MIX_SetTrackOutputChannelMap,0,73,MIX_Track int bool,Set the current output channel map of a track.
+MIX_SetTrackPlaybackPosition,0,36,MIX_Track Sint64 bool,Seek a playing track to a new position in its input.
+MIX_SetTrackRawCallback,0,83,MIX_Track MIX_TrackMixCallback bool,Set a callback that fires when a MIX_Track has initial decoded audio.
+MIX_SetTrackRawIOStream,0,31,MIX_Track SDL_IOStream SDL_AudioSpec bool,Set a MIX_Track's input to an SDL_IOStream providing raw PCM data.
+MIX_SetTrackStereo,0,74,MIX_Track MIX_StereoGains bool,"Force a track to stereo output, with optionally left/right panning."
+MIX_SetTrackStoppedCallback,0,82,MIX_Track MIX_TrackStoppedCallback bool,Set a callback that fires when a MIX_Track is stopped.
+MIX_StopAllTracks,0,54,MIX_Mixer Sint64 bool,"Halt all currently-playing tracks, possibly fading out over time."
+MIX_StopTag,0,55,MIX_Mixer char Sint64 bool,"Halt all tracks with a specific tag, possibly fading out over time."
+MIX_StopTrack,0,53,MIX_Track Sint64 bool,"Halt a currently-playing track, possibly fading out over time."
+MIX_TagTrack,0,32,MIX_Track char bool,Assign an arbitrary tag to a track.
+MIX_TrackFramesToMS,0,45,MIX_Track Sint64,Convert sample frames for a track's current format to milliseconds.
+MIX_TrackMSToFrames,0,44,MIX_Track Sint64,Convert milliseconds to sample frames for a track's current format.
+MIX_TrackPaused,0,63,MIX_Track bool,Query if a track is currently paused.
+MIX_TrackPlaying,0,62,MIX_Track bool,Query if a track is currently playing.
+MIX_UnlockMixer,0,11,MIX_Mixer,Unlock a mixer previously locked by a call to MIX_LockMixer().
+MIX_UntagTrack,0,33,MIX_Track char,Remove an arbitrary tag from a track.
+MIX_Version,0,0,int,Get the version of SDL_mixer that is linked against your program.

@@ -1,126 +1,126 @@
-name,types,description
-TTF_AddFallbackFont,TTF_Font bool,Add a fallback font.
-TTF_AppendTextString,TTF_Text char size_t bool,Append UTF-8 text to a text object.
-TTF_ClearFallbackFonts,TTF_Font,Remove all fallback fonts.
-TTF_CloseFont,TTF_Font,Dispose of a previously-created font.
-TTF_CopyFont,TTF_Font,Create a copy of an existing font.
-TTF_CreateGLTextEngine,TTF_TextEngine,Create a text engine for drawing text with OpenGL.
-TTF_CreateGLTextEngineWithProperties,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text with OpenGL, with extra properties."
-TTF_CreateGPUTextEngine,SDL_GPUDevice TTF_TextEngine,Create a text engine for drawing text with the SDL GPU API.
-TTF_CreateGPUTextEngineWithProperties,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text with the SDL GPU API, with the specified properties."
-TTF_CreateRendererTextEngine,SDL_Renderer TTF_TextEngine,Create a text engine for drawing text on an SDL renderer.
-TTF_CreateRendererTextEngineWithProperties,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text on an SDL renderer, with the specified properties."
-TTF_CreateSurfaceTextEngine,TTF_TextEngine,Create a text engine for drawing text on SDL surfaces.
-TTF_CreateText,TTF_TextEngine TTF_Font char size_t TTF_Text,Create a text object from UTF-8 text and a text engine.
-TTF_DeleteTextString,TTF_Text int bool,Delete UTF-8 text from a text object.
-TTF_DestroyGLTextEngine,TTF_TextEngine,Destroy a text engine created for drawing text with OpenGL.
-TTF_DestroyGPUTextEngine,TTF_TextEngine,Destroy a text engine created for drawing text with the SDL GPU API.
-TTF_DestroyRendererTextEngine,TTF_TextEngine,Destroy a text engine created for drawing text on an SDL renderer.
-TTF_DestroySurfaceTextEngine,TTF_TextEngine,Destroy a text engine created for drawing text on SDL surfaces.
-TTF_DestroyText,TTF_Text,Destroy a text object created by a text engine.
-TTF_DrawRendererText,TTF_Text float bool,Draw text to an SDL renderer.
-TTF_DrawSurfaceText,TTF_Text int SDL_Surface bool,Draw text to an SDL surface.
-TTF_FontHasGlyph,TTF_Font Uint32 bool,Check whether a glyph is provided by the font for a UNICODE codepoint.
-TTF_FontIsFixedWidth,TTF_Font bool,Query whether a font is fixed-width.
-TTF_FontIsScalable,TTF_Font bool,Query whether a font is scalable or not.
-TTF_GetFontAscent,TTF_Font int,Query the offset from the baseline to the top of a font.
-TTF_GetFontCharSpacing,TTF_Font int,Get the additional character spacing in pixels to be applied between any two rendered characters.
-TTF_GetFontDPI,TTF_Font int bool,"Get font target resolutions, in dots per inch."
-TTF_GetFontDescent,TTF_Font int,Query the offset from the baseline to the bottom of a font.
-TTF_GetFontDirection,TTF_Font TTF_Direction,Get the direction to be used for text shaping by a font.
-TTF_GetFontFamilyName,TTF_Font char,Query a font's family name.
-TTF_GetFontGeneration,TTF_Font Uint32,Get the font generation.
-TTF_GetFontHeight,TTF_Font int,Query the total height of a font.
-TTF_GetFontHinting,TTF_Font TTF_HintingFlags,Query a font's current FreeType hinter setting.
-TTF_GetFontKerning,TTF_Font bool,Query whether or not kerning is enabled for a font.
-TTF_GetFontLineSkip,TTF_Font int,Query the spacing between lines of text for a font.
-TTF_GetFontOutline,TTF_Font int,Query a font's current outline.
-TTF_GetFontProperties,TTF_Font SDL_PropertiesID,Get the properties associated with a font.
-TTF_GetFontSDF,TTF_Font bool,Query whether Signed Distance Field rendering is enabled for a font.
-TTF_GetFontScript,TTF_Font Uint32,Get the script used for text shaping a font.
-TTF_GetFontSize,TTF_Font float,Get the size of a font.
-TTF_GetFontStyle,TTF_Font TTF_FontStyleFlags,Query a font's current style.
-TTF_GetFontStyleName,TTF_Font char,Query a font's style name.
-TTF_GetFontWeight,TTF_Font int,"Query a font's weight, in terms of the lightness/heaviness of the strokes."
-TTF_GetFontWrapAlignment,TTF_Font TTF_HorizontalAlignment,Query a font's current wrap alignment option.
-TTF_GetFreeTypeVersion,int,Query the version of the FreeType library in use.
-TTF_GetGLTextDrawData,TTF_Text TTF_GLAtlasDrawSequence,Get the geometry data needed for drawing the text.
-TTF_GetGLTextEngineWinding,TTF_TextEngine TTF_GLTextEngineWinding,Get the winding order of the vertices returned by TTF_GetGLTextDrawData for a particular GL text engine.
-TTF_GetGPUTextDrawData,TTF_Text TTF_GPUAtlasDrawSequence,Get the geometry data needed for drawing the text.
-TTF_GetGPUTextEngineWinding,TTF_TextEngine TTF_GPUTextEngineWinding,Get the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine
-TTF_GetGlyphImage,TTF_Font Uint32 TTF_ImageType SDL_Surface,Get the pixel image for a UNICODE codepoint.
-TTF_GetGlyphImageForIndex,TTF_Font Uint32 TTF_ImageType SDL_Surface,Get the pixel image for a character index.
-TTF_GetGlyphKerning,TTF_Font Uint32 int bool,Query the kerning size between the glyphs of two UNICODE codepoints.
-TTF_GetGlyphMetrics,TTF_Font Uint32 int bool,Query the metrics (dimensions) of a font's glyph for a UNICODE codepoint.
-TTF_GetGlyphScript,Uint32,Get the script used by a 32-bit codepoint.
-TTF_GetHarfBuzzVersion,int,Query the version of the HarfBuzz library in use.
-TTF_GetNextTextSubString,TTF_Text TTF_SubString bool,Get the next substring in a text object
-TTF_GetNumFontFaces,TTF_Font int,Query the number of faces of a font.
-TTF_GetPreviousTextSubString,TTF_Text TTF_SubString bool,Get the previous substring in a text object
-TTF_GetStringSize,TTF_Font char size_t int bool,Calculate the dimensions of a rendered string of UTF-8 text.
-TTF_GetStringSizeWrapped,TTF_Font char size_t int bool,Calculate the dimensions of a rendered string of UTF-8 text.
-TTF_GetTextColor,TTF_Text Uint8 bool,Get the color of a text object.
-TTF_GetTextColorFloat,TTF_Text float bool,Get the color of a text object.
-TTF_GetTextDirection,TTF_Text TTF_Direction,Get the direction to be used for text shaping a text object.
-TTF_GetTextEngine,TTF_Text TTF_TextEngine,Get the text engine used by a text object.
-TTF_GetTextFont,TTF_Text TTF_Font,Get the font used by a text object.
-TTF_GetTextPosition,TTF_Text int bool,Get the position of a text object.
-TTF_GetTextProperties,TTF_Text SDL_PropertiesID,Get the properties associated with a text object.
-TTF_GetTextScript,TTF_Text Uint32,Get the script used for text shaping a text object.
-TTF_GetTextSize,TTF_Text int bool,Get the size of a text object.
-TTF_GetTextSubString,TTF_Text int TTF_SubString bool,Get the substring of a text object that surrounds a text offset.
-TTF_GetTextSubStringForLine,TTF_Text int TTF_SubString bool,Get the substring of a text object that contains the given line.
-TTF_GetTextSubStringForPoint,TTF_Text int TTF_SubString bool,Get the portion of a text string that is closest to a point.
-TTF_GetTextSubStringsForRange,TTF_Text int TTF_SubString,Get the substrings of a text object that contain a range of text.
-TTF_GetTextWrapWidth,TTF_Text int bool,Get whether wrapping is enabled on a text object.
-TTF_Init,bool,Initialize SDL_ttf.
-TTF_InsertTextString,TTF_Text int char size_t bool,Insert UTF-8 text into a text object.
-TTF_MeasureString,TTF_Font char size_t int bool,Calculate how much of a UTF-8 string will fit in a given width.
-TTF_OpenFont,char float TTF_Font,"Create a font from a file, using a specified point size."
-TTF_OpenFontIO,SDL_IOStream bool float TTF_Font,"Create a font from an SDL_IOStream, using a specified point size."
-TTF_OpenFontWithProperties,SDL_PropertiesID TTF_Font,Create a font with the specified properties.
-TTF_Quit,,Deinitialize SDL_ttf.
-TTF_RemoveFallbackFont,TTF_Font,Remove a fallback font.
-TTF_RenderGlyph_Blended,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at high quality to a new ARGB surface.
-TTF_RenderGlyph_LCD,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface.
-TTF_RenderGlyph_Shaded,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at high quality to a new 8-bit surface.
-TTF_RenderGlyph_Solid,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single 32-bit glyph at fast quality to a new 8-bit surface.
-TTF_RenderText_Blended,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at high quality to a new ARGB surface.
-TTF_RenderText_Blended_Wrapped,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at high quality to a new ARGB surface.
-TTF_RenderText_LCD,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at LCD subpixel quality to a new ARGB surface.
-TTF_RenderText_LCD_Wrapped,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB surface.
-TTF_RenderText_Shaded,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at high quality to a new 8-bit surface.
-TTF_RenderText_Shaded_Wrapped,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at high quality to a new 8-bit surface.
-TTF_RenderText_Solid,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at fast quality to a new 8-bit surface.
-TTF_RenderText_Solid_Wrapped,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.
-TTF_SetFontCharSpacing,TTF_Font int bool,Set additional space in pixels to be applied between any two rendered characters.
-TTF_SetFontDirection,TTF_Font TTF_Direction bool,Set the direction to be used for text shaping by a font.
-TTF_SetFontHinting,TTF_Font TTF_HintingFlags,Set a font's current hinter setting.
-TTF_SetFontKerning,TTF_Font bool,Set if kerning is enabled for a font.
-TTF_SetFontLanguage,TTF_Font char bool,Set language to be used for text shaping by a font.
-TTF_SetFontLineSkip,TTF_Font int,Set the spacing between lines of text for a font.
-TTF_SetFontOutline,TTF_Font int bool,Set a font's current outline.
-TTF_SetFontSDF,TTF_Font bool,Enable Signed Distance Field rendering for a font.
-TTF_SetFontScript,TTF_Font Uint32 bool,Set the script to be used for text shaping by a font.
-TTF_SetFontSize,TTF_Font float bool,Set a font's size dynamically.
-TTF_SetFontSizeDPI,TTF_Font float int bool,"Set font size dynamically with target resolutions, in dots per inch."
-TTF_SetFontStyle,TTF_Font TTF_FontStyleFlags,Set a font's current style.
-TTF_SetFontWrapAlignment,TTF_Font TTF_HorizontalAlignment,Set a font's current wrap alignment option.
-TTF_SetGLTextEngineWinding,TTF_TextEngine TTF_GLTextEngineWinding,Sets the winding order of the vertices returned by TTF_GetGLTextDrawData for a particular GL text engine.
-TTF_SetGPUTextEngineWinding,TTF_TextEngine TTF_GPUTextEngineWinding,Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine.
-TTF_SetTextColor,TTF_Text Uint8 bool,Set the color of a text object.
-TTF_SetTextColorFloat,TTF_Text float bool,Set the color of a text object.
-TTF_SetTextDirection,TTF_Text TTF_Direction bool,Set the direction to be used for text shaping a text object.
-TTF_SetTextEngine,TTF_Text TTF_TextEngine bool,Set the text engine used by a text object.
-TTF_SetTextFont,TTF_Text TTF_Font bool,Set the font used by a text object.
-TTF_SetTextPosition,TTF_Text int bool,Set the position of a text object.
-TTF_SetTextScript,TTF_Text Uint32 bool,Set the script to be used for text shaping a text object.
-TTF_SetTextString,TTF_Text char size_t bool,Set the UTF-8 text used by a text object.
-TTF_SetTextWrapWhitespaceVisible,TTF_Text bool,Set whether whitespace should be visible when wrapping a text object.
-TTF_SetTextWrapWidth,TTF_Text int bool,Set whether wrapping is enabled on a text object.
-TTF_StringToTag,char Uint32,Convert from a 4 character string to a 32-bit tag.
-TTF_TagToString,Uint32 char size_t,Convert from a 32-bit tag to a 4 character string.
-TTF_TextWrapWhitespaceVisible,TTF_Text bool,Return whether whitespace is shown when wrapping a text object.
-TTF_UpdateText,TTF_Text bool,Update the layout of a text object.
-TTF_Version,int,This function gets the version of the dynamically linked SDL_ttf library.
-TTF_WasInit,int,Check if SDL_ttf is initialized.
+name,group,order,types,description
+TTF_AddFallbackFont,0,10,TTF_Font bool,Add a fallback font.
+TTF_AppendTextString,0,111,TTF_Text char size_t bool,Append UTF-8 text to a text object.
+TTF_ClearFallbackFonts,0,12,TTF_Font,Remove all fallback fonts.
+TTF_CloseFont,0,122,TTF_Font,Dispose of a previously-created font.
+TTF_CopyFont,0,7,TTF_Font,Create a copy of an existing font.
+TTF_CreateGLTextEngine,0,83,TTF_TextEngine,Create a text engine for drawing text with OpenGL.
+TTF_CreateGLTextEngineWithProperties,0,84,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text with OpenGL, with extra properties."
+TTF_CreateGPUTextEngine,0,77,SDL_GPUDevice TTF_TextEngine,Create a text engine for drawing text with the SDL GPU API.
+TTF_CreateGPUTextEngineWithProperties,0,78,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text with the SDL GPU API, with the specified properties."
+TTF_CreateRendererTextEngine,0,73,SDL_Renderer TTF_TextEngine,Create a text engine for drawing text on an SDL renderer.
+TTF_CreateRendererTextEngineWithProperties,0,74,SDL_PropertiesID TTF_TextEngine,"Create a text engine for drawing text on an SDL renderer, with the specified properties."
+TTF_CreateSurfaceTextEngine,0,70,TTF_TextEngine,Create a text engine for drawing text on SDL surfaces.
+TTF_CreateText,0,89,TTF_TextEngine TTF_Font char size_t TTF_Text,Create a text object from UTF-8 text and a text engine.
+TTF_DeleteTextString,0,112,TTF_Text int bool,Delete UTF-8 text from a text object.
+TTF_DestroyGLTextEngine,0,86,TTF_TextEngine,Destroy a text engine created for drawing text with OpenGL.
+TTF_DestroyGPUTextEngine,0,80,TTF_TextEngine,Destroy a text engine created for drawing text with the SDL GPU API.
+TTF_DestroyRendererTextEngine,0,76,TTF_TextEngine,Destroy a text engine created for drawing text on an SDL renderer.
+TTF_DestroySurfaceTextEngine,0,72,TTF_TextEngine,Destroy a text engine created for drawing text on SDL surfaces.
+TTF_DestroyText,0,121,TTF_Text,Destroy a text object created by a text engine.
+TTF_DrawRendererText,0,75,TTF_Text float bool,Draw text to an SDL renderer.
+TTF_DrawSurfaceText,0,71,TTF_Text int SDL_Surface bool,Draw text to an SDL surface.
+TTF_FontHasGlyph,0,50,TTF_Font Uint32 bool,Check whether a glyph is provided by the font for a UNICODE codepoint.
+TTF_FontIsFixedWidth,0,36,TTF_Font bool,Query whether a font is fixed-width.
+TTF_FontIsScalable,0,37,TTF_Font bool,Query whether a font is scalable or not.
+TTF_GetFontAscent,0,30,TTF_Font int,Query the offset from the baseline to the top of a font.
+TTF_GetFontCharSpacing,0,43,TTF_Font int,Get the additional character spacing in pixels to be applied between any two rendered characters.
+TTF_GetFontDPI,0,16,TTF_Font int bool,"Get font target resolutions, in dots per inch."
+TTF_GetFontDescent,0,31,TTF_Font int,Query the offset from the baseline to the bottom of a font.
+TTF_GetFontDirection,0,41,TTF_Font TTF_Direction,Get the direction to be used for text shaping by a font.
+TTF_GetFontFamilyName,0,38,TTF_Font char,Query a font's family name.
+TTF_GetFontGeneration,0,9,TTF_Font Uint32,Get the font generation.
+TTF_GetFontHeight,0,29,TTF_Font int,Query the total height of a font.
+TTF_GetFontHinting,0,23,TTF_Font TTF_HintingFlags,Query a font's current FreeType hinter setting.
+TTF_GetFontKerning,0,35,TTF_Font bool,Query whether or not kerning is enabled for a font.
+TTF_GetFontLineSkip,0,33,TTF_Font int,Query the spacing between lines of text for a font.
+TTF_GetFontOutline,0,20,TTF_Font int,Query a font's current outline.
+TTF_GetFontProperties,0,8,TTF_Font SDL_PropertiesID,Get the properties associated with a font.
+TTF_GetFontSDF,0,25,TTF_Font bool,Query whether Signed Distance Field rendering is enabled for a font.
+TTF_GetFontScript,0,47,TTF_Font Uint32,Get the script used for text shaping a font.
+TTF_GetFontSize,0,15,TTF_Font float,Get the size of a font.
+TTF_GetFontStyle,0,18,TTF_Font TTF_FontStyleFlags,Query a font's current style.
+TTF_GetFontStyleName,0,39,TTF_Font char,Query a font's style name.
+TTF_GetFontWeight,0,26,TTF_Font int,"Query a font's weight, in terms of the lightness/heaviness of the strokes."
+TTF_GetFontWrapAlignment,0,28,TTF_Font TTF_HorizontalAlignment,Query a font's current wrap alignment option.
+TTF_GetFreeTypeVersion,0,1,int,Query the version of the FreeType library in use.
+TTF_GetGLTextDrawData,0,85,TTF_Text TTF_GLAtlasDrawSequence,Get the geometry data needed for drawing the text.
+TTF_GetGLTextEngineWinding,0,88,TTF_TextEngine TTF_GLTextEngineWinding,Get the winding order of the vertices returned by TTF_GetGLTextDrawData for a particular GL text engine.
+TTF_GetGPUTextDrawData,0,79,TTF_Text TTF_GPUAtlasDrawSequence,Get the geometry data needed for drawing the text.
+TTF_GetGPUTextEngineWinding,0,82,TTF_TextEngine TTF_GPUTextEngineWinding,Get the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine
+TTF_GetGlyphImage,0,51,TTF_Font Uint32 TTF_ImageType SDL_Surface,Get the pixel image for a UNICODE codepoint.
+TTF_GetGlyphImageForIndex,0,52,TTF_Font Uint32 TTF_ImageType SDL_Surface,Get the pixel image for a character index.
+TTF_GetGlyphKerning,0,54,TTF_Font Uint32 int bool,Query the kerning size between the glyphs of two UNICODE codepoints.
+TTF_GetGlyphMetrics,0,53,TTF_Font Uint32 int bool,Query the metrics (dimensions) of a font's glyph for a UNICODE codepoint.
+TTF_GetGlyphScript,0,48,Uint32,Get the script used by a 32-bit codepoint.
+TTF_GetHarfBuzzVersion,0,2,int,Query the version of the HarfBuzz library in use.
+TTF_GetNextTextSubString,0,119,TTF_Text TTF_SubString bool,Get the next substring in a text object
+TTF_GetNumFontFaces,0,22,TTF_Font int,Query the number of faces of a font.
+TTF_GetPreviousTextSubString,0,118,TTF_Text TTF_SubString bool,Get the previous substring in a text object
+TTF_GetStringSize,0,55,TTF_Font char size_t int bool,Calculate the dimensions of a rendered string of UTF-8 text.
+TTF_GetStringSizeWrapped,0,56,TTF_Font char size_t int bool,Calculate the dimensions of a rendered string of UTF-8 text.
+TTF_GetTextColor,0,101,TTF_Text Uint8 bool,Get the color of a text object.
+TTF_GetTextColorFloat,0,102,TTF_Text float bool,Get the color of a text object.
+TTF_GetTextDirection,0,96,TTF_Text TTF_Direction,Get the direction to be used for text shaping a text object.
+TTF_GetTextEngine,0,92,TTF_Text TTF_TextEngine,Get the text engine used by a text object.
+TTF_GetTextFont,0,94,TTF_Text TTF_Font,Get the font used by a text object.
+TTF_GetTextPosition,0,104,TTF_Text int bool,Get the position of a text object.
+TTF_GetTextProperties,0,90,TTF_Text SDL_PropertiesID,Get the properties associated with a text object.
+TTF_GetTextScript,0,98,TTF_Text Uint32,Get the script used for text shaping a text object.
+TTF_GetTextSize,0,113,TTF_Text int bool,Get the size of a text object.
+TTF_GetTextSubString,0,114,TTF_Text int TTF_SubString bool,Get the substring of a text object that surrounds a text offset.
+TTF_GetTextSubStringForLine,0,115,TTF_Text int TTF_SubString bool,Get the substring of a text object that contains the given line.
+TTF_GetTextSubStringForPoint,0,117,TTF_Text int TTF_SubString bool,Get the portion of a text string that is closest to a point.
+TTF_GetTextSubStringsForRange,0,116,TTF_Text int TTF_SubString,Get the substrings of a text object that contain a range of text.
+TTF_GetTextWrapWidth,0,106,TTF_Text int bool,Get whether wrapping is enabled on a text object.
+TTF_Init,0,3,bool,Initialize SDL_ttf.
+TTF_InsertTextString,0,110,TTF_Text int char size_t bool,Insert UTF-8 text into a text object.
+TTF_MeasureString,0,57,TTF_Font char size_t int bool,Calculate how much of a UTF-8 string will fit in a given width.
+TTF_OpenFont,0,4,char float TTF_Font,"Create a font from a file, using a specified point size."
+TTF_OpenFontIO,0,5,SDL_IOStream bool float TTF_Font,"Create a font from an SDL_IOStream, using a specified point size."
+TTF_OpenFontWithProperties,0,6,SDL_PropertiesID TTF_Font,Create a font with the specified properties.
+TTF_Quit,0,123,,Deinitialize SDL_ttf.
+TTF_RemoveFallbackFont,0,11,TTF_Font,Remove a fallback font.
+TTF_RenderGlyph_Blended,0,66,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at high quality to a new ARGB surface.
+TTF_RenderGlyph_LCD,0,69,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface.
+TTF_RenderGlyph_Shaded,0,63,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single UNICODE codepoint at high quality to a new 8-bit surface.
+TTF_RenderGlyph_Solid,0,60,TTF_Font Uint32 SDL_Color SDL_Surface,Render a single 32-bit glyph at fast quality to a new 8-bit surface.
+TTF_RenderText_Blended,0,64,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at high quality to a new ARGB surface.
+TTF_RenderText_Blended_Wrapped,0,65,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at high quality to a new ARGB surface.
+TTF_RenderText_LCD,0,67,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at LCD subpixel quality to a new ARGB surface.
+TTF_RenderText_LCD_Wrapped,0,68,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB surface.
+TTF_RenderText_Shaded,0,61,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at high quality to a new 8-bit surface.
+TTF_RenderText_Shaded_Wrapped,0,62,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at high quality to a new 8-bit surface.
+TTF_RenderText_Solid,0,58,TTF_Font char size_t SDL_Color SDL_Surface,Render UTF-8 text at fast quality to a new 8-bit surface.
+TTF_RenderText_Solid_Wrapped,0,59,TTF_Font char size_t SDL_Color int SDL_Surface,Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface.
+TTF_SetFontCharSpacing,0,42,TTF_Font int bool,Set additional space in pixels to be applied between any two rendered characters.
+TTF_SetFontDirection,0,40,TTF_Font TTF_Direction bool,Set the direction to be used for text shaping by a font.
+TTF_SetFontHinting,0,21,TTF_Font TTF_HintingFlags,Set a font's current hinter setting.
+TTF_SetFontKerning,0,34,TTF_Font bool,Set if kerning is enabled for a font.
+TTF_SetFontLanguage,0,49,TTF_Font char bool,Set language to be used for text shaping by a font.
+TTF_SetFontLineSkip,0,32,TTF_Font int,Set the spacing between lines of text for a font.
+TTF_SetFontOutline,0,19,TTF_Font int bool,Set a font's current outline.
+TTF_SetFontSDF,0,24,TTF_Font bool,Enable Signed Distance Field rendering for a font.
+TTF_SetFontScript,0,46,TTF_Font Uint32 bool,Set the script to be used for text shaping by a font.
+TTF_SetFontSize,0,13,TTF_Font float bool,Set a font's size dynamically.
+TTF_SetFontSizeDPI,0,14,TTF_Font float int bool,"Set font size dynamically with target resolutions, in dots per inch."
+TTF_SetFontStyle,0,17,TTF_Font TTF_FontStyleFlags,Set a font's current style.
+TTF_SetFontWrapAlignment,0,27,TTF_Font TTF_HorizontalAlignment,Set a font's current wrap alignment option.
+TTF_SetGLTextEngineWinding,0,87,TTF_TextEngine TTF_GLTextEngineWinding,Sets the winding order of the vertices returned by TTF_GetGLTextDrawData for a particular GL text engine.
+TTF_SetGPUTextEngineWinding,0,81,TTF_TextEngine TTF_GPUTextEngineWinding,Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine.
+TTF_SetTextColor,0,99,TTF_Text Uint8 bool,Set the color of a text object.
+TTF_SetTextColorFloat,0,100,TTF_Text float bool,Set the color of a text object.
+TTF_SetTextDirection,0,95,TTF_Text TTF_Direction bool,Set the direction to be used for text shaping a text object.
+TTF_SetTextEngine,0,91,TTF_Text TTF_TextEngine bool,Set the text engine used by a text object.
+TTF_SetTextFont,0,93,TTF_Text TTF_Font bool,Set the font used by a text object.
+TTF_SetTextPosition,0,103,TTF_Text int bool,Set the position of a text object.
+TTF_SetTextScript,0,97,TTF_Text Uint32 bool,Set the script to be used for text shaping a text object.
+TTF_SetTextString,0,109,TTF_Text char size_t bool,Set the UTF-8 text used by a text object.
+TTF_SetTextWrapWhitespaceVisible,0,107,TTF_Text bool,Set whether whitespace should be visible when wrapping a text object.
+TTF_SetTextWrapWidth,0,105,TTF_Text int bool,Set whether wrapping is enabled on a text object.
+TTF_StringToTag,0,44,char Uint32,Convert from a 4 character string to a 32-bit tag.
+TTF_TagToString,0,45,Uint32 char size_t,Convert from a 32-bit tag to a 4 character string.
+TTF_TextWrapWhitespaceVisible,0,108,TTF_Text bool,Return whether whitespace is shown when wrapping a text object.
+TTF_UpdateText,0,120,TTF_Text bool,Update the layout of a text object.
+TTF_Version,0,0,int,This function gets the version of the dynamically linked SDL_ttf library.
+TTF_WasInit,0,124,int,Check if SDL_ttf is initialized.

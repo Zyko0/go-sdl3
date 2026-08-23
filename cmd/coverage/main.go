@@ -5,11 +5,11 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"maps"
 	"os"
 	"path/filepath"
 	"regexp"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/Zyko0/go-sdl3/cmd/internal/assets"
@@ -44,10 +44,10 @@ type refFunc struct {
 	Name     string
 	URL      string
 
-	// Position of the declaration in its header, so functions keep the order
-	// their author gave them rather than an alphabetical one.
-	Header string
-	Line   int
+	// Position in the reference, so functions keep the order their author gave
+	// them rather than an alphabetical one.
+	Group int
+	Order int
 
 	Desktop coverage
 	JS      coverage
@@ -129,44 +129,88 @@ func label(header string) string {
 	return strings.ToUpper(stem[:1]) + stem[1:]
 }
 
-// AllFunctions pairs the documented public API with the headers it is declared
-// in. The reference says what is public, the ffi entries say where it lives.
-func AllFunctions(apiref map[string]*assets.APIRefEntry, ffiEntries []*assets.FFIEntry) {
-	order := categoryOrder[cfg.LibraryName]
+// groupHeaders names every section of the reference. A section is named after
+// the header its functions are declared in; sections whose functions are all
+// newer than the ffi entries keep no such evidence, so they take what is left
+// of the expected headers, in order.
+func groupHeaders(apiref map[string]*assets.APIRefEntry, ffiEntries []*assets.FFIEntry) map[int]string {
+	votes := map[int]map[string]int{}
+	groups := map[int]struct{}{}
 
+	for _, e := range apiref {
+		groups[e.Group] = struct{}{}
+	}
 	for _, e := range ffiEntries {
 		if e.Tag != "function" || !strings.HasPrefix(e.Location, cfg.AllowedInclude) {
 			continue
 		}
-		if _, ok := apiref[e.Name]; !ok {
+		ref, ok := apiref[e.Name]
+		if !ok {
 			continue
 		}
-		parts := strings.Split(filepath.Base(e.Location), ":")
-		if len(parts) < 2 {
-			continue
+		header, _, _ := strings.Cut(filepath.Base(e.Location), ":")
+		if votes[ref.Group] == nil {
+			votes[ref.Group] = map[string]int{}
 		}
-		if !slices.Contains(order, parts[0]) {
-			log.Printf("%s: %s is declared in unlisted header %s", cfg.LibraryName, e.Name, parts[0])
-			continue
-		}
-		line, _ := strconv.Atoi(parts[1])
+		votes[ref.Group][header]++
+	}
 
+	headers := map[int]string{}
+	for group, v := range votes {
+		var best string
+		for header, n := range v {
+			if n > v[best] {
+				best = header
+			}
+		}
+		headers[group] = best
+	}
+
+	// Sections left without evidence are matched against the headers no other
+	// section claimed, both taken in order.
+	var orphans []int
+	for group := range groups {
+		if _, ok := headers[group]; !ok {
+			orphans = append(orphans, group)
+		}
+	}
+	slices.Sort(orphans)
+	var free []string
+	for _, header := range categoryOrder[cfg.LibraryName] {
+		if !slices.Contains(slices.Collect(maps.Values(headers)), header) {
+			free = append(free, header)
+		}
+	}
+	for i, group := range orphans {
+		if i >= len(free) {
+			log.Printf("%s: section %d has no header to name it", cfg.LibraryName, group)
+			break
+		}
+		headers[group] = free[i]
+	}
+
+	return headers
+}
+
+// AllFunctions lists the documented public API in the order the reference
+// gives it. Functions the ffi entries do not know about are kept: they are the
+// ones a newer upstream added, and they belong in the table as unimplemented.
+func AllFunctions(apiref map[string]*assets.APIRefEntry, ffiEntries []*assets.FFIEntry) {
+	headers := groupHeaders(apiref, ffiEntries)
+
+	for _, e := range apiref {
 		fn := &refFunc{
-			Category: label(parts[0]),
+			Category: label(headers[e.Group]),
 			Name:     e.Name,
-			Header:   parts[0],
-			Line:     line,
+			Group:    e.Group,
+			Order:    e.Order,
 		}
 		uniqueAPIFunctions[e.Name] = fn
 		functions = append(functions, fn)
 	}
 
 	slices.SortFunc(functions, func(a, b *refFunc) int {
-		if a.Header != b.Header {
-			return slices.Index(order, a.Header) - slices.Index(order, b.Header)
-		}
-
-		return a.Line - b.Line
+		return a.Order - b.Order
 	})
 }
 

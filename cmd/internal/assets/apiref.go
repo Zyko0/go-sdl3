@@ -4,13 +4,19 @@ import (
 	"bytes"
 	"encoding/csv"
 	"os"
+	"strconv"
 	"strings"
 )
 
 // APIRefEntry is a function documented by a library's quick reference page,
 // which is the source of truth for what belongs to its public API.
 type APIRefEntry struct {
-	Name        string
+	Name string
+	// Group and Order place the function back where the reference had it:
+	// Group is the banner-delimited section it belongs to, Order its rank in
+	// the page. Both are needed because the CSV is sorted by name.
+	Group       int
+	Order       int
 	Types       []string
 	Description string
 }
@@ -28,10 +34,20 @@ func LoadAPIRef(path string) (map[string]*APIRefEntry, error) {
 
 	entries := make(map[string]*APIRefEntry)
 	for _, record := range records[1:] { // Skip header
+		group, err := strconv.Atoi(record[1])
+		if err != nil {
+			return nil, err
+		}
+		order, err := strconv.Atoi(record[2])
+		if err != nil {
+			return nil, err
+		}
 		entries[record[0]] = &APIRefEntry{
 			Name:        record[0],
-			Types:       strings.Fields(record[1]),
-			Description: record[2],
+			Group:       group,
+			Order:       order,
+			Types:       strings.Fields(record[3]),
+			Description: record[4],
 		}
 	}
 
