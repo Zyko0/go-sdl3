@@ -486,7 +486,24 @@ type HapticEffect struct {
 
 // SDL_HitTest - Callback used for hit-testing.
 // (https://wiki.libsdl.org/SDL3/SDL_HitTest)
-type HitTest uintptr // TODO: supposed to be a callback but can't find the signature
+type HitTest uintptr
+
+// SDL_HitTestResult - Possible return values from the [SDL_HitTest](SDL_HitTest) callback.
+// (https://wiki.libsdl.org/SDL3/SDL_HitTestResult)
+type HitTestResult uint32
+
+const (
+	HITTEST_NORMAL             HitTestResult = 0 // Region is normal. No special properties.
+	HITTEST_DRAGGABLE          HitTestResult = 1 // Region can drag entire window.
+	HITTEST_RESIZE_TOPLEFT     HitTestResult = 2 // Region is the resizable top-left corner border.
+	HITTEST_RESIZE_TOP         HitTestResult = 3 // Region is the resizable top border.
+	HITTEST_RESIZE_TOPRIGHT    HitTestResult = 4 // Region is the resizable top-right corner border.
+	HITTEST_RESIZE_RIGHT       HitTestResult = 5 // Region is the resizable right border.
+	HITTEST_RESIZE_BOTTOMRIGHT HitTestResult = 6 // Region is the resizable bottom-right corner border.
+	HITTEST_RESIZE_BOTTOM      HitTestResult = 7 // Region is the resizable bottom border.
+	HITTEST_RESIZE_BOTTOMLEFT  HitTestResult = 8 // Region is the resizable bottom-left corner border.
+	HITTEST_RESIZE_LEFT        HitTestResult = 9 // Region is the resizable left border.
+)
 
 type va_list uintptr // TODO: not done yet
 
