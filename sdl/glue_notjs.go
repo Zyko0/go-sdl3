@@ -100,3 +100,24 @@ func NewEventFilter(fn func(event *Event) bool) EventFilter {
 		return 0
 	}))
 }
+
+func NewHitTest(fn func(window *Window, area *Point) HitTestResult) HitTest {
+	// Unlike other callbacks, userdata comes last.
+	return HitTest(purego.NewCallback(func(window *Window, area *Point, _ uintptr) uintptr {
+		return uintptr(fn(window, area))
+	}))
+}
+
+func NewMouseMotionTransformCallback(fn func(timestamp uint64, window *Window, mouseID MouseID, x, y *float32)) MouseMotionTransformCallback {
+	return MouseMotionTransformCallback(purego.NewCallback(func(_ uintptr, timestamp uint64, window *Window, mouseID MouseID, x, y *float32) uintptr {
+		fn(timestamp, window, mouseID, x, y)
+		return 0
+	}))
+}
+
+func NewTrayCallback(fn func(entry *TrayEntry)) TrayCallback {
+	return TrayCallback(purego.NewCallback(func(_ uintptr, entry *TrayEntry) uintptr {
+		fn(entry)
+		return 0
+	}))
+}
