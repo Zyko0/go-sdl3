@@ -50,7 +50,7 @@ func (v Version) String() string {
 // (https://wiki.libsdl.org/SDL3/SDL_GamepadBinding)
 // Union type
 type GamepadBinding struct {
-	InputType  int32
+	InputType  GamepadBindingType
 	InputData  [12]byte
 	OutputType GamepadBindingType
 	OutputData [12]byte

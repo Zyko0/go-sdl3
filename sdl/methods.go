@@ -69,7 +69,7 @@ func (touchID TouchID) Fingers() ([]*Finger, error) {
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[*Finger](ptr, int(count)), nil
+	return internal.ClonePtrSliceValues[Finger](ptr, int(count)), nil
 }
 
 // Storage
@@ -2659,7 +2659,7 @@ func (gamepad *Gamepad) Bindings() ([]*GamepadBinding, error) {
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[*GamepadBinding](ptr, int(count)), nil
+	return internal.ClonePtrSliceValues[GamepadBinding](ptr, int(count)), nil
 }
 
 // SDL_GamepadHasAxis - Query whether a gamepad has a given axis.
@@ -3660,7 +3660,7 @@ func (instance_id CameraID) CameraSupportedFormats() ([]*CameraSpec, error) {
 	if ptr == 0 {
 		return nil, internal.LastErr()
 	}
-	specs := internal.ClonePtrSlice[*CameraSpec](ptr, int(count))
+	specs := internal.ClonePtrSliceValues[CameraSpec](ptr, int(count))
 	internal.Free(ptr)
 
 	return specs, nil
@@ -3772,7 +3772,7 @@ func (displayID DisplayID) FullscreenDisplayModes() ([]*DisplayMode, error) {
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[*DisplayMode](ptr, int(count)), nil
+	return internal.ClonePtrSliceValues[DisplayMode](ptr, int(count)), nil
 }
 
 // SDL_GetClosestFullscreenDisplayMode - Get the closest match to the requested display mode.

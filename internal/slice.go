@@ -15,6 +15,23 @@ func ClonePtrSlice[T any](ptr uintptr, count int) []T {
 	return s
 }
 
+// ClonePtrSliceValues copies count pointers from ptr and the values they
+// point to, for C arrays whose elements share the array's allocation.
+func ClonePtrSliceValues[T any](ptr uintptr, count int) []*T {
+	if count <= 0 {
+		return nil
+	}
+
+	values := make([]T, count)
+	ptrs := make([]*T, count)
+	for i, p := range PtrToSlice[*T](ptr, count) {
+		values[i] = *p
+		ptrs[i] = &values[i]
+	}
+
+	return ptrs
+}
+
 // PtrToSlice returns a slice pointing to the provided uintptr data
 func PtrToSlice[T any](ptr uintptr, count int) []T {
 	return unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), count)
