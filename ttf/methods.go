@@ -305,7 +305,7 @@ func (text *Text) SubStringsForRange(offset int32, length int32) ([]*SubString, 
 	}
 	defer internal.Free(uintptr(unsafe.Pointer(ptr)))
 
-	return internal.ClonePtrSlice[*SubString](uintptr(unsafe.Pointer(ptr)), int(count)), nil
+	return internal.ClonePtrSliceValues[SubString](uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 // TTF_GetTextSubStringForPoint - Get the portion of a text string that is closest to a point.
