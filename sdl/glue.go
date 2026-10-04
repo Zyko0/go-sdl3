@@ -51,9 +51,51 @@ func (v Version) String() string {
 // Union type
 type GamepadBinding struct {
 	InputType  GamepadBindingType
-	InputData  [12]byte
+	inputData  [12]byte
 	OutputType GamepadBindingType
-	OutputData [12]byte
+	outputData [12]byte
+}
+
+type GamepadBindingInputAxis struct {
+	Axis    int32
+	AxisMin int32
+	AxisMax int32
+}
+
+type GamepadBindingInputHat struct {
+	Hat     int32
+	HatMask int32
+}
+
+type GamepadBindingOutputAxis struct {
+	Axis    GamepadAxis
+	AxisMin int32
+	AxisMax int32
+}
+
+// InputButton is only meaningful when InputType is GAMEPAD_BINDTYPE_BUTTON.
+func (b *GamepadBinding) InputButton() int32 {
+	return *(*int32)(unsafe.Pointer(&b.inputData))
+}
+
+// InputAxis is only meaningful when InputType is GAMEPAD_BINDTYPE_AXIS.
+func (b *GamepadBinding) InputAxis() GamepadBindingInputAxis {
+	return *(*GamepadBindingInputAxis)(unsafe.Pointer(&b.inputData))
+}
+
+// InputHat is only meaningful when InputType is GAMEPAD_BINDTYPE_HAT.
+func (b *GamepadBinding) InputHat() GamepadBindingInputHat {
+	return *(*GamepadBindingInputHat)(unsafe.Pointer(&b.inputData))
+}
+
+// OutputButton is only meaningful when OutputType is GAMEPAD_BINDTYPE_BUTTON.
+func (b *GamepadBinding) OutputButton() GamepadButton {
+	return *(*GamepadButton)(unsafe.Pointer(&b.outputData))
+}
+
+// OutputAxis is only meaningful when OutputType is GAMEPAD_BINDTYPE_AXIS.
+func (b *GamepadBinding) OutputAxis() GamepadBindingOutputAxis {
+	return *(*GamepadBindingOutputAxis)(unsafe.Pointer(&b.outputData))
 }
 
 // TODO: union type
