@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Surface) Pixels() []byte {
-	return internal.GetByteSliceFromJSPtr(js.ValueOf(s.pixels), int(s.H*s.Pitch))
+	return internal.GetByteSliceFromJSPtr(js.ValueOf(int32(s.pixels)), int(s.H*s.Pitch))
 }
 
 // Callbacks

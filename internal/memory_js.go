@@ -13,7 +13,7 @@ import (
 	"unsafe"
 )
 
-type Pointer = int32
+type Pointer int32
 
 var (
 	heapU8 js.Value

@@ -17,20 +17,11 @@ func NewProperties(properties map[string]any) (PropertiesID, error) {
 		var err error
 		switch value := anyValue.(type) {
 		case uintptr:
-			ok := props.SetPointerProperty(name, (*byte)(unsafe.Pointer(value)))
-			if !ok {
-				err = errors.New("failed to set pointer property")
-			}
-		case unsafe.Pointer:
-			ok := props.SetPointerProperty(name, (*byte)(unsafe.Pointer(value)))
-			if !ok {
-				err = errors.New("failed to set pointer property")
-			}
+			err = props.SetPointerProperty(name, Pointer(value))
+		case Pointer:
+			err = props.SetPointerProperty(name, value)
 		case *byte:
-			ok := props.SetPointerProperty(name, value)
-			if !ok {
-				err = errors.New("failed to set pointer property")
-			}
+			err = props.SetPointerProperty(name, Pointer(uintptr(unsafe.Pointer(value))))
 		case string:
 			err = props.SetStringProperty(name, value)
 		case int:

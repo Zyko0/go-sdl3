@@ -632,12 +632,11 @@ func initialize() {
 	}*/
 
 	iSetPointerProperty = func(props PropertiesID, name string, value uintptr) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
 		_name := internal.StringOnJSStack(name)
-		_value := internal.NewBigInt(value)
+		_value := int32(value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetPointerProperty",
 			_props,
@@ -745,12 +744,11 @@ func initialize() {
 	}
 
 	iGetPointerProperty = func(props PropertiesID, name string, default_value uintptr) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_props := int32(props)
 		_name := internal.StringOnJSStack(name)
-		_default_value := internal.NewBigInt(default_value)
+		_default_value := int32(default_value)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetPointerProperty",
 			_props,
@@ -758,7 +756,7 @@ func initialize() {
 			_default_value,
 		)
 
-		return uintptr(internal.GetInt64(ret))
+		return uintptr(ret.Int())
 	}
 
 	iGetStringProperty = func(props PropertiesID, name string, default_value string) string {

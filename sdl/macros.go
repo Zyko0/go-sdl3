@@ -90,6 +90,48 @@ const (
 	WINDOW_NOT_FOCUSABLE       WindowFlags = 0x0000000080000000 /**< window should not be focusable */
 )
 
+// SDL_GetWindowProperties - Get the properties associated with a window.
+// (https://wiki.libsdl.org/SDL3/SDL_GetWindowProperties)
+const (
+	PROP_WINDOW_SHAPE_POINTER                             = "SDL.window.shape"
+	PROP_WINDOW_HDR_ENABLED_BOOLEAN                       = "SDL.window.HDR_enabled"
+	PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT                     = "SDL.window.SDR_white_level"
+	PROP_WINDOW_HDR_HEADROOM_FLOAT                        = "SDL.window.HDR_headroom"
+	PROP_WINDOW_ANDROID_WINDOW_POINTER                    = "SDL.window.android.window"
+	PROP_WINDOW_ANDROID_SURFACE_POINTER                   = "SDL.window.android.surface"
+	PROP_WINDOW_UIKIT_WINDOW_POINTER                      = "SDL.window.uikit.window"
+	PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER               = "SDL.window.uikit.metal_view_tag"
+	PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER           = "SDL.window.uikit.opengl.framebuffer"
+	PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER          = "SDL.window.uikit.opengl.renderbuffer"
+	PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER   = "SDL.window.uikit.opengl.resolve_framebuffer"
+	PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER                = "SDL.window.kmsdrm.dev_index"
+	PROP_WINDOW_KMSDRM_DRM_FD_NUMBER                      = "SDL.window.kmsdrm.drm_fd"
+	PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER                 = "SDL.window.kmsdrm.gbm_dev"
+	PROP_WINDOW_COCOA_WINDOW_POINTER                      = "SDL.window.cocoa.window"
+	PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER               = "SDL.window.cocoa.metal_view_tag"
+	PROP_WINDOW_OPENVR_OVERLAY_ID_NUMBER                  = "SDL.window.openvr.overlay_id"
+	PROP_WINDOW_VIVANTE_DISPLAY_POINTER                   = "SDL.window.vivante.display"
+	PROP_WINDOW_VIVANTE_WINDOW_POINTER                    = "SDL.window.vivante.window"
+	PROP_WINDOW_VIVANTE_SURFACE_POINTER                   = "SDL.window.vivante.surface"
+	PROP_WINDOW_WIN32_HWND_POINTER                        = "SDL.window.win32.hwnd"
+	PROP_WINDOW_WIN32_HDC_POINTER                         = "SDL.window.win32.hdc"
+	PROP_WINDOW_WIN32_INSTANCE_POINTER                    = "SDL.window.win32.instance"
+	PROP_WINDOW_WAYLAND_DISPLAY_POINTER                   = "SDL.window.wayland.display"
+	PROP_WINDOW_WAYLAND_SURFACE_POINTER                   = "SDL.window.wayland.surface"
+	PROP_WINDOW_WAYLAND_VIEWPORT_POINTER                  = "SDL.window.wayland.viewport"
+	PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER                = "SDL.window.wayland.egl_window"
+	PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER               = "SDL.window.wayland.xdg_surface"
+	PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER              = "SDL.window.wayland.xdg_toplevel"
+	PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING = "SDL.window.wayland.xdg_toplevel_export_handle"
+	PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER                 = "SDL.window.wayland.xdg_popup"
+	PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER            = "SDL.window.wayland.xdg_positioner"
+	PROP_WINDOW_X11_DISPLAY_POINTER                       = "SDL.window.x11.display"
+	PROP_WINDOW_X11_SCREEN_NUMBER                         = "SDL.window.x11.screen"
+	PROP_WINDOW_X11_WINDOW_NUMBER                         = "SDL.window.x11.window"
+	PROP_WINDOW_EMSCRIPTEN_CANVAS_ID_STRING               = "SDL.window.emscripten.canvas_id"
+	PROP_WINDOW_EMSCRIPTEN_KEYBOARD_ELEMENT_STRING        = "SDL.window.emscripten.keyboard_element"
+)
+
 // SDL_WINDOWPOS_UNDEFINED_MASK - A magic value used with SDL_WINDOWPOS_UNDEFINED.
 // (https://wiki.libsdl.org/SDL3/SDL_WINDOWPOS_UNDEFINED_MASK)
 const WINDOWPOS_UNDEFINED_MASK uint32 = 0x1FFF0000

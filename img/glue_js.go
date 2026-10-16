@@ -10,9 +10,9 @@ import (
 )
 
 func (a *Animation) Frames() []*sdl.Surface {
-	return internal.GetObjectSliceFromJSPtr[sdl.Surface](js.ValueOf(a.frames), int(a.count))
+	return internal.GetObjectSliceFromJSPtr[sdl.Surface](js.ValueOf(int32(a.frames)), int(a.count))
 }
 
 func (a *Animation) Delays() []int32 {
-	return internal.GetNumericSliceFromJSPtr[int32](js.ValueOf(a.delays), int(a.count))
+	return internal.GetNumericSliceFromJSPtr[int32](js.ValueOf(int32(a.delays)), int(a.count))
 }

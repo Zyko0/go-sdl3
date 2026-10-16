@@ -5800,9 +5800,12 @@ func (props PropertiesID) SetPointerPropertyWithCleanup(name string, value *byte
 
 // SDL_SetPointerProperty - Set a pointer property in a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_SetPointerProperty)
-func (props PropertiesID) SetPointerProperty(name string, value *byte) bool {
-	panic("not implemented")
-	//return iSetPointerProperty(props, name, value)
+func (props PropertiesID) SetPointerProperty(name string, value Pointer) error {
+	if !iSetPointerProperty(props, name, uintptr(value)) {
+		return internal.LastErr()
+	}
+
+	return nil
 }
 
 // SDL_SetStringProperty - Set a string property in a group of properties.
@@ -5859,9 +5862,8 @@ func (props PropertiesID) PropertyType(name string) PropertyType {
 
 // SDL_GetPointerProperty - Get a pointer property from a group of properties.
 // (https://wiki.libsdl.org/SDL3/SDL_GetPointerProperty)
-func (props PropertiesID) PointerProperty(name string, default_value *byte) *byte {
-	panic("not implemented")
-	//return iGetPointerProperty(props, name, default_value)
+func (props PropertiesID) PointerProperty(name string) Pointer {
+	return Pointer(iGetPointerProperty(props, name, 0))
 }
 
 // SDL_GetStringProperty - Get a string property from a group of properties.
