@@ -1992,6 +1992,12 @@ func (device *GPUDevice) Driver() string {
 	return iGetGPUDeviceDriver(device)
 }
 
+// SDL_GetGPUDeviceProperties - Get the properties associated with a GPU device.
+// (https://wiki.libsdl.org/SDL3/SDL_GetGPUDeviceProperties)
+func (device *GPUDevice) Properties() PropertiesID {
+	return iGetGPUDeviceProperties(device)
+}
+
 // SDL_GetGPUShaderFormats - Returns the supported shader formats for this GPU context.
 // (https://wiki.libsdl.org/SDL3/SDL_GetGPUShaderFormats)
 func (device *GPUDevice) ShaderFormats() GPUShaderFormat {
