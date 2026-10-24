@@ -29,8 +29,6 @@ func Path() string {
 func LoadLibrary(path string) error {
 	var err error
 
-	runtime.LockOSThread()
-
 	_hnd_midi, err = puregogen.OpenLibrary(path)
 	if err != nil {
 		return err
