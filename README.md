@@ -45,6 +45,7 @@ defer binsdl.Load().Unload()
 ```go
 sdl.LoadLibrary(sdl.Path()) // "SDL3.dll", "libSDL3.so.0", "libSDL3.dylib"
 ```
+<ins>Threading:</ins> Importing `sdl` locks the main goroutine to the main OS thread (`runtime.LockOSThread` in `init`), as SDL expects video and event functions to be called from it.
 
 <ins>**Example:**</ins>
 > Note that you do not have to pass your update function to `sdl.RunLoop`, however doing so allows you to target `GOOS=js`/`GOARCH=wasm`, see [wasmsdl](cmd/wasmsdl/).
