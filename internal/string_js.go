@@ -13,6 +13,9 @@ func ClonePtrString(ptr uintptr) string {
 
 // PtrToString returns a string pointing to the provided ptr char data
 func PtrToString(ptr uintptr) string {
+	if addr, ok := lookupHeap(ptr); ok {
+		return heapString(addr)
+	}
 	p := *(**uint8)(unsafe.Pointer(&ptr))
 	if p == nil {
 		return ""
@@ -31,10 +34,17 @@ func PtrToString(ptr uintptr) string {
 
 // StringToNullablePtr returns a uintptr pointing to the provided string data
 func StringToNullablePtr(s string) *byte {
-	panic("not implemented on js")
+	if len(s) == 0 {
+		return nil
+	}
+	return StringToPtr(s)
 }
 
-// StringToPtr returns a uintptr pointing to the provided string data
+// StringToPtr returns a NUL-terminated copy of s whose heap mirror lives
+// as long as the copy.
 func StringToPtr(s string) *byte {
-	panic("not implemented on js")
+	b := pinnable[byte](len(s) + 1)
+	copy(b, s)
+	pin(b)
+	return &b[0]
 }

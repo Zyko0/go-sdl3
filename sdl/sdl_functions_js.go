@@ -3898,17 +3898,30 @@ func initialize() {
 	}
 
 	iCreateSurfaceFrom = func(width int32, height int32, format PixelFormat, pixels uintptr, pitch int32) *Surface {
-		_pixels := internal.NewBigInt(uint64(pixels))
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateSurfaceFrom",
-			width,
-			height,
-			int32(format),
-			_pixels,
-			pitch,
-		)
+		if pixels == 0 {
+			ret := js.Global().Get("Module").Call(
+				"_SDL_CreateSurfaceFrom",
+				width,
+				height,
+				int32(format),
+				0,
+				pitch,
+			)
+			return internal.NewObject[Surface](ret)
+		}
+		// C cannot alias Go memory, so the surface owns a copy of pixels.
+		surface := iCreateSurface(width, height, format)
+		if surface == nil {
+			return nil
+		}
+		src := unsafe.Slice(*(**byte)(unsafe.Pointer(&pixels)), int(height*pitch))
+		rowSize := min(pitch, surface.Pitch)
+		for y := range height {
+			row := src[y*pitch : y*pitch+rowSize]
+			internal.SetNumericSliceToJSPtr(js.ValueOf(int32(surface.pixels)+y*surface.Pitch), row)
+		}
 
-		return internal.NewObject[Surface](ret)
+		return surface
 	}
 
 	iDestroySurface = func(surface *Surface) {
@@ -4925,9 +4938,9 @@ func initialize() {
 			_a,
 		)
 		*r = uint8(internal.GetValue(_r, "i8").Int())
-		*g = uint8(internal.GetValue(_r, "i8").Int())
-		*b = uint8(internal.GetValue(_r, "i8").Int())
-		*a = uint8(internal.GetValue(_r, "i8").Int())
+		*g = uint8(internal.GetValue(_g, "i8").Int())
+		*b = uint8(internal.GetValue(_b, "i8").Int())
+		*a = uint8(internal.GetValue(_a, "i8").Int())
 
 		return internal.GetBool(ret)
 	}

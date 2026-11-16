@@ -1,3 +1,5 @@
+//go:build !js
+
 package internal
 
 import (
@@ -53,4 +55,18 @@ func BytePtrPtrToStrSlice(byteptrptr **byte, count uint32, noempty bool) []strin
 	}
 
 	return strslice
+}
+
+// ClonePtrStringSlice returns the count strings of the C string array ptr.
+func ClonePtrStringSlice(ptr uintptr, count int) []string {
+	if count <= 0 {
+		return nil
+	}
+
+	strs := make([]string, count)
+	for i, p := range PtrToSlice[uintptr](ptr, count) {
+		strs[i] = ClonePtrString(p)
+	}
+
+	return strs
 }
