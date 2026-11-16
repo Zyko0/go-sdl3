@@ -314,7 +314,7 @@ func GetEventFilter() EventFilter {
 // (https://wiki.libsdl.org/SDL3/SDL_AddEventWatch)
 func AddEventWatch(filter EventFilter) error {
 	if !iAddEventWatch(filter, 0) {
-		internal.LastErr()
+		return internal.LastErr()
 	}
 
 	return nil

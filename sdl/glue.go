@@ -160,7 +160,7 @@ type textEditingEvent struct {
 }
 
 func (e *Event) TextEditingEvent() *TextEditingEvent {
-	impl := (*textEditingEvent)(unsafe.Pointer(e))
+	impl := internal.CStructAt[textEditingEvent](unsafe.Pointer(e))
 	if impl == nil {
 		return nil
 	}
@@ -205,7 +205,7 @@ type TextEditingCandidatesEvent struct {
 }
 
 func (e *Event) TextEditingCandidatesEvent() *TextEditingCandidatesEvent {
-	impl := (*textEditingCandidatesEvent)(unsafe.Pointer(e))
+	impl := internal.CStructAt[textEditingCandidatesEvent](unsafe.Pointer(e))
 	if impl == nil {
 		return nil
 	}
@@ -232,7 +232,7 @@ type textInputEvent struct {
 }
 
 func (e *Event) TextInputEvent() *TextInputEvent {
-	impl := (*textInputEvent)(unsafe.Pointer(e))
+	impl := internal.CStructAt[textInputEvent](unsafe.Pointer(e))
 	if impl == nil {
 		return nil
 	}
@@ -443,7 +443,7 @@ type dropEvent struct {
 }
 
 func (e *Event) DropEvent() *DropEvent {
-	impl := (*dropEvent)(unsafe.Pointer(e))
+	impl := internal.CStructAt[dropEvent](unsafe.Pointer(e))
 	if impl == nil {
 		return nil
 	}
@@ -480,7 +480,7 @@ type clipboardEvent struct {
 }
 
 func (e *Event) ClipboardEvent() *ClipboardEvent {
-	impl := (*clipboardEvent)(unsafe.Pointer(e))
+	impl := internal.CStructAt[clipboardEvent](unsafe.Pointer(e))
 	if impl == nil {
 		return nil
 	}
@@ -600,7 +600,7 @@ func (md *MessageBoxData) as() *messageBoxData {
 		Title:       internal.StringToNullablePtr(md.Title),
 		Message:     internal.StringToNullablePtr(md.Message),
 		Numbuttons:  int32(len(buttons)),
-		Buttons:     unsafe.SliceData(buttons),
+		Buttons:     internal.SliceData(buttons),
 		ColorScheme: md.ColorScheme,
 	}
 }
@@ -635,7 +635,7 @@ func (info *GPUShaderCreateInfo) as() *gpuShaderCreateInfo {
 	}
 	return &gpuShaderCreateInfo{
 		CodeSize:           uintptr(len(info.Code)),
-		Code:               unsafe.SliceData(info.Code),
+		Code:               internal.SliceData(info.Code),
 		Entrypoint:         internal.StringToNullablePtr(info.Entrypoint),
 		Format:             info.Format,
 		Stage:              info.Stage,
@@ -684,7 +684,7 @@ func (info *GPUComputePipelineCreateInfo) as() *gpuComputePipelineCreateInfo {
 	}
 	return &gpuComputePipelineCreateInfo{
 		CodeSize:                    uintptr(len(info.Code)),
-		Code:                        unsafe.SliceData(info.Code),
+		Code:                        internal.SliceData(info.Code),
 		Entrypoint:                  internal.StringToNullablePtr(info.Entrypoint),
 		Format:                      info.Format,
 		NumSamplers:                 info.NumSamplers,
@@ -730,7 +730,7 @@ type gpuGraphicsPipelineTargetInfo struct {
 
 func (info *GPUGraphicsPipelineTargetInfo) as() gpuGraphicsPipelineTargetInfo {
 	return gpuGraphicsPipelineTargetInfo{
-		ColorTargetDescriptions: unsafe.SliceData(info.ColorTargetDescriptions),
+		ColorTargetDescriptions: internal.SliceData(info.ColorTargetDescriptions),
 		NumColorTargets:         uint32(len(info.ColorTargetDescriptions)),
 		DepthStencilFormat:      info.DepthStencilFormat,
 		HasDepthStencilTarget:   info.HasDepthStencilTarget,
@@ -764,9 +764,9 @@ type gpuVertexInputState struct {
 
 func (state *GPUVertexInputState) as() gpuVertexInputState {
 	return gpuVertexInputState{
-		VertexBufferDescriptions: unsafe.SliceData(state.VertexBufferDescriptions),
+		VertexBufferDescriptions: internal.SliceData(state.VertexBufferDescriptions),
 		NumVertexBuffers:         uint32(len(state.VertexBufferDescriptions)),
-		VertexAttributes:         unsafe.SliceData(state.VertexAttributes),
+		VertexAttributes:         internal.SliceData(state.VertexAttributes),
 		NumVertexAttributes:      uint32(len(state.VertexAttributes)),
 	}
 }
@@ -886,10 +886,10 @@ func (desc *VirtualJoystickDesc) as() *virtualJoystickDesc {
 	var sensors *VirtualJoystickSensorDesc
 	var nilPointer internal.Pointer
 	if len(desc.Touchpads) > 0 {
-		touchpads = unsafe.SliceData(desc.Touchpads)
+		touchpads = internal.SliceData(desc.Touchpads)
 	}
 	if len(desc.Sensors) > 0 {
-		sensors = unsafe.SliceData(desc.Sensors)
+		sensors = internal.SliceData(desc.Sensors)
 	}
 	return &virtualJoystickDesc{
 		Version:           desc.Version,
@@ -950,13 +950,13 @@ func (info *GPURenderStateCreateInfo) as() *gpuRenderStateCreateInfo {
 	var storageTextures **GPUTexture
 	var storageBuffers **GPUBuffer
 	if len(info.SamplerBindings) > 0 {
-		samplerBindings = unsafe.SliceData(info.SamplerBindings)
+		samplerBindings = internal.SliceData(info.SamplerBindings)
 	}
 	if len(info.StorageTextures) > 0 {
-		storageTextures = unsafe.SliceData(info.StorageTextures)
+		storageTextures = internal.SliceData(info.StorageTextures)
 	}
 	if len(info.StorageBuffers) > 0 {
-		storageBuffers = unsafe.SliceData(info.StorageBuffers)
+		storageBuffers = internal.SliceData(info.StorageBuffers)
 	}
 	return &gpuRenderStateCreateInfo{
 		FragmentShader:     info.FragmentShader,
