@@ -37,6 +37,20 @@ func PtrToSlice[T any](ptr uintptr, count int) []T {
 	return unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), count)
 }
 
+// ClonePtrStringSlice returns the count strings of the C string array ptr.
+func ClonePtrStringSlice(ptr uintptr, count int) []string {
+	if count <= 0 {
+		return nil
+	}
+
+	strs := make([]string, count)
+	for i, p := range PtrToSlice[uintptr](ptr, count) {
+		strs[i] = ClonePtrString(p)
+	}
+
+	return strs
+}
+
 // BytePtrPtrToStrSlice returns a slice of strings from the pointer and count of strings
 func BytePtrPtrToStrSlice(byteptrptr **byte, count uint32, noempty bool) []string {
 	pointer := *(*uintptr)(unsafe.Pointer(byteptrptr))

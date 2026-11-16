@@ -214,7 +214,7 @@ func (e *Event) TextEditingCandidatesEvent() *TextEditingCandidatesEvent {
 		Reserved:          impl.Reserved,
 		Timestamp:         impl.Timestamp,
 		WindowID:          impl.WindowID,
-		Candidates:        internal.ClonePtrSlice[string](uintptr(unsafe.Pointer(impl.Candidates)), int(impl.NumCandidates)),
+		Candidates:        internal.ClonePtrStringSlice(uintptr(unsafe.Pointer(impl.Candidates)), int(impl.NumCandidates)),
 		SelectedCandidate: impl.SelectedCandidate,
 		NumCandidates:     impl.NumCandidates,
 		Horizontal:        impl.Horizontal,
@@ -490,7 +490,7 @@ func (e *Event) ClipboardEvent() *ClipboardEvent {
 		Timestamp:    impl.Timestamp,
 		Owner:        impl.Owner,
 		NumMimeTypes: impl.NumMimeTypes,
-		MimeTypes:    internal.ClonePtrSlice[string](uintptr(unsafe.Pointer(impl.MimeTypes)), int(impl.NumMimeTypes)),
+		MimeTypes:    internal.ClonePtrStringSlice(uintptr(unsafe.Pointer(impl.MimeTypes)), int(impl.NumMimeTypes)),
 	}
 }
 

@@ -202,7 +202,7 @@ func (storage *Storage) GlobDirectory(path string, pattern string, flags GlobFla
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[string](ptr, int(count)), nil
+	return internal.ClonePtrStringSlice(ptr, int(count)), nil
 }
 
 // AudioDeviceID
