@@ -1982,8 +1982,9 @@ func initialize() {
 			panic("nil font")
 		}
 		_str := internal.StringOnJSStack(str)
-		_length := internal.NewBigInt(length)
-		_fg := int32(fg)
+		_length := int32(length)
+		// wasm32 passes SDL_Color by value as a pointer to a copy.
+		_fg := internal.CloneObjectToJSStack(&fg)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_RenderText_Solid",
 			_font,

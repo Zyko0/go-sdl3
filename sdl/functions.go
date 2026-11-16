@@ -314,7 +314,7 @@ func GetEventFilter() EventFilter {
 // (https://wiki.libsdl.org/SDL3/SDL_AddEventWatch)
 func AddEventWatch(filter EventFilter) error {
 	if !iAddEventWatch(filter, 0) {
-		internal.LastErr()
+		return internal.LastErr()
 	}
 
 	return nil
@@ -1616,7 +1616,7 @@ func GetGamepadMappings() ([]string, error) {
 	}
 	defer internal.Free(ptr)
 
-	return internal.ClonePtrSlice[string](ptr, int(count)), nil
+	return internal.ClonePtrStringSlice(ptr, int(count)), nil
 }
 
 // SDL_HasGamepad - Return whether a gamepad is currently connected.

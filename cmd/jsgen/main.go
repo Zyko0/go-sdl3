@@ -170,27 +170,17 @@ func main() {
 					for _, arg := range fn.Params {
 						switch {
 						case strings.HasPrefix(arg.Type, "*"):
+							// Registered SDL objects pass their heap address, Go
+							// values a C-layout stack copy read back after the call.
 							h.Add(
-								jen.Id("_"+arg.Name).Op(",").Id("ok").Op(":=").
-									Qual(internalQual, "GetJSPointer").
+								jen.Id("_"+arg.Name).Op(":=").
+									Qual(internalQual, "CloneObjectToJSStack").
 									Call(jen.Id(arg.Name)),
 							)
-							h.Add(jen.If(jen.Op("!").Id("ok")).BlockFunc(func(i *jen.Group) {
-								var n jen.Code
-								switch {
-								case strings.HasPrefix(arg.Type, "**"):
-									n = jen.Lit(4) // Size of int32
-								case arg.Type == "*string":
-
-								default:
-									n = jen.Int().Parens(jen.Qual("unsafe", "Sizeof").Call(
-										jen.Id("*" + arg.Name),
-									))
-								}
-								i.Id("_"+arg.Name).Op("=").
-									Qual(internalQual, "StackAlloc").
-									Call(n)
-							}))
+							h.Add(jen.If(jen.Id(arg.Name).Op("!=").Nil()).Block(
+								jen.Defer().Qual(internalQual, "CopyJSToObject").
+									Call(jen.Id(arg.Name), jen.Id("_"+arg.Name)),
+							))
 						default:
 							switch arg.Type {
 							case "bool":
@@ -199,7 +189,7 @@ func main() {
 										Qual(internalQual, "NewBoolean").
 										Call(jen.Id(arg.Name)),
 								)
-							case "int64", "uint64", "uintptr":
+							case "int64", "uint64":
 								h.Add(
 									jen.Id("_"+arg.Name).Op(":=").
 										Qual(internalQual, "NewBigInt").
@@ -248,11 +238,16 @@ func main() {
 							h.Return(jen.Id(fn.Return.Type).Parens(
 								jen.Id("ret").Op(".").Id("Int").Call()),
 							)
-						case "int64", "uint64", "uintptr":
-							h.Return(jen.Id(fn.Return.Type).Parens(jen.Qual(internalQual, "GetInt64").
-								Call(jen.Id("ret")),
+						case "int64":
+							h.Return(jen.Qual(internalQual, "GetInt64").Call(jen.Id("ret")))
+						case "uint64":
+							h.Return(jen.Qual(internalQual, "GetUint64").Call(jen.Id("ret")))
+						case "uintptr":
+							// size_t and void* both map to uintptr: pointer results
+							// must be wrapped with internal.NewUintptr by hand.
+							h.Return(jen.Id("uintptr").Parens(jen.Id("uint32").Parens(
+								jen.Id("ret").Op(".").Id("Int").Call()),
 							))
-							// TODO: ^
 						case "string":
 							h.Return(jen.Qual(internalQual, "UTF8JSToString").
 								Call(jen.Id("ret")),
