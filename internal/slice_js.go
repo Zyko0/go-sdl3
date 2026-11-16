@@ -60,17 +60,6 @@ func PtrToSlice[T any](ptr uintptr, count int) []T {
 	return unsafe.Slice(*(**T)(unsafe.Pointer(&ptr)), count)
 }
 
-// BytePtrPtrToStrSlice returns the count strings of the C string array
-// byteptrptr.
-func BytePtrPtrToStrSlice(byteptrptr **byte, count uint32, noempty bool) []string {
-	addr, ok := lookupHeap(uintptr(unsafe.Pointer(byteptrptr)))
-	if !ok {
-		panic("internal: string array was not returned by SDL")
-	}
-
-	return heapSlice[string](addr, int(count))
-}
-
 // ClonePtrStringSlice returns the count strings of the C string array ptr.
 func ClonePtrStringSlice(ptr uintptr, count int) []string {
 	return ClonePtrSlice[string](ptr, count)

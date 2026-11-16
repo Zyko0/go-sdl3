@@ -1913,7 +1913,7 @@ func Vulkan_GetInstanceExtensions() ([]string, error) {
 		return nil, internal.LastErr()
 	}
 	// Dont free pointer, its owned by sdl
-	return internal.BytePtrPtrToStrSlice(ptr, count, true), nil
+	return internal.ClonePtrStringSlice(uintptr(unsafe.Pointer(ptr)), int(count)), nil
 }
 
 // SDL_Vulkan_CreateSurface - Create a Vulkan rendering surface for a window.
