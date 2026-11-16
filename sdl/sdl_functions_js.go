@@ -3910,7 +3910,13 @@ func initialize() {
 			return internal.NewObject[Surface](ret)
 		}
 		// C cannot alias Go memory, so the surface owns a copy of pixels.
-		surface := iCreateSurface(width, height, format)
+		ret := js.Global().Get("Module").Call(
+			"_SDL_CreateSurface",
+			width,
+			height,
+			int32(format),
+		)
+		surface := internal.NewObject[Surface](ret)
 		if surface == nil {
 			return nil
 		}
