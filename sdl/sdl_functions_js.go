@@ -7706,23 +7706,33 @@ func initialize() {
 	}
 
 	iPeepEvents = func(events *Event, numevents int32, action EventAction, minType uint32, maxType uint32) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_events := events // TODO: input, output or array?
-		_numevents := numevents
-		_action := int32(action)
-		_minType := int32(minType)
-		_maxType := int32(maxType)
+		size := internal.CSizeof[Event]()
+		_events, free := js.Null(), func() {}
+		switch {
+		case action == ADDEVENT:
+			_events, free = internal.ClonePtrArrayToJSHeap(events, int(numevents))
+		case events != nil && numevents > 0:
+			// An output array may not fit on the stack.
+			_events = js.Global().Call("_malloc", int(numevents)*size)
+			free = func() { js.Global().Call("_free", _events) }
+		}
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_PeepEvents",
 			_events,
-			_numevents,
-			_action,
-			_minType,
-			_maxType,
+			numevents,
+			int32(action),
+			int32(minType),
+			int32(maxType),
 		)
-		return int32(ret.Int())
+		n := int32(ret.Int())
+		if action != ADDEVENT && events != nil {
+			out := unsafe.Slice(events, numevents)
+			for i := range int(max(n, 0)) {
+				internal.CopyJSToObject(&out[i], js.ValueOf(_events.Int()+i*size))
+			}
+		}
+		return n
 	}
 
 	iHasEvent = func(typ uint32) bool {
@@ -7777,36 +7787,38 @@ func initialize() {
 	}
 
 	iWaitEvent = func(event *Event) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_event := event // TODO: input, output or array?
+		_event := internal.CloneObjectToJSStack(event)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_WaitEvent",
 			_event,
 		)
+		if event != nil {
+			internal.CopyJSToObject(event, _event)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iWaitEventTimeout = func(event *Event, timeoutMS int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_event := event // TODO: input, output or array?
-		_timeoutMS := timeoutMS
+		_event := internal.CloneObjectToJSStack(event)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_WaitEventTimeout",
 			_event,
-			_timeoutMS,
+			timeoutMS,
 		)
+		if event != nil {
+			internal.CopyJSToObject(event, _event)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iPushEvent = func(event *Event) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_event := event // TODO: input, output or array?
+		_event := internal.CloneObjectToJSStack(event)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_PushEvent",
 			_event,
@@ -7814,73 +7826,20 @@ func initialize() {
 		return internal.GetBool(ret)
 	}
 
-	/*iSetEventFilter = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_filter := int32(filter)
-		_userdata := internal.NewBigInt(userdata)
-		js.Global().Get("Module").Call(
-			"_SDL_SetEventFilter",
-			_filter,
-			_userdata,
-		)
-	}*/
-
 	iGetEventFilter = func(filter *EventFilter, userdata *uintptr) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_filter := filter     // TODO: input, output or array?
-		_userdata := userdata // TODO: input, output or array?
+		_filter := internal.StackAlloc(4)
+		_userdata := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetEventFilter",
 			_filter,
 			_userdata,
 		)
+		*filter = EventFilter(uint32(internal.GetValue(_filter, "*").Int()))
+		*userdata = uintptr(uint32(internal.GetValue(_userdata, "*").Int()))
 		return internal.GetBool(ret)
 	}
-
-	/*iAddEventWatch = func(filter EventFilter, userdata uintptr) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_filter := int32(filter)
-		_userdata := internal.NewBigInt(userdata)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_AddEventWatch",
-			_filter,
-			_userdata,
-		)
-
-		return internal.GetBool(ret)
-	}*/
-
-	/*iRemoveEventWatch = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_filter := int32(filter)
-		_userdata := internal.NewBigInt(userdata)
-		js.Global().Get("Module").Call(
-			"_SDL_RemoveEventWatch",
-			_filter,
-			_userdata,
-		)
-	}*/
-
-	/*iFilterEvents = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_filter := int32(filter)
-		_userdata := internal.NewBigInt(userdata)
-		js.Global().Get("Module").Call(
-			"_SDL_FilterEvents",
-			_filter,
-			_userdata,
-		)
-	}*/
 
 	iSetEventEnabled = func(typ uint32, enabled bool) {
 		_typ := int32(typ)
@@ -7911,10 +7870,9 @@ func initialize() {
 	}
 
 	iGetWindowFromEvent = func(event *Event) *Window {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_event := event // TODO: input, output or array?
+		_event := internal.CloneObjectToJSStack(event)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowFromEvent",
 			_event,
@@ -12229,63 +12187,52 @@ func initialize() {
 	}
 
 	iSetEventFilter = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		_filter := filter     // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		js.Global().Get("Module").Call(
 			"_SDL_SetEventFilter",
-			_filter,
-			_userdata,
+			int32(filter),
+			int32(userdata),
 		)
 	}
 
 	iAddEventWatch = func(filter EventFilter, userdata uintptr) bool {
-		panic("not implemented on js")
-		_filter := filter     // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AddEventWatch",
-			_filter,
-			_userdata,
+			int32(filter),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iRemoveEventWatch = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		_filter := filter     // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		js.Global().Get("Module").Call(
 			"_SDL_RemoveEventWatch",
-			_filter,
-			_userdata,
+			int32(filter),
+			int32(userdata),
 		)
 	}
 
 	iFilterEvents = func(filter EventFilter, userdata uintptr) {
-		panic("not implemented on js")
-		_filter := filter     // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		js.Global().Get("Module").Call(
 			"_SDL_FilterEvents",
-			_filter,
-			_userdata,
+			int32(filter),
+			int32(userdata),
 		)
 	}
 
 	iGetEventDescription = func(event *Event, buf *byte, buflen int32) int32 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_event := event // TODO: input, output or array?
-		_buf := buf     // TODO: input, output or array?
-		_buflen := buflen
+		_event := internal.CloneObjectToJSStack(event)
+		_buf := internal.StackAlloc(int(buflen))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetEventDescription",
 			_event,
 			_buf,
-			_buflen,
+			buflen,
 		)
+		if buf != nil && buflen > 0 {
+			copy(unsafe.Slice(buf, buflen), internal.GetByteSliceFromJSPtr(_buf, int(buflen)))
+		}
 		return int32(ret.Int())
 	}
 
