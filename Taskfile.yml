@@ -86,7 +86,7 @@ tasks:
         requires:
             vars: [LIBRARY]
         cmds:
-            - go run ./cmd/jsgen --library {{.LIBRARY}} --dir {{.LIBRARY}}
+            - go run ./cmd/jsgen --library {{.LIBRARY}} --dir {{.LIBRARY}} --config cmd/internal/assets/config/{{.LIBRARY}}.json
 
     gen-doc:
         deps: [extract-wiki]

@@ -725,16 +725,7 @@ func initialize() {
 	}
 
 	iWaitThread = func(thread *Thread, status *int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_thread, _ := internal.GetJSPointer(thread)
-		_status := status // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_WaitThread",
-			_thread,
-			_status,
-		)
+		panic("not supported on js: the web build has no threads")
 	}
 
 	iGetThreadState = func(thread *Thread) ThreadState {
@@ -8044,17 +8035,7 @@ func initialize() {
 	}
 
 	iGPUSupportsShaderFormats = func(format_flags GPUShaderFormat, name *byte) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_format_flags := int32(format_flags)
-		_name := name // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_GPUSupportsShaderFormats",
-			_format_flags,
-			_name,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iGPUSupportsProperties = func(props PropertiesID) bool {
@@ -8067,19 +8048,7 @@ func initialize() {
 	}
 
 	iCreateGPUDevice = func(format_flags GPUShaderFormat, debug_mode bool, name *byte) *GPUDevice {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_format_flags := int32(format_flags)
-		_debug_mode := internal.NewBoolean(debug_mode)
-		_name := name // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUDevice",
-			_format_flags,
-			_debug_mode,
-			_name,
-		)
-		return internal.NewObject[GPUDevice](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCreateGPUDeviceWithProperties = func(props PropertiesID) *GPUDevice {
@@ -8135,47 +8104,15 @@ func initialize() {
 	}
 
 	iCreateGPUComputePipeline = func(device *GPUDevice, createinfo *gpuComputePipelineCreateInfo) *GPUComputePipeline {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUComputePipeline",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUComputePipeline](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCreateGPUGraphicsPipeline = func(device *GPUDevice, createinfo *gpuGraphicsPipelineCreateInfo) *GPUGraphicsPipeline {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUGraphicsPipeline",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUGraphicsPipeline](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCreateGPUSampler = func(device *GPUDevice, createinfo *GPUSamplerCreateInfo) *GPUSampler {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUSampler",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUSampler](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	/*iCreateGPUShader = func(device *GPUDevice, createinfo *GPUShaderCreateInfo) *GPUShader {
@@ -8203,45 +8140,15 @@ func initialize() {
 	}*/
 
 	iCreateGPUTexture = func(device *GPUDevice, createinfo *GPUTextureCreateInfo) *GPUTexture {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUTexture",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUTexture](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCreateGPUBuffer = func(device *GPUDevice, createinfo *GPUBufferCreateInfo) *GPUBuffer {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUBuffer",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUBuffer](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCreateGPUTransferBuffer = func(device *GPUDevice, createinfo *GPUTransferBufferCreateInfo) *GPUTransferBuffer {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUTransferBuffer",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUTransferBuffer](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSetGPUBufferName = func(device *GPUDevice, buffer *GPUBuffer, text string) {
@@ -8384,66 +8291,19 @@ func initialize() {
 	}
 
 	iPushGPUVertexUniformData = func(command_buffer *GPUCommandBuffer, slot_index uint32, data uintptr, length uint32) {
-		panic("not implemented on js")
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_slot_index := int32(slot_index)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_length := int32(length)
-		js.Global().Get("Module").Call(
-			"_SDL_PushGPUVertexUniformData",
-			_command_buffer,
-			_slot_index,
-			_data,
-			_length,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iPushGPUFragmentUniformData = func(command_buffer *GPUCommandBuffer, slot_index uint32, data uintptr, length uint32) {
-		panic("not implemented on js")
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_slot_index := int32(slot_index)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_length := int32(length)
-		js.Global().Get("Module").Call(
-			"_SDL_PushGPUFragmentUniformData",
-			_command_buffer,
-			_slot_index,
-			_data,
-			_length,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iPushGPUComputeUniformData = func(command_buffer *GPUCommandBuffer, slot_index uint32, data uintptr, length uint32) {
-		panic("not implemented on js")
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_slot_index := int32(slot_index)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_length := int32(length)
-		js.Global().Get("Module").Call(
-			"_SDL_PushGPUComputeUniformData",
-			_command_buffer,
-			_slot_index,
-			_data,
-			_length,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBeginGPURenderPass = func(command_buffer *GPUCommandBuffer, color_target_infos *GPUColorTargetInfo, num_color_targets uint32, depth_stencil_target_info *GPUDepthStencilTargetInfo) *GPURenderPass {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_color_target_infos := color_target_infos // TODO: input, output or array?
-		_num_color_targets := int32(num_color_targets)
-		_depth_stencil_target_info := depth_stencil_target_info // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_BeginGPURenderPass",
-			_command_buffer,
-			_color_target_infos,
-			_num_color_targets,
-			_depth_stencil_target_info,
-		)
-		return internal.NewObject[GPURenderPass](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUGraphicsPipeline = func(render_pass *GPURenderPass, graphics_pipeline *GPUGraphicsPipeline) {
@@ -8457,29 +8317,11 @@ func initialize() {
 	}
 
 	iSetGPUViewport = func(render_pass *GPURenderPass, viewport *GPUViewport) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_viewport := viewport // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_SetGPUViewport",
-			_render_pass,
-			_viewport,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSetGPUScissor = func(render_pass *GPURenderPass, scissor *Rect) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_scissor := scissor // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_SetGPUScissor",
-			_render_pass,
-			_scissor,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSetGPUStencilReference = func(render_pass *GPURenderPass, reference uint8) {
@@ -8493,137 +8335,35 @@ func initialize() {
 	}
 
 	iBindGPUVertexBuffers = func(render_pass *GPURenderPass, first_slot uint32, bindings *GPUBufferBinding, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_bindings := bindings // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUVertexBuffers",
-			_render_pass,
-			_first_slot,
-			_bindings,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUIndexBuffer = func(render_pass *GPURenderPass, binding *GPUBufferBinding, index_element_size GPUIndexElementSize) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_binding := binding // TODO: input, output or array?
-		_index_element_size := int32(index_element_size)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUIndexBuffer",
-			_render_pass,
-			_binding,
-			_index_element_size,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUVertexSamplers = func(render_pass *GPURenderPass, first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_texture_sampler_bindings := texture_sampler_bindings // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUVertexSamplers",
-			_render_pass,
-			_first_slot,
-			_texture_sampler_bindings,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUVertexStorageTextures = func(render_pass *GPURenderPass, first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_storage_textures := storage_textures // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUVertexStorageTextures",
-			_render_pass,
-			_first_slot,
-			_storage_textures,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUVertexStorageBuffers = func(render_pass *GPURenderPass, first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_storage_buffers := storage_buffers // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUVertexStorageBuffers",
-			_render_pass,
-			_first_slot,
-			_storage_buffers,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUFragmentSamplers = func(render_pass *GPURenderPass, first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_texture_sampler_bindings := texture_sampler_bindings // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUFragmentSamplers",
-			_render_pass,
-			_first_slot,
-			_texture_sampler_bindings,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUFragmentStorageTextures = func(render_pass *GPURenderPass, first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_storage_textures := storage_textures // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUFragmentStorageTextures",
-			_render_pass,
-			_first_slot,
-			_storage_textures,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUFragmentStorageBuffers = func(render_pass *GPURenderPass, first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_render_pass, _ := internal.GetJSPointer(render_pass)
-		_first_slot := int32(first_slot)
-		_storage_buffers := storage_buffers // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUFragmentStorageBuffers",
-			_render_pass,
-			_first_slot,
-			_storage_buffers,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iDrawGPUIndexedPrimitives = func(render_pass *GPURenderPass, num_indices uint32, num_instances uint32, first_index uint32, vertex_offset int32, first_instance uint32) {
@@ -8697,23 +8437,7 @@ func initialize() {
 	}
 
 	iBeginGPUComputePass = func(command_buffer *GPUCommandBuffer, storage_texture_bindings *GPUStorageTextureReadWriteBinding, num_storage_texture_bindings uint32, storage_buffer_bindings *GPUStorageBufferReadWriteBinding, num_storage_buffer_bindings uint32) *GPUComputePass {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_storage_texture_bindings := storage_texture_bindings // TODO: input, output or array?
-		_num_storage_texture_bindings := int32(num_storage_texture_bindings)
-		_storage_buffer_bindings := storage_buffer_bindings // TODO: input, output or array?
-		_num_storage_buffer_bindings := int32(num_storage_buffer_bindings)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_BeginGPUComputePass",
-			_command_buffer,
-			_storage_texture_bindings,
-			_num_storage_texture_bindings,
-			_storage_buffer_bindings,
-			_num_storage_buffer_bindings,
-		)
-		return internal.NewObject[GPUComputePass](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUComputePipeline = func(compute_pass *GPUComputePass, compute_pipeline *GPUComputePipeline) {
@@ -8727,54 +8451,15 @@ func initialize() {
 	}
 
 	iBindGPUComputeSamplers = func(compute_pass *GPUComputePass, first_slot uint32, texture_sampler_bindings *GPUTextureSamplerBinding, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_compute_pass, _ := internal.GetJSPointer(compute_pass)
-		_first_slot := int32(first_slot)
-		_texture_sampler_bindings := texture_sampler_bindings // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUComputeSamplers",
-			_compute_pass,
-			_first_slot,
-			_texture_sampler_bindings,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUComputeStorageTextures = func(compute_pass *GPUComputePass, first_slot uint32, storage_textures **GPUTexture, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_compute_pass, _ := internal.GetJSPointer(compute_pass)
-		_first_slot := int32(first_slot)
-		_storage_textures := storage_textures // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUComputeStorageTextures",
-			_compute_pass,
-			_first_slot,
-			_storage_textures,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iBindGPUComputeStorageBuffers = func(compute_pass *GPUComputePass, first_slot uint32, storage_buffers **GPUBuffer, num_bindings uint32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_compute_pass, _ := internal.GetJSPointer(compute_pass)
-		_first_slot := int32(first_slot)
-		_storage_buffers := storage_buffers // TODO: input, output or array?
-		_num_bindings := int32(num_bindings)
-		js.Global().Get("Module").Call(
-			"_SDL_BindGPUComputeStorageBuffers",
-			_compute_pass,
-			_first_slot,
-			_storage_buffers,
-			_num_bindings,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iDispatchGPUCompute = func(compute_pass *GPUComputePass, groupcount_x uint32, groupcount_y uint32, groupcount_z uint32) {
@@ -8812,17 +8497,7 @@ func initialize() {
 	}
 
 	iMapGPUTransferBuffer = func(device *GPUDevice, transfer_buffer *GPUTransferBuffer, cycle bool) uintptr {
-		panic("not implemented on js")
-		_device, _ := internal.GetJSPointer(device)
-		_transfer_buffer, _ := internal.GetJSPointer(transfer_buffer)
-		_cycle := internal.NewBoolean(cycle)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_MapGPUTransferBuffer",
-			_device,
-			_transfer_buffer,
-			_cycle,
-		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iUnmapGPUTransferBuffer = func(device *GPUDevice, transfer_buffer *GPUTransferBuffer) {
@@ -8845,109 +8520,27 @@ func initialize() {
 	}
 
 	iUploadToGPUTexture = func(copy_pass *GPUCopyPass, source *GPUTextureTransferInfo, destination *GPUTextureRegion, cycle bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		_cycle := internal.NewBoolean(cycle)
-		js.Global().Get("Module").Call(
-			"_SDL_UploadToGPUTexture",
-			_copy_pass,
-			_source,
-			_destination,
-			_cycle,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iUploadToGPUBuffer = func(copy_pass *GPUCopyPass, source *GPUTransferBufferLocation, destination *GPUBufferRegion, cycle bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		_cycle := internal.NewBoolean(cycle)
-		js.Global().Get("Module").Call(
-			"_SDL_UploadToGPUBuffer",
-			_copy_pass,
-			_source,
-			_destination,
-			_cycle,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCopyGPUTextureToTexture = func(copy_pass *GPUCopyPass, source *GPUTextureLocation, destination *GPUTextureLocation, w uint32, h uint32, d uint32, cycle bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		_w := int32(w)
-		_h := int32(h)
-		_d := int32(d)
-		_cycle := internal.NewBoolean(cycle)
-		js.Global().Get("Module").Call(
-			"_SDL_CopyGPUTextureToTexture",
-			_copy_pass,
-			_source,
-			_destination,
-			_w,
-			_h,
-			_d,
-			_cycle,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iCopyGPUBufferToBuffer = func(copy_pass *GPUCopyPass, source *GPUBufferLocation, destination *GPUBufferLocation, size uint32, cycle bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		_size := int32(size)
-		_cycle := internal.NewBoolean(cycle)
-		js.Global().Get("Module").Call(
-			"_SDL_CopyGPUBufferToBuffer",
-			_copy_pass,
-			_source,
-			_destination,
-			_size,
-			_cycle,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iDownloadFromGPUTexture = func(copy_pass *GPUCopyPass, source *GPUTextureRegion, destination *GPUTextureTransferInfo) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_DownloadFromGPUTexture",
-			_copy_pass,
-			_source,
-			_destination,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iDownloadFromGPUBuffer = func(copy_pass *GPUCopyPass, source *GPUBufferRegion, destination *GPUTransferBufferLocation) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_copy_pass, _ := internal.GetJSPointer(copy_pass)
-		_source := source           // TODO: input, output or array?
-		_destination := destination // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_DownloadFromGPUBuffer",
-			_copy_pass,
-			_source,
-			_destination,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iEndGPUCopyPass = func(copy_pass *GPUCopyPass) {
@@ -8969,16 +8562,7 @@ func initialize() {
 	}
 
 	iBlitGPUTexture = func(command_buffer *GPUCommandBuffer, info *GPUBlitInfo) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_info := info // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_BlitGPUTexture",
-			_command_buffer,
-			_info,
-		)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iWindowSupportsGPUSwapchainComposition = func(device *GPUDevice, window *Window, swapchain_composition GPUSwapchainComposition) bool {
@@ -9066,23 +8650,7 @@ func initialize() {
 	}
 
 	iAcquireGPUSwapchainTexture = func(command_buffer *GPUCommandBuffer, window *Window, swapchain_texture **GPUTexture, swapchain_texture_width *uint32, swapchain_texture_height *uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_window, _ := internal.GetJSPointer(window)
-		_swapchain_texture := swapchain_texture               // TODO: input, output or array?
-		_swapchain_texture_width := swapchain_texture_width   // TODO: input, output or array?
-		_swapchain_texture_height := swapchain_texture_height // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_AcquireGPUSwapchainTexture",
-			_command_buffer,
-			_window,
-			_swapchain_texture,
-			_swapchain_texture_width,
-			_swapchain_texture_height,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iWaitForGPUSwapchain = func(device *GPUDevice, window *Window) bool {
@@ -9097,23 +8665,7 @@ func initialize() {
 	}
 
 	iWaitAndAcquireGPUSwapchainTexture = func(command_buffer *GPUCommandBuffer, window *Window, swapchain_texture **GPUTexture, swapchain_texture_width *uint32, swapchain_texture_height *uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_command_buffer, _ := internal.GetJSPointer(command_buffer)
-		_window, _ := internal.GetJSPointer(window)
-		_swapchain_texture := swapchain_texture               // TODO: input, output or array?
-		_swapchain_texture_width := swapchain_texture_width   // TODO: input, output or array?
-		_swapchain_texture_height := swapchain_texture_height // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_WaitAndAcquireGPUSwapchainTexture",
-			_command_buffer,
-			_window,
-			_swapchain_texture,
-			_swapchain_texture_width,
-			_swapchain_texture_height,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSubmitGPUCommandBuffer = func(command_buffer *GPUCommandBuffer) bool {
@@ -9153,21 +8705,7 @@ func initialize() {
 	}
 
 	iWaitForGPUFences = func(device *GPUDevice, wait_all bool, fences **GPUFence, num_fences uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_wait_all := internal.NewBoolean(wait_all)
-		_fences := fences // TODO: input, output or array?
-		_num_fences := int32(num_fences)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_WaitForGPUFences",
-			_device,
-			_wait_all,
-			_fences,
-			_num_fences,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iQueryGPUFence = func(device *GPUDevice, fence *GPUFence) bool {
@@ -9378,47 +8916,15 @@ func initialize() {
 	}
 
 	iHapticEffectSupported = func(haptic *Haptic, effect *HapticEffect) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_haptic, _ := internal.GetJSPointer(haptic)
-		_effect := effect // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_HapticEffectSupported",
-			_haptic,
-			_effect,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no haptic devices")
 	}
 
 	iCreateHapticEffect = func(haptic *Haptic, effect *HapticEffect) HapticEffectID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_haptic, _ := internal.GetJSPointer(haptic)
-		_effect := effect // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateHapticEffect",
-			_haptic,
-			_effect,
-		)
-		return HapticEffectID(ret.Int())
+		panic("not supported on js: the web build has no haptic devices")
 	}
 
 	iUpdateHapticEffect = func(haptic *Haptic, effect HapticEffectID, data *HapticEffect) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_haptic, _ := internal.GetJSPointer(haptic)
-		_effect := int32(effect)
-		_data := data // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_UpdateHapticEffect",
-			_haptic,
-			_effect,
-			_data,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no haptic devices")
 	}
 
 	iRunHapticEffect = func(haptic *Haptic, effect HapticEffectID, iterations uint32) bool {
@@ -10050,32 +9556,15 @@ func initialize() {
 	}
 
 	iMetal_CreateView = func(window *Window) MetalView {
-		panic("not implemented on js")
-		_window, _ := internal.GetJSPointer(window)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Metal_CreateView",
-			_window,
-		)
-		return MetalView(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: Metal is only available on Apple platforms")
 	}
 
 	iMetal_DestroyView = func(view MetalView) {
-		panic("not implemented on js")
-		_view := view // TODO: size, buffer, userdata or callback?
-		js.Global().Get("Module").Call(
-			"_SDL_Metal_DestroyView",
-			_view,
-		)
+		panic("not supported on js: Metal is only available on Apple platforms")
 	}
 
 	iMetal_GetLayer = func(view MetalView) uintptr {
-		panic("not implemented on js")
-		_view := view // TODO: size, buffer, userdata or callback?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Metal_GetLayer",
-			_view,
-		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: Metal is only available on Apple platforms")
 	}
 
 	iOpenURL = func(url string) bool {
@@ -10128,19 +9617,7 @@ func initialize() {
 	}
 
 	iReadProcess = func(process *Process, datasize *uintptr, exitcode *int32) uintptr {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_process, _ := internal.GetJSPointer(process)
-		_datasize := datasize // TODO: input, output or array?
-		_exitcode := exitcode // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_ReadProcess",
-			_process,
-			_datasize,
-			_exitcode,
-		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: browsers cannot spawn processes")
 	}
 
 	iGetProcessInput = func(process *Process) *IOStream {
@@ -10173,19 +9650,7 @@ func initialize() {
 	}
 
 	iWaitProcess = func(process *Process, block bool, exitcode *int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_process, _ := internal.GetJSPointer(process)
-		_block := internal.NewBoolean(block)
-		_exitcode := exitcode // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_WaitProcess",
-			_process,
-			_block,
-			_exitcode,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: browsers cannot spawn processes")
 	}
 
 	iDestroyProcess = func(process *Process) {
@@ -12193,11 +11658,7 @@ func initialize() {
 	}
 
 	iVulkan_GetVkGetInstanceProcAddr = func() FunctionPointer {
-		panic("not implemented on js")
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Vulkan_GetVkGetInstanceProcAddr",
-		)
-		return FunctionPointer(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: the web build has no Vulkan support")
 	}
 
 	iVulkan_UnloadLibrary = func() {
@@ -12207,60 +11668,19 @@ func initialize() {
 	}
 
 	iVulkan_GetInstanceExtensions = func(count *uint32) **byte {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Vulkan_GetInstanceExtensions",
-			_count,
-		)
-		return internal.NewObject[*byte](ret) // TODO: single value or array?
+		panic("not supported on js: the web build has no Vulkan support")
 	}
 
 	iVulkan_CreateSurface = func(window *Window, instance VkInstance, allocator *VkAllocationCallbacks, surface *VkSurfaceKHR) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_window, _ := internal.GetJSPointer(window)
-		_instance := instance // TODO: size, buffer, userdata or callback?
-		_allocator, _ := internal.GetJSPointer(allocator)
-		_surface := surface // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Vulkan_CreateSurface",
-			_window,
-			_instance,
-			_allocator,
-			_surface,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no Vulkan support")
 	}
 
 	iVulkan_DestroySurface = func(instance VkInstance, surface VkSurfaceKHR, allocator *VkAllocationCallbacks) {
-		panic("not implemented on js")
-		_instance := instance // TODO: size, buffer, userdata or callback?
-		_surface := surface   // TODO: size, buffer, userdata or callback?
-		_allocator, _ := internal.GetJSPointer(allocator)
-		js.Global().Get("Module").Call(
-			"_SDL_Vulkan_DestroySurface",
-			_instance,
-			_surface,
-			_allocator,
-		)
+		panic("not supported on js: the web build has no Vulkan support")
 	}
 
 	iVulkan_GetPresentationSupport = func(instance VkInstance, physicalDevice VkPhysicalDevice, queueFamilyIndex uint32) bool {
-		panic("not implemented on js")
-		_instance := instance             // TODO: size, buffer, userdata or callback?
-		_physicalDevice := physicalDevice // TODO: size, buffer, userdata or callback?
-		_queueFamilyIndex := int32(queueFamilyIndex)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_Vulkan_GetPresentationSupport",
-			_instance,
-			_physicalDevice,
-			_queueFamilyIndex,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no Vulkan support")
 	}
 
 	iAddAtomicU32 = func(a *AtomicU32, v int32) uint32 {
@@ -12650,37 +12070,11 @@ func initialize() {
 	}
 
 	iShowOpenFolderDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, default_location *byte, allow_many bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
-		_window, _ := internal.GetJSPointer(window)
-		_default_location := default_location // TODO: input, output or array?
-		_allow_many := internal.NewBoolean(allow_many)
-		js.Global().Get("Module").Call(
-			"_SDL_ShowOpenFolderDialog",
-			_callback,
-			_userdata,
-			_window,
-			_default_location,
-			_allow_many,
-		)
+		panic("not supported on js: the web build has no file dialog driver")
 	}
 
 	iShowFileDialogWithProperties = func(typ FileDialogType, callback DialogFileCallback, userdata uintptr, props PropertiesID) {
-		panic("not implemented on js")
-		_typ := int32(typ)
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
-		_props := int32(props)
-		js.Global().Get("Module").Call(
-			"_SDL_ShowFileDialogWithProperties",
-			_typ,
-			_callback,
-			_userdata,
-			_props,
-		)
+		panic("not supported on js: the web build has no file dialog driver")
 	}
 
 	iGUIDToString = func(guid GUID, pszGUID string, cbGUID int32) {
@@ -12998,17 +12392,7 @@ func initialize() {
 	}
 
 	iCreateProcess = func(args *string, pipe_stdio bool) *Process {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_args := args // TODO: input, output or array?
-		_pipe_stdio := internal.NewBoolean(pipe_stdio)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateProcess",
-			_args,
-			_pipe_stdio,
-		)
-		return internal.NewObject[Process](ret)
+		panic("not supported on js: browsers cannot spawn processes")
 	}
 
 	iCreateGPURenderer = func(device *GPUDevice, window *Window) *Renderer {
@@ -13229,17 +12613,7 @@ func initialize() {
 	}
 
 	iCreateTray = func(icon *Surface, tooltip *byte) *Tray {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_icon, _ := internal.GetJSPointer(icon)
-		_tooltip := tooltip // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateTray",
-			_icon,
-			_tooltip,
-		)
-		return internal.NewObject[Tray](ret)
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iSetTrayIcon = func(tray *Tray, icon *Surface) {
@@ -13253,16 +12627,7 @@ func initialize() {
 	}
 
 	iSetTrayTooltip = func(tray *Tray, tooltip *byte) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_tray, _ := internal.GetJSPointer(tray)
-		_tooltip := tooltip // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_SetTrayTooltip",
-			_tray,
-			_tooltip,
-		)
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iCreateTrayMenu = func(tray *Tray) *TrayMenu {
@@ -13302,17 +12667,7 @@ func initialize() {
 	}
 
 	iGetTrayEntries = func(menu *TrayMenu, count *int32) **TrayEntry {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_menu, _ := internal.GetJSPointer(menu)
-		_count := count // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_GetTrayEntries",
-			_menu,
-			_count,
-		)
-		return internal.NewObject[*TrayEntry](ret) // TODO: single value or array?
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iRemoveTrayEntry = func(entry *TrayEntry) {
@@ -13324,34 +12679,11 @@ func initialize() {
 	}
 
 	iInsertTrayEntryAt = func(menu *TrayMenu, pos int32, label *byte, flags TrayEntryFlags) *TrayEntry {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_menu, _ := internal.GetJSPointer(menu)
-		_pos := pos
-		_label := label // TODO: input, output or array?
-		_flags := int32(flags)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_InsertTrayEntryAt",
-			_menu,
-			_pos,
-			_label,
-			_flags,
-		)
-		return internal.NewObject[TrayEntry](ret)
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iSetTrayEntryLabel = func(entry *TrayEntry, label *byte) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_entry, _ := internal.GetJSPointer(entry)
-		_label := label // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_SetTrayEntryLabel",
-			_entry,
-			_label,
-		)
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iGetTrayEntryLabel = func(entry *TrayEntry) string {
@@ -13402,16 +12734,7 @@ func initialize() {
 	}
 
 	iSetTrayEntryCallback = func(entry *TrayEntry, callback TrayCallback, userdata uintptr) {
-		panic("not implemented on js")
-		_entry, _ := internal.GetJSPointer(entry)
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
-		js.Global().Get("Module").Call(
-			"_SDL_SetTrayEntryCallback",
-			_entry,
-			_callback,
-			_userdata,
-		)
+		panic("not supported on js: browsers have no system tray")
 	}
 
 	iClickTrayEntry = func(entry *TrayEntry) {
@@ -13472,18 +12795,7 @@ func initialize() {
 	}
 
 	iCreateGPUShader = func(device *GPUDevice, createinfo *gpuShaderCreateInfo) *GPUShader {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, _ := internal.GetJSPointer(device)
-		_createinfo := createinfo // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPUShader",
-			_device,
-			_createinfo,
-		)
-		return internal.NewObject[GPUShader](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSetClipboardData = func(callback ClipboardDataCallback, cleanup ClipboardCleanupCallback, userdata uintptr, mime_types **byte, num_mime_types uintptr) bool {
@@ -13508,49 +12820,11 @@ func initialize() {
 	}
 
 	iShowOpenFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte, allow_many bool) {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
-		_window, _ := internal.GetJSPointer(window)
-		_filters := filters // TODO: input, output or array?
-		_num_filters := num_filters
-		_default_location := default_location // TODO: input, output or array?
-		_allow_many := internal.NewBoolean(allow_many)
-		js.Global().Get("Module").Call(
-			"_SDL_ShowOpenFileDialog",
-			_callback,
-			_userdata,
-			_window,
-			_filters,
-			_num_filters,
-			_default_location,
-			_allow_many,
-		)
+		panic("not supported on js: the web build has no file dialog driver")
 	}
 
 	iShowSaveFileDialog = func(callback DialogFileCallback, userdata uintptr, window *Window, filters *dialogFileFilter, num_filters int32, default_location *byte) {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
-		_window, _ := internal.GetJSPointer(window)
-		_filters := filters // TODO: input, output or array?
-		_num_filters := num_filters
-		_default_location := default_location // TODO: input, output or array?
-		js.Global().Get("Module").Call(
-			"_SDL_ShowSaveFileDialog",
-			_callback,
-			_userdata,
-			_window,
-			_filters,
-			_num_filters,
-			_default_location,
-		)
+		panic("not supported on js: the web build has no file dialog driver")
 	}
 
 	iCreateGPURenderState = func(renderer *Renderer, info *gpuRenderStateCreateInfo) *GPURenderState {

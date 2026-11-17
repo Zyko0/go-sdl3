@@ -9,6 +9,10 @@
 // strings and pointers to SDL-allocated objects. Other stubs keep panicking,
 // with TODO markers on the arguments that need a decision.
 //
+// A stub listed in the js_unsupported map of the library config panics with
+// "not supported on js: <reason>" instead, and stays a stub: removing it from
+// the map brings the skeleton back.
+//
 // A generated working body has no panic, so later runs keep it like a
 // hand-written one: restore the file from git to regenerate it.
 package main
@@ -28,9 +32,14 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/Zyko0/go-sdl3/cmd/internal/assets"
 )
 
-const stubPanic = "not implemented on js"
+const (
+	stubPanic        = "not implemented on js"
+	unsupportedPanic = "not supported on js: "
+)
 
 // sdlAllocated lists non-opaque structs that only SDL allocates, so that a
 // Go pointer to one always comes from internal.NewObject.
@@ -76,6 +85,9 @@ type function struct {
 	// they encode the native ABI, e.g. SDL_Color passed by value as a
 	// uint32, which does not hold on wasm32.
 	Manual bool
+	// Unsupported is the reason the web build cannot run the function, from
+	// the js_unsupported config map.
+	Unsupported string
 }
 
 func (f *function) mechanical() bool {
@@ -102,10 +114,16 @@ func (k kind) mechanical() bool {
 }
 
 func main() {
-	var libraryName, dir string
+	var libraryName, dir, configPath string
 	flag.StringVar(&dir, "dir", "", "package directory to update (e.g: sdl)")
 	flag.StringVar(&libraryName, "library", "", "library name (e.g: sdl)")
+	flag.StringVar(&configPath, "config", "", "path to the library config.json file")
 	flag.Parse()
+
+	cfg, err := assets.LoadConfig(configPath)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	prefix, ok := map[string]string{
 		"sdl":   "SDL_",
@@ -132,6 +150,18 @@ func main() {
 			continue
 		}
 		funcs = append(funcs, loadFunctions(path, prefix, res, name == "_functions_ex.go")...)
+	}
+	listed := map[string]bool{}
+	for _, f := range funcs {
+		if reason, ok := cfg.JSUnsupported[f.Symbol]; ok {
+			f.Unsupported = reason
+			listed[f.Symbol] = true
+		}
+	}
+	for symbol := range cfg.JSUnsupported {
+		if !listed[symbol] {
+			log.Printf("%s: js_unsupported lists unknown function %s", configPath, symbol)
+		}
 	}
 
 	path := filepath.Join(dir, libraryName+"_functions_js.go")
@@ -323,7 +353,11 @@ func isStub(lit *ast.FuncLit) bool {
 		return false
 	}
 	lit2, ok := call.Args[0].(*ast.BasicLit)
-	return ok && lit2.Value == strconv.Quote(stubPanic)
+	if !ok {
+		return false
+	}
+	msg, err := strconv.Unquote(lit2.Value)
+	return err == nil && (msg == stubPanic || strings.HasPrefix(msg, unsupportedPanic))
 }
 
 type edit struct {
@@ -353,14 +387,17 @@ func merge(path string, src []byte, funcs []*function) ([]byte, error) {
 		byName[f.Name] = f
 	}
 	var (
-		edits                                 []edit
-		seen                                  = map[string]bool{}
-		kept, working, stubs, added, orphaned int
+		edits                                              []edit
+		seen                                               = map[string]bool{}
+		kept, working, stubs, unsupported, added, orphaned int
 	)
 	count := func(f *function) {
-		if f.mechanical() {
+		switch {
+		case f.Unsupported != "":
+			unsupported++
+		case f.mechanical():
 			working++
-		} else {
+		default:
 			stubs++
 		}
 	}
@@ -383,6 +420,9 @@ func merge(path string, src []byte, funcs []*function) ([]byte, error) {
 		seen[f.Name] = true
 		if !isStub(lit) {
 			kept++
+			if f.Unsupported != "" {
+				log.Printf("%s: %s is listed in js_unsupported but has a body, kept as is", path, f.Name)
+			}
 			continue
 		}
 		count(f)
@@ -411,8 +451,8 @@ func merge(path string, src []byte, funcs []*function) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("%s: format: %w", path, err)
 	}
-	log.Printf("%s: %d hand-written kept, %d generated (%d new): %d working, %d stubs, %d orphans",
-		path, kept, working+stubs, added, working, stubs, orphaned)
+	log.Printf("%s: %d hand-written kept, %d generated (%d new): %d working, %d stubs, %d unsupported, %d orphans",
+		path, kept, working+stubs+unsupported, added, working, stubs, unsupported, orphaned)
 	return formatted, nil
 }
 
@@ -509,6 +549,11 @@ func generate(f *function) string {
 		result = " " + f.Result.Type
 	}
 	w("%s = func(%s)%s {", f.Name, strings.Join(params, ", "), result)
+	if f.Unsupported != "" {
+		w("panic(%q)", unsupportedPanic+f.Unsupported)
+		w("}")
+		return strings.TrimSuffix(b.String(), "\n")
+	}
 	if !f.mechanical() {
 		w("panic(%q)", stubPanic)
 		if f.Manual {
