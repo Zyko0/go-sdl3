@@ -2559,11 +2559,10 @@ func initialize() {
 	}
 
 	iHasRectIntersection = func(A *Rect, B *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A // TODO: input, output or array?
-		_B := B // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasRectIntersection",
 			_A,
@@ -2573,64 +2572,69 @@ func initialize() {
 	}
 
 	iGetRectIntersection = func(A *Rect, B *Rect, result *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A           // TODO: input, output or array?
-		_B := B           // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectIntersection",
 			_A,
 			_B,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectUnion = func(A *Rect, B *Rect, result *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A           // TODO: input, output or array?
-		_B := B           // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectUnion",
 			_A,
 			_B,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectEnclosingPoints = func(points *Point, count int32, clip *Rect, result *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_points := points // TODO: input, output or array?
-		_count := count
-		_clip := clip     // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_points, free := internal.ClonePtrArrayToJSHeap(points, int(count))
+		defer free()
+		_clip := internal.CloneObjectToJSStack(clip)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectEnclosingPoints",
 			_points,
-			_count,
+			count,
 			_clip,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectAndLineIntersection = func(rect *Rect, X1 *int32, Y1 *int32, X2 *int32, Y2 *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_rect := rect // TODO: input, output or array?
-		_X1 := X1     // TODO: input, output or array?
-		_Y1 := Y1     // TODO: input, output or array?
-		_X2 := X2     // TODO: input, output or array?
-		_Y2 := Y2     // TODO: input, output or array?
+		_rect := internal.CloneObjectToJSStack(rect)
+		_X1 := internal.CloneObjectToJSStack(X1)
+		_Y1 := internal.CloneObjectToJSStack(Y1)
+		_X2 := internal.CloneObjectToJSStack(X2)
+		_Y2 := internal.CloneObjectToJSStack(Y2)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectAndLineIntersection",
 			_rect,
@@ -2639,15 +2643,26 @@ func initialize() {
 			_X2,
 			_Y2,
 		)
+		if X1 != nil {
+			internal.CopyJSToObject(X1, _X1)
+		}
+		if Y1 != nil {
+			internal.CopyJSToObject(Y1, _Y1)
+		}
+		if X2 != nil {
+			internal.CopyJSToObject(X2, _X2)
+		}
+		if Y2 != nil {
+			internal.CopyJSToObject(Y2, _Y2)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iHasRectIntersectionFloat = func(A *FRect, B *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A // TODO: input, output or array?
-		_B := B // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_HasRectIntersectionFloat",
 			_A,
@@ -2657,64 +2672,69 @@ func initialize() {
 	}
 
 	iGetRectIntersectionFloat = func(A *FRect, B *FRect, result *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A           // TODO: input, output or array?
-		_B := B           // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectIntersectionFloat",
 			_A,
 			_B,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectUnionFloat = func(A *FRect, B *FRect, result *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_A := A           // TODO: input, output or array?
-		_B := B           // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_A := internal.CloneObjectToJSStack(A)
+		_B := internal.CloneObjectToJSStack(B)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectUnionFloat",
 			_A,
 			_B,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectEnclosingPointsFloat = func(points *FPoint, count int32, clip *FRect, result *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_points := points // TODO: input, output or array?
-		_count := count
-		_clip := clip     // TODO: input, output or array?
-		_result := result // TODO: input, output or array?
+		_points, free := internal.ClonePtrArrayToJSHeap(points, int(count))
+		defer free()
+		_clip := internal.CloneObjectToJSStack(clip)
+		_result := internal.CloneObjectToJSStack(result)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectEnclosingPointsFloat",
 			_points,
-			_count,
+			count,
 			_clip,
 			_result,
 		)
+		if result != nil {
+			internal.CopyJSToObject(result, _result)
+		}
 		return internal.GetBool(ret)
 	}
 
 	iGetRectAndLineIntersectionFloat = func(rect *FRect, X1 *float32, Y1 *float32, X2 *float32, Y2 *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_rect := rect // TODO: input, output or array?
-		_X1 := X1     // TODO: input, output or array?
-		_Y1 := Y1     // TODO: input, output or array?
-		_X2 := X2     // TODO: input, output or array?
-		_Y2 := Y2     // TODO: input, output or array?
+		_rect := internal.CloneObjectToJSStack(rect)
+		_X1 := internal.CloneObjectToJSStack(X1)
+		_Y1 := internal.CloneObjectToJSStack(Y1)
+		_X2 := internal.CloneObjectToJSStack(X2)
+		_Y2 := internal.CloneObjectToJSStack(Y2)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRectAndLineIntersectionFloat",
 			_rect,
@@ -2723,6 +2743,18 @@ func initialize() {
 			_X2,
 			_Y2,
 		)
+		if X1 != nil {
+			internal.CopyJSToObject(X1, _X1)
+		}
+		if Y1 != nil {
+			internal.CopyJSToObject(Y1, _Y1)
+		}
+		if X2 != nil {
+			internal.CopyJSToObject(X2, _X2)
+		}
+		if Y2 != nil {
+			internal.CopyJSToObject(Y2, _Y2)
+		}
 		return internal.GetBool(ret)
 	}
 
