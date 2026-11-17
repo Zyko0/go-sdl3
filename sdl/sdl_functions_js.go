@@ -4199,15 +4199,15 @@ func initialize() {
 	}
 
 	iGetDisplays = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDisplays",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetPrimaryDisplay = func() DisplayID {
@@ -4236,30 +4236,30 @@ func initialize() {
 	}
 
 	iGetDisplayBounds = func(displayID DisplayID, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_displayID := int32(displayID)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDisplayBounds",
 			_displayID,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
 	iGetDisplayUsableBounds = func(displayID DisplayID, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_displayID := int32(displayID)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDisplayUsableBounds",
 			_displayID,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
@@ -4291,21 +4291,20 @@ func initialize() {
 	}
 
 	iGetFullscreenDisplayModes = func(displayID DisplayID, count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_displayID := int32(displayID)
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetFullscreenDisplayModes",
 			_displayID,
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetClosestFullscreenDisplayMode = func(displayID DisplayID, w int32, h int32, refresh_rate float32, include_high_density_modes bool, closest *DisplayMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_displayID := int32(displayID)
@@ -4313,7 +4312,7 @@ func initialize() {
 		_h := h
 		_refresh_rate := refresh_rate
 		_include_high_density_modes := internal.NewBoolean(include_high_density_modes)
-		_closest := closest // TODO: input, output or array?
+		_closest := internal.StackAlloc(internal.CSizeof[DisplayMode]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetClosestFullscreenDisplayMode",
 			_displayID,
@@ -4323,34 +4322,32 @@ func initialize() {
 			_include_high_density_modes,
 			_closest,
 		)
+		internal.CopyJSToObject(closest, _closest)
 		return internal.GetBool(ret)
 	}
 
 	iGetDesktopDisplayMode = func(displayID DisplayID) *DisplayMode {
-		panic("not implemented on js")
 		_displayID := int32(displayID)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDesktopDisplayMode",
 			_displayID,
 		)
-		return internal.NewObject[DisplayMode](ret) // TODO: single value or array?
+		return internal.NewObject[DisplayMode](ret)
 	}
 
 	iGetCurrentDisplayMode = func(displayID DisplayID) *DisplayMode {
-		panic("not implemented on js")
 		_displayID := int32(displayID)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCurrentDisplayMode",
 			_displayID,
 		)
-		return internal.NewObject[DisplayMode](ret) // TODO: single value or array?
+		return internal.NewObject[DisplayMode](ret)
 	}
 
 	iGetDisplayForPoint = func(point *Point) DisplayID {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_point := point // TODO: input, output or array?
+		_point := internal.CloneObjectToJSStack(point)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDisplayForPoint",
 			_point,
@@ -4359,10 +4356,9 @@ func initialize() {
 	}
 
 	iGetDisplayForRect = func(rect *Rect) DisplayID {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDisplayForRect",
 			_rect,
@@ -4398,11 +4394,10 @@ func initialize() {
 	}
 
 	iSetWindowFullscreenMode = func(window *Window, mode *DisplayMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_mode := mode // TODO: input, output or array?
+		_mode := internal.CloneObjectToJSStack(mode)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetWindowFullscreenMode",
 			_window,
@@ -4412,27 +4407,26 @@ func initialize() {
 	}
 
 	iGetWindowFullscreenMode = func(window *Window) *DisplayMode {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowFullscreenMode",
 			_window,
 		)
-		return internal.NewObject[DisplayMode](ret) // TODO: single value or array?
+		return internal.NewObject[DisplayMode](ret)
 	}
 
 	iGetWindowICCProfile = func(window *Window, size *uintptr) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_size := size // TODO: input, output or array?
+		_size := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowICCProfile",
 			_window,
 			_size,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*size = uintptr(uint32(internal.GetValue(_size, "i32").Int()))
+		return internal.NewUintptr(ret)
 	}
 
 	iGetWindowPixelFormat = func(window *Window) PixelFormat {
@@ -4449,15 +4443,15 @@ func initialize() {
 	}
 
 	iGetWindows = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindows",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iCreateWindow = func(title string, w int32, h int32, flags WindowFlags) *Window {
@@ -4597,18 +4591,19 @@ func initialize() {
 	}
 
 	iGetWindowPosition = func(window *Window, x *int32, y *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_x := x // TODO: input, output or array?
-		_y := y // TODO: input, output or array?
+		_x := internal.StackAlloc(4)
+		_y := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowPosition",
 			_window,
 			_x,
 			_y,
 		)
+		*x = int32(internal.GetValue(_x, "i32").Int())
+		*y = int32(internal.GetValue(_y, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -4648,16 +4643,16 @@ func initialize() {
 	}
 
 	iGetWindowSafeArea = func(window *Window, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowSafeArea",
 			_window,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
@@ -4675,30 +4670,30 @@ func initialize() {
 	}
 
 	iGetWindowAspectRatio = func(window *Window, min_aspect *float32, max_aspect *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_min_aspect := min_aspect // TODO: input, output or array?
-		_max_aspect := max_aspect // TODO: input, output or array?
+		_min_aspect := internal.StackAlloc(4)
+		_max_aspect := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowAspectRatio",
 			_window,
 			_min_aspect,
 			_max_aspect,
 		)
+		*min_aspect = float32(internal.GetValue(_min_aspect, "f32").Float())
+		*max_aspect = float32(internal.GetValue(_max_aspect, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
 	iGetWindowBordersSize = func(window *Window, top *int32, left *int32, bottom *int32, right *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_top := top       // TODO: input, output or array?
-		_left := left     // TODO: input, output or array?
-		_bottom := bottom // TODO: input, output or array?
-		_right := right   // TODO: input, output or array?
+		_top := internal.StackAlloc(4)
+		_left := internal.StackAlloc(4)
+		_bottom := internal.StackAlloc(4)
+		_right := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowBordersSize",
 			_window,
@@ -4707,22 +4702,27 @@ func initialize() {
 			_bottom,
 			_right,
 		)
+		*top = int32(internal.GetValue(_top, "i32").Int())
+		*left = int32(internal.GetValue(_left, "i32").Int())
+		*bottom = int32(internal.GetValue(_bottom, "i32").Int())
+		*right = int32(internal.GetValue(_right, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetWindowSizeInPixels = func(window *Window, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowSizeInPixels",
 			_window,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -4740,18 +4740,19 @@ func initialize() {
 	}
 
 	iGetWindowMinimumSize = func(window *Window, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowMinimumSize",
 			_window,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -4769,18 +4770,19 @@ func initialize() {
 	}
 
 	iGetWindowMaximumSize = func(window *Window, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowMaximumSize",
 			_window,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -4925,16 +4927,16 @@ func initialize() {
 	}
 
 	iGetWindowSurfaceVSync = func(window *Window, vsync *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_vsync := vsync // TODO: input, output or array?
+		_vsync := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowSurfaceVSync",
 			_window,
 			_vsync,
 		)
+		*vsync = int32(internal.GetValue(_vsync, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -4948,17 +4950,14 @@ func initialize() {
 	}
 
 	iUpdateWindowSurfaceRects = func(window *Window, rects *Rect, numrects int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_rects := rects // TODO: input, output or array?
-		_numrects := numrects
+		_rects, free := internal.ClonePtrArrayToJSHeap(rects, int(numrects))
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_UpdateWindowSurfaceRects",
 			_window,
 			_rects,
-			_numrects,
+			numrects,
 		)
 		return internal.GetBool(ret)
 	}
@@ -5021,11 +5020,10 @@ func initialize() {
 	}
 
 	iSetWindowMouseRect = func(window *Window, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_window, _ := internal.GetJSPointer(window)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.CloneObjectToJSStack(rect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetWindowMouseRect",
 			_window,
@@ -5035,13 +5033,12 @@ func initialize() {
 	}
 
 	iGetWindowMouseRect = func(window *Window) *Rect {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetWindowMouseRect",
 			_window,
 		)
-		return internal.NewObject[Rect](ret) // TODO: single value or array?
+		return internal.NewObject[Rect](ret)
 	}
 
 	iSetWindowOpacity = func(window *Window, opacity float32) bool {
@@ -5111,15 +5108,12 @@ func initialize() {
 	}
 
 	iSetWindowHitTest = func(window *Window, callback HitTest, callback_data uintptr) bool {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
-		_callback := callback           // TODO: size, buffer, userdata or callback?
-		_callback_data := callback_data // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetWindowHitTest",
 			_window,
-			_callback,
-			_callback_data,
+			int32(callback),
+			int32(callback_data),
 		)
 		return internal.GetBool(ret)
 	}
@@ -5251,16 +5245,16 @@ func initialize() {
 	}
 
 	iGL_GetAttribute = func(attr GLAttr, value *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_attr := int32(attr)
-		_value := value // TODO: input, output or array?
+		_value := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_GetAttribute",
 			_attr,
 			_value,
 		)
+		*value = int32(internal.GetValue(_value, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -5317,29 +5311,26 @@ func initialize() {
 	}*/
 
 	iEGL_GetCurrentDisplay = func() EGLDisplay {
-		panic("not implemented on js")
 		ret := js.Global().Get("Module").Call(
 			"_SDL_EGL_GetCurrentDisplay",
 		)
-		return EGLDisplay(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		return EGLDisplay(internal.NewUintptr(ret))
 	}
 
 	iEGL_GetCurrentConfig = func() EGLConfig {
-		panic("not implemented on js")
 		ret := js.Global().Get("Module").Call(
 			"_SDL_EGL_GetCurrentConfig",
 		)
-		return EGLConfig(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		return EGLConfig(internal.NewUintptr(ret))
 	}
 
 	iEGL_GetWindowSurface = func(window *Window) EGLSurface {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_EGL_GetWindowSurface",
 			_window,
 		)
-		return EGLSurface(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		return EGLSurface(internal.NewUintptr(ret))
 	}
 
 	/*iEGL_SetAttributeCallbacks = func(platformAttribCallback EGLAttribArrayCallback, surfaceAttribCallback EGLIntArrayCallback, contextAttribCallback EGLIntArrayCallback, userdata uintptr) {
@@ -5369,14 +5360,14 @@ func initialize() {
 	}
 
 	iGL_GetSwapInterval = func(interval *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_interval := interval // TODO: input, output or array?
+		_interval := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_GetSwapInterval",
 			_interval,
 		)
+		*interval = int32(internal.GetValue(_interval, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -11989,7 +11980,6 @@ func initialize() {
 	}
 
 	iGL_GetProcAddress = func(proc string) FunctionPointer {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_proc := internal.StringOnJSStack(proc)
@@ -11997,11 +11987,12 @@ func initialize() {
 			"_SDL_GL_GetProcAddress",
 			_proc,
 		)
-		return FunctionPointer(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		// A function pointer is an index in the wasm function table, not
+		// a heap address.
+		return FunctionPointer(uint32(ret.Int()))
 	}
 
 	iEGL_GetProcAddress = func(proc string) FunctionPointer {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_proc := internal.StringOnJSStack(proc)
@@ -12009,24 +12000,23 @@ func initialize() {
 			"_SDL_EGL_GetProcAddress",
 			_proc,
 		)
-		return FunctionPointer(uintptr(uint32(ret.Int()))) // TODO: size, or pointer through internal.NewUintptr?
+		// A function pointer is an index in the wasm function table, not
+		// a heap address.
+		return FunctionPointer(uint32(ret.Int()))
 	}
 
 	iGL_CreateContext = func(window *Window) GLContext {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_CreateContext",
 			_window,
 		)
-		_ = ret
-		return *new(GLContext) // TODO: unsupported type
+		return internal.NewObject[GLContextState](ret)
 	}
 
 	iGL_MakeCurrent = func(window *Window, context GLContext) bool {
-		panic("not implemented on js")
 		_window, _ := internal.GetJSPointer(window)
-		_context := context // TODO: unsupported type
+		_context, _ := internal.GetJSPointer((*GLContextState)(context))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_MakeCurrent",
 			_window,
@@ -12036,36 +12026,29 @@ func initialize() {
 	}
 
 	iGL_GetCurrentContext = func() GLContext {
-		panic("not implemented on js")
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_GetCurrentContext",
 		)
-		_ = ret
-		return *new(GLContext) // TODO: unsupported type
+		return internal.NewObject[GLContextState](ret)
 	}
 
 	iEGL_SetAttributeCallbacks = func(platformAttribCallback EGLAttribArrayCallback, surfaceAttribCallback EGLIntArrayCallback, contextAttribCallback EGLIntArrayCallback, userdata uintptr) {
-		panic("not implemented on js")
-		_platformAttribCallback := platformAttribCallback // TODO: size, buffer, userdata or callback?
-		_surfaceAttribCallback := surfaceAttribCallback   // TODO: size, buffer, userdata or callback?
-		_contextAttribCallback := contextAttribCallback   // TODO: size, buffer, userdata or callback?
-		_userdata := userdata                             // TODO: size, buffer, userdata or callback?
 		js.Global().Get("Module").Call(
 			"_SDL_EGL_SetAttributeCallbacks",
-			_platformAttribCallback,
-			_surfaceAttribCallback,
-			_contextAttribCallback,
-			_userdata,
+			int32(platformAttribCallback),
+			int32(surfaceAttribCallback),
+			int32(contextAttribCallback),
+			int32(userdata),
 		)
 	}
 
 	iGL_DestroyContext = func(context GLContext) bool {
-		panic("not implemented on js")
-		_context := context // TODO: unsupported type
+		_context, _ := internal.GetJSPointer((*GLContextState)(context))
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GL_DestroyContext",
 			_context,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(context)))
 		return internal.GetBool(ret)
 	}
 
