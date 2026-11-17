@@ -7435,15 +7435,15 @@ func initialize() {
 	}
 
 	iGetMice = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetMice",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetMouseNameForID = func(instance_id MouseID) string {
@@ -7479,30 +7479,32 @@ func initialize() {
 	}
 
 	iGetGlobalMouseState = func(x *float32, y *float32) MouseButtonFlags {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_x := x // TODO: input, output or array?
-		_y := y // TODO: input, output or array?
+		_x := internal.StackAlloc(4)
+		_y := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGlobalMouseState",
 			_x,
 			_y,
 		)
+		*x = float32(internal.GetValue(_x, "float").Float())
+		*y = float32(internal.GetValue(_y, "float").Float())
 		return MouseButtonFlags(ret.Int())
 	}
 
 	iGetRelativeMouseState = func(x *float32, y *float32) MouseButtonFlags {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_x := x // TODO: input, output or array?
-		_y := y // TODO: input, output or array?
+		_x := internal.StackAlloc(4)
+		_y := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRelativeMouseState",
 			_x,
 			_y,
 		)
+		*x = float32(internal.GetValue(_x, "float").Float())
+		*y = float32(internal.GetValue(_y, "float").Float())
 		return MouseButtonFlags(ret.Int())
 	}
 
@@ -7559,11 +7561,12 @@ func initialize() {
 	}
 
 	iCreateCursor = func(data *uint8, mask *uint8, w int32, h int32, hot_x int32, hot_y int32) *Cursor {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_data := data // TODO: input, output or array?
-		_mask := mask // TODO: input, output or array?
+		// Both bitmaps hold one bit per pixel, each row padded to a byte.
+		size := int((w + 7) / 8 * h)
+		_data, freeData := internal.ClonePtrArrayToJSHeap(data, size)
+		defer freeData()
+		_mask, freeMask := internal.ClonePtrArrayToJSHeap(mask, size)
+		defer freeMask()
 		_w := w
 		_h := h
 		_hot_x := hot_x
@@ -12157,22 +12160,17 @@ func initialize() {
 	}
 
 	iSetRelativeMouseTransform = func(callback MouseMotionTransformCallback, userdata uintptr) bool {
-		panic("not implemented on js")
-		_callback := callback // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetRelativeMouseTransform",
-			_callback,
-			_userdata,
+			int32(callback),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iCreateAnimatedCursor = func(frames *CursorFrameInfo, frame_count int32, hot_x int32, hot_y int32) *Cursor {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_frames := frames // TODO: input, output or array?
+		_frames, free := internal.ClonePtrArrayToJSHeap(frames, int(frame_count))
+		defer free()
 		_frame_count := frame_count
 		_hot_x := hot_x
 		_hot_y := hot_y
