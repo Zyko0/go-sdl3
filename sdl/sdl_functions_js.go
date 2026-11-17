@@ -9765,34 +9765,36 @@ func initialize() {
 	}
 
 	iGetRenderOutputSize = func(renderer *Renderer, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderOutputSize",
 			_renderer,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetCurrentRenderOutputSize = func(renderer *Renderer, w *int32, h *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetCurrentRenderOutputSize",
 			_renderer,
 			_w,
 			_h,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -9869,18 +9871,19 @@ func initialize() {
 	}
 
 	iGetTextureSize = func(texture *Texture, w *float32, h *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_w := w // TODO: input, output or array?
-		_h := h // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureSize",
 			_texture,
 			_w,
 			_h,
 		)
+		*w = float32(internal.GetValue(_w, "f32").Float())
+		*h = float32(internal.GetValue(_h, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -9916,13 +9919,12 @@ func initialize() {
 	}
 
 	iGetTextureColorMod = func(texture *Texture, r *uint8, g *uint8, b *uint8) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_r := r // TODO: input, output or array?
-		_g := g // TODO: input, output or array?
-		_b := b // TODO: input, output or array?
+		_r := internal.StackAlloc(1)
+		_g := internal.StackAlloc(1)
+		_b := internal.StackAlloc(1)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureColorMod",
 			_texture,
@@ -9930,17 +9932,19 @@ func initialize() {
 			_g,
 			_b,
 		)
+		*r = uint8(internal.GetValue(_r, "i8").Int())
+		*g = uint8(internal.GetValue(_g, "i8").Int())
+		*b = uint8(internal.GetValue(_b, "i8").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetTextureColorModFloat = func(texture *Texture, r *float32, g *float32, b *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_r := r // TODO: input, output or array?
-		_g := g // TODO: input, output or array?
-		_b := b // TODO: input, output or array?
+		_r := internal.StackAlloc(4)
+		_g := internal.StackAlloc(4)
+		_b := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureColorModFloat",
 			_texture,
@@ -9948,6 +9952,9 @@ func initialize() {
 			_g,
 			_b,
 		)
+		*r = float32(internal.GetValue(_r, "f32").Float())
+		*g = float32(internal.GetValue(_g, "f32").Float())
+		*b = float32(internal.GetValue(_b, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -9974,30 +9981,30 @@ func initialize() {
 	}
 
 	iGetTextureAlphaMod = func(texture *Texture, alpha *uint8) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_alpha := alpha // TODO: input, output or array?
+		_alpha := internal.StackAlloc(1)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureAlphaMod",
 			_texture,
 			_alpha,
 		)
+		*alpha = uint8(internal.GetValue(_alpha, "i8").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetTextureAlphaModFloat = func(texture *Texture, alpha *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_alpha := alpha // TODO: input, output or array?
+		_alpha := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureAlphaModFloat",
 			_texture,
 			_alpha,
 		)
+		*alpha = float32(internal.GetValue(_alpha, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -10013,16 +10020,16 @@ func initialize() {
 	}
 
 	iGetTextureBlendMode = func(texture *Texture, blendMode *BlendMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_blendMode := blendMode // TODO: input, output or array?
+		_blendMode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureBlendMode",
 			_texture,
 			_blendMode,
 		)
+		*blendMode = BlendMode(uint32(internal.GetValue(_blendMode, "i32").Int()))
 		return internal.GetBool(ret)
 	}
 
@@ -10038,16 +10045,16 @@ func initialize() {
 	}
 
 	iGetTextureScaleMode = func(texture *Texture, scaleMode *ScaleMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_scaleMode := scaleMode // TODO: input, output or array?
+		_scaleMode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTextureScaleMode",
 			_texture,
 			_scaleMode,
 		)
+		*scaleMode = ScaleMode(internal.GetValue(_scaleMode, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -10076,61 +10083,66 @@ func initialize() {
 	}
 
 	iUpdateYUVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, Uplane *uint8, Upitch int32, Vplane *uint8, Vpitch int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_rect := rect     // TODO: input, output or array?
-		_Yplane := Yplane // TODO: input, output or array?
-		_Ypitch := Ypitch
-		_Uplane := Uplane // TODO: input, output or array?
-		_Upitch := Upitch
-		_Vplane := Vplane // TODO: input, output or array?
-		_Vpitch := Vpitch
+		w, h := texture.W, texture.H
+		if rect != nil {
+			w, h = rect.W, rect.H
+		}
+		_rect := internal.CloneObjectToJSStack(rect)
+		_Yplane, freeY := internal.ClonePtrArrayToJSHeap(Yplane, planeSize(h, Ypitch, w))
+		defer freeY()
+		_Uplane, freeU := internal.ClonePtrArrayToJSHeap(Uplane, planeSize((h+1)/2, Upitch, (w+1)/2))
+		defer freeU()
+		_Vplane, freeV := internal.ClonePtrArrayToJSHeap(Vplane, planeSize((h+1)/2, Vpitch, (w+1)/2))
+		defer freeV()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_UpdateYUVTexture",
 			_texture,
 			_rect,
 			_Yplane,
-			_Ypitch,
+			Ypitch,
 			_Uplane,
-			_Upitch,
+			Upitch,
 			_Vplane,
-			_Vpitch,
+			Vpitch,
 		)
 		return internal.GetBool(ret)
 	}
 
 	iUpdateNVTexture = func(texture *Texture, rect *Rect, Yplane *uint8, Ypitch int32, UVplane *uint8, UVpitch int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_rect := rect     // TODO: input, output or array?
-		_Yplane := Yplane // TODO: input, output or array?
-		_Ypitch := Ypitch
-		_UVplane := UVplane // TODO: input, output or array?
-		_UVpitch := UVpitch
+		w, h := texture.W, texture.H
+		if rect != nil {
+			w, h = rect.W, rect.H
+		}
+		_rect := internal.CloneObjectToJSStack(rect)
+		_Yplane, freeY := internal.ClonePtrArrayToJSHeap(Yplane, planeSize(h, Ypitch, w))
+		defer freeY()
+		_UVplane, freeUV := internal.ClonePtrArrayToJSHeap(UVplane, planeSize((h+1)/2, UVpitch, 2*((w+1)/2)))
+		defer freeUV()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_UpdateNVTexture",
 			_texture,
 			_rect,
 			_Yplane,
-			_Ypitch,
+			Ypitch,
 			_UVplane,
-			_UVpitch,
+			UVpitch,
 		)
 		return internal.GetBool(ret)
 	}
 
 	iLockTexture = func(texture *Texture, rect *Rect, pixels *uintptr, pitch *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_texture, _ := internal.GetJSPointer(texture)
-		_rect := rect     // TODO: input, output or array?
-		_pixels := pixels // TODO: input, output or array?
-		_pitch := pitch   // TODO: input, output or array?
+		_rect := internal.CloneObjectToJSStack(rect)
+		_pixels := internal.StackAlloc(4)
+		_pitch := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_LockTexture",
 			_texture,
@@ -10138,7 +10150,12 @@ func initialize() {
 			_pixels,
 			_pitch,
 		)
-		return internal.GetBool(ret)
+		if !internal.GetBool(ret) {
+			return false
+		}
+		*pitch = int32(internal.GetValue(_pitch, "i32").Int())
+		*pixels = lockTextureMirror(texture, rect, internal.GetValue(_pixels, "*").Int(), *pitch)
+		return true
 	}
 
 	iLockTextureToSurface = func(texture *Texture, rect *Rect, surface **Surface) bool {
@@ -10168,6 +10185,7 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
+		unlockTextureMirror(texture)
 		js.Global().Get("Module").Call(
 			"_SDL_UnlockTexture",
 			_texture,
@@ -10210,13 +10228,12 @@ func initialize() {
 	}
 
 	iGetRenderLogicalPresentation = func(renderer *Renderer, w *int32, h *int32, mode *RendererLogicalPresentation) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_w := w       // TODO: input, output or array?
-		_h := h       // TODO: input, output or array?
-		_mode := mode // TODO: input, output or array?
+		_w := internal.StackAlloc(4)
+		_h := internal.StackAlloc(4)
+		_mode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderLogicalPresentation",
 			_renderer,
@@ -10224,74 +10241,75 @@ func initialize() {
 			_h,
 			_mode,
 		)
+		*w = int32(internal.GetValue(_w, "i32").Int())
+		*h = int32(internal.GetValue(_h, "i32").Int())
+		*mode = RendererLogicalPresentation(internal.GetValue(_mode, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetRenderLogicalPresentationRect = func(renderer *Renderer, rect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[FRect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderLogicalPresentationRect",
 			_renderer,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
 	iRenderCoordinatesFromWindow = func(renderer *Renderer, window_x float32, window_y float32, x *float32, y *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_window_x := window_x
-		_window_y := window_y
-		_x := x // TODO: input, output or array?
-		_y := y // TODO: input, output or array?
+		_x := internal.StackAlloc(4)
+		_y := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderCoordinatesFromWindow",
 			_renderer,
-			_window_x,
-			_window_y,
+			window_x,
+			window_y,
 			_x,
 			_y,
 		)
+		*x = float32(internal.GetValue(_x, "f32").Float())
+		*y = float32(internal.GetValue(_y, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
 	iRenderCoordinatesToWindow = func(renderer *Renderer, x float32, y float32, window_x *float32, window_y *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_x := x
-		_y := y
-		_window_x := window_x // TODO: input, output or array?
-		_window_y := window_y // TODO: input, output or array?
+		_window_x := internal.StackAlloc(4)
+		_window_y := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderCoordinatesToWindow",
 			_renderer,
-			_x,
-			_y,
+			x,
+			y,
 			_window_x,
 			_window_y,
 		)
+		*window_x = float32(internal.GetValue(_window_x, "f32").Float())
+		*window_y = float32(internal.GetValue(_window_y, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
 	iConvertEventToRenderCoordinates = func(renderer *Renderer, event *Event) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_event := event // TODO: input, output or array?
+		_event := internal.CloneObjectToJSStack(event)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_ConvertEventToRenderCoordinates",
 			_renderer,
 			_event,
 		)
+		internal.CopyJSToObject(event, _event)
 		return internal.GetBool(ret)
 	}
 
@@ -10313,16 +10331,16 @@ func initialize() {
 	}
 
 	iGetRenderViewport = func(renderer *Renderer, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderViewport",
 			_renderer,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
@@ -10336,16 +10354,16 @@ func initialize() {
 	}
 
 	iGetRenderSafeArea = func(renderer *Renderer, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderSafeArea",
 			_renderer,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
@@ -10367,16 +10385,16 @@ func initialize() {
 	}
 
 	iGetRenderClipRect = func(renderer *Renderer, rect *Rect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_rect := rect // TODO: input, output or array?
+		_rect := internal.StackAlloc(internal.CSizeof[Rect]())
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderClipRect",
 			_renderer,
 			_rect,
 		)
+		internal.CopyJSToObject(rect, _rect)
 		return internal.GetBool(ret)
 	}
 
@@ -10407,18 +10425,19 @@ func initialize() {
 	}
 
 	iGetRenderScale = func(renderer *Renderer, scaleX *float32, scaleY *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_scaleX := scaleX // TODO: input, output or array?
-		_scaleY := scaleY // TODO: input, output or array?
+		_scaleX := internal.StackAlloc(4)
+		_scaleY := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderScale",
 			_renderer,
 			_scaleX,
 			_scaleY,
 		)
+		*scaleX = float32(internal.GetValue(_scaleX, "f32").Float())
+		*scaleY = float32(internal.GetValue(_scaleY, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -10462,14 +10481,13 @@ func initialize() {
 	}
 
 	iGetRenderDrawColor = func(renderer *Renderer, r *uint8, g *uint8, b *uint8, a *uint8) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_r := r // TODO: input, output or array?
-		_g := g // TODO: input, output or array?
-		_b := b // TODO: input, output or array?
-		_a := a // TODO: input, output or array?
+		_r := internal.StackAlloc(1)
+		_g := internal.StackAlloc(1)
+		_b := internal.StackAlloc(1)
+		_a := internal.StackAlloc(1)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderDrawColor",
 			_renderer,
@@ -10478,18 +10496,21 @@ func initialize() {
 			_b,
 			_a,
 		)
+		*r = uint8(internal.GetValue(_r, "i8").Int())
+		*g = uint8(internal.GetValue(_g, "i8").Int())
+		*b = uint8(internal.GetValue(_b, "i8").Int())
+		*a = uint8(internal.GetValue(_a, "i8").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetRenderDrawColorFloat = func(renderer *Renderer, r *float32, g *float32, b *float32, a *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_r := r // TODO: input, output or array?
-		_g := g // TODO: input, output or array?
-		_b := b // TODO: input, output or array?
-		_a := a // TODO: input, output or array?
+		_r := internal.StackAlloc(4)
+		_g := internal.StackAlloc(4)
+		_b := internal.StackAlloc(4)
+		_a := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderDrawColorFloat",
 			_renderer,
@@ -10498,6 +10519,10 @@ func initialize() {
 			_b,
 			_a,
 		)
+		*r = float32(internal.GetValue(_r, "f32").Float())
+		*g = float32(internal.GetValue(_g, "f32").Float())
+		*b = float32(internal.GetValue(_b, "f32").Float())
+		*a = float32(internal.GetValue(_a, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -10513,16 +10538,16 @@ func initialize() {
 	}
 
 	iGetRenderColorScale = func(renderer *Renderer, scale *float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_scale := scale // TODO: input, output or array?
+		_scale := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderColorScale",
 			_renderer,
 			_scale,
 		)
+		*scale = float32(internal.GetValue(_scale, "f32").Float())
 		return internal.GetBool(ret)
 	}
 
@@ -10542,16 +10567,16 @@ func initialize() {
 	}
 
 	iGetRenderDrawBlendMode = func(renderer *Renderer, blendMode *BlendMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_blendMode := blendMode // TODO: input, output or array?
+		_blendMode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderDrawBlendMode",
 			_renderer,
 			_blendMode,
 		)
+		*blendMode = BlendMode(uint32(internal.GetValue(_blendMode, "i32").Int()))
 		return internal.GetBool(ret)
 	}
 
@@ -10787,48 +10812,40 @@ func initialize() {
 	}
 
 	iRenderTextureTiled = func(renderer *Renderer, texture *Texture, srcrect *FRect, scale float32, dstrect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
 		_texture, _ := internal.GetJSPointer(texture)
-		_srcrect := srcrect // TODO: input, output or array?
-		_scale := scale
-		_dstrect := dstrect // TODO: input, output or array?
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_dstrect := internal.CloneObjectToJSStack(dstrect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTextureTiled",
 			_renderer,
 			_texture,
 			_srcrect,
-			_scale,
+			scale,
 			_dstrect,
 		)
 		return internal.GetBool(ret)
 	}
 
 	iRenderTexture9Grid = func(renderer *Renderer, texture *Texture, srcrect *FRect, left_width float32, right_width float32, top_height float32, bottom_height float32, scale float32, dstrect *FRect) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
 		_texture, _ := internal.GetJSPointer(texture)
-		_srcrect := srcrect // TODO: input, output or array?
-		_left_width := left_width
-		_right_width := right_width
-		_top_height := top_height
-		_bottom_height := bottom_height
-		_scale := scale
-		_dstrect := dstrect // TODO: input, output or array?
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_dstrect := internal.CloneObjectToJSStack(dstrect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTexture9Grid",
 			_renderer,
 			_texture,
 			_srcrect,
-			_left_width,
-			_right_width,
-			_top_height,
-			_bottom_height,
-			_scale,
+			left_width,
+			right_width,
+			top_height,
+			bottom_height,
+			scale,
 			_dstrect,
 		)
 		return internal.GetBool(ret)
@@ -10862,35 +10879,33 @@ func initialize() {
 	}
 
 	iRenderGeometryRaw = func(renderer *Renderer, texture *Texture, xy *float32, xy_stride int32, color *FColor, color_stride int32, uv *float32, uv_stride int32, num_vertices int32, indices uintptr, num_indices int32, size_indices int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
 		_texture, _ := internal.GetJSPointer(texture)
-		_xy := xy // TODO: input, output or array?
-		_xy_stride := xy_stride
-		_color := color // TODO: input, output or array?
-		_color_stride := color_stride
-		_uv := uv // TODO: input, output or array?
-		_uv_stride := uv_stride
-		_num_vertices := num_vertices
-		_indices := indices // TODO: size, buffer, userdata or callback?
-		_num_indices := num_indices
-		_size_indices := size_indices
+		// The arrays are strided, so they are copied as raw bytes up to
+		// the end of the last vertex.
+		last := num_vertices - 1
+		_xy, freeXY := internal.ClonePtrArrayToJSHeap((*byte)(unsafe.Pointer(xy)), int(last*xy_stride+8))
+		defer freeXY()
+		_color, freeColor := internal.ClonePtrArrayToJSHeap((*byte)(unsafe.Pointer(color)), int(last*color_stride+16))
+		defer freeColor()
+		_uv, freeUV := internal.ClonePtrArrayToJSHeap((*byte)(unsafe.Pointer(uv)), int(last*uv_stride+8))
+		defer freeUV()
+		_indices, freeIndices := internal.ClonePtrArrayToJSHeap(*(**byte)(unsafe.Pointer(&indices)), int(num_indices*size_indices))
+		defer freeIndices()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderGeometryRaw",
 			_renderer,
 			_texture,
 			_xy,
-			_xy_stride,
+			xy_stride,
 			_color,
-			_color_stride,
+			color_stride,
 			_uv,
-			_uv_stride,
-			_num_vertices,
+			uv_stride,
+			num_vertices,
 			_indices,
-			_num_indices,
-			_size_indices,
+			num_indices,
+			size_indices,
 		)
 		return internal.GetBool(ret)
 	}
@@ -10932,6 +10947,7 @@ func initialize() {
 		if !ok {
 			panic("nil texture")
 		}
+		delete(lockedTextures, texture)
 		js.Global().Get("Module").Call(
 			"_SDL_DestroyTexture",
 			_texture,
@@ -10961,23 +10977,11 @@ func initialize() {
 	}
 
 	iGetRenderMetalLayer = func(renderer *Renderer) uintptr {
-		panic("not implemented on js")
-		_renderer, _ := internal.GetJSPointer(renderer)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_GetRenderMetalLayer",
-			_renderer,
-		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: Metal is only available on Apple platforms")
 	}
 
 	iGetRenderMetalCommandEncoder = func(renderer *Renderer) uintptr {
-		panic("not implemented on js")
-		_renderer, _ := internal.GetJSPointer(renderer)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_GetRenderMetalCommandEncoder",
-			_renderer,
-		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		panic("not supported on js: Metal is only available on Apple platforms")
 	}
 
 	iAddVulkanRenderSemaphores = func(renderer *Renderer, wait_stage_mask uint32, wait_semaphore int64, signal_semaphore int64) bool {
@@ -11007,16 +11011,16 @@ func initialize() {
 	}
 
 	iGetRenderVSync = func(renderer *Renderer, vsync *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_vsync := vsync // TODO: input, output or array?
+		_vsync := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderVSync",
 			_renderer,
 			_vsync,
 		)
+		*vsync = int32(internal.GetValue(_vsync, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -12419,31 +12423,24 @@ func initialize() {
 	}
 
 	iRenderTexture9GridTiled = func(renderer *Renderer, texture *Texture, srcrect *FRect, left_width float32, right_width float32, top_height float32, bottom_height float32, scale float32, dstrect *FRect, tileScale float32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
 		_texture, _ := internal.GetJSPointer(texture)
-		_srcrect := srcrect // TODO: input, output or array?
-		_left_width := left_width
-		_right_width := right_width
-		_top_height := top_height
-		_bottom_height := bottom_height
-		_scale := scale
-		_dstrect := dstrect // TODO: input, output or array?
-		_tileScale := tileScale
+		_srcrect := internal.CloneObjectToJSStack(srcrect)
+		_dstrect := internal.CloneObjectToJSStack(dstrect)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_RenderTexture9GridTiled",
 			_renderer,
 			_texture,
 			_srcrect,
-			_left_width,
-			_right_width,
-			_top_height,
-			_bottom_height,
-			_scale,
+			left_width,
+			right_width,
+			top_height,
+			bottom_height,
+			scale,
 			_dstrect,
-			_tileScale,
+			tileScale,
 		)
 		return internal.GetBool(ret)
 	}
@@ -12462,18 +12459,19 @@ func initialize() {
 	}
 
 	iGetRenderTextureAddressMode = func(renderer *Renderer, u_mode *TextureAddressMode, v_mode *TextureAddressMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_u_mode := u_mode // TODO: input, output or array?
-		_v_mode := v_mode // TODO: input, output or array?
+		_u_mode := internal.StackAlloc(4)
+		_v_mode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetRenderTextureAddressMode",
 			_renderer,
 			_u_mode,
 			_v_mode,
 		)
+		*u_mode = TextureAddressMode(internal.GetValue(_u_mode, "i32").Int())
+		*v_mode = TextureAddressMode(internal.GetValue(_v_mode, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -12489,33 +12487,21 @@ func initialize() {
 	}
 
 	iGetDefaultTextureScaleMode = func(renderer *Renderer, scale_mode *ScaleMode) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_renderer, _ := internal.GetJSPointer(renderer)
-		_scale_mode := scale_mode // TODO: input, output or array?
+		_scale_mode := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetDefaultTextureScaleMode",
 			_renderer,
 			_scale_mode,
 		)
+		*scale_mode = ScaleMode(internal.GetValue(_scale_mode, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
 	iSetGPURenderStateFragmentUniforms = func(state *GPURenderState, slot_index uint32, data uintptr, length uint32) bool {
-		panic("not implemented on js")
-		_state, _ := internal.GetJSPointer(state)
-		_slot_index := int32(slot_index)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_length := int32(length)
-		ret := js.Global().Get("Module").Call(
-			"_SDL_SetGPURenderStateFragmentUniforms",
-			_state,
-			_slot_index,
-			_data,
-			_length,
-		)
-		return internal.GetBool(ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 
 	iSetGPURenderState = func(renderer *Renderer, state *GPURenderState) bool {
@@ -12811,17 +12797,6 @@ func initialize() {
 	}
 
 	iCreateGPURenderState = func(renderer *Renderer, info *gpuRenderStateCreateInfo) *GPURenderState {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
-		internal.StackSave()
-		defer internal.StackRestore()
-		_renderer, _ := internal.GetJSPointer(renderer)
-		_info := info // TODO: input, output or array?
-		ret := js.Global().Get("Module").Call(
-			"_SDL_CreateGPURenderState",
-			_renderer,
-			_info,
-		)
-		return internal.NewObject[GPURenderState](ret)
+		panic("not supported on js: the web build has no SDL_GPU backend")
 	}
 }
