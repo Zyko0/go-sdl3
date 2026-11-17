@@ -81,6 +81,13 @@ tasks:
                     --extra {{.EXTRA | join ","}}
             - '{{if regexMatch .LIBRARY "sdl|ttf"}}purego-gen --no-library-handle --no-warnings --function-name "initialize_ex" --input {{.DIR}}/{{.LIBRARY}}_functions_ex.go --extra {{.EXTRA | join ","}}{{end}}'
     
+    gen-js:
+        desc: Update the js/wasm bindings of a chosen SDL3 library, keeping hand-written functions
+        requires:
+            vars: [LIBRARY]
+        cmds:
+            - go run ./cmd/jsgen --library {{.LIBRARY}} --dir {{.LIBRARY}}
+
     gen-doc:
         deps: [extract-wiki]
         desc: Generate documentation headers for exposed functions and custom types for the specified SDL3 library

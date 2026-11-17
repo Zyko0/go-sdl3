@@ -12,13 +12,9 @@ import (
 
 func initialize() {
 	iVersion = func() int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_TTF_Version",
 		)
-
 		return int32(ret.Int())
 	}
 
@@ -26,18 +22,9 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_major, ok := internal.GetJSPointer(major)
-		if !ok {
-			_major = internal.StackAlloc(int(unsafe.Sizeof(*major)))
-		}
-		_minor, ok := internal.GetJSPointer(minor)
-		if !ok {
-			_minor = internal.StackAlloc(int(unsafe.Sizeof(*minor)))
-		}
-		_patch, ok := internal.GetJSPointer(patch)
-		if !ok {
-			_patch = internal.StackAlloc(int(unsafe.Sizeof(*patch)))
-		}
+		_major := major // TODO: input, output or array?
+		_minor := minor // TODO: input, output or array?
+		_patch := patch // TODO: input, output or array?
 		js.Global().Get("Module").Call(
 			"_TTF_GetFreeTypeVersion",
 			_major,
@@ -50,18 +37,9 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_major, ok := internal.GetJSPointer(major)
-		if !ok {
-			_major = internal.StackAlloc(int(unsafe.Sizeof(*major)))
-		}
-		_minor, ok := internal.GetJSPointer(minor)
-		if !ok {
-			_minor = internal.StackAlloc(int(unsafe.Sizeof(*minor)))
-		}
-		_patch, ok := internal.GetJSPointer(patch)
-		if !ok {
-			_patch = internal.StackAlloc(int(unsafe.Sizeof(*patch)))
-		}
+		_major := major // TODO: input, output or array?
+		_minor := minor // TODO: input, output or array?
+		_patch := patch // TODO: input, output or array?
 		js.Global().Get("Module").Call(
 			"_TTF_GetHarfBuzzVersion",
 			_major,
@@ -79,19 +57,16 @@ func initialize() {
 	}
 
 	iOpenFont = func(file string, ptsize float32) *Font {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_file := internal.StringOnJSStack(file)
-		_ptsize := int32(ptsize)
+		_ptsize := ptsize
 		ret := js.Global().Get("Module").Call(
 			"_TTF_OpenFont",
 			_file,
 			_ptsize,
 		)
-
-		_obj := internal.NewObject[Font](ret)
-		return _obj
+		return internal.NewObject[Font](ret)
 	}
 
 	iOpenFontIO = func(src *sdl.IOStream, closeio bool, ptsize float32) *Font {
@@ -130,87 +105,46 @@ func initialize() {
 	}*/
 
 	iCopyFont = func(existing_font *Font) *Font {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_existing_font, ok := internal.GetJSPointer(existing_font)
-		if !ok {
-			_existing_font = internal.StackAlloc(int(unsafe.Sizeof(*existing_font)))
-		}
+		_existing_font, _ := internal.GetJSPointer(existing_font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_CopyFont",
 			_existing_font,
 		)
-
-		_obj := internal.NewObject[Font](ret)
-		return _obj
+		return internal.NewObject[Font](ret)
 	}
 
 	iGetFontProperties = func(font *Font) sdl.PropertiesID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontProperties",
 			_font,
 		)
-
 		return sdl.PropertiesID(ret.Int())
 	}
 
 	iGetFontGeneration = func(font *Font) uint32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontGeneration",
 			_font,
 		)
-
 		return uint32(ret.Int())
 	}
 
 	iAddFallbackFont = func(font *Font, fallback *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_fallback, ok := internal.GetJSPointer(fallback)
-		if !ok {
-			_fallback = internal.StackAlloc(int(unsafe.Sizeof(*fallback)))
-		}
+		_font, _ := internal.GetJSPointer(font)
+		_fallback, _ := internal.GetJSPointer(fallback)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_AddFallbackFont",
 			_font,
 			_fallback,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iRemoveFallbackFont = func(font *Font, fallback *Font) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_fallback, ok := internal.GetJSPointer(fallback)
-		if !ok {
-			_fallback = internal.StackAlloc(int(unsafe.Sizeof(*fallback)))
-		}
+		_font, _ := internal.GetJSPointer(font)
+		_fallback, _ := internal.GetJSPointer(fallback)
 		js.Global().Get("Module").Call(
 			"_TTF_RemoveFallbackFont",
 			_font,
@@ -219,13 +153,7 @@ func initialize() {
 	}
 
 	iClearFallbackFonts = func(font *Font) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		js.Global().Get("Module").Call(
 			"_TTF_ClearFallbackFonts",
 			_font,
@@ -233,34 +161,21 @@ func initialize() {
 	}
 
 	iSetFontSize = func(font *Font, ptsize float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_ptsize := int32(ptsize)
+		_font, _ := internal.GetJSPointer(font)
+		_ptsize := ptsize
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontSize",
 			_font,
 			_ptsize,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetFontSizeDPI = func(font *Font, ptsize float32, hdpi int32, vdpi int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_ptsize := int32(ptsize)
-		_hdpi := int32(hdpi)
-		_vdpi := int32(vdpi)
+		_font, _ := internal.GetJSPointer(font)
+		_ptsize := ptsize
+		_hdpi := hdpi
+		_vdpi := vdpi
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontSizeDPI",
 			_font,
@@ -268,60 +183,36 @@ func initialize() {
 			_hdpi,
 			_vdpi,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontSize = func(font *Font) float32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontSize",
 			_font,
 		)
-
-		return float32(ret.Int())
+		return float32(ret.Float())
 	}
 
 	iGetFontDPI = func(font *Font, hdpi *int32, vdpi *int32) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_hdpi, ok := internal.GetJSPointer(hdpi)
-		if !ok {
-			_hdpi = internal.StackAlloc(int(unsafe.Sizeof(*hdpi)))
-		}
-		_vdpi, ok := internal.GetJSPointer(vdpi)
-		if !ok {
-			_vdpi = internal.StackAlloc(int(unsafe.Sizeof(*vdpi)))
-		}
+		_font, _ := internal.GetJSPointer(font)
+		_hdpi := hdpi // TODO: input, output or array?
+		_vdpi := vdpi // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontDPI",
 			_font,
 			_hdpi,
 			_vdpi,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetFontStyle = func(font *Font, style FontStyleFlags) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_style := int32(style)
 		js.Global().Get("Module").Call(
 			"_TTF_SetFontStyle",
@@ -331,63 +222,36 @@ func initialize() {
 	}
 
 	iGetFontStyle = func(font *Font) FontStyleFlags {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontStyle",
 			_font,
 		)
-
 		return FontStyleFlags(ret.Int())
 	}
 
 	iSetFontOutline = func(font *Font, outline int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_outline := int32(outline)
+		_font, _ := internal.GetJSPointer(font)
+		_outline := outline
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontOutline",
 			_font,
 			_outline,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontOutline = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontOutline",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iSetFontHinting = func(font *Font, hinting HintingFlags) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_hinting := int32(hinting)
 		js.Global().Get("Module").Call(
 			"_TTF_SetFontHinting",
@@ -397,79 +261,45 @@ func initialize() {
 	}
 
 	iGetNumFontFaces = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetNumFontFaces",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iGetFontHinting = func(font *Font) HintingFlags {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontHinting",
 			_font,
 		)
-
 		return HintingFlags(ret.Int())
 	}
 
 	iSetFontSDF = func(font *Font, enabled bool) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_enabled := internal.NewBoolean(enabled)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontSDF",
 			_font,
 			_enabled,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontSDF = func(font *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontSDF",
 			_font,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetFontWrapAlignment = func(font *Font, align HorizontalAlignment) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_align := int32(align)
 		js.Global().Get("Module").Call(
 			"_TTF_SetFontWrapAlignment",
@@ -479,78 +309,44 @@ func initialize() {
 	}
 
 	iGetFontWrapAlignment = func(font *Font) HorizontalAlignment {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontWrapAlignment",
 			_font,
 		)
-
 		return HorizontalAlignment(ret.Int())
 	}
 
 	iGetFontHeight = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontHeight",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iGetFontAscent = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontAscent",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iGetFontDescent = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontDescent",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iSetFontLineSkip = func(font *Font, lineskip int32) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
-		_lineskip := int32(lineskip)
+		_font, _ := internal.GetJSPointer(font)
+		_lineskip := lineskip
 		js.Global().Get("Module").Call(
 			"_TTF_SetFontLineSkip",
 			_font,
@@ -559,29 +355,16 @@ func initialize() {
 	}
 
 	iGetFontLineSkip = func(font *Font) int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontLineSkip",
 			_font,
 		)
-
 		return int32(ret.Int())
 	}
 
 	iSetFontKerning = func(font *Font, enabled bool) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_enabled := internal.NewBoolean(enabled)
 		js.Global().Get("Module").Call(
 			"_TTF_SetFontKerning",
@@ -591,121 +374,71 @@ func initialize() {
 	}
 
 	iGetFontKerning = func(font *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontKerning",
 			_font,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iFontIsFixedWidth = func(font *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_FontIsFixedWidth",
 			_font,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iFontIsScalable = func(font *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_FontIsScalable",
 			_font,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontFamilyName = func(font *Font) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontFamilyName",
 			_font,
 		)
-
 		return internal.UTF8JSToString(ret)
 	}
 
 	iGetFontStyleName = func(font *Font) string {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontStyleName",
 			_font,
 		)
-
 		return internal.UTF8JSToString(ret)
 	}
 
 	iSetFontDirection = func(font *Font, direction Direction) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_direction := int32(direction)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontDirection",
 			_font,
 			_direction,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontDirection = func(font *Font) Direction {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontDirection",
 			_font,
 		)
-
 		return Direction(ret.Int())
 	}
 
 	iStringToTag = func(string string) uint32 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_string := internal.StringOnJSStack(string)
@@ -713,90 +446,59 @@ func initialize() {
 			"_TTF_StringToTag",
 			_string,
 		)
-
 		return uint32(ret.Int())
 	}
 
 	iSetFontScript = func(font *Font, script uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_script := int32(script)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontScript",
 			_font,
 			_script,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetFontScript = func(font *Font) uint32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetFontScript",
 			_font,
 		)
-
 		return uint32(ret.Int())
 	}
 
 	iGetGlyphScript = func(ch uint32) uint32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGlyphScript",
 			_ch,
 		)
-
 		return uint32(ret.Int())
 	}
 
 	iSetFontLanguage = func(font *Font, language_bcp47 string) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_language_bcp47 := internal.StringOnJSStack(language_bcp47)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetFontLanguage",
 			_font,
 			_language_bcp47,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iFontHasGlyph = func(font *Font, ch uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_ch := int32(ch)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_FontHasGlyph",
 			_font,
 			_ch,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -804,79 +506,45 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_ch := int32(ch)
-		_image_type, ok := internal.GetJSPointer(image_type)
-		if !ok {
-			_image_type = internal.StackAlloc(int(unsafe.Sizeof(*image_type)))
-		}
+		_image_type := image_type // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGlyphImage",
 			_font,
 			_ch,
 			_image_type,
 		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
+		return internal.NewObject[sdl.Surface](ret)
 	}
 
 	iGetGlyphImageForIndex = func(font *Font, glyph_index uint32, image_type *ImageType) *sdl.Surface {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_glyph_index := int32(glyph_index)
-		_image_type, ok := internal.GetJSPointer(image_type)
-		if !ok {
-			_image_type = internal.StackAlloc(int(unsafe.Sizeof(*image_type)))
-		}
+		_image_type := image_type // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGlyphImageForIndex",
 			_font,
 			_glyph_index,
 			_image_type,
 		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
+		return internal.NewObject[sdl.Surface](ret)
 	}
 
 	iGetGlyphMetrics = func(font *Font, ch uint32, minx *int32, maxx *int32, miny *int32, maxy *int32, advance *int32) bool {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_ch := int32(ch)
-		_minx, ok := internal.GetJSPointer(minx)
-		if !ok {
-			_minx = internal.StackAlloc(int(unsafe.Sizeof(*minx)))
-		}
-		_maxx, ok := internal.GetJSPointer(maxx)
-		if !ok {
-			_maxx = internal.StackAlloc(int(unsafe.Sizeof(*maxx)))
-		}
-		_miny, ok := internal.GetJSPointer(miny)
-		if !ok {
-			_miny = internal.StackAlloc(int(unsafe.Sizeof(*miny)))
-		}
-		_maxy, ok := internal.GetJSPointer(maxy)
-		if !ok {
-			_maxy = internal.StackAlloc(int(unsafe.Sizeof(*maxy)))
-		}
-		_advance, ok := internal.GetJSPointer(advance)
-		if !ok {
-			_advance = internal.StackAlloc(int(unsafe.Sizeof(*advance)))
-		}
+		_minx := minx       // TODO: input, output or array?
+		_maxx := maxx       // TODO: input, output or array?
+		_miny := miny       // TODO: input, output or array?
+		_maxy := maxy       // TODO: input, output or array?
+		_advance := advance // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGlyphMetrics",
 			_font,
@@ -887,7 +555,6 @@ func initialize() {
 			_maxy,
 			_advance,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -895,16 +562,10 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_previous_ch := int32(previous_ch)
 		_ch := int32(ch)
-		_kerning, ok := internal.GetJSPointer(kerning)
-		if !ok {
-			_kerning = internal.StackAlloc(int(unsafe.Sizeof(*kerning)))
-		}
+		_kerning := kerning // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGlyphKerning",
 			_font,
@@ -912,7 +573,6 @@ func initialize() {
 			_ch,
 			_kerning,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -945,21 +605,12 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_text := internal.StringOnJSStack(text)
-		_length := internal.NewBigInt(length)
-		_wrap_width := int32(wrap_width)
-		_w, ok := internal.GetJSPointer(w)
-		if !ok {
-			_w = internal.StackAlloc(int(unsafe.Sizeof(*w)))
-		}
-		_h, ok := internal.GetJSPointer(h)
-		if !ok {
-			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
-		}
+		_length := length // TODO: size, buffer, userdata or callback?
+		_wrap_width := wrap_width
+		_w := w // TODO: input, output or array?
+		_h := h // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetStringSizeWrapped",
 			_font,
@@ -969,7 +620,6 @@ func initialize() {
 			_w,
 			_h,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -977,21 +627,12 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_text := internal.StringOnJSStack(text)
-		_length := internal.NewBigInt(length)
-		_max_width := int32(max_width)
-		_measured_width, ok := internal.GetJSPointer(measured_width)
-		if !ok {
-			_measured_width = internal.StackAlloc(int(unsafe.Sizeof(*measured_width)))
-		}
-		_measured_length, ok := internal.GetJSPointer(measured_length)
-		if !ok {
-			_measured_length = internal.StackAlloc(int(unsafe.Sizeof(*measured_length)))
-		}
+		_length := length // TODO: size, buffer, userdata or callback?
+		_max_width := max_width
+		_measured_width := measured_width   // TODO: input, output or array?
+		_measured_length := measured_length // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_MeasureString",
 			_font,
@@ -1001,36 +642,22 @@ func initialize() {
 			_measured_width,
 			_measured_length,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iCreateSurfaceTextEngine = func() *TextEngine {
 		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_TTF_CreateSurfaceTextEngine",
 		)
-
-		_obj := internal.NewObject[TextEngine](ret)
-		return _obj
+		return internal.NewObject[TextEngine](ret) // TODO: single value or array?
 	}
 
 	iDrawSurfaceText = func(text *Text, x int32, y int32, surface *sdl.Surface) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_x := int32(x)
-		_y := int32(y)
-		_surface, ok := internal.GetJSPointer(surface)
-		if !ok {
-			_surface = internal.StackAlloc(int(unsafe.Sizeof(*surface)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_x := x
+		_y := y
+		_surface, _ := internal.GetJSPointer(surface)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_DrawSurfaceText",
 			_text,
@@ -1038,7 +665,6 @@ func initialize() {
 			_y,
 			_surface,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1046,10 +672,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_engine := engine // TODO: input, output or array?
 		js.Global().Get("Module").Call(
 			"_TTF_DestroySurfaceTextEngine",
 			_engine,
@@ -1108,10 +731,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_engine := engine // TODO: input, output or array?
 		js.Global().Get("Module").Call(
 			"_TTF_DestroyRendererTextEngine",
 			_engine,
@@ -1120,19 +740,12 @@ func initialize() {
 
 	iCreateGPUTextEngine = func(device *sdl.GPUDevice) *TextEngine {
 		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_device, ok := internal.GetJSPointer(device)
-		if !ok {
-			_device = internal.StackAlloc(int(unsafe.Sizeof(*device)))
-		}
+		_device, _ := internal.GetJSPointer(device)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_CreateGPUTextEngine",
 			_device,
 		)
-
-		_obj := internal.NewObject[TextEngine](ret)
-		return _obj
+		return internal.NewObject[TextEngine](ret) // TODO: single value or array?
 	}
 
 	/*iCreateGPUTextEngineWithProperties = func(props *sdl.PropertiesID) *TextEngine {
@@ -1154,29 +767,19 @@ func initialize() {
 
 	iGetGPUTextDrawData = func(text *Text) *GPUAtlasDrawSequence {
 		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGPUTextDrawData",
 			_text,
 		)
-
-		_obj := internal.NewObject[GPUAtlasDrawSequence](ret)
-		return _obj
+		return internal.NewObject[GPUAtlasDrawSequence](ret) // TODO: single value or array?
 	}
 
 	iDestroyGPUTextEngine = func(engine *TextEngine) {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_engine := engine // TODO: input, output or array?
 		js.Global().Get("Module").Call(
 			"_TTF_DestroyGPUTextEngine",
 			_engine,
@@ -1187,10 +790,7 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_engine := engine // TODO: input, output or array?
 		_winding := int32(winding)
 		js.Global().Get("Module").Call(
 			"_TTF_SetGPUTextEngineWinding",
@@ -1203,15 +803,11 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_engine := engine // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetGPUTextEngineWinding",
 			_engine,
 		)
-
 		return GPUTextEngineWinding(ret.Int())
 	}
 
@@ -1242,18 +838,11 @@ func initialize() {
 	}
 
 	iGetTextProperties = func(text *Text) sdl.PropertiesID {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextProperties",
 			_text,
 		)
-
 		return sdl.PropertiesID(ret.Int())
 	}
 
@@ -1261,143 +850,83 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_engine, ok := internal.GetJSPointer(engine)
-		if !ok {
-			_engine = internal.StackAlloc(int(unsafe.Sizeof(*engine)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_engine := engine // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextEngine",
 			_text,
 			_engine,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetTextEngine = func(text *Text) *TextEngine {
 		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextEngine",
 			_text,
 		)
-
-		_obj := internal.NewObject[TextEngine](ret)
-		return _obj
+		return internal.NewObject[TextEngine](ret) // TODO: single value or array?
 	}
 
 	iSetTextFont = func(text *Text, font *Font) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_font, _ := internal.GetJSPointer(font)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextFont",
 			_text,
 			_font,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetTextFont = func(text *Text) *Font {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextFont",
 			_text,
 		)
-
-		_obj := internal.NewObject[Font](ret)
-		return _obj
+		return internal.NewObject[Font](ret)
 	}
 
 	iSetTextDirection = func(text *Text, direction Direction) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		_direction := int32(direction)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextDirection",
 			_text,
 			_direction,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetTextDirection = func(text *Text) Direction {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextDirection",
 			_text,
 		)
-
 		return Direction(ret.Int())
 	}
 
 	iSetTextScript = func(text *Text, script uint32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		_script := int32(script)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextScript",
 			_text,
 			_script,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iGetTextScript = func(text *Text) uint32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextScript",
 			_text,
 		)
-
 		return uint32(ret.Int())
 	}
 
@@ -1423,17 +952,11 @@ func initialize() {
 	}
 
 	iSetTextColorFloat = func(text *Text, r float32, g float32, b float32, a float32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_r := int32(r)
-		_g := int32(g)
-		_b := int32(b)
-		_a := int32(a)
+		_text, _ := internal.GetJSPointer(text)
+		_r := r
+		_g := g
+		_b := b
+		_a := a
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextColorFloat",
 			_text,
@@ -1442,7 +965,6 @@ func initialize() {
 			_b,
 			_a,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1450,26 +972,11 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_r, ok := internal.GetJSPointer(r)
-		if !ok {
-			_r = internal.StackAlloc(int(unsafe.Sizeof(*r)))
-		}
-		_g, ok := internal.GetJSPointer(g)
-		if !ok {
-			_g = internal.StackAlloc(int(unsafe.Sizeof(*g)))
-		}
-		_b, ok := internal.GetJSPointer(b)
-		if !ok {
-			_b = internal.StackAlloc(int(unsafe.Sizeof(*b)))
-		}
-		_a, ok := internal.GetJSPointer(a)
-		if !ok {
-			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_r := r // TODO: input, output or array?
+		_g := g // TODO: input, output or array?
+		_b := b // TODO: input, output or array?
+		_a := a // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextColor",
 			_text,
@@ -1478,7 +985,6 @@ func initialize() {
 			_b,
 			_a,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1486,26 +992,11 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_r, ok := internal.GetJSPointer(r)
-		if !ok {
-			_r = internal.StackAlloc(int(unsafe.Sizeof(*r)))
-		}
-		_g, ok := internal.GetJSPointer(g)
-		if !ok {
-			_g = internal.StackAlloc(int(unsafe.Sizeof(*g)))
-		}
-		_b, ok := internal.GetJSPointer(b)
-		if !ok {
-			_b = internal.StackAlloc(int(unsafe.Sizeof(*b)))
-		}
-		_a, ok := internal.GetJSPointer(a)
-		if !ok {
-			_a = internal.StackAlloc(int(unsafe.Sizeof(*a)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_r := r // TODO: input, output or array?
+		_g := g // TODO: input, output or array?
+		_b := b // TODO: input, output or array?
+		_a := a // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextColorFloat",
 			_text,
@@ -1514,27 +1005,19 @@ func initialize() {
 			_b,
 			_a,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetTextPosition = func(text *Text, x int32, y int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_x := int32(x)
-		_y := int32(y)
+		_text, _ := internal.GetJSPointer(text)
+		_x := x
+		_y := y
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextPosition",
 			_text,
 			_x,
 			_y,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1542,43 +1025,26 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_x, ok := internal.GetJSPointer(x)
-		if !ok {
-			_x = internal.StackAlloc(int(unsafe.Sizeof(*x)))
-		}
-		_y, ok := internal.GetJSPointer(y)
-		if !ok {
-			_y = internal.StackAlloc(int(unsafe.Sizeof(*y)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_x := x // TODO: input, output or array?
+		_y := y // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextPosition",
 			_text,
 			_x,
 			_y,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetTextWrapWidth = func(text *Text, wrap_width int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_wrap_width := int32(wrap_width)
+		_text, _ := internal.GetJSPointer(text)
+		_wrap_width := wrap_width
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextWrapWidth",
 			_text,
 			_wrap_width,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1586,54 +1052,33 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_wrap_width, ok := internal.GetJSPointer(wrap_width)
-		if !ok {
-			_wrap_width = internal.StackAlloc(int(unsafe.Sizeof(*wrap_width)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_wrap_width := wrap_width // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextWrapWidth",
 			_text,
 			_wrap_width,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iSetTextWrapWhitespaceVisible = func(text *Text, visible bool) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		_visible := internal.NewBoolean(visible)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextWrapWhitespaceVisible",
 			_text,
 			_visible,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iTextWrapWhitespaceVisible = func(text *Text) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_TextWrapWhitespaceVisible",
 			_text,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1641,19 +1086,15 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		_string := internal.StringOnJSStack(string)
-		_length := internal.NewBigInt(length)
+		_length := length // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_SetTextString",
 			_text,
 			_string,
 			_length,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1661,13 +1102,10 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_offset := int32(offset)
+		_text, _ := internal.GetJSPointer(text)
+		_offset := offset
 		_string := internal.StringOnJSStack(string)
-		_length := internal.NewBigInt(length)
+		_length := length // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_InsertTextString",
 			_text,
@@ -1675,7 +1113,6 @@ func initialize() {
 			_string,
 			_length,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1683,39 +1120,28 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		_string := internal.StringOnJSStack(string)
-		_length := internal.NewBigInt(length)
+		_length := length // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_AppendTextString",
 			_text,
 			_string,
 			_length,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iDeleteTextString = func(text *Text, offset int32, length int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_offset := int32(offset)
-		_length := int32(length)
+		_text, _ := internal.GetJSPointer(text)
+		_offset := offset
+		_length := length
 		ret := js.Global().Get("Module").Call(
 			"_TTF_DeleteTextString",
 			_text,
 			_offset,
 			_length,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1723,25 +1149,15 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_w, ok := internal.GetJSPointer(w)
-		if !ok {
-			_w = internal.StackAlloc(int(unsafe.Sizeof(*w)))
-		}
-		_h, ok := internal.GetJSPointer(h)
-		if !ok {
-			_h = internal.StackAlloc(int(unsafe.Sizeof(*h)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_w := w // TODO: input, output or array?
+		_h := h // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextSize",
 			_text,
 			_w,
 			_h,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1749,22 +1165,15 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_offset := int32(offset)
-		_substring, ok := internal.GetJSPointer(substring)
-		if !ok {
-			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_offset := offset
+		_substring := substring // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextSubString",
 			_text,
 			_offset,
 			_substring,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1772,22 +1181,15 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_line := int32(line)
-		_substring, ok := internal.GetJSPointer(substring)
-		if !ok {
-			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_line := line
+		_substring := substring // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextSubStringForLine",
 			_text,
 			_line,
 			_substring,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1821,16 +1223,10 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_x := int32(x)
-		_y := int32(y)
-		_substring, ok := internal.GetJSPointer(substring)
-		if !ok {
-			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_x := x
+		_y := y
+		_substring := substring // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetTextSubStringForPoint",
 			_text,
@@ -1838,7 +1234,6 @@ func initialize() {
 			_y,
 			_substring,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1846,25 +1241,15 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_substring, ok := internal.GetJSPointer(substring)
-		if !ok {
-			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
-		}
-		_previous, ok := internal.GetJSPointer(previous)
-		if !ok {
-			_previous = internal.StackAlloc(int(unsafe.Sizeof(*previous)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_substring := substring // TODO: input, output or array?
+		_previous := previous   // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetPreviousTextSubString",
 			_text,
 			_substring,
 			_previous,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1872,41 +1257,24 @@ func initialize() {
 		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
-		_substring, ok := internal.GetJSPointer(substring)
-		if !ok {
-			_substring = internal.StackAlloc(int(unsafe.Sizeof(*substring)))
-		}
-		_next, ok := internal.GetJSPointer(next)
-		if !ok {
-			_next = internal.StackAlloc(int(unsafe.Sizeof(*next)))
-		}
+		_text, _ := internal.GetJSPointer(text)
+		_substring := substring // TODO: input, output or array?
+		_next := next           // TODO: input, output or array?
 		ret := js.Global().Get("Module").Call(
 			"_TTF_GetNextTextSubString",
 			_text,
 			_substring,
 			_next,
 		)
-
 		return internal.GetBool(ret)
 	}
 
 	iUpdateText = func(text *Text) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_text, ok := internal.GetJSPointer(text)
-		if !ok {
-			_text = internal.StackAlloc(int(unsafe.Sizeof(*text)))
-		}
+		_text, _ := internal.GetJSPointer(text)
 		ret := js.Global().Get("Module").Call(
 			"_TTF_UpdateText",
 			_text,
 		)
-
 		return internal.GetBool(ret)
 	}
 
@@ -1923,49 +1291,35 @@ func initialize() {
 	}
 
 	iCloseFont = func(font *Font) {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		js.Global().Get("Module").Call(
 			"_TTF_CloseFont",
 			_font,
 		)
+		internal.DeleteJSPointer(uintptr(unsafe.Pointer(font)))
 	}
 
 	iQuit = func() {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		js.Global().Get("Module").Call(
 			"_TTF_Quit",
 		)
 	}
 
 	iWasInit = func() int32 {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		ret := js.Global().Get("Module").Call(
 			"_TTF_WasInit",
 		)
-
 		return int32(ret.Int())
 	}
 
 	iTagToString = func(tag uint32, str *byte, size uintptr) {
 		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
 		internal.StackSave()
 		defer internal.StackRestore()
 		_tag := int32(tag)
-		_str, ok := internal.GetJSPointer(str)
-		if !ok {
-			_str = internal.StackAlloc(int(unsafe.Sizeof(*str)))
-		}
-		_size := internal.NewBigInt(size)
+		_str := str   // TODO: input, output or array?
+		_size := size // TODO: size, buffer, userdata or callback?
 		js.Global().Get("Module").Call(
 			"_TTF_TagToString",
 			_tag,
@@ -1999,16 +1353,14 @@ func initialize() {
 
 	iRenderText_Solid_Wrapped = func(font *Font, str string, length uintptr, fg uint32, wrapLength int32) *sdl.Surface {
 		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_str := internal.StringOnJSStack(str)
-		_length := internal.NewBigInt(length)
+		_length := length // TODO: size, buffer, userdata or callback?
 		_fg := int32(fg)
-		_wrapLength := int32(wrapLength)
+		_wrapLength := wrapLength
 		ret := js.Global().Get("Module").Call(
 			"_TTF_RenderText_Solid_Wrapped",
 			_font,
@@ -2017,9 +1369,7 @@ func initialize() {
 			_fg,
 			_wrapLength,
 		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
+		return internal.NewObject[sdl.Surface](ret)
 	}
 
 	/*iRenderGlyph_Solid = func(font *Font, ch uint32) *sdl.Surface {
@@ -2134,16 +1484,14 @@ func initialize() {
 
 	iRenderText_Blended_Wrapped = func(font *Font, str string, length uintptr, fg uint32, wrapWidth int32) *sdl.Surface {
 		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
 		internal.StackSave()
 		defer internal.StackRestore()
-		_font, ok := internal.GetJSPointer(font)
-		if !ok {
-			_font = internal.StackAlloc(int(unsafe.Sizeof(*font)))
-		}
+		_font, _ := internal.GetJSPointer(font)
 		_str := internal.StringOnJSStack(str)
-		_length := internal.NewBigInt(length)
+		_length := length // TODO: size, buffer, userdata or callback?
 		_fg := int32(fg)
-		_wrapWidth := int32(wrapWidth)
+		_wrapWidth := wrapWidth
 		ret := js.Global().Get("Module").Call(
 			"_TTF_RenderText_Blended_Wrapped",
 			_font,
@@ -2152,9 +1500,7 @@ func initialize() {
 			_fg,
 			_wrapWidth,
 		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
+		return internal.NewObject[sdl.Surface](ret)
 	}
 
 	/*iRenderGlyph_Blended = func(font *Font, ch uint32) *sdl.Surface {
@@ -2243,4 +1589,211 @@ func initialize() {
 		return _obj
 	}*/
 
+	iOpenFontWithProperties = func(props sdl.PropertiesID) *Font {
+		_props := int32(props)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_OpenFontWithProperties",
+			_props,
+		)
+		return internal.NewObject[Font](ret)
+	}
+
+	iGetFontWeight = func(font *Font) int32 {
+		_font, _ := internal.GetJSPointer(font)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_GetFontWeight",
+			_font,
+		)
+		return int32(ret.Int())
+	}
+
+	iCreateRendererTextEngineWithProperties = func(props sdl.PropertiesID) *TextEngine {
+		panic("not implemented on js")
+		_props := int32(props)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_CreateRendererTextEngineWithProperties",
+			_props,
+		)
+		return internal.NewObject[TextEngine](ret) // TODO: single value or array?
+	}
+
+	iCreateGPUTextEngineWithProperties = func(props sdl.PropertiesID) *TextEngine {
+		panic("not implemented on js")
+		_props := int32(props)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_CreateGPUTextEngineWithProperties",
+			_props,
+		)
+		return internal.NewObject[TextEngine](ret) // TODO: single value or array?
+	}
+
+	iGetTextSubStringsForRange = func(text *Text, offset int32, length int32, count *int32) **SubString {
+		panic("not implemented on js")
+		internal.StackSave()
+		defer internal.StackRestore()
+		_text, _ := internal.GetJSPointer(text)
+		_offset := offset
+		_length := length
+		_count := count // TODO: input, output or array?
+		ret := js.Global().Get("Module").Call(
+			"_TTF_GetTextSubStringsForRange",
+			_text,
+			_offset,
+			_length,
+			_count,
+		)
+		return internal.NewObject[*SubString](ret) // TODO: single value or array?
+	}
+
+	iRenderGlyph_Solid = func(font *Font, ch uint32, fg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		_font, _ := internal.GetJSPointer(font)
+		_ch := int32(ch)
+		_fg := int32(fg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderGlyph_Solid",
+			_font,
+			_ch,
+			_fg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderText_Shaded = func(font *Font, str string, length uintptr, fg uint32, bg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		internal.StackSave()
+		defer internal.StackRestore()
+		_font, _ := internal.GetJSPointer(font)
+		_str := internal.StringOnJSStack(str)
+		_length := length // TODO: size, buffer, userdata or callback?
+		_fg := int32(fg)
+		_bg := int32(bg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderText_Shaded",
+			_font,
+			_str,
+			_length,
+			_fg,
+			_bg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderText_Shaded_Wrapped = func(font *Font, str string, length uintptr, fg uint32, bg uint32, wrapWidth int32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		internal.StackSave()
+		defer internal.StackRestore()
+		_font, _ := internal.GetJSPointer(font)
+		_str := internal.StringOnJSStack(str)
+		_length := length // TODO: size, buffer, userdata or callback?
+		_fg := int32(fg)
+		_bg := int32(bg)
+		_wrapWidth := wrapWidth
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderText_Shaded_Wrapped",
+			_font,
+			_str,
+			_length,
+			_fg,
+			_bg,
+			_wrapWidth,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderGlyph_Shaded = func(font *Font, ch uint32, fg uint32, bg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		_font, _ := internal.GetJSPointer(font)
+		_ch := int32(ch)
+		_fg := int32(fg)
+		_bg := int32(bg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderGlyph_Shaded",
+			_font,
+			_ch,
+			_fg,
+			_bg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderGlyph_Blended = func(font *Font, ch uint32, fg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		_font, _ := internal.GetJSPointer(font)
+		_ch := int32(ch)
+		_fg := int32(fg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderGlyph_Blended",
+			_font,
+			_ch,
+			_fg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderText_LCD = func(font *Font, str string, length uintptr, fg uint32, bg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		internal.StackSave()
+		defer internal.StackRestore()
+		_font, _ := internal.GetJSPointer(font)
+		_str := internal.StringOnJSStack(str)
+		_length := length // TODO: size, buffer, userdata or callback?
+		_fg := int32(fg)
+		_bg := int32(bg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderText_LCD",
+			_font,
+			_str,
+			_length,
+			_fg,
+			_bg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderText_LCD_Wrapped = func(font *Font, str string, length uintptr, fg uint32, bg uint32, wrapWidth int32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		internal.StackSave()
+		defer internal.StackRestore()
+		_font, _ := internal.GetJSPointer(font)
+		_str := internal.StringOnJSStack(str)
+		_length := length // TODO: size, buffer, userdata or callback?
+		_fg := int32(fg)
+		_bg := int32(bg)
+		_wrapWidth := wrapWidth
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderText_LCD_Wrapped",
+			_font,
+			_str,
+			_length,
+			_fg,
+			_bg,
+			_wrapWidth,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
+
+	iRenderGlyph_LCD = func(font *Font, ch uint32, fg uint32, bg uint32) *sdl.Surface {
+		panic("not implemented on js")
+		// TODO: this signature follows the native ABI, check the C prototype.
+		_font, _ := internal.GetJSPointer(font)
+		_ch := int32(ch)
+		_fg := int32(fg)
+		_bg := int32(bg)
+		ret := js.Global().Get("Module").Call(
+			"_TTF_RenderGlyph_LCD",
+			_font,
+			_ch,
+			_fg,
+			_bg,
+		)
+		return internal.NewObject[sdl.Surface](ret)
+	}
 }
