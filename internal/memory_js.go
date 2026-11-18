@@ -205,6 +205,13 @@ func ClonePtrArrayToJSHeap[T any](ptr *T, count int) (js.Value, func()) {
 	t := reflect.TypeFor[T]()
 	l := layoutOf(t)
 	allocs := &heapAllocs{}
+	if l.same {
+		// Pixel buffers take this path: encoding them element by element
+		// costs over 100ms per 640x480 frame.
+		addr := allocs.alloc(int(l.size) * count)
+		writeHeap(addr, unsafe.Slice((*byte)(unsafe.Pointer(ptr)), int(l.size)*count))
+		return js.ValueOf(addr), allocs.free
+	}
 	buf := make([]byte, int(l.size)*count)
 	for i, v := range unsafe.Slice(ptr, count) {
 		encodeValue(buf[uintptr(i)*l.size:], unsafe.Pointer(&v), t, allocs.alloc)
