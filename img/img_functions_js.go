@@ -281,40 +281,6 @@ func initialize() {
 		return internal.NewObject[sdl.Surface](ret)
 	}
 
-	/*iReadXPMFromArray = func(xpm *string) *sdl.Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_xpm, ok := internal.GetJSPointer(xpm)
-		if !ok {
-			_xpm = internal.StackAlloc()
-		}
-		ret := js.Global().Get("Module").Call(
-			"_IMG_ReadXPMFromArray",
-			_xpm,
-		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
-	}*/
-
-	/*iReadXPMFromArrayToRGB888 = func(xpm *string) *sdl.Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_xpm, ok := internal.GetJSPointer(xpm)
-		if !ok {
-			_xpm = internal.StackAlloc()
-		}
-		ret := js.Global().Get("Module").Call(
-			"_IMG_ReadXPMFromArrayToRGB888",
-			_xpm,
-		)
-
-		_obj := internal.NewObject[sdl.Surface](ret)
-		return _obj
-	}*/
-
 	iSaveAVIF = func(surface *sdl.Surface, file string, quality int32) bool {
 		internal.StackSave()
 		defer internal.StackRestore()
@@ -627,10 +593,8 @@ func initialize() {
 	}
 
 	iReadXPMFromArray = func(xpm *string) *sdl.Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_xpm := xpm // TODO: input, output or array?
+		_xpm, free := cStringArrayToJSHeap(xpm)
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_IMG_ReadXPMFromArray",
 			_xpm,
@@ -639,10 +603,8 @@ func initialize() {
 	}
 
 	iReadXPMFromArrayToRGB888 = func(xpm *string) *sdl.Surface {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
-		_xpm := xpm // TODO: input, output or array?
+		_xpm, free := cStringArrayToJSHeap(xpm)
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_IMG_ReadXPMFromArrayToRGB888",
 			_xpm,
