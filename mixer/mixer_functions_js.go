@@ -195,7 +195,7 @@ func initialize() {
 			internal.NewBoolean(true),
 		)
 		if ret.Int() == 0 {
-			js.Global().Call("_free", _data)
+			js.Global().Get("Module").Call("_free", _data)
 		}
 		return internal.NewObject[Audio](ret)
 	}
@@ -939,7 +939,7 @@ func initialize() {
 			internal.NewBoolean(true),
 		)
 		if ret.Int() == 0 {
-			js.Global().Call("_free", _data)
+			js.Global().Get("Module").Call("_free", _data)
 		}
 		return internal.NewObject[Audio](ret)
 	}

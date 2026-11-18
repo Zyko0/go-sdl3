@@ -45,14 +45,14 @@ func RunLoop(updateFunc func() error) error {
 	ch := make(chan error)
 	fn := js.FuncOf(func(this js.Value, args []js.Value) any {
 		if err := updateFunc(); err != nil {
-			js.Global().Call("_emscripten_cancel_main_loop")
+			js.Global().Get("Module").Call("_emscripten_cancel_main_loop")
 			ch <- err
 		}
 
 		return nil
 	})
 	fnAddr := js.Global().Get("Module").Call("addFunction", fn, "v")
-	js.Global().Call("_emscripten_set_main_loop", fnAddr, -1, 0)
+	js.Global().Get("Module").Call("_emscripten_set_main_loop", fnAddr, -1, 0)
 
 	err := <-ch
 
