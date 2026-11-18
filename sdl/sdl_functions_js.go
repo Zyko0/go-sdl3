@@ -5345,15 +5345,15 @@ func initialize() {
 	}
 
 	iGetJoysticks = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoysticks",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetJoystickNameForID = func(instance_id JoystickID) string {
@@ -5455,11 +5455,9 @@ func initialize() {
 	}
 
 	iAttachVirtualJoystick = func(desc *virtualJoystickDesc) JoystickID {
-		panic("not implemented on js")
-		// TODO: this signature follows the native ABI, check the C prototype.
 		internal.StackSave()
 		defer internal.StackRestore()
-		_desc := desc // TODO: input, output or array?
+		_desc := internal.CloneObjectToJSStack(desc)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_AttachVirtualJoystick",
 			_desc,
@@ -5561,21 +5559,16 @@ func initialize() {
 	}
 
 	iSendJoystickVirtualSensorData = func(joystick *Joystick, typ SensorType, sensor_timestamp uint64, data *float32, num_values int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_joystick, _ := internal.GetJSPointer(joystick)
-		_typ := int32(typ)
-		_sensor_timestamp := internal.NewBigInt(sensor_timestamp)
-		_data := data // TODO: input, output or array?
-		_num_values := num_values
+		_data, free := internal.ClonePtrArrayToJSHeap(data, int(num_values))
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SendJoystickVirtualSensorData",
 			_joystick,
-			_typ,
-			_sensor_timestamp,
+			int32(typ),
+			internal.NewBigInt(sensor_timestamp),
 			_data,
-			_num_values,
+			num_values,
 		)
 		return internal.GetBool(ret)
 	}
@@ -5792,36 +5785,35 @@ func initialize() {
 	}
 
 	iGetJoystickAxisInitialState = func(joystick *Joystick, axis int32, state *int16) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_joystick, _ := internal.GetJSPointer(joystick)
-		_axis := axis
-		_state := state // TODO: input, output or array?
+		_state := internal.StackAlloc(2)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickAxisInitialState",
 			_joystick,
-			_axis,
+			axis,
 			_state,
 		)
+		*state = int16(internal.GetValue(_state, "i16").Int())
 		return internal.GetBool(ret)
 	}
 
 	iGetJoystickBall = func(joystick *Joystick, ball int32, dx *int32, dy *int32) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_joystick, _ := internal.GetJSPointer(joystick)
-		_ball := ball
-		_dx := dx // TODO: input, output or array?
-		_dy := dy // TODO: input, output or array?
+		_dx := internal.StackAlloc(4)
+		_dy := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickBall",
 			_joystick,
-			_ball,
+			ball,
 			_dx,
 			_dy,
 		)
+		*dx = int32(internal.GetValue(_dx, "i32").Int())
+		*dy = int32(internal.GetValue(_dy, "i32").Int())
 		return internal.GetBool(ret)
 	}
 
@@ -5901,15 +5893,14 @@ func initialize() {
 	}
 
 	iSendJoystickEffect = func(joystick *Joystick, data uintptr, size int32) bool {
-		panic("not implemented on js")
 		_joystick, _ := internal.GetJSPointer(joystick)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_size := size
+		_data, free := internal.ClonePtrArrayToJSHeap(*(**byte)(unsafe.Pointer(&data)), int(size))
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SendJoystickEffect",
 			_joystick,
 			_data,
-			_size,
+			size,
 		)
 		return internal.GetBool(ret)
 	}
@@ -5937,16 +5928,16 @@ func initialize() {
 	}
 
 	iGetJoystickPowerInfo = func(joystick *Joystick, percent *int32) PowerState {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_joystick, _ := internal.GetJSPointer(joystick)
-		_percent := percent // TODO: input, output or array?
+		_percent := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetJoystickPowerInfo",
 			_joystick,
 			_percent,
 		)
+		*percent = int32(internal.GetValue(_percent, "i32").Int())
 		return PowerState(ret.Int())
 	}
 
@@ -5991,36 +5982,33 @@ func initialize() {
 	}
 
 	iGetGamepadMappings = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadMappings",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetGamepadMapping = func(gamepad *Gamepad) uintptr {
-		panic("not implemented on js")
 		_gamepad, _ := internal.GetJSPointer(gamepad)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadMapping",
 			_gamepad,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		return internal.NewUintptr(ret)
 	}
 
 	iSetGamepadMapping = func(instance_id JoystickID, mapping *byte) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_instance_id := int32(instance_id)
-		_mapping := mapping // TODO: input, output or array?
+		_mapping := internal.CloneObjectToJSStack(mapping)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SetGamepadMapping",
-			_instance_id,
+			int32(instance_id),
 			_mapping,
 		)
 		return internal.GetBool(ret)
@@ -6034,15 +6022,15 @@ func initialize() {
 	}
 
 	iGetGamepads = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepads",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iIsGamepad = func(instance_id JoystickID) bool {
@@ -6127,13 +6115,11 @@ func initialize() {
 	}
 
 	iGetGamepadMappingForID = func(instance_id JoystickID) uintptr {
-		panic("not implemented on js")
-		_instance_id := int32(instance_id)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadMappingForID",
-			_instance_id,
+			int32(instance_id),
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		return internal.NewUintptr(ret)
 	}
 
 	iOpenGamepad = func(instance_id JoystickID) *Gamepad {
@@ -6301,16 +6287,16 @@ func initialize() {
 	}
 
 	iGetGamepadPowerInfo = func(gamepad *Gamepad, percent *int32) PowerState {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_gamepad, _ := internal.GetJSPointer(gamepad)
-		_percent := percent // TODO: input, output or array?
+		_percent := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadPowerInfo",
 			_gamepad,
 			_percent,
 		)
+		*percent = int32(internal.GetValue(_percent, "i32").Int())
 		return PowerState(ret.Int())
 	}
 
@@ -6348,17 +6334,17 @@ func initialize() {
 	}
 
 	iGetGamepadBindings = func(gamepad *Gamepad, count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_gamepad, _ := internal.GetJSPointer(gamepad)
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetGamepadBindings",
 			_gamepad,
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iUpdateGamepads = func() {
@@ -6647,15 +6633,14 @@ func initialize() {
 	}
 
 	iSendGamepadEffect = func(gamepad *Gamepad, data uintptr, size int32) bool {
-		panic("not implemented on js")
 		_gamepad, _ := internal.GetJSPointer(gamepad)
-		_data := data // TODO: size, buffer, userdata or callback?
-		_size := size
+		_data, free := internal.ClonePtrArrayToJSHeap(*(**byte)(unsafe.Pointer(&data)), int(size))
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_SDL_SendGamepadEffect",
 			_gamepad,
 			_data,
-			_size,
+			size,
 		)
 		return internal.GetBool(ret)
 	}
