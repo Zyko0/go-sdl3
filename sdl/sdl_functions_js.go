@@ -1157,15 +1157,10 @@ func initialize() {
 		internal.StackSave()
 		defer internal.StackRestore()
 		_context, _ := internal.GetJSPointer(context)
-		// The text is already formatted: print it through "%s" so that a
-		// '%' in it is not read as a directive.
-		_args := internal.StackAlloc(4)
-		internal.SetValue(_args, internal.StringOnJSStack(fmt), "*")
 		ret := js.Global().Get("Module").Call(
 			"_SDL_IOprintf",
 			_context,
-			internal.StringOnJSStack("%s"),
-			_args,
+			internal.StringOnJSStack(fmt),
 		)
 		return uintptr(uint32(ret.Int()))
 	}
