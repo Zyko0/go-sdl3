@@ -18,6 +18,7 @@ import (
 var (
 	regDesktop = regexp.MustCompile(`i([A-Z][A-Za-z_0-9]+)\(`)
 	regJsFunc  = regexp.MustCompile(`.*\s=\sfunc`)
+	regJsName  = regexp.MustCompile(`\bi([A-Z][A-Za-z_0-9]*) = func`)
 	regJS      *regexp.Regexp
 
 	cfg *assets.Config
@@ -34,9 +35,12 @@ func False() *bool {
 }
 
 type coverage struct {
-	Exposed  *bool
-	Filename string
-	Line     int
+	Exposed *bool
+	// Unsupported marks a js binding that panics because the web build of
+	// SDL has no backend for it.
+	Unsupported bool
+	Filename    string
+	Line        int
 }
 
 type refFunc struct {
@@ -288,6 +292,7 @@ func main() {
 		var lineIndex int
 
 		var impl *bool
+		var unsupported bool
 
 		lines := strings.Split(string(b), "\n")
 		isJS := strings.HasPrefix(lines[0], "//go:build js")
@@ -330,6 +335,19 @@ func main() {
 						}
 					case isJS && strings.Contains(l, "panic(\"not implemented on js\")"):
 						impl = False()
+					case isJS && strings.Contains(l, "panic(\"not supported on js"):
+						impl = False()
+						unsupported = true
+						// The body makes no Module call to name the function,
+						// so take the name from the declaration.
+						if m := regJsName.FindStringSubmatch(lines[lineIndex]); m != nil {
+							name := cfg.Prefix + m[1]
+							if fn, found := uniqueAPIFunctions[name]; found {
+								funcName = name
+								fn.JS.Line = lineIndex
+								fn.JS.Filename = dir + "/" + e.Name()
+							}
+						}
 					case !isJS && strings.Contains(l, "panic(\"not implemented\")"):
 						impl = False()
 					}
@@ -341,12 +359,14 @@ func main() {
 						if impl != nil {
 							if isJS {
 								fn.JS.Exposed = impl
+								fn.JS.Unsupported = unsupported
 							} else {
 								fn.Desktop.Exposed = impl
 							}
 						}
 					}
 					impl = nil
+					unsupported = false
 				}
 				continue
 			}
@@ -378,6 +398,7 @@ The following emojis mean (they are clickable and should link to the code implem
 - :heavy_check_mark: = implemented
 - :x: = not implemented yet
 - :question: = not planned / don't know about integrating it or not
+- :no_entry_sign: = not supported by the web build of SDL (WASM/js only)
 `)
 	}
 	sb.WriteString("<details open>\n")
@@ -417,6 +438,8 @@ The following emojis mean (they are clickable and should link to the code implem
 				desktop = ":heavy_check_mark:"
 				if fn.JS.Exposed == nil {
 					js = ":heavy_check_mark:"
+				} else if fn.JS.Unsupported {
+					js = ":no_entry_sign:"
 				} else {
 					js = ":x:"
 				}

@@ -12,6 +12,7 @@ package sdl
 import (
 	"fmt"
 	"runtime"
+	"strings"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -5020,7 +5021,10 @@ func (context *IOStream) Write(data []byte) (uint64, error) {
 // SDL_IOprintf - Print to an SDL_IOStream data stream.
 // (https://wiki.libsdl.org/SDL3/SDL_IOprintf)
 func (context *IOStream) Printf(format string, values ...any) (uint64, error) {
-	count := iIOprintf(context, fmt.Sprintf(format, values...))
+	// The text is formatted in Go: escape it, or SDL reads each '%' in it
+	// as a directive.
+	text := strings.ReplaceAll(fmt.Sprintf(format, values...), "%", "%%")
+	count := iIOprintf(context, text)
 	if count == 0 {
 		return 0, internal.LastErr()
 	}

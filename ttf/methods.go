@@ -752,7 +752,7 @@ func (font *Font) StringSizeWrapped(text string, wrapWidth int32) (int32, int32,
 		return 0, 0, internal.LastErr()
 	}
 
-	return 0, 0, nil
+	return w, h, nil
 }
 
 // TTF_MeasureString - Calculate how much of a UTF-8 string will fit in a given width.

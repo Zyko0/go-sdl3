@@ -20,6 +20,9 @@ type Config struct {
 	BaseTypes               []string `json:"base_types"`
 	SDLFreeFunctions        []string `json:"sdl_free_functions"`
 	NoAutoStringFunctions   []string `json:"no_auto_string_functions"`
+	// JSUnsupported maps a C function name to the reason the web build of
+	// the library cannot run it.
+	JSUnsupported map[string]string `json:"js_unsupported"`
 }
 
 func LoadConfig(path string) (*Config, error) {

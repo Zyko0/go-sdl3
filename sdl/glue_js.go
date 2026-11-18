@@ -13,6 +13,52 @@ func (s *Surface) Pixels() []byte {
 	return internal.GetByteSliceFromJSPtr(js.ValueOf(int32(s.pixels)), int(s.H*s.Pitch))
 }
 
+// planeSize returns the bytes spanned by rows rows of rowBytes bytes, pitch
+// bytes apart: the last row may end before the pitch.
+func planeSize(rows, pitch, rowBytes int32) int {
+	if rows <= 0 {
+		return 0
+	}
+	return int((rows-1)*pitch + rowBytes)
+}
+
+// lockedTexture is the Go mirror of the heap pixels of a locked texture.
+type lockedTexture struct {
+	addr   int
+	pixels []byte
+}
+
+// C cannot alias Go memory, so a locked texture exposes a Go copy of its
+// pixels, written back to the heap by UnlockTexture.
+var lockedTextures = map[*Texture]lockedTexture{}
+
+func lockTextureMirror(texture *Texture, rect *Rect, addr int, pitch int32) uintptr {
+	size := int(texture.H * pitch)
+	if rect != nil {
+		bpp := int32(texture.Format & 0xFF)
+		// Packed FOURCC formats use 2 bytes per pixel; SDL refuses partial
+		// locks of planar ones.
+		if texture.Format != 0 && (texture.Format>>28)&0x0F != 1 {
+			bpp = 2
+		}
+		size = planeSize(rect.H, pitch, rect.W*bpp)
+	}
+	// The Lock wrapper slices texture.H*pitch bytes whatever the rect.
+	pixels := make([]byte, max(int(texture.H*pitch), size, 1))
+	copy(pixels, internal.GetByteSliceFromJSPtr(js.ValueOf(addr), size))
+	lockedTextures[texture] = lockedTexture{addr: addr, pixels: pixels[:size]}
+	return uintptr(unsafe.Pointer(&pixels[0]))
+}
+
+func unlockTextureMirror(texture *Texture) {
+	m, ok := lockedTextures[texture]
+	if !ok {
+		return
+	}
+	delete(lockedTextures, texture)
+	internal.SetNumericSliceToJSPtr(js.ValueOf(m.addr), m.pixels)
+}
+
 // Callbacks
 
 // Opaque pointers such as userdata and property values are never

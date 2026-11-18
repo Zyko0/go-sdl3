@@ -1,6 +1,7 @@
 package img
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/Zyko0/go-sdl3/internal"
@@ -410,8 +411,9 @@ func LoadSizedSVG_IO(src *sdl.IOStream, width, height int32) (*sdl.Surface, erro
 // IMG_ReadXPMFromArray - Load an XPM image from a memory array.
 // (https://wiki.libsdl.org/SDL3_img/IMG_ReadXPMFromArray)
 func ReadXPMFFromArray(xpm []string) (*sdl.Surface, error) {
-	xpm = append(xpm, "") // TODO: not sure that counts for a NULL-terminated array, see: https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArray
-	surface := iReadXPMFromArray(unsafe.SliceData(xpm))
+	ptrs := cStringArray(xpm)
+	surface := iReadXPMFromArray((*string)(unsafe.Pointer(unsafe.SliceData(ptrs))))
+	runtime.KeepAlive(ptrs)
 	if surface == nil {
 		return nil, internal.LastErr()
 	}
@@ -422,8 +424,9 @@ func ReadXPMFFromArray(xpm []string) (*sdl.Surface, error) {
 // IMG_ReadXPMFromArrayToRGB888 - Load an XPM image from a memory array.
 // (https://wiki.libsdl.org/SDL3_img/IMG_ReadXPMFromArrayToRGB888)
 func ReadXPMFFromArrayToRGB888(xpm []string) (*sdl.Surface, error) {
-	xpm = append(xpm, "") // TODO: not sure that counts for a NULL-terminated array, see: https://wiki.libsdl.org/SDL3_image/IMG_ReadXPMFromArrayToRGB888
-	surface := iReadXPMFromArrayToRGB888(unsafe.SliceData(xpm))
+	ptrs := cStringArray(xpm)
+	surface := iReadXPMFromArrayToRGB888((*string)(unsafe.Pointer(unsafe.SliceData(ptrs))))
+	runtime.KeepAlive(ptrs)
 	if surface == nil {
 		return nil, internal.LastErr()
 	}
