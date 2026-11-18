@@ -35,6 +35,9 @@
         "TTF_DrawOperation"
     ],
     "sdl_free_functions": [
-        
-    ]
+
+    ],
+    "js_unsupported": {
+        "TTF_GetGPUTextDrawData": "the web build has no SDL_GPU backend"
+    }
 }
