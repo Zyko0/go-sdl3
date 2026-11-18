@@ -7185,15 +7185,15 @@ func initialize() {
 	}
 
 	iGetTouchDevices = func(count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTouchDevices",
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetTouchDeviceName = func(touchID TouchID) string {
@@ -7215,17 +7215,17 @@ func initialize() {
 	}
 
 	iGetTouchFingers = func(touchID TouchID, count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_touchID := internal.NewBigInt(uint64(touchID))
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_SDL_GetTouchFingers",
 			_touchID,
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iPumpEvents = func() {
