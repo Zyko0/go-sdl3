@@ -32,25 +32,26 @@ var (
 )
 
 func init() {
-	// Wait for runtime initialization
-	for js.Global().Get("runtimeInitialized").IsUndefined() {
-		time.Sleep(1 * time.Millisecond)
-	}
-	for !js.Global().Get("runtimeInitialized").Bool() {
-		time.Sleep(1 * time.Millisecond)
-	}
-	// TODO: find a cleaner way than loop+sleep?
-	for js.Global().Get("HEAPU8").IsUndefined() {
+	// Module.calledRun is set by .docker/emscripten-build/post.js once the
+	// runtime is initialized: optimized emscripten builds drop it.
+	// Every runtime symbol read below must be listed in the emcc
+	// EXPORTED_RUNTIME_METHODS, or optimized builds drop it.
+	for {
+		m := js.Global().Get("Module")
+		if !m.IsUndefined() && m.Get("calledRun").Truthy() {
+			break
+		}
 		time.Sleep(1 * time.Millisecond)
 	}
 
-	stackAlloc = js.Global().Get("stackAlloc")
-	stackString = js.Global().Get("stringToUTF8OnStack")
-	utf8String = js.Global().Get("UTF8ToString")
-	getValue = js.Global().Get("getValue")
-	setValue = js.Global().Get("setValue")
-	stackSave = js.Global().Get("stackSave")
-	stackRestore = js.Global().Get("stackRestore")
+	module := js.Global().Get("Module")
+	stackAlloc = module.Get("stackAlloc")
+	stackString = module.Get("stringToUTF8OnStack")
+	utf8String = module.Get("UTF8ToString")
+	getValue = module.Get("getValue")
+	setValue = module.Get("setValue")
+	stackSave = module.Get("stackSave")
+	stackRestore = module.Get("stackRestore")
 
 	bigInt = js.Global().Get("BigInt")
 	boolean = js.Global().Get("Boolean")
@@ -59,7 +60,7 @@ func init() {
 // heapU8 must not be cached: memory growth replaces HEAPU8 and detaches
 // the previous view.
 func heapU8() js.Value {
-	return js.Global().Get("HEAPU8")
+	return js.Global().Get("Module").Get("HEAPU8")
 }
 
 // On js, Go pointers and uintptr values always hold Go addresses: Go and
@@ -189,7 +190,7 @@ func CopyJSToObject[T any](obj *T, ptr js.Value) {
 }
 
 func CloneByteSliceToJSHeap(s []byte) js.Value {
-	ptr := js.Global().Call("_malloc", len(s))
+	ptr := js.Global().Get("Module").Call("_malloc", len(s))
 	writeHeap(ptr.Int(), s)
 
 	return ptr

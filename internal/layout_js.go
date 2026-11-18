@@ -87,14 +87,14 @@ func stackAllocator(n int) int {
 type heapAllocs []int
 
 func (h *heapAllocs) alloc(n int) int {
-	addr := js.Global().Call("_malloc", max(n, 1)).Int()
+	addr := js.Global().Get("Module").Call("_malloc", max(n, 1)).Int()
 	*h = append(*h, addr)
 	return addr
 }
 
 func (h *heapAllocs) free() {
 	for _, addr := range *h {
-		js.Global().Call("_free", addr)
+		js.Global().Get("Module").Call("_free", addr)
 	}
 	*h = nil
 }

@@ -48,7 +48,7 @@ tasks:
             - docker build ./.docker/emscripten-build/ -t sdl3wasm
             - docker create --name wasm sdl3wasm
             - docker cp wasm:/_out ./out_test
-            - docker rm -f tmp
+            - docker rm -f wasm
     
     gen-bindings:
         desc: Generate Go bindings for a chosen SDL3 library

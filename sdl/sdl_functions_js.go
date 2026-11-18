@@ -1032,7 +1032,7 @@ func initialize() {
 
 		_obj := internal.NewObject[IOStream](ret)
 		internal.AttachFinalizer(_obj, func() {
-			js.Global().Call("_free", _mem)
+			js.Global().Get("Module").Call("_free", _mem)
 		})
 
 		return _obj
@@ -7228,8 +7228,8 @@ func initialize() {
 			_events, free = internal.ClonePtrArrayToJSHeap(events, int(numevents))
 		case events != nil && numevents > 0:
 			// An output array may not fit on the stack.
-			_events = js.Global().Call("_malloc", int(numevents)*size)
-			free = func() { js.Global().Call("_free", _events) }
+			_events = js.Global().Get("Module").Call("_malloc", int(numevents)*size)
+			free = func() { js.Global().Get("Module").Call("_free", _events) }
 		}
 		defer free()
 		ret := js.Global().Get("Module").Call(

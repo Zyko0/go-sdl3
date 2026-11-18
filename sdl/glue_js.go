@@ -114,7 +114,7 @@ func NewClipboardDataCallback(fn func(mimeType string) []byte) ClipboardDataCall
 	var last js.Value
 	return ClipboardDataCallback(internal.NewCallback("pppp", func(args []js.Value) any {
 		if !last.IsUndefined() {
-			js.Global().Call("_free", last)
+			js.Global().Get("Module").Call("_free", last)
 			last = js.Value{}
 		}
 		data := fn(internal.UTF8JSToString(args[1]))
