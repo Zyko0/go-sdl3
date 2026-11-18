@@ -48,11 +48,10 @@ func initialize() {
 	}
 
 	iCreateMixerDevice = func(devid sdl.AudioDeviceID, spec *sdl.AudioSpec) *Mixer {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_devid := int32(devid)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_CreateMixerDevice",
 			_devid,
@@ -62,10 +61,9 @@ func initialize() {
 	}
 
 	iCreateMixer = func(spec *sdl.AudioSpec) *Mixer {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_CreateMixer",
 			_spec,
@@ -92,16 +90,16 @@ func initialize() {
 	}
 
 	iGetMixerFormat = func(mixer *Mixer, spec *sdl.AudioSpec) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.StackAlloc(internal.CSizeof[sdl.AudioSpec]())
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetMixerFormat",
 			_mixer,
 			_spec,
 		)
+		internal.CopyJSToObject(spec, _spec)
 		return internal.GetBool(ret)
 	}
 
@@ -145,12 +143,11 @@ func initialize() {
 	}
 
 	iLoadRawAudio_IO = func(mixer *Mixer, io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) *Audio {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, _ := internal.GetJSPointer(mixer)
 		_io, _ := internal.GetJSPointer(io)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.CloneObjectToJSStack(spec)
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_LoadRawAudio_IO",
@@ -163,13 +160,13 @@ func initialize() {
 	}
 
 	iLoadRawAudio = func(mixer *Mixer, data uintptr, datalen uintptr, spec *sdl.AudioSpec) *Audio {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_data := data       // TODO: size, buffer, userdata or callback?
-		_datalen := datalen // TODO: size, buffer, userdata or callback?
-		_spec := spec       // TODO: input, output or array?
+		_data, free := internal.ClonePtrArrayToJSHeap(*(**byte)(unsafe.Pointer(&data)), int(datalen))
+		defer free()
+		_datalen := int32(datalen)
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_LoadRawAudio",
 			_mixer,
@@ -181,22 +178,25 @@ func initialize() {
 	}
 
 	iLoadRawAudioNoCopy = func(mixer *Mixer, data uintptr, datalen uintptr, spec *sdl.AudioSpec, free_when_done bool) *Audio {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_data := data       // TODO: size, buffer, userdata or callback?
-		_datalen := datalen // TODO: size, buffer, userdata or callback?
-		_spec := spec       // TODO: input, output or array?
-		_free_when_done := internal.NewBoolean(free_when_done)
+		// C cannot alias Go memory: the audio keeps a heap copy, which SDL
+		// owns and frees with the audio.
+		_data := internal.CloneByteSliceToJSHeap(unsafe.Slice(*(**byte)(unsafe.Pointer(&data)), datalen))
+		_datalen := int32(datalen)
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_LoadRawAudioNoCopy",
 			_mixer,
 			_data,
 			_datalen,
 			_spec,
-			_free_when_done,
+			internal.NewBoolean(true),
 		)
+		if ret.Int() == 0 {
+			js.Global().Call("_free", _data)
+		}
 		return internal.NewObject[Audio](ret)
 	}
 
@@ -234,16 +234,16 @@ func initialize() {
 	}
 
 	iGetAudioFormat = func(audio *Audio, spec *sdl.AudioSpec) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_audio, _ := internal.GetJSPointer(audio)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.StackAlloc(internal.CSizeof[sdl.AudioSpec]())
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetAudioFormat",
 			_audio,
 			_spec,
 		)
+		internal.CopyJSToObject(spec, _spec)
 		return internal.GetBool(ret)
 	}
 
@@ -675,11 +675,9 @@ func initialize() {
 	}
 
 	iSetTrackOutputChannelMap = func(track *Track, chmap *int32, count int32) bool {
-		panic("not implemented on js")
-		internal.StackSave()
-		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
-		_chmap := chmap // TODO: input, output or array?
+		_chmap, free := internal.ClonePtrArrayToJSHeap(chmap, int(count))
+		defer free()
 		_count := count
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackOutputChannelMap",
@@ -691,11 +689,10 @@ func initialize() {
 	}
 
 	iSetTrackStereo = func(track *Track, gains *StereoGains) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
-		_gains := gains // TODO: input, output or array?
+		_gains := internal.CloneObjectToJSStack(gains)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackStereo",
 			_track,
@@ -705,11 +702,10 @@ func initialize() {
 	}
 
 	iSetTrack3DPosition = func(track *Track, position *Point3D) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
-		_position := position // TODO: input, output or array?
+		_position := internal.CloneObjectToJSStack(position)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrack3DPosition",
 			_track,
@@ -719,16 +715,16 @@ func initialize() {
 	}
 
 	iGetTrack3DPosition = func(track *Track, position *Point3D) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
-		_position := position // TODO: input, output or array?
+		_position := internal.StackAlloc(internal.CSizeof[Point3D]())
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetTrack3DPosition",
 			_track,
 			_position,
 		)
+		internal.CopyJSToObject(position, _position)
 		return internal.GetBool(ret)
 	}
 
@@ -780,71 +776,56 @@ func initialize() {
 	}
 
 	iSetTrackStoppedCallback = func(track *Track, cb TrackStoppedCallback, userdata uintptr) bool {
-		panic("not implemented on js")
 		_track, _ := internal.GetJSPointer(track)
-		_cb := cb             // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackStoppedCallback",
 			_track,
-			_cb,
-			_userdata,
+			int32(cb),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iSetTrackRawCallback = func(track *Track, cb TrackMixCallback, userdata uintptr) bool {
-		panic("not implemented on js")
 		_track, _ := internal.GetJSPointer(track)
-		_cb := cb             // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackRawCallback",
 			_track,
-			_cb,
-			_userdata,
+			int32(cb),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iSetTrackCookedCallback = func(track *Track, cb TrackMixCallback, userdata uintptr) bool {
-		panic("not implemented on js")
 		_track, _ := internal.GetJSPointer(track)
-		_cb := cb             // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackCookedCallback",
 			_track,
-			_cb,
-			_userdata,
+			int32(cb),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iSetGroupPostMixCallback = func(group *Group, cb GroupMixCallback, userdata uintptr) bool {
-		panic("not implemented on js")
 		_group, _ := internal.GetJSPointer(group)
-		_cb := cb             // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetGroupPostMixCallback",
 			_group,
-			_cb,
-			_userdata,
+			int32(cb),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
 
 	iSetPostMixCallback = func(mixer *Mixer, cb PostMixCallback, userdata uintptr) bool {
-		panic("not implemented on js")
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_cb := cb             // TODO: size, buffer, userdata or callback?
-		_userdata := userdata // TODO: size, buffer, userdata or callback?
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetPostMixCallback",
 			_mixer,
-			_cb,
-			_userdata,
+			int32(cb),
+			int32(userdata),
 		)
 		return internal.GetBool(ret)
 	}
@@ -894,34 +875,37 @@ func initialize() {
 	}
 
 	iGetAudioDecoderFormat = func(audiodecoder *AudioDecoder, spec *sdl.AudioSpec) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_audiodecoder, _ := internal.GetJSPointer(audiodecoder)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.StackAlloc(internal.CSizeof[sdl.AudioSpec]())
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetAudioDecoderFormat",
 			_audiodecoder,
 			_spec,
 		)
+		internal.CopyJSToObject(spec, _spec)
 		return internal.GetBool(ret)
 	}
 
 	iDecodeAudio = func(audiodecoder *AudioDecoder, buffer uintptr, buflen int32, spec *sdl.AudioSpec) int32 {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_audiodecoder, _ := internal.GetJSPointer(audiodecoder)
-		_buffer := buffer // TODO: size, buffer, userdata or callback?
-		_buflen := buflen
-		_spec := spec // TODO: input, output or array?
+		dst := unsafe.Slice(*(**byte)(unsafe.Pointer(&buffer)), buflen)
+		_buffer, free := internal.ClonePtrArrayToJSHeap(unsafe.SliceData(dst), int(buflen))
+		defer free()
+		_spec := internal.CloneObjectToJSStack(spec)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_DecodeAudio",
 			_audiodecoder,
 			_buffer,
-			_buflen,
+			buflen,
 			_spec,
 		)
+		if n := ret.Int(); n > 0 {
+			copy(dst, internal.GetByteSliceFromJSPtr(_buffer, n))
+		}
 		return int32(ret.Int())
 	}
 
@@ -942,28 +926,30 @@ func initialize() {
 	}
 
 	iLoadAudioNoCopy = func(mixer *Mixer, data uintptr, datalen uintptr, free_when_done bool) *Audio {
-		panic("not implemented on js")
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_data := data       // TODO: size, buffer, userdata or callback?
-		_datalen := datalen // TODO: size, buffer, userdata or callback?
-		_free_when_done := internal.NewBoolean(free_when_done)
+		// C cannot alias Go memory: the audio keeps a heap copy, which SDL
+		// owns and frees with the audio.
+		_data := internal.CloneByteSliceToJSHeap(unsafe.Slice(*(**byte)(unsafe.Pointer(&data)), datalen))
+		_datalen := int32(datalen)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_LoadAudioNoCopy",
 			_mixer,
 			_data,
 			_datalen,
-			_free_when_done,
+			internal.NewBoolean(true),
 		)
+		if ret.Int() == 0 {
+			js.Global().Call("_free", _data)
+		}
 		return internal.NewObject[Audio](ret)
 	}
 
 	iSetTrackRawIOStream = func(track *Track, io *sdl.IOStream, spec *sdl.AudioSpec, closeio bool) bool {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
 		_io, _ := internal.GetJSPointer(io)
-		_spec := spec // TODO: input, output or array?
+		_spec := internal.CloneObjectToJSStack(spec)
 		_closeio := internal.NewBoolean(closeio)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_SetTrackRawIOStream",
@@ -976,33 +962,33 @@ func initialize() {
 	}
 
 	iGetTrackTags = func(track *Track, count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_track, _ := internal.GetJSPointer(track)
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetTrackTags",
 			_track,
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetTaggedTracks = func(mixer *Mixer, tag string, count *int32) uintptr {
-		panic("not implemented on js")
 		internal.StackSave()
 		defer internal.StackRestore()
 		_mixer, _ := internal.GetJSPointer(mixer)
 		_tag := internal.StringOnJSStack(tag)
-		_count := count // TODO: input, output or array?
+		_count := internal.StackAlloc(4)
 		ret := js.Global().Get("Module").Call(
 			"_MIX_GetTaggedTracks",
 			_mixer,
 			_tag,
 			_count,
 		)
-		return uintptr(uint32(ret.Int())) // TODO: size, or pointer through internal.NewUintptr?
+		*count = int32(internal.GetValue(_count, "i32").Int())
+		return internal.NewUintptr(ret)
 	}
 
 	iGetTrackFadeFrames = func(track *Track) int64 {
@@ -1075,16 +1061,19 @@ func initialize() {
 	}
 
 	iGenerate = func(mixer *Mixer, buffer uintptr, buflen int32) int32 {
-		panic("not implemented on js")
 		_mixer, _ := internal.GetJSPointer(mixer)
-		_buffer := buffer // TODO: size, buffer, userdata or callback?
-		_buflen := buflen
+		dst := unsafe.Slice(*(**byte)(unsafe.Pointer(&buffer)), buflen)
+		_buffer, free := internal.ClonePtrArrayToJSHeap(unsafe.SliceData(dst), int(buflen))
+		defer free()
 		ret := js.Global().Get("Module").Call(
 			"_MIX_Generate",
 			_mixer,
 			_buffer,
-			_buflen,
+			buflen,
 		)
+		if n := ret.Int(); n > 0 {
+			copy(dst, internal.GetByteSliceFromJSPtr(_buffer, n))
+		}
 		return int32(ret.Int())
 	}
 }

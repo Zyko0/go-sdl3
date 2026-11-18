@@ -484,12 +484,7 @@ func (track *Track) Tags() ([]string, error) {
 		return nil, internal.LastErr()
 	}
 
-	ptrSlice := unsafe.Slice((**byte)(unsafe.Pointer(ptr)), count)
-	tags := make([]string, count)
-	for i := range tags {
-		tags[i] = internal.ClonePtrString(uintptr(unsafe.Pointer(ptrSlice[i])))
-	}
-
+	tags := internal.ClonePtrStringSlice(ptr, int(count))
 	internal.Free(ptr)
 
 	return tags, nil
