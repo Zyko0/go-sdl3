@@ -53,8 +53,14 @@ func goVersion(buildDir string) (string, error) {
 
 func getWasmExecJS(buildDir string) ([]byte, error) {
 	// Try finding it locally
-	dir, ok := os.LookupEnv("GOROOT")
-	if ok {
+	// GOROOT is usually unset, e.g. under `go run`.
+	dir := os.Getenv("GOROOT")
+	if dir == "" {
+		if out, err := exec.Command("go", "env", "GOROOT").Output(); err == nil {
+			dir = strings.TrimSpace(string(out))
+		}
+	}
+	if dir != "" {
 		// go1.23.0 and before were under "misc" folder
 		for _, d := range []string{"lib", "misc"} {
 			b, err := os.ReadFile(filepath.Join(dir, d, "wasm/wasm_exec.js"))

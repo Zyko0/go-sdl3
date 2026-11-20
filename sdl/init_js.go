@@ -41,23 +41,27 @@ func CloseLibrary() error {
 	return nil
 }
 
+// RunLoop calls updateFunc once per browser animation frame, on the calling
+// goroutine. A js.FuncOf callback must not block, as it holds the browser
+// event loop: the frame callback only wakes this goroutine, so updateFunc may
+// block (net/http, channels, time.Sleep).
 func RunLoop(updateFunc func() error) error {
-	ch := make(chan error)
-	fn := js.FuncOf(func(this js.Value, args []js.Value) any {
-		if err := updateFunc(); err != nil {
-			js.Global().Get("Module").Call("_emscripten_cancel_main_loop")
-			ch <- err
-		}
-
+	frame := make(chan struct{}, 1)
+	onFrame := js.FuncOf(func(this js.Value, args []js.Value) any {
+		frame <- struct{}{}
 		return nil
 	})
-	fnAddr := js.Global().Get("Module").Call("addFunction", fn, "v")
-	js.Global().Get("Module").Call("_emscripten_set_main_loop", fnAddr, -1, 0)
+	defer onFrame.Release()
 
-	err := <-ch
-
-	if errors.Is(err, EndLoop) {
-		return nil
+	requestAnimationFrame := js.Global().Get("requestAnimationFrame")
+	for {
+		requestAnimationFrame.Invoke(onFrame)
+		<-frame
+		if err := updateFunc(); err != nil {
+			if errors.Is(err, EndLoop) {
+				return nil
+			}
+			return err
+		}
 	}
-	return err
 }

@@ -25,6 +25,11 @@ RUN git clone --depth 1 --recurse-submodules --shallow-submodules --branch relea
 RUN git clone --depth 1 --recurse-submodules --shallow-submodules --branch release-${IMAGE_VERSION} https://github.com/libsdl-org/SDL_image.git
 RUN git clone --depth 1 --recurse-submodules --shallow-submodules --branch release-${MIXER_VERSION} https://github.com/libsdl-org/SDL_mixer.git
 
+# Emscripten's clock_gettime rejects CLOCK_MONOTONIC_RAW: SDL would fall back
+# to gettimeofday and round every timestamp to 1 ms. Use CLOCK_MONOTONIC.
+RUN sed -i 's/defined(CLOCK_MONOTONIC_RAW) && !defined(__ANDROID__)/& \&\& !defined(__EMSCRIPTEN__)/' SDL/src/timer/unix/SDL_systimer.c && \
+        grep -q '!defined(__ANDROID__) && !defined(__EMSCRIPTEN__)' SDL/src/timer/unix/SDL_systimer.c
+
 # Build SDL
 RUN source emsdk/emsdk_env.sh && \
         mkdir build_sdl && cd build_sdl && \
